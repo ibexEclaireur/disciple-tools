@@ -70,6 +70,20 @@ $dmmcrm_post_type_locations = new Dmmcrm_Locations_Post_Type;
  */
 $dmmcrm_post_type_groups = new Dmmcrm_Groups_Post_Type;
 
+
+
+/**
+ * Prayer Post Type
+ *
+ * This defines the Prayer custom post type. A majority of the prayer app data
+ * will be stored under this custom post type. Taxonomy and heavy use of meta
+ * are used as well to construct the different data functionalities that this
+ * plugin provides.
+ *
+ * @since 0.9.0
+ */
+$prayer_post_type_prayer = new Dmmcrm_Prayer_Post_Type;
+
 /**
  * Dashboard Widgets
  *
@@ -80,6 +94,21 @@ $dmmcrm_post_type_groups = new Dmmcrm_Groups_Post_Type;
  * @since 0.0.1
  */
 require_once( DMMCRM_PLUGIN_DIR . "includes/dmmcrm-dashboard.php" );
+
+/**
+ * Load roles.
+ */
+require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-roles.php');
+
+/**
+ * Load admin panel functions to control the experience of the admin panel.
+ */
+require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-admin-setup.php');
+
+/**
+ * Load security modifications to site.
+ */
+require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-security-setup.php');
 
 
 
