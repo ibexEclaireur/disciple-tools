@@ -6,6 +6,8 @@
  * Version: 0.0.1
  * Author: Chasm.Solutions & Kingdom.Training
  * Author URI: https://github.com/ChasmSolutions
+ * Requires at least: 4.0.0
+ * Tested up to: 4.7.0
  *
  * @package   DmmCrm
  * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
@@ -17,9 +19,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-    die;
-}
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // Define plugin directory constant
 define( 'DMMCRM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );

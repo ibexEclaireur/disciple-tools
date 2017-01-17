@@ -1,4 +1,5 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  *  Setup Roles and Capabilities on Theme install and Remove custom Roles and Capabilities on Theme Switch
  *
