@@ -1,2 +1,0 @@
-# Prayer Plugin Documentation
-

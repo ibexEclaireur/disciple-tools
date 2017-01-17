@@ -13,8 +13,7 @@
  * @copyright 2017 Chasm Solutions
  * @license   GPL-3.0
  * @version   0.0.1
- *
- * TODO: 
+ * 
  */
 
 // If this file is called directly, abort.
@@ -85,7 +84,7 @@ $dmmcrm_post_type_groups = new Dmmcrm_Groups_Post_Type;
 $prayer_post_type_prayer = new Dmmcrm_Prayer_Post_Type;
 
 /**
- * Dashboard Widgets
+ * Load Dashboard Widgets
  *
  * This defines the default dashboard widgets.
  * 
