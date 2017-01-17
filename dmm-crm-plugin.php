@@ -109,6 +109,11 @@ require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-admin-setup.php');
  */
 require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-security-setup.php');
 
+/**
+ * Load security modifications to site.
+ */
+require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-metaboxes.php');
+
 
 
 
