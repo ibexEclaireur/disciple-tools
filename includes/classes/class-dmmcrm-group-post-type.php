@@ -133,7 +133,7 @@ class DmmCrm_Plugin_Group_Post_Type {
 			'capability_type' => 'post',
 			'has_archive' => $archive_slug,
 			'hierarchical' => false,
-			'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail', 'page-attributes' ),
+			'supports' => array( 'title', 'thumbnail', 'comments' ),
 			'menu_position' => 5,
 			'menu_icon' => 'dashicons-smiley',
 		);
@@ -242,7 +242,7 @@ class DmmCrm_Plugin_Group_Post_Type {
 	 * @return void
 	 */
 	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '-data', __( 'Thing Details', 'dmmcrm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '-data', __( 'Group Details', 'dmmcrm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
 	} // End meta_box_setup()
 
 	/**
@@ -259,6 +259,7 @@ class DmmCrm_Plugin_Group_Post_Type {
 		$html = '';
 
 		$html .= '<input type="hidden" name="dmmcrm_' . $this->post_type . '_noonce" id="dmmcrm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( DmmCrm_Plugin()->plugin_path ) ) ) . '" />';
+		
 
 		if ( 0 < count( $field_data ) ) {
 			$html .= '<table class="form-table">' . "\n";
@@ -269,10 +270,57 @@ class DmmCrm_Plugin_Group_Post_Type {
 				if ( isset( $fields['_' . $k] ) && isset( $fields['_' . $k][0] ) ) {
 					$data = $fields['_' . $k][0];
 				}
-
-				$html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-				$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-				$html .= '</td><tr/>' . "\n";
+				
+				$type = $v['type'];
+				
+				switch ( $type ) {
+					
+					case 'url':
+						$html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+						$html .= '</td><tr/>' . "\n";
+					break;
+					case 'text':
+						$html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+						$html .= '</td><tr/>' . "\n";
+					break;
+					case 'select':
+						$html .= '<tr valign="top"><th scope="row">
+							<label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+							<td><select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+									// Iterate the options
+						            foreach ($v['default'] as $vv) {
+							            $html .= '<option value="' . $vv . '" '; 
+							            if($vv == $data) { $html .= 'selected';}
+							            $html .= '>' .$vv . '</option>';
+						            }
+						$html .= '</select>' . "\n";
+						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+						$html .= '</td><tr/>' . "\n";
+					break;
+					case 'radio':
+						$html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+							<td><fieldset>';
+								// Iterate the buttons
+								$increment_the_radio_button = 1;
+					            foreach ($v['default'] as $vv) {
+						            $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
+								    '<input class="dmmcrm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
+								    if($vv == $data) { $html .= 'checked';}
+								    $html .= '>';
+								   $increment_the_radio_button++;
+					            }
+						$html .= '</fieldset>' . "\n";
+						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+						$html .= '</td><tr/>' . "\n";
+					break;
+		
+					default:
+					break;
+				}
+				
+				
 			}
 
 			$html .= '</tbody>' . "\n";

@@ -50,6 +50,25 @@ function __empty_footer_string () {
 }
 add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
 add_filter( 'update_footer',     '__empty_footer_string', 11 );
- 
- 
- ?>
+
+
+function my_enqueue_scripts($hook) {
+     // Only load the scripts on the pages where they're needed
+     if( 'post.php' != $hook )
+          return;
+		  
+		  
+     wp_register_style( 'dmmcrm_ui_css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' );
+     wp_enqueue_style( 'dmmcrm_ui_css' );
+     
+     wp_register_style( 'dmmcrm_admin_css', plugin_dir_url( __FILE__ ) . 'css/dmmcrm-admin-styles.css' );
+     wp_enqueue_style( 'dmmcrm_admin_css' );
+
+     wp_enqueue_script("jquery-ui-core");
+     wp_enqueue_script( 'admin_scripts', plugin_dir_url( __FILE__ ) .'js/dmmcrm-admin.js', array('jquery', 'jquery-ui-core') );
+     // No need to enqueue jQuery as it's already included in the WordPress admin by default
+     
+     wp_enqueue_script('jquery-ui-checkboxradio'); 
+}
+add_action( 'admin_enqueue_scripts', 'my_enqueue_scripts' );
+
