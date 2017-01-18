@@ -81,19 +81,13 @@ class DmmCrm_Plugin_Contact_Post_Type {
 				add_filter( 'manage_edit-' . $this->post_type . '_columns', array( $this, 'register_custom_column_headings' ), 10, 1 );
 				add_action( 'manage_posts_custom_column', array( $this, 'register_custom_columns' ), 10, 2 );
 			}
+			
 		}
 
 		add_action( 'after_setup_theme', array( $this, 'ensure_post_thumbnails_support' ) );
 		add_action( 'after_theme_setup', array( $this, 'register_image_sizes' ) );
 		
-		// Additional Metabox Section
 		
-		
-		add_action( 'add_meta_boxes', array( $this, 'additional_contact_meta' ) );
-		add_action( 'save_post',  array( $this, 'additional_contact_meta_save' ) );
-		add_action( 'admin_print_styles', array( $this, 'additional_contact_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'additional_contact_color_enqueue' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'additional_contact_image_enqueue' ) );
 		
 	} // End __construct()
 
@@ -145,7 +139,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 			'capability_type' 		=> 'post',
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'excerpt', 'thumbnail' ),
+			'supports' 				=> array( 'title', 'excerpt', 'thumbnail', 'comments' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-groups',
 			'show_in_rest'          => true,
@@ -258,6 +252,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	
 	
 	
+	
 	/**
 	 * Setup the meta box.
 	 * @access public
@@ -266,8 +261,9 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'dmmcrm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+		
 	} // End meta_box_setup()
-
+	
 	/**
 	 * The contents of our meta box.
 	 * @access public
@@ -295,7 +291,9 @@ class DmmCrm_Plugin_Contact_Post_Type {
 				}
 				
 				$type = $v['type'];
+				
 				switch ( $type ) {
+					
 					case 'url':
 						$html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
 						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
@@ -310,14 +308,29 @@ class DmmCrm_Plugin_Contact_Post_Type {
 						$html .= '<tr valign="top"><th scope="row">
 							<label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
 							<td><select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
-									
-						            
+									// Iterate the options
 						            foreach ($v['default'] as $vv) {
 							            $html .= '<option value="' . $vv . '" '; 
 							            if($vv == $data) { $html .= 'selected';}
 							            $html .= '>' .$vv . '</option>';
 						            }
 						$html .= '</select>' . "\n";
+						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+						$html .= '</td><tr/>' . "\n";
+					break;
+					case 'radio':
+						$html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+							<td><fieldset>';
+								// Iterate the buttons
+								$increment_the_radio_button = 1;
+					            foreach ($v['default'] as $vv) {
+						            $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
+								    '<input class="dmmcrm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
+								    if($vv == $data) { $html .= 'checked';}
+								    $html .= '>';
+								   $increment_the_radio_button++;
+					            }
+						$html .= '</fieldset>' . "\n";
 						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
 						$html .= '</td><tr/>' . "\n";
 					break;
@@ -417,9 +430,158 @@ class DmmCrm_Plugin_Contact_Post_Type {
 		    'name' => __( 'Overall Status', 'dmmcrm' ),
 		    'description' => __( '', 'dmmcrm' ),
 		    'type' => 'select',
-		    'default' => array('Unassignable', 'Unassigned', 'Assigned', 'Accepted', 'On Pause', 'Closed'),
+		    'default' => array('', 'Unassignable', 'Unassigned', 'Assigned', 'Accepted', 'On Pause', 'Closed'),
 		    'section' => 'info'
 		);
+		$fields['seeker_path'] = array(
+		    'name' => __( 'Seeker Path', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Contact Attempted', 'Contact Established', 'Confirms Interest', 'Meeting Scheduled', 'First Meeting Complete', 'Ongoing Meetings', 'Being Coached'),
+		    'section' => 'info'
+		);
+		$fields['seeker_milestones'] = array(
+		    'name' => __( 'Seeker Milestones', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
+		    'section' => 'info'
+		);
+		$fields['preferred_contact_method'] = array(
+		    'name' => __( 'Preferred Contact Method', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Phone', 'Skype', 'Facebook', 'Mail', 'Email', 'SMS'),
+		    'section' => 'info'
+		);
+		$fields['bible'] = array(
+		    'name' => __( 'Bible', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Yes - given by hand', 'Yes - already had one', 'Yes - receipt by mail confirmed', 'Bible mailed', 'Needs / Requests Bible'),
+		    'section' => 'info'
+		);
+		$fields['email'] = array(
+		    'name' => __( 'Email', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['skype'] = array(
+		    'name' => __( 'Skype', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['facebook'] = array(
+		    'name' => __( 'Facebook', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['last_actual_contact'] = array(
+		    'name' => __( 'Last Actual Contact', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['comprehension'] = array(
+		    'name' => __( 'Gospel Comprehension', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Very Strong', 'Strong', 'Unknown/Unclear', 'Weak'),
+		    'section' => 'info'
+		);
+		$fields['investigating_with_others'] = array(
+		    'name' => __( 'Investigating with others', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Not exploring with others', 'Only with a few people', 'Openly sharing with many', 'Studying in a group'),
+		    'section' => 'info'
+		);
+		$fields['gender'] = array(
+		    'name' => __( 'Gender', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Male', 'Female'),
+		    'section' => 'info'
+		);
+		$fields['age'] = array(
+		    'name' => __( 'Age', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Under 18 years old', '18-25 years old', '26-40 years old', 'Over 40 years old'),
+		    'section' => 'info'
+		);
+		$fields['mailing_street'] = array(
+		    'name' => __( 'Mailing Street', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['mailing_city'] = array(
+		    'name' => __( 'Mailing City', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['mailing_zip'] = array(
+		    'name' => __( 'Mailing Zip', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['mailing_state'] = array(
+		    'name' => __( 'Mailing State', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['mailing_country'] = array(
+		    'name' => __( 'Mailing Country', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['baptism_date'] = array(
+		    'name' => __( 'Baptism Date', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
+		    'default' => '',
+		    'section' => 'info'
+		);
+		$fields['contact_generation'] = array(
+		    'name' => __( 'Contact Generation', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', '1st Generation (media)', '1st Generation (relationship)', '2nd Generation', '3rd Generation', '4th Generation', '5+ Generation'),
+		    'section' => 'info'
+		);
+		$fields['preferred_language'] = array(
+		    'name' => __( 'Preferred Language', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'English', 'French', 'Arabic', 'Spanish'),
+		    'section' => 'info'
+		);
+		$fields['reason_closed'] = array(
+		    'name' => __( 'Reason Closed', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'select',
+		    'default' => array('', 'Duplicate', 'Hostile / Playing Games', 'Insufficient Contact Info', 'Already In Church/Connected with Others', 'No Longer Interested', 'Just wanted a book', 'Unknown'),
+		    'section' => 'info'
+		);
+		
+		
 		
 
 		return apply_filters( 'dmmcrm_custom_fields_settings', $fields );
@@ -488,197 +650,5 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	} // End ensure_post_thumbnails_support()
 	
 				
-			
-			/**
-			 * Adds a meta box to the post editing screen
-			 */
-			public function additional_contact_meta() {
-				add_meta_box( $this->post_type . '_add_meta', __( 'Additional Information', 'dmmcrm' ), array( $this, 'additional_contact_meta_callback' ), $this->post_type, 'normal', 'high'  );
-			}
-			
-			public function additional_contact_meta_callback () {
-				global $post_id;
 				
-				$fields = get_post_custom( $post_id );
-				$field_data = $this->get_custom_fields_settings();
-		
-				$html = '';
-				$html .= '<table class="form-table">' . "\n";
-				$html .= '<tbody>' . "\n";
-				
-				$html .= '<tr><th>Example Text</th><td><input type="text" name="meta-text" id="meta-text" value="';
-				//if ( isset ( $additional_contact_stored_meta['meta-text'] ) ) { $html .=  $additional_contact_stored_meta['meta-text'][0];}
-				$html .= '" /></td></tr>';
-							
-				
-				$html .= '</tbody>' . "\n";
-				$html .= '</table>' . "\n";
-		
-				echo $html;
-			} // End meta_box_content()
-			
-			/**
-			 * Outputs the content of the meta box
-			 */
-			public function x_additional_contact_meta_callback( $post ) {
-				
-				wp_nonce_field( basename( __FILE__ ), 'additional_contact_nonce' );
-				$additional_contact_stored_meta = get_post_meta( $post->ID );
-				?>
-			
-				<p>
-					<label for="meta-text" class="additional_contact-row-title"><?php _e( 'Example Text Input', 'additional_contact-textdomain' )?></label>
-					<input type="text" name="meta-text" id="meta-text" value="<?php if ( isset ( $additional_contact_stored_meta['meta-text'] ) ) echo $additional_contact_stored_meta['meta-text'][0]; ?>" />
-				</p>
-			
-				<p>
-					<span class="additional_contact-row-title"><?php _e( 'Example Checkbox Input', 'additional_contact-textdomain' )?></span>
-					<div class="additional_contact-row-content">
-						<label for="meta-checkbox">
-							<input type="checkbox" name="meta-checkbox" id="meta-checkbox" value="yes" <?php if ( isset ( $additional_contact_stored_meta['meta-checkbox'] ) ) checked( $additional_contact_stored_meta['meta-checkbox'][0], 'yes' ); ?> />
-							<?php _e( 'Checkbox label', 'additional_contact-textdomain' )?>
-						</label>
-						<label for="meta-checkbox-two">
-							<input type="checkbox" name="meta-checkbox-two" id="meta-checkbox-two" value="yes" <?php if ( isset ( $additional_contact_stored_meta['meta-checkbox-two'] ) ) checked( $additional_contact_stored_meta['meta-checkbox-two'][0], 'yes' ); ?> />
-							<?php _e( 'Another checkbox', 'additional_contact-textdomain' )?>
-						</label>
-					</div>
-				</p>
-			
-				<p>
-					<span class="additional_contact-row-title"><?php _e( 'Example Radio Buttons', 'additional_contact-textdomain' )?></span>
-					<div class="additional_contact-row-content">
-						<label for="meta-radio-one">
-							<input type="radio" name="meta-radio" id="meta-radio-one" value="radio-one" <?php if ( isset ( $additional_contact_stored_meta['meta-radio'] ) ) checked( $additional_contact_stored_meta['meta-radio'][0], 'radio-one' ); ?>>
-							<?php _e( 'Radio Option #1', 'additional_contact-textdomain' )?>
-						</label>
-						<label for="meta-radio-two">
-							<input type="radio" name="meta-radio" id="meta-radio-two" value="radio-two" <?php if ( isset ( $additional_contact_stored_meta['meta-radio'] ) ) checked( $additional_contact_stored_meta['meta-radio'][0], 'radio-two' ); ?>>
-							<?php _e( 'Radio Option #2', 'additional_contact-textdomain' )?>
-						</label>
-					</div>
-				</p>
-			
-				<p>
-					<label for="meta-select" class="additional_contact-row-title"><?php _e( 'Example Select Input', 'additional_contact-textdomain' )?></label>
-					<select name="meta-select" id="meta-select">
-						<option value="select-one" <?php if ( isset ( $additional_contact_stored_meta['meta-select'] ) ) selected( $additional_contact_stored_meta['meta-select'][0], 'select-one' ); ?>><?php _e( 'One', 'additional_contact-textdomain' )?></option>';
-						<option value="select-two" <?php if ( isset ( $additional_contact_stored_meta['meta-select'] ) ) selected( $additional_contact_stored_meta['meta-select'][0], 'select-two' ); ?>><?php _e( 'Two', 'additional_contact-textdomain' )?></option>';
-					</select>
-				</p>
-			
-				<p>
-					<label for="meta-textarea" class="additional_contact-row-title"><?php _e( 'Example Textarea Input', 'additional_contact-textdomain' )?></label>
-					<textarea name="meta-textarea" id="meta-textarea"><?php if ( isset ( $additional_contact_stored_meta['meta-textarea'] ) ) echo $additional_contact_stored_meta['meta-textarea'][0]; ?></textarea>
-				</p>
-			
-				<p>
-					<label for="meta-color" class="additional_contact-row-title"><?php _e( 'Color Picker', 'additional_contact-textdomain' )?></label>
-					<input name="meta-color" type="text" value="<?php if ( isset ( $additional_contact_stored_meta['meta-color'] ) ) echo $additional_contact_stored_meta['meta-color'][0]; ?>" class="meta-color" />
-				</p>
-			
-				<p>
-					<label for="meta-image" class="additional_contact-row-title"><?php _e( 'Example File Upload', 'additional_contact-textdomain' )?></label>
-					<input type="text" name="meta-image" id="meta-image" value="<?php if ( isset ( $additional_contact_stored_meta['meta-image'] ) ) echo $additional_contact_stored_meta['meta-image'][0]; ?>" />
-					<input type="button" id="meta-image-button" class="button" value="<?php _e( 'Choose or Upload an Image', 'additional_contact-textdomain' )?>" />
-				</p>
-			 
-			
-				<?php
-			}
-			/**
-			 * Saves the custom meta input
-			 */
-			public function additional_contact_meta_save( $post_id ) {
-			 
-				// Checks save status
-				$is_autosave = wp_is_post_autosave( $post_id );
-				$is_revision = wp_is_post_revision( $post_id );
-				$is_valid_nonce = ( isset( $_POST[ 'additional_contact_nonce' ] ) && wp_verify_nonce( $_POST[ 'additional_contact_nonce' ], basename( __FILE__ ) ) ) ? 'true' : 'false';
-			 
-				// Exits script depending on save status
-				if ( $is_autosave || $is_revision || !$is_valid_nonce ) {
-					return;
-				}
-			 
-				// Checks for input and sanitizes/saves if needed
-				if( isset( $_POST[ 'meta-text' ] ) ) {
-					update_post_meta( $post_id, 'meta-text', sanitize_text_field( $_POST[ 'meta-text' ] ) );
-				}
-				// Checks for input and saves
-				if( isset( $_POST[ 'meta-checkbox' ] ) ) {
-					update_post_meta( $post_id, 'meta-checkbox', 'yes' );
-				} else {
-					update_post_meta( $post_id, 'meta-checkbox', '' );
-				}
-				 
-				// Checks for input and saves
-				if( isset( $_POST[ 'meta-checkbox-two' ] ) ) {
-					update_post_meta( $post_id, 'meta-checkbox-two', 'yes' );
-				} else {
-					update_post_meta( $post_id, 'meta-checkbox-two', '' );
-				}
-				// Checks for input and saves if needed
-				if( isset( $_POST[ 'meta-radio' ] ) ) {
-					update_post_meta( $post_id, 'meta-radio', $_POST[ 'meta-radio' ] );
-				}
-				// Checks for input and saves if needed
-				if( isset( $_POST[ 'meta-select' ] ) ) {
-					update_post_meta( $post_id, 'meta-select', $_POST[ 'meta-select' ] );
-				}
-				// Checks for input and saves if needed
-				if( isset( $_POST[ 'meta-textarea' ] ) ) {
-					update_post_meta( $post_id, 'meta-textarea', $_POST[ 'meta-textarea' ] );
-				}
-				// Checks for input and saves if needed
-				if( isset( $_POST[ 'meta-color' ] ) ) {
-					update_post_meta( $post_id, 'meta-color', $_POST[ 'meta-color' ] );
-				}
-				// Checks for input and saves if needed
-				if( isset( $_POST[ 'meta-image' ] ) ) {
-					update_post_meta( $post_id, 'meta-image', $_POST[ 'meta-image' ] );
-				}
-			}
-			
-			/**
-			 * Adds the meta box stylesheet when appropriate
-			 */
-			public function additional_contact_admin_styles(){
-				global $typenow;
-				if( $typenow == 'post' ) {
-					wp_enqueue_style( 'additional_contact_meta_box_styles', plugin_dir_url( __FILE__ ) . 'meta-box-styles.css' );
-				}
-			}
-			
-			/**
-			 * Loads the color picker javascript
-			 */
-			public function additional_contact_color_enqueue() {
-				global $typenow;
-				if( $typenow == 'post' ) {
-					wp_enqueue_style( 'wp-color-picker' );
-					wp_enqueue_script( 'meta-box-color-js', plugin_dir_url( __FILE__ ) . 'meta-box-color.js', array( 'wp-color-picker' ) );
-				}
-			}
-			
-			/**
-			 * Loads the image management javascript
-			 */
-			public function additional_contact_image_enqueue() {
-				global $typenow;
-				if( $typenow == 'post' ) {
-					wp_enqueue_media();
-			 
-					// Registers and enqueues the required javascript.
-					wp_register_script( 'meta-box-image', plugin_dir_url( __FILE__ ) . 'meta-box-image.js', array( 'jquery' ) );
-					wp_localize_script( 'meta-box-image', 'meta_image',
-						array(
-							'title' => __( 'Choose or Upload an Image', 'additional_contact-textdomain' ),
-							'button' => __( 'Use this image', 'additional_contact-textdomain' ),
-						)
-					);
-					wp_enqueue_script( 'meta-box-image' );
-				}
-			}
-			
 } // End Class
