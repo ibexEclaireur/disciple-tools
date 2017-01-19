@@ -45,7 +45,7 @@ spl_autoload_register(function ( $class ) {
  *
  * @since 0.0.1
  */
-//$dmmcrm_post_type_contacts = new Dmmcrm_Contacts_Post_Type;
+//$dmmcrm_post_type_contacts = new class_dmmcrm_psalm_119;
 
 
 
@@ -160,6 +160,10 @@ final class DmmCrm_Plugin {
 			$this->admin = DmmCrm_Plugin_Admin::instance();
 		}
 		// Admin - End
+		
+		// Add Psalm 119
+		require_once( 'includes/classes/class-dmmcrm-psalm-119.php' );
+			$this->psalm = Psalm_119::instance();
 
 		// Post Types - Start
 		require_once( 'includes/classes/class-dmmcrm-contact-post-type.php' );
