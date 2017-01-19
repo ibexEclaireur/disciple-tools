@@ -248,11 +248,11 @@ final class DmmCrm_Plugin {
 
 
 /**
- * Load Dashboard Widgets
+ * Helper pages
  *
  * This defines the default dashboard widgets.
  * 
- * TODO: Convert to Class & Convert placeholder content.
+ * TODO: Convert to Class & Integrate it the class above.
  *
  * @since 0.0.1
  */
