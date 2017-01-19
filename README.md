@@ -16,7 +16,7 @@ We are building on the Wordpress platform because of its open-source availabilit
 The goal of the project is to create a disciple-making CRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that. 
 
 ##Step 1
-- [[Download the plugin .zip file|https://github.com/ChasmSolutions/DMM-CRM-Plugin/archive/master.zip]] from the [[DMM-CRM-Plugin GitHub home page|https://github.com/ChasmSolutions/DMM-CRM-Plugin]]. Save it to your desktop of anywhere you can easily find it in a minute. 
+- Download the plugin .zip file from the DMM-CRM-Plugin GitHub home page (https://github.com/ChasmSolutions/DMM-CRM-Plugin). Save it to your desktop of anywhere so that you can easily find it in a minute. 
 
 ##Step 2
 - Open up your Wordpress site, login to your Admin Dashboard. 
