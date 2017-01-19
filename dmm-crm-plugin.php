@@ -278,4 +278,4 @@ require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-admin-setup.php');
 /**
  * Load columns plugin to changes view of contact to 2 equal columns
  */
-require_once(DMMCRM_PLUGIN_DIR . '3-col-plugin/three-column-screen-layout.php');
+require_once(DMMCRM_PLUGIN_DIR . 'includes/classes/three-column-screen-layout.php');

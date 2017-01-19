@@ -59,7 +59,7 @@ if (!class_exists('Three_Column_Screen_Layout')) {
 		}
 		
 		public function admin_scripts() {
-			wp_enqueue_style('Three_Column_Screen_Layout-style', plugins_url('/style.min.css?v=4.2', __FILE__));
+			wp_enqueue_style('Three_Column_Screen_Layout-style', plugins_url('../css/three-column-screen-layout.min.css?v=4.2', __FILE__));
 		}
 
 		protected function create_metabox($i) {
