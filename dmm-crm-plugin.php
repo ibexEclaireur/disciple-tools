@@ -161,10 +161,30 @@ final class DmmCrm_Plugin {
 		}
 		// Admin - End
 		
-		// Add Psalm 119
-		require_once( 'includes/classes/class-dmmcrm-psalm-119.php' );
-			$this->psalm = Psalm_119::instance();
-
+		// Locations Metabox
+		if ( is_admin() ) {
+			require_once( 'includes/classes/class-dmmcrm-location-meta.php' );
+			$this->p2pmeta = DmmCrm_P2P_Metabox::instance();
+		}
+		// Locations Metabox End
+		
+		if ( is_admin() ) {
+		/* 
+		* Psalms 119 plugin
+		*
+		* Psalms 119 as a testing tool. 
+		* 
+		* Add the line require_once( 'psalm-119.php' ); to any function or class call that you want make sure is responding properly 
+		* and if the directory is correct on psalm-119.php,thet it will add a verse to the top of the admin section.
+		*
+		* TODO: When development is done, add this call back to a permanent part of the system.
+		* require_once( 'includes/classes/psalm-119.php' );
+		*
+		* Chris
+		* 
+		*/
+		}
+		
 		// Post Types - Start
 		require_once( 'includes/classes/class-dmmcrm-contact-post-type.php' );
 		require_once( 'includes/classes/class-dmmcrm-group-post-type.php' );

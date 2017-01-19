@@ -139,7 +139,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 			'capability_type' 		=> 'post',
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'excerpt', 'thumbnail', 'comments' ),
+			'supports' 				=> array( 'title', 'thumbnail', 'comments' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-groups',
 			'show_in_rest'          => true,
@@ -261,7 +261,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'dmmcrm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
-		
+		add_meta_box( $this->post_type . '_location', __( 'Location', 'dmmcrm' ), array( $this, 'meta_box_location_content' ), $this->post_type, 'normal', 'high' );
 	} // End meta_box_setup()
 	
 	/**
@@ -279,15 +279,15 @@ class DmmCrm_Plugin_Contact_Post_Type {
 
 		$html .= '<input type="hidden" name="dmmcrm_' . $this->post_type . '_noonce" id="dmmcrm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( DmmCrm_Plugin()->plugin_path ) ) ) . '" />';
 		
-
+		
 		if ( 0 < count( $field_data ) ) {
 			$html .= '<table class="form-table">' . "\n";
 			$html .= '<tbody>' . "\n";
 
 			foreach ( $field_data as $k => $v ) {
 				$data = $v['default'];
-				if ( isset( $fields['_' . $k] ) && isset( $fields['_' . $k][0] ) ) {
-					$data = $fields['_' . $k][0];
+				if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
+					$data = $fields[$k][0];
 				}
 				
 				$type = $v['type'];
@@ -348,7 +348,9 @@ class DmmCrm_Plugin_Contact_Post_Type {
 
 		echo $html;
 	} // End meta_box_content()
-
+	
+	
+	
 	/**
 	 * Save meta box fields.
 	 * @access public
@@ -386,16 +388,112 @@ class DmmCrm_Plugin_Contact_Post_Type {
 				${$f} = esc_url( ${$f} );
 			}
 
-			if ( get_post_meta( $post_id, '_' . $f ) == '' ) {
-				add_post_meta( $post_id, '_' . $f, ${$f}, true );
-			} elseif( ${$f} != get_post_meta( $post_id, '_' . $f, true ) ) {
-				update_post_meta( $post_id, '_' . $f, ${$f} );
+			if ( get_post_meta( $post_id,  $f ) == '' ) {
+				add_post_meta( $post_id,  $f, ${$f}, true );
+			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+				update_post_meta( $post_id, $f, ${$f} );
 			} elseif ( ${$f} == '' ) {
-				delete_post_meta( $post_id, '_' . $f, get_post_meta( $post_id, '_' . $f, true ) );
+				delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
 			}
 		}
 	} // End meta_box_save()
+	
+	/**
+	 * The contents of location metabox box.
+	 * @access public
+	 * @since  1.0.0
+	 * @return void
+	 */
+	public function meta_box_location_content () {
+		
+		// TODO : FUNCTION NOT COMPLETE. 
+		// This is actively pulling a list to a metabox on the contact page from the locations page. 
+		// Need to connect the two post types.
+		
+		global $post_id;
+		$fields = get_post_custom( $post_id );
+		
+		$args = array(
+			'posts_per_page'   => 20,
+			'offset'           => 0,
+			'category'         => '',
+			'category_name'    => '',
+			'orderby'          => 'date',
+			'order'            => 'DESC',
+			'include'          => '',
+			'exclude'          => '',
+			'meta_key'         => '',
+			'meta_value'       => 'Single Address',
+			'post_type'        => 'locations',
+			'post_mime_type'   => '',
+			'post_parent'      => '',
+			'author'	   => '',
+			'author_name'	   => '',
+			'post_status'      => 'publish',
+			'suppress_filters' => true 
+		);
+		
+		$html = '';
 
+		$myposts = get_posts( $args );
+		
+		foreach ( $myposts as $v ) {
+			$html .= '<li>' . $v->post_title . '</a></li>';
+		}
+			
+		$html .= '</tbody>' . "\n";
+		$html .= '</table>' . "\n";		
+		
+		echo $html;
+	}
+	
+	/**
+	 * Save meta box location fields.
+	 * @access public
+	 * @since  1.0.0
+	 * @param int $post_id
+	 * @return int $post_id
+	 */
+	public function meta_box_locations_save ( $post_id ) {
+		global $post, $messages;
+
+		// Verify
+		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dmmcrm_' . $this->post_type . '_noonce'], plugin_basename( dirname( DmmCrm_Plugin()->plugin_path ) ) ) ) {
+			return $post_id;
+		}
+
+		if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
+			if ( ! current_user_can( 'edit_page', $post_id ) ) {
+				return $post_id;
+			}
+		} else {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				return $post_id;
+			}
+		}
+
+		$field_data = $this->get_custom_fields_settings();
+		$fields = array_keys( $field_data );
+
+		foreach ( $fields as $f ) {
+
+			${$f} = strip_tags(trim($_POST[$f]));
+
+			// Escape the URLs.
+			if ( 'url' == $field_data[$f]['type'] ) {
+				${$f} = esc_url( ${$f} );
+			}
+
+			if ( get_post_meta( $post_id,  $f ) == '' ) {
+				add_post_meta( $post_id,  $f, ${$f}, true );
+			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+				update_post_meta( $post_id, $f, ${$f} );
+			} elseif ( ${$f} == '' ) {
+				delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
+			}
+		}
+	} // End meta_box_locations_save()
+	
 	/**
 	 * Customise the "Enter title here" text.
 	 * @access public

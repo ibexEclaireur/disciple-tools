@@ -1,5 +1,7 @@
 <?php
 /**
+	Text Domain: dmmcrm	
+	
 	Modified version of Plugin 'Three Column Screen Layout' (http://wordpress.org/plugins/three-column-screen-layout/)
  	Modification date: 19 January 2017
  	Description: Three, four and five column screen layouts for the post editor.
@@ -7,7 +9,7 @@
 	Original Version: 4.2
 	Original Author: Chad Hovell
 	Original Author URI: http://www.chadhovell.com.au
-	Text Domain: three-column-screen-layout
+	
 	License: GPLv2 or later
 
 	Copyright 2016 Chad Hovell (email: chadhovell@gmail.com)
