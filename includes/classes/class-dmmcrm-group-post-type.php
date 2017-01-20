@@ -123,19 +123,22 @@ class DmmCrm_Plugin_Group_Post_Type {
 		$archive_slug = apply_filters( 'dmmcrm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'dmmcrm' ) );
 
 		$defaults = array(
-			'labels' => $labels,
-			'public' => true,
-			'publicly_queryable' => true,
-			'show_ui' => true,
-			'show_in_menu' => true,
-			'query_var' => true,
-			'rewrite' => array( 'slug' => $single_slug ),
-			'capability_type' => 'post',
-			'has_archive' => $archive_slug,
-			'hierarchical' => false,
-			'supports' => array( 'title', 'thumbnail', 'comments' ),
-			'menu_position' => 5,
-			'menu_icon' => 'dashicons-smiley',
+			'labels' 				=> $labels,
+			'public' 				=> true,
+			'publicly_queryable' 	=> true,
+			'show_ui' 				=> true,
+			'show_in_menu' 			=> true,
+			'query_var' 			=> true,
+			'rewrite' 				=> array( 'slug' => $single_slug ),
+			'capability_type' 		=> 'post',
+			'has_archive' 			=> $archive_slug,
+			'hierarchical' 			=> false,
+			'supports' 				=> array( 'title', 'thumbnail', 'comments' ),
+			'menu_position' 		=> 5,
+			'menu_icon' 			=> 'dashicons-smiley',
+			'show_in_rest'          => true,
+			'rest_base'             => 'groups',
+			'rest_controller_class' => 'WP_REST_Groups_Controller',
 		);
 
 		$args = wp_parse_args( $this->args, $defaults );

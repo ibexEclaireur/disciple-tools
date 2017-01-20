@@ -143,8 +143,8 @@ class DmmCrm_Plugin_Contact_Post_Type {
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-groups',
 			'show_in_rest'          => true,
-			'rest_base'             => 'groups',
-			'rest_controller_class' => 'WP_REST_Posts_Controller',
+			'rest_base'             => 'contacts',
+			'rest_controller_class' => 'WP_REST_Contacts_Controller',
 		);
 
 		$args = wp_parse_args( $this->args, $defaults );
