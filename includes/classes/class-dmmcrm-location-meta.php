@@ -1,6 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
+	
 /**
  * DMM CRM Post to Post Metabox for Locations
  *
@@ -10,6 +9,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @package	DmmCrm_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
+ 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+ 
 final class DmmCrm_P2P_Metabox {
 	
 	/**
@@ -20,17 +22,14 @@ final class DmmCrm_P2P_Metabox {
 	 */
 	private static $_instance = null;
 	
-	
-
-
 	/**
-	 * Main DmmCrm_Plugin_Settings Instance
+	 * Main DmmCrm_P2P_Metabox Instance
 	 *
-	 * Ensures only one instance of DmmCrm_Plugin_Settings is loaded or can be loaded.
+	 * Ensures only one instance of DmmCrm_P2P_Metabox is loaded or can be loaded.
 	 *
 	 * @since 1.0.0
 	 * @static
-	 * @return Main DmmCrm_Plugin_Settings instance
+	 * @return Main DmmCrm_P2P_Metabox instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -44,11 +43,9 @@ final class DmmCrm_P2P_Metabox {
 	 * @since   1.0.0
 	 */
 	public function __construct () {
-		if ( is_admin() ) {
-			global $pagenow;
-			
-			
-		}
+		
+		
+		
 	} // End __construct()
 	
 }
