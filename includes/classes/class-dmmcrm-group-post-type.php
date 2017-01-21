@@ -270,8 +270,8 @@ class DmmCrm_Plugin_Group_Post_Type {
 
 			foreach ( $field_data as $k => $v ) {
 				$data = $v['default'];
-				if ( isset( $fields['_' . $k] ) && isset( $fields['_' . $k][0] ) ) {
-					$data = $fields['_' . $k][0];
+				if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
+					$data = $fields[$k][0];
 				}
 				
 				$type = $v['type'];
@@ -322,8 +322,6 @@ class DmmCrm_Plugin_Group_Post_Type {
 					default:
 					break;
 				}
-				
-				
 			}
 
 			$html .= '</tbody>' . "\n";
@@ -370,12 +368,12 @@ class DmmCrm_Plugin_Group_Post_Type {
 				${$f} = esc_url( ${$f} );
 			}
 
-			if ( get_post_meta( $post_id, '_' . $f ) == '' ) {
-				add_post_meta( $post_id, '_' . $f, ${$f}, true );
-			} elseif( ${$f} != get_post_meta( $post_id, '_' . $f, true ) ) {
-				update_post_meta( $post_id, '_' . $f, ${$f} );
+			if ( get_post_meta( $post_id, $f ) == '' ) {
+				add_post_meta( $post_id, $f, ${$f}, true );
+			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+				update_post_meta( $post_id, $f, ${$f} );
 			} elseif ( ${$f} == '' ) {
-				delete_post_meta( $post_id, '_' . $f, get_post_meta( $post_id, '_' . $f, true ) );
+				delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
 			}
 		}
 	} // End meta_box_save()
@@ -389,7 +387,7 @@ class DmmCrm_Plugin_Group_Post_Type {
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the thing title here', 'dmmcrm' );
+			$title = __( 'Enter the title here', 'dmmcrm' );
 		}
 		return $title;
 	} // End enter_title_here()
@@ -403,13 +401,56 @@ class DmmCrm_Plugin_Group_Post_Type {
 	public function get_custom_fields_settings () {
 		$fields = array();
 
-		$fields['url'] = array(
-		    'name' => __( 'URL', 'dmmcrm' ),
-		    'description' => __( 'Enter a URL that applies to this thing (for example: http://domain.com/).', 'dmmcrm' ),
-		    'type' => 'url',
+        $fields['type'] = array(
+            'name' => __( 'Type', 'dmmcrm' ),
+            'description' => __( '', 'dmmcrm' ),
+            'type' => 'select',
+            'default' => array('', 'DBS', 'Church'),
+            'section' => 'info'
+        );
+        $fields['generation'] = array(
+            'name' => __( 'Generation', 'dmmcrm' ),
+            'description' => __( '', 'dmmcrm' ),
+            'type' => 'select',
+            'default' => array('', '1st Generation', '2nd Generation', '3rd Generation', '4th Generation', '5+ Generation'),
+            'section' => 'info'
+        );
+		$fields['address'] = array(
+		    'name' => __( 'Address', 'dmmcrm' ),
+		    'description' => __( '', 'dmmcrm' ),
+		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
+        $fields['city'] = array(
+            'name' => __( 'City', 'dmmcrm' ),
+            'description' => __( '', 'dmmcrm' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+        $fields['state'] = array(
+            'name' => __( 'State', 'dmmcrm' ),
+            'description' => __( '', 'dmmcrm' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+        $fields['zip'] = array(
+            'name' => __( 'Zip', 'dmmcrm' ),
+            'description' => __( '', 'dmmcrm' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+        $fields['country'] = array(
+            'name' => __( 'Country', 'dmmcrm' ),
+            'description' => __( '', 'dmmcrm' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+
 
 		return apply_filters( 'dmmcrm_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
