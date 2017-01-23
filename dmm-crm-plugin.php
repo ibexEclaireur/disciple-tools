@@ -187,6 +187,7 @@ final class DmmCrm_Plugin {
         /**
          * Load the configuration and plugin library that creates post relationships
          */
+        require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-p2p-config.php');
         require_once (DMMCRM_PLUGIN_DIR . 'includes/plugins/posts-to-posts/posts-to-posts.php');
         /**
          * Load required plugin library, TGM
