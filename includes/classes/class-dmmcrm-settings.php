@@ -298,6 +298,13 @@ final class DmmCrm_Plugin_Settings {
 													'section' => 'special-fields',
 													'description' => __( 'Place the field description text here.', 'dmmcrm' )
 											);
+                $settings_fields['private_site'] = array(
+                    'name' => __( 'Make site private', 'dmmcrm' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'special-fields',
+                    'description' => __( 'Default is private. Warning: please leave site private unless you know what you are doing.', 'dmmcrm' )
+                );
 
 				break;
 			default:
@@ -352,7 +359,7 @@ final class DmmCrm_Plugin_Settings {
 		// Explore how best to escape this data, as esc_textarea() strips HTML tags, it seems.
 		$html = '<textarea id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" cols="42" rows="5">' . $this->get_value( $args['id'], $args['default'], $args['section'] ) . '</textarea>' . "\n";
 		return $html;
-	} // End render_field_textarea()
+	} // End render_field_textarea()rist
 
 	/**
 	 * Render HTML markup for the "checkbox" field type.

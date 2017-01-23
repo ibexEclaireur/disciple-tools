@@ -62,7 +62,7 @@ final class DmmCrm_Plugin_Admin {
 	 * @return  void
 	 */
 	public function register_settings_screen () {
-		$this->_hook = add_submenu_page( 'options-general.php', __( 'DMM CRM Settings', 'dmmcrm' ), __( 'Starter Plugin', 'dmmcrm' ), 'manage_options', 'dmmcrm', array( $this, 'settings_screen' ) );
+		$this->_hook = add_submenu_page( 'options-general.php', __( 'DMM CRM Settings', 'dmmcrm' ), __( 'DMM CRM Settings', 'dmmcrm' ), 'manage_options', 'dmmcrm', array( $this, 'settings_screen' ) );
 	} // End register_settings_screen()
 
 	/**

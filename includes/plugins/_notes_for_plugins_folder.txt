@@ -1,0 +1,5 @@
+##
+
+General usage of the plugins folder is house libraries/plugins that we are bundeling with the DMM CRM package.
+
+Ideally, these plugins are fully un-modified so that we can maintain sync with the live project over time.

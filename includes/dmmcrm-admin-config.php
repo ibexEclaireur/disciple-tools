@@ -9,9 +9,20 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 * @package dmmcrm
 */
 
+    /*
+    * Load Setup dependencies
+    *
+    */
+    // Load DMM CRM Dasboard configurations
+    require_once ( DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-dashboard-config.php' );
+    // Load multiple column configuration library into screen options area.
+    // This changes the view of contacts to 2 equal columns
+    require_once ( DMMCRM_PLUGIN_DIR . 'includes/plugins/three-column-screen-layout.php' );
+    // Load custom metaboxes
+    require_once ( DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-metaboxes-config.php'); // TODO: Delete this? Not needed?
 
 	/*
-	* Modified Admin Bar
+	* Modify Admin Bar
 	* 
 	*/
 	function modify_admin_bar( $wp_admin_bar ) {
@@ -44,17 +55,18 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	}
 	add_action( 'admin_bar_menu', 'modify_admin_bar', 999 );
 
+
     /*
 	* Remove Admin Footer and Version Number
 	* 
 	*/
-	// 
-	function __empty_footer_string () {
+    function __empty_footer_string () {
 		// Update the text area with an empty string. TODO: see if this is better to do with CSS display:none;
 		return '';
 	}
 	add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
 	add_filter( 'update_footer',     '__empty_footer_string', 11 );
+
 
     /*
 	* Enqueue Styles and Scripts to the Post Type pages
@@ -80,4 +92,3 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	    
 	}
 	add_action( 'admin_enqueue_scripts', 'my_enqueue_scripts' );
-
