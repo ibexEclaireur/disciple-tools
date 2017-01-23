@@ -13,22 +13,24 @@ We are building on the Wordpress platform because of its open-source availabilit
 ---
 
 ##How to Install
-The goal of the project in incredibly simple and fast launch of the DMM CRM system. Below are the simple steps to do that. The files here are the complete theme folder.
->Warning: The DMM-CRM is best installed on a fresh Wordpress installation. The DMM-CRM system will make a complete transformation of the Wordpress site, so it is not recommended to be used on an existing site or one that has any mission critical information.
+The goal of the project is to create a disciple-making CRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that. 
 
-###Step 1
-- Download theme .zip file from the DMM-CRM project page (https://github.com/ChrisChasm/DMM-CRM). 
+##Step 1
+- Download the plugin .zip file from the DMM-CRM-Plugin GitHub home page (https://github.com/ChasmSolutions/DMM-CRM-Plugin). Save it to your desktop of anywhere so that you can easily find it in a minute. 
 
-###Step 2
-- Login to your Wordpress site. (Note: New installations are highly recommended) 
-- Open "Appearance > Themes" from the Admin menu. 
+##Step 2
+- Open up your Wordpress site, login to your Admin Dashboard. 
+- Then on the admin navigation, go to "Plugins". 
 
-###Step 3
-- At the top of the Themes page, select the "Add New" button.
-- At the top of the "Add New" screen, select the "Upload Theme" button. 
-- Upload the .zip file you just downloaded in Step 1.
+> Note: You have to be an administrator with the permissions to install plugins.
 
-###Step 4
-- Once the .zip folder is uploaded, "Activate" the DMM-CRM theme.
+##Step 3
+- At the top of the "Add New" plugins screen, select the "Upload Plugin" button at the top of the page. 
+- Use the file upload tool, to upload the .zip file you saved in Step #1.
 
-You now have a complete digital marketing to disciple making movement system. Enjoy!
+##Step 4
+- Once uploaded, "Activate" the plugin. Done!
+
+> Note: You can find the "Activate" link for the plugin both on the screen on which you installed it, and on the "Installed Plugins" screen under the "Plugins" admin menu.
+
+You now have a complete disciple-making CRM for your movement. Blessings!
