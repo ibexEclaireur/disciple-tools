@@ -138,7 +138,7 @@ class DmmCrm_Plugin_Group_Post_Type {
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
 			'rest_base'             => 'groups',
-			'rest_controller_class' => 'WP_REST_Groups_Controller',
+			'rest_controller_class' => 'WP_REST_Posts_Controller',
 		);
 
 		$args = wp_parse_args( $this->args, $defaults );
@@ -153,8 +153,11 @@ class DmmCrm_Plugin_Group_Post_Type {
 	 * @return void
 	 */
 	public function register_taxonomy () {
-		$this->taxonomies['groups-cities'] = new DmmCrm_Plugin_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
-		$this->taxonomies['groups-cities']->register();
+
+//		TODO: commented out taxonomies until we know how we want to use them.
+//
+//      $this->taxonomies['groups-cities'] = new DmmCrm_Plugin_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
+//		$this->taxonomies['groups-cities']->register();
 	} // End register_taxonomy()
 
 	/**
@@ -186,11 +189,11 @@ class DmmCrm_Plugin_Group_Post_Type {
 	 * @return void
 	 */
 	public function register_custom_column_headings ( $defaults ) {
-		$new_columns = array( 'image' => __( 'Image', 'dmmcrm' ) );
+		$new_columns = array( 'location' => __( 'Location', 'dmmcrm' ) );
 
 		$last_item = array();
 
-		if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
+//		if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
 
 		if ( count( $defaults ) > 2 ) {
 			$last_item = array_slice( $defaults, -1 );

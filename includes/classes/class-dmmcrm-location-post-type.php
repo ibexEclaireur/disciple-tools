@@ -138,7 +138,7 @@ class DmmCrm_Plugin_Location_Post_Type {
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
 			'rest_base'             => 'locations',
-			'rest_controller_class' => 'WP_REST_locations_Controller',
+			'rest_controller_class' => 'WP_REST_Posts_Controller',
 		);
 
 		$args = wp_parse_args( $this->args, $defaults );
@@ -153,8 +153,10 @@ class DmmCrm_Plugin_Location_Post_Type {
 	 * @return void
 	 */
 	public function register_taxonomy () {
-		$this->taxonomies['locations-type'] = new DmmCrm_Plugin_Taxonomy($post_type = 'locations', $token = 'locations-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
-		$this->taxonomies['locations-type']->register();
+//		TODO: commented out taxonomies until we know how we want to use them. Chris
+//
+//      $this->taxonomies['locations-type'] = new DmmCrm_Plugin_Taxonomy($post_type = 'locations', $token = 'locations-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
+//		$this->taxonomies['locations-type']->register();
 	} // End register_taxonomy()
 
 	/**
@@ -186,7 +188,8 @@ class DmmCrm_Plugin_Location_Post_Type {
 	 * @return void
 	 */
 	public function register_custom_column_headings ( $defaults ) {
-		$new_columns = array( 'image' => __( 'Image', 'dmmcrm' ) );
+//		$new_columns = array( 'image' => __( 'Image', 'dmmcrm' ) );
+        $new_columns = array(); // TODO: restore above column once we know what columns we need to show.
 
 		$last_item = array();
 
