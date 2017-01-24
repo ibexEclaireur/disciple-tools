@@ -17,7 +17,7 @@ function my_connection_types() {
         'name' => 'coach_to_disciple',
         'from' => 'contacts',
         'to' => 'contacts',
-        'admin_column' => 'any',
+        //'admin_column' => 'any',  // TODO: This created an invalid string error.
         'title' => array(
             'from' => __( 'Coached by', 'dmmcrm' ),
             'to' => __( 'Coaching', 'dmmcrm' ),
@@ -34,6 +34,7 @@ function my_connection_types() {
             'not_found' => __( 'No contacts found.', 'dmmcrm' ),
             'create' => __( 'Connect Coach', 'dmmcrm' ),
         ),
+
     ) );
 
     p2p_register_connection_type( array(
@@ -82,6 +83,13 @@ function my_connection_types() {
                 'not_found' => __( 'No members found.', 'dmmcrm' ),
                 'create' => __( 'Connect Member', 'dmmcrm' ),
             ),
+            'fields' => array(
+                'role' => array(
+                    'title' => __( 'Role', 'dmmcrm' ),
+                    'type' => 'select',
+                    'values' => array( 'Attending', 'Planting', 'Coaching' ),
+                ),
+            ),
         )
     );
 
@@ -92,7 +100,7 @@ function my_connection_types() {
         'admin_column' => 'any',
         'title' => array(
             'from' => __( 'Planted by', 'dmmcrm' ),
-            'to' => __( 'Planting', 'dmmcrm' )
+            'to' => __( 'Planting', 'dmmcrm' ),
         ),
         'from_labels' => array(
             'singular_name' => __( 'Group', 'dmmcrm' ),
