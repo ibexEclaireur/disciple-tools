@@ -118,6 +118,17 @@ class DmmCrm_Plugin_Group_Post_Type {
 			'items_list_navigation' => sprintf( __( '%s list navigation', 'dmmcrm' ), $this->plural ),
 			'filter_items_list'     => sprintf( __( 'Filter %s list', 'dmmcrm' ), $this->plural ),
 		);
+        $capabilities = array(
+            'edit_post'             => 'edit_group',
+            'read_post'             => 'read_group',
+            'delete_post'           => 'delete_group',
+            'delete_others_posts'   => 'delete_others_groups',
+            'delete_posts'          => 'delete_groups',
+            'edit_posts'            => 'edit_groups',
+            'edit_others_posts'     => 'edit_others_groups',
+            'publish_posts'         => 'publish_groups',
+            'read_private_posts'    => 'read_private_groups',
+        );
 
 		$single_slug = apply_filters( 'dmmcrm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'dmmcrm' ) );
 		$archive_slug = apply_filters( 'dmmcrm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'dmmcrm' ) );
@@ -130,7 +141,8 @@ class DmmCrm_Plugin_Group_Post_Type {
 			'show_in_menu' 			=> true,
 			'query_var' 			=> true,
 			'rewrite' 				=> array( 'slug' => $single_slug ),
-			'capability_type' 		=> 'post',
+			'capability_type' 		=> 'group',
+            'capabilities'          => $capabilities,
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
 			'supports' 				=> array( 'title', 'thumbnail', 'comments' ),

@@ -14,7 +14,7 @@ function my_connection_types() {
 
 
     p2p_register_connection_type( array(
-        'name' => 'coach_to_disciple',
+        'name' => 'contacts_to_contacts',
         'from' => 'contacts',
         'to' => 'contacts',
         //'admin_column' => 'any',  // TODO: This created an invalid string error.

@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Include the TGM_Plugin_Activation class. This class makes other plugins required for the DMM CRM system.
  * Refer to documentation here: https://github.com/TGMPA/TGM-Plugin-Activation
  *
- * TODO: Determine if we should use the DMM CRM Theme as the way to insure the installation of all the plugins. Chris
+ *
  */
-require_once (DMMCRM_PLUGIN_DIR . 'includes/plugins/class-tgm-plugin-activation.php');
+require_once (DmmCrm_Plugin()->plugin_path . 'includes/plugins/class-tgm-plugin-activation.php');
 
 /**
  * Register the required plugins for this theme.
@@ -61,15 +61,15 @@ function dmmcrm_register_required_plugins() {
             'force_deactivation' => true,
             'is_callable'        => 'WP_REST_Console',
         ),
-        array(
-            'name'               => 'WP oAuth Server',
-            'slug'               => 'oauth2-provider',
-            'required'           => true,
-            'version'            => '3.2',
-            'force_activation'   => true,
-            'force_deactivation' => true,
-            'is_callable'        => 'WO_Server',
-        ),
+//        array(
+//            'name'               => 'WP oAuth Server',
+//            'slug'               => 'oauth2-provider',
+//            'required'           => true,
+//            'version'            => '3.2',
+//            'force_activation'   => true,
+//            'force_deactivation' => true,
+//            'is_callable'        => 'WO_Server',
+//        ),
 // Removed because it was giving an install error trying to pull from Github. Needs research.
 //        array(
 //            'name'               => 'DMM CRM Sample Data',

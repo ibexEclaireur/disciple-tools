@@ -9,17 +9,29 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 * @package dmmcrm
 */
 
+    // TODO: Heavy clean up needed. Convert to factory design.
+
     /*
     * Load Setup dependencies
     *
     */
     // Load DMM CRM Dasboard configurations
-    require_once ( DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-dashboard-config.php' );
+    require_once ( DmmCrm_Plugin()->plugin_path . 'includes/config/config-dashboard.php' );
     // Load multiple column configuration library into screen options area.
     // This changes the view of contacts to 2 equal columns
-    require_once ( DMMCRM_PLUGIN_DIR . 'includes/plugins/three-column-screen-layout.php' );
-    // Load custom metaboxes
-    require_once ( DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-metaboxes-config.php'); // TODO: Delete this? Not needed?
+    require_once ( DmmCrm_Plugin()->plugin_path . 'includes/plugins/three-column-screen-layout.php' );
+
+    /**
+     * Load the configuration and plugin library that creates post relationships (p2p)
+     */
+    require_once (DmmCrm_Plugin()->plugin_path . 'includes/config/config-p2p.php');
+    require_once (DmmCrm_Plugin()->plugin_path . 'includes/plugins/posts-to-posts/posts-to-posts.php');
+
+    /**
+     * Load security modifications to site.
+     */
+    require_once (DmmCrm_Plugin()->plugin_path . 'includes/config/config-site.php');
+
 
 	/*
 	* Modify Admin Bar
@@ -55,6 +67,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	}
 	add_action( 'admin_bar_menu', 'modify_admin_bar', 999 );
 
+	/*
+	 * Sets the default user role to 'registered'
+	 *
+	 *
+	 * */
+    add_filter('pre_option_default_role', function($default_role){
+        // You can also add conditional tags here and return whatever
+        return 'registered'; // This is changed
+        return $default_role; // This allows default
+    });
 
     /*
 	* Remove Admin Footer and Version Number
