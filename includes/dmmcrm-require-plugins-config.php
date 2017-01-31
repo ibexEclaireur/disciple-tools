@@ -61,15 +61,15 @@ function dmmcrm_register_required_plugins() {
             'force_deactivation' => true,
             'is_callable'        => 'WP_REST_Console',
         ),
-        array(
-            'name'               => 'WP oAuth Server',
-            'slug'               => 'oauth2-provider',
-            'required'           => true,
-            'version'            => '3.2',
-            'force_activation'   => true,
-            'force_deactivation' => true,
-            'is_callable'        => 'WO_Server',
-        ),
+//        array(
+//            'name'               => 'WP oAuth Server',
+//            'slug'               => 'oauth2-provider',
+//            'required'           => true,
+//            'version'            => '3.2',
+//            'force_activation'   => true,
+//            'force_deactivation' => true,
+//            'is_callable'        => 'WO_Server',
+//        ),
 // Removed because it was giving an install error trying to pull from Github. Needs research.
 //        array(
 //            'name'               => 'DMM CRM Sample Data',
