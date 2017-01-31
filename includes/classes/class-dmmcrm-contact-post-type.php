@@ -124,7 +124,17 @@ class DmmCrm_Plugin_Contact_Post_Type {
 			'filter_items_list'     => sprintf( __( 'Filter %s list', 'dmmcrm' ), $this->plural ),
 			
 		);
-
+        $capabilities = array(
+            'edit_post'             => 'edit_contact',
+            'read_post'             => 'read_contact',
+            'delete_post'           => 'delete_contact',
+            'delete_others_posts'   => 'delete_others_contacts',
+            'delete_posts'          => 'delete_contacts',
+            'edit_posts'            => 'edit_contacts',
+            'edit_others_posts'     => 'edit_others_contacts',
+            'publish_posts'         => 'publish_contacts',
+            'read_private_posts'    => 'read_private_contacts',
+        );
 		$single_slug = apply_filters( 'dmmcrm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'dmmcrm' ) );
 		$archive_slug = apply_filters( 'dmmcrm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'dmmcrm' ) );
 
@@ -136,10 +146,11 @@ class DmmCrm_Plugin_Contact_Post_Type {
 			'show_in_menu' 			=> true,
 			'query_var' 			=> true,
 			'rewrite' 				=> array( 'slug' => $single_slug ),
-			'capability_type' 		=> 'post',
+            'capabilities'          => $capabilities,
+			'capability_type' 		=> 'contact',
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'thumbnail', 'comments' ),
+			'supports' 				=> array( 'title', 'thumbnail', 'comments', 'author' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-groups',
 			'show_in_rest'          => true,

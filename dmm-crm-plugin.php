@@ -141,18 +141,7 @@ final class DmmCrm_Plugin {
 		// Admin - End
 
 
-//		/*
-//		* Psalms 119 plugin
-//		*
-//		* Psalms 119 as a testing tool:
-//		* Add the line require_once( 'psalm-119.php' ); to any function or class call that you want make sure is responding properly
-//		* and if the directory is correct on psalm-119.php,thet it will add a verse to the top of the admin section.
-//		*
-//		* TODO: When development is done, add this call back to a permanent part of the system. Chris
-//		*/
-//      if ( is_admin() ) {
-//            require_once( 'includes/plugins/psalm-119.php' );
-//		}
+
 
 		
 		// Post Types - Start
@@ -189,10 +178,24 @@ final class DmmCrm_Plugin {
          */
         require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-p2p-config.php');
         require_once (DMMCRM_PLUGIN_DIR . 'includes/plugins/posts-to-posts/posts-to-posts.php');
+
         /**
-         * Load required plugin library, TGM
+         * Load plugin library that "requires plugins" at activation
          */
         require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-require-plugins-config.php');
+
+        /**
+         * Load meta capabilities
+         */
+        require_once (DMMCRM_PLUGIN_DIR . 'includes/config-capabilities.php');
+
+        /*
+		* Psalms 119 plugin
+		*
+		*/
+        if ( is_admin() ) {
+            require_once( 'includes/plugins/psalm-119.php' );
+		}
 
 		
 	} // End __construct()

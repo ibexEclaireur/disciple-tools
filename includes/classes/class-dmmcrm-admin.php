@@ -47,7 +47,7 @@ final class DmmCrm_Plugin_Admin {
 	 *
 	 * @since 1.0.0
 	 * @static
-	 * @return Main DmmCrm_Plugin_Admin instance
+	 * @return DmmCrm_Plugin_Admin instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
