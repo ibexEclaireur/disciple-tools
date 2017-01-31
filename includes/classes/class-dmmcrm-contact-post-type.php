@@ -419,7 +419,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	 * @access public
 	 * @since  1.0.0
 	 * @param string $title
-	 * @return void
+	 * @return string
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {

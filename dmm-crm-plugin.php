@@ -21,10 +21,7 @@
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-// Define plugin directory constant
-define( 'DMMCRM_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'DMMCRM_PLUGIN_VERSION', '0.0.1' );
-define( 'DMMCRM_TEXTDOMAIN', 'dmmcrm' );
+
 
 /**
  * Returns the main instance of DmmCrm_Plugin to prevent the need to use globals.
@@ -92,6 +89,14 @@ final class DmmCrm_Plugin {
 	 */
 	public $plugin_path;
 
+    /**
+     * Activation of roles.
+     * @var     string
+     * @access  public
+     * @since   1.0.0
+     */
+    private $roles;
+
 	// Admin - Start
 	/**
 	 * The admin object.
@@ -130,6 +135,8 @@ final class DmmCrm_Plugin {
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
 		$this->version 			= '0.0.1';
 
+
+
 		// Admin - Start
 		require_once( 'includes/classes/class-dmmcrm-settings.php' );
 			$this->settings = DmmCrm_Plugin_Settings::instance();
@@ -137,11 +144,29 @@ final class DmmCrm_Plugin {
 		if ( is_admin() ) {
 			require_once( 'includes/classes/class-dmmcrm-admin.php' );
 			$this->admin = DmmCrm_Plugin_Admin::instance();
-		}
+
+            /**
+             * Load plugin library that "requires plugins" at activation
+             */
+            require_once ('includes/config/config-required-plugins.php');
+
+            // Adds Psalms 119 to top screen in admin panel
+            require_once( 'includes/plugins/psalm-119.php' );
+
+        }
 		// Admin - End
 
 
+        // Run Once At Activation
+        require_once( 'includes/services/service-runonce.php' );
+        $this->run_once = new run_once;
 
+        if ($this->run_once->run('activation') ) {
+            // Roles and capabilities
+            require_once ('includes/config/config-roles.php');
+            $this->roles = DmmCrm_Roles::instance();
+            $this->roles->set_roles();
+        }
 
 		
 		// Post Types - Start
@@ -157,45 +182,20 @@ final class DmmCrm_Plugin {
 		// Post Types - End
 
 
+
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 
-        // Roles and capabilities
-        require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-roles-config.php');
+
+
         /**
          * Load admin panel functions to control the experience of the admin panel.
          */
-        require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-admin-config.php');
-        /**
-         * Load security modifications to site.
-         */
-        require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-site-config.php');
+        require_once ('includes/config.php');
 
-        /**
-         * Load the configuration and plugin library that creates post relationships
-         */
-        require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-p2p-config.php');
-        require_once (DMMCRM_PLUGIN_DIR . 'includes/plugins/posts-to-posts/posts-to-posts.php');
 
-        /**
-         * Load plugin library that "requires plugins" at activation
-         */
-        require_once (DMMCRM_PLUGIN_DIR . 'includes/dmmcrm-require-plugins-config.php');
-
-        /**
-         * Load meta capabilities
-         */
-        require_once (DMMCRM_PLUGIN_DIR . 'includes/config-capabilities.php');
-
-        /*
-		* Psalms 119 plugin
-		*
-		*/
-        if ( is_admin() ) {
-            require_once( 'includes/plugins/psalm-119.php' );
-		}
 
 		
 	} // End __construct()
@@ -208,7 +208,7 @@ final class DmmCrm_Plugin {
 	 * @since 1.0.0
 	 * @static
 	 * @see DmmCrm_Plugin()
-	 * @return Main DmmCrm_Plugin instance
+	 * @return DmmCrm_Plugin instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -249,8 +249,8 @@ final class DmmCrm_Plugin {
 	 * @since   1.0.0
 	 */
 	public function install () {
-		$this->_log_version_number();
-	} // End install()
+        $this->_log_version_number();
+    } // End install()
 
 	/**
 	 * Log the plugin version number.

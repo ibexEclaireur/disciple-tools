@@ -14,9 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Include the TGM_Plugin_Activation class. This class makes other plugins required for the DMM CRM system.
  * Refer to documentation here: https://github.com/TGMPA/TGM-Plugin-Activation
  *
- * TODO: Determine if we should use the DMM CRM Theme as the way to insure the installation of all the plugins. Chris
+ *
  */
-require_once (DMMCRM_PLUGIN_DIR . 'includes/plugins/class-tgm-plugin-activation.php');
+require_once (DmmCrm_Plugin()->plugin_path . 'includes/plugins/class-tgm-plugin-activation.php');
 
 /**
  * Register the required plugins for this theme.
