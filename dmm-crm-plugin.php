@@ -135,6 +135,10 @@ final class DmmCrm_Plugin {
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
 		$this->version 			= '0.0.1';
 
+        /**
+         * Load admin panel functions to control the experience of the admin panel.
+         */
+        require_once ('includes/config.php');
 
 
 		// Admin - Start
@@ -179,13 +183,13 @@ final class DmmCrm_Plugin {
 		// Post Types - Start
 		require_once( 'includes/classes/class-dmmcrm-contact-post-type.php' );
 		require_once( 'includes/classes/class-dmmcrm-group-post-type.php' );
-		require_once( 'includes/classes/class-dmmcrm-location-post-type.php' );
+//		require_once( 'includes/classes/class-dmmcrm-location-post-type.php' ); //TODO: Reactivate when ready for development
 		require_once( 'includes/classes/class-dmmcrm-taxonomy.php' );
 
 		// Register an example post type. To register other post types, duplicate this line.
 		$this->post_types['contacts'] = new DmmCrm_Plugin_Contact_Post_Type( 'contacts', __( 'Contact', 'dmmcrm' ), __( 'Contacts', 'dmmcrm' ), array( 'menu_icon' => 'dashicons-groups' ) );
 		$this->post_types['groups'] = new DmmCrm_Plugin_Group_Post_Type( 'groups', __( 'Group', 'dmmcrm' ), __( 'Groups', 'dmmcrm' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-		$this->post_types['locations'] = new DmmCrm_Plugin_Location_Post_Type( 'locations', __( 'Location', 'dmmcrm' ), __( 'Locations', 'dmmcrm' ), array( 'menu_icon' => 'dashicons-admin-site' ) );
+//		$this->post_types['locations'] = new DmmCrm_Plugin_Location_Post_Type( 'locations', __( 'Location', 'dmmcrm' ), __( 'Locations', 'dmmcrm' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
 		// Post Types - End
 
 
@@ -197,10 +201,7 @@ final class DmmCrm_Plugin {
 
 
 
-        /**
-         * Load admin panel functions to control the experience of the admin panel.
-         */
-        require_once ('includes/config.php');
+
 
 
 

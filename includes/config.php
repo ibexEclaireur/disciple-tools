@@ -59,7 +59,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
         if( ( 'edit.php' != $pagenow && 'upload.php' != $pagenow && 'post.php' != $pagenow   ) || !$query->is_admin ){
             return $query;
         }
-        if( !current_user_can( 'manage_options' ) ) {
+        if( !current_user_can( 'manage_contacts' ) ) {
             global $user_ID;
             $query->set('author', $user_ID );
         }
