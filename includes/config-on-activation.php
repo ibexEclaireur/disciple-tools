@@ -12,7 +12,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-final class DmmCrm_Config_Activation {
+class DmmCrm_Config_Activation {
 
     /**
      * DmmCrm_Config_Activation The single instance of DmmCrm_Config_Activation.

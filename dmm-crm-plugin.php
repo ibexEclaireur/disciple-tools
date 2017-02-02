@@ -142,8 +142,11 @@ final class DmmCrm_Plugin {
 			$this->settings = DmmCrm_Plugin_Settings::instance();
 
 		if ( is_admin() ) {
-			require_once( 'includes/classes/class-dmmcrm-admin.php' );
-			$this->admin = DmmCrm_Plugin_Admin::instance();
+
+
+            require_once( 'includes/classes/class-dmmcrm-admin.php' );
+            $this->admin = DmmCrm_Plugin_Admin::instance();
+
 
             /**
              * Load plugin library that "requires plugins" at activation
@@ -151,7 +154,7 @@ final class DmmCrm_Plugin {
             require_once ('includes/config/config-required-plugins.php');
 
             // Adds Psalms 119 to top screen in admin panel
-            require_once( 'includes/plugins/psalm-119.php' );
+//            require_once( 'includes/plugins/psalm-119.php' );
 
         }
 		// Admin - End
@@ -160,6 +163,8 @@ final class DmmCrm_Plugin {
         // Run Once At Activation
         require_once( 'includes/services/service-runonce.php' );
         $this->run_once = new run_once;
+
+
 
         if ($this->run_once->run('activation') ) {
             // Roles and capabilities
@@ -262,3 +267,5 @@ final class DmmCrm_Plugin {
 		update_option( $this->token . '-version', $this->version );
 	} // End _log_version_number()
 } // End Class
+
+

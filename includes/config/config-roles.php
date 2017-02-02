@@ -11,7 +11,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-final class DmmCrm_Roles {
+class DmmCrm_Roles {
 
     /**
      * DmmCrm_P2P_Metabox The single instance of DmmCrm_P2P_Metabox.
@@ -45,6 +45,9 @@ final class DmmCrm_Roles {
 
     } // End __construct()
 
+    /*
+     * Install DMM Roles
+     * */
     public function set_roles () {
         if ( get_role( 'marketer' )) { remove_role( 'marketer' ); }
         add_role( 'marketer', 'Marketer',
@@ -303,16 +306,13 @@ final class DmmCrm_Roles {
 
 
         }
-
-
-
-    }
+}
 
 
 
     /*
-* Reset Role on Theme Switch
-*/
+    * Reset Roles on deactivation
+    */
     public function reset_dmm_roles () {
         delete_option('run_once');
 
