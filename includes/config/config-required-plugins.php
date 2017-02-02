@@ -92,7 +92,7 @@ function dmmcrm_register_required_plugins() {
 //        array(
 //            'name'               => 'DMM CRM Sample Data',
 //            'slug'               => 'dmm-crm-sample-data',
-//            'external_url'       => 'http://github.com/ChasmSolutions/dmm-crm-sample-data/archive/master.zip',
+//            'external_url'       => 'https://github.com/ChasmSolutions/dmm-crm-sample-data/archive/master.zip',
 //            'is_callable'       =>  'dmmcrm_sample_data',
 //        ),
     );
