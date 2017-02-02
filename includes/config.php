@@ -32,6 +32,120 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
      */
     require_once (DmmCrm_Plugin()->plugin_path . 'includes/config/config-site.php');
 
+    /*
+     * Sanitize image file name
+     *
+     * https://wordpress.org/plugins/wp-hash-filename/
+     * */
+    function make_filename_hash($filename) {
+        $info = pathinfo($filename);
+        $ext  = empty($info['extension']) ? '' : '.' . $info['extension'];
+        $name = basename($filename, $ext);
+        return md5($name) . $ext;
+    }
+    add_filter('sanitize_file_name', 'make_filename_hash', 10);
+    /* End Sanitize file name */
+
+
+    /*
+    * Set users to only see their posts and media.
+    *   This is a key configuration section for partitioning the ability to view contacts.
+    *
+    * @source  http://phpbits.net/hide-wordpress-posts-and-media-uploaded-by-other-users/
+    *
+    * */
+    function hide_posts_media_by_other($query) {
+        global $pagenow;
+        if( ( 'edit.php' != $pagenow && 'upload.php' != $pagenow && 'post.php' != $pagenow   ) || !$query->is_admin ){
+            return $query;
+        }
+        if( !current_user_can( 'manage_contacts' ) ) {
+            global $user_ID;
+            $query->set('author', $user_ID );
+        }
+        return $query;
+    }
+    add_filter('pre_get_posts', 'hide_posts_media_by_other');
+
+    /*
+    * Hide Media Images
+    */
+    add_filter( 'posts_where', 'hide_attachments_wpquery_where' );
+    function hide_attachments_wpquery_where( $where ){
+        global $current_user;
+        if( !current_user_can( 'manage_options' ) ) {
+            if( is_user_logged_in() ){
+                if( isset( $_POST['action'] ) ){
+                    // library query
+                    if( $_POST['action'] == 'query-attachments' ){
+                        $where .= ' AND post_author='.$current_user->data->ID;
+                    }
+                }
+            }
+        }
+        return $where;
+    }
+
+    /*
+     * End set users.
+     *
+     * */
+
+
+
+
+
+    /*
+     * Sets the Admin color scheme.
+     *
+     * Sets the DmmCrm admin screen to "light" and take away the color scheme change feature in profile
+     * */
+    add_filter('get_user_option_admin_color', 'change_admin_color');
+    function change_admin_color($result) {
+        return 'light';
+    }
+    remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
+    /* end colored scheme configuration */
+
+
+    /*
+     * Table configuration experiment. Adds columns to the contacts list.
+     * */
+
+    add_filter('manage_contacts_posts_columns', 'contacts_table_head');
+    function contacts_table_head( $defaults ) {
+        $defaults['phone']  = 'Phone';
+        $defaults['seeker_path']    = 'Seeker Path';
+        $defaults['seeker_milestones']    = 'Seeker Milestone';
+        return $defaults;
+    }
+
+
+    add_action( 'manage_contacts_posts_custom_column', 'contacts_table_content', 10, 2 );
+
+    function contacts_table_content( $column_name, $post_id ) {
+        if ($column_name == 'phone') {
+            echo get_post_meta( $post_id, 'phone', true );
+            ;
+        }
+        if ($column_name == 'seeker_path') {
+            $status = get_post_meta( $post_id, 'seeker_path', true );
+            echo $status;
+        }
+
+        if ($column_name == 'seeker_milestones') {
+            echo get_post_meta( $post_id, 'seeker_milestones', true );
+        }
+
+    }
+
+
+
+    /*
+     * End table configuration experiment
+     *
+     * */
+
 
 	/*
 	* Modify Admin Bar
@@ -92,25 +206,25 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
     /*
 	* Enqueue Styles and Scripts to the Post Type pages
-	* 
+	*
 	*/
 	function my_enqueue_scripts($hook) {
 	    // Test if post type page
 	    if( 'post.php' != $hook )
 	          return;
-		
+
 		// Enqueue Custom DMMCRM admin styles page
 	    wp_register_style( 'dmmcrm_admin_css', plugin_dir_url( __FILE__ ) . 'css/dmmcrm-admin-styles.css' );
 	    wp_enqueue_style( 'dmmcrm_admin_css' );
-		
+
 		// Enqueue Jquery UI CSS
 		wp_register_style( 'dmmcrm_ui_css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' );
 	    wp_enqueue_style( 'dmmcrm_ui_css' );
-	    
+
 		// Enqueue Jquery UI
 	    wp_enqueue_script("jquery-ui-core");
 	    wp_enqueue_script( 'admin_scripts', plugin_dir_url( __FILE__ ) .'js/dmmcrm-admin.js', array('jquery', 'jquery-ui-core') );
 	     // No need to enqueue jQuery as it's already included in the WordPress admin by default
-	    
+
 	}
 	add_action( 'admin_enqueue_scripts', 'my_enqueue_scripts' );

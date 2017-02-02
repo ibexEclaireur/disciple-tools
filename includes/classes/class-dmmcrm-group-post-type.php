@@ -420,7 +420,7 @@ class DmmCrm_Plugin_Group_Post_Type {
             'name' => __( 'Type', 'dmmcrm' ),
             'description' => __( '', 'dmmcrm' ),
             'type' => 'select',
-            'default' => array('', 'DBS', 'Church'),
+            'default' => array('DBS', 'Church'),
             'section' => 'info'
         );
         $fields['generation'] = array(
