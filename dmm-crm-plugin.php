@@ -141,6 +141,9 @@ final class DmmCrm_Plugin {
 		require_once( 'includes/classes/class-dmmcrm-settings.php' );
 			$this->settings = DmmCrm_Plugin_Settings::instance();
 
+        require_once( 'includes/config/config-private-site.php' );
+
+
 		if ( is_admin() ) {
 
 
@@ -163,7 +166,6 @@ final class DmmCrm_Plugin {
         // Run Once At Activation
         require_once( 'includes/services/service-runonce.php' );
         $this->run_once = new run_once;
-
 
 
         if ($this->run_once->run('activation') ) {
