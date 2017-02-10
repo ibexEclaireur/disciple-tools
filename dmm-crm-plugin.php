@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: DMM CRM
+ * Plugin Name: DRM
  * Plugin URI: https://github.com/ChasmSolutions/DMM-CRM-Plugin
- * Description: DMM CRM is a contact relationship management system for disciple making movements. 
+ * Description: DRM is a contact relationship management system for disciple making movements.
  * Version: 0.0.1
  * Author: Chasm.Solutions & Kingdom.Training
  * Author URI: https://github.com/ChasmSolutions
  * Requires at least: 4.0.0
  * Tested up to: 4.7.0
  *
- * @package   DmmCrm
+ * @package   DRM
  * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @copyright 2017 Chasm Solutions
@@ -24,36 +24,36 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 /**
- * Returns the main instance of DmmCrm_Plugin to prevent the need to use globals.
+ * Returns the main instance of DRM_Plugin to prevent the need to use globals.
  *
- * @since  1.0.0
- * @return object DmmCrm_Plugin
+ * @since  0.0.1
+ * @return object DRM_Plugin
  */
 
-    // Adds the DMM CRM Plugin after plugins load
-    add_action( 'plugins_loaded', 'DmmCrm_Plugin' );
+    // Adds the DRM Plugin after plugins load
+    add_action( 'plugins_loaded', 'DRM_Plugin' );
 
     // Creates the instance
-    function DmmCrm_Plugin() {
-        return DmmCrm_Plugin::instance();
+    function DRM_Plugin() {
+        return DRM_Plugin::instance();
     }
 
 
 /**
- * Main DmmCrm_Plugin Class
+ * Main DRM_Plugin Class
  *
- * @class DmmCrm_Plugin
+ * @class DRM_Plugin
  * @version	1.0.0
- * @since 1.0.0
- * @package	DmmCrm_Plugin
+ * @since 0.0.1
+ * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
-final class DmmCrm_Plugin {
+final class DRM_Plugin {
 	/**
-	 * DmmCrm_Plugin The single instance of DmmCrm_Plugin.
+	 * DRM_Plugin The single instance of DRM_Plugin.
 	 * @var 	object
 	 * @access  private
-	 * @since 	1.0.0
+	 * @since  0.0.1
 	 */
 	private static $_instance = null;
 
@@ -61,7 +61,7 @@ final class DmmCrm_Plugin {
 	 * The token.
 	 * @var     string
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public $token;
 
@@ -69,7 +69,7 @@ final class DmmCrm_Plugin {
 	 * The version number.
 	 * @var     string
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public $version;
 
@@ -77,7 +77,7 @@ final class DmmCrm_Plugin {
 	 * The plugin directory URL.
 	 * @var     string
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public $plugin_url;
 
@@ -85,7 +85,7 @@ final class DmmCrm_Plugin {
 	 * The plugin directory path.
 	 * @var     string
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public $plugin_path;
 
@@ -93,7 +93,7 @@ final class DmmCrm_Plugin {
      * Activation of roles.
      * @var     string
      * @access  public
-     * @since   1.0.0
+     * @since   0.0.1
      */
     private $roles;
 
@@ -102,7 +102,7 @@ final class DmmCrm_Plugin {
 	 * The admin object.
 	 * @var     object
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public $admin;
 
@@ -110,7 +110,7 @@ final class DmmCrm_Plugin {
 	 * The settings object.
 	 * @var     object
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public $settings;
 	// Admin - End
@@ -120,20 +120,38 @@ final class DmmCrm_Plugin {
 	 * The post types we're registering.
 	 * @var     array
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public $post_types = array();
 	// Post Types - End
 	/**
 	 * Constructor function.
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public function __construct () {
-		$this->token 			= 'dmmcrm';
+		$this->token 			= 'drm';
 		$this->plugin_url 		= plugin_dir_url( __FILE__ );
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
 		$this->version 			= '0.0.1';
+
+
+
+        // Admin - Start
+		if ( is_admin() ) {
+
+
+            require_once('includes/config/config-admin.php');
+            $this->admin = DRM_Plugin_Admin::instance();
+
+
+            /**
+             * Load plugin library that "requires plugins" at activation
+             */
+            require_once ('includes/config/config-required-plugins.php');
+        }
+		// Admin - End
+
 
         /**
          * Load admin panel functions to control the experience of the admin panel.
@@ -141,31 +159,12 @@ final class DmmCrm_Plugin {
         require_once ('includes/config.php');
 
 
-		// Admin - Start
-		require_once( 'includes/classes/class-dmmcrm-settings.php' );
-			$this->settings = DmmCrm_Plugin_Settings::instance();
+        // Sets the config panel
+        require_once('includes/config/config-settings.php');
+        $this->settings = DRM_Plugin_Settings::instance();
 
+        // Sets the site to private.
         require_once( 'includes/config/config-private-site.php' );
-
-
-		if ( is_admin() ) {
-
-
-            require_once( 'includes/classes/class-dmmcrm-admin.php' );
-            $this->admin = DmmCrm_Plugin_Admin::instance();
-
-
-            /**
-             * Load plugin library that "requires plugins" at activation
-             */
-            require_once ('includes/config/config-required-plugins.php');
-
-            // Adds Psalms 119 to top screen in admin panel
-//            require_once( 'includes/plugins/psalm-119.php' );
-
-        }
-		// Admin - End
-
 
         // Run Once At Activation
         require_once( 'includes/services/service-runonce.php' );
@@ -175,21 +174,21 @@ final class DmmCrm_Plugin {
         if ($this->run_once->run('activation') ) {
             // Roles and capabilities
             require_once ('includes/config/config-roles.php');
-            $this->roles = DmmCrm_Roles::instance();
+            $this->roles = DRM_Roles::instance();
             $this->roles->set_roles();
         }
 
 		
 		// Post Types - Start
-		require_once( 'includes/classes/class-dmmcrm-contact-post-type.php' );
-		require_once( 'includes/classes/class-dmmcrm-group-post-type.php' );
-//		require_once( 'includes/classes/class-dmmcrm-location-post-type.php' ); //TODO: Reactivate when ready for development
-		require_once( 'includes/classes/class-dmmcrm-taxonomy.php' );
+		require_once('includes/classes/class-contact-post-type.php');
+		require_once('includes/classes/class-group-post-type.php');
+//		require_once( 'includes/classes/class-drm-location-post-type.php' ); //TODO: Reactivate when ready for development
+		require_once('includes/classes/class-taxonomy.php');
 
 		// Register an example post type. To register other post types, duplicate this line.
-		$this->post_types['contacts'] = new DmmCrm_Plugin_Contact_Post_Type( 'contacts', __( 'Contact', 'dmmcrm' ), __( 'Contacts', 'dmmcrm' ), array( 'menu_icon' => 'dashicons-groups' ) );
-		$this->post_types['groups'] = new DmmCrm_Plugin_Group_Post_Type( 'groups', __( 'Group', 'dmmcrm' ), __( 'Groups', 'dmmcrm' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-//		$this->post_types['locations'] = new DmmCrm_Plugin_Location_Post_Type( 'locations', __( 'Location', 'dmmcrm' ), __( 'Locations', 'dmmcrm' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
+		$this->post_types['contacts'] = new DRM_Plugin_Contact_Post_Type( 'contacts', __( 'Contact', 'drm' ), __( 'Contacts', 'drm' ), array( 'menu_icon' => 'dashicons-groups' ) );
+		$this->post_types['groups'] = new DRM_Plugin_Group_Post_Type( 'groups', __( 'Group', 'drm' ), __( 'Groups', 'drm' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
+//		$this->post_types['locations'] = new DRM_Plugin_Location_Post_Type( 'locations', __( 'Location', 'drm' ), __( 'Locations', 'drm' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
 		// Post Types - End
 
 
@@ -205,18 +204,18 @@ final class DmmCrm_Plugin {
 
 
 
-		
+
 	} // End __construct()
 
 	/**
-	 * Main DmmCrm_Plugin Instance
+	 * Main DRM_Plugin Instance
 	 *
-	 * Ensures only one instance of DmmCrm_Plugin is loaded or can be loaded.
+	 * Ensures only one instance of DRM_Plugin is loaded or can be loaded.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 * @static
-	 * @see DmmCrm_Plugin()
-	 * @return DmmCrm_Plugin instance
+	 * @see DRM_Plugin()
+	 * @return DRM_Plugin instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -227,16 +226,16 @@ final class DmmCrm_Plugin {
 	/**
 	 * Load the localisation file.
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'dmmcrm', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'drm', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	} // End load_plugin_textdomain()
 
 	/**
 	 * Cloning is forbidden.
 	 * @access public
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function __clone () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
@@ -245,7 +244,7 @@ final class DmmCrm_Plugin {
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 * @access public
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function __wakeup () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
@@ -254,7 +253,7 @@ final class DmmCrm_Plugin {
 	/**
 	 * Installation. Runs on activation.
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public function install () {
         $this->_log_version_number();
@@ -263,7 +262,7 @@ final class DmmCrm_Plugin {
 	/**
 	 * Log the plugin version number.
 	 * @access  private
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	private function _log_version_number () {
 		// Log the version number.

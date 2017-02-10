@@ -4,19 +4,19 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 /**
  * DmmCRM Plugin Post Type Class
  *
- * All functionality pertaining to post types in DmmCrm.
+ * All functionality pertaining to post types in DRM.
  *
  * @package WordPress
- * @subpackage DmmCrm_Plugin
+ * @subpackage DRM_Plugin
  * @category Plugin
  * @author Chasm.Solutions & Kingdom.Training
- * @since 1.0.0
+ * @since 0.0.1
  */
-class DmmCrm_Plugin_Contact_Post_Type {
+class DRM_Plugin_Contact_Post_Type {
 	/**
 	 * The post type token.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @var    string
 	 */
 	public $post_type;
@@ -24,7 +24,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * The post type singular label.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @var    string
 	 */
 	public $singular;
@@ -32,7 +32,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * The post type plural label.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @var    string
 	 */
 	public $plural;
@@ -40,7 +40,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * The post type args.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @var    array
 	 */
 	public $args;
@@ -48,7 +48,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * The taxonomies for this post type.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @var    array
 	 */
 	public $taxonomies;
@@ -56,7 +56,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Constructor function.
 	 * @access public
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
 		$this->post_type = $post_type;
@@ -98,30 +98,30 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	 */
 	public function register_post_type () {
 		$labels = array(
-			'name' 					=> sprintf( _x( '%s', 'post type general name', 'dmmcrm' ), $this->plural ),
-			'singular_name' 		=> sprintf( _x( '%s', 'post type singular name', 'dmmcrm' ), $this->singular ),
-			'add_new' 				=> _x( 'Add New', $this->post_type, 'dmmcrm' ),
-			'add_new_item' 			=> sprintf( __( 'Add New %s', 'dmmcrm' ), $this->singular ),
-			'edit_item' 			=> sprintf( __( 'Edit %s', 'dmmcrm' ), $this->singular ),
-			'update_item'           => sprintf( __( 'Update %s', 'dmmcrm' ), $this->singular ),
-			'new_item' 				=> sprintf( __( 'New %s', 'dmmcrm' ), $this->singular ),
-			'all_items' 			=> sprintf( __( 'All %s', 'dmmcrm' ), $this->plural ),
-			'view_item' 			=> sprintf( __( 'View %s', 'dmmcrm' ), $this->singular ),
-			'view_items'            => sprintf( __( 'View %s', 'dmmcrm' ), $this->plural ),
-			'search_items' 			=> sprintf( __( 'Search %a', 'dmmcrm' ), $this->plural ),
-			'not_found' 			=> sprintf( __( 'No %s Found', 'dmmcrm' ), $this->plural ),
-			'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'dmmcrm' ), $this->plural ),
+			'name' 					=> sprintf( _x( '%s', 'post type general name', 'drm' ), $this->plural ),
+			'singular_name' 		=> sprintf( _x( '%s', 'post type singular name', 'drm' ), $this->singular ),
+			'add_new' 				=> _x( 'Add New', $this->post_type, 'drm' ),
+			'add_new_item' 			=> sprintf( __( 'Add New %s', 'drm' ), $this->singular ),
+			'edit_item' 			=> sprintf( __( 'Edit %s', 'drm' ), $this->singular ),
+			'update_item'           => sprintf( __( 'Update %s', 'drm' ), $this->singular ),
+			'new_item' 				=> sprintf( __( 'New %s', 'drm' ), $this->singular ),
+			'all_items' 			=> sprintf( __( 'All %s', 'drm' ), $this->plural ),
+			'view_item' 			=> sprintf( __( 'View %s', 'drm' ), $this->singular ),
+			'view_items'            => sprintf( __( 'View %s', 'drm' ), $this->plural ),
+			'search_items' 			=> sprintf( __( 'Search %a', 'drm' ), $this->plural ),
+			'not_found' 			=> sprintf( __( 'No %s Found', 'drm' ), $this->plural ),
+			'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'drm' ), $this->plural ),
 			'parent_item_colon' 	=> '',
 			'menu_name' 			=> $this->plural,
-			'featured_image'        => sprintf( __( 'Featured Image', 'dmmcrm' ), $this->plural ),
-			'set_featured_image'    => sprintf( __( 'Set featured image', 'dmmcrm' ), $this->plural ),
-			'remove_featured_image' => sprintf( __( 'Remove featured image', 'dmmcrm' ), $this->plural ),
-			'use_featured_image'    => sprintf( __( 'Use as featured image', 'dmmcrm' ), $this->plural ),
-			'insert_into_item'      => sprintf( __( 'Insert into %s', 'dmmcrm' ), $this->plural ),
-			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'dmmcrm' ), $this->plural ),
-			'items_list'            => sprintf( __( '%s list', 'dmmcrm' ), $this->plural ),
-			'items_list_navigation' => sprintf( __( '%s list navigation', 'dmmcrm' ), $this->plural ),
-			'filter_items_list'     => sprintf( __( 'Filter %s list', 'dmmcrm' ), $this->plural ),
+			'featured_image'        => sprintf( __( 'Featured Image', 'drm' ), $this->plural ),
+			'set_featured_image'    => sprintf( __( 'Set featured image', 'drm' ), $this->plural ),
+			'remove_featured_image' => sprintf( __( 'Remove featured image', 'drm' ), $this->plural ),
+			'use_featured_image'    => sprintf( __( 'Use as featured image', 'drm' ), $this->plural ),
+			'insert_into_item'      => sprintf( __( 'Insert into %s', 'drm' ), $this->plural ),
+			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'drm' ), $this->plural ),
+			'items_list'            => sprintf( __( '%s list', 'drm' ), $this->plural ),
+			'items_list_navigation' => sprintf( __( '%s list navigation', 'drm' ), $this->plural ),
+			'filter_items_list'     => sprintf( __( 'Filter %s list', 'drm' ), $this->plural ),
 			
 		);
         $rewrite = array(
@@ -141,12 +141,12 @@ class DmmCrm_Plugin_Contact_Post_Type {
             'publish_posts'         => 'publish_contacts',
             'read_private_posts'    => 'read_private_contacts',
         );
-		$single_slug = apply_filters( 'dmmcrm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'dmmcrm' ) );
-		$archive_slug = apply_filters( 'dmmcrm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'dmmcrm' ) );
+		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'drm' ) );
+		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'drm' ) );
 
 		$defaults = array(
-            'label'                 => __( 'Contact', 'dmmcrm' ),
-            'description'           => __( 'Contacts generated by the media to movement effort', 'dmmcrm' ),
+            'label'                 => __( 'Contact', 'drm' ),
+            'description'           => __( 'Contacts generated by the media to movement effort', 'drm' ),
 			'labels' 				=> $labels,
 			'public' 				=> true,
 			'publicly_queryable' 	=> true,
@@ -185,9 +185,9 @@ class DmmCrm_Plugin_Contact_Post_Type {
 //
 //      TODO: removed until we decide whether we want classification and how we want to use them.
 //
-//		$this->taxonomies['contacts-source'] = new DmmCrm_Plugin_Taxonomy($post_type = 'contacts', $token = 'contacts-source', $singular = 'Source', $plural = 'Sources', $args = array()); // Leave arguments empty, to use the default arguments.
+//		$this->taxonomies['contacts-source'] = new DRM_Plugin_Taxonomy($post_type = 'contacts', $token = 'contacts-source', $singular = 'Source', $plural = 'Sources', $args = array()); // Leave arguments empty, to use the default arguments.
 //		$this->taxonomies['contacts-source']->register();
-//		$this->taxonomies['contacts-type'] = new DmmCrm_Plugin_Taxonomy($post_type = 'contacts', $token = 'contacts-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
+//		$this->taxonomies['contacts-type'] = new DRM_Plugin_Taxonomy($post_type = 'contacts', $token = 'contacts-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
 //		$this->taxonomies['contacts-type']->register();
 	} // End register_taxonomy()
 
@@ -196,7 +196,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	 * @access public
 	 * @param string $column_name
 	 * @param int $id
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return void
 	 */
 	public function register_custom_columns ( $column_name, $id ) {
@@ -219,13 +219,13 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	 * Add custom column headings for the "manage" screen of this post type.
 	 * @access public
 	 * @param array $defaults
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return void
 	 */
 	public function register_custom_column_headings ( $defaults ) {
 
 
-	    $new_columns = array(); //array( 'image' => __( 'Image', 'dmmcrm' ));
+	    $new_columns = array(); //array( 'image' => __( 'Image', 'drm' ));
 		
 		$last_item = array();
 
@@ -251,7 +251,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 
 	/**
 	 * Update messages for the post type admin.
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @param  array $messages Array of messages for all post types.
 	 * @return array           Modified array.
 	 */
@@ -260,19 +260,19 @@ class DmmCrm_Plugin_Contact_Post_Type {
 
 		$messages[$this->post_type] = array(
 			0 => '', // Unused. Messages start at index 1.
-			1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'dmmcrm' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
-			2 => __( 'Custom field updated.', 'dmmcrm' ),
-			3 => __( 'Custom field deleted.', 'dmmcrm' ),
-			4 => sprintf( __( '%s updated.', 'dmmcrm' ), $this->singular ),
+			1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'drm' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
+			2 => __( 'Custom field updated.', 'drm' ),
+			3 => __( 'Custom field deleted.', 'drm' ),
+			4 => sprintf( __( '%s updated.', 'drm' ), $this->singular ),
 			/* translators: %s: date and time of the revision */
-			5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'dmmcrm' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'dmmcrm' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
-			7 => sprintf( __( '%s saved.', 'dmmcrm' ), $this->singular ),
-			8 => sprintf( __( '%s submitted. %sPreview %s%s', 'dmmcrm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
-			9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'dmmcrm' ), $this->singular, strtolower( $this->singular ),
+			5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'drm' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
+			7 => sprintf( __( '%s saved.', 'drm' ), $this->singular ),
+			8 => sprintf( __( '%s submitted. %sPreview %s%s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+			9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'drm' ), $this->singular, strtolower( $this->singular ),
 			// translators: Publish box date format, see http://php.net/date
 			'<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink($post_ID) ) . '">', '</a>' ),
-			10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'dmmcrm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+			10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
 		);
 
 		return $messages;
@@ -284,18 +284,18 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Setup the meta box.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return void
 	 */
 	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'dmmcrm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'drm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
 
 	} // End meta_box_setup()
 	
 	/**
 	 * The contents of our meta box.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return void
 	 */
 	public function meta_box_content () {
@@ -305,7 +305,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="dmmcrm_' . $this->post_type . '_noonce" id="dmmcrm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( DmmCrm_Plugin()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( DRM_Plugin()->plugin_path ) ) ) . '" />';
 		
 		
 		if ( 0 < count( $field_data ) ) {
@@ -353,7 +353,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 								$increment_the_radio_button = 1;
 					            foreach ($v['default'] as $vv) {
 						            $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
-								    '<input class="dmmcrm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
+								    '<input class="drm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
 								    if($vv == $data) { $html .= 'checked';}
 								    $html .= '>';
 								   $increment_the_radio_button++;
@@ -382,7 +382,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Save meta box fields.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @param int $post_id
 	 * @return int $post_id
 	 */
@@ -390,7 +390,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 		global $post, $messages;
 
 		// Verify
-		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dmmcrm_' . $this->post_type . '_noonce'], plugin_basename( dirname( DmmCrm_Plugin()->plugin_path ) ) ) ) {
+		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( DRM_Plugin()->plugin_path ) ) ) ) {
 			return $post_id;
 		}
 
@@ -431,13 +431,13 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Customise the "Enter title here" text.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @param string $title
 	 * @return string
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the contact name here', 'dmmcrm' );
+			$title = __( 'Enter the contact name here', 'drm' );
 		}
 		return $title;
 	} // End enter_title_here()
@@ -445,169 +445,169 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Get the settings for the custom fields.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return array
 	 */
 	public function get_custom_fields_settings () {
 		$fields = array();
 		
 		$fields['phone'] = array(
-		    'name' => __( 'Phone', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Phone', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['overall_status'] = array(
-		    'name' => __( 'Overall Status', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Overall Status', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Unassignable', 'Unassigned', 'Assigned', 'Accepted', 'On Pause', 'Closed'),
 		    'section' => 'info'
 		);
 		$fields['seeker_path'] = array(
-		    'name' => __( 'Seeker Path', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Seeker Path', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Contact Attempted', 'Contact Established', 'Confirms Interest', 'Meeting Scheduled', 'First Meeting Complete', 'Ongoing Meetings', 'Being Coached'),
 		    'section' => 'info'
 		);
 		$fields['seeker_milestones'] = array(
-		    'name' => __( 'Seeker Milestones', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Seeker Milestones', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
 		    'section' => 'info'
 		);
 		$fields['preferred_contact_method'] = array(
-		    'name' => __( 'Preferred Contact Method', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Preferred Contact Method', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Phone', 'Skype', 'Facebook', 'Mail', 'Email', 'SMS'),
 		    'section' => 'info'
 		);
 		$fields['bible'] = array(
-		    'name' => __( 'Bible', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Bible', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Yes - given by hand', 'Yes - already had one', 'Yes - receipt by mail confirmed', 'Bible mailed', 'Needs / Requests Bible'),
 		    'section' => 'info'
 		);
 		$fields['email'] = array(
-		    'name' => __( 'Email', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Email', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['skype'] = array(
-		    'name' => __( 'Skype', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Skype', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['facebook'] = array(
-		    'name' => __( 'Facebook', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Facebook', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['last_actual_contact'] = array(
-		    'name' => __( 'Last Actual Contact', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Last Actual Contact', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['comprehension'] = array(
-		    'name' => __( 'Gospel Comprehension', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Gospel Comprehension', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Very Strong', 'Strong', 'Unknown/Unclear', 'Weak'),
 		    'section' => 'info'
 		);
 		$fields['investigating_with_others'] = array(
-		    'name' => __( 'Investigating with others', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Investigating with others', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Not exploring with others', 'Only with a few people', 'Openly sharing with many', 'Studying in a group'),
 		    'section' => 'info'
 		);
 		$fields['gender'] = array(
-		    'name' => __( 'Gender', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Gender', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Male', 'Female'),
 		    'section' => 'info'
 		);
 		$fields['age'] = array(
-		    'name' => __( 'Age', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Age', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Under 18 years old', '18-25 years old', '26-40 years old', 'Over 40 years old'),
 		    'section' => 'info'
 		);
 		$fields['mailing_street'] = array(
-		    'name' => __( 'Mailing Street', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Mailing Street', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_city'] = array(
-		    'name' => __( 'Mailing City', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Mailing City', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_zip'] = array(
-		    'name' => __( 'Mailing Zip', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Mailing Zip', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_state'] = array(
-		    'name' => __( 'Mailing State', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Mailing State', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_country'] = array(
-		    'name' => __( 'Mailing Country', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Mailing Country', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['baptism_date'] = array(
-		    'name' => __( 'Baptism Date', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Baptism Date', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['contact_generation'] = array(
-		    'name' => __( 'Contact Generation', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Contact Generation', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', '1st Generation (media)', '1st Generation (relationship)', '2nd Generation', '3rd Generation', '4th Generation', '5+ Generation'),
 		    'section' => 'info'
 		);
 		$fields['preferred_language'] = array(
-		    'name' => __( 'Preferred Language', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Preferred Language', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'English', 'French', 'Arabic', 'Spanish'),
 		    'section' => 'info'
 		);
 		$fields['reason_closed'] = array(
-		    'name' => __( 'Reason Closed', 'dmmcrm' ),
-		    'description' => __( '', 'dmmcrm' ),
+		    'name' => __( 'Reason Closed', 'drm' ),
+		    'description' => __( '', 'drm' ),
 		    'type' => 'select',
 		    'default' => array('', 'Duplicate', 'Hostile / Playing Games', 'Insufficient Contact Info', 'Already In Church/Connected with Others', 'No Longer Interested', 'Just wanted a book', 'Unknown'),
 		    'section' => 'info'
@@ -616,14 +616,14 @@ class DmmCrm_Plugin_Contact_Post_Type {
 		
 		
 
-		return apply_filters( 'dmmcrm_custom_fields_settings', $fields );
+		return apply_filters( 'drm_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
 
 	/**
 	 * Get the image for the given ID.
 	 * @param  int 				$id   Post ID.
 	 * @param  mixed $size Image dimension. (default: "thing-thumbnail")
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return string       	<img> tag.
 	 */
 	protected function get_image ( $id, $size = 'thing-thumbnail' ) {
@@ -645,7 +645,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Register image sizes.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 */
 	public function register_image_sizes () {
 		if ( function_exists( 'add_image_size' ) ) {
@@ -656,7 +656,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Run on activation.
 	 * @access public
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	public function activation () {
 		$this->flush_rewrite_rules();
@@ -665,7 +665,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Flush the rewrite rules
 	 * @access public
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 */
 	private function flush_rewrite_rules () {
 		$this->register_post_type();
@@ -675,7 +675,7 @@ class DmmCrm_Plugin_Contact_Post_Type {
 	/**
 	 * Ensure that "post-thumbnails" support is available for those themes that don't register it.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 */
 	public function ensure_post_thumbnails_support () {
 		if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }

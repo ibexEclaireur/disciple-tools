@@ -2,11 +2,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
-* DMM CRM modifications to WP Admin Area
+* DRM modifications to WP Admin Area
 *
 * 
 * @author Chasm Solutions
-* @package dmmcrm
+* @package DRM_Plugin
 */
 
     // TODO: Heavy clean up needed. Convert to factory design.
@@ -15,22 +15,22 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     * Load Setup dependencies
     *
     */
-    // Load DMM CRM Dasboard configurations
-    require_once ( DmmCrm_Plugin()->plugin_path . 'includes/config/config-dashboard.php' );
+    // Load DRM Dasboard configurations
+    require_once ( DRM_Plugin()->plugin_path . 'includes/config/config-dashboard.php' );
     // Load multiple column configuration library into screen options area.
     // This changes the view of contacts to 2 equal columns
-    require_once ( DmmCrm_Plugin()->plugin_path . 'includes/plugins/three-column-screen-layout.php' );
+    require_once ( DRM_Plugin()->plugin_path . 'includes/plugins/three-column-screen-layout.php' );
 
     /**
      * Load the configuration and plugin library that creates post relationships (p2p)
      */
-    require_once (DmmCrm_Plugin()->plugin_path . 'includes/config/config-p2p.php');
-    require_once (DmmCrm_Plugin()->plugin_path . 'includes/plugins/posts-to-posts/posts-to-posts.php');
+    require_once (DRM_Plugin()->plugin_path . 'includes/config/config-p2p.php');
+    require_once (DRM_Plugin()->plugin_path . 'includes/plugins/posts-to-posts/posts-to-posts.php');
 
     /**
      * Load security modifications to site.
      */
-    require_once (DmmCrm_Plugin()->plugin_path . 'includes/config/config-site.php');
+    require_once (DRM_Plugin()->plugin_path . 'includes/config/config-site.php');
 
     /*
      * Sanitize image file name
@@ -98,7 +98,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
     /*
      * Sets the Admin color scheme.
      *
-     * Sets the DmmCrm admin screen to "light" and take away the color scheme change feature in profile
+     * Sets the DRM admin screen to "light" and take away the color scheme change feature in profile
      * */
     add_filter('get_user_option_admin_color', 'change_admin_color');
     function change_admin_color($result) {
@@ -214,16 +214,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	          return;
 
 		// Enqueue Custom DMMCRM admin styles page
-	    wp_register_style( 'dmmcrm_admin_css', plugin_dir_url( __FILE__ ) . 'css/dmmcrm-admin-styles.css' );
-	    wp_enqueue_style( 'dmmcrm_admin_css' );
+	    wp_register_style( 'drm_admin_css', plugin_dir_url( __FILE__ ) . 'css/drm-admin-styles.css' );
+	    wp_enqueue_style( 'drm_admin_css' );
 
 		// Enqueue Jquery UI CSS
-		wp_register_style( 'dmmcrm_ui_css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' );
-	    wp_enqueue_style( 'dmmcrm_ui_css' );
+		wp_register_style( 'drm_ui_css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' );
+	    wp_enqueue_style( 'drm_ui_css' );
 
 		// Enqueue Jquery UI
 	    wp_enqueue_script("jquery-ui-core");
-	    wp_enqueue_script( 'admin_scripts', plugin_dir_url( __FILE__ ) .'js/dmmcrm-admin.js', array('jquery', 'jquery-ui-core') );
+	    wp_enqueue_script( 'admin_scripts', plugin_dir_url( __FILE__ ) .'js/drm-admin.js', array('jquery', 'jquery-ui-core') );
 	     // No need to enqueue jQuery as it's already included in the WordPress admin by default
 
 	}

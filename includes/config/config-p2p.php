@@ -19,20 +19,20 @@ function my_connection_types() {
         'to' => 'contacts',
         //'admin_column' => 'any',  // TODO: This created an invalid string error.
         'title' => array(
-            'from' => __( 'Coached by', 'dmmcrm' ),
-            'to' => __( 'Coaching', 'dmmcrm' ),
+            'from' => __( 'Coached by', 'drm' ),
+            'to' => __( 'Coaching', 'drm' ),
         ),
         'from_labels' => array(
-            'singular_name' => __( 'Contact', 'dmmcrm' ),
-            'search_items' => __( 'Search contacts', 'dmmcrm' ),
-            'not_found' => __( 'No contacts found.', 'dmmcrm' ),
-            'create' => __( 'Connect Disciple ', 'dmmcrm' ),
+            'singular_name' => __( 'Contact', 'drm' ),
+            'search_items' => __( 'Search contacts', 'drm' ),
+            'not_found' => __( 'No contacts found.', 'drm' ),
+            'create' => __( 'Connect Disciple ', 'drm' ),
         ),
         'to_labels' => array(
-            'singular_name' => __( 'Contact', 'dmmcrm' ),
-            'search_items' => __( 'Search contacts', 'dmmcrm' ),
-            'not_found' => __( 'No contacts found.', 'dmmcrm' ),
-            'create' => __( 'Connect Coach', 'dmmcrm' ),
+            'singular_name' => __( 'Contact', 'drm' ),
+            'search_items' => __( 'Search contacts', 'drm' ),
+            'not_found' => __( 'No contacts found.', 'drm' ),
+            'create' => __( 'Connect Coach', 'drm' ),
         ),
 
     ) );
@@ -43,20 +43,20 @@ function my_connection_types() {
         'to' => 'user',
         'admin_dropdown' => 'any',
         'title' => array(
-            'from' => __( 'Assigned Multiplier', 'dmmcrm' ),
-            'to' => __( 'Assigned Contact', 'dmmcrm' ),
+            'from' => __( 'Assigned Multiplier', 'drm' ),
+            'to' => __( 'Assigned Contact', 'drm' ),
         ),
         'to_labels' => array(
-            'singular_name' => __( 'Multiplier', 'dmmcrm' ),
-            'search_items' => __( 'Search multipliers', 'dmmcrm' ),
-            'not_found' => __( 'No multiplier found.', 'dmmcrm' ),
-            'create' => __( 'Connect Multiplier ', 'dmmcrm' ),
+            'singular_name' => __( 'Multiplier', 'drm' ),
+            'search_items' => __( 'Search multipliers', 'drm' ),
+            'not_found' => __( 'No multiplier found.', 'drm' ),
+            'create' => __( 'Connect Multiplier ', 'drm' ),
         ),
         'from_labels' => array(
-            'singular_name' => __( 'Contact', 'dmmcrm' ),
-            'search_items' => __( 'Search contacts', 'dmmcrm' ),
-            'not_found' => __( 'No contacts found.', 'dmmcrm' ),
-            'create' => __( 'Connect Contact', 'dmmcrm' ),
+            'singular_name' => __( 'Contact', 'drm' ),
+            'search_items' => __( 'Search contacts', 'drm' ),
+            'not_found' => __( 'No contacts found.', 'drm' ),
+            'create' => __( 'Connect Contact', 'drm' ),
         ),
     ) );
 
@@ -68,24 +68,24 @@ function my_connection_types() {
             'admin_column' => 'any',
             'admin_dropdown' => 'from',
             'title' => array(
-                'from' => __( 'Groups', 'dmmcrm' ),
-                'to' => __( 'Members', 'dmmcrm' )
+                'from' => __( 'Groups', 'drm' ),
+                'to' => __( 'Members', 'drm' )
             ),
             'to_labels' => array(
-                'singular_name' => __( 'Groups', 'dmmcrm' ),
-                'search_items' => __( 'Search groups', 'dmmcrm' ),
-                'not_found' => __( 'No groups found.', 'dmmcrm' ),
-                'create' => __( 'Connect Group ', 'dmmcrm' ),
+                'singular_name' => __( 'Groups', 'drm' ),
+                'search_items' => __( 'Search groups', 'drm' ),
+                'not_found' => __( 'No groups found.', 'drm' ),
+                'create' => __( 'Connect Group ', 'drm' ),
             ),
             'from_labels' => array(
-                'singular_name' => __( 'Member', 'dmmcrm' ),
-                'search_items' => __( 'Search members', 'dmmcrm' ),
-                'not_found' => __( 'No members found.', 'dmmcrm' ),
-                'create' => __( 'Connect Member', 'dmmcrm' ),
+                'singular_name' => __( 'Member', 'drm' ),
+                'search_items' => __( 'Search members', 'drm' ),
+                'not_found' => __( 'No members found.', 'drm' ),
+                'create' => __( 'Connect Member', 'drm' ),
             ),
             'fields' => array(
                 'role' => array(
-                    'title' => __( 'Role', 'dmmcrm' ),
+                    'title' => __( 'Role', 'drm' ),
                     'type' => 'select',
                     'values' => array( 'Attending', 'Planting', 'Coaching' ),
                 ),
@@ -99,20 +99,20 @@ function my_connection_types() {
         'to' => 'groups',
         'admin_column' => 'any',
         'title' => array(
-            'from' => __( 'Planted by', 'dmmcrm' ),
-            'to' => __( 'Planting', 'dmmcrm' ),
+            'from' => __( 'Planted by', 'drm' ),
+            'to' => __( 'Planting', 'drm' ),
         ),
         'from_labels' => array(
-            'singular_name' => __( 'Group', 'dmmcrm' ),
-            'search_items' => __( 'Search groups', 'dmmcrm' ),
-            'not_found' => __( 'No groups found.', 'dmmcrm' ),
-            'create' => __( 'Connect Child Group', 'dmmcrm' ),
+            'singular_name' => __( 'Group', 'drm' ),
+            'search_items' => __( 'Search groups', 'drm' ),
+            'not_found' => __( 'No groups found.', 'drm' ),
+            'create' => __( 'Connect Child Group', 'drm' ),
         ),
         'to_labels' => array(
-            'singular_name' => __( 'Group', 'dmmcrm' ),
-            'search_items' => __( 'Search groups', 'dmmcrm' ),
-            'not_found' => __( 'No groups found.', 'dmmcrm' ),
-            'create' => __( 'Connect Parent Group', 'dmmcrm' ),
+            'singular_name' => __( 'Group', 'drm' ),
+            'search_items' => __( 'Search groups', 'drm' ),
+            'not_found' => __( 'No groups found.', 'drm' ),
+            'create' => __( 'Connect Parent Group', 'drm' ),
         ),
     ) );
 

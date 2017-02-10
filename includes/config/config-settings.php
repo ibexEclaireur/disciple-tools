@@ -2,20 +2,20 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * DmmCrm_Plugin_Settings Class
+ * DRM_Plugin_Settings Class
  *
- * @class DmmCrm_Plugin_Settings
+ * @class DRM_Plugin_Settings
  * @version	1.0.0
- * @since 1.0.0
- * @package	DmmCrm_Plugin
+ * @since 0.0.1
+ * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
-final class DmmCrm_Plugin_Settings {
+final class DRM_Plugin_Settings {
 	/**
-	 * DmmCrm_Plugin_Admin The single instance of DmmCrm_Plugin_Admin.
+	 * DRM_Plugin_Admin The single instance of DRM_Plugin_Admin.
 	 * @var 	object
 	 * @access  private
-	 * @since 	1.0.0
+	 * @since  0.0.1
 	 */
 	private static $_instance = null;
 
@@ -23,18 +23,18 @@ final class DmmCrm_Plugin_Settings {
 	 * Whether or not a 'select' field is present.
 	 * @var     boolean
 	 * @access  private
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	private $_has_select;
 
 	/**
-	 * Main DmmCrm_Plugin_Settings Instance
+	 * Main DRM_Plugin_Settings Instance
 	 *
-	 * Ensures only one instance of DmmCrm_Plugin_Settings is loaded or can be loaded.
+	 * Ensures only one instance of DRM_Plugin_Settings is loaded or can be loaded.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.1
 	 * @static
-	 * @return Main DmmCrm_Plugin_Settings instance
+	 * @return DRM_Plugin_Settings instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -45,7 +45,7 @@ final class DmmCrm_Plugin_Settings {
 	/**
 	 * Constructor function.
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 */
 	public function __construct () {
 	} // End __construct()
@@ -53,7 +53,7 @@ final class DmmCrm_Plugin_Settings {
 	/**
 	 * Validate the settings.
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 * @param   array $input Inputted data.
 	 * @param   string $section field section.
 	 * @return  array        Validated data.
@@ -71,7 +71,7 @@ final class DmmCrm_Plugin_Settings {
 				$method = 'validate_field_' . $fields[$k]['type'];
 
 				if ( ! method_exists( $this, $method ) ) {
-					if ( true === (bool)apply_filters( 'dmmcrm-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
+					if ( true === (bool)apply_filters( 'drm-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
 						$method = 'validate_field_text';
 					} else {
 						$method = '';
@@ -80,10 +80,10 @@ final class DmmCrm_Plugin_Settings {
 
 				// If we have an internal method for validation, filter and apply it.
 				if ( '' != $method ) {
-					add_filter( 'dmmcrm-validate-field-' . $fields[$k]['type'], array( $this, $method ) );
+					add_filter( 'drm-validate-field-' . $fields[$k]['type'], array( $this, $method ) );
 				}
 
-				$method_output = apply_filters( 'dmmcrm-validate-field-' . $fields[$k]['type'], $v, $fields[$k] );
+				$method_output = apply_filters( 'drm-validate-field-' . $fields[$k]['type'], $v, $fields[$k] );
 
 				if ( ! is_wp_error( $method_output ) ) {
 					$input[$k] = $method_output;
@@ -169,7 +169,7 @@ final class DmmCrm_Plugin_Settings {
 	/**
 	 * Render a field of a given type.
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 * @param   array $args The field parameters.
 	 * @return  void
 	 */
@@ -189,7 +189,7 @@ final class DmmCrm_Plugin_Settings {
 		}
 
 		// Construct the key.
-		$key 				= DmmCrm_Plugin()->token . '-' . $args['section'] . '[' . $args['id'] . ']';
+		$key 				= DRM_Plugin()->token . '-' . $args['section'] . '[' . $args['id'] . ']';
 		$method_output 		= $this->$method( $key, $args );
 
 		if ( ! is_wp_error( $method_output ) ) {
@@ -197,10 +197,10 @@ final class DmmCrm_Plugin_Settings {
 		}
 
 		// Output the description, if the current field allows it.
-		if ( isset( $args['type'] ) && ! in_array( $args['type'], (array)apply_filters( 'dmmcrm-no-description-fields', array( 'checkbox' ) ) ) ) {
+		if ( isset( $args['type'] ) && ! in_array( $args['type'], (array)apply_filters( 'drm-no-description-fields', array( 'checkbox' ) ) ) ) {
 			if ( isset( $args['description'] ) ) {
 				$description = '<p class="description">' . wp_kses_post( $args['description'] ) . '</p>' . "\n";
-				if ( in_array( $args['type'], (array)apply_filters( 'dmmcrm-new-line-description-fields', array( 'textarea', 'select' ) ) ) ) {
+				if ( in_array( $args['type'], (array)apply_filters( 'drm-new-line-description-fields', array( 'textarea', 'select' ) ) ) ) {
 					$description = wpautop( $description );
 				}
 				$html .= $description;
@@ -213,26 +213,26 @@ final class DmmCrm_Plugin_Settings {
 	/**
 	 * Retrieve the settings fields details
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 * @return  array        Settings fields.
 	 */
 	public function get_settings_sections () {
 		$settings_sections = array();
 
-		$settings_sections['standard-fields'] = __( 'Standard Fields', 'dmmcrm' );
-		$settings_sections['special-fields'] = __( 'Special Fields', 'dmmcrm' );
+		$settings_sections['standard-fields'] = __( 'Standard Fields', 'drm' );
+		$settings_sections['special-fields'] = __( 'Special Fields', 'drm' );
 		// Add your new sections below here.
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
 
-		return (array)apply_filters( 'dmmcrm-settings-sections', $settings_sections );
+		return (array)apply_filters( 'drm-settings-sections', $settings_sections );
 	} // End get_settings_sections()
 
 	/**
 	 * Retrieve the settings fields details
 	 * @access  public
 	 * @param  string $section field section.
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 * @return  array        Settings fields.
 	 */
 	public function get_settings_fields ( $section ) {
@@ -243,67 +243,67 @@ final class DmmCrm_Plugin_Settings {
 			case 'standard-fields':
 
 				$settings_fields['text'] = array(
-												'name' => __( 'Example Text Input', 'dmmcrm' ),
+												'name' => __( 'Example Text Input', 'drm' ),
 												'type' => 'text',
 												'default' => '',
 												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'dmmcrm' )
+												'description' => __( 'Place the field description text here.', 'drm' )
 											);
 				$settings_fields['textarea'] = array(
-												'name' => __( 'Example Textarea', 'dmmcrm' ),
+												'name' => __( 'Example Textarea', 'drm' ),
 												'type' => 'textarea',
 												'default' => '',
 												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'dmmcrm' )
+												'description' => __( 'Place the field description text here.', 'drm' )
 											);
 				$settings_fields['checkbox'] = array(
-												'name' => __( 'Example Checkbox', 'dmmcrm' ),
+												'name' => __( 'Example Checkbox', 'drm' ),
 												'type' => 'checkbox',
 												'default' => '',
 												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'dmmcrm' )
+												'description' => __( 'Place the field description text here.', 'drm' )
 											);
 				$settings_fields['radio'] = array(
-												'name' => __( 'Example Radio Buttons', 'dmmcrm' ),
+												'name' => __( 'Example Radio Buttons', 'drm' ),
 												'type' => 'radio',
 												'default' => '',
 												'section' => 'standard-fields',
 												'options' => array(
-																	'one' => __( 'One', 'dmmcrm' ),
-																	'two' => __( 'Two', 'dmmcrm' ),
-																	'three' => __( 'Three', 'dmmcrm' )
+																	'one' => __( 'One', 'drm' ),
+																	'two' => __( 'Two', 'drm' ),
+																	'three' => __( 'Three', 'drm' )
 															),
-												'description' => __( 'Place the field description text here.', 'dmmcrm' )
+												'description' => __( 'Place the field description text here.', 'drm' )
 											);
 				$settings_fields['select'] = array(
-													'name' => __( 'Example Select', 'dmmcrm' ),
+													'name' => __( 'Example Select', 'drm' ),
 													'type' => 'select',
 													'default' => '',
 													'section' => 'standard-fields',
 													'options' => array(
-																	'one' => __( 'One', 'dmmcrm' ),
-																	'two' => __( 'Two', 'dmmcrm' ),
-																	'three' => __( 'Three', 'dmmcrm' )
+																	'one' => __( 'One', 'drm' ),
+																	'two' => __( 'Two', 'drm' ),
+																	'three' => __( 'Three', 'drm' )
 																),
-													'description' => __( 'Place the field description text here.', 'dmmcrm' )
+													'description' => __( 'Place the field description text here.', 'drm' )
 											);
 
 				break;
 			case 'special-fields':
 
 				$settings_fields['select_taxonomy'] = array(
-													'name' => __( 'Example Taxonomy Selector', 'dmmcrm' ),
+													'name' => __( 'Example Taxonomy Selector', 'drm' ),
 													'type' => 'select_taxonomy',
 													'default' => '',
 													'section' => 'special-fields',
-													'description' => __( 'Place the field description text here.', 'dmmcrm' )
+													'description' => __( 'Place the field description text here.', 'drm' )
 											);
                 $settings_fields['private_site'] = array(
-                    'name' => __( 'Make site private', 'dmmcrm' ),
+                    'name' => __( 'Make site private', 'drm' ),
                     'type' => 'checkbox',
                     'default' => '',
                     'section' => 'special-fields',
-                    'description' => __( 'Default is private. Warning: please leave site private unless you know what you are doing.', 'dmmcrm' )
+                    'description' => __( 'Default is private. Warning: please leave site private unless you know what you are doing.', 'drm' )
                 );
 
 				break;
@@ -312,7 +312,7 @@ final class DmmCrm_Plugin_Settings {
 				break;
 		}
 
-		return (array)apply_filters( 'dmmcrm-settings-fields', $settings_fields );
+		return (array)apply_filters( 'drm-settings-fields', $settings_fields );
 	} // End get_settings_fields()
 
 	/**
@@ -453,7 +453,7 @@ final class DmmCrm_Plugin_Settings {
 	/**
 	 * Return an array of field types expecting an array value returned.
 	 * @access public
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return array
 	 */
 	public function get_array_field_types () {
@@ -463,7 +463,7 @@ final class DmmCrm_Plugin_Settings {
 	/**
 	 * Return an array of field types where no label/header is to be displayed.
 	 * @access protected
-	 * @since  1.0.0
+	 * @since  0.0.1
 	 * @return array
 	 */
 	protected function get_no_label_field_types () {
@@ -473,11 +473,11 @@ final class DmmCrm_Plugin_Settings {
 	/**
 	 * Return a filtered array of supported field types.
 	 * @access  public
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 * @return  array Supported field type keys.
 	 */
 	public function get_supported_fields () {
-		return (array)apply_filters( 'dmmcrm-supported-fields', array( 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ) );
+		return (array)apply_filters( 'drm-supported-fields', array( 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ) );
 	} // End get_supported_fields()
 
 	/**
@@ -486,11 +486,11 @@ final class DmmCrm_Plugin_Settings {
 	 * @param  string $key option key.
 	 * @param  string $default default value.
 	 * @param  string $section field section.
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 * @return  mixed Returned value.
 	 */
 	public function get_value ( $key, $default, $section ) {
-		$values = get_option( 'dmmcrm-' . $section, array() );
+		$values = get_option( 'drm-' . $section, array() );
 
 		if ( is_array( $values ) && isset( $values[$key] ) ) {
 			$response = $values[$key];
@@ -505,7 +505,7 @@ final class DmmCrm_Plugin_Settings {
 	 * Return all settings keys.
 	 * @access  public
 	 * @param  string $section field section.
-	 * @since   1.0.0
+	 * @since   0.0.1
 	 * @return  mixed Returned value.
 	 */
 	public function get_settings ( $section = '' ) {
@@ -520,7 +520,7 @@ final class DmmCrm_Plugin_Settings {
 		if ( 0 < count( $sections ) ) {
 			foreach ( $sections as $k => $v ) {
 				$fields = $this->get_settings_fields( $v );
-				$values = get_option( 'dmmcrm-' . $v, array() );
+				$values = get_option( 'drm-' . $v, array() );
 
 				if ( is_array( $fields ) && 0 < count( $fields ) ) {
 					foreach ( $fields as $i => $j ) {

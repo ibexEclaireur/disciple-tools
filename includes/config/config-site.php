@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @Login Page Modifications 
  *
  * @author Chasm Solutions
- * @package dmmcrm
+ * @package drm
  */
 
 
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 		$html = '    
 		    <style type="text/css">
 		        #login h1 a, .login h1 a {
-		            background-image: url(' . get_stylesheet_directory_uri() . '/img/dmm-crm-logo.png);
+		            background-image: url(' . get_stylesheet_directory_uri() . '/img/drm.png);
 		        }
 		    </style>';
 		return $html;
@@ -35,6 +35,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	
 	// Change title
 	function my_login_logo_url_title() {
-	    return 'DMM CRM';
+	    return 'DRM';
 	}
 	add_filter( 'login_headertitle', 'my_login_logo_url_title' );

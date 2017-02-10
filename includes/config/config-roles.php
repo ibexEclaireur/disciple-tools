@@ -1,34 +1,34 @@
 <?php
 /**
- * DMM CRM Post to Post Metabox for Locations
+ * DRM Post to Post Metabox for Locations
  *
- * @class DmmCrm_Plugin_Settings
+ * @class DRM_Roles
  * @version	1.0.0
- * @since 1.0.0
- * @package	DmmCrm_Plugin
+ * @since 0.0.1
+ * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class DmmCrm_Roles {
+class DRM_Roles {
 
     /**
-     * DmmCrm_P2P_Metabox The single instance of DmmCrm_P2P_Metabox.
+     * The single instance of DRM_Roles
      * @var 	object
      * @access  private
-     * @since 	1.0.0
+     * @since  0.0.1
      */
     private static $_instance = null;
 
     /**
-     * Main DmmCrm_P2P_Metabox Instance
+     * Main DRM_P2P_Metabox Instance
      *
-     * Ensures only one instance of DmmCrm_P2P_Metabox is loaded or can be loaded.
+     * Ensures only one instance of DRM_P2P_Metabox is loaded or can be loaded.
      *
-     * @since 1.0.0
+     * @since 0.0.1
      * @static
-     * @return DmmCrm_Roles instance
+     * @return DRM_Roles instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) )
@@ -39,7 +39,7 @@ class DmmCrm_Roles {
     /**
      * Constructor function.
      * @access  public
-     * @since   1.0.0
+     * @since   0.0.1
      */
     public function __construct () {
 
