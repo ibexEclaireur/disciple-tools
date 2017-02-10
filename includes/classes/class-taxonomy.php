@@ -2,17 +2,17 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 /**
- * DmmCrm Plugin Taxonomy Class
+ * DRM Plugin Taxonomy Class
  *
  * Re-usable class for registering post type taxonomies.
  *
  * @package WordPress
- * @subpackage DmmCrm_Plugin
+ * @subpackage DRM_Plugin
  * @category Plugin
  * @author Matty
- * @since 1.0.0
+ * @since 0.0.1
  */
-class DmmCrm_Plugin_Taxonomy {
+class DRM_Plugin_Taxonomy {
 	/**
 	 * The post type to register the taxonomy for.
 	 * @access  private
@@ -69,8 +69,8 @@ class DmmCrm_Plugin_Taxonomy {
 		$this->singular = esc_html( $singular );
 		$this->plural = esc_html( $plural );
 
-		if ( '' == $this->singular ) $this->singular = __( 'Category', 'dmmcrm' );
-		if ( '' == $this->plural ) $this->plural = __( 'Categories', 'dmmcrm' );
+		if ( '' == $this->singular ) $this->singular = __( 'Category', 'drm' );
+		if ( '' == $this->plural ) $this->plural = __( 'Categories', 'drm' );
 
 		$this->args = wp_parse_args( $args, $this->_get_default_args() );
 	} // End __construct()
@@ -93,17 +93,17 @@ class DmmCrm_Plugin_Taxonomy {
 	 */
 	private function _get_default_labels () {
 		return array(
-			    'name'                => sprintf( _x( '%s', 'taxonomy general name', 'dmmcrm' ), $this->plural ),
-			    'singular_name'       => sprintf( _x( '%s', 'taxonomy singular name', 'dmmcrm' ), $this->singular ),
-			    'search_items'        => sprintf( __( 'Search %s', 'dmmcrm' ), $this->plural ),
-			    'all_items'           => sprintf( __( 'All %s', 'dmmcrm' ), $this->plural ),
-			    'parent_item'         => sprintf( __( 'Parent %s', 'dmmcrm' ), $this->singular ),
-			    'parent_item_colon'   => sprintf( __( 'Parent %s:', 'dmmcrm' ), $this->singular ),
-			    'edit_item'           => sprintf( __( 'Edit %s', 'dmmcrm' ), $this->singular ),
-			    'update_item'         => sprintf( __( 'Update %s', 'dmmcrm' ), $this->singular ),
-			    'add_new_item'        => sprintf( __( 'Add New %s', 'dmmcrm' ), $this->singular ),
-			    'new_item_name'       => sprintf( __( 'New %s Name', 'dmmcrm' ), $this->singular ),
-			    'menu_name'           => sprintf( __( '%s', 'dmmcrm' ), $this->plural )
+			    'name'                => sprintf( _x( '%s', 'taxonomy general name', 'drm' ), $this->plural ),
+			    'singular_name'       => sprintf( _x( '%s', 'taxonomy singular name', 'drm' ), $this->singular ),
+			    'search_items'        => sprintf( __( 'Search %s', 'drm' ), $this->plural ),
+			    'all_items'           => sprintf( __( 'All %s', 'drm' ), $this->plural ),
+			    'parent_item'         => sprintf( __( 'Parent %s', 'drm' ), $this->singular ),
+			    'parent_item_colon'   => sprintf( __( 'Parent %s:', 'drm' ), $this->singular ),
+			    'edit_item'           => sprintf( __( 'Edit %s', 'drm' ), $this->singular ),
+			    'update_item'         => sprintf( __( 'Update %s', 'drm' ), $this->singular ),
+			    'add_new_item'        => sprintf( __( 'Add New %s', 'drm' ), $this->singular ),
+			    'new_item_name'       => sprintf( __( 'New %s Name', 'drm' ), $this->singular ),
+			    'menu_name'           => sprintf( __( '%s', 'drm' ), $this->plural )
 			  );
 	} // End _get_default_labels()
 

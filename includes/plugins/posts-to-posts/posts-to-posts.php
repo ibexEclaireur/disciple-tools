@@ -12,7 +12,7 @@ Domain Path: /lang
 
 define( 'P2P_PLUGIN_VERSION', '1.6.5' );
 
-define( 'P2P_TEXTDOMAIN', 'dmmcrm' );
+define( 'P2P_TEXTDOMAIN', 'drm' );
 
 function _p2p_load() {
     load_plugin_textdomain( P2P_TEXTDOMAIN, '', basename( dirname( __FILE__ ) ) . '/lang' );

@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * 
  * @author Chasm Solutions
- * @package dmmcrm
+ * @package drm
  */
 
 

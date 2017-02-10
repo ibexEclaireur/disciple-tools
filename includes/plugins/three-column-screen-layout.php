@@ -1,6 +1,6 @@
 <?php
 /**
-	Text Domain: dmmcrm	
+	Text Domain: drm
 	
 	Modified version of Plugin 'Three Column Screen Layout' (http://wordpress.org/plugins/three-column-screen-layout/)
  	Modification date: 19 January 2017
