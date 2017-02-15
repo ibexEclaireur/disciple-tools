@@ -151,19 +151,22 @@ class DRM_Plugin {
             require_once ( 'includes/config/config-admin.php' );
             $this->admin = DRM_Plugin_Admin::instance();
 
+			// DRM admin settings page configuration
+			require_once ( 'includes/config/config-settings.php' );
+			$this->settings = DRM_Plugin_Settings::instance();
+
             // Load plugin library that "requires plugins" at activation
             require_once ( 'includes/config/config-required-plugins.php' );
 
-            // Load DRM Dasboard configurations
+            // Load DRM Dashboard configurations
             require_once ( 'includes/config/config-dashboard.php' );
+			$this->admin = DRM_Dashboard::instance();
 
             // Load multiple column configuration library into screen options area.
             require_once ( 'includes/plugins/three-column-screen-layout.php' );
 
         }
-            // DRM admin settings page configuration
-            require_once ( 'includes/config/config-settings.php' );
-            $this->settings = DRM_Plugin_Settings::instance();
+
 
             // Admin panel filters
             require_once('includes/config/drm-filters.php');
