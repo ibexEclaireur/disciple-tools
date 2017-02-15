@@ -37,7 +37,10 @@ function my_connection_types() {
 
     ) );
 
-    p2p_register_connection_type( array(
+/*  // TODO: This section connects a contact to a user, and generates a connection column.
+	// The better way to do this is to create a one-to-one connection between the contact and user.
+
+	p2p_register_connection_type( array(
         'name' => 'users_to_contacts',
         'from' => 'contacts',
         'to' => 'user',
@@ -58,7 +61,7 @@ function my_connection_types() {
             'not_found' => __( 'No contacts found.', 'drm' ),
             'create' => __( 'Connect Contact', 'drm' ),
         ),
-    ) );
+    ) );*/
 
     p2p_register_connection_type(
         array(

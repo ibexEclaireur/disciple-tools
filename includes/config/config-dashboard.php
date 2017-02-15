@@ -4,22 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  *  ADD DASHBOARD WIDGETS
  *
- * 
- * @author Chasm Solutions
+ * @since 0.1
+ * @author Chasm/Solutions
  * @package drm
  */
 
-
-	/*
-	* Call action hooks
-	*
-	*/
+	/* Call action hooks */
 	add_action('wp_dashboard_setup', 'add_dmm_widgets' );
 
-	/*
-	* Action hooks
-	*
-	*/
+	/* Action hooks */
 	function add_dmm_widgets() {
 		wp_add_dashboard_widget('new_contacts_widget', 'New Contacts', 'new_contacts_dashboard_widget');
 		wp_add_dashboard_widget('updates_needed_widget', 'Updates Needed', 'update_needed_dashboard_widget');

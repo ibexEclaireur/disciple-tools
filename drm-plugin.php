@@ -46,7 +46,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
-final class DRM_Plugin {
+class DRM_Plugin {
 	/**
 	 * DRM_Plugin The single instance of DRM_Plugin.
 	 * @var 	object
@@ -130,9 +130,12 @@ final class DRM_Plugin {
 		 *
 		 */
 	    $this->token 			= 'drm';
+		$this->version 			= '0.1';
 		$this->plugin_url 		= plugin_dir_url( __FILE__ );
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
-		$this->version 			= '0.1';
+		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'includes/img/';
+		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'includes/js/';
+		$this->plugin_css        = plugin_dir_url( __FILE__ ) . 'includes/css/';
         /* End prep of variables */
 
 
