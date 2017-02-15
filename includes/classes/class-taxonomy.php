@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  * @subpackage DRM_Plugin
  * @category Plugin
  * @author Matty
- * @since 0.0.1
+ * @since 0.1
  */
 class DRM_Plugin_Taxonomy {
 	/**

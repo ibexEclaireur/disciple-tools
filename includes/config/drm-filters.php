@@ -9,29 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 * @package DRM_Plugin
 */
 
-    // TODO: Heavy clean up needed. Convert to factory design.
-
-    /*
-    * Load Setup dependencies
-    *
-    */
-    // Load DRM Dasboard configurations
-    require_once ( DRM_Plugin()->plugin_path . 'includes/config/config-dashboard.php' );
-    // Load multiple column configuration library into screen options area.
-    // This changes the view of contacts to 2 equal columns
-    require_once ( DRM_Plugin()->plugin_path . 'includes/plugins/three-column-screen-layout.php' );
-
-    /**
-     * Load the configuration and plugin library that creates post relationships (p2p)
-     */
-    require_once (DRM_Plugin()->plugin_path . 'includes/config/config-p2p.php');
-    require_once (DRM_Plugin()->plugin_path . 'includes/plugins/posts-to-posts/posts-to-posts.php');
-
-    /**
-     * Load security modifications to site.
-     */
-    require_once (DRM_Plugin()->plugin_path . 'includes/config/config-site.php');
-
     /*
      * Sanitize image file name
      *

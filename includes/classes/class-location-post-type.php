@@ -10,13 +10,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  * @subpackage DRM_Plugin
  * @category Plugin
  * @author Chasm.Solutions & Kingdom.Training
- * @since 0.0.1
+ * @since 0.1
  */
 class DRM_Plugin_Location_Post_Type {
 	/**
 	 * The post type token.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @var    string
 	 */
 	public $post_type;
@@ -24,7 +24,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * The post type singular label.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @var    string
 	 */
 	public $singular;
@@ -32,7 +32,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * The post type plural label.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @var    string
 	 */
 	public $plural;
@@ -40,7 +40,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * The post type args.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @var    array
 	 */
 	public $args;
@@ -48,7 +48,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * The taxonomies for this post type.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @var    array
 	 */
 	public $taxonomies;
@@ -56,7 +56,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Constructor function.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __construct( $post_type = 'thing', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
 		$this->post_type = $post_type;
@@ -164,7 +164,7 @@ class DRM_Plugin_Location_Post_Type {
 	 * @access public
 	 * @param string $column_name
 	 * @param int $id
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return void
 	 */
 	public function register_custom_columns ( $column_name, $id ) {
@@ -184,7 +184,7 @@ class DRM_Plugin_Location_Post_Type {
 	 * Add custom column headings for the "manage" screen of this post type.
 	 * @access public
 	 * @param array $defaults
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return void
 	 */
 	public function register_custom_column_headings ( $defaults ) {
@@ -214,7 +214,7 @@ class DRM_Plugin_Location_Post_Type {
 
 	/**
 	 * Update messages for the post type admin.
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @param  array $messages Array of messages for all post types.
 	 * @return array           Modified array.
 	 */
@@ -244,7 +244,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Setup the meta box.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return void
 	 */
 	public function meta_box_setup () {
@@ -254,7 +254,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * The contents of our meta box.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return void
 	 */
 	public function meta_box_content () {
@@ -340,7 +340,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Save meta box fields.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @param int $post_id
 	 * @return int $post_id
 	 */
@@ -387,7 +387,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Customise the "Enter title here" text.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @param string $title
 	 * @return void
 	 */
@@ -401,7 +401,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Get the settings for the custom fields.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return array
 	 */
 	public function get_custom_fields_settings () {
@@ -429,7 +429,7 @@ class DRM_Plugin_Location_Post_Type {
 	 * Get the image for the given ID.
 	 * @param  int 				$id   Post ID.
 	 * @param  mixed $size Image dimension. (default: "thing-thumbnail")
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return string       	<img> tag.
 	 */
 	protected function get_image ( $id, $size = 'thing-thumbnail' ) {
@@ -451,7 +451,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Register image sizes.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 */
 	public function register_image_sizes () {
 		if ( function_exists( 'add_image_size' ) ) {
@@ -462,7 +462,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Run on activation.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function activation () {
 		$this->flush_rewrite_rules();
@@ -471,7 +471,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Flush the rewrite rules
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	private function flush_rewrite_rules () {
 		$this->register_post_type();
@@ -481,7 +481,7 @@ class DRM_Plugin_Location_Post_Type {
 	/**
 	 * Ensure that "post-thumbnails" support is available for those themes that don't register it.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 */
 	public function ensure_post_thumbnails_support () {
 		if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }
