@@ -171,7 +171,7 @@ class DRM_Plugin {
 
 		// Counters
 		require_once('includes/factories/factory-counter.php');
-		$this->counter = drm_counter_factory::instance();
+		$this->counter = new drm_counter_factory();
 
         /* End Admin configuration section */
 
@@ -222,7 +222,7 @@ class DRM_Plugin {
 		 * Activation section
 		 *
 		 */
-        require_once( 'includes/factories/factory-runonce.php' );
+        require_once( 'includes/factories/service-runonce.php' );
         $this->run_once = new run_once;
 
 

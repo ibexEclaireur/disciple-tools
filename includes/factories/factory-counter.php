@@ -14,78 +14,118 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class drm_counter_factory {
 
 	/**
-	 * drm_counter_factory The single instance of drm_counter_factory.
-	 * @var 	object
-	 * @access  private
-	 * @since 	0.1
-	 */
-	private static $_instance = null;
-
-	/**
-	 * Main drm_counter_factory Instance
-	 *
-	 * Ensures only one instance of DmmCrm_P2P_Metabox is loaded or can be loaded.
-	 *
-	 * @since 0.1
-	 * @static
-	 * @return drm_counter_factory instance
-	 */
-	public static function instance () {
-		if ( is_null( self::$_instance ) )
-			self::$_instance = new self();
-		return self::$_instance;
-	} // End instance()
-
-	/**
 	 * Constructor function.
 	 * @access  public
 	 * @since   0.1
 	 */
-	public function __construct ( ) {
+	public function __construct ( ) { } // End __construct
 
-
-
-		/*include_once ('counters/counter-parent-generations.php');
-		$this->drm_counter($target, $type, $question, $count, $return);*/
-
-
-	} // End __construct
-
-	public function contacts_count () {
-		$the_query = get_posts('post_type=contacts');
-	}
-
-	public function drm_counter( $target, $type, $question, $count, $return ) {
+	/**
+	 * Returns Counts of the Contacts
+	 * @access  public
+	 * @since   0.1
+	 */
+	public function contacts_status ($status = '') {
 
 		/**
-		 * @var "target"    This is the id number of the contact or group
-		 * @var "type"      This is either "group" or "contact"
-		 * @var "question"  This is name of the counter we are calling for information.
-		 * @var "count"     This is number of items to return
-		 * @var "return"    This is the type of answer returned
+		 * @usage DRM_Plugin()->counter->contacts_status()
+		 * @returns array of status counts
+		 *
+		 * @usage DRM_Plugin()->counter->contacts_status('publish')
+		 * @returns number count
 		 */
 
-		/*switch( $question ) {
+		$status = strtolower($status);
 
-			case 'read-write':
-				$user = new Admin();
+		switch ($status) {
+
+			case 'publish':
+				$count = wp_count_posts('contacts');
+				$count = $count->publish;
+				return $count;
 				break;
 
-			case 'help':
-				$user = new Volunteer();
+			case 'draft':
+				$count = wp_count_posts('contacts');
+				$count = $count->draft;
+				return $count;
 				break;
 
-			case 'read':
-				$user = new Reader();
+			case 'pending':
+				$count = wp_count_posts('contacts');
+				$count = $count->pending;
+				return $count;
+				break;
+
+			case 'private':
+				$count = wp_count_posts('contacts');
+				$count = $count->private;
+				return $count;
+				break;
+
+			case 'trash':
+				$count = wp_count_posts('contacts');
+				$count = $count->trash;
+				return $count;
 				break;
 
 			default:
-				$user = null;
+				return wp_count_posts('contacts');
 				break;
 
 		}
-
-		return $user;*/
-
 	}
+
+	/**
+	 * Get Count from Meta Data in Contacts
+	 *
+	 * @returns number
+	 *
+	 */
+	public function contacts_meta ($status = 'unassigned') {
+
+		$status = strtolower($status);
+
+		switch ($status) {
+
+			case 'unassignable':
+				$query = new WP_Query( array( 'meta_key' => 'overall_status', 'meta_value' => 'Unassignable', 'post_type' => 'contacts', ) );
+				return $query->found_posts;
+				break;
+
+			case 'unassigned':
+				$query = new WP_Query( array( 'meta_key' => 'overall_status', 'meta_value' => 'Unassigned', 'post_type' => 'contacts', ) );
+				return $query->found_posts;
+				break;
+
+			case 'assigned':
+				$query = new WP_Query( array( 'meta_key' => 'overall_status', 'meta_value' => 'Assigned', 'post_type' => 'contacts', ) );
+				return $query->found_posts;
+				break;
+
+			case 'accepted':
+				$query = new WP_Query( array( 'meta_key' => 'overall_status', 'meta_value' => 'Accepted', 'post_type' => 'contacts', ) );
+				return $query->found_posts;
+				break;
+
+			case 'onpause':
+				$query = new WP_Query( array( 'meta_key' => 'overall_status', 'meta_value' => 'On Pause', 'post_type' => 'contacts', ) );
+				return $query->found_posts;
+				break;
+
+			case 'closed':
+				$query = new WP_Query( array( 'meta_key' => 'overall_status', 'meta_value' => 'Closed', 'post_type' => 'contacts', ) );
+				return $query->found_posts;
+				break;
+
+			default:
+				$query = new WP_Query( array( 'meta_key' => 'overall_status', 'meta_value' => 'Unassigned', 'post_type' => 'contacts', ) );
+				return $query->found_posts;
+				break;
+		}
+	}
+
+
+
+
 }
