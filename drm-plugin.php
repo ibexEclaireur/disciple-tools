@@ -136,6 +136,7 @@ class DRM_Plugin {
 		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'includes/img/';
 		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'includes/js/';
 		$this->plugin_css        = plugin_dir_url( __FILE__ ) . 'includes/css/';
+        $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
         /* End prep variables */
 
 
@@ -170,8 +171,8 @@ class DRM_Plugin {
         require_once('includes/config/drm-filters.php');
 
 		// Counters
-		require_once('includes/factories/factory-counter.php');
-		$this->counter = new drm_counter_factory();
+		require_once('includes/factories/drm_counter_factory.php');
+		$this->counter = Drm_Counter_Factory::instance();
 
         /* End Admin configuration section */
 

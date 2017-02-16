@@ -283,7 +283,7 @@ final class DRM_Dashboard {
 	 * @access public
 	 */
 	public function generations_stats_widget (  ) {
-
+        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('first') ); print '</pre>';
 		// Build counters
 		$con_1gen = 'x';
 		$con_2gen = 'x';

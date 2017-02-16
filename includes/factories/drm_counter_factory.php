@@ -11,7 +11,29 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class drm_counter_factory {
+class Drm_Counter_Factory {
+
+    /**
+     * Drm_Counter_Factory The single instance of Drm_Counter_Factory.
+     * @var 	object
+     * @access  private
+     * @since 	0.1
+     */
+    private static $_instance = null;
+
+    /**
+     * Main Drm_Counter_Factory Instance
+     * Ensures only one instance of Drm_Counter_Factory is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Drm_Counter_Factory
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
 
 	/**
 	 * Constructor function
@@ -19,7 +41,12 @@ class drm_counter_factory {
 	 * @access  public
 	 * @since   0.1
 	 */
-	public function __construct ( ) { } // End __construct
+	public function __construct ( ) {
+
+	    // Load required files
+	    require_once ( 'counters/first-gen.php');
+
+    } // End __construct
 
 	/**
 	 * Returns count of contacts publish status
@@ -128,7 +155,27 @@ class drm_counter_factory {
 		}
 	}
 
-    
+	/**
+	 * Get count of generations
+	 *
+	 *
+	 */
+    public function get_generation( $generation_number ) {
+
+
+	    switch($generation_number) {
+
+            case 'first':
+                $gen_object = new drm_first_generation_counter();
+                $count = $gen_object->count_first_generation();
+                break;
+
+            default:
+                $count = null;
+                break;
+        }
+        return $count;
+    }
 
 
 }

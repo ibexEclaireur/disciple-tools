@@ -97,13 +97,6 @@ final class dmm_crm_p2p_generations {
     } // End __construct()
 
 
-    public function test_run() {
-        $html = 'test';
-
-        return $html;
-
-    }
-
     /*
      * Get Current Generation
      * retrieves a number representing the generation of the supplied record number.
@@ -250,7 +243,7 @@ final class dmm_crm_p2p_generations {
      * Checks if the parent is first generation
      *
      *
-     * */
+     */
     protected function p2p_get_single_parent_id( $target, $list) {
         $parent = '';
 
