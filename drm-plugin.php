@@ -126,7 +126,7 @@ class DRM_Plugin {
 	 */
 	public function __construct () {
 		/**
-		 * Prepares variables
+		 * Prepare variables
 		 *
 		 */
 	    $this->token 			= 'drm';
@@ -136,7 +136,7 @@ class DRM_Plugin {
 		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'includes/img/';
 		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'includes/js/';
 		$this->plugin_css        = plugin_dir_url( __FILE__ ) . 'includes/css/';
-        /* End prep of variables */
+        /* End prep variables */
 
 
 		/**
@@ -166,12 +166,14 @@ class DRM_Plugin {
             require_once ( 'includes/plugins/three-column-screen-layout.php' );
 
         }
+		// Admin panel filters
+        require_once('includes/config/drm-filters.php');
 
+		// Counters
+		require_once('includes/factories/factory-counter.php');
+		$this->counter = drm_counter_factory::instance();
 
-            // Admin panel filters
-            require_once('includes/config/drm-filters.php');
-
-        /* End Administrative panel section */
+        /* End Admin configuration section */
 
 
         /**
@@ -180,6 +182,7 @@ class DRM_Plugin {
          * @posttype Contacts
          * @posttype Groups
          * @posttype Locations
+         * @taxonomies
          * @postconnector   P2P connection
          *
          */
@@ -191,41 +194,35 @@ class DRM_Plugin {
         require_once( 'includes/classes/class-group-post-type.php' );
         $this->post_types['groups'] = new DRM_Plugin_Group_Post_Type( 'groups', __( 'Group', 'drm' ), __( 'Groups', 'drm' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
 
-        // Taxonomies
-        require_once( 'includes/classes/class-taxonomy.php' );
-
         // Locations post types
         // require_once( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development
         // $this->post_types['locations'] = new DRM_Plugin_Location_Post_Type( 'locations', __( 'Location', 'drm' ), __( 'Locations', 'drm' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
 
+		// Taxonomies
+		require_once( 'includes/classes/class-taxonomy.php' );
+
         // Creates the post to post relationship between the post type tables.
         require_once ( 'includes/config/config-p2p.php' );
         require_once ( 'includes/plugins/posts-to-posts/posts-to-posts.php' );
-        /* End post type configuration section */
+        /* End model configuration section */
 
 
         /**
          * Overall site configuration section
          *
          */
-
-
-        // Sets the site to private.
+		// Set the site to private.
         require_once( 'includes/config/config-private-site.php' );
-
-
-
-        /**
-         * Load security modifications to site.
-         */
+		// Load security modifications to site.
         require_once ( 'includes/config/config-site.php');
+		/* End overall site configuration section */
 
 
-
-
-
-        // Activation section
-        require_once( 'includes/services/service-runonce.php' );
+		/**
+		 * Activation section
+		 *
+		 */
+        require_once( 'includes/factories/factory-runonce.php' );
         $this->run_once = new run_once;
 
 
@@ -236,12 +233,8 @@ class DRM_Plugin {
             $this->roles->set_roles();
         }
 
-		
-
-
-
-
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
+        /* End Activation seciton */
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 

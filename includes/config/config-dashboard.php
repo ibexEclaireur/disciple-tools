@@ -170,13 +170,13 @@ final class DRM_Dashboard {
 								
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td><a href="#">Prayers Network</a></td>
-								<td>132,811</td>
-								
-							</tr>
-							<tr>
+						<tbody>';
+
+		$html .= '<tr><td>Total Contacts</td><td>';
+		$html .= DRM_Plugin()->version;
+		$html .= '</td></tr>';
+
+							$html .= '<tr>
 								<td><a href="#">Facebook Engagement</a></td>
 								<td>447,239</td>
 								
