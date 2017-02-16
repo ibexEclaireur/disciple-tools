@@ -52,7 +52,12 @@ final class DRM_Dashboard {
 		}
 	} // End __construct()
 
-	/* Action hooks */
+	/**
+	 * Main action hooks
+	 *
+	 * @since 0.1
+	 * @access public
+	 */
 	public function add_dmm_widgets() {
 
 		/* Add custom dashboard widgets */
@@ -148,7 +153,7 @@ final class DRM_Dashboard {
 		$prayer = 'x';
 		$facebook = 'x';
 		$websites = 'x';
-		$new_contacts = DRM_Plugin()->counter->contacts_status('publish');
+		$new_contacts = DRM_Plugin()->counter->contacts_post_status('publish');
 		$conacts_attempted = 'x';
 		$contacts_established = 'x';
 		$first_meetings = 'x';
@@ -232,9 +237,9 @@ final class DRM_Dashboard {
 	public function project_stats_widget(  ) {
 
 		// Build counters
-		$contacts_count = DRM_Plugin()->counter->contacts_status();
-		$unassigned = DRM_Plugin()->counter->contacts_meta('unassigned');
-		$accepted = DRM_Plugin()->counter->contacts_meta('accepted');
+		$contacts_count = DRM_Plugin()->counter->contacts_post_status();
+		$unassigned = DRM_Plugin()->counter->contacts_overall_status('unassigned');
+		$accepted = DRM_Plugin()->counter->contacts_overall_status('accepted');
 
 		// Build HTML of widget
 		$html = '
@@ -355,7 +360,22 @@ final class DRM_Dashboard {
 	public function system_stats_widget (  ) {
 
 		// Build counters
-		$users = 'x';
+		$system_users = count_users();
+		$dispatchers = $system_users['avail_roles']['dispatcher'];
+		$marketers = $system_users['avail_roles']['marketer'];
+		$multipliers = $system_users['avail_roles']['multiplier'];
+		$multiplier_leader = $system_users['avail_roles']['multiplier_leader'];
+		$prayer_supporters = $system_users['avail_roles']['prayer_supporter'];
+		$project_supporters = $system_users['avail_roles']['project_supporter'];
+		$registered = $system_users['avail_roles']['registered'];
+
+		$monitored_websites = 'x';
+		$monitored_facebook_pages = 'x';
+
+		$comments = wp_count_comments();
+		$comments = $comments->total_comments;
+
+		$comments_for_dispatcher = 'x';
 
 		// Build HTML of widget
 		$html = '
@@ -369,11 +389,53 @@ final class DRM_Dashboard {
 						</thead>
 						<tbody>
 							<tr>
-								<td>Users</td>
-								<td>'. $users .'</td>
-								
+								<td>System Users</td>
+								<td>'. $system_users['total_users'] .'</td>
 							</tr>
-							
+							<tr>
+								<td>Dispatchers</td>
+								<td>'. $dispatchers .'</td>
+							</tr>
+							<tr>
+								<td>Marketers</td>
+								<td>'. $marketers .'</td>
+							</tr>
+							<tr>
+								<td>Multipliers</td>
+								<td>'. $multipliers .'</td>
+							</tr>
+							<tr>
+								<td>Multiplier Leaders</td>
+								<td>'. $multiplier_leader .'</td>
+							</tr>
+							<tr>
+								<td>Prayer Supporters</td>
+								<td>'. $prayer_supporters .'</td>
+							</tr>
+							<tr>
+								<td>Project Supporters</td>
+								<td>'. $project_supporters .'</td>
+							</tr>
+							<tr>
+								<td>Registered</td>
+								<td>'. $registered .'</td>
+							</tr>
+							<tr>
+								<td>Monitored Websites</td>
+								<td>'. $monitored_websites .'</td>
+							</tr>
+							<tr>
+								<td>Monitored Facebook</td>
+								<td>'. $monitored_facebook_pages .'</td>
+							</tr>
+							<tr>
+								<td>Comments</td>
+								<td>'. $comments .'</td>
+							</tr>
+							<tr>
+								<td>Comments for @dispatcher</td>
+								<td>'. $comments_for_dispatcher .'</td>
+							</tr>
 						</tbody>
 					</table>
 			';

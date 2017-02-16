@@ -14,18 +14,20 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class drm_counter_factory {
 
 	/**
-	 * Constructor function.
+	 * Constructor function
+	 *
 	 * @access  public
 	 * @since   0.1
 	 */
 	public function __construct ( ) { } // End __construct
 
 	/**
-	 * Returns Counts of the Contacts
+	 * Returns count of contacts publish status
+	 *
 	 * @access  public
 	 * @since   0.1
 	 */
-	public function contacts_status ($status = '') {
+	public function contacts_post_status ($status = '') {
 
 		/**
 		 * @usage DRM_Plugin()->counter->contacts_status()
@@ -80,9 +82,10 @@ class drm_counter_factory {
 	 * Get Count from Meta Data in Contacts
 	 *
 	 * @returns number
-	 *
+	 * @access  public
+	 * @since   0.1
 	 */
-	public function contacts_meta ($status = 'unassigned') {
+	public function contacts_overall_status ($status = 'unassigned') {
 
 		$status = strtolower($status);
 
@@ -125,7 +128,7 @@ class drm_counter_factory {
 		}
 	}
 
-
+    
 
 
 }
