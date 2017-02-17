@@ -44,7 +44,7 @@ class Drm_Counter_Factory {
 	public function __construct ( ) {
 
 	    // Load required files
-	    require_once ( 'counters/first-gen.php');
+	    require_once('counters/generations-counter.php');
 
     } // End __construct
 
@@ -165,9 +165,71 @@ class Drm_Counter_Factory {
 
 	    switch($generation_number) {
 
-            case 'first':
-                $gen_object = new drm_first_generation_counter();
-                $count = $gen_object->count_first_generation();
+
+
+	        case 'has_zero':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has_zero();
+                break;
+
+            case 'has_one_or_more':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has_at_least(1);
+                break;
+
+            case 'has_two_or_more':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has_at_least(2);
+                break;
+
+            case 'has_three_or_more':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has_at_least(3);
+                break;
+
+            case 'has_0':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has_zero();
+                break;
+
+            case 'has_1':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has(1);
+                break;
+
+            case 'has_2':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has(2);
+                break;
+
+            case 'has_3':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_has(3);
+                break;
+
+            case 'generation_list':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->generation_status_list();
+                break;
+
+            case 'first_gen':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_gen_level(1);
+                break;
+
+            case 'second_gen':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_gen_level(2);
+                break;
+
+            case 'third_gen':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_gen_level(3);
+                break;
+
+            case 'fourth_gen':
+                $gen_object = new drm_generations_counter();
+                $count = $gen_object->contact_gen_level(4);
                 break;
 
             default:

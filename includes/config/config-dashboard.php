@@ -283,12 +283,24 @@ final class DRM_Dashboard {
 	 * @access public
 	 */
 	public function generations_stats_widget (  ) {
-        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('first') ); print '</pre>';
+
+        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('generation_list') ); print '</pre>';
+
 		// Build counters
-		$con_1gen = 'x';
-		$con_2gen = 'x';
-		$con_3gen = 'x';
-		$con_4gen = 'x';
+        $has_at_least_1 = DRM_Plugin()->counter->get_generation('has_one_or_more');
+        $has_at_least_2 = DRM_Plugin()->counter->get_generation('has_two_or_more');
+        $has_more_than_2 = DRM_Plugin()->counter->get_generation('has_three_or_more');
+
+        $has_0 = DRM_Plugin()->counter->get_generation('has_0');
+        $has_1 = DRM_Plugin()->counter->get_generation('has_1');
+        $has_2 = DRM_Plugin()->counter->get_generation('has_2');
+        $has_3 = DRM_Plugin()->counter->get_generation('has_3');
+
+        $con_1gen = DRM_Plugin()->counter->get_generation('first_gen');
+		$con_2gen = DRM_Plugin()->counter->get_generation('second_gen');
+		$con_3gen = DRM_Plugin()->counter->get_generation('third_gen');
+		$con_4gen = DRM_Plugin()->counter->get_generation('fourth_gen');
+
 		$gr_1gen = 'x';
 		$gr_2gen = 'x';
 		$gr_3gen = 'x';
@@ -305,6 +317,42 @@ final class DRM_Dashboard {
 							</tr>
 						</thead>
 						<tbody>
+						    <tr>
+								<th><strong>HAS AT LEAST</strong></th>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Has at least 1 disciple</td>
+								<td>'. $has_at_least_1 .'</td>
+							</tr>
+							<tr>
+								<td>Has at least 2 disciples</td>
+								<td>'. $has_at_least_2 .'</td>
+							</tr>
+							<tr>
+								<td>Has more than 2 disciples</td>
+								<td>'. $has_more_than_2 .'</td>
+							</tr>
+							<tr>
+								<td><strong>HAS</strong></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Has No Disciples</td>
+								<td>'. $has_0 .'</td>
+							</tr>
+							<tr>
+								<td>Has 1 Disciple</td>
+								<td>'. $has_1 .'</td>
+							</tr>
+							<tr>
+								<td>Has 2 Disciples</td>
+								<td>'. $has_2 .'</td>
+							</tr>
+							<tr>
+								<td>Has 3 Disciples</td>
+								<td>'. $has_3 .'</td>
+							</tr>
 							<tr>
 								<th><strong>CONTACTS</strong></th>
 								<td></td>

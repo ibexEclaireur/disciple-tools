@@ -145,7 +145,7 @@ class DRM_Plugin_Group_Post_Type {
             'capabilities'          => $capabilities,
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'thumbnail', 'comments' ),
+			'supports' 				=> array( 'title', 'thumbnail', 'comments', 'revisions' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,

@@ -224,11 +224,9 @@ final class dmm_crm_p2p_generations {
     }
 
 
-    /*
+    /**
      * Checks for number of parents for a target id
-     *
-     *
-     * */
+     */
     protected function p2p_number_of_parents_check ($value, $column) {
         $i = 0;
         foreach ($column as $row) {

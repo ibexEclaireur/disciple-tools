@@ -21,7 +21,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
-
 /**
  * Returns the main instance of DRM_Plugin to prevent the need to use globals.
  *

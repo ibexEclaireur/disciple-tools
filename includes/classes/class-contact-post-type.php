@@ -157,7 +157,7 @@ class DRM_Plugin_Contact_Post_Type {
 			'capability_type' 		=> 'contact',
 			'has_archive' 			=> true, //$archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'comments', 'author' ),
+			'supports' 				=> array( 'title', 'comments', 'author', 'revisions' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-groups',
             'show_in_admin_bar'     => true,
