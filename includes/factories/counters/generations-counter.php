@@ -80,9 +80,43 @@ class drm_generations_counter  {
         $p2p_array_from = array_column ( $p2p_array , 'p2p_from');
         $p2p_array_to = array_column ( $p2p_array , 'p2p_to');
 
+        // Make master array of all people involved in discipleship
+        $full_p2p_array = array();
+        $full_p2p_array = array_unique( array_merge($full_p2p_array, $p2p_array_to, $p2p_array_from), SORT_REGULAR );
+
+        // run checks on every contact in discipleship
+
+        foreach ($full_p2p_array as $contact) {
+            $first_generation = true;
+            $last_generation = true;
+
+            // Check if contact is first generation. If true, create array item and move to next item in loop.
+            if($first_generation) {
+
+            }
+            // If first generation is not true, then check for what generation the contact is.
+            else  {
+
+                if ($last_generation) {
+
+                }
+
+            }
+
+            // Check what generation the contact is
+
+
+            // Add contact and generation number to array
+
+
+
+        }
+
+        /*
         // Find all generation numbers for contacts, except last generation
         foreach ($p2p_array as $value) {
 
+            // Get the two record numbers
             $target = $value['p2p_to'];
             $from = $value['p2p_from'];
 
@@ -105,47 +139,15 @@ class drm_generations_counter  {
                     break; // leave loop
                 }
             }
-
-            
-
-            // Count the number of records
+        // Count the number of records
             $gen_count[$target] = count( array_unique($gen_ids) );
-        }
-
-        /*// Find generation number for all last generation
-        $distinct_from = array_unique( $p2p_array_from, SORT_REGULAR);
-
-        foreach($distinct_from as $value) {
-            if( $this->last_gen_check ($value, $p2p_array_to)) {
-                // While loop checks for the first generation and increments the generation above the target until it gets to the first generation.
-                $target_inc = $value; // separates the target from the increment
-                $i = 1; // sets the increment value
-
-                while (true) {
-                    if ($this->last_gen_check($target_inc, $p2p_array_from)) { // is initial condition true
-
-                        // get the parent id & replace target with parent id
-                        $parent_id = $this->p2p_get_single_parent_id($target_inc, $p2p_array) ;
-                        $gen_ids[$i] = $parent_id;
-                        $target_inc = $parent_id;
-                        $i++;
-
-                    }
-                    else { // condition failed
-                        break; // leave loop
-                    }
-                }
-
-                // Count the number of records
-                $gen_count[$value] = count( array_unique($gen_ids) );
-            }
         }*/
-        // then add that number and its generation to the gen_count
-
 
         // Return number of contacts who are zero generation
-        return $gen_count;
+//        return $gen_count;
+        return $full_p2p_array;
     }
+
 
     public function contact_gen_level ($level) {
         $i = 0;

@@ -45,6 +45,7 @@ class Drm_Counter_Factory {
 
 	    // Load required files
 	    require_once('counters/generations-counter.php');
+        require_once('counters/generations-status-counter.php');
 
     } // End __construct
 
@@ -208,28 +209,38 @@ class Drm_Counter_Factory {
                 break;
 
             case 'generation_list':
-                $gen_object = new drm_generations_counter();
+                $gen_object = new drm_generations_status_counter();
                 $count = $gen_object->generation_status_list();
                 break;
 
-            case 'first_gen':
-                $gen_object = new drm_generations_counter();
+            case 'at_zero':
+                $gen_object = new drm_generations_status_counter();
+                $count = $gen_object->contact_gen_level(0);
+                break;
+
+            case 'at_first':
+                $gen_object = new drm_generations_status_counter();
                 $count = $gen_object->contact_gen_level(1);
                 break;
 
-            case 'second_gen':
-                $gen_object = new drm_generations_counter();
+            case 'at_second':
+                $gen_object = new drm_generations_status_counter();
                 $count = $gen_object->contact_gen_level(2);
                 break;
 
-            case 'third_gen':
-                $gen_object = new drm_generations_counter();
+            case 'at_third':
+                $gen_object = new drm_generations_status_counter();
                 $count = $gen_object->contact_gen_level(3);
                 break;
 
-            case 'fourth_gen':
-                $gen_object = new drm_generations_counter();
+            case 'at_fourth':
+                $gen_object = new drm_generations_status_counter();
                 $count = $gen_object->contact_gen_level(4);
+                break;
+
+            case 'at_fifth':
+                $gen_object = new drm_generations_status_counter();
+                $count = $gen_object->contact_gen_level(5);
                 break;
 
             default:

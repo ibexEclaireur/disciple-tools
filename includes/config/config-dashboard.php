@@ -296,10 +296,12 @@ final class DRM_Dashboard {
         $has_2 = DRM_Plugin()->counter->get_generation('has_2');
         $has_3 = DRM_Plugin()->counter->get_generation('has_3');
 
-        $con_1gen = DRM_Plugin()->counter->get_generation('first_gen');
-		$con_2gen = DRM_Plugin()->counter->get_generation('second_gen');
-		$con_3gen = DRM_Plugin()->counter->get_generation('third_gen');
-		$con_4gen = DRM_Plugin()->counter->get_generation('fourth_gen');
+        $con_0gen = DRM_Plugin()->counter->get_generation('at_zero');
+        $con_1gen = DRM_Plugin()->counter->get_generation('at_first');
+		$con_2gen = DRM_Plugin()->counter->get_generation('at_second');
+		$con_3gen = DRM_Plugin()->counter->get_generation('at_third');
+		$con_4gen = DRM_Plugin()->counter->get_generation('at_fourth');
+        $con_5gen = DRM_Plugin()->counter->get_generation('at_fifth');
 
 		$gr_1gen = 'x';
 		$gr_2gen = 'x';
@@ -358,6 +360,10 @@ final class DRM_Dashboard {
 								<td></td>
 							</tr>
 							<tr>
+								<td>Zero Gen</td>
+								<td>'. $con_0gen .'</td>
+							</tr>
+							<tr>
 								<td>1st Gen</td>
 								<td>'. $con_1gen .'</td>
 							</tr>
@@ -372,6 +378,10 @@ final class DRM_Dashboard {
 							<tr>
 								<td>4th Gen</td>
 								<td>'. $con_4gen .'</td>
+							</tr>
+							<tr>
+								<td>5th Gen</td>
+								<td>'. $con_5gen .'</td>
 							</tr>
 							<tr>
 								<th><strong>GROUPS</strong></td>
