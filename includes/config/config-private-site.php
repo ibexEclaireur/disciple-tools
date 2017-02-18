@@ -33,7 +33,7 @@ add_filter( 'drm_feed_error_message',                              'shortcode_un
 /**
  * Conditional tag to see if we have a private blog.
  *
- * @since  0.0.1
+ * @since  0.1
  * @access public
  * @return bool
  */
@@ -45,7 +45,7 @@ function drm_is_private_blog() {
 /**
  * Conditional tag to see if we have a private feed.
  *
- * @since  0.0.1
+ * @since  0.1
  * @access public
  * @return bool
  */
@@ -91,7 +91,7 @@ function drm_private_feed( $content ) {
 /**
  * Returns the private feed error message.
  *
- * @since  0.0.1
+ * @since  0.1
  * @access public
  * @return string
  */

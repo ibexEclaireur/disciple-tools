@@ -4,7 +4,7 @@
  *
  * @class DRM_Roles
  * @version	1.0.0
- * @since 0.0.1
+ * @since 0.1
  * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
@@ -17,7 +17,7 @@ class DRM_Roles {
      * The single instance of DRM_Roles
      * @var 	object
      * @access  private
-     * @since  0.0.1
+     * @since  0.1
      */
     private static $_instance = null;
 
@@ -26,7 +26,7 @@ class DRM_Roles {
      *
      * Ensures only one instance of DRM_P2P_Metabox is loaded or can be loaded.
      *
-     * @since 0.0.1
+     * @since 0.1
      * @static
      * @return DRM_Roles instance
      */
@@ -39,7 +39,7 @@ class DRM_Roles {
     /**
      * Constructor function.
      * @access  public
-     * @since   0.0.1
+     * @since   0.1
      */
     public function __construct () {
 
@@ -228,7 +228,7 @@ class DRM_Roles {
                 // No capabilities to this role. Must be moved to another role for permission.
             ) );
         /*
-         * Default user role set to registered in /includes/config.php
+         * Default user role set to registered in /includes/drm-filters.php
          * */
 
         remove_role( 'subscriber' );

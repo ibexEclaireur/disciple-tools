@@ -9,29 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 * @package DRM_Plugin
 */
 
-    // TODO: Heavy clean up needed. Convert to factory design.
-
-    /*
-    * Load Setup dependencies
-    *
-    */
-    // Load DRM Dasboard configurations
-    require_once ( DRM_Plugin()->plugin_path . 'includes/config/config-dashboard.php' );
-    // Load multiple column configuration library into screen options area.
-    // This changes the view of contacts to 2 equal columns
-    require_once ( DRM_Plugin()->plugin_path . 'includes/plugins/three-column-screen-layout.php' );
-
-    /**
-     * Load the configuration and plugin library that creates post relationships (p2p)
-     */
-    require_once (DRM_Plugin()->plugin_path . 'includes/config/config-p2p.php');
-    require_once (DRM_Plugin()->plugin_path . 'includes/plugins/posts-to-posts/posts-to-posts.php');
-
-    /**
-     * Load security modifications to site.
-     */
-    require_once (DRM_Plugin()->plugin_path . 'includes/config/config-site.php');
-
     /*
      * Sanitize image file name
      *
@@ -214,7 +191,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	          return;
 
 		// Enqueue Custom DMMCRM admin styles page
-	    wp_register_style( 'drm_admin_css', plugin_dir_url( __FILE__ ) . 'css/drm-admin-styles.css' );
+	    wp_register_style( 'drm_admin_css', DRM_Plugin()->plugin_css . 'drm-admin-styles.css' );
 	    wp_enqueue_style( 'drm_admin_css' );
 
 		// Enqueue Jquery UI CSS
@@ -223,7 +200,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 		// Enqueue Jquery UI
 	    wp_enqueue_script("jquery-ui-core");
-	    wp_enqueue_script( 'admin_scripts', plugin_dir_url( __FILE__ ) .'js/drm-admin.js', array('jquery', 'jquery-ui-core') );
+	    wp_enqueue_script( 'admin_scripts', DRM_Plugin()->plugin_js .'drm-admin.js', array('jquery', 'jquery-ui-core') );
 	     // No need to enqueue jQuery as it's already included in the WordPress admin by default
 
 	}

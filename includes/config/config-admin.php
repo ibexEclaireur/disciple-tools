@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @class DRM_Plugin_Admin
  * @version	1.0.0
- * @since 0.0.1
+ * @since 0.1
  * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
@@ -15,7 +15,7 @@ final class DRM_Plugin_Admin {
 	 * The single instance of DRM_Plugin_Admin.
 	 * @var 	object
 	 * @access  private
-	 * @since  0.0.1
+	 * @since  0.1
 	 */
 	private static $_instance = null;
 
@@ -23,14 +23,14 @@ final class DRM_Plugin_Admin {
 	 * The string containing the dynamically generated hook token.
 	 * @var     string
 	 * @access  private
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	private $_hook;
 
 	/**
 	 * Constructor function.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public function __construct () {
 		// Register the settings with WordPress.
@@ -45,7 +45,7 @@ final class DRM_Plugin_Admin {
 	 *
 	 * Ensures only one instance of DRM_Plugin_Admin is loaded or can be loaded.
 	 *
-	 * @since 0.0.1
+	 * @since 0.1
 	 * @static
 	 * @return DRM_Plugin_Admin instance
 	 */
@@ -58,7 +58,7 @@ final class DRM_Plugin_Admin {
 	/**
 	 * Register the admin screen.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  void
 	 */
 	public function register_settings_screen () {
@@ -68,7 +68,7 @@ final class DRM_Plugin_Admin {
 	/**
 	 * Output the markup for the settings screen.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  void
 	 */
 	public function settings_screen () {
@@ -94,7 +94,7 @@ final class DRM_Plugin_Admin {
 	/**
 	 * Register the settings within the Settings API.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  void
 	 */
 	public function register_settings () {
@@ -111,7 +111,7 @@ final class DRM_Plugin_Admin {
 	 * Render the settings.
 	 * @access  public
 	 * @param  array $args arguments.
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  void
 	 */
 	public function render_settings ( $args ) {
@@ -131,7 +131,7 @@ final class DRM_Plugin_Admin {
 	/**
 	 * Validate the settings.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @param   array $input Inputted data.
 	 * @return  array        Validated data.
 	 */
@@ -144,7 +144,7 @@ final class DRM_Plugin_Admin {
 	/**
 	 * Return marked up HTML for the header tag on the settings screen.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @param   array  $sections Sections to scan through.
 	 * @param   string $title    Title to use, if only one section is present.
 	 * @return  string 			 The current tab key.
@@ -175,7 +175,7 @@ final class DRM_Plugin_Admin {
 	/**
 	 * Return the current tab key.
 	 * @access  private
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @param   array  $sections Sections to scan through for a section key.
 	 * @return  string 			 The current tab key.
 	 */
@@ -197,7 +197,7 @@ final class DRM_Plugin_Admin {
 	/**
 	 * Return an array of data, used to construct the header tag.
 	 * @access  private
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @param   array  $sections Sections to scan through.
 	 * @param   string $title    Title to use, if only one section is present.
 	 * @return  array 			 An array of data with which to mark up the header HTML.

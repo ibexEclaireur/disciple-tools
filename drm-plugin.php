@@ -3,18 +3,17 @@
  * Plugin Name: DRM
  * Plugin URI: https://github.com/ChasmSolutions/DMM-CRM-Plugin
  * Description: DRM is a contact relationship management system for disciple making movements.
- * Version: 0.0.1
+ * Version: 0.1
  * Author: Chasm.Solutions & Kingdom.Training
  * Author URI: https://github.com/ChasmSolutions
  * Requires at least: 4.0.0
- * Tested up to: 4.7.0
+ * Tested up to: 4.7.2
  *
  * @package   DRM
  * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
- * @copyright 2017 Chasm Solutions
  * @license   GPL-3.0
- * @version   0.0.1
+ * @version   0.1
  * 
  */
 
@@ -22,11 +21,10 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
-
 /**
  * Returns the main instance of DRM_Plugin to prevent the need to use globals.
  *
- * @since  0.0.1
+ * @since  0.1
  * @return object DRM_Plugin
  */
 
@@ -43,17 +41,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Main DRM_Plugin Class
  *
  * @class DRM_Plugin
- * @version	1.0.0
- * @since 0.0.1
+ * @since 0.1
  * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
-final class DRM_Plugin {
+class DRM_Plugin {
 	/**
 	 * DRM_Plugin The single instance of DRM_Plugin.
 	 * @var 	object
 	 * @access  private
-	 * @since  0.0.1
+	 * @since  0.1
 	 */
 	private static $_instance = null;
 
@@ -61,7 +58,7 @@ final class DRM_Plugin {
 	 * The token.
 	 * @var     string
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public $token;
 
@@ -69,7 +66,7 @@ final class DRM_Plugin {
 	 * The version number.
 	 * @var     string
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public $version;
 
@@ -77,7 +74,7 @@ final class DRM_Plugin {
 	 * The plugin directory URL.
 	 * @var     string
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public $plugin_url;
 
@@ -85,7 +82,7 @@ final class DRM_Plugin {
 	 * The plugin directory path.
 	 * @var     string
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public $plugin_path;
 
@@ -93,16 +90,15 @@ final class DRM_Plugin {
      * Activation of roles.
      * @var     string
      * @access  public
-     * @since   0.0.1
+     * @since   0.1
      */
     private $roles;
 
-	// Admin - Start
 	/**
 	 * The admin object.
 	 * @var     object
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public $admin;
 
@@ -110,64 +106,123 @@ final class DRM_Plugin {
 	 * The settings object.
 	 * @var     object
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public $settings;
-	// Admin - End
 
-	// Post Types - Start
 	/**
 	 * The post types we're registering.
 	 * @var     array
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public $post_types = array();
-	// Post Types - End
+
 	/**
 	 * Constructor function.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public function __construct () {
-		$this->token 			= 'drm';
+		/**
+		 * Prepare variables
+		 *
+		 */
+	    $this->token 			= 'drm';
+		$this->version 			= '0.1';
 		$this->plugin_url 		= plugin_dir_url( __FILE__ );
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
-		$this->version 			= '0.0.1';
+		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'includes/img/';
+		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'includes/js/';
+		$this->plugin_css        = plugin_dir_url( __FILE__ ) . 'includes/css/';
+        $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
+        /* End prep variables */
 
 
-
-        // Admin - Start
+		/**
+		 * Admin configuration section
+         *
+         * Contains all those features that only run if in the Admin panel
+		 * or those things directly supporting Admin panel features.
+		 *
+		 */
 		if ( is_admin() ) {
-
-
-            require_once('includes/config/config-admin.php');
+            // DRM admin settings page configuration
+            require_once ( 'includes/config/config-admin.php' );
             $this->admin = DRM_Plugin_Admin::instance();
 
+			// DRM admin settings page configuration
+			require_once ( 'includes/config/config-settings.php' );
+			$this->settings = DRM_Plugin_Settings::instance();
 
-            /**
-             * Load plugin library that "requires plugins" at activation
-             */
-            require_once ('includes/config/config-required-plugins.php');
+            // Load plugin library that "requires plugins" at activation
+            require_once ( 'includes/config/config-required-plugins.php' );
+
+            // Load DRM Dashboard configurations
+            require_once ( 'includes/config/config-dashboard.php' );
+			$this->admin = DRM_Dashboard::instance();
+
+            // Load multiple column configuration library into screen options area.
+            require_once ( 'includes/plugins/three-column-screen-layout.php' );
+
         }
-		// Admin - End
+		// Admin panel filters
+        require_once('includes/config/drm-filters.php');
+
+		// Counters
+		require_once('includes/factories/drm_counter_factory.php');
+		$this->counter = Drm_Counter_Factory::instance();
+
+        /* End Admin configuration section */
 
 
         /**
-         * Load admin panel functions to control the experience of the admin panel.
+         * Data model configuration section
+         *
+         * @posttype Contacts
+         * @posttype Groups
+         * @posttype Locations
+         * @taxonomies
+         * @postconnector   P2P connection
+         *
          */
-        require_once ('includes/config.php');
+        // Contacts post types
+        require_once( 'includes/classes/class-contact-post-type.php' );
+        $this->post_types['contacts'] = new DRM_Plugin_Contact_Post_Type( 'contacts', __( 'Contact', 'drm' ), __( 'Contacts', 'drm' ), array( 'menu_icon' => 'dashicons-groups' ) );
+
+        // Groups post types
+        require_once( 'includes/classes/class-group-post-type.php' );
+        $this->post_types['groups'] = new DRM_Plugin_Group_Post_Type( 'groups', __( 'Group', 'drm' ), __( 'Groups', 'drm' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
+
+        // Locations post types
+        // require_once( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development
+        // $this->post_types['locations'] = new DRM_Plugin_Location_Post_Type( 'locations', __( 'Location', 'drm' ), __( 'Locations', 'drm' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
+
+		// Taxonomies
+		require_once( 'includes/classes/class-taxonomy.php' );
+
+        // Creates the post to post relationship between the post type tables.
+        require_once ( 'includes/config/config-p2p.php' );
+        require_once ( 'includes/plugins/posts-to-posts/posts-to-posts.php' );
+        /* End model configuration section */
 
 
-        // Sets the config panel
-        require_once('includes/config/config-settings.php');
-        $this->settings = DRM_Plugin_Settings::instance();
-
-        // Sets the site to private.
+        /**
+         * Overall site configuration section
+         *
+         */
+		// Set the site to private.
         require_once( 'includes/config/config-private-site.php' );
+		// Load security modifications to site.
+        require_once ( 'includes/config/config-site.php');
+		/* End overall site configuration section */
 
-        // Run Once At Activation
-        require_once( 'includes/services/service-runonce.php' );
+
+		/**
+		 * Activation section
+		 *
+		 */
+        require_once( 'includes/factories/service-runonce.php' );
         $this->run_once = new run_once;
 
 
@@ -178,41 +233,20 @@ final class DRM_Plugin {
             $this->roles->set_roles();
         }
 
-		
-		// Post Types - Start
-		require_once('includes/classes/class-contact-post-type.php');
-		require_once('includes/classes/class-group-post-type.php');
-//		require_once( 'includes/classes/class-drm-location-post-type.php' ); //TODO: Reactivate when ready for development
-		require_once('includes/classes/class-taxonomy.php');
-
-		// Register an example post type. To register other post types, duplicate this line.
-		$this->post_types['contacts'] = new DRM_Plugin_Contact_Post_Type( 'contacts', __( 'Contact', 'drm' ), __( 'Contacts', 'drm' ), array( 'menu_icon' => 'dashicons-groups' ) );
-		$this->post_types['groups'] = new DRM_Plugin_Group_Post_Type( 'groups', __( 'Group', 'drm' ), __( 'Groups', 'drm' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-//		$this->post_types['locations'] = new DRM_Plugin_Location_Post_Type( 'locations', __( 'Location', 'drm' ), __( 'Locations', 'drm' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
-		// Post Types - End
-
-
-
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
+        /* End Activation seciton */
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
+    } // End __construct()
 
-
-
-
-
-
-
-
-	} // End __construct()
 
 	/**
 	 * Main DRM_Plugin Instance
 	 *
 	 * Ensures only one instance of DRM_Plugin is loaded or can be loaded.
 	 *
-	 * @since 0.0.1
+	 * @since 0.1
 	 * @static
 	 * @see DRM_Plugin()
 	 * @return DRM_Plugin instance
@@ -226,7 +260,7 @@ final class DRM_Plugin {
 	/**
 	 * Load the localisation file.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public function load_plugin_textdomain() {
 		load_plugin_textdomain( 'drm', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
@@ -235,7 +269,7 @@ final class DRM_Plugin {
 	/**
 	 * Cloning is forbidden.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __clone () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
@@ -244,7 +278,7 @@ final class DRM_Plugin {
 	/**
 	 * Unserializing instances of this class is forbidden.
 	 * @access public
-	 * @since 0.0.1
+	 * @since 0.1
 	 */
 	public function __wakeup () {
 		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
@@ -253,7 +287,7 @@ final class DRM_Plugin {
 	/**
 	 * Installation. Runs on activation.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public function install () {
         $this->_log_version_number();
@@ -262,7 +296,7 @@ final class DRM_Plugin {
 	/**
 	 * Log the plugin version number.
 	 * @access  private
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	private function _log_version_number () {
 		// Log the version number.

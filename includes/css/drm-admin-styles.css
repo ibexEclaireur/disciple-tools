@@ -1,16 +1,16 @@
 /*
 * This style sheet is only loaded for admin pages and is used to configure the appearance of admin area. 
 *
-* @package DRM
+* @package drm
+* @since 0.1
 */
 
-/* Remove a few features of the contact, groups, and locations pages 
-	
-	TODO: Need to isolate the application of these just to the Contacts, Groups, and Locations post types, not the posts or other post types.
-*/
 
+/* These edits remove unwanted features of the contacts edit screen */
 div#edit-slug-box.hide-if-no-js {display:none;} /* Removes Permalink preview link. */
 div#minor-publishing {display:none;} /* Removes contents of the Publish Metabox. */
 div#message p a {display:none;} /* Removes the link to view to the post type on the public page. */
-
+/*
+TODO: Need to isolate the application of these just to the Contacts, Groups, and Locations post types, not the posts or other post types.
+*/
 

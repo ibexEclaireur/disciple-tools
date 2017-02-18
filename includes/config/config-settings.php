@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  *
  * @class DRM_Plugin_Settings
  * @version	1.0.0
- * @since 0.0.1
+ * @since 0.1
  * @package	DRM_Plugin
  * @author Chasm.Solutions & Kingdom.Training
  */
@@ -15,7 +15,7 @@ final class DRM_Plugin_Settings {
 	 * DRM_Plugin_Admin The single instance of DRM_Plugin_Admin.
 	 * @var 	object
 	 * @access  private
-	 * @since  0.0.1
+	 * @since  0.1
 	 */
 	private static $_instance = null;
 
@@ -23,7 +23,7 @@ final class DRM_Plugin_Settings {
 	 * Whether or not a 'select' field is present.
 	 * @var     boolean
 	 * @access  private
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	private $_has_select;
 
@@ -32,7 +32,7 @@ final class DRM_Plugin_Settings {
 	 *
 	 * Ensures only one instance of DRM_Plugin_Settings is loaded or can be loaded.
 	 *
-	 * @since 0.0.1
+	 * @since 0.1
 	 * @static
 	 * @return DRM_Plugin_Settings instance
 	 */
@@ -45,7 +45,7 @@ final class DRM_Plugin_Settings {
 	/**
 	 * Constructor function.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 */
 	public function __construct () {
 	} // End __construct()
@@ -53,7 +53,7 @@ final class DRM_Plugin_Settings {
 	/**
 	 * Validate the settings.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @param   array $input Inputted data.
 	 * @param   string $section field section.
 	 * @return  array        Validated data.
@@ -169,7 +169,7 @@ final class DRM_Plugin_Settings {
 	/**
 	 * Render a field of a given type.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @param   array $args The field parameters.
 	 * @return  void
 	 */
@@ -213,7 +213,7 @@ final class DRM_Plugin_Settings {
 	/**
 	 * Retrieve the settings fields details
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  array        Settings fields.
 	 */
 	public function get_settings_sections () {
@@ -232,7 +232,7 @@ final class DRM_Plugin_Settings {
 	 * Retrieve the settings fields details
 	 * @access  public
 	 * @param  string $section field section.
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  array        Settings fields.
 	 */
 	public function get_settings_fields ( $section ) {
@@ -453,7 +453,7 @@ final class DRM_Plugin_Settings {
 	/**
 	 * Return an array of field types expecting an array value returned.
 	 * @access public
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return array
 	 */
 	public function get_array_field_types () {
@@ -463,7 +463,7 @@ final class DRM_Plugin_Settings {
 	/**
 	 * Return an array of field types where no label/header is to be displayed.
 	 * @access protected
-	 * @since  0.0.1
+	 * @since  0.1
 	 * @return array
 	 */
 	protected function get_no_label_field_types () {
@@ -473,7 +473,7 @@ final class DRM_Plugin_Settings {
 	/**
 	 * Return a filtered array of supported field types.
 	 * @access  public
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  array Supported field type keys.
 	 */
 	public function get_supported_fields () {
@@ -486,7 +486,7 @@ final class DRM_Plugin_Settings {
 	 * @param  string $key option key.
 	 * @param  string $default default value.
 	 * @param  string $section field section.
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  mixed Returned value.
 	 */
 	public function get_value ( $key, $default, $section ) {
@@ -505,7 +505,7 @@ final class DRM_Plugin_Settings {
 	 * Return all settings keys.
 	 * @access  public
 	 * @param  string $section field section.
-	 * @since   0.0.1
+	 * @since   0.1
 	 * @return  mixed Returned value.
 	 */
 	public function get_settings ( $section = '' ) {
