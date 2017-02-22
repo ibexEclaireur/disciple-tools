@@ -219,8 +219,8 @@ final class DRM_Plugin_Settings {
 	public function get_settings_sections () {
 		$settings_sections = array();
 
-		$settings_sections['standard-fields'] = __( 'Standard Fields', 'drm' );
-		$settings_sections['special-fields'] = __( 'Special Fields', 'drm' );
+		$settings_sections['general'] = __( 'General', 'drm' );
+		$settings_sections['integrations'] = __( 'Integrations', 'drm' );
 		// Add your new sections below here.
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
@@ -240,9 +240,28 @@ final class DRM_Plugin_Settings {
 		// Declare the default settings fields.
 
 		switch ( $section ) {
-			case 'standard-fields':
+			case 'general':
 
-				$settings_fields['text'] = array(
+                $settings_fields['private_site'] = array(
+                    'name' => __( 'Make site private', 'drm' ),
+                    'type' => 'checkbox',
+                    'default' => 'true',
+                    'section' => 'general',
+                    'description' => __( 'Default is private.', 'drm' )
+                );
+                $settings_fields['select'] = array(
+                    'name' => __( 'Example Select', 'drm' ),
+                    'type' => 'select',
+                    'default' => '',
+                    'section' => 'standard-fields',
+                    'options' => array(
+                        'one' => __( 'One', 'drm' ),
+                        'two' => __( 'Two', 'drm' ),
+                        'three' => __( 'Three', 'drm' )
+                    ),
+                    'description' => __( 'Place the field description text here.', 'drm' )
+                );
+			    $settings_fields['text'] = array(
 												'name' => __( 'Example Text Input', 'drm' ),
 												'type' => 'text',
 												'default' => '',
@@ -275,36 +294,51 @@ final class DRM_Plugin_Settings {
 															),
 												'description' => __( 'Place the field description text here.', 'drm' )
 											);
-				$settings_fields['select'] = array(
-													'name' => __( 'Example Select', 'drm' ),
-													'type' => 'select',
-													'default' => '',
-													'section' => 'standard-fields',
-													'options' => array(
-																	'one' => __( 'One', 'drm' ),
-																	'two' => __( 'Two', 'drm' ),
-																	'three' => __( 'Three', 'drm' )
-																),
-													'description' => __( 'Place the field description text here.', 'drm' )
-											);
+
 
 				break;
-			case 'special-fields':
+			case 'integrations':
 
-				$settings_fields['select_taxonomy'] = array(
-													'name' => __( 'Example Taxonomy Selector', 'drm' ),
-													'type' => 'select_taxonomy',
-													'default' => '',
-													'section' => 'special-fields',
-													'description' => __( 'Place the field description text here.', 'drm' )
-											);
-                $settings_fields['private_site'] = array(
-                    'name' => __( 'Make site private', 'drm' ),
-                    'type' => 'checkbox',
+                $settings_fields['google_api_name'] = array(
+                    'name' => __( 'Google API Name', 'drm' ),
+                    'type' => 'text',
                     'default' => '',
-                    'section' => 'special-fields',
-                    'description' => __( 'Default is private. Warning: please leave site private unless you know what you are doing.', 'drm' )
+                    'section' => 'integrations',
+                    'description' => __( 'Google Analytics API key to give access to the reports within the system.', 'drm' )
                 );
+                $settings_fields['google_api_key'] = array(
+                    'name' => __( 'Google API Key', 'drm' ),
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'integrations'
+                );
+                $settings_fields['google_analytics_view_1'] = array(
+                    'name' => __( 'Google Analytics View Code', 'drm' ),
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'integrations'
+                );
+                $settings_fields['google_analytics_view_2'] = array(
+                    'name' => __( 'Google Analytics View Code 2', 'drm' ),
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'integrations'
+                );
+                $settings_fields['facebook_page_name'] = array(
+                    'name' => __( 'Facebook Page Name', 'drm' ),
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'integrations'
+                );
+                $settings_fields['facebook_page_api'] = array(
+                    'name' => __( 'Facebook Page API', 'drm' ),
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'integrations'
+                );
+
+
+
 
 				break;
 			default:

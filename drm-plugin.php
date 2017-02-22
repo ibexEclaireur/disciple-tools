@@ -132,10 +132,11 @@ class DRM_Plugin {
 		$this->version 			= '0.1';
 		$this->plugin_url 		= plugin_dir_url( __FILE__ );
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
-		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'includes/img/';
-		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'includes/js/';
-		$this->plugin_css        = plugin_dir_url( __FILE__ ) . 'includes/css/';
+		$this->plugin_img       = plugin_dir_url( __FILE__ ) . '/img/';
+		$this->plugin_js        = plugin_dir_url( __FILE__ ) . '/js/';
+		$this->plugin_css       = plugin_dir_url( __FILE__ ) . '/css/';
         $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
+        $this->includes         = plugin_dir_path( __FILE__ ) . 'includes/';
         /* End prep variables */
 
 
@@ -163,7 +164,7 @@ class DRM_Plugin {
 			$this->admin = DRM_Dashboard::instance();
 
             // Load multiple column configuration library into screen options area.
-            require_once ( 'includes/plugins/three-column-screen-layout.php' );
+            require_once('includes/config/three-column-screen-layout.php');
 
         }
 		// Admin panel filters
@@ -215,8 +216,10 @@ class DRM_Plugin {
         require_once( 'includes/config/config-private-site.php' );
 		// Load security modifications to site.
         require_once ( 'includes/config/config-site.php');
-		/* End overall site configuration section */
-
+		// Load shortcodes
+        require_once ( 'includes/shortcodes.php');
+        $this->shortcodes = DTools_Function_Callback::getInstance();
+        /* End overall site configuration section */
 
 		/**
 		 * Activation section

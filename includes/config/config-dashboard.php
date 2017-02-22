@@ -284,7 +284,7 @@ final class DRM_Dashboard {
 	 */
 	public function generations_stats_widget (  ) {
 
-        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('generation_list') ); print '</pre>';
+//        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('generation_list') ); print '</pre>';
 
 		// Build counters
         $has_at_least_1 = DRM_Plugin()->counter->get_generation('has_one_or_more');
