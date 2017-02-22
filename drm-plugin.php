@@ -219,6 +219,7 @@ class DRM_Plugin {
 		// Load shortcodes
         require_once ( 'includes/shortcodes.php');
         $this->shortcodes = DTools_Function_Callback::getInstance();
+
         /* End overall site configuration section */
 
 		/**
@@ -234,6 +235,7 @@ class DRM_Plugin {
             require_once ('includes/config/config-roles.php');
             $this->roles = DRM_Roles::instance();
             $this->roles->set_roles();
+
         }
 
 		register_activation_hook( __FILE__, array( $this, 'install' ) );
