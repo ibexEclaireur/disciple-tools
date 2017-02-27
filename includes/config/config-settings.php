@@ -2,17 +2,17 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * DRM_Plugin_Settings Class
+ * Disciple_Tools_Settings Class
  *
- * @class DRM_Plugin_Settings
+ * @class Disciple_Tools_Settings
  * @version	1.0.0
  * @since 0.1
- * @package	DRM_Plugin
+ * @package	Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
-final class DRM_Plugin_Settings {
+final class Disciple_Tools_Settings {
 	/**
-	 * DRM_Plugin_Admin The single instance of DRM_Plugin_Admin.
+	 * Disciple_Tools_Admin The single instance of Disciple_Tools_Admin.
 	 * @var 	object
 	 * @access  private
 	 * @since  0.1
@@ -28,13 +28,13 @@ final class DRM_Plugin_Settings {
 	private $_has_select;
 
 	/**
-	 * Main DRM_Plugin_Settings Instance
+	 * Main Disciple_Tools_Settings Instance
 	 *
-	 * Ensures only one instance of DRM_Plugin_Settings is loaded or can be loaded.
+	 * Ensures only one instance of Disciple_Tools_Settings is loaded or can be loaded.
 	 *
 	 * @since 0.1
 	 * @static
-	 * @return DRM_Plugin_Settings instance
+	 * @return Disciple_Tools_Settings instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -189,7 +189,7 @@ final class DRM_Plugin_Settings {
 		}
 
 		// Construct the key.
-		$key 				= DRM_Plugin()->token . '-' . $args['section'] . '[' . $args['id'] . ']';
+		$key 				= Disciple_Tools()->token . '-' . $args['section'] . '[' . $args['id'] . ']';
 		$method_output 		= $this->$method( $key, $args );
 
 		if ( ! is_wp_error( $method_output ) ) {
@@ -219,8 +219,8 @@ final class DRM_Plugin_Settings {
 	public function get_settings_sections () {
 		$settings_sections = array();
 
-		$settings_sections['general'] = __( 'General', 'drm' );
-		$settings_sections['integrations'] = __( 'Integrations', 'drm' );
+		$settings_sections['general'] = __( 'General', 'disciple_tools' );
+		$settings_sections['integrations'] = __( 'Integrations', 'disciple_tools' );
 		// Add your new sections below here.
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
@@ -243,56 +243,56 @@ final class DRM_Plugin_Settings {
 			case 'general':
 
                 $settings_fields['private_site'] = array(
-                    'name' => __( 'Make site private', 'drm' ),
+                    'name' => __( 'Make site private', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'general',
-                    'description' => __( 'Default is private.', 'drm' )
+                    'description' => __( 'Default is private.', 'disciple_tools' )
                 );
                 $settings_fields['select'] = array(
-                    'name' => __( 'Example Select', 'drm' ),
+                    'name' => __( 'Example Select', 'disciple_tools' ),
                     'type' => 'select',
                     'default' => '',
                     'section' => 'standard-fields',
                     'options' => array(
-                        'one' => __( 'One', 'drm' ),
-                        'two' => __( 'Two', 'drm' ),
-                        'three' => __( 'Three', 'drm' )
+                        'one' => __( 'One', 'disciple_tools' ),
+                        'two' => __( 'Two', 'disciple_tools' ),
+                        'three' => __( 'Three', 'disciple_tools' )
                     ),
-                    'description' => __( 'Place the field description text here.', 'drm' )
+                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
                 );
 			    $settings_fields['text'] = array(
-												'name' => __( 'Example Text Input', 'drm' ),
+												'name' => __( 'Example Text Input', 'disciple_tools' ),
 												'type' => 'text',
 												'default' => '',
 												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'drm' )
+												'description' => __( 'Place the field description text here.', 'disciple_tools' )
 											);
 				$settings_fields['textarea'] = array(
-												'name' => __( 'Example Textarea', 'drm' ),
+												'name' => __( 'Example Textarea', 'disciple_tools' ),
 												'type' => 'textarea',
 												'default' => '',
 												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'drm' )
+												'description' => __( 'Place the field description text here.', 'disciple_tools' )
 											);
 				$settings_fields['checkbox'] = array(
-												'name' => __( 'Example Checkbox', 'drm' ),
+												'name' => __( 'Example Checkbox', 'disciple_tools' ),
 												'type' => 'checkbox',
 												'default' => '',
 												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'drm' )
+												'description' => __( 'Place the field description text here.', 'disciple_tools' )
 											);
 				$settings_fields['radio'] = array(
-												'name' => __( 'Example Radio Buttons', 'drm' ),
+												'name' => __( 'Example Radio Buttons', 'disciple_tools' ),
 												'type' => 'radio',
 												'default' => '',
 												'section' => 'standard-fields',
 												'options' => array(
-																	'one' => __( 'One', 'drm' ),
-																	'two' => __( 'Two', 'drm' ),
-																	'three' => __( 'Three', 'drm' )
+																	'one' => __( 'One', 'disciple_tools' ),
+																	'two' => __( 'Two', 'disciple_tools' ),
+																	'three' => __( 'Three', 'disciple_tools' )
 															),
-												'description' => __( 'Place the field description text here.', 'drm' )
+												'description' => __( 'Place the field description text here.', 'disciple_tools' )
 											);
 
 
@@ -300,38 +300,38 @@ final class DRM_Plugin_Settings {
 			case 'integrations':
 
                 $settings_fields['google_api_name'] = array(
-                    'name' => __( 'Google API Name', 'drm' ),
+                    'name' => __( 'Google API Name', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => '',
                     'section' => 'integrations',
-                    'description' => __( 'Google Analytics API key to give access to the reports within the system.', 'drm' )
+                    'description' => __( 'Google Analytics API key to give access to the reports within the system.', 'disciple_tools' )
                 );
                 $settings_fields['google_api_key'] = array(
-                    'name' => __( 'Google API Key', 'drm' ),
+                    'name' => __( 'Google API Key', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => '',
                     'section' => 'integrations'
                 );
                 $settings_fields['google_analytics_view_1'] = array(
-                    'name' => __( 'Google Analytics View Code', 'drm' ),
+                    'name' => __( 'Google Analytics View Code', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => '',
                     'section' => 'integrations'
                 );
                 $settings_fields['google_analytics_view_2'] = array(
-                    'name' => __( 'Google Analytics View Code 2', 'drm' ),
+                    'name' => __( 'Google Analytics View Code 2', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => '',
                     'section' => 'integrations'
                 );
                 $settings_fields['facebook_page_name'] = array(
-                    'name' => __( 'Facebook Page Name', 'drm' ),
+                    'name' => __( 'Facebook Page Name', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => '',
                     'section' => 'integrations'
                 );
                 $settings_fields['facebook_page_api'] = array(
-                    'name' => __( 'Facebook Page API', 'drm' ),
+                    'name' => __( 'Facebook Page API', 'disciple_tools' ),
                     'type' => 'text',
                     'default' => '',
                     'section' => 'integrations'

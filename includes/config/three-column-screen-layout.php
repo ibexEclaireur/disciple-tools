@@ -24,8 +24,8 @@
 	GNU General Public License for more details.
 */
 
-if (!class_exists('DRM_Three_Column_Screen_Layout')) {
-	class DRM_Three_Column_Screen_Layout {
+if (!class_exists('Disciple_Tools_Three_Column_Screen_Layout')) {
+	class Disciple_Tools_Three_Column_Screen_Layout {
 
 		public function __construct() {
 			register_activation_hook(__FILE__, array($this, 'activate'));
@@ -62,7 +62,7 @@ if (!class_exists('DRM_Three_Column_Screen_Layout')) {
 		}
 		
 		public function admin_scripts() {
-			wp_enqueue_style('DRM_Three_Column_Screen_Layout-style', DRM_Plugin()->plugin_css . 'three-column-screen-layout.min.css?v=4.2');
+			wp_enqueue_style('Disciple_Tools_Three_Column_Screen_Layout-style', Disciple_Tools()->plugin_css . 'three-column-screen-layout.min.css?v=4.2');
 		}
 
 		protected function create_metabox($i) {
@@ -102,6 +102,6 @@ if (!class_exists('DRM_Three_Column_Screen_Layout')) {
 		}
 	}
 	
-	$DRM_Three_Column_Screen_Layout = new DRM_Three_Column_Screen_Layout();
+	$Disciple_Tools_Three_Column_Screen_Layout = new Disciple_Tools_Three_Column_Screen_Layout();
 }
 ?>

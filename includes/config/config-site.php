@@ -35,6 +35,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	
 	// Change title
 	function my_login_logo_url_title() {
-	    return 'DRM';
+	    return 'Disciple_Tools';
 	}
 	add_filter( 'login_headertitle', 'my_login_logo_url_title' );

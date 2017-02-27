@@ -4,15 +4,15 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 /**
  * DmmCRM Plugin Post Type Class
  *
- * All functionality pertaining to post types in DRM.
+ * All functionality pertaining to post types in Disciple_Tools.
  *
  * @package WordPress
- * @subpackage DRM_Plugin
+ * @subpackage Disciple_Tools
  * @category Plugin
  * @author Chasm.Solutions & Kingdom.Training
  * @since 0.1
  */
-class DRM_Plugin_Group_Post_Type {
+class Disciple_Tools_Group_Post_Type {
 	/**
 	 * The post type token.
 	 * @access public
@@ -93,30 +93,30 @@ class DRM_Plugin_Group_Post_Type {
 	 */
 	public function register_post_type () {
 		$labels = array(
-			'name' 					=> sprintf( _x( '%s', 'post type general name', 'drm' ), $this->plural ),
-			'singular_name' 		=> sprintf( _x( '%s', 'post type singular name', 'drm' ), $this->singular ),
-			'add_new' 				=> _x( 'Add New', $this->post_type, 'drm' ),
-			'add_new_item' 			=> sprintf( __( 'Add New %s', 'drm' ), $this->singular ),
-			'edit_item' 			=> sprintf( __( 'Edit %s', 'drm' ), $this->singular ),
-			'update_item'           => sprintf( __( 'Update %s', 'drm' ), $this->singular ),
-			'new_item' 				=> sprintf( __( 'New %s', 'drm' ), $this->singular ),
-			'all_items' 			=> sprintf( __( 'All %s', 'drm' ), $this->plural ),
-			'view_item' 			=> sprintf( __( 'View %s', 'drm' ), $this->singular ),
-			'view_items'            => sprintf( __( 'View %s', 'drm' ), $this->plural ),
-			'search_items' 			=> sprintf( __( 'Search %a', 'drm' ), $this->plural ),
-			'not_found' 			=> sprintf( __( 'No %s Found', 'drm' ), $this->plural ),
-			'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'drm' ), $this->plural ),
+			'name' 					=> sprintf( _x( '%s', 'post type general name', 'disciple_tools' ), $this->plural ),
+			'singular_name' 		=> sprintf( _x( '%s', 'post type singular name', 'disciple_tools' ), $this->singular ),
+			'add_new' 				=> _x( 'Add New', $this->post_type, 'disciple_tools' ),
+			'add_new_item' 			=> sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
+			'edit_item' 			=> sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
+			'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
+			'new_item' 				=> sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
+			'all_items' 			=> sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
+			'view_item' 			=> sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
+			'view_items'            => sprintf( __( 'View %s', 'disciple_tools' ), $this->plural ),
+			'search_items' 			=> sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
+			'not_found' 			=> sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
+			'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
 			'parent_item_colon' 	=> '',
 			'menu_name' 			=> $this->plural,
-			'featured_image'        => sprintf( __( 'Featured Image', 'drm' ), $this->plural ),
-			'set_featured_image'    => sprintf( __( 'Set featured image', 'drm' ), $this->plural ),
-			'remove_featured_image' => sprintf( __( 'Remove featured image', 'drm' ), $this->plural ),
-			'use_featured_image'    => sprintf( __( 'Use as featured image', 'drm' ), $this->plural ),
-			'insert_into_item'      => sprintf( __( 'Insert into %s', 'drm' ), $this->plural ),
-			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'drm' ), $this->plural ),
-			'items_list'            => sprintf( __( '%s list', 'drm' ), $this->plural ),
-			'items_list_navigation' => sprintf( __( '%s list navigation', 'drm' ), $this->plural ),
-			'filter_items_list'     => sprintf( __( 'Filter %s list', 'drm' ), $this->plural ),
+			'featured_image'        => sprintf( __( 'Featured Image', 'disciple_tools' ), $this->plural ),
+			'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
+			'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
+			'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
+			'insert_into_item'      => sprintf( __( 'Insert into %s', 'disciple_tools' ), $this->plural ),
+			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
+			'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
+			'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
+			'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
 		);
         $capabilities = array(
             'edit_post'             => 'edit_group',
@@ -130,8 +130,8 @@ class DRM_Plugin_Group_Post_Type {
             'read_private_posts'    => 'read_private_groups',
         );
 
-		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'drm' ) );
-		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'drm' ) );
+		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
+		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
 		$defaults = array(
 			'labels' 				=> $labels,
@@ -168,7 +168,7 @@ class DRM_Plugin_Group_Post_Type {
 
 //		TODO: commented out taxonomies until we know how we want to use them.
 //
-//      $this->taxonomies['groups-cities'] = new DRM_Plugin_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
+//      $this->taxonomies['groups-cities'] = new Disciple_Tools_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
 //		$this->taxonomies['groups-cities']->register();
 	} // End register_taxonomy()
 
@@ -201,7 +201,7 @@ class DRM_Plugin_Group_Post_Type {
 	 * @return void
 	 */
 	public function register_custom_column_headings ( $defaults ) {
-		$new_columns = array( 'location' => __( 'Location', 'drm' ) );
+		$new_columns = array( 'location' => __( 'Location', 'disciple_tools' ) );
 
 		$last_item = array();
 
@@ -235,19 +235,19 @@ class DRM_Plugin_Group_Post_Type {
 
 		$messages[$this->post_type] = array(
 			0 => '', // Unused. Messages start at index 1.
-			1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'drm' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
-			2 => __( 'Custom field updated.', 'drm' ),
-			3 => __( 'Custom field deleted.', 'drm' ),
-			4 => sprintf( __( '%s updated.', 'drm' ), $this->singular ),
+			1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
+			2 => __( 'Custom field updated.', 'disciple_tools' ),
+			3 => __( 'Custom field deleted.', 'disciple_tools' ),
+			4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
 			/* translators: %s: date and time of the revision */
-			5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'drm' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
-			7 => sprintf( __( '%s saved.', 'drm' ), $this->singular ),
-			8 => sprintf( __( '%s submitted. %sPreview %s%s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
-			9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'drm' ), $this->singular, strtolower( $this->singular ),
+			5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
+			7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
+			8 => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+			9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
 			// translators: Publish box date format, see http://php.net/date
 			'<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink($post_ID) ) . '">', '</a>' ),
-			10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+			10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
 		);
 
 		return $messages;
@@ -260,7 +260,7 @@ class DRM_Plugin_Group_Post_Type {
 	 * @return void
 	 */
 	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '-data', __( 'Group Details', 'drm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '-data', __( 'Group Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
 	} // End meta_box_setup()
 
 	/**
@@ -276,7 +276,7 @@ class DRM_Plugin_Group_Post_Type {
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( DRM_Plugin()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 		
 
 		if ( 0 < count( $field_data ) ) {
@@ -357,7 +357,7 @@ class DRM_Plugin_Group_Post_Type {
 		global $post, $messages;
 
 		// Verify
-		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( DRM_Plugin()->plugin_path ) ) ) ) {
+		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
 			return $post_id;
 		}
 
@@ -402,7 +402,7 @@ class DRM_Plugin_Group_Post_Type {
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the title here', 'drm' );
+			$title = __( 'Enter the title here', 'disciple_tools' );
 		}
 		return $title;
 	} // End enter_title_here()
@@ -417,50 +417,50 @@ class DRM_Plugin_Group_Post_Type {
 		$fields = array();
 
         $fields['type'] = array(
-            'name' => __( 'Type', 'drm' ),
-            'description' => __( '', 'drm' ),
+            'name' => __( 'Type', 'disciple_tools' ),
+            'description' => '',
             'type' => 'select',
             'default' => array('DBS', 'Church'),
             'section' => 'info'
         );
         $fields['generation'] = array(
-            'name' => __( 'Generation', 'drm' ),
-            'description' => __( '', 'drm' ),
+            'name' => __( 'Generation', 'disciple_tools' ),
+            'description' => '',
             'type' => 'select',
             'default' => array('', '1st Generation', '2nd Generation', '3rd Generation', '4th Generation', '5+ Generation'),
             'section' => 'info'
         );
 		$fields['address'] = array(
-		    'name' => __( 'Address', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Address', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
         $fields['city'] = array(
-            'name' => __( 'City', 'drm' ),
-            'description' => __( '', 'drm' ),
+            'name' => __( 'City', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
         );
         $fields['state'] = array(
-            'name' => __( 'State', 'drm' ),
-            'description' => __( '', 'drm' ),
+            'name' => __( 'State', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
         );
         $fields['zip'] = array(
-            'name' => __( 'Zip', 'drm' ),
-            'description' => __( '', 'drm' ),
+            'name' => __( 'Zip', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
         );
         $fields['country'] = array(
-            'name' => __( 'Country', 'drm' ),
-            'description' => __( '', 'drm' ),
+            'name' => __( 'Country', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'

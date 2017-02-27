@@ -4,31 +4,30 @@
  * selected in the plugin settings, the plugin will redirect all non-logged-in users to the
  * login page.  If private feed is selected, all content is blocked from feeds from the site.
  *
- * @package    DRM
+ * @package    Disciple_Tools
  * @subpackage Includes
  * @author     Justin Tadlock <justin@justintadlock.com>
  * @copyright  Copyright (c) 2009 - 2016, Justin Tadlock
- * @link       http://themehybrid.com/plugins/drm
  * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
 
 # Redirects users to the login page.
-add_action( 'template_redirect', 'drm_please_log_in', 0 );
+add_action( 'template_redirect', 'dt_please_log_in', 0 );
 
 # Disable content in feeds if the feed should be private.
-add_filter( 'the_content_feed', 'drm_private_feed', 95 );
-add_filter( 'the_excerpt_rss',  'drm_private_feed', 95 );
-add_filter( 'comment_text_rss', 'drm_private_feed', 95 );
+add_filter( 'the_content_feed', 'dt_private_feed', 95 );
+add_filter( 'the_excerpt_rss',  'dt_private_feed', 95 );
+add_filter( 'comment_text_rss', 'dt_private_feed', 95 );
 
 # Filters for the feed error message.
-add_filter( 'drm_feed_error_message', array( $GLOBALS['wp_embed'], 'run_shortcode' ),   5 );
-add_filter( 'drm_feed_error_message', array( $GLOBALS['wp_embed'], 'autoembed'     ),   5 );
-add_filter( 'drm_feed_error_message',                              'wptexturize',       10 );
-add_filter( 'drm_feed_error_message',                              'convert_smilies',   15 );
-add_filter( 'drm_feed_error_message',                              'convert_chars',     20 );
-add_filter( 'drm_feed_error_message',                              'wpautop',           25 );
-add_filter( 'drm_feed_error_message',                              'do_shortcode',      30 );
-add_filter( 'drm_feed_error_message',                              'shortcode_unautop', 35 );
+add_filter( 'dt_feed_error_message', array( $GLOBALS['wp_embed'], 'run_shortcode' ),   5 );
+add_filter( 'dt_feed_error_message', array( $GLOBALS['wp_embed'], 'autoembed'     ),   5 );
+add_filter( 'dt_feed_error_message',                              'wptexturize',       10 );
+add_filter( 'dt_feed_error_message',                              'convert_smilies',   15 );
+add_filter( 'dt_feed_error_message',                              'convert_chars',     20 );
+add_filter( 'dt_feed_error_message',                              'wpautop',           25 );
+add_filter( 'dt_feed_error_message',                              'do_shortcode',      30 );
+add_filter( 'dt_feed_error_message',                              'shortcode_unautop', 35 );
 
 /**
  * Conditional tag to see if we have a private blog.
@@ -37,8 +36,8 @@ add_filter( 'drm_feed_error_message',                              'shortcode_un
  * @access public
  * @return bool
  */
-function drm_is_private_blog() {
-    //return drm_get_setting( 'private_blog' ); // Removed to set it always to private site. @Chris
+function dt_is_private_blog() {
+    //return dt_get_setting( 'private_blog' ); // Removed to set it always to private site. @Chris
     return true;
 }
 
@@ -49,8 +48,8 @@ function drm_is_private_blog() {
  * @access public
  * @return bool
  */
-function drm_is_private_feed() {
-    return drm_get_setting( 'private_feed' );
+function dt_is_private_feed() {
+    return dt_get_setting( 'private_feed' );
 }
 
 /**
@@ -60,10 +59,10 @@ function drm_is_private_feed() {
  * @access public
  * @return void
  */
-function drm_please_log_in() {
+function dt_please_log_in() {
 
     // Check if the private blog feature is active and if the user is not logged in.
-    if ( drm_is_private_blog() && ! is_user_logged_in() ) {
+    if ( dt_is_private_blog() && ! is_user_logged_in() ) {
 
         // If using BuddyPress and on the register/activate page, don't do anything.
         if ( function_exists( 'bp_is_current_component' ) && ( bp_is_current_component( 'register' ) || bp_is_current_component( 'activate' ) ) )
@@ -83,9 +82,9 @@ function drm_please_log_in() {
  * @param  string  $content
  * @return string
  */
-function drm_private_feed( $content ) {
+function dt_private_feed( $content ) {
 
-    return drm_is_private_feed() ? drm_get_private_feed_message() : $content;
+    return dt_is_private_feed() ? dt_get_private_feed_message() : $content;
 }
 
 /**
@@ -95,7 +94,7 @@ function drm_private_feed( $content ) {
  * @access public
  * @return string
  */
-function drm_get_private_feed_message() {
+function dt_get_private_feed_message() {
 
-    return apply_filters( 'drm_feed_error_message', drm_get_setting( 'private_feed_error' ) );
+    return apply_filters( 'dt_feed_error_message', dt_get_setting( 'private_feed_error' ) );
 }

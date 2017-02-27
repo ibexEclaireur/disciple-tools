@@ -2,11 +2,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
-* DRM modifications to WP Admin Area
+* Disciple_Tools modifications to WP Admin Area
 *
 * 
 * @author Chasm Solutions
-* @package DRM_Plugin
+* @package Disciple_Tools
 */
 
     /*
@@ -72,11 +72,11 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 
-    /*
+    /**
      * Sets the Admin color scheme.
      *
-     * Sets the DRM admin screen to "light" and take away the color scheme change feature in profile
-     * */
+     * Sets the Disciple_Tools admin screen to "light" and take away the color scheme change feature in profile
+     */
     add_filter('get_user_option_admin_color', 'change_admin_color');
     function change_admin_color($result) {
         return 'light';
@@ -191,7 +191,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	          return;
 
 		// Enqueue Custom DMMCRM admin styles page
-	    wp_register_style( 'drm_admin_css', DRM_Plugin()->plugin_css . 'drm-admin-styles.css' );
+	    wp_register_style( 'drm_admin_css', Disciple_Tools()->plugin_css . 'drm-admin-styles.css' );
 	    wp_enqueue_style( 'drm_admin_css' );
 
 		// Enqueue Jquery UI CSS
@@ -200,7 +200,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 		// Enqueue Jquery UI
 	    wp_enqueue_script("jquery-ui-core");
-	    wp_enqueue_script( 'admin_scripts', DRM_Plugin()->plugin_js .'drm-admin.js', array('jquery', 'jquery-ui-core') );
+	    wp_enqueue_script( 'admin_scripts', Disciple_Tools()->plugin_js .'drm-admin.js', array('jquery', 'jquery-ui-core') );
 	     // No need to enqueue jQuery as it's already included in the WordPress admin by default
 
 	}

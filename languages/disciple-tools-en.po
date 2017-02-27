@@ -1,0 +1,1257 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Disciple Tools\n"
+"POT-Creation-Date: 2017-02-27 10:04-0700\n"
+"PO-Revision-Date: 2017-02-27 10:08-0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: disciple-tools.php\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: disciple-tools.php:192 includes/classes/class-contact-post-type.php:147
+#: includes/config/config-p2p.php:26 includes/config/config-p2p.php:32
+msgid "Contact"
+msgstr ""
+
+#: disciple-tools.php:192
+msgid "Contacts"
+msgstr ""
+
+#: disciple-tools.php:196 includes/config/config-p2p.php:109
+#: includes/config/config-p2p.php:115
+msgid "Group"
+msgstr ""
+
+#: disciple-tools.php:196 includes/config/config-p2p.php:74
+#: includes/config/config-p2p.php:78
+msgid "Groups"
+msgstr ""
+
+#: disciple-tools.php:280 disciple-tools.php:289
+msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:100
+#: includes/classes/class-group-post-type.php:96
+#: includes/classes/class-location-post-type.php:96
+#, php-format
+msgctxt "post type general name"
+msgid "%s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:101
+#: includes/classes/class-group-post-type.php:97
+#: includes/classes/class-location-post-type.php:97
+#, php-format
+msgctxt "post type singular name"
+msgid "%s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:103
+#: includes/classes/class-group-post-type.php:99
+#: includes/classes/class-location-post-type.php:99
+#: includes/classes/class-taxonomy.php:104
+#, php-format
+msgid "Add New %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:104
+#: includes/classes/class-group-post-type.php:100
+#: includes/classes/class-location-post-type.php:100
+#: includes/classes/class-taxonomy.php:102
+#, php-format
+msgid "Edit %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:105
+#: includes/classes/class-group-post-type.php:101
+#: includes/classes/class-location-post-type.php:101
+#: includes/classes/class-taxonomy.php:103
+#, php-format
+msgid "Update %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:106
+#: includes/classes/class-group-post-type.php:102
+#: includes/classes/class-location-post-type.php:102
+#, php-format
+msgid "New %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:107
+#: includes/classes/class-group-post-type.php:103
+#: includes/classes/class-location-post-type.php:103
+#: includes/classes/class-taxonomy.php:99
+#, php-format
+msgid "All %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:108
+#: includes/classes/class-contact-post-type.php:109
+#: includes/classes/class-group-post-type.php:104
+#: includes/classes/class-group-post-type.php:105
+#: includes/classes/class-location-post-type.php:104
+#: includes/classes/class-location-post-type.php:105
+#, php-format
+msgid "View %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:110
+#: includes/classes/class-group-post-type.php:106
+#: includes/classes/class-location-post-type.php:106
+msgid "Search %a"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:111
+#: includes/classes/class-group-post-type.php:107
+#: includes/classes/class-location-post-type.php:107
+#, php-format
+msgid "No %s Found"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:112
+#: includes/classes/class-group-post-type.php:108
+#: includes/classes/class-location-post-type.php:108
+#, php-format
+msgid "No %s Found In Trash"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:115
+#: includes/classes/class-group-post-type.php:111
+#: includes/classes/class-location-post-type.php:111
+msgid "Featured Image"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:116
+#: includes/classes/class-group-post-type.php:112
+#: includes/classes/class-location-post-type.php:112
+msgid "Set featured image"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:117
+#: includes/classes/class-group-post-type.php:113
+#: includes/classes/class-location-post-type.php:113
+msgid "Remove featured image"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:118
+#: includes/classes/class-group-post-type.php:114
+#: includes/classes/class-location-post-type.php:114
+msgid "Use as featured image"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:119
+#: includes/classes/class-group-post-type.php:115
+#: includes/classes/class-location-post-type.php:115
+#, php-format
+msgid "Insert into %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:120
+#: includes/classes/class-group-post-type.php:116
+#: includes/classes/class-location-post-type.php:116
+#, php-format
+msgid "Uploaded to this %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:121
+#: includes/classes/class-group-post-type.php:117
+#: includes/classes/class-location-post-type.php:117
+#, php-format
+msgid "%s list"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:122
+#: includes/classes/class-group-post-type.php:118
+#: includes/classes/class-location-post-type.php:118
+#, php-format
+msgid "%s list navigation"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:123
+#: includes/classes/class-group-post-type.php:119
+#: includes/classes/class-location-post-type.php:119
+#, php-format
+msgid "Filter %s list"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:148
+msgid "Contacts generated by the media to movement effort"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:262
+#: includes/classes/class-group-post-type.php:238
+#: includes/classes/class-location-post-type.php:226
+#, php-format
+msgid "%3$s updated. %sView %4$s%s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:263
+#: includes/classes/class-group-post-type.php:239
+#: includes/classes/class-location-post-type.php:227
+msgid "Custom field updated."
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:264
+#: includes/classes/class-group-post-type.php:240
+#: includes/classes/class-location-post-type.php:228
+msgid "Custom field deleted."
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:265
+#: includes/classes/class-group-post-type.php:241
+#: includes/classes/class-location-post-type.php:229
+#, php-format
+msgid "%s updated."
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:267
+#: includes/classes/class-group-post-type.php:243
+#: includes/classes/class-location-post-type.php:231
+#, php-format
+msgid "%s restored to revision from %s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:268
+#: includes/classes/class-group-post-type.php:244
+#: includes/classes/class-location-post-type.php:232
+#, php-format
+msgid "%1$s published. %3$sView %2$s%4$s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:269
+#: includes/classes/class-group-post-type.php:245
+#: includes/classes/class-location-post-type.php:233
+#, php-format
+msgid "%s saved."
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:270
+#: includes/classes/class-group-post-type.php:246
+#: includes/classes/class-location-post-type.php:234
+#, php-format
+msgid "%s submitted. %sPreview %s%s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:271
+#: includes/classes/class-group-post-type.php:247
+#: includes/classes/class-location-post-type.php:235
+#, php-format
+msgid "%s scheduled for: %1$s. %2$sPreview %s%3$s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:273
+#: includes/classes/class-group-post-type.php:249
+#: includes/classes/class-location-post-type.php:237
+msgid "M j, Y @ G:i"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:274
+#: includes/classes/class-group-post-type.php:250
+#: includes/classes/class-location-post-type.php:238
+#, php-format
+msgid "%s draft updated. %sPreview %s%s"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:290
+msgid "Contact Details"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:439
+msgid "Enter the contact name here"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:454
+msgid "Phone"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:461
+msgid "Overall Status"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:468
+msgid "Seeker Path"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:475
+msgid "Seeker Milestones"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:482
+msgid "Preferred Contact Method"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:489
+msgid "Bible"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:496
+msgid "Email"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:503
+msgid "Skype"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:510
+msgid "Facebook"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:517
+msgid "Last Actual Contact"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:524
+msgid "Gospel Comprehension"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:531
+msgid "Investigating with others"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:538
+msgid "Gender"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:545
+msgid "Age"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:552
+msgid "Mailing Street"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:559
+msgid "Mailing City"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:566
+msgid "Mailing Zip"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:573
+msgid "Mailing State"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:580
+msgid "Mailing Country"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:587
+msgid "Baptism Date"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:594
+msgid "Contact Generation"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:601
+msgid "Preferred Language"
+msgstr ""
+
+#: includes/classes/class-contact-post-type.php:608
+msgid "Reason Closed"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:204
+msgid "Location"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:263
+msgid "Group Details"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:405
+msgid "Enter the title here"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:420
+#: includes/plugins/class-tgm-plugin-activation.php:2642
+msgid "Type"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:427
+msgid "Generation"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:434
+msgid "Address"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:441
+msgid "City"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:448
+msgid "State"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:455
+msgid "Zip"
+msgstr ""
+
+#: includes/classes/class-group-post-type.php:462
+msgid "Country"
+msgstr ""
+
+#: includes/classes/class-location-post-type.php:251
+msgid "Location Details"
+msgstr ""
+
+#: includes/classes/class-location-post-type.php:396
+msgid "Enter the thing title here"
+msgstr ""
+
+#: includes/classes/class-location-post-type.php:411
+msgid "Types of Location"
+msgstr ""
+
+#: includes/classes/class-location-post-type.php:412
+#: includes/classes/class-location-post-type.php:419
+msgid "Raw mapping coordinates."
+msgstr ""
+
+#: includes/classes/class-location-post-type.php:418
+msgid "Coordinates"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:72
+msgid "Category"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:73
+msgid "Categories"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:96
+#, php-format
+msgctxt "taxonomy general name"
+msgid "%s"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:97
+#, php-format
+msgctxt "taxonomy singular name"
+msgid "%s"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:98
+#, php-format
+msgid "Search %s"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:100
+#, php-format
+msgid "Parent %s"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:101
+#, php-format
+msgid "Parent %s:"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:105
+#, php-format
+msgid "New %s Name"
+msgstr ""
+
+#: includes/classes/class-taxonomy.php:106
+#, php-format
+msgid "%s"
+msgstr ""
+
+#: includes/config/config-admin.php:65
+msgid "Disciple_Tools Settings"
+msgstr ""
+
+#: includes/config/config-admin.php:87
+msgid "Save Changes"
+msgstr ""
+
+#: includes/config/config-p2p.php:22
+msgid "Coached by"
+msgstr ""
+
+#: includes/config/config-p2p.php:23
+msgid "Coaching"
+msgstr ""
+
+#: includes/config/config-p2p.php:27 includes/config/config-p2p.php:33
+msgid "Search contacts"
+msgstr ""
+
+#: includes/config/config-p2p.php:28 includes/config/config-p2p.php:34
+msgid "No contacts found."
+msgstr ""
+
+#: includes/config/config-p2p.php:29
+msgid "Connect Disciple "
+msgstr ""
+
+#: includes/config/config-p2p.php:35
+msgid "Connect Coach"
+msgstr ""
+
+#: includes/config/config-p2p.php:75
+msgid "Members"
+msgstr ""
+
+#: includes/config/config-p2p.php:79 includes/config/config-p2p.php:110
+#: includes/config/config-p2p.php:116
+msgid "Search groups"
+msgstr ""
+
+#: includes/config/config-p2p.php:80 includes/config/config-p2p.php:111
+#: includes/config/config-p2p.php:117
+msgid "No groups found."
+msgstr ""
+
+#: includes/config/config-p2p.php:81
+msgid "Connect Group "
+msgstr ""
+
+#: includes/config/config-p2p.php:84
+msgid "Member"
+msgstr ""
+
+#: includes/config/config-p2p.php:85
+msgid "Search members"
+msgstr ""
+
+#: includes/config/config-p2p.php:86
+msgid "No members found."
+msgstr ""
+
+#: includes/config/config-p2p.php:87
+msgid "Connect Member"
+msgstr ""
+
+#: includes/config/config-p2p.php:91
+msgid "Role"
+msgstr ""
+
+#: includes/config/config-p2p.php:105
+msgid "Planted by"
+msgstr ""
+
+#: includes/config/config-p2p.php:106
+msgid "Planting"
+msgstr ""
+
+#: includes/config/config-p2p.php:112
+msgid "Connect Child Group"
+msgstr ""
+
+#: includes/config/config-p2p.php:118
+msgid "Connect Parent Group"
+msgstr ""
+
+#: includes/config/config-settings.php:222
+msgid "General"
+msgstr ""
+
+#: includes/config/config-settings.php:223
+msgid "Integrations"
+msgstr ""
+
+#: includes/config/config-settings.php:246
+msgid "Make site private"
+msgstr ""
+
+#: includes/config/config-settings.php:250
+msgid "Default is private."
+msgstr ""
+
+#: includes/config/config-settings.php:253
+msgid "Example Select"
+msgstr ""
+
+#: includes/config/config-settings.php:258
+#: includes/config/config-settings.php:291
+msgid "One"
+msgstr ""
+
+#: includes/config/config-settings.php:259
+#: includes/config/config-settings.php:292
+msgid "Two"
+msgstr ""
+
+#: includes/config/config-settings.php:260
+#: includes/config/config-settings.php:293
+msgid "Three"
+msgstr ""
+
+#: includes/config/config-settings.php:262
+#: includes/config/config-settings.php:269
+#: includes/config/config-settings.php:276
+#: includes/config/config-settings.php:283
+#: includes/config/config-settings.php:295
+msgid "Place the field description text here."
+msgstr ""
+
+#: includes/config/config-settings.php:265
+msgid "Example Text Input"
+msgstr ""
+
+#: includes/config/config-settings.php:272
+msgid "Example Textarea"
+msgstr ""
+
+#: includes/config/config-settings.php:279
+msgid "Example Checkbox"
+msgstr ""
+
+#: includes/config/config-settings.php:286
+msgid "Example Radio Buttons"
+msgstr ""
+
+#: includes/config/config-settings.php:303
+msgid "Google API Name"
+msgstr ""
+
+#: includes/config/config-settings.php:307
+msgid ""
+"Google Analytics API key to give access to the reports within the system."
+msgstr ""
+
+#: includes/config/config-settings.php:310
+msgid "Google API Key"
+msgstr ""
+
+#: includes/config/config-settings.php:316
+msgid "Google Analytics View Code"
+msgstr ""
+
+#: includes/config/config-settings.php:322
+msgid "Google Analytics View Code 2"
+msgstr ""
+
+#: includes/config/config-settings.php:328
+msgid "Facebook Page Name"
+msgstr ""
+
+#: includes/config/config-settings.php:334
+msgid "Facebook Page API"
+msgstr ""
+
+#: includes/config/drm-filters.php:144
+#, php-format
+msgid "Welcome, %1$s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:334
+msgid "Install Required Plugins"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:335
+msgid "Install Plugins"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:337
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:339
+#, php-format
+msgid "Updating Plugin: %s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:340
+msgid "Something went wrong with the plugin API."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:343
+#, php-format
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:349
+#, php-format
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:355
+#, php-format
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:361
+#, php-format
+msgid "There is an update available for: %1$s."
+msgid_plural "There are updates available for the following plugins: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:367
+#, php-format
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:373
+#, php-format
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:378
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:383
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:388
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:392
+msgid "Return to Required Plugins Installer"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:393
+#: includes/plugins/class-tgm-plugin-activation.php:920
+#: includes/plugins/class-tgm-plugin-activation.php:2626
+#: includes/plugins/class-tgm-plugin-activation.php:3673
+msgid "Return to the Dashboard"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:394
+#: includes/plugins/class-tgm-plugin-activation.php:3252
+msgid "Plugin activated successfully."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:395
+#: includes/plugins/class-tgm-plugin-activation.php:3045
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:397
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:399
+#, php-format
+msgid ""
+"Plugin not activated. A higher version of %s is needed for this theme. "
+"Please update the plugin."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:401
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:402
+msgid "Dismiss this notice"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:403
+msgid ""
+"There are one or more required or recommended plugins to install, update or "
+"activate."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:404
+msgid "Please contact the administrator of this site for help."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:607
+msgid "This plugin needs to be updated to be compatible with your theme."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:608
+msgid "Update Required"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:725
+msgid "Set the parent_slug config variable instead."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:1027
+msgid ""
+"The remote plugin package does not contain a folder with the desired slug "
+"and renaming did not work."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:1027
+#: includes/plugins/class-tgm-plugin-activation.php:1030
+msgid ""
+"Please contact the plugin provider and ask them to package their plugin "
+"according to the WordPress guidelines."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:1030
+msgid ""
+"The remote plugin package consists of more than one file, but the files are "
+"not packaged in a folder."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:1214
+#: includes/plugins/class-tgm-plugin-activation.php:3041
+msgctxt "plugin A *and* plugin B"
+msgid "and"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2075
+#, php-format
+msgid "TGMPA v%s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2366
+msgid "Required"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2369
+msgid "Recommended"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2385
+msgid "WordPress Repository"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2388
+msgid "External Source"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2391
+msgid "Pre-Packaged"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2408
+msgid "Not Installed"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2412
+msgid "Installed But Not Activated"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2414
+msgid "Active"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2420
+msgid "Required Update not Available"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2423
+msgid "Requires Update"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2426
+msgid "Update recommended"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2435
+#, php-format
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2481
+#, php-format
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2485
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2489
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2493
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2575
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2583
+msgid "Installed version:"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2591
+msgid "Minimum required version:"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2603
+msgid "Available version:"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2626
+msgid "No plugins to install, update or activate."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2640
+msgid "Plugin"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2641
+msgid "Source"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2646
+msgid "Version"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2647
+msgid "Status"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2696
+#, php-format
+msgid "Install %2$s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2701
+#, php-format
+msgid "Update %2$s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2707
+#, php-format
+msgid "Activate %2$s"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2777
+msgid "Upgrade message from the plugin author:"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2810
+msgid "Install"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2816
+msgid "Update"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2819
+msgid "Activate"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2850
+msgid "No plugins were selected to be installed. No action taken."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2852
+msgid "No plugins were selected to be updated. No action taken."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2893
+msgid "No plugins are available to be installed at this time."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:2895
+msgid "No plugins are available to be updated at this time."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3001
+msgid "No plugins were selected to be activated. No action taken."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3027
+msgid "No plugins are available to be activated at this time."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3251
+msgid "Plugin activation failed."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3591
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3594
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3596
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3600
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3602
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3602
+#: includes/plugins/class-tgm-plugin-activation.php:3610
+msgid "Show Details"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3602
+#: includes/plugins/class-tgm-plugin-activation.php:3610
+msgid "Hide Details"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3603
+msgid "All installations and activations have been completed."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3605
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3608
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3610
+#, php-format
+msgid "%1$s installed successfully."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3611
+msgid "All installations have been completed."
+msgstr ""
+
+#: includes/plugins/class-tgm-plugin-activation.php:3613
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/box.php:48
+msgid "Are you sure you want to delete all connections?"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/box.php:140
+msgid "Search"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/box.php:230
+msgid "previous"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/box.php:231
+msgid "next"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/box.php:232
+msgid "of"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/dropdown-user.php:32
+msgid "Filter"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/factory.php:88
+msgid " (from)"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/factory.php:89
+msgid " (to)"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/field-delete.php:7
+msgid "Delete all connections"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/field-delete.php:16
+msgid "Delete connection"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:7
+msgid "Connection Types"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:41
+#, php-format
+msgid "<em>%s</em> is not a registered connection type."
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:50
+#, php-format
+msgid "Converted %1$s connections from <em>%2$s</em> to <em>%3$s</em>."
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:64
+msgid "Name"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:65
+msgid "Information"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:66
+msgid "Connections"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:74
+msgid "No connection types registered."
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:76
+#, php-format
+msgid "To register a connection type, see <a href=\"%s\">the wiki</a>."
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:93
+msgid "Convert to registered connection type:"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/admin/tools-page.php:129
+msgid "Go"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/connection-type.php:91
+msgid "Create connections"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/connection-type.php:109
+#, php-format
+msgid "Connected %s"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:16
+msgid "Users"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:25
+msgid "User"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:26
+msgid "Search Users"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/side-user.php:27
+msgid "No users found."
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:19
+msgid "Posts 2 Posts"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:20
+msgid "A list of posts connected to the current post"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:37
+msgid "Title:"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:44
+msgid "Connection type:"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:49
+msgid "Connection listing:"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:55
+msgid "connected"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/lib-posts-to-posts/widget.php:56
+msgid "related"
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/scb-framework/AdminPage.php:261
+msgid "Settings <strong>saved</strong>."
+msgstr ""
+
+#: includes/plugins/posts-to-posts/vendor/scribu/scb-framework/AdminPage.php:519
+msgid "Settings"
+msgstr ""
+
+#: includes/shortcodes.php:86
+#, php-format
+msgid "[dtools] Not a \"name\" option: %s"
+msgstr ""
+
+#: includes/shortcodes.php:98 includes/shortcodes.php:112
+#: includes/shortcodes.php:122
+#, php-format
+msgid "[dtools] Function not callable: %s"
+msgstr ""
+
+#: includes/shortcodes.php:117
+#, php-format
+msgid "[dtools] File not found: %s"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Disciple Tools"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/ChasmSolutions/Disciple-Tools"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Disciple Tools is a disciple relationship management system for disciple "
+"making movements. The plugin is the core of the system. It is intended to "
+"work with the Disciple Tools Theme, and Disciple Tools extension plugins."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Chasm.Solutions"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://github.com/ChasmSolutions"
+msgstr ""

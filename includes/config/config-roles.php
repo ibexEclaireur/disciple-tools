@@ -1,20 +1,20 @@
 <?php
 /**
- * DRM Post to Post Metabox for Locations
+ * Disciple_Tools Post to Post Metabox for Locations
  *
- * @class DRM_Roles
+ * @class Disciple_Tools_Roles
  * @version	1.0.0
  * @since 0.1
- * @package	DRM_Plugin
+ * @package	Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class DRM_Roles {
+class Disciple_Tools_Roles {
 
     /**
-     * The single instance of DRM_Roles
+     * The single instance of Disciple_Tools_Roles
      * @var 	object
      * @access  private
      * @since  0.1
@@ -22,13 +22,13 @@ class DRM_Roles {
     private static $_instance = null;
 
     /**
-     * Main DRM_P2P_Metabox Instance
+     * Main Disciple_Tools_P2P_Metabox Instance
      *
-     * Ensures only one instance of DRM_P2P_Metabox is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_P2P_Metabox is loaded or can be loaded.
      *
      * @since 0.1
      * @static
-     * @return DRM_Roles instance
+     * @return Disciple_Tools_Roles instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) )

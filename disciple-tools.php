@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: DRM
- * Plugin URI: https://github.com/ChasmSolutions/DMM-CRM-Plugin
- * Description: DRM is a contact relationship management system for disciple making movements.
+ * Plugin Name: Disciple Tools
+ * Plugin URI: https://github.com/ChasmSolutions/Disciple-Tools
+ * Description: Disciple Tools is a disciple relationship management system for disciple making movements. The plugin is the core of the system. It is intended to work with the Disciple Tools Theme, and Disciple Tools extension plugins.
  * Version: 0.1
- * Author: Chasm.Solutions & Kingdom.Training
+ * Author: Chasm.Solutions
  * Author URI: https://github.com/ChasmSolutions
- * Requires at least: 4.0.0
+ * Requires at least: 4.5.0
  * Tested up to: 4.7.2
  *
- * @package   DRM
+ * @package   Disciple_Tools
  * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @license   GPL-3.0
@@ -22,32 +22,32 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 /**
- * Returns the main instance of DRM_Plugin to prevent the need to use globals.
+ * Returns the main instance of Disciple_Tools to prevent the need to use globals.
  *
  * @since  0.1
- * @return object DRM_Plugin
+ * @return object Disciple_Tools
  */
 
-    // Adds the DRM Plugin after plugins load
-    add_action( 'init', 'DRM_Plugin' );
+    // Adds the Disciple_Tools Plugin after plugins load
+    add_action( 'init', 'Disciple_Tools' );
 
     // Creates the instance
-    function DRM_Plugin() {
-        return DRM_Plugin::instance();
+    function Disciple_Tools() {
+        return Disciple_Tools::instance();
     }
 
 
 /**
- * Main DRM_Plugin Class
+ * Main Disciple_Tools Class
  *
- * @class DRM_Plugin
+ * @class Disciple_Tools
  * @since 0.1
- * @package	DRM_Plugin
+ * @package	Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
-class DRM_Plugin {
+class Disciple_Tools {
 	/**
-	 * DRM_Plugin The single instance of DRM_Plugin.
+	 * Disciple_Tools The single instance of Disciple_Tools.
 	 * @var 	object
 	 * @access  private
 	 * @since  0.1
@@ -128,7 +128,7 @@ class DRM_Plugin {
 		 * Prepare variables
 		 *
 		 */
-	    $this->token 			= 'drm';
+	    $this->token 			= 'disciple_tools';
 		$this->version 			= '0.1';
 		$this->plugin_url 		= plugin_dir_url( __FILE__ );
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
@@ -148,20 +148,20 @@ class DRM_Plugin {
 		 *
 		 */
 		if ( is_admin() ) {
-            // DRM admin settings page configuration
+            // Disciple_Tools admin settings page configuration
             require_once ( 'includes/config/config-admin.php' );
-            $this->admin = DRM_Plugin_Admin::instance();
+            $this->admin = Disciple_Tools_Admin::instance();
 
-			// DRM admin settings page configuration
+			// Disciple_Tools admin settings page configuration
 			require_once ( 'includes/config/config-settings.php' );
-			$this->settings = DRM_Plugin_Settings::instance();
+			$this->settings = Disciple_Tools_Settings::instance();
 
             // Load plugin library that "requires plugins" at activation
             require_once ( 'includes/config/config-required-plugins.php' );
 
-            // Load DRM Dashboard configurations
+            // Load Disciple_Tools Dashboard configurations
             require_once ( 'includes/config/config-dashboard.php' );
-			$this->admin = DRM_Dashboard::instance();
+			$this->admin = Disciple_Tools_Dashboard::instance();
 
             // Load multiple column configuration library into screen options area.
             require_once('includes/config/three-column-screen-layout.php');
@@ -171,8 +171,8 @@ class DRM_Plugin {
         require_once('includes/config/drm-filters.php');
 
 		// Counters
-		require_once('includes/factories/drm_counter_factory.php');
-		$this->counter = Drm_Counter_Factory::instance();
+		require_once('includes/factories/counter-factory.php');
+		$this->counter = DT_Counter_Factory::instance();
 
         /* End Admin configuration section */
 
@@ -189,15 +189,15 @@ class DRM_Plugin {
          */
         // Contacts post types
         require_once( 'includes/classes/class-contact-post-type.php' );
-        $this->post_types['contacts'] = new DRM_Plugin_Contact_Post_Type( 'contacts', __( 'Contact', 'drm' ), __( 'Contacts', 'drm' ), array( 'menu_icon' => 'dashicons-groups' ) );
+        $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
 
         // Groups post types
         require_once( 'includes/classes/class-group-post-type.php' );
-        $this->post_types['groups'] = new DRM_Plugin_Group_Post_Type( 'groups', __( 'Group', 'drm' ), __( 'Groups', 'drm' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
+        $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
 
         // Locations post types
         // require_once( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development
-        // $this->post_types['locations'] = new DRM_Plugin_Location_Post_Type( 'locations', __( 'Location', 'drm' ), __( 'Locations', 'drm' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
+        // $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
 
 		// Taxonomies
 		require_once( 'includes/classes/class-taxonomy.php' );
@@ -233,7 +233,7 @@ class DRM_Plugin {
         if ($this->run_once->run('activation') ) {
             // Roles and capabilities
             require_once ('includes/config/config-roles.php');
-            $this->roles = DRM_Roles::instance();
+            $this->roles = Disciple_Tools_Roles::instance();
             $this->roles->set_roles();
 
         }
@@ -247,14 +247,14 @@ class DRM_Plugin {
 
 
 	/**
-	 * Main DRM_Plugin Instance
+	 * Main Disciple_Tools Instance
 	 *
-	 * Ensures only one instance of DRM_Plugin is loaded or can be loaded.
+	 * Ensures only one instance of Disciple_Tools is loaded or can be loaded.
 	 *
 	 * @since 0.1
 	 * @static
-	 * @see DRM_Plugin()
-	 * @return DRM_Plugin instance
+	 * @see Disciple_Tools()
+	 * @return Disciple_Tools instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -268,7 +268,7 @@ class DRM_Plugin {
 	 * @since   0.1
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'drm', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'disciple_tools', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	} // End load_plugin_textdomain()
 
 	/**

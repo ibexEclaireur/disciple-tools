@@ -1,5 +1,5 @@
 ##
 
-General usage of the plugins folder is house libraries/plugins that we are bundeling with the DRM package.
+General usage of the plugins folder is house libraries/plugins that we are bundeling with the Disciple_Tools package.
 
 Ideally, these plugins are fully un-modified so that we can maintain sync with the live project over time.

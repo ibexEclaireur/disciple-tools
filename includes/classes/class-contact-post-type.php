@@ -2,16 +2,16 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 /**
- * DRM Plugin Contacts Post Type Class
+ * Disciple_Tools Plugin Contacts Post Type Class
  *
- * All functionality pertaining to contacts post types in DRM.
+ * All functionality pertaining to contacts post types in Disciple_Tools.
  *
- * @package DRM
+ * @package Disciple_Tools
  * @category Plugin
  * @author Chasm.Solutions & Kingdom.Training
  * @since 0.1
  */
-class DRM_Plugin_Contact_Post_Type {
+class Disciple_Tools_Contact_Post_Type {
 	/**
 	 * The post type token.
 	 * @access public
@@ -97,30 +97,30 @@ class DRM_Plugin_Contact_Post_Type {
 	 */
 	public function register_post_type () {
 		$labels = array(
-			'name' 					=> sprintf( _x( '%s', 'post type general name', 'drm' ), $this->plural ),
-			'singular_name' 		=> sprintf( _x( '%s', 'post type singular name', 'drm' ), $this->singular ),
-			'add_new' 				=> _x( 'Add New', $this->post_type, 'drm' ),
-			'add_new_item' 			=> sprintf( __( 'Add New %s', 'drm' ), $this->singular ),
-			'edit_item' 			=> sprintf( __( 'Edit %s', 'drm' ), $this->singular ),
-			'update_item'           => sprintf( __( 'Update %s', 'drm' ), $this->singular ),
-			'new_item' 				=> sprintf( __( 'New %s', 'drm' ), $this->singular ),
-			'all_items' 			=> sprintf( __( 'All %s', 'drm' ), $this->plural ),
-			'view_item' 			=> sprintf( __( 'View %s', 'drm' ), $this->singular ),
-			'view_items'            => sprintf( __( 'View %s', 'drm' ), $this->plural ),
-			'search_items' 			=> sprintf( __( 'Search %a', 'drm' ), $this->plural ),
-			'not_found' 			=> sprintf( __( 'No %s Found', 'drm' ), $this->plural ),
-			'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'drm' ), $this->plural ),
+			'name' 					=> sprintf( _x( '%s', 'Contacts', 'disciple_tools' ), $this->plural ),
+			'singular_name' 		=> sprintf( _x( '%s', 'Contact', 'disciple_tools' ), $this->singular ),
+			'add_new' 				=> _x( 'Add New', $this->post_type, 'disciple_tools' ),
+			'add_new_item' 			=> sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
+			'edit_item' 			=> sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
+			'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
+			'new_item' 				=> sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
+			'all_items' 			=> sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
+			'view_item' 			=> sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
+			'view_items'            => sprintf( __( 'View %s', 'disciple_tools' ), $this->plural ),
+			'search_items' 			=> sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
+			'not_found' 			=> sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
+			'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
 			'parent_item_colon' 	=> '',
 			'menu_name' 			=> $this->plural,
-			'featured_image'        => sprintf( __( 'Featured Image', 'drm' ), $this->plural ),
-			'set_featured_image'    => sprintf( __( 'Set featured image', 'drm' ), $this->plural ),
-			'remove_featured_image' => sprintf( __( 'Remove featured image', 'drm' ), $this->plural ),
-			'use_featured_image'    => sprintf( __( 'Use as featured image', 'drm' ), $this->plural ),
-			'insert_into_item'      => sprintf( __( 'Insert into %s', 'drm' ), $this->plural ),
-			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'drm' ), $this->plural ),
-			'items_list'            => sprintf( __( '%s list', 'drm' ), $this->plural ),
-			'items_list_navigation' => sprintf( __( '%s list navigation', 'drm' ), $this->plural ),
-			'filter_items_list'     => sprintf( __( 'Filter %s list', 'drm' ), $this->plural ),
+			'featured_image'        => sprintf( __( 'Featured Image', 'disciple_tools' ), $this->plural ),
+			'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
+			'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
+			'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
+			'insert_into_item'      => sprintf( __( 'Insert into %s', 'disciple_tools' ), $this->plural ),
+			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
+			'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
+			'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
+			'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
 			
 		);
         $rewrite = array(
@@ -140,12 +140,12 @@ class DRM_Plugin_Contact_Post_Type {
             'publish_posts'         => 'publish_contacts',
             'read_private_posts'    => 'read_private_contacts',
         );
-		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'drm' ) );
-		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'drm' ) );
+		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
+		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
 		$defaults = array(
-            'label'                 => __( 'Contact', 'drm' ),
-            'description'           => __( 'Contacts generated by the media to movement effort', 'drm' ),
+            'label'                 => __( 'Contact', 'disciple_tools' ),
+            'description'           => __( 'Contacts generated by the media to movement effort', 'disciple_tools' ),
 			'labels' 				=> $labels,
 			'public' 				=> true,
 			'publicly_queryable' 	=> true,
@@ -184,9 +184,9 @@ class DRM_Plugin_Contact_Post_Type {
 //
 //      TODO: removed until we decide whether we want classification and how we want to use them.
 //
-//		$this->taxonomies['contacts-source'] = new DRM_Plugin_Taxonomy($post_type = 'contacts', $token = 'contacts-source', $singular = 'Source', $plural = 'Sources', $args = array()); // Leave arguments empty, to use the default arguments.
+//		$this->taxonomies['contacts-source'] = new Disciple_Tools_Taxonomy($post_type = 'contacts', $token = 'contacts-source', $singular = 'Source', $plural = 'Sources', $args = array()); // Leave arguments empty, to use the default arguments.
 //		$this->taxonomies['contacts-source']->register();
-//		$this->taxonomies['contacts-type'] = new DRM_Plugin_Taxonomy($post_type = 'contacts', $token = 'contacts-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
+//		$this->taxonomies['contacts-type'] = new Disciple_Tools_Taxonomy($post_type = 'contacts', $token = 'contacts-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
 //		$this->taxonomies['contacts-type']->register();
 	} // End register_taxonomy()
 
@@ -224,7 +224,7 @@ class DRM_Plugin_Contact_Post_Type {
 	public function register_custom_column_headings ( $defaults ) {
 
 
-	    $new_columns = array(); //array( 'image' => __( 'Image', 'drm' ));
+	    $new_columns = array(); //array( 'image' => __( 'Image', 'disciple_tools' ));
 		
 		$last_item = array();
 
@@ -259,19 +259,19 @@ class DRM_Plugin_Contact_Post_Type {
 
 		$messages[$this->post_type] = array(
 			0 => '', // Unused. Messages start at index 1.
-			1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'drm' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
-			2 => __( 'Custom field updated.', 'drm' ),
-			3 => __( 'Custom field deleted.', 'drm' ),
-			4 => sprintf( __( '%s updated.', 'drm' ), $this->singular ),
+			1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
+			2 => __( 'Custom field updated.', 'disciple_tools' ),
+			3 => __( 'Custom field deleted.', 'disciple_tools' ),
+			4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
 			/* translators: %s: date and time of the revision */
-			5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'drm' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
-			7 => sprintf( __( '%s saved.', 'drm' ), $this->singular ),
-			8 => sprintf( __( '%s submitted. %sPreview %s%s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
-			9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'drm' ), $this->singular, strtolower( $this->singular ),
+			5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
+			7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
+			8 => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+			9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
 			// translators: Publish box date format, see http://php.net/date
 			'<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink($post_ID) ) . '">', '</a>' ),
-			10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'drm' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+			10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
 		);
 
 		return $messages;
@@ -287,7 +287,7 @@ class DRM_Plugin_Contact_Post_Type {
 	 * @return void
 	 */
 	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'drm' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
 
 	} // End meta_box_setup()
 	
@@ -304,7 +304,7 @@ class DRM_Plugin_Contact_Post_Type {
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( DRM_Plugin()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 		
 		
 		if ( 0 < count( $field_data ) ) {
@@ -389,7 +389,7 @@ class DRM_Plugin_Contact_Post_Type {
 		global $post, $messages;
 
 		// Verify
-		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( DRM_Plugin()->plugin_path ) ) ) ) {
+		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
 			return $post_id;
 		}
 
@@ -436,7 +436,7 @@ class DRM_Plugin_Contact_Post_Type {
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the contact name here', 'drm' );
+			$title = __( 'Enter the contact name here', 'disciple_tools' );
 		}
 		return $title;
 	} // End enter_title_here()
@@ -451,162 +451,162 @@ class DRM_Plugin_Contact_Post_Type {
 		$fields = array();
 		
 		$fields['phone'] = array(
-		    'name' => __( 'Phone', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Phone', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['overall_status'] = array(
-		    'name' => __( 'Overall Status', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Overall Status', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Unassignable', 'Unassigned', 'Assigned', 'Accepted', 'On Pause', 'Closed'),
 		    'section' => 'info'
 		);
 		$fields['seeker_path'] = array(
-		    'name' => __( 'Seeker Path', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Seeker Path', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Contact Attempted', 'Contact Established', 'Confirms Interest', 'Meeting Scheduled', 'First Meeting Complete', 'Ongoing Meetings', 'Being Coached'),
 		    'section' => 'info'
 		);
 		$fields['seeker_milestones'] = array(
-		    'name' => __( 'Seeker Milestones', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Seeker Milestones', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
 		    'section' => 'info'
 		);
 		$fields['preferred_contact_method'] = array(
-		    'name' => __( 'Preferred Contact Method', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Preferred Contact Method', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Phone', 'Skype', 'Facebook', 'Mail', 'Email', 'SMS'),
 		    'section' => 'info'
 		);
 		$fields['bible'] = array(
-		    'name' => __( 'Bible', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Bible', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Yes - given by hand', 'Yes - already had one', 'Yes - receipt by mail confirmed', 'Bible mailed', 'Needs / Requests Bible'),
 		    'section' => 'info'
 		);
 		$fields['email'] = array(
-		    'name' => __( 'Email', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Email', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['skype'] = array(
-		    'name' => __( 'Skype', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Skype', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['facebook'] = array(
-		    'name' => __( 'Facebook', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Facebook', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['last_actual_contact'] = array(
-		    'name' => __( 'Last Actual Contact', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Last Actual Contact', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['comprehension'] = array(
-		    'name' => __( 'Gospel Comprehension', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Gospel Comprehension', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Very Strong', 'Strong', 'Unknown/Unclear', 'Weak'),
 		    'section' => 'info'
 		);
 		$fields['investigating_with_others'] = array(
-		    'name' => __( 'Investigating with others', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Investigating with others', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Not exploring with others', 'Only with a few people', 'Openly sharing with many', 'Studying in a group'),
 		    'section' => 'info'
 		);
 		$fields['gender'] = array(
-		    'name' => __( 'Gender', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Gender', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Male', 'Female'),
 		    'section' => 'info'
 		);
 		$fields['age'] = array(
-		    'name' => __( 'Age', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Age', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Under 18 years old', '18-25 years old', '26-40 years old', 'Over 40 years old'),
 		    'section' => 'info'
 		);
 		$fields['mailing_street'] = array(
-		    'name' => __( 'Mailing Street', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Mailing Street', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_city'] = array(
-		    'name' => __( 'Mailing City', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Mailing City', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_zip'] = array(
-		    'name' => __( 'Mailing Zip', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Mailing Zip', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_state'] = array(
-		    'name' => __( 'Mailing State', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Mailing State', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['mailing_country'] = array(
-		    'name' => __( 'Mailing Country', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Mailing Country', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['baptism_date'] = array(
-		    'name' => __( 'Baptism Date', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Baptism Date', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 		$fields['contact_generation'] = array(
-		    'name' => __( 'Contact Generation', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Contact Generation', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', '1st Generation (media)', '1st Generation (relationship)', '2nd Generation', '3rd Generation', '4th Generation', '5+ Generation'),
 		    'section' => 'info'
 		);
 		$fields['preferred_language'] = array(
-		    'name' => __( 'Preferred Language', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Preferred Language', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'English', 'French', 'Arabic', 'Spanish'),
 		    'section' => 'info'
 		);
 		$fields['reason_closed'] = array(
-		    'name' => __( 'Reason Closed', 'drm' ),
-		    'description' => __( '', 'drm' ),
+		    'name' => __( 'Reason Closed', 'disciple_tools' ),
+		    'description' => '',
 		    'type' => 'select',
 		    'default' => array('', 'Duplicate', 'Hostile / Playing Games', 'Insufficient Contact Info', 'Already In Church/Connected with Others', 'No Longer Interested', 'Just wanted a book', 'Unknown'),
 		    'section' => 'info'
