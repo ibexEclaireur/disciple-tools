@@ -181,7 +181,7 @@ class Disciple_Tools {
 
 
 		/**
-		 * Admin Panel section
+		 * Admin panel
          *
          * Contains all those features that only run if in the Admin panel
 		 * or those things directly supporting Admin panel features.
@@ -205,17 +205,18 @@ class Disciple_Tools {
             // Load multiple column configuration library into screen options area.
             require_once('includes/config/three-column-screen-layout.php');
 
+            // Load Functions
+            require_once ('includes/functions/hide-contacts.php');
+            require_once ('includes/functions/admin-design.php');
+            require_once ('includes/functions/profile.php');
+            require_once ('includes/functions/hide-contacts.php');
+            require_once ('includes/functions/media.php');
         }
-		// Admin panel filters
-        require_once('includes/config/drm-filters.php');
-
         /* End Admin configuration section */
 
 
-
-
         /**
-         * Data model section
+         * Data model
          *
          * @posttype Contacts
          * @posttype Groups
@@ -224,36 +225,37 @@ class Disciple_Tools {
          * @postconnector   P2P connection
          *
          */
-        require_once('includes/model/class-contact-post-type.php');
-        require_once('includes/model/class-group-post-type.php');
+        require_once ('includes/model/class-contact-post-type.php');
+        require_once ('includes/model/class-group-post-type.php');
         /*require_once( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
-        require_once('includes/model/class-taxonomy.php');
+        require_once ('includes/model/class-taxonomy.php');
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
         /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
         // Creates the post to post relationship between the post type tables.
-        require_once('includes/model/config-p2p.php');
-        require_once ( 'includes/plugins/posts-to-posts/posts-to-posts.php' );
+        require_once ('includes/model/config-p2p.php');
+        require_once ('includes/plugins/posts-to-posts/posts-to-posts.php');
         /* End model configuration section */
 
-        // Factories
+
+        /*
+         * Factories
+         */
         require_once('includes/factories/class-counter-factory.php');
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
 
         /*
-         * Actions and Filters Section
-         *
-         * Requires class-hooks.php which calls class-loader.php to load all the actions and filters in one location.
+         * Functions
          */
-        require_once ('includes/functions/class-hooks.php');
-        require_once('includes/functions/private-site.php');
+        require_once ('includes/functions/login.php');
+        require_once ('includes/functions/private-site.php');
+
 
 		// Load shortcodes
         require_once('includes/public/class-shortcodes.php');
         $this->shortcodes = Disciple_Tools_Function_Callback::instance();
 
-        /* End Actions and Filters section */
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 

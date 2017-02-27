@@ -27,6 +27,8 @@ final class Disciple_Tools_Admin {
 	 */
 	private $_hook;
 
+
+
 	/**
 	 * Constructor function.
 	 * @access  public
@@ -38,6 +40,7 @@ final class Disciple_Tools_Admin {
 
 		// Register the settings screen within WordPress.
 		add_action( 'admin_menu', array( $this, 'register_settings_screen' ) );
+
 	} // End __construct()
 
 	/**
@@ -223,4 +226,6 @@ final class Disciple_Tools_Admin {
 
 		return (array)apply_filters( 'drm-get-admin-header-data', $response );
 	} // End _get_admin_header_data()
+
+
 } // End Class
