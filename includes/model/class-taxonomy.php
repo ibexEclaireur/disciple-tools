@@ -2,17 +2,17 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 /**
- * DRM Plugin Taxonomy Class
+ * Disciple_Tools Plugin Taxonomy Class
  *
  * Re-usable class for registering post type taxonomies.
  *
  * @package WordPress
- * @subpackage DRM_Plugin
+ * @subpackage Disciple_Tools
  * @category Plugin
  * @author Matty
  * @since 0.1
  */
-class DRM_Plugin_Taxonomy {
+class Disciple_Tools_Taxonomy {
 	/**
 	 * The post type to register the taxonomy for.
 	 * @access  private
@@ -69,8 +69,8 @@ class DRM_Plugin_Taxonomy {
 		$this->singular = esc_html( $singular );
 		$this->plural = esc_html( $plural );
 
-		if ( '' == $this->singular ) $this->singular = __( 'Category', 'drm' );
-		if ( '' == $this->plural ) $this->plural = __( 'Categories', 'drm' );
+		if ( '' == $this->singular ) $this->singular = __( 'Category', 'disciple_tools' );
+		if ( '' == $this->plural ) $this->plural = __( 'Categories', 'disciple_tools' );
 
 		$this->args = wp_parse_args( $args, $this->_get_default_args() );
 	} // End __construct()
@@ -93,17 +93,17 @@ class DRM_Plugin_Taxonomy {
 	 */
 	private function _get_default_labels () {
 		return array(
-			    'name'                => sprintf( _x( '%s', 'taxonomy general name', 'drm' ), $this->plural ),
-			    'singular_name'       => sprintf( _x( '%s', 'taxonomy singular name', 'drm' ), $this->singular ),
-			    'search_items'        => sprintf( __( 'Search %s', 'drm' ), $this->plural ),
-			    'all_items'           => sprintf( __( 'All %s', 'drm' ), $this->plural ),
-			    'parent_item'         => sprintf( __( 'Parent %s', 'drm' ), $this->singular ),
-			    'parent_item_colon'   => sprintf( __( 'Parent %s:', 'drm' ), $this->singular ),
-			    'edit_item'           => sprintf( __( 'Edit %s', 'drm' ), $this->singular ),
-			    'update_item'         => sprintf( __( 'Update %s', 'drm' ), $this->singular ),
-			    'add_new_item'        => sprintf( __( 'Add New %s', 'drm' ), $this->singular ),
-			    'new_item_name'       => sprintf( __( 'New %s Name', 'drm' ), $this->singular ),
-			    'menu_name'           => sprintf( __( '%s', 'drm' ), $this->plural )
+			    'name'                => sprintf( _x( '%s', 'taxonomy general name', 'disciple_tools' ), $this->plural ),
+			    'singular_name'       => sprintf( _x( '%s', 'taxonomy singular name', 'disciple_tools' ), $this->singular ),
+			    'search_items'        => sprintf( __( 'Search %s', 'disciple_tools' ), $this->plural ),
+			    'all_items'           => sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
+			    'parent_item'         => sprintf( __( 'Parent %s', 'disciple_tools' ), $this->singular ),
+			    'parent_item_colon'   => sprintf( __( 'Parent %s:', 'disciple_tools' ), $this->singular ),
+			    'edit_item'           => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
+			    'update_item'         => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
+			    'add_new_item'        => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
+			    'new_item_name'       => sprintf( __( 'New %s Name', 'disciple_tools' ), $this->singular ),
+			    'menu_name'           => sprintf( __( '%s', 'disciple_tools' ), $this->plural )
 			  );
 	} // End _get_default_labels()
 

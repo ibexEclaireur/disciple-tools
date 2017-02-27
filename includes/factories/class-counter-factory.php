@@ -3,7 +3,7 @@
 /**
  * Counter factory for reporting
  *
- * @package   DRM
+ * @package   Disciple_Tools
  * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @license   GPL-3.0
@@ -11,10 +11,10 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Drm_Counter_Factory {
+class Disciple_Tools_Counter_Factory {
 
     /**
-     * Drm_Counter_Factory The single instance of Drm_Counter_Factory.
+     * Disciple_Tools_Counter_Factory The single instance of Disciple_Tools_Counter_Factory.
      * @var 	object
      * @access  private
      * @since 	0.1
@@ -22,12 +22,12 @@ class Drm_Counter_Factory {
     private static $_instance = null;
 
     /**
-     * Main Drm_Counter_Factory Instance
-     * Ensures only one instance of Drm_Counter_Factory is loaded or can be loaded.
+     * Main Disciple_Tools_Counter_Factory Instance
+     * Ensures only one instance of Disciple_Tools_Counter_Factory is loaded or can be loaded.
      *
      * @since 0.1
      * @static
-     * @return Drm_Counter_Factory
+     * @return Disciple_Tools_Counter_Factory
      */
     public static function instance () {
         if ( is_null( self::$_instance ) )
@@ -58,10 +58,10 @@ class Drm_Counter_Factory {
 	public function contacts_post_status ($status = '') {
 
 		/**
-		 * @usage DRM_Plugin()->counter->contacts_status()
+		 * @usage Disciple_Tools()->counter->contacts_status()
 		 * @returns array of status counts
 		 *
-		 * @usage DRM_Plugin()->counter->contacts_status('publish')
+		 * @usage Disciple_Tools()->counter->contacts_status('publish')
 		 * @returns number count
 		 */
 

@@ -1,21 +1,21 @@
 <?php
 
 /**
- * DRM dashboard widget
+ * Disciple_Tools_Dashboard Class
  *
- * @class Drm_Dashboard
+ * @class Disciple_Tools_Dashboard
  * @version	0.1
  * @since 0.1
- * @package	drm
+ * @package	Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-final class DRM_Dashboard {
+final class Disciple_Tools_Dashboard {
 
 	/**
-	 * Drm_Dashboard The single instance of Drm_Dashboard.
+	 * Disciple_Tools_Dashboard The single instance of Disciple_Tools_Dashboard.
 	 * @var 	object
 	 * @access  private
 	 * @since 	0.1
@@ -23,12 +23,12 @@ final class DRM_Dashboard {
 	private static $_instance = null;
 
 	/**
-	 * Main Drm_Dashboard Instance
-	 * Ensures only one instance of Drm_Dashboard is loaded or can be loaded.
+	 * Main Disciple_Tools_Dashboard Instance
+	 * Ensures only one instance of Disciple_Tools_Dashboard is loaded or can be loaded.
 	 *
 	 * @since 0.1
 	 * @static
-	 * @return Drm_Dashboard
+	 * @return Disciple_Tools_Dashboard
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -153,7 +153,7 @@ final class DRM_Dashboard {
 		$prayer = 'x';
 		$facebook = 'x';
 		$websites = 'x';
-		$new_contacts = DRM_Plugin()->counter->contacts_post_status('publish');
+		$new_contacts = Disciple_Tools()->counter->contacts_post_status('publish');
 		$conacts_attempted = 'x';
 		$contacts_established = 'x';
 		$first_meetings = 'x';
@@ -237,9 +237,9 @@ final class DRM_Dashboard {
 	public function project_stats_widget(  ) {
 
 		// Build counters
-		$contacts_count = DRM_Plugin()->counter->contacts_post_status();
-		$unassigned = DRM_Plugin()->counter->contacts_overall_status('unassigned');
-		$accepted = DRM_Plugin()->counter->contacts_overall_status('accepted');
+		$contacts_count = Disciple_Tools()->counter->contacts_post_status();
+		$unassigned = Disciple_Tools()->counter->contacts_overall_status('unassigned');
+		$accepted = Disciple_Tools()->counter->contacts_overall_status('accepted');
 
 		// Build HTML of widget
 		$html = '
@@ -284,30 +284,30 @@ final class DRM_Dashboard {
 	 */
 	public function generations_stats_widget (  ) {
 
-//        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('generation_list') ); print '</pre>';
+//        print '<pre>'; print_r( Disciple_Tools()->counter->get_generation('generation_list') ); print '</pre>';
 
 		// Build counters
-        $has_at_least_1 = DRM_Plugin()->counter->get_generation('has_one_or_more');
-        $has_at_least_2 = DRM_Plugin()->counter->get_generation('has_two_or_more');
-        $has_more_than_2 = DRM_Plugin()->counter->get_generation('has_three_or_more');
+        $has_at_least_1 = Disciple_Tools()->counter->get_generation('has_one_or_more');
+        $has_at_least_2 = Disciple_Tools()->counter->get_generation('has_two_or_more');
+        $has_more_than_2 = Disciple_Tools()->counter->get_generation('has_three_or_more');
 
-        $has_0 = DRM_Plugin()->counter->get_generation('has_0');
-        $has_1 = DRM_Plugin()->counter->get_generation('has_1');
-        $has_2 = DRM_Plugin()->counter->get_generation('has_2');
-        $has_3 = DRM_Plugin()->counter->get_generation('has_3');
+        $has_0 = Disciple_Tools()->counter->get_generation('has_0');
+        $has_1 = Disciple_Tools()->counter->get_generation('has_1');
+        $has_2 = Disciple_Tools()->counter->get_generation('has_2');
+        $has_3 = Disciple_Tools()->counter->get_generation('has_3');
 
-        $con_0gen = DRM_Plugin()->counter->get_generation('at_zero');
-        $con_1gen = DRM_Plugin()->counter->get_generation('at_first');
-		$con_2gen = DRM_Plugin()->counter->get_generation('at_second');
-		$con_3gen = DRM_Plugin()->counter->get_generation('at_third');
-		$con_4gen = DRM_Plugin()->counter->get_generation('at_fourth');
-        $con_5gen = DRM_Plugin()->counter->get_generation('at_fifth');
+        $con_0gen = Disciple_Tools()->counter->get_generation('at_zero');
+        $con_1gen = Disciple_Tools()->counter->get_generation('at_first');
+		$con_2gen = Disciple_Tools()->counter->get_generation('at_second');
+		$con_3gen = Disciple_Tools()->counter->get_generation('at_third');
+		$con_4gen = Disciple_Tools()->counter->get_generation('at_fourth');
+        $con_5gen = Disciple_Tools()->counter->get_generation('at_fifth');
 
-        $has_0_groups = DRM_Plugin()->counter->get_generation('has_0', 'groups');
-		$gr_1gen = DRM_Plugin()->counter->get_generation('at_first', 'groups');
-		$gr_2gen = DRM_Plugin()->counter->get_generation('at_second', 'groups');
-		$gr_3gen = DRM_Plugin()->counter->get_generation('at_third', 'groups');
-		$gr_4gen = DRM_Plugin()->counter->get_generation('at_fourth', 'groups');
+        $has_0_groups = Disciple_Tools()->counter->get_generation('has_0', 'groups');
+		$gr_1gen = Disciple_Tools()->counter->get_generation('at_first', 'groups');
+		$gr_2gen = Disciple_Tools()->counter->get_generation('at_second', 'groups');
+		$gr_3gen = Disciple_Tools()->counter->get_generation('at_third', 'groups');
+		$gr_4gen = Disciple_Tools()->counter->get_generation('at_fourth', 'groups');
 
 		// Build HTML of widget
 		$html = '

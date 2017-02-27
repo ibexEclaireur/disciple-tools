@@ -2,17 +2,17 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * DRM_Plugin_Admin Class
+ * Disciple_Tools_Admin Class
  *
- * @class DRM_Plugin_Admin
+ * @class Disciple_Tools_Admin
  * @version	1.0.0
  * @since 0.1
- * @package	DRM_Plugin
+ * @package	Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
-final class DRM_Plugin_Admin {
+final class Disciple_Tools_Admin {
 	/**
-	 * The single instance of DRM_Plugin_Admin.
+	 * The single instance of Disciple_Tools_Admin.
 	 * @var 	object
 	 * @access  private
 	 * @since  0.1
@@ -27,6 +27,8 @@ final class DRM_Plugin_Admin {
 	 */
 	private $_hook;
 
+
+
 	/**
 	 * Constructor function.
 	 * @access  public
@@ -38,16 +40,17 @@ final class DRM_Plugin_Admin {
 
 		// Register the settings screen within WordPress.
 		add_action( 'admin_menu', array( $this, 'register_settings_screen' ) );
+
 	} // End __construct()
 
 	/**
-	 * Main DRM_Plugin_Admin Instance
+	 * Main Disciple_Tools_Admin Instance
 	 *
-	 * Ensures only one instance of DRM_Plugin_Admin is loaded or can be loaded.
+	 * Ensures only one instance of Disciple_Tools_Admin is loaded or can be loaded.
 	 *
 	 * @since 0.1
 	 * @static
-	 * @return DRM_Plugin_Admin instance
+	 * @return Disciple_Tools_Admin instance
 	 */
 	public static function instance () {
 		if ( is_null( self::$_instance ) )
@@ -62,7 +65,7 @@ final class DRM_Plugin_Admin {
 	 * @return  void
 	 */
 	public function register_settings_screen () {
-		$this->_hook = add_submenu_page( 'options-general.php', __( 'DRM Settings', 'drm' ), __( 'DRM Settings', 'drm' ), 'manage_options', 'drm', array( $this, 'settings_screen' ) );
+		$this->_hook = add_submenu_page( 'options-general.php', __( 'Disciple_Tools Settings', 'disciple_tools' ), __( 'Disciple_Tools Settings', 'disciple_tools' ), 'manage_options', 'disciple_tools', array( $this, 'settings_screen' ) );
 	} // End register_settings_screen()
 
 	/**
@@ -73,7 +76,7 @@ final class DRM_Plugin_Admin {
 	 */
 	public function settings_screen () {
 		global $title;
-		$sections = DRM_Plugin()->settings->get_settings_sections();
+		$sections = Disciple_Tools()->settings->get_settings_sections();
 		$tab = $this->_get_current_tab( $sections );
 		?>
 		<div class="wrap drm-wrap">
@@ -84,7 +87,7 @@ final class DRM_Plugin_Admin {
 				<?php
 					settings_fields( 'drm-settings-' . $tab );
 					do_settings_sections( 'drm-' . $tab );
-					submit_button( __( 'Save Changes', 'drm' ) );
+					submit_button( __( 'Save Changes', 'disciple_tools' ) );
 				?>
 			</form>
 		</div><!--/.wrap-->
@@ -98,7 +101,7 @@ final class DRM_Plugin_Admin {
 	 * @return  void
 	 */
 	public function register_settings () {
-		$sections = DRM_Plugin()->settings->get_settings_sections();
+		$sections = Disciple_Tools()->settings->get_settings_sections();
 		if ( 0 < count( $sections ) ) {
 			foreach ( $sections as $k => $v ) {
 				register_setting( 'drm-settings-' . sanitize_title_with_dashes( $k ), 'drm-' . $k, array( $this, 'validate_settings' ) );
@@ -116,14 +119,14 @@ final class DRM_Plugin_Admin {
 	 */
 	public function render_settings ( $args ) {
 		$token = $args['id'];
-		$fields = DRM_Plugin()->settings->get_settings_fields( $token );
+		$fields = Disciple_Tools()->settings->get_settings_fields( $token );
 
 		if ( 0 < count( $fields ) ) {
 			foreach ( $fields as $k => $v ) {
 				$args 		= $v;
 				$args['id'] = $k;
 
-				add_settings_field( $k, $v['name'], array( DRM_Plugin()->settings, 'render_field' ), 'drm-' . $token , $v['section'], $args );
+				add_settings_field( $k, $v['name'], array( Disciple_Tools()->settings, 'render_field' ), 'drm-' . $token , $v['section'], $args );
 			}
 		}
 	} // End render_settings()
@@ -136,9 +139,9 @@ final class DRM_Plugin_Admin {
 	 * @return  array        Validated data.
 	 */
 	public function validate_settings ( $input ) {
-		$sections = DRM_Plugin()->settings->get_settings_sections();
+		$sections = Disciple_Tools()->settings->get_settings_sections();
 		$tab = $this->_get_current_tab( $sections );
-		return DRM_Plugin()->settings->validate_settings( $input, $tab );
+		return Disciple_Tools()->settings->validate_settings( $input, $tab );
 	} // End validate_settings()
 
 	/**
@@ -223,4 +226,6 @@ final class DRM_Plugin_Admin {
 
 		return (array)apply_filters( 'drm-get-admin-header-data', $response );
 	} // End _get_admin_header_data()
+
+
 } // End Class

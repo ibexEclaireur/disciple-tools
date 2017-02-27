@@ -1,22 +1,22 @@
-# DRM Plugin
-A contact relationship management system for discipleship making movements. Wordpress plugin.
+# Disciple Tools
+A disciple relationship management system for discipleship making movements. Wordpress plugin.
 
 ##Description
-DRM is a contact relationship management system (CRM) specially designed to support outreach projects using digital marketing to accelerate disciple making movements (DMM).
+Disciple Tools is a disciple relationship management (DRM) system especially designed to support outreach projects using digital marketing to accelerate disciple making movements (DMM).
 
 ##Purpose
-There needs to exist a simple, low-cost, highly distributable CRM that is tailored to the process of using digital marketing to accelerate disciple making movements (M2DMM). Most CRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
+There needs to exist a simple, low-cost, highly distributable DRM that is tailored to the process of using digital marketing to accelerate disciple making movements. Most DRM solutions are too expensive to be used by small volunteer teams, and they often require significant configuration and development to implement. This project is attempting to make a rapid launch, low cost system that is tailored for movements.
 
 ##Platform
-We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, (soon to be) native REST API, mobile readiness, and healthy market place for distributing themes and plugins. 
+We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, (soon to be) native REST API, mobile readiness, and healthy market place for distributing themes and plugins.
 
 ---
 
 ##How to Install
-The goal of the project is to create a disciple-making CRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that. 
+The goal of the project is to create a disciple-making DRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
 
 ##Step 1
-- Download the plugin .zip file from the DMM-CRM-Plugin GitHub home page (https://github.com/ChasmSolutions/DMM-CRM-Plugin). Save it to your desktop of anywhere so that you can easily find it in a minute. 
+- Download the plugin .zip file from the Disciple-Tools GitHub home page (https://github.com/ChasmSolutions/disciple-tools). Save it to your desktop of anywhere so that you can easily find it in a minute. 
 
 ##Step 2
 - Open up your Wordpress site, login to your Admin Dashboard. 

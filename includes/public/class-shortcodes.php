@@ -2,13 +2,13 @@
 /*
  * Disciple Tools - Short Codes
  *
- * @class DTools_Function_Callback
+ * @class Disciple_Tools_Function_Callback
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
-class DTools_Function_Callback
+class Disciple_Tools_Function_Callback
 {
     /**
      * Class derived from:
@@ -22,26 +22,38 @@ class DTools_Function_Callback
      * @uses [dtools function="someFunction" include="custom/filetoinclude.php" param="something"]
      */
 
-    protected static $_instance;
+    /**
+     * Disciple_Tools_Function_Callback The single instance of Disciple_Tools_Function_Callback.
+     * @var 	object
+     * @access  private
+     * @since  0.1
+     */
+    private static $_instance = null;
 
     /**
-     * Protected constructor. Use {@link getInstance()} instead.
+     * Main Disciple_Tools_Function_Callback Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Function_Callback is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @see Disciple_Tools()
+     * @return Disciple_Tools_Function_Callback instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
+
+    /**
+     * Constructor function.
+     * @access  public
+     * @since   0.1
      */
     protected function __construct()
     {
-    }
-
-    public static final function getInstance()
-    {
-        if (!self::$_instance)
-        {
-            $class = __CLASS__;
-            self::$_instance = new $class;
-
-            self::$_instance->_initHooks();
-        }
-
-        return self::$_instance;
+        $this->_initHooks();
     }
 
     /**
@@ -52,6 +64,11 @@ class DTools_Function_Callback
         add_shortcode('dtools', array($this, 'shortcode_callback'));
     }
 
+    /**
+     * Loads the shortcode
+     *
+     * @since 0.1
+     */
     public function shortcode_callback($atts)
     {
 
@@ -76,10 +93,10 @@ class DTools_Function_Callback
             // Select the file to include
             switch ($atts['name']) {
                 case 'map';
-                    require_once('views/maps.php');
+                    require_once('../views/maps.php');
                     break;
                 case 'chart':
-                    require_once('views/charts.php');
+                    require_once('../views/charts.php');
                     break;
 
                 default:
@@ -123,6 +140,11 @@ class DTools_Function_Callback
         }
     }
 
+    /**
+     * Checks if the function is callable
+     *
+     * @return boolean
+     */
     protected function _isCallable($function)
     {
         if (strpos($function, '::'))

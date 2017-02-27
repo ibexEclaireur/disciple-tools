@@ -2,7 +2,7 @@
 /**
  * Dtools Maps
  *
- * @uses DTools_Function_Callback
+ * @uses Disciple_Tools_Function_Callback
  *
  */
 

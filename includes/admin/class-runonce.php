@@ -1,4 +1,10 @@
 <?php
+/**
+ * Simple helper class to set something to run once.
+ *
+ * @package Disciple_Tools
+ * @since 0.1
+ */
 
 if (!class_exists('run_once')){
     class run_once{

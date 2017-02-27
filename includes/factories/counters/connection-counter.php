@@ -2,7 +2,7 @@
 /**
  * Count first generations in database
  *
- * @package   DRM
+ * @package   Disciple_Tools
  * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @license   GPL-3.0
