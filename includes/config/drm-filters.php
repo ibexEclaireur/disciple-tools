@@ -191,7 +191,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 	          return;
 
 		// Enqueue Custom DMMCRM admin styles page
-	    wp_register_style( 'drm_admin_css', Disciple_Tools()->plugin_css . 'drm-admin-styles.css' );
+	    wp_register_style( 'drm_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
 	    wp_enqueue_style( 'drm_admin_css' );
 
 		// Enqueue Jquery UI CSS
@@ -200,7 +200,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 		// Enqueue Jquery UI
 	    wp_enqueue_script("jquery-ui-core");
-	    wp_enqueue_script( 'admin_scripts', Disciple_Tools()->plugin_js .'drm-admin.js', array('jquery', 'jquery-ui-core') );
+	    wp_enqueue_script( 'admin_scripts', Disciple_Tools()->plugin_js .'disciple-tools-admin.js', array('jquery', 'jquery-ui-core') );
 	     // No need to enqueue jQuery as it's already included in the WordPress admin by default
 
 	}

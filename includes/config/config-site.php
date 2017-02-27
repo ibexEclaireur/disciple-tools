@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 		$html = '    
 		    <style type="text/css">
 		        #login h1 a, .login h1 a {
-		            background-image: url(' . get_stylesheet_directory_uri() . '/img/drm.png);
+		            background-image: url(' . get_stylesheet_directory_uri() . '/img/disciple-tools-logo.png);
 		        }
 		    </style>';
 		return $html;

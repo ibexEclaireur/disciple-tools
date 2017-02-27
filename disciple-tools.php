@@ -217,7 +217,7 @@ class Disciple_Tools {
 		// Load security modifications to site.
         require_once ( 'includes/config/config-site.php');
 		// Load shortcodes
-        require_once('includes/class-shortcodes.php');
+        require_once('includes/classes/class-shortcodes.php');
         $this->shortcodes = Disciple_Tools_Function_Callback::instance();
 
         /* End overall site configuration section */
@@ -226,19 +226,19 @@ class Disciple_Tools {
 		 * Activation section
 		 *
 		 */
-        require_once( 'includes/factories/service-runonce.php' );
+        require_once('includes/classes/class-runonce.php');
         $this->run_once = new run_once;
 
 
         if ($this->run_once->run('activation') ) {
             // Roles and capabilities
-            require_once ('includes/config/config-roles.php');
+            require_once('includes/classes/class-roles.php');
             $this->roles = Disciple_Tools_Roles::instance();
             $this->roles->set_roles();
 
         }
 
-		register_activation_hook( __FILE__, array( $this, 'install' ) );
+		register_activation_hook( __FILE__, array( 'Disciple_Tools', 'install' ) );
         /* End Activation seciton */
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -294,8 +294,8 @@ class Disciple_Tools {
 	 * @access  public
 	 * @since   0.1
 	 */
-	public function install () {
-        $this->_log_version_number();
+	static function install () {
+        Disciple_Tools::instance()->_log_version_number();
     } // End install()
 
 	/**
