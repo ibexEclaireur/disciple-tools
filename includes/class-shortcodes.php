@@ -2,13 +2,13 @@
 /*
  * Disciple Tools - Short Codes
  *
- * @class DTools_Function_Callback
+ * @class Disciple_Tools_Function_Callback
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
-class DTools_Function_Callback
+class Disciple_Tools_Function_Callback
 {
     /**
      * Class derived from:
@@ -29,20 +29,15 @@ class DTools_Function_Callback
      */
     protected function __construct()
     {
+        $this->_initHooks();
     }
 
-    public static final function getInstance()
-    {
-        if (!self::$_instance)
-        {
-            $class = __CLASS__;
-            self::$_instance = new $class;
-
-            self::$_instance->_initHooks();
-        }
-
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
         return self::$_instance;
-    }
+    } // End instance()
+
 
     /**
      * Initializes WordPress hooks

@@ -172,7 +172,7 @@ class Disciple_Tools {
 
 		// Counters
 		require_once('includes/factories/counter-factory.php');
-		$this->counter = DT_Counter_Factory::instance();
+		$this->counter = Disciple_Tools_Counter_Factory::instance();
 
         /* End Admin configuration section */
 
@@ -217,8 +217,8 @@ class Disciple_Tools {
 		// Load security modifications to site.
         require_once ( 'includes/config/config-site.php');
 		// Load shortcodes
-        require_once ( 'includes/shortcodes.php');
-        $this->shortcodes = DTools_Function_Callback::getInstance();
+        require_once('includes/class-shortcodes.php');
+        $this->shortcodes = Disciple_Tools_Function_Callback::instance();
 
         /* End overall site configuration section */
 

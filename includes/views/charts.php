@@ -2,7 +2,7 @@
 /**
  * Dtools Charts
  *
- * @uses DTools_Function_Callback - Used in short codes
+ * @uses Disciple_Tools_Function_Callback - Used in short codes
  *
  */
 

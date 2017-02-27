@@ -11,10 +11,10 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class DT_Counter_Factory {
+class Disciple_Tools_Counter_Factory {
 
     /**
-     * DT_Counter_Factory The single instance of DT_Counter_Factory.
+     * Disciple_Tools_Counter_Factory The single instance of Disciple_Tools_Counter_Factory.
      * @var 	object
      * @access  private
      * @since 	0.1
@@ -22,12 +22,12 @@ class DT_Counter_Factory {
     private static $_instance = null;
 
     /**
-     * Main DT_Counter_Factory Instance
-     * Ensures only one instance of DT_Counter_Factory is loaded or can be loaded.
+     * Main Disciple_Tools_Counter_Factory Instance
+     * Ensures only one instance of Disciple_Tools_Counter_Factory is loaded or can be loaded.
      *
      * @since 0.1
      * @static
-     * @return DT_Counter_Factory
+     * @return Disciple_Tools_Counter_Factory
      */
     public static function instance () {
         if ( is_null( self::$_instance ) )
