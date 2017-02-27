@@ -284,7 +284,7 @@ final class DRM_Dashboard {
 	 */
 	public function generations_stats_widget (  ) {
 
-        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('generation_list') ); print '</pre>';
+//        print '<pre>'; print_r( DRM_Plugin()->counter->get_generation('generation_list') ); print '</pre>';
 
 		// Build counters
         $has_at_least_1 = DRM_Plugin()->counter->get_generation('has_one_or_more');
@@ -303,10 +303,11 @@ final class DRM_Dashboard {
 		$con_4gen = DRM_Plugin()->counter->get_generation('at_fourth');
         $con_5gen = DRM_Plugin()->counter->get_generation('at_fifth');
 
-		$gr_1gen = 'x';
-		$gr_2gen = 'x';
-		$gr_3gen = 'x';
-		$gr_4gen = 'x';
+        $has_0_groups = DRM_Plugin()->counter->get_generation('has_0', 'groups');
+		$gr_1gen = DRM_Plugin()->counter->get_generation('at_first', 'groups');
+		$gr_2gen = DRM_Plugin()->counter->get_generation('at_second', 'groups');
+		$gr_3gen = DRM_Plugin()->counter->get_generation('at_third', 'groups');
+		$gr_4gen = DRM_Plugin()->counter->get_generation('at_fourth', 'groups');
 
 		// Build HTML of widget
 		$html = '
@@ -386,6 +387,10 @@ final class DRM_Dashboard {
 							<tr>
 								<th><strong>GROUPS</strong></td>
 								<td></td>
+							</tr>
+							<tr>
+								<td>Has No Child Groups</td>
+								<td>'. $has_0_groups .'</td>
 							</tr>
 							<tr>
 								<td>1st Gen</td>

@@ -44,7 +44,7 @@ class Drm_Counter_Factory {
 	public function __construct ( ) {
 
 	    // Load required files
-	    require_once('counters/generations-counter.php');
+	    require_once('counters/connection-counter.php');
         require_once('counters/generations-status-counter.php');
 
     } // End __construct
@@ -157,55 +157,52 @@ class Drm_Counter_Factory {
 	}
 
 	/**
-	 * Get count of generations
+	 * Generations counting factory
 	 *
-	 *
+     * @param   number = 1,2,3 etc for $generation number
+     * @param   string = contacts or groups
+	 * @return number
 	 */
-    public function get_generation( $generation_number ) {
+    public function get_generation( $generation_number, $type = 'contacts' ) {
 
+        // Set the P2P type for selecting group or contacts
+        $type = $this->set_connection_type($type);
 
 	    switch($generation_number) {
 
-
-
-	        case 'has_zero':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has_zero();
-                break;
-
             case 'has_one_or_more':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has_at_least(1);
+                $gen_object = new drm_connection_counter();
+                $count = $gen_object->has_at_least(1, $type);
                 break;
 
             case 'has_two_or_more':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has_at_least(2);
+                $gen_object = new drm_connection_counter();
+                $count = $gen_object->has_at_least(2, $type);
                 break;
 
             case 'has_three_or_more':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has_at_least(3);
+                $gen_object = new drm_connection_counter();
+                $count = $gen_object->has_at_least(3, $type);
                 break;
 
             case 'has_0':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has_zero();
+                $gen_object = new drm_connection_counter();
+                $count = $gen_object->has_zero($type);
                 break;
 
             case 'has_1':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has(1);
+                $gen_object = new drm_connection_counter();
+                $count = $gen_object->has_exactly(1, $type);
                 break;
 
             case 'has_2':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has(2);
+                $gen_object = new drm_connection_counter();
+                $count = $gen_object->has_exactly(2, $type);
                 break;
 
             case 'has_3':
-                $gen_object = new drm_generations_counter();
-                $count = $gen_object->contact_has(3);
+                $gen_object = new drm_connection_counter();
+                $count = $gen_object->has_exactly(3, $type);
                 break;
 
             case 'generation_list':
@@ -215,32 +212,32 @@ class Drm_Counter_Factory {
 
             case 'at_zero':
                 $gen_object = new drm_generations_status_counter();
-                $count = $gen_object->contact_gen_level(0);
+                $count = $gen_object->gen_level(0, $type);
                 break;
 
             case 'at_first':
                 $gen_object = new drm_generations_status_counter();
-                $count = $gen_object->contact_gen_level(1);
+                $count = $gen_object->gen_level(1, $type);
                 break;
 
             case 'at_second':
                 $gen_object = new drm_generations_status_counter();
-                $count = $gen_object->contact_gen_level(2);
+                $count = $gen_object->gen_level(2, $type);
                 break;
 
             case 'at_third':
                 $gen_object = new drm_generations_status_counter();
-                $count = $gen_object->contact_gen_level(3);
+                $count = $gen_object->gen_level(3, $type);
                 break;
 
             case 'at_fourth':
                 $gen_object = new drm_generations_status_counter();
-                $count = $gen_object->contact_gen_level(4);
+                $count = $gen_object->gen_level(4, $type);
                 break;
 
             case 'at_fifth':
                 $gen_object = new drm_generations_status_counter();
-                $count = $gen_object->contact_gen_level(5);
+                $count = $gen_object->gen_level(5, $type);
                 break;
 
             default:
@@ -248,6 +245,23 @@ class Drm_Counter_Factory {
                 break;
         }
         return $count;
+    }
+
+    /**
+     * Sets the p2p_type for the where statement
+     *
+     * @param   string = 'contacts' or 'groups'
+     * @return  string
+     */
+    public function set_connection_type ($type) {
+        if ($type == 'contacts') {
+            $type = 'contacts_to_contacts';
+        } elseif ($type == 'groups') {
+            $type = 'groups_to_groups';
+        } else {
+            $type = '';
+        }
+        return $type;
     }
 
 

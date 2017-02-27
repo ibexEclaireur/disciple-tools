@@ -27,9 +27,9 @@ class drm_generations_status_counter  {
      * @param   number
      * @return  number
      */
-    public function contact_gen_level ($level) {
+    public function gen_level ($level, $type) {
         $i = 0;
-        $list = $this->generation_status_list();
+        $list = $this->generation_status_list($type);
 
         foreach($list as $item) {
             if($item == $level) {
@@ -46,7 +46,7 @@ class drm_generations_status_counter  {
      * @since   0.1
      * @return array
      */
-    public function generation_status_list () {
+    public function generation_status_list ($type = 'contacts_to_contacts') {
 
         // Load variables
         global $wpdb;
@@ -54,7 +54,7 @@ class drm_generations_status_counter  {
         $full_p2p_array = array();
 
         // Get records from P2P table
-        $p2p_array = $wpdb->get_results(" SELECT p2p_to, p2p_from FROM $wpdb->p2p WHERE p2p_type = 'contacts_to_contacts'", ARRAY_A);
+        $p2p_array = $wpdb->get_results(" SELECT p2p_to, p2p_from FROM $wpdb->p2p WHERE p2p_type = '$type'", ARRAY_A);
 
         // Prepare arrays of all people involved in discipleship
         $p2p_array_from = array_column ( $p2p_array , 'p2p_from');
