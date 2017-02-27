@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 
     // Adds the DRM Plugin after plugins load
-    add_action( 'plugins_loaded', 'DRM_Plugin' );
+    add_action( 'init', 'DRM_Plugin' );
 
     // Creates the instance
     function DRM_Plugin() {
