@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  */
 
     // Adds the Disciple_Tools Plugin after plugins load
-    add_action( 'init', 'Disciple_Tools' );
+    add_action( 'plugins_loaded', 'Disciple_Tools' );
 
     // Creates the instance
     function Disciple_Tools() {
