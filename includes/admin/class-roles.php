@@ -273,7 +273,7 @@ class Disciple_Tools_Roles {
     /*
     * Reset Roles on deactivation
     */
-    public function reset_dmm_roles () {
+    public function reset_roles () {
         delete_option('run_once');
 
         remove_role( 'dispatcher' );
