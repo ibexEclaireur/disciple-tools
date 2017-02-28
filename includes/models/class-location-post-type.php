@@ -12,10 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  * @author Chasm.Solutions & Kingdom.Training
  * @since 0.1
  */
-class Disciple_Tools_Group_Post_Type {
+class Disciple_Tools_Location_Post_Type {
 	/**
 	 * The post type token.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @var    string
 	 */
@@ -23,7 +23,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The post type singular label.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @var    string
 	 */
@@ -31,7 +31,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The post type plural label.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @var    string
 	 */
@@ -39,7 +39,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The post type args.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @var    array
 	 */
@@ -47,7 +47,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The taxonomies for this post type.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @var    array
 	 */
@@ -55,10 +55,10 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Constructor function.
-	 * @access public
+	 * @access portal
 	 * @since 0.1
 	 */
-	public function __construct( $post_type = 'groups', $singular = '', $plural = '', $args = array(), $taxonomies = array('Cities') ) {
+	public function __construct( $post_type = 'thing', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
 		$this->post_type = $post_type;
 		$this->singular = $singular;
 		$this->plural = $plural;
@@ -88,7 +88,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Register the post type.
-	 * @access public
+	 * @access portal
 	 * @return void
 	 */
 	public function register_post_type () {
@@ -118,38 +118,26 @@ class Disciple_Tools_Group_Post_Type {
 			'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
 			'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
 		);
-        $capabilities = array(
-            'edit_post'             => 'edit_group',
-            'read_post'             => 'read_group',
-            'delete_post'           => 'delete_group',
-            'delete_others_posts'   => 'delete_others_groups',
-            'delete_posts'          => 'delete_groups',
-            'edit_posts'            => 'edit_groups',
-            'edit_others_posts'     => 'edit_others_groups',
-            'publish_posts'         => 'publish_groups',
-            'read_private_posts'    => 'read_private_groups',
-        );
 
 		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
 		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
 		$defaults = array(
 			'labels' 				=> $labels,
-			'public' 				=> true,
+			'portal' 				=> true,
 			'publicly_queryable' 	=> true,
 			'show_ui' 				=> true,
 			'show_in_menu' 			=> true,
 			'query_var' 			=> true,
 			'rewrite' 				=> array( 'slug' => $single_slug ),
-			'capability_type' 		=> 'group',
-            'capabilities'          => $capabilities,
+			'capability_type' 		=> 'post',
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'thumbnail', 'comments', 'revisions' ),
+			'supports' 				=> array( 'title', 'comments' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
-			'rest_base'             => 'groups',
+			'rest_base'             => 'locations',
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
 		);
 
@@ -160,21 +148,20 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Register the "thing-category" taxonomy.
-	 * @access public
+	 * @access portal
 	 * @since  1.3.0
 	 * @return void
 	 */
 	public function register_taxonomy () {
-
-//		TODO: commented out taxonomies until we know how we want to use them.
+//		TODO: commented out taxonomies until we know how we want to use them. Chris
 //
-//      $this->taxonomies['groups-cities'] = new Disciple_Tools_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
-//		$this->taxonomies['groups-cities']->register();
+//      $this->taxonomies['locations-type'] = new Disciple_Tools_Taxonomy($post_type = 'locations', $token = 'locations-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
+//		$this->taxonomies['locations-type']->register();
 	} // End register_taxonomy()
 
 	/**
 	 * Add custom columns for the "manage" screen of this post type.
-	 * @access public
+	 * @access portal
 	 * @param string $column_name
 	 * @param int $id
 	 * @since  0.1
@@ -195,17 +182,18 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Add custom column headings for the "manage" screen of this post type.
-	 * @access public
+	 * @access portal
 	 * @param array $defaults
 	 * @since  0.1
 	 * @return void
 	 */
 	public function register_custom_column_headings ( $defaults ) {
-		$new_columns = array( 'location' => __( 'Location', 'disciple_tools' ) );
+//		$new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
+        $new_columns = array(); // TODO: restore above column once we know what columns we need to show.
 
 		$last_item = array();
 
-//		if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
+		if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
 
 		if ( count( $defaults ) > 2 ) {
 			$last_item = array_slice( $defaults, -1 );
@@ -255,17 +243,17 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Setup the meta box.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @return void
 	 */
 	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '-data', __( 'Group Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '-data', __( 'Location Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
 	} // End meta_box_setup()
 
 	/**
 	 * The contents of our meta box.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @return void
 	 */
@@ -285,8 +273,8 @@ class Disciple_Tools_Group_Post_Type {
 
 			foreach ( $field_data as $k => $v ) {
 				$data = $v['default'];
-				if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
-					$data = $fields[$k][0];
+				if ( isset( $fields['_' . $k] ) && isset( $fields['_' . $k][0] ) ) {
+					$data = $fields['_' . $k][0];
 				}
 				
 				$type = $v['type'];
@@ -333,10 +321,13 @@ class Disciple_Tools_Group_Post_Type {
 						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
 						$html .= '</td><tr/>' . "\n";
 					break;
+					
 		
 					default:
 					break;
 				}
+				
+				
 			}
 
 			$html .= '</tbody>' . "\n";
@@ -348,7 +339,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Save meta box fields.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @param int $post_id
 	 * @return int $post_id
@@ -383,89 +374,53 @@ class Disciple_Tools_Group_Post_Type {
 				${$f} = esc_url( ${$f} );
 			}
 
-			if ( get_post_meta( $post_id, $f ) == '' ) {
-				add_post_meta( $post_id, $f, ${$f}, true );
-			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-				update_post_meta( $post_id, $f, ${$f} );
+			if ( get_post_meta( $post_id, '_' . $f ) == '' ) {
+				add_post_meta( $post_id, '_' . $f, ${$f}, true );
+			} elseif( ${$f} != get_post_meta( $post_id, '_' . $f, true ) ) {
+				update_post_meta( $post_id, '_' . $f, ${$f} );
 			} elseif ( ${$f} == '' ) {
-				delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
+				delete_post_meta( $post_id, '_' . $f, get_post_meta( $post_id, '_' . $f, true ) );
 			}
 		}
 	} // End meta_box_save()
 
 	/**
 	 * Customise the "Enter title here" text.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @param string $title
 	 * @return void
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the title here', 'disciple_tools' );
+			$title = __( 'Enter the thing title here', 'disciple_tools' );
 		}
 		return $title;
 	} // End enter_title_here()
 
 	/**
 	 * Get the settings for the custom fields.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 * @return array
 	 */
 	public function get_custom_fields_settings () {
 		$fields = array();
-
-        $fields['type'] = array(
-            'name' => __( 'Type', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('DBS', 'Church'),
-            'section' => 'info'
-        );
-        $fields['generation'] = array(
-            'name' => __( 'Generation', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', '1st Generation', '2nd Generation', '3rd Generation', '4th Generation', '5+ Generation'),
-            'section' => 'info'
-        );
-		$fields['address'] = array(
-		    'name' => __( 'Address', 'disciple_tools' ),
-		    'description' => '',
+		
+		$fields['type'] = array(
+		    'name' => __( 'Types of Location', 'disciple_tools' ),
+		    'description' => __( 'Raw mapping coordinates.', 'disciple_tools' ),
+		    'type' => 'select',
+		    'default' => array('', 'Single Address', 'Polygon Area' ),
+		    'section' => 'info'
+		);
+		$fields['coordinates'] = array(
+		    'name' => __( 'Coordinates', 'disciple_tools' ),
+		    'description' => __( 'Raw mapping coordinates.', 'disciple_tools' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
-        $fields['city'] = array(
-            'name' => __( 'City', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['state'] = array(
-            'name' => __( 'State', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['zip'] = array(
-            'name' => __( 'Zip', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['country'] = array(
-            'name' => __( 'Country', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-
 
 		return apply_filters( 'drm_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
@@ -495,7 +450,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Register image sizes.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 */
 	public function register_image_sizes () {
@@ -506,7 +461,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Run on activation.
-	 * @access public
+	 * @access portal
 	 * @since 0.1
 	 */
 	public function activation () {
@@ -515,7 +470,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Flush the rewrite rules
-	 * @access public
+	 * @access portal
 	 * @since 0.1
 	 */
 	private function flush_rewrite_rules () {
@@ -525,7 +480,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Ensure that "post-thumbnails" support is available for those themes that don't register it.
-	 * @access public
+	 * @access portal
 	 * @since  0.1
 	 */
 	public function ensure_post_thumbnails_support () {

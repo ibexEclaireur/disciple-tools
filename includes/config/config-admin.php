@@ -65,7 +65,7 @@ final class Disciple_Tools_Admin {
 	 * @return  void
 	 */
 	public function register_settings_screen () {
-		$this->_hook = add_submenu_page( 'options-general.php', __( 'Disciple_Tools Settings', 'disciple_tools' ), __( 'Disciple_Tools Settings', 'disciple_tools' ), 'manage_options', 'disciple_tools', array( $this, 'settings_screen' ) );
+		$this->_hook = add_submenu_page( 'options-general.php', __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_options', 'disciple_tools', array( $this, 'settings_screen' ) );
 	} // End register_settings_screen()
 
 	/**
@@ -79,14 +79,14 @@ final class Disciple_Tools_Admin {
 		$sections = Disciple_Tools()->settings->get_settings_sections();
 		$tab = $this->_get_current_tab( $sections );
 		?>
-		<div class="wrap drm-wrap">
+		<div class="wrap dt-wrap">
 			<?php
 				echo $this->get_admin_header_html( $sections, $title );
 			?>
 			<form action="options.php" method="post">
 				<?php
-					settings_fields( 'drm-settings-' . $tab );
-					do_settings_sections( 'drm-' . $tab );
+					settings_fields( 'dt-settings-' . $tab );
+					do_settings_sections( 'dt-' . $tab );
 					submit_button( __( 'Save Changes', 'disciple_tools' ) );
 				?>
 			</form>
@@ -104,8 +104,8 @@ final class Disciple_Tools_Admin {
 		$sections = Disciple_Tools()->settings->get_settings_sections();
 		if ( 0 < count( $sections ) ) {
 			foreach ( $sections as $k => $v ) {
-				register_setting( 'drm-settings-' . sanitize_title_with_dashes( $k ), 'drm-' . $k, array( $this, 'validate_settings' ) );
-				add_settings_section( sanitize_title_with_dashes( $k ), $v, array( $this, 'render_settings' ), 'drm-' . $k, $k, $k );
+				register_setting( 'dt-settings-' . sanitize_title_with_dashes( $k ), 'dt-' . $k, array( $this, 'validate_settings' ) );
+				add_settings_section( sanitize_title_with_dashes( $k ), $v, array( $this, 'render_settings' ), 'dt-' . $k, $k, $k );
 			}
 		}
 	} // End register_settings()
@@ -126,7 +126,7 @@ final class Disciple_Tools_Admin {
 				$args 		= $v;
 				$args['id'] = $k;
 
-				add_settings_field( $k, $v['name'], array( Disciple_Tools()->settings, 'render_field' ), 'drm-' . $token , $v['section'], $args );
+				add_settings_field( $k, $v['name'], array( Disciple_Tools()->settings, 'render_field' ), 'dt-' . $token , $v['section'], $args );
 			}
 		}
 	} // End render_settings()
@@ -155,7 +155,7 @@ final class Disciple_Tools_Admin {
 	public function get_admin_header_html ( $sections, $title ) {
 		$defaults = array(
 							'tag' => 'h2',
-							'atts' => array( 'class' => 'drm-wrapper' ),
+							'atts' => array( 'class' => 'dt-wrapper' ),
 							'content' => $title
 						);
 
@@ -206,7 +206,7 @@ final class Disciple_Tools_Admin {
 	 * @return  array 			 An array of data with which to mark up the header HTML.
 	 */
 	private function _get_admin_header_data ( $sections, $title ) {
-		$response = array( 'tag' => 'h2', 'atts' => array( 'class' => 'drm-wrapper' ), 'content' => $title );
+		$response = array( 'tag' => 'h2', 'atts' => array( 'class' => 'dt-wrapper' ), 'content' => $title );
 
 		if ( is_array( $sections ) && 1 < count( $sections ) ) {
 			$response['content'] = '';
@@ -220,11 +220,11 @@ final class Disciple_Tools_Admin {
 					$class .= ' nav-tab-active';
 				}
 
-				$response['content'] .= '<a href="' . admin_url( 'options-general.php?page=drm&tab=' . sanitize_title_with_dashes( $key ) ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $value ) . '</a>';
+				$response['content'] .= '<a href="' . admin_url( 'options-general.php?page=disciple_tools&tab=' . sanitize_title_with_dashes( $key ) ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $value ) . '</a>';
 			}
 		}
 
-		return (array)apply_filters( 'drm-get-admin-header-data', $response );
+		return (array)apply_filters( 'dt-get-admin-header-data', $response );
 	} // End _get_admin_header_data()
 
 

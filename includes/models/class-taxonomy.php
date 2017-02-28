@@ -55,7 +55,7 @@ class Disciple_Tools_Taxonomy {
 
 	/**
 	 * Class constructor.
-	 * @access  public
+	 * @access  portal
 	 * @since   1.3.0
 	 * @param   string $post_type The post type key.
 	 * @param   string $token     The taxonomy key.
@@ -82,7 +82,7 @@ class Disciple_Tools_Taxonomy {
 	 * @return  array Default arguments.
 	 */
 	private function _get_default_args () {
-		return array( 'labels' => $this->_get_default_labels(), 'public' => true, 'hierarchical' => true, 'show_ui' => true, 'show_admin_column' => true, 'query_var' => true, 'show_in_nav_menus' => false, 'show_tagcloud' => false );
+		return array( 'labels' => $this->_get_default_labels(), 'portal' => true, 'hierarchical' => true, 'show_ui' => true, 'show_admin_column' => true, 'query_var' => true, 'show_in_nav_menus' => false, 'show_tagcloud' => false );
 	} // End _get_default_args()
 
 	/**
@@ -109,7 +109,7 @@ class Disciple_Tools_Taxonomy {
 
 	/**
 	 * Register the taxonomy.
-	 * @access  public
+	 * @access  portal
 	 * @since   1.3.0
 	 * @return  void
 	 */
