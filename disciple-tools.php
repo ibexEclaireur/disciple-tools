@@ -197,22 +197,22 @@ class Disciple_Tools {
 			$this->settings = Disciple_Tools_Settings::instance();
 
             // Load plugin library that "requires plugins" at activation
-            require_once ( 'includes/config/config-required-plugins.php' );
+            require_once('includes/admin/config-required-plugins.php');
 
             // Load Disciple_Tools Dashboard configurations
-            require_once ( 'includes/config/config-dashboard.php' );
+            require_once('includes/admin/config-dashboard.php');
 			$this->admin = Disciple_Tools_Dashboard::instance();
 
             // Load multiple column configuration library into screen options area.
-            require_once('includes/config/three-column-screen-layout.php');
+            require_once ('includes/admin/three-column-screen-layout.php');
 
             // Load report pages
-            require_once('includes/admin/class-page-factory.php'); // Factory class for page building
-            require_once('includes/admin/reports-funnel.php');
-            $this->reports_connections= Disciple_Tools_Funnel_Reports::instance();
-            require_once('includes/admin/reports-media.php');
+            require_once ('includes/admin/class-page-factory.php'); // Factory class for page building
+            require_once ('includes/admin/reports-funnel.php');
+            $this->reports_funnel = Disciple_Tools_Funnel_Reports::instance();
+            require_once ('includes/admin/reports-media.php');
             $this->reports_media = Disciple_Tools_Media_Reports::instance();
-            require_once('includes/admin/reports-project.php');
+            require_once ('includes/admin/reports-project.php');
             $this->reports_project = Disciple_Tools_Project_Reports::instance();
 
             // Load Functions
@@ -221,7 +221,6 @@ class Disciple_Tools {
             require_once ('includes/functions/profile.php');
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/media.php');
-
         }
         /* End Admin configuration section */
 
@@ -233,26 +232,36 @@ class Disciple_Tools {
          * @posttype Groups
          * @posttype Locations
          * @taxonomies
-         * @postconnector   P2P connection
-         *
+         * @service   Post to Post connections
+         * @service User groups via taxonomies
          */
-        require_once('includes/models/class-contact-post-type.php');
-        require_once('includes/models/class-group-post-type.php');
-        /*require_once( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
-        require_once('includes/models/class-taxonomy.php');
+        // Register Post types
+        require_once ('includes/models/class-contact-post-type.php');
+        require_once ('includes/models/class-group-post-type.php');
+            /*require_once ( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
+        require_once ('includes/models/class-taxonomy.php');
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-        /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
+            /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
+
         // Creates the post to post relationship between the post type tables.
-        require_once('includes/models/config-p2p.php');
+        require_once ('includes/models/config-p2p.php');
         require_once ('includes/plugins/posts-to-posts/posts-to-posts.php');
+
+        // User Groups
+        require_once ( 'includes/models/class-user-taxonomy.php' );
+        require_once ( 'includes/functions/user-groups-admin.php' );
+        require_once ( 'includes/functions/user-groups-common.php' );
+        require_once ( 'includes/functions/user-groups-taxonomies.php' );
+        require_once ( 'includes/functions/user-groups-hooks.php' );
+
         /* End model configuration section */
 
 
         /*
          * Factories
          */
-        require_once('includes/factories/class-counter-factory.php');
+        require_once ('includes/factories/class-counter-factory.php');
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
 
@@ -264,7 +273,7 @@ class Disciple_Tools {
 
 
 		// Load shortcodes
-        require_once('includes/portal/class-shortcodes.php');
+        require_once ('includes/portal/class-shortcodes.php');
         $this->shortcodes = Disciple_Tools_Function_Callback::instance();
 
 

@@ -46,7 +46,7 @@ class Disciple_Tools_Funnel_Reports {
      */
     public function __construct () {
         // Build page
-        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Funnel','disciple_tools'),__('Funnel Report','disciple_tools'), 'read','funnel_report' );
+        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Funnel Stats','disciple_tools'),__('Funnel Stats','disciple_tools'), 'read','funnel_report' );
         // Build Boxes
         add_action('add_meta_boxes', array($this, 'page_metaboxes') );
     } // End __construct()
@@ -55,17 +55,298 @@ class Disciple_Tools_Funnel_Reports {
     //Add some metaboxes to the page
     public function page_metaboxes(){
 
-        add_meta_box('example1','Example 1', array($this, 'example_metabox'),'dashboard_page_funnel_report','normal','high');
-        add_meta_box('example2','Example 2', array($this, 'example_metabox'),'dashboard_page_funnel_report','side','high');
-        add_meta_box('example3','Example 3', array($this, 'example_metabox'),'dashboard_page_funnel_report','side','low');
+        add_meta_box('critical_path_stats','Critical Path', array($this, 'critical_path_stats'),'dashboard_page_funnel_report','normal','high');
+        add_meta_box('generation_stats','Generation Stats', array($this, 'generations_stats_widget'),'dashboard_page_funnel_report','normal','high');
+        add_meta_box('contact_stats','Contact Stats', array($this, 'contacts_stats_widget'),'dashboard_page_funnel_report','normal','low');
+        add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_funnel_report','side','high');
     }
 
-    //Define the insides of the metabox
-    public function example_metabox(){
-        ?>
-        <p> An example of a metabox <p>
-        <?php
+    /**
+     * Movement funnel path dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function critical_path_stats ( ) {
 
+        // Build variables
+        $prayer = 'x';
+        $facebook = 'x';
+        $websites = 'x';
+        $new_contacts = Disciple_Tools()->counter->contacts_post_status('publish');
+        $conacts_attempted = 'x';
+        $contacts_established = 'x';
+        $first_meetings = 'x';
+        $baptisms = 'x';
+        $baptizers = 'x';
+        $active_churches = 'x';
+        $church_planters = 'x';
+
+        // Build html
+        $html = '
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Progress</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="#">Prayers Network</a></td>
+								<td>'.$prayer.'</td>
+								
+							</tr>
+							<tr>
+								<td><a href="#">Facebook Engagement</a></td>
+								<td>'.$facebook.'</td>
+								
+							</tr>
+							<tr>
+								<td><a href="#">Website Visitors</a></td>
+								<td>'.$websites.'</td>
+								
+							</tr>
+							<tr>
+								<td><a href="#">New Contacts</a></td>
+								<td>'.$new_contacts.'</td>
+							</tr>
+							<tr>
+								<td><a href="#">Contact Attempted</a></td>
+								<td>'.$conacts_attempted.'</td>
+							</tr>
+							<tr>
+								<td><a href="#">Contact Established</a></td>
+								<td>'.$contacts_established.'</td>
+							</tr>
+							<tr>
+								<td><a href="#">First Meeting Complete</a></td>
+								<td>'.$first_meetings.'</td>
+							</tr>
+							<tr>
+								<td><a href="#">Baptisms</a></td>
+								<td>'.$baptisms.'</td>
+							</tr>
+							<tr>
+								<td><a href="#">Baptizers</a></td>
+								<td>'.$baptizers.'</td>
+							</tr>
+							<tr>
+								<td><a href="#">Active Churches</a></td>
+								<td>'.$active_churches.'</td>
+							</tr>
+							<tr>
+								<td><a href="#">Church Planters</a></td>
+								<td>'.$church_planters.'</td>
+							</tr>
+							
+						</tbody>
+					</table>
+			';
+
+        echo $html;
+    }
+
+    /**
+     * Generations stats dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function generations_stats_widget (  ) {
+
+//        print '<pre>'; print_r( Disciple_Tools()->counter->get_generation('generation_list') ); print '</pre>';
+
+        // Build counters
+        $has_at_least_1 = Disciple_Tools()->counter->get_generation('has_one_or_more');
+        $has_at_least_2 = Disciple_Tools()->counter->get_generation('has_two_or_more');
+        $has_more_than_2 = Disciple_Tools()->counter->get_generation('has_three_or_more');
+
+        $has_0 = Disciple_Tools()->counter->get_generation('has_0');
+        $has_1 = Disciple_Tools()->counter->get_generation('has_1');
+        $has_2 = Disciple_Tools()->counter->get_generation('has_2');
+        $has_3 = Disciple_Tools()->counter->get_generation('has_3');
+
+        $con_0gen = Disciple_Tools()->counter->get_generation('at_zero');
+        $con_1gen = Disciple_Tools()->counter->get_generation('at_first');
+        $con_2gen = Disciple_Tools()->counter->get_generation('at_second');
+        $con_3gen = Disciple_Tools()->counter->get_generation('at_third');
+        $con_4gen = Disciple_Tools()->counter->get_generation('at_fourth');
+        $con_5gen = Disciple_Tools()->counter->get_generation('at_fifth');
+
+        $has_0_groups = Disciple_Tools()->counter->get_generation('has_0', 'groups');
+        $gr_1gen = Disciple_Tools()->counter->get_generation('at_first', 'groups');
+        $gr_2gen = Disciple_Tools()->counter->get_generation('at_second', 'groups');
+        $gr_3gen = Disciple_Tools()->counter->get_generation('at_third', 'groups');
+        $gr_4gen = Disciple_Tools()->counter->get_generation('at_fourth', 'groups');
+
+
+
+        // Build HTML of widget
+        $html = ' 
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Count</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+						    <tr>
+								<th><strong>HAS AT LEAST</strong></th>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Has at least 1 disciple</td>
+								<td>'. $has_at_least_1 .'</td>
+							</tr>
+							<tr>
+								<td>Has at least 2 disciples</td>
+								<td>'. $has_at_least_2 .'</td>
+							</tr>
+							<tr>
+								<td>Has more than 2 disciples</td>
+								<td>'. $has_more_than_2 .'</td>
+							</tr>
+							<tr>
+								<td><strong>HAS</strong></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Has No Disciples</td>
+								<td>'. $has_0 .'</td>
+							</tr>
+							<tr>
+								<td>Has 1 Disciple</td>
+								<td>'. $has_1 .'</td>
+							</tr>
+							<tr>
+								<td>Has 2 Disciples</td>
+								<td>'. $has_2 .'</td>
+							</tr>
+							<tr>
+								<td>Has 3 Disciples</td>
+								<td>'. $has_3 .'</td>
+							</tr>
+							<tr>
+								<th><strong>CONTACTS</strong></th>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Zero Gen</td>
+								<td>'. $con_0gen .'</td>
+							</tr>
+							<tr>
+								<td>1st Gen</td>
+								<td>'. $con_1gen .'</td>
+							</tr>
+							<tr>
+								<td>2nd Gen</td>
+								<td>'. $con_2gen .'</td>
+							</tr>
+							<tr>
+								<td>3rd Gen</td>
+								<td>'. $con_3gen .'</td>
+							</tr>
+							<tr>
+								<td>4th Gen</td>
+								<td>'. $con_4gen .'</td>
+							</tr>
+							<tr>
+								<td>5th Gen</td>
+								<td>'. $con_5gen .'</td>
+							</tr>
+							<tr>
+								<th><strong>GROUPS</strong></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Has No Child Groups</td>
+								<td>'. $has_0_groups .'</td>
+							</tr>
+							<tr>
+								<td>1st Gen</td>
+								<td>'. $gr_1gen .'</td>
+							</tr>
+							<tr>
+								<td>2nd Gen</td>
+								<td>'. $gr_2gen .'</td>
+							</tr>
+							<tr>
+								<td>3rd Gen</td>
+								<td>'. $gr_3gen .'</td>
+							</tr>
+							<tr>
+								<td>4th Gen</td>
+								<td>'. $gr_4gen .'</td>
+							</tr>
+						</tbody>
+					</table>
+			';
+        echo $html;
+    }
+
+    /**
+     * Contact stats dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function contacts_stats_widget () {
+
+        // Build counters
+        $contacts_count = Disciple_Tools()->counter->contacts_post_status();
+        $unassigned = Disciple_Tools()->counter->contacts_overall_status('unassigned');
+        $accepted = Disciple_Tools()->counter->contacts_overall_status('accepted');
+
+        // Build HTML of widget
+        $html = '
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Progress</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Active Contacts</td>
+								<td>'. $contacts_count->publish .'</td>
+								
+							</tr>
+							<tr>
+								<td>Draft Contacts</td>
+								<td>'. $contacts_count->draft .'</td>
+								
+							</tr>
+							<tr>
+								<td>Unassigned</td>
+								<td>'. $unassigned .'</td>
+							</tr>
+							<tr>
+								<td>Accepted</td>
+								<td>'. $accepted .'</td>
+							</tr>
+						</tbody>
+					</table>
+			';
+        echo $html;
+    }
+
+    public function page_notes () {
+        $html = '
+            <p>The funnel stats report summarizes the contacts and milestones within the disciple making movement project.</p>
+            <hr>
+            <p>Funnel stats box highlights the critical path of seekers through the system.</p>
+            <hr>
+            <p>Generations stats box highlights the generation status of contacts through the system.</p>
+            <hr>
+            <p>Contacts stats box highlights the current status of contacts.</p>
+        ';
+        echo $html;
     }
 
 }

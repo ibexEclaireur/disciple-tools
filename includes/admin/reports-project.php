@@ -47,7 +47,7 @@ class Disciple_Tools_Project_Reports {
     public function __construct () {
         // Load Admin menus
         require_once('class-page-factory.php');
-        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Report','disciple_tools'),__('Project Report','disciple_tools'), 'manage_options','project_report' );
+        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Stats','disciple_tools'),__('Project Stats','disciple_tools'), 'manage_options','project_report' );
 
         add_action('add_meta_boxes', array($this, 'page_metaboxes') );
     } // End __construct()
@@ -56,17 +56,115 @@ class Disciple_Tools_Project_Reports {
     //Add some metaboxes to the page
     public function page_metaboxes(){
 
-        add_meta_box('example1','Example 1', array($this, 'dt_example_metabox'),'dashboard_page_project_report','normal','high');
-        add_meta_box('example2','Example 2', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','high');
-        add_meta_box('example3','Example 3', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','low');
+
+        add_meta_box('system_stats','System Stats', array($this, 'system_stats_widget'),'dashboard_page_project_report','normal','high');
+        add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_project_report','side','high');
     }
 
-    //Define the insides of the metabox
-    public function dt_example_metabox(){
-        ?>
-        <p> An example of a metabox <p>
-        <?php
+    /**
+     * System stats dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function system_stats_widget (  ) {
 
+        // Build counters
+        $system_users = count_users();
+        $dispatchers = $system_users['avail_roles']['dispatcher'];
+        $marketers = $system_users['avail_roles']['marketer'];
+        $multipliers = $system_users['avail_roles']['multiplier'];
+        $multiplier_leader = $system_users['avail_roles']['multiplier_leader'];
+        $prayer_supporters = $system_users['avail_roles']['prayer_supporter'];
+        $project_supporters = $system_users['avail_roles']['project_supporter'];
+        $registered = $system_users['avail_roles']['registered'];
+
+        $monitored_websites = 'x';
+        $monitored_facebook_pages = 'x';
+
+        $comments = wp_count_comments();
+        $comments = $comments->total_comments;
+
+        $comments_for_dispatcher = 'x';
+
+        // Build HTML of widget
+        $html = '
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Progress</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>System Users</td>
+								<td>'. $system_users['total_users'] .'</td>
+							</tr>
+							<tr>
+								<td>Dispatchers</td>
+								<td>'. $dispatchers .'</td>
+							</tr>
+							<tr>
+								<td>Marketers</td>
+								<td>'. $marketers .'</td>
+							</tr>
+							<tr>
+								<td>Multipliers</td>
+								<td>'. $multipliers .'</td>
+							</tr>
+							<tr>
+								<td>Multiplier Leaders</td>
+								<td>'. $multiplier_leader .'</td>
+							</tr>
+							<tr>
+								<td>Prayer Supporters</td>
+								<td>'. $prayer_supporters .'</td>
+							</tr>
+							<tr>
+								<td>Project Supporters</td>
+								<td>'. $project_supporters .'</td>
+							</tr>
+							<tr>
+								<td>Registered</td>
+								<td>'. $registered .'</td>
+							</tr>
+							<tr>
+								<td>Monitored Websites</td>
+								<td>'. $monitored_websites .'</td>
+							</tr>
+							<tr>
+								<td>Monitored Facebook</td>
+								<td>'. $monitored_facebook_pages .'</td>
+							</tr>
+							<tr>
+								<td>Comments</td>
+								<td>'. $comments .'</td>
+							</tr>
+							<tr>
+								<td>Comments for @dispatcher</td>
+								<td>'. $comments_for_dispatcher .'</td>
+							</tr>
+						</tbody>
+					</table>
+			';
+        echo $html;
+    }
+
+    public function page_notes () {
+        $html = '
+            <p>Project stats summarizes the people and activities within the disciple making movement project.</p>
+            <ul>
+                <li>
+                    Project statistics covers...
+                </li>
+                <li>
+                    System statistics covers counts of features inside the Disciple Tools system.
+                </li>
+            </ul>
+        ';
+        echo $html;
     }
 
 }
