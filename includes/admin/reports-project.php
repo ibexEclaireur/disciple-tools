@@ -46,7 +46,6 @@ class Disciple_Tools_Project_Reports {
      */
     public function __construct () {
         // Load Admin menus
-        require_once('class-page-factory.php');
         $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Stats','disciple_tools'),__('Project Stats','disciple_tools'), 'manage_options','project_report' );
 
         add_action('add_meta_boxes', array($this, 'page_metaboxes') );
@@ -55,9 +54,8 @@ class Disciple_Tools_Project_Reports {
 
     //Add some metaboxes to the page
     public function page_metaboxes(){
-
-
         add_meta_box('system_stats','System Stats', array($this, 'system_stats_widget'),'dashboard_page_project_report','normal','high');
+        add_meta_box('team_stats','Team Stats', array($this, 'team_stats_widget'),'dashboard_page_project_report','normal','high');
         add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_project_report','side','high');
     }
 
@@ -164,6 +162,21 @@ class Disciple_Tools_Project_Reports {
                 </li>
             </ul>
         ';
+        echo $html;
+    }
+
+    public function team_stats_widget () {
+
+        $userID = get_current_user_id();
+        $term = get_term_by('slug', 'team-1', 'user-group' );
+
+//        print $userID;
+        print $term->name . ' has ' . $term->count . ' users ';
+
+
+        $html ='';
+
+
         echo $html;
     }
 

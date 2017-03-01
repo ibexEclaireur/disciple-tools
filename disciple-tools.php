@@ -207,7 +207,7 @@ class Disciple_Tools {
             require_once ('includes/admin/three-column-screen-layout.php');
 
             // Load report pages
-            require_once ('includes/admin/class-page-factory.php'); // Factory class for page building
+            require_once('includes/factories/class-page-factory.php'); // Factory class for page building
             require_once ('includes/admin/reports-funnel.php');
             $this->reports_funnel = Disciple_Tools_Funnel_Reports::instance();
             require_once ('includes/admin/reports-media.php');
