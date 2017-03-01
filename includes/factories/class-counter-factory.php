@@ -38,7 +38,7 @@ class Disciple_Tools_Counter_Factory {
 	/**
 	 * Constructor function
 	 *
-	 * @access  public
+	 * @access  portal
 	 * @since   0.1
 	 */
 	public function __construct ( ) {
@@ -52,7 +52,7 @@ class Disciple_Tools_Counter_Factory {
 	/**
 	 * Returns count of contacts publish status
 	 *
-	 * @access  public
+	 * @access  portal
 	 * @since   0.1
 	 */
 	public function contacts_post_status ($status = '') {
@@ -110,7 +110,7 @@ class Disciple_Tools_Counter_Factory {
 	 * Get Count from Meta Data in Contacts
 	 *
 	 * @returns number
-	 * @access  public
+	 * @access  portal
 	 * @since   0.1
 	 */
 	public function contacts_overall_status ($status = 'unassigned') {

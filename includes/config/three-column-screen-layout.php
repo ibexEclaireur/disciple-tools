@@ -32,7 +32,7 @@ if (!class_exists('Disciple_Tools_Three_Column_Screen_Layout')) {
 			register_deactivation_hook(__FILE__, array($this, 'deactivate'));
 			if (function_exists('get_bloginfo') && version_compare(get_bloginfo('version'), '3.4') >= 0) {
 				global $pagenow;
-				if (is_admin() && in_array($pagenow, array('post.php', 'post-new.php')) && in_array('contacts', array('contacts'))) {
+				if (is_admin() && in_array($pagenow, array('post.php', 'post-new.php', 'index.php?page=media-report')) && in_array('contacts', array('contacts') )  ) {
 					add_action('admin_head', array($this, 'admin_head'));
 					add_action('admin_footer', array($this, 'admin_footer'));
 					add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));

@@ -48,7 +48,7 @@ class Disciple_Tools_Function_Callback
 
     /**
      * Constructor function.
-     * @access  public
+     * @access  portal
      * @since   0.1
      */
     protected function __construct()
