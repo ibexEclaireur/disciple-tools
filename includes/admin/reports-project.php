@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_Project_Reports {
 
+//    private $page;
+
     /**
      * Disciple_Tools_Project_Reports The single instance of Disciple_Tools_Project_Reports.
      * @var 	object
@@ -43,12 +45,28 @@ class Disciple_Tools_Project_Reports {
      * @since   0.1
      */
     public function __construct () {
+        // Load Admin menus
+        require_once('class-page-factory.php');
+        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Report','disciple_tools'),__('Project Report','disciple_tools'), 'manage_options','project_report' );
 
+        add_action('add_meta_boxes', array($this, 'page_metaboxes') );
     } // End __construct()
 
-    public function run_reports () {
-        $html = 'Project Reports';
-        return $html;
+
+    //Add some metaboxes to the page
+    public function page_metaboxes(){
+
+        add_meta_box('example1','Example 1', array($this, 'dt_example_metabox'),'dashboard_page_project_report','normal','high');
+        add_meta_box('example2','Example 2', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','high');
+        add_meta_box('example3','Example 3', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','low');
+    }
+
+    //Define the insides of the metabox
+    public function dt_example_metabox(){
+        ?>
+        <p> An example of a metabox <p>
+        <?php
+
     }
 
 }

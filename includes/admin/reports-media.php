@@ -14,6 +14,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_Media_Reports {
 
+//    private $page;
+
     /**
      * Disciple_Tools_Media_Reports The single instance of Disciple_Tools_Media_Reports.
      * @var 	object
@@ -25,7 +27,7 @@ class Disciple_Tools_Media_Reports {
     /**
      * Main Disciple_Tools_Media_Reports Instance
      *
-     * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Media_Reports is loaded or can be loaded.
      *
      * @since 0.1
      * @static
@@ -43,13 +45,28 @@ class Disciple_Tools_Media_Reports {
      * @since   0.1
      */
     public function __construct () {
+        // Load Admin menus
+        require_once('class-page-factory.php');
+        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Media Report','disciple_tools'),__('Media Report','disciple_tools'), 'manage_options','media_report' );
 
+        add_action('add_meta_boxes', array($this, 'page_metaboxes') );
     } // End __construct()
 
-    public function run_reports () {
+
+    //Add some metaboxes to the page
+    public function page_metaboxes(){
+
+        add_meta_box('example1','Example 1', array($this, 'example_metabox'),'dashboard_page_media_report','normal','high');
+        add_meta_box('example2','Example 2', array($this, 'example_metabox'),'dashboard_page_media_report','side','high');
+        add_meta_box('example3','Example 3', array($this, 'example_metabox'),'dashboard_page_media_report','side','low');
+    }
+
+    //Define the insides of the metabox
+    public function example_metabox(){
         ?>
-               Content
+        <p> An example of a metabox <p>
         <?php
+
     }
 
 }

@@ -175,7 +175,7 @@ class Disciple_Tools {
 		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'img/';
 		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'js/';
 		$this->plugin_css       = plugin_dir_url( __FILE__ ) . 'css/';
-        $this->includes         = plugin_dir_path( __FILE__ ) . 'includes/';
+        $this->includes         = plugin_dir_url( __FILE__ ) . 'includes/';
         $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
 
         /* End prep variables */
@@ -206,9 +206,14 @@ class Disciple_Tools {
             // Load multiple column configuration library into screen options area.
             require_once('includes/config/three-column-screen-layout.php');
 
-            // Load Admin menus
-            require_once ('includes/config/class-admin-menus.php');
-            $this->admin_menus = Disciple_Tools_Admin_Menus::instance();
+            // Load report pages
+            require_once('includes/admin/class-page-factory.php'); // Factory class for page building
+            require_once('includes/admin/reports-funnel.php');
+            $this->reports_connections= Disciple_Tools_Funnel_Reports::instance();
+            require_once('includes/admin/reports-media.php');
+            $this->reports_media = Disciple_Tools_Media_Reports::instance();
+            require_once('includes/admin/reports-project.php');
+            $this->reports_project = Disciple_Tools_Project_Reports::instance();
 
             // Load Functions
             require_once ('includes/functions/hide-contacts.php');
@@ -217,7 +222,6 @@ class Disciple_Tools {
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/media.php');
 
-//            require_once ('includes/admin/class-user-edit.php');
         }
         /* End Admin configuration section */
 
