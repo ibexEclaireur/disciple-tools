@@ -60,6 +60,8 @@ final class Disciple_Tools_Dashboard {
 	 */
 	public function add_dmm_widgets() {
 
+
+
 		/* Add custom dashboard widgets */
 		wp_add_dashboard_widget('new_contacts_widget', 'New Contacts', array( $this, 'new_contacts_dashboard_widget' ) );
 		wp_add_dashboard_widget('updates_needed_widget', 'Updates Needed', array( $this, 'update_needed_dashboard_widget' ) );
@@ -71,6 +73,10 @@ final class Disciple_Tools_Dashboard {
 
 		add_filter( 'dashboard_recent_posts_query_args', array( $this, 'add_page_to_dashboard_activity') );
 	}
+
+    function media_reports_menu() {
+        add_dashboard_page('My Plugin Dashboard', 'My Plugin', 'read', 'my-unique-identifier', 'my_plugin_function');
+    }
 
 	/**
 	 * New Contacts Dashboard Widget
@@ -309,8 +315,10 @@ final class Disciple_Tools_Dashboard {
 		$gr_3gen = Disciple_Tools()->counter->get_generation('at_third', 'groups');
 		$gr_4gen = Disciple_Tools()->counter->get_generation('at_fourth', 'groups');
 
+
+
 		// Build HTML of widget
-		$html = '
+		$html = ' 
 			<table class="widefat striped ">
 						<thead>
 							<tr>

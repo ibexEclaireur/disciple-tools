@@ -172,11 +172,12 @@ class Disciple_Tools {
 		$this->version 			= '0.1';
 		$this->plugin_url 		= plugin_dir_url( __FILE__ );
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
-		$this->plugin_img       = plugin_dir_url( __FILE__ ) . '/img/';
-		$this->plugin_js        = plugin_dir_url( __FILE__ ) . '/js/';
-		$this->plugin_css       = plugin_dir_url( __FILE__ ) . '/css/';
-        $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
+		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'img/';
+		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'js/';
+		$this->plugin_css       = plugin_dir_url( __FILE__ ) . 'css/';
         $this->includes         = plugin_dir_path( __FILE__ ) . 'includes/';
+        $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
+
         /* End prep variables */
 
 
@@ -204,6 +205,10 @@ class Disciple_Tools {
 
             // Load multiple column configuration library into screen options area.
             require_once('includes/config/three-column-screen-layout.php');
+
+            // Load Admin menus
+            require_once ('includes/config/class-admin-menus.php');
+            $this->admin_menus = Disciple_Tools_Admin_Menus::instance();
 
             // Load Functions
             require_once ('includes/functions/hide-contacts.php');
