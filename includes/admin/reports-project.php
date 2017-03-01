@@ -47,7 +47,7 @@ class Disciple_Tools_Project_Reports {
     public function __construct () {
         // Load Admin menus
         require_once('class-page-factory.php');
-        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Report','disciple_tools'),__('Project Report','disciple_tools'), 'manage_options','project_report' );
+        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Stats','disciple_tools'),__('Project Stats','disciple_tools'), 'manage_options','project_report' );
 
         add_action('add_meta_boxes', array($this, 'page_metaboxes') );
     } // End __construct()
@@ -56,7 +56,7 @@ class Disciple_Tools_Project_Reports {
     //Add some metaboxes to the page
     public function page_metaboxes(){
 
-        add_meta_box('example1','Example 1', array($this, 'dt_example_metabox'),'dashboard_page_project_report','normal','high');
+        add_meta_box('project_stats','Project Stats', array($this, 'project_stats_widget'),'dashboard_page_project_report','normal','high');
         add_meta_box('example2','Example 2', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','high');
         add_meta_box('example3','Example 3', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','low');
     }
@@ -67,6 +67,54 @@ class Disciple_Tools_Project_Reports {
         <p> An example of a metabox <p>
         <?php
 
+    }
+
+    /**
+     * Project stats dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function project_stats_widget () {
+
+        // Build counters
+        $contacts_count = Disciple_Tools()->counter->contacts_post_status();
+        $unassigned = Disciple_Tools()->counter->contacts_overall_status('unassigned');
+        $accepted = Disciple_Tools()->counter->contacts_overall_status('accepted');
+
+        // Build HTML of widget
+        $html = '
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Progress</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Active Contacts</td>
+								<td>'. $contacts_count->publish .'</td>
+								
+							</tr>
+							<tr>
+								<td>Draft Contacts</td>
+								<td>'. $contacts_count->draft .'</td>
+								
+							</tr>
+							<tr>
+								<td>Unassigned</td>
+								<td>'. $unassigned .'</td>
+							</tr>
+							<tr>
+								<td>Accepted</td>
+								<td>'. $accepted .'</td>
+							</tr>
+						</tbody>
+					</table>
+			';
+        echo $html;
     }
 
 }

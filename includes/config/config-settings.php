@@ -262,38 +262,38 @@ final class Disciple_Tools_Settings {
                     'description' => __( 'Place the field description text here.', 'disciple_tools' )
                 );
 			    $settings_fields['text'] = array(
-												'name' => __( 'Example Text Input', 'disciple_tools' ),
-												'type' => 'text',
-												'default' => '',
-												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'disciple_tools' )
-											);
+                    'name' => __( 'Example Text Input', 'disciple_tools' ),
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'standard-fields',
+                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+                );
 				$settings_fields['textarea'] = array(
-												'name' => __( 'Example Textarea', 'disciple_tools' ),
-												'type' => 'textarea',
-												'default' => '',
-												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'disciple_tools' )
-											);
+                    'name' => __( 'Example Textarea', 'disciple_tools' ),
+                    'type' => 'textarea',
+                    'default' => '',
+                    'section' => 'standard-fields',
+                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+                );
 				$settings_fields['checkbox'] = array(
-												'name' => __( 'Example Checkbox', 'disciple_tools' ),
-												'type' => 'checkbox',
-												'default' => '',
-												'section' => 'standard-fields',
-												'description' => __( 'Place the field description text here.', 'disciple_tools' )
-											);
+                    'name' => __( 'Example Checkbox', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'standard-fields',
+                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+                );
 				$settings_fields['radio'] = array(
-												'name' => __( 'Example Radio Buttons', 'disciple_tools' ),
-												'type' => 'radio',
-												'default' => '',
-												'section' => 'standard-fields',
-												'options' => array(
-																	'one' => __( 'One', 'disciple_tools' ),
-																	'two' => __( 'Two', 'disciple_tools' ),
-																	'three' => __( 'Three', 'disciple_tools' )
-															),
-												'description' => __( 'Place the field description text here.', 'disciple_tools' )
-											);
+                    'name' => __( 'Example Radio Buttons', 'disciple_tools' ),
+                    'type' => 'radio',
+                    'default' => '',
+                    'section' => 'standard-fields',
+                    'options' => array(
+                                        'one' => __( 'One', 'disciple_tools' ),
+                                        'two' => __( 'Two', 'disciple_tools' ),
+                                        'three' => __( 'Three', 'disciple_tools' )
+                                ),
+                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+                );
 
 
 				break;
