@@ -67,8 +67,6 @@ final class Disciple_Tools_Dashboard {
 		wp_add_dashboard_widget('updates_needed_widget', 'Updates Needed', array( $this, 'update_needed_dashboard_widget' ) );
 
 		add_meta_box( 'funnel_stats_widget', 'Funnel Stats', array( $this, 'funnel_stats_widget' ), 'dashboard', 'side', 'high' );
-		add_meta_box( 'project_stats_widget', 'Project Stats', array( $this, 'project_stats_widget'), 'dashboard', 'side', 'high' );
-		add_meta_box( 'system_stats_widget', 'System Stats', array( $this, 'system_stats_widget'), 'dashboard', 'side', 'low' );
 
 		add_filter( 'dashboard_recent_posts_query_args', array( $this, 'add_page_to_dashboard_activity') );
 	}
@@ -153,7 +151,7 @@ final class Disciple_Tools_Dashboard {
 	 * @access public
 	 */
 	public function funnel_stats_widget( ) {
-        $html = Disciple_Tools()->reports_funnel->funnel_stats();
+        $html = Disciple_Tools()->reports_funnel->critical_path_stats();
         echo $html;
 	}
 
@@ -161,96 +159,6 @@ final class Disciple_Tools_Dashboard {
 
 
 
-	/**
-	 * System stats dashboard widget
-	 *
-	 * @since 0.1
-	 * @access public
-	 */
-	public function system_stats_widget (  ) {
-
-		// Build counters
-		$system_users = count_users();
-		$dispatchers = $system_users['avail_roles']['dispatcher'];
-		$marketers = $system_users['avail_roles']['marketer'];
-		$multipliers = $system_users['avail_roles']['multiplier'];
-		$multiplier_leader = $system_users['avail_roles']['multiplier_leader'];
-		$prayer_supporters = $system_users['avail_roles']['prayer_supporter'];
-		$project_supporters = $system_users['avail_roles']['project_supporter'];
-		$registered = $system_users['avail_roles']['registered'];
-
-		$monitored_websites = 'x';
-		$monitored_facebook_pages = 'x';
-
-		$comments = wp_count_comments();
-		$comments = $comments->total_comments;
-
-		$comments_for_dispatcher = 'x';
-
-		// Build HTML of widget
-		$html = '
-			<table class="widefat striped ">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Progress</th>
-								
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>System Users</td>
-								<td>'. $system_users['total_users'] .'</td>
-							</tr>
-							<tr>
-								<td>Dispatchers</td>
-								<td>'. $dispatchers .'</td>
-							</tr>
-							<tr>
-								<td>Marketers</td>
-								<td>'. $marketers .'</td>
-							</tr>
-							<tr>
-								<td>Multipliers</td>
-								<td>'. $multipliers .'</td>
-							</tr>
-							<tr>
-								<td>Multiplier Leaders</td>
-								<td>'. $multiplier_leader .'</td>
-							</tr>
-							<tr>
-								<td>Prayer Supporters</td>
-								<td>'. $prayer_supporters .'</td>
-							</tr>
-							<tr>
-								<td>Project Supporters</td>
-								<td>'. $project_supporters .'</td>
-							</tr>
-							<tr>
-								<td>Registered</td>
-								<td>'. $registered .'</td>
-							</tr>
-							<tr>
-								<td>Monitored Websites</td>
-								<td>'. $monitored_websites .'</td>
-							</tr>
-							<tr>
-								<td>Monitored Facebook</td>
-								<td>'. $monitored_facebook_pages .'</td>
-							</tr>
-							<tr>
-								<td>Comments</td>
-								<td>'. $comments .'</td>
-							</tr>
-							<tr>
-								<td>Comments for @dispatcher</td>
-								<td>'. $comments_for_dispatcher .'</td>
-							</tr>
-						</tbody>
-					</table>
-			';
-		echo $html;
-	}
 
 	/**
 	 * Remove default dashboard widgets

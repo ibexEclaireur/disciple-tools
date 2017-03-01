@@ -232,19 +232,29 @@ class Disciple_Tools {
          * @posttype Groups
          * @posttype Locations
          * @taxonomies
-         * @postconnector   P2P connection
-         *
+         * @service   Post to Post connections
+         * @service User groups via taxonomies
          */
+        // Register Post types
         require_once ('includes/models/class-contact-post-type.php');
         require_once ('includes/models/class-group-post-type.php');
-        /*require_once ( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
+            /*require_once ( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
         require_once ('includes/models/class-taxonomy.php');
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-        /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
+            /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
+
         // Creates the post to post relationship between the post type tables.
         require_once ('includes/models/config-p2p.php');
         require_once ('includes/plugins/posts-to-posts/posts-to-posts.php');
+
+        // User Groups
+        require_once ( 'includes/models/class-user-taxonomy.php' );
+        require_once ( 'includes/functions/user-groups-admin.php' );
+        require_once ( 'includes/functions/user-groups-common.php' );
+        require_once ( 'includes/functions/user-groups-taxonomies.php' );
+        require_once ( 'includes/functions/user-groups-hooks.php' );
+
         /* End model configuration section */
 
 

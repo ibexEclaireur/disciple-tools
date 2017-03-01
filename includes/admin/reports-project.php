@@ -56,31 +56,36 @@ class Disciple_Tools_Project_Reports {
     //Add some metaboxes to the page
     public function page_metaboxes(){
 
-        add_meta_box('project_stats','Project Stats', array($this, 'project_stats_widget'),'dashboard_page_project_report','normal','high');
-        add_meta_box('example2','Example 2', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','high');
-        add_meta_box('example3','Example 3', array($this, 'dt_example_metabox'),'dashboard_page_project_report','side','low');
-    }
 
-    //Define the insides of the metabox
-    public function dt_example_metabox(){
-        ?>
-        <p> An example of a metabox <p>
-        <?php
-
+        add_meta_box('system_stats','System Stats', array($this, 'system_stats_widget'),'dashboard_page_project_report','normal','high');
+        add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_project_report','side','high');
     }
 
     /**
-     * Project stats dashboard widget
+     * System stats dashboard widget
      *
      * @since 0.1
      * @access public
      */
-    public function project_stats_widget () {
+    public function system_stats_widget (  ) {
 
         // Build counters
-        $contacts_count = Disciple_Tools()->counter->contacts_post_status();
-        $unassigned = Disciple_Tools()->counter->contacts_overall_status('unassigned');
-        $accepted = Disciple_Tools()->counter->contacts_overall_status('accepted');
+        $system_users = count_users();
+        $dispatchers = $system_users['avail_roles']['dispatcher'];
+        $marketers = $system_users['avail_roles']['marketer'];
+        $multipliers = $system_users['avail_roles']['multiplier'];
+        $multiplier_leader = $system_users['avail_roles']['multiplier_leader'];
+        $prayer_supporters = $system_users['avail_roles']['prayer_supporter'];
+        $project_supporters = $system_users['avail_roles']['project_supporter'];
+        $registered = $system_users['avail_roles']['registered'];
+
+        $monitored_websites = 'x';
+        $monitored_facebook_pages = 'x';
+
+        $comments = wp_count_comments();
+        $comments = $comments->total_comments;
+
+        $comments_for_dispatcher = 'x';
 
         // Build HTML of widget
         $html = '
@@ -94,26 +99,71 @@ class Disciple_Tools_Project_Reports {
 						</thead>
 						<tbody>
 							<tr>
-								<td>Active Contacts</td>
-								<td>'. $contacts_count->publish .'</td>
-								
+								<td>System Users</td>
+								<td>'. $system_users['total_users'] .'</td>
 							</tr>
 							<tr>
-								<td>Draft Contacts</td>
-								<td>'. $contacts_count->draft .'</td>
-								
+								<td>Dispatchers</td>
+								<td>'. $dispatchers .'</td>
 							</tr>
 							<tr>
-								<td>Unassigned</td>
-								<td>'. $unassigned .'</td>
+								<td>Marketers</td>
+								<td>'. $marketers .'</td>
 							</tr>
 							<tr>
-								<td>Accepted</td>
-								<td>'. $accepted .'</td>
+								<td>Multipliers</td>
+								<td>'. $multipliers .'</td>
+							</tr>
+							<tr>
+								<td>Multiplier Leaders</td>
+								<td>'. $multiplier_leader .'</td>
+							</tr>
+							<tr>
+								<td>Prayer Supporters</td>
+								<td>'. $prayer_supporters .'</td>
+							</tr>
+							<tr>
+								<td>Project Supporters</td>
+								<td>'. $project_supporters .'</td>
+							</tr>
+							<tr>
+								<td>Registered</td>
+								<td>'. $registered .'</td>
+							</tr>
+							<tr>
+								<td>Monitored Websites</td>
+								<td>'. $monitored_websites .'</td>
+							</tr>
+							<tr>
+								<td>Monitored Facebook</td>
+								<td>'. $monitored_facebook_pages .'</td>
+							</tr>
+							<tr>
+								<td>Comments</td>
+								<td>'. $comments .'</td>
+							</tr>
+							<tr>
+								<td>Comments for @dispatcher</td>
+								<td>'. $comments_for_dispatcher .'</td>
 							</tr>
 						</tbody>
 					</table>
 			';
+        echo $html;
+    }
+
+    public function page_notes () {
+        $html = '
+            <p>Project stats summarizes the people and activities within the disciple making movement project.</p>
+            <ul>
+                <li>
+                    Project statistics covers...
+                </li>
+                <li>
+                    System statistics covers counts of features inside the Disciple Tools system.
+                </li>
+            </ul>
+        ';
         echo $html;
     }
 

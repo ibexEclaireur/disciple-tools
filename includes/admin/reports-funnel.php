@@ -55,25 +55,19 @@ class Disciple_Tools_Funnel_Reports {
     //Add some metaboxes to the page
     public function page_metaboxes(){
 
-        add_meta_box('funnel_stats','Funnel Stats', array($this, 'funnel_stats'),'dashboard_page_funnel_report','normal','high');
+        add_meta_box('critical_path_stats','Critical Path', array($this, 'critical_path_stats'),'dashboard_page_funnel_report','normal','high');
         add_meta_box('generation_stats','Generation Stats', array($this, 'generations_stats_widget'),'dashboard_page_funnel_report','normal','high');
-        add_meta_box('example3','Example 3', array($this, 'example_metabox'),'dashboard_page_funnel_report','side','low');
+        add_meta_box('contact_stats','Contact Stats', array($this, 'contacts_stats_widget'),'dashboard_page_funnel_report','normal','low');
+        add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_funnel_report','side','high');
     }
 
-    //Define the insides of the metabox
-    public function example_metabox(){
-        ?>
-        <p> An example of a metabox <p>
-        <?php
-
-    }
     /**
      * Movement funnel path dashboard widget
      *
      * @since 0.1
      * @access public
      */
-    public function funnel_stats ( ) {
+    public function critical_path_stats ( ) {
 
         // Build variables
         $prayer = 'x';
@@ -291,6 +285,67 @@ class Disciple_Tools_Funnel_Reports {
 						</tbody>
 					</table>
 			';
+        echo $html;
+    }
+
+    /**
+     * Contact stats dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function contacts_stats_widget () {
+
+        // Build counters
+        $contacts_count = Disciple_Tools()->counter->contacts_post_status();
+        $unassigned = Disciple_Tools()->counter->contacts_overall_status('unassigned');
+        $accepted = Disciple_Tools()->counter->contacts_overall_status('accepted');
+
+        // Build HTML of widget
+        $html = '
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Progress</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Active Contacts</td>
+								<td>'. $contacts_count->publish .'</td>
+								
+							</tr>
+							<tr>
+								<td>Draft Contacts</td>
+								<td>'. $contacts_count->draft .'</td>
+								
+							</tr>
+							<tr>
+								<td>Unassigned</td>
+								<td>'. $unassigned .'</td>
+							</tr>
+							<tr>
+								<td>Accepted</td>
+								<td>'. $accepted .'</td>
+							</tr>
+						</tbody>
+					</table>
+			';
+        echo $html;
+    }
+
+    public function page_notes () {
+        $html = '
+            <p>The funnel stats report summarizes the contacts and milestones within the disciple making movement project.</p>
+            <hr>
+            <p>Funnel stats box highlights the critical path of seekers through the system.</p>
+            <hr>
+            <p>Generations stats box highlights the generation status of contacts through the system.</p>
+            <hr>
+            <p>Contacts stats box highlights the current status of contacts.</p>
+        ';
         echo $html;
     }
 
