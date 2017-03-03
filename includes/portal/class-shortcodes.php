@@ -93,10 +93,10 @@ class Disciple_Tools_Function_Callback
             // Select the file to include
             switch ($atts['name']) {
                 case 'map';
-                    require_once('../views/maps.php');
+                    require_once( 'maps.php');
                     break;
                 case 'chart':
-                    require_once('../views/charts.php');
+                    require_once( 'charts.php');
                     break;
 
                 default:
