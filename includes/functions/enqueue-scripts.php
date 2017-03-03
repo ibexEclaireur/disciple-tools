@@ -27,8 +27,8 @@ function contact_groups_page_scripts() {
     // if the post type is 'event' do something
     if ( 'post.php' === $pagenow && 'contacts' === get_post_type( $post) || 'groups' === get_post_type( $post ) ) {
 
-//        wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
-//        wp_enqueue_style( 'dt_admin_css' );
+        wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
+        wp_enqueue_style( 'dt_admin_css' );
 
         wp_enqueue_script( 'dt_contact_scripts', Disciple_Tools()->plugin_js .'disciple-tools-admin.js', array(), '1.0.0', true  );
     }

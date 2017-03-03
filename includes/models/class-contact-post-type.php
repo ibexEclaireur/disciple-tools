@@ -429,10 +429,10 @@ class Disciple_Tools_Contact_Post_Type {
         global $post, $messages;
 
         // Verify
-//        if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
-//            return $post_id;
-//        }
         if (  get_post_type() != $this->post_type  ) {
+            return $post_id;
+        }
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
             return $post_id;
         }
 
@@ -446,7 +446,14 @@ class Disciple_Tools_Contact_Post_Type {
             }
         }
 
+        if ( isset($_GET['action']) ) {
+            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
+                return $post_id;
+            }
+        }
+
         $fields = array('assigned_to');
+
 
         foreach ( $fields as $f ) {
 
@@ -476,6 +483,7 @@ class Disciple_Tools_Contact_Post_Type {
 
 		$html = '';
 
+        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 
 		
 		if ( 0 < count( $field_data ) ) {
@@ -564,13 +572,12 @@ class Disciple_Tools_Contact_Post_Type {
 		global $post, $messages;
 
 //		 Verify
-//        if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
-//			return $post_id;
-//		}
 		if (  get_post_type() != $this->post_type  ) {
 			return $post_id;
 		}
-
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+            return $post_id;
+        }
 
 		if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
 			if ( ! current_user_can( 'edit_page', $post_id ) ) {
@@ -581,6 +588,13 @@ class Disciple_Tools_Contact_Post_Type {
 				return $post_id;
 			}
 		}
+
+		if ( isset($_GET['action']) ) {
+            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
+                return $post_id;
+            }
+        }
+
 
 		$field_data = $this->get_custom_fields_settings();
 		$fields = array_keys( $field_data );
@@ -610,9 +624,8 @@ class Disciple_Tools_Contact_Post_Type {
      * @since  0.1
      */
     public function load_status_meta_box () {
-//        $html = '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 
-        echo ''. $html . $this->meta_box_content('status');
+        echo '' . $this->meta_box_content('status');
     }
 
     /**

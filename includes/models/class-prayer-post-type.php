@@ -385,7 +385,14 @@ class Disciple_Tools_Prayer_Post_Type {
         global $post, $messages;
 
         // Verify
-        if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+//        if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+//            return $post_id;
+//        }
+        if (  get_post_type() != $this->post_type  ) {
+            return $post_id;
+        }
+
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
             return $post_id;
         }
 
@@ -395,6 +402,12 @@ class Disciple_Tools_Prayer_Post_Type {
             }
         } else {
             if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                return $post_id;
+            }
+        }
+
+        if ( isset($_GET['action']) ) {
+            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
                 return $post_id;
             }
         }
