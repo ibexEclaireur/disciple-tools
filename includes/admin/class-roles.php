@@ -109,7 +109,17 @@ class Disciple_Tools_Roles {
                 'edit_prayers' => true,
                 'edit_others_prayers' => true,
                 'publish_prayers' => true,
-                'read_private_prayers' => true
+                'read_private_prayers' => true,
+                // Add custom caps for project updates
+                'read_projectupdate' => true,
+                'edit_projectupdate' => true,
+                'delete_projectupdate' => true,
+                'delete_others_projectupdates' => true,
+                'delete_projectupdates' => true,
+                'edit_projectupdates' => true,
+                'edit_others_projectupdates' => true,
+                'publish_projectupdates' => true,
+                'read_private_projectupdates' => true
             ) );
 
 
@@ -173,7 +183,17 @@ class Disciple_Tools_Roles {
                 'edit_prayers' => true,
                 'edit_others_prayers' => true,
                 'publish_prayers' => true,
-                'read_private_prayers' => true
+                'read_private_prayers' => true,
+                // Add custom caps for project updates
+                'read_projectupdate' => true,
+                'edit_projectupdate' => true,
+                'delete_projectupdate' => true,
+                'delete_others_projectupdates' => true,
+                'delete_projectupdates' => true,
+                'edit_projectupdates' => true,
+                'edit_others_projectupdates' => true,
+                'publish_projectupdates' => true,
+                'read_private_projectupdates' => true
             ) );
 
 
@@ -209,7 +229,17 @@ class Disciple_Tools_Roles {
                 'edit_prayers' => true,
                 'edit_others_prayers' => true,
                 'publish_prayers' => true,
-                'read_private_prayers' => true
+                'read_private_prayers' => true,
+                // Add custom caps for project updates
+                'read_projectupdate' => true,
+                'edit_projectupdate' => true,
+                'delete_projectupdate' => true,
+                'delete_others_projectupdates' => true,
+                'delete_projectupdates' => true,
+                'edit_projectupdates' => true,
+                'edit_others_projectupdates' => true,
+                'publish_projectupdates' => true,
+                'read_private_projectupdates' => true
             ) );
 
 
@@ -250,7 +280,17 @@ class Disciple_Tools_Roles {
                 'edit_prayers' => true,
                 'edit_others_prayers' => true,
                 'publish_prayers' => true,
-                'read_private_prayers' => true
+                'read_private_prayers' => true,
+                // Add custom caps for project updates
+                'read_projectupdate' => true,
+                'edit_projectupdate' => true,
+                'delete_projectupdate' => true,
+                'delete_others_projectupdates' => true,
+                'delete_projectupdates' => true,
+                'edit_projectupdates' => true,
+                'edit_others_projectupdates' => true,
+                'publish_projectupdates' => true,
+                'read_private_projectupdates' => true
             ) );
 
 
@@ -258,13 +298,16 @@ class Disciple_Tools_Roles {
         if ( get_role( 'prayer_supporter' )) { remove_role( 'prayer_supporter' );}
         add_role( 'prayer_supporter', 'Prayer Supporter',
             array(
-                'prayer_supporter' => true
+                'prayer_supporter' => true,
+                'read_prayer' => true
             ) );
 
         if ( get_role( 'project_supporter' )) { remove_role( 'project_supporter' );}
         add_role( 'project_supporter', 'Project Supporter',
             array(
-                'project_supporter' => true
+                'project_supporter' => true,
+                'read_prayer' => true,
+                'read_projectupdate' => true
             ) );
 
         if ( get_role( 'registered' )) { remove_role( 'registered' );}
@@ -316,7 +359,15 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_prayers' );
             $role->add_cap( 'publish_prayers' );
             $role->add_cap( 'read_private_prayers' );
-
+            $role->add_cap( 'edit_projectupdate' );
+            $role->add_cap( 'read_projectupdate' );
+            $role->add_cap( 'delete_projectupdate' );
+            $role->add_cap( 'delete_others_projectupdates' );
+            $role->add_cap( 'delete_projectupdates' );
+            $role->add_cap( 'edit_projectupdates' );
+            $role->add_cap( 'edit_others_projectupdates' );
+            $role->add_cap( 'publish_projectupdates' );
+            $role->add_cap( 'read_private_projectupdates' );
 
         }
 }

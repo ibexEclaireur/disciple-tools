@@ -24,6 +24,10 @@ remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Re
 add_filter('manage_contacts_posts_columns', 'contacts_table_head');
 add_action( 'manage_contacts_posts_custom_column', 'contacts_table_content', 10, 2 );
 
+if( is_admin() && !current_user_can( 'administrator' ) ) {
+    add_action( 'admin_menu', 'disciple_tools_remove_posts_menu' );
+}
+
 
 /*********************************************************************************************
 * Functions
@@ -103,6 +107,21 @@ function contacts_table_content( $column_name, $post_id ) {
 
 }
 
+/**
+ * Removes the Posts menu from all users but administrators
+ */
+if( is_admin() && !current_user_can( 'administrator' ) ) {
+
+    function remove_menus(){
+        remove_menu_page( 'edit.php' );
+    }
+    add_action( 'admin_menu', 'remove_menus' );
+}
+
+function disciple_tools_remove_posts_menu(){
+    remove_menu_page( 'edit.php' ); // Posts
+    remove_menu_page( 'edit.php?post_type=page' );    //Pages
+}
 
 
 
