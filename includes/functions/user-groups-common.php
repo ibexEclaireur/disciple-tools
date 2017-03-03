@@ -17,9 +17,9 @@ defined( 'ABSPATH' ) || exit;
  * @param  mixed  $user
  * @param  int    $taxonomy
  *
- * @return boolean
+ * @return object //corrected from boolean
  */
-function wp_get_terms_for_user( $user = false, $taxonomy = '' ) {
+function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' ) {
 
 	// Verify user ID
 	$user_id = is_object( $user )
@@ -49,7 +49,7 @@ function wp_get_terms_for_user( $user = false, $taxonomy = '' ) {
  *
  * @return boolean
  */
-function wp_set_terms_for_user( $user_id, $taxonomy, $terms = array(), $bulk = false ) {
+function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = array(), $bulk = false ) {
 
 	// Get the taxonomy
 	$tax = get_taxonomy( $taxonomy );
@@ -99,7 +99,7 @@ function wp_set_terms_for_user( $user_id, $taxonomy, $terms = array(), $bulk = f
  *
  * @return array A list of taxonomy names or objects.
  */
-function wp_get_user_groups( $args = array(), $output = 'names', $operator = 'and' ) {
+function disciple_tools_get_user_groups( $args = array(), $output = 'names', $operator = 'and' ) {
 
 	// Parse arguments
 	$r = wp_parse_args( $args, array(
@@ -113,17 +113,17 @@ function wp_get_user_groups( $args = array(), $output = 'names', $operator = 'an
 /**
  * Get all user group objects
  *
- * @uses wp_get_user_groups() To get user group objects
+ * @uses disciple_tools_get_user_groups() To get user group objects
  *
  * @since 0.1.5
  *
- * @param  array  $args     See wp_get_user_groups()
- * @param  string $operator See wp_get_user_groups()
+ * @param  array  $args     See disciple_tools_get_user_groups()
+ * @param  string $operator See disciple_tools_get_user_groups()
  *
  * @return array
  */
-function wp_get_user_group_objects( $args = array(), $operator = 'and' ) {
-	return wp_get_user_groups( $args, 'objects', $operator );
+function disciple_tools_get_user_group_objects( $args = array(), $operator = 'and' ) {
+	return disciple_tools_get_user_groups( $args, 'objects', $operator );
 }
 
 /**
@@ -131,7 +131,7 @@ function wp_get_user_group_objects( $args = array(), $operator = 'and' ) {
  *
  * @since 0.1.0
  */
-function wp_get_users_of_group( $args = array() ) {
+function disciple_tools_get_users_of_group( $args = array() ) {
 
 	// Parse arguments
 	$r = wp_parse_args( $args, array(

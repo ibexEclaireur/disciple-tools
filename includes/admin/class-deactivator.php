@@ -10,6 +10,9 @@
  * @subpackage Disciple_Tools/includes/admin
  * @author     
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class Disciple_Tools_Deactivator {
 
 	/**
@@ -22,7 +25,7 @@ class Disciple_Tools_Deactivator {
 	public static function deactivate() {
 
         // Reset roles and capabilities
-        require_once('../admin/class-roles.php');
+        require_once('class-roles.php');
         $roles = Disciple_Tools_Roles::instance();
         $roles->reset_roles();
 	}

@@ -189,11 +189,11 @@ class Disciple_Tools {
 		 */
 		if ( is_admin() ) {
             // Disciple_Tools admin settings page configuration
-            require_once ( 'includes/config/config-admin.php' );
+            require_once('includes/admin/config-admin.php');
             $this->admin = Disciple_Tools_Admin::instance();
 
 			// Disciple_Tools admin settings page configuration
-			require_once ( 'includes/config/config-settings.php' );
+			require_once('includes/admin/config-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
             // Load plugin library that "requires plugins" at activation
@@ -205,9 +205,11 @@ class Disciple_Tools {
 
             // Load multiple column configuration library into screen options area.
             require_once ('includes/admin/three-column-screen-layout.php');
+            require_once ('includes/admin/class-better-author-metabox.php');
+            $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
 
             // Load report pages
-            require_once ('includes/admin/class-page-factory.php'); // Factory class for page building
+            require_once('includes/factories/class-page-factory.php'); // Factory class for page building
             require_once ('includes/admin/reports-funnel.php');
             $this->reports_funnel = Disciple_Tools_Funnel_Reports::instance();
             require_once ('includes/admin/reports-media.php');
@@ -221,6 +223,7 @@ class Disciple_Tools {
             require_once ('includes/functions/profile.php');
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/media.php');
+            require_once ('includes/functions/enqueue-scripts.php');
         }
         /* End Admin configuration section */
 
@@ -230,25 +233,31 @@ class Disciple_Tools {
          *
          * @posttype Contacts
          * @posttype Groups
-         * @posttype Locations
+         * @posttype Prayers
+         *
          * @taxonomies
          * @service   Post to Post connections
-         * @service User groups via taxonomies
+         * @service   User groups via taxonomies
          */
         // Register Post types
         require_once ('includes/models/class-contact-post-type.php');
         require_once ('includes/models/class-group-post-type.php');
-            /*require_once ( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
+        require_once ('includes/models/class-prayer-post-type.php');
+        /*require_once ( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
         require_once ('includes/models/class-taxonomy.php');
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-            /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
+        $this->post_types['prayers'] = new Disciple_Tools_Prayer_Post_Type( 'prayers', __( 'Prayers', 'disciple_tools' ), __( 'Prayers', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-heart' ) );
+        /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
+
 
         // Creates the post to post relationship between the post type tables.
+        // Based on the posts-to-posts project by scribu.
         require_once ('includes/models/config-p2p.php');
         require_once ('includes/plugins/posts-to-posts/posts-to-posts.php');
 
-        // User Groups
+
+        // Creates User Groups out of Taxonomies
         require_once ( 'includes/models/class-user-taxonomy.php' );
         require_once ( 'includes/functions/user-groups-admin.php' );
         require_once ( 'includes/functions/user-groups-common.php' );
@@ -278,6 +287,7 @@ class Disciple_Tools {
 
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+
 
     } // End __construct()
 

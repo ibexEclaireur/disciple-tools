@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 class Disciple_Tools_Group_Post_Type {
 	/**
 	 * The post type token.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @var    string
 	 */
@@ -23,7 +23,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The post type singular label.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @var    string
 	 */
@@ -31,7 +31,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The post type plural label.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @var    string
 	 */
@@ -39,7 +39,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The post type args.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @var    array
 	 */
@@ -47,15 +47,15 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The taxonomies for this post type.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @var    array
 	 */
-	public $taxonomies;
+//	public $taxonomies;
 
 	/**
 	 * Constructor function.
-	 * @access portal
+	 * @access public
 	 * @since 0.1
 	 */
 	public function __construct( $post_type = 'groups', $singular = '', $plural = '', $args = array(), $taxonomies = array('Cities') ) {
@@ -66,7 +66,7 @@ class Disciple_Tools_Group_Post_Type {
 		$this->taxonomies = $taxonomies;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'init', array( $this, 'register_taxonomy' ) );
+//		add_action( 'init', array( $this, 'register_taxonomy' ) );
 
 		if ( is_admin() ) {
 			global $pagenow;
@@ -88,7 +88,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Register the post type.
-	 * @access portal
+	 * @access public
 	 * @return void
 	 */
 	public function register_post_type () {
@@ -130,12 +130,12 @@ class Disciple_Tools_Group_Post_Type {
             'read_private_posts'    => 'read_private_groups',
         );
 
-		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
-		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
+		$single_slug = apply_filters( 'dt_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
+		$archive_slug = apply_filters( 'dt_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
 		$defaults = array(
 			'labels' 				=> $labels,
-			'portal' 				=> true,
+			'public' 				=> true,
 			'publicly_queryable' 	=> true,
 			'show_ui' 				=> true,
 			'show_in_menu' 			=> true,
@@ -160,21 +160,21 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Register the "thing-category" taxonomy.
-	 * @access portal
+	 * @access public
 	 * @since  1.3.0
 	 * @return void
 	 */
-	public function register_taxonomy () {
-
-//		TODO: commented out taxonomies until we know how we want to use them.
+//	public function register_taxonomy () {
 //
-//      $this->taxonomies['groups-cities'] = new Disciple_Tools_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
-//		$this->taxonomies['groups-cities']->register();
-	} // End register_taxonomy()
+////		TODO: commented out taxonomies until we know how we want to use them.
+////
+////      $this->taxonomies['groups-cities'] = new Disciple_Tools_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
+////		$this->taxonomies['groups-cities']->register();
+//	} // End register_taxonomy()
 
 	/**
 	 * Add custom columns for the "manage" screen of this post type.
-	 * @access portal
+	 * @access public
 	 * @param string $column_name
 	 * @param int $id
 	 * @since  0.1
@@ -195,7 +195,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Add custom column headings for the "manage" screen of this post type.
-	 * @access portal
+	 * @access public
 	 * @param array $defaults
 	 * @since  0.1
 	 * @return void
@@ -255,7 +255,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Setup the meta box.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @return void
 	 */
@@ -265,7 +265,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * The contents of our meta box.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @return void
 	 */
@@ -276,7 +276,7 @@ class Disciple_Tools_Group_Post_Type {
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 		
 
 		if ( 0 < count( $field_data ) ) {
@@ -348,7 +348,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Save meta box fields.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @param int $post_id
 	 * @return int $post_id
@@ -357,9 +357,12 @@ class Disciple_Tools_Group_Post_Type {
 		global $post, $messages;
 
 		// Verify
-		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
-			return $post_id;
-		}
+        if (  get_post_type() != $this->post_type  ) {
+            return $post_id;
+        }
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+            return $post_id;
+        }
 
 		if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
 			if ( ! current_user_can( 'edit_page', $post_id ) ) {
@@ -370,6 +373,12 @@ class Disciple_Tools_Group_Post_Type {
 				return $post_id;
 			}
 		}
+
+        if ( isset($_GET['action']) ) {
+            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
+                return $post_id;
+            }
+        }
 
 		$field_data = $this->get_custom_fields_settings();
 		$fields = array_keys( $field_data );
@@ -395,21 +404,21 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Customise the "Enter title here" text.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @param string $title
 	 * @return void
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the title here', 'disciple_tools' );
+			$title = __( 'Enter the group here', 'disciple_tools' );
 		}
 		return $title;
 	} // End enter_title_here()
 
 	/**
 	 * Get the settings for the custom fields.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 * @return array
 	 */
@@ -467,7 +476,7 @@ class Disciple_Tools_Group_Post_Type {
         );
 
 
-		return apply_filters( 'drm_custom_fields_settings', $fields );
+		return apply_filters( 'dt_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
 
 	/**
@@ -495,7 +504,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Register image sizes.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 */
 	public function register_image_sizes () {
@@ -506,7 +515,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Run on activation.
-	 * @access portal
+	 * @access public
 	 * @since 0.1
 	 */
 	public function activation () {
@@ -515,7 +524,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Flush the rewrite rules
-	 * @access portal
+	 * @access public
 	 * @since 0.1
 	 */
 	private function flush_rewrite_rules () {
@@ -525,7 +534,7 @@ class Disciple_Tools_Group_Post_Type {
 
 	/**
 	 * Ensure that "post-thumbnails" support is available for those themes that don't register it.
-	 * @access portal
+	 * @access public
 	 * @since  0.1
 	 */
 	public function ensure_post_thumbnails_support () {

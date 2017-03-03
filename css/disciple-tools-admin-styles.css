@@ -8,9 +8,6 @@
 
 /* These edits remove unwanted features of the contacts edit screen */
 div#edit-slug-box.hide-if-no-js {display:none;} /* Removes Permalink preview link. */
-div#minor-publishing {display:none;} /* Removes contents of the Publish Metabox. */
+/*div#minor-publishing {display:none;} *//* Removes contents of the Publish Metabox. */
 div#message p a {display:none;} /* Removes the link to view to the post type on the portal page. */
-/*
-TODO: Need to isolate the application of these just to the Contacts, Groups, and Locations post types, not the posts or other post types.
-*/
 

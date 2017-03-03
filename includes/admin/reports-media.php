@@ -46,7 +46,6 @@ class Disciple_Tools_Media_Reports {
      */
     public function __construct () {
         // Load Admin menus
-        require_once('class-page-factory.php');
         $this->page = new Disciple_Tools_Page_Factory('index.php',__('Media Stats','disciple_tools'),__('Media Stats','disciple_tools'), 'manage_options','media_report' );
 
         add_action('add_meta_boxes', array($this, 'page_metaboxes') );
@@ -56,17 +55,72 @@ class Disciple_Tools_Media_Reports {
     //Add some metaboxes to the page
     public function page_metaboxes(){
 
-        add_meta_box('example1','Example 1', array($this, 'example_metabox'),'dashboard_page_media_report','normal','high');
-        add_meta_box('example2','Example 2', array($this, 'example_metabox'),'dashboard_page_media_report','side','high');
-        add_meta_box('example3','Example 3', array($this, 'example_metabox'),'dashboard_page_media_report','side','low');
+        add_meta_box('content_locations','Content Locations', array($this, 'content_locations_widget'),'dashboard_page_media_report','normal','high');
+        add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_media_report','side','high');
     }
 
-    //Define the insides of the metabox
-    public function example_metabox(){
-        ?>
-        <p> An example of a metabox <p>
-        <?php
 
+    public function page_notes () {
+        $html = '
+            <p>The media stats report summarizes the web and social media properties being used by the project.</p>
+            <hr>
+            <p>Box 1...</p>
+            <hr>
+            <p>Box 2...</p>
+            <hr>
+            <p>Box 3...</p>
+        ';
+        echo $html;
+    }
+
+    /**
+     * Movement funnel path dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function content_locations_widget ( ) {
+
+
+
+        // Build html
+        $html = '
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Url</th>
+								<th>Launch Date</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th>Pray4Colorado</th>
+								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+								<td>Jan 1, 2017</td>
+							</tr>
+							<tr>
+								<th>Pray4Colorado</th>
+								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+								<td>Jan 1, 2017</td>
+							</tr>
+							<tr>
+								<th>Pray4Colorado</th>
+								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+								<td>Jan 1, 2017</td>
+							</tr>
+							<tr>
+								<th>Pray4Colorado</th>
+								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+								<td>Jan 1, 2017</td>
+							</tr>
+							
+						</tbody>
+					</table>
+			';
+
+        echo $html;
     }
 
 }

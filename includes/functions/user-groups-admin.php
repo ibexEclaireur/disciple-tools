@@ -15,7 +15,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 0.1.4
  */
 function disciple_tools_groups_admin_assets() {
-	$url = Disciple_Tools()->plugin_path;
+	$url = Disciple_Tools()->plugin_url;
 	$ver = Disciple_Tools()->version;
 
 	wp_enqueue_style( 'disciple_tools_groups', $url. 'css/user-groups.css', false, $ver, false );
