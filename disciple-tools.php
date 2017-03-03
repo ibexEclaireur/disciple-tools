@@ -243,7 +243,7 @@ class Disciple_Tools {
         require_once ('includes/models/class-contact-post-type.php');
         require_once ('includes/models/class-group-post-type.php');
         require_once ('includes/models/class-prayer-post-type.php');
-        require_once ('includes/models/class-project-update-post-type.php');
+        require_once ('includes/models/class-projectupdate-post-type.php');
         /*require_once ( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
         require_once ('includes/models/class-taxonomy.php');
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
