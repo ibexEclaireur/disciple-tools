@@ -298,8 +298,6 @@ class Disciple_Tools_Contact_Post_Type {
     public function load_assigned_meta_box ( $post_id) {
         $exclude_group = '';
         $exclude_user = '';
-        $type = '';
-        $id = '';
 
         // Start drop down
         echo '<select name="assigned_to" id="assigned_to" class="regular-text">';

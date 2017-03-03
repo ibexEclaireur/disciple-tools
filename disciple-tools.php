@@ -189,11 +189,11 @@ class Disciple_Tools {
 		 */
 		if ( is_admin() ) {
             // Disciple_Tools admin settings page configuration
-            require_once ( 'includes/config/config-admin.php' );
+            require_once('includes/admin/config-admin.php');
             $this->admin = Disciple_Tools_Admin::instance();
 
 			// Disciple_Tools admin settings page configuration
-			require_once ( 'includes/config/config-settings.php' );
+			require_once('includes/admin/config-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
             // Load plugin library that "requires plugins" at activation
@@ -282,7 +282,6 @@ class Disciple_Tools {
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		require_once ('includes/functions/record-owner-metabox.php');
 
     } // End __construct()
 
