@@ -10,6 +10,9 @@
  * @subpackage Disciple_Tools/includes/admin
  * @author     
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class Disciple_Tools_Deactivator {
 
 	/**

@@ -9,6 +9,9 @@
  * @subpackage Disciple_Tools/includes/admin
  * @author     
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 class Disciple_Tools_Activator {
 
 
@@ -25,7 +28,7 @@ class Disciple_Tools_Activator {
 	    Disciple_Tools::instance()->_log_version_number();
 
         // Create roles and capabilities
-        require_once('../admin/class-roles.php');
+        require_once('class-roles.php');
         $roles = Disciple_Tools_Roles::instance();
         $roles->set_roles();
 	}

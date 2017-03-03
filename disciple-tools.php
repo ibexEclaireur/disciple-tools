@@ -205,6 +205,8 @@ class Disciple_Tools {
 
             // Load multiple column configuration library into screen options area.
             require_once ('includes/admin/three-column-screen-layout.php');
+            require_once ('includes/admin/class-better-author-metabox.php');
+            $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
 
             // Load report pages
             require_once('includes/factories/class-page-factory.php'); // Factory class for page building
@@ -221,6 +223,7 @@ class Disciple_Tools {
             require_once ('includes/functions/profile.php');
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/media.php');
+            require_once ('includes/functions/enqueue-scripts.php');
         }
         /* End Admin configuration section */
 
@@ -278,6 +281,8 @@ class Disciple_Tools {
 
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+
+		require_once ('includes/functions/record-owner-metabox.php');
 
     } // End __construct()
 

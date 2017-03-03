@@ -321,7 +321,7 @@ class Disciple_Tools_User_Taxonomy {
 		}
 
 		// Set terms for user
-		wp_set_terms_for_user( $user_id, $this->taxonomy );
+		disciple_tools_set_terms_for_user( $user_id, $this->taxonomy );
 	}
 
 	/**
@@ -778,7 +778,7 @@ class Disciple_Tools_User_Taxonomy {
 			}
 
 			// Get term slugs of user for this taxonomy
-			$terms        = wp_get_terms_for_user( $user, $this->taxonomy );
+			$terms        = disciple_tools_get_terms_for_user( $user, $this->taxonomy );
 			$update_terms = wp_list_pluck( $terms, 'slug' );
 
 			// Adding
@@ -802,7 +802,7 @@ class Disciple_Tools_User_Taxonomy {
 
 			// Update terms for users
 			if ( $update_terms !== $terms ) {
-				wp_set_terms_for_user( $user, $this->taxonomy, $update_terms, true );
+				disciple_tools_set_terms_for_user( $user, $this->taxonomy, $update_terms, true );
 			}
 		}
 
@@ -974,7 +974,7 @@ class Disciple_Tools_User_Taxonomy {
 	private function get_user_term_links( $user, $page = null ) {
 
 		// Get terms for user and this taxonomy
-		$terms = wp_get_terms_for_user( $user, $this->taxonomy );
+		$terms = disciple_tools_get_terms_for_user( $user, $this->taxonomy );
 
 		// Bail if user has no terms
 		if ( empty( $terms ) ) {

@@ -10,8 +10,8 @@
 defined( 'ABSPATH' ) || exit;
 
 // Register the default taxonomies
-add_action( 'init', 'wp_register_default_user_group_taxonomy' );
-add_action( 'init', 'wp_register_default_user_type_taxonomy'  );
+add_action( 'init', 'disciple_tools_register_default_user_group_taxonomy' );
+add_action( 'init', 'disciple_tools_register_default_user_type_taxonomy'  );
 
 // Enqueue assets
 add_action( 'admin_head', 'disciple_tools_groups_admin_assets' );

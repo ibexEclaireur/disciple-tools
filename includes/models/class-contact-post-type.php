@@ -72,6 +72,7 @@ class Disciple_Tools_Contact_Post_Type {
 
 			add_action( 'admin_menu', array( $this, 'meta_box_setup' ), 20 );
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
+            add_action( 'save_post', array( $this, 'save_assigned_meta_box' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 			add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 			
@@ -140,8 +141,8 @@ class Disciple_Tools_Contact_Post_Type {
             'publish_posts'         => 'publish_contacts',
             'read_private_posts'    => 'read_private_contacts',
         );
-		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
-		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
+		$single_slug = apply_filters( 'dt_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
+		$archive_slug = apply_filters( 'dt_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
 		$defaults = array(
             'label'                 => __( 'Contact', 'disciple_tools' ),
@@ -174,12 +175,12 @@ class Disciple_Tools_Contact_Post_Type {
 		register_post_type( $this->post_type, $args );
 	} // End register_post_type()
 
-	/**
-	 * Register the "thing-category" taxonomy.
-	 * @access portal
-	 * @since  1.3.0
-	 * @return void
-	 */
+//	/**
+//	 * Register the "thing-category" taxonomy.
+//	 * @access portal
+//	 * @since  1.3.0
+//	 * @return void
+//	 */
 	public function register_taxonomy () {
 //
 //      TODO: removed until we decide whether we want classification and how we want to use them.
@@ -277,9 +278,7 @@ class Disciple_Tools_Contact_Post_Type {
 		return $messages;
 	} // End updated_messages()
 	
-	
-	
-	
+
 	/**
 	 * Setup the meta box.
 	 * @access portal
@@ -288,8 +287,117 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_assigned', __( 'Assigned to', 'disciple_tools' ), array( $this, 'load_assigned_meta_box' ), $this->post_type, 'side', 'low' );
 
 	} // End meta_box_setup()
+
+    /**
+     * Setup "assigned" meta box.
+     *
+     */
+    public function load_assigned_meta_box ( $post_id) {
+        $exclude_group = '';
+        $exclude_user = '';
+        $type = '';
+        $id = '';
+
+        // Start drop down
+        echo '<select name="assigned_to" id="assigned_to" class="regular-text">';
+
+        if ( !empty( get_post_meta( $post_id->ID, 'assigned_to', true) ) ) { // If there is already a record
+            $metadata = get_post_meta($post_id->ID, 'assigned_to', true);
+            $meta_array = explode('-', $metadata); // Separate the type and id
+            $type = $meta_array[0]; // Build variables
+            $id = $meta_array[1];
+
+            // Build option for current value
+            if ( $type == 'group') {
+                $term_id = $id;
+                $value = get_term( $term_id);
+                echo '<option value="group-'.$value->term_id.'" selected>'.$value->name.'</option>';
+
+                // exclude the current id from the $results list
+                $exclude_group = "'exclude' => $term_id";
+            } else {
+                $value = get_user_by( 'id', $id);
+                echo '<option value="user-'.$id.'" selected>'.$value->display_name.'</option>';
+
+                // exclude the current id from the $results list
+                $exclude_user = "'exclude' => $id";
+            }
+
+        }
+
+        // Separate groups from users
+        echo '<option value="" disabled> --- Teams</option>';
+
+        // Get groups list excluding current selection
+        $results = get_terms( array( 'taxonomy' => 'user-group', 'hide_empty' => true, 'exclude' => $exclude_group ) );
+
+        // Loop list of groups list
+        foreach ($results as $value) {
+            echo '<option value="group-'.$value->term_id.'">'.$value->name.'</option>';
+        }
+
+        // Separate groups from users
+        echo '<option value="" disabled> --- Users</option>';
+
+        // Collect user list
+        $args = array('role__not_in' => array('registered', 'prayer_supporter', 'project_supporter'), 'fields' => array('ID', 'display_name'), 'exclude' => $exclude_user );
+        $results = get_users($args);
+
+        // Loop user list
+        foreach ($results as $value) {
+            echo '<option value="user-'.$value->ID.'">'.$value->display_name.'</option>';
+        }
+
+        // End drop down
+        echo '</select><br> ';
+
+
+//        $term_id = get_post_meta( $post_id->ID, 'assigned_to_teams', true);
+//        print_r( get_term( '4')); //print_r(get_post_meta( $post_id->ID, 'assigned_to_teams', true) );
+    }
+
+    /**
+     * Save the contents of the Assigned To Metabox
+     *
+     * @return mixed/void
+     */
+    public function save_assigned_meta_box ( $post_id ) {
+        global $post, $messages;
+
+        // Verify
+        if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+            return $post_id;
+        }
+
+        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
+            if ( ! current_user_can( 'edit_page', $post_id ) ) {
+                return $post_id;
+            }
+        } else {
+            if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                return $post_id;
+            }
+        }
+
+        $fields = array('assigned_to');
+
+        foreach ( $fields as $f ) {
+
+            ${$f} = strip_tags(trim($_POST[$f]));
+
+
+            if ( get_post_meta( $post_id,  $f ) == '' ) {
+                add_post_meta( $post_id,  $f, ${$f}, true );
+            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+                update_post_meta( $post_id, $f, ${$f} );
+            } elseif ( ${$f} == '' ) {
+                delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
+            }
+        }
+    }
 	
 	/**
 	 * The contents of our meta box.
@@ -304,7 +412,7 @@ class Disciple_Tools_Contact_Post_Type {
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 		
 		
 		if ( 0 < count( $field_data ) ) {
@@ -389,7 +497,7 @@ class Disciple_Tools_Contact_Post_Type {
 		global $post, $messages;
 
 		// Verify
-		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
 			return $post_id;
 		}
 
@@ -461,7 +569,7 @@ class Disciple_Tools_Contact_Post_Type {
 		    'name' => __( 'Overall Status', 'disciple_tools' ),
 		    'description' => '',
 		    'type' => 'select',
-		    'default' => array('', 'Unassignable', 'Unassigned', 'Assigned', 'Accepted', 'On Pause', 'Closed'),
+		    'default' => array('Unassigned', 'Unassignable', 'Assigned', 'Accepted', 'On Pause', 'Closed'),
 		    'section' => 'info'
 		);
 		$fields['seeker_path'] = array(
@@ -615,7 +723,7 @@ class Disciple_Tools_Contact_Post_Type {
 		
 		
 
-		return apply_filters( 'drm_custom_fields_settings', $fields );
+		return apply_filters( 'dt_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
 
 	/**
