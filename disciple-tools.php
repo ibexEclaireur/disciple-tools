@@ -247,7 +247,7 @@ class Disciple_Tools {
         require_once ('includes/models/class-taxonomy.php');
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-        $this->post_types['prayers'] = new Disciple_Tools_Prayer_Post_Type( 'prayers', __( 'Prayers', 'disciple_tools' ), __( 'Prayers', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
+        $this->post_types['prayers'] = new Disciple_Tools_Prayer_Post_Type( 'prayers', __( 'Prayers', 'disciple_tools' ), __( 'Prayers', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-heart' ) );
         /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
 
 

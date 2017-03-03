@@ -10,29 +10,28 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /*
  * Action and Filters
  */
-add_action( 'admin_enqueue_scripts', 'post_page_scripts' );
+add_action( 'admin_enqueue_scripts', 'contact_groups_page_scripts' );
+//add_action( 'admin_enqueue_scripts', 'group_page_scripts' );
 
 /*
  * Functions
  */
 
 
-function post_page_scripts($hook) {
-//    // Test if post type page
-//    if( 'post.php' != $hook )
-//        return;
+// Loads scripts and styles for the admin contacts and groups pages.
+function contact_groups_page_scripts() {
+    // Global object containing current admin page
+    global $pagenow, $post;
 
-    // Enqueue Custom DMMCRM admin styles page
-    wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
-    wp_enqueue_style( 'dt_admin_css' );
+    // If current page is post.php and post isset than query for its post type
+    // if the post type is 'event' do something
+    if ( 'post.php' === $pagenow && 'contacts' === get_post_type( $post) || 'groups' === get_post_type( $post ) ) {
 
-//    // Enqueue Jquery UI CSS
-//    wp_register_style( 'drm_ui_css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css' );
-//    wp_enqueue_style( 'drm_ui_css' );
-//
-//    // Enqueue Jquery UI
-//    wp_enqueue_script("jquery-ui-core");
-    wp_enqueue_script( 'dt_admin_scripts', Disciple_Tools()->plugin_js .'disciple-tools-admin.js', array(), '1.0.0', true  );
-//    // No need to enqueue jQuery as it's already included in the WordPress admin by default
+//        wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
+//        wp_enqueue_style( 'dt_admin_css' );
 
+        wp_enqueue_script( 'dt_contact_scripts', Disciple_Tools()->plugin_js .'disciple-tools-admin.js', array(), '1.0.0', true  );
+    }
 }
+
+

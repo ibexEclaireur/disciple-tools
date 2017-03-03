@@ -646,7 +646,7 @@ class Disciple_Tools_User_Taxonomy {
 		return wp_parse_args( $this->args, array(
 			'user_group'   => true, // Custom
 			'hierarchical' => true,
-			'portal'       => false,
+			'public'       => false,
 			'show_ui'      => true,
 			'meta_box_cb'  => '',
 			'labels'       => $this->parse_labels(),
