@@ -265,7 +265,6 @@ class Disciple_Tools {
         require_once ( 'includes/functions/user-groups-common.php' );
         require_once ( 'includes/functions/user-groups-taxonomies.php' );
         require_once ( 'includes/functions/user-groups-hooks.php' );
-
         /* End model configuration section */
 
 
@@ -282,10 +281,23 @@ class Disciple_Tools {
         require_once ('includes/functions/login.php');
         require_once ('includes/functions/private-site.php');
 
+        /*
+         * Portal Configurations through the Disciple Tools Theme
+         *
+         *
+         */
+        $this->theme = wp_get_theme( );
+        if ( $this->theme == 'Disciple Tools' ) {
 
-		// Load shortcodes
-        require_once ('includes/portal/class-shortcodes.php');
-        $this->shortcodes = Disciple_Tools_Function_Callback::instance();
+            // Load portal menu logic
+            require_once ('includes/portal/class-portal-menu.php');
+
+            // Load shortcodes
+            require_once ('includes/portal/class-shortcodes.php');
+            $this->shortcodes = Disciple_Tools_Function_Callback::instance();
+        }
+        /* End Portal Section */
+
 
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
