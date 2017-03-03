@@ -14,6 +14,8 @@
  *
  * @package Disciple Tools
  * @class Disciple_Tools_BetterAuthorMetabox
+ *
+ * TODO: Clean un-necessary settings panel and define authors for contacts and groups. And determine if securing pages by author, or assigned_to is better.
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -273,7 +275,7 @@ class Disciple_Tools_BetterAuthorMetabox {
 //                }
 //            }
 //        }
-        $safe_input = array( 'enabled_post_types' => array('contacts' => 1, 'groups' => 1) );
+        $safe_input = array( 'enabled_post_types' => array('contacts' => 1, 'groups' => 1, 'prayers' => 1) );
 
         if ($input['enabled_roles']) {
             foreach ($input['enabled_roles'] as $role => $enabled) {

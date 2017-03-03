@@ -80,7 +80,7 @@ class Disciple_Tools_Roles {
                 'level_0' => true,
                 // see all contacts
                 'manage_contacts' => true,
-                // Add custom caps for contacts and groups
+                // Add custom caps for contacts
                 'edit_contact' => true,
                 'read_contact' => true,
                 'delete_contact' => true,
@@ -90,6 +90,7 @@ class Disciple_Tools_Roles {
                 'edit_others_contacts' => true,
                 'publish_contacts' => true,
                 'read_private_contacts' => true,
+                // Add custom caps for groups
                 'edit_group' => true,
                 'read_group' => true,
                 'delete_group' => true,
@@ -98,7 +99,17 @@ class Disciple_Tools_Roles {
                 'edit_groups' => true,
                 'edit_others_groups' => true,
                 'publish_groups' => true,
-                'read_private_groups' => true
+                'read_private_groups' => true,
+                // Add custom caps for prayers
+                'read_prayer' => true,
+                'edit_prayer' => true,
+                'delete_prayer' => true,
+                'delete_others_prayers' => true,
+                'delete_prayers' => true,
+                'edit_prayers' => true,
+                'edit_others_prayers' => true,
+                'publish_prayers' => true,
+                'read_private_prayers' => true
             ) );
 
 
@@ -133,7 +144,7 @@ class Disciple_Tools_Roles {
                 'level_0' => true,
                 // See all contacts
                 'manage_contacts' => true,
-                // Add custom caps for contacts and groups
+                // Add custom caps for contacts
                 'edit_contact' => true,
                 'read_contact' => true,
                 'delete_contact' => true,
@@ -143,6 +154,7 @@ class Disciple_Tools_Roles {
                 'edit_others_contacts' => true,
                 'publish_contacts' => true,
                 'read_private_contacts' => true,
+                // Add custom caps for groups
                 'edit_group' => true,
                 'read_group' => true,
                 'delete_group' => true,
@@ -151,7 +163,17 @@ class Disciple_Tools_Roles {
                 'edit_groups' => true,
                 'edit_others_groups' => true,
                 'publish_groups' => true,
-                'read_private_groups' => true
+                'read_private_groups' => true,
+                // Add custom caps for prayers
+                'read_prayer' => true,
+                'edit_prayer' => true,
+                'delete_prayer' => true,
+                'delete_others_prayers' => true,
+                'delete_prayers' => true,
+                'edit_prayers' => true,
+                'edit_others_prayers' => true,
+                'publish_prayers' => true,
+                'read_private_prayers' => true
             ) );
 
 
@@ -162,7 +184,7 @@ class Disciple_Tools_Roles {
                 'moderate_comments' => true,
                 'read' => true,
                 'upload_files' => true,
-                // Add custom caps for contacts and groups
+                // Add custom caps for contacts
                 'edit_contact' => true,
                 'read_contact' => true,
                 'delete_contact' => true,
@@ -170,14 +192,26 @@ class Disciple_Tools_Roles {
                 'edit_contacts' => true,
                 'publish_contacts' => true,
                 'read_private_contacts' => true,
+                // Add custom caps for groups
                 'edit_group' => true,
                 'read_group' => true,
                 'delete_group' => true,
                 'delete_groups' => true,
                 'edit_groups' => true,
                 'publish_groups' => true,
-                'read_private_groups' => true
+                'read_private_groups' => true,
+                // Add custom caps for prayers
+                'read_prayer' => true,
+                'edit_prayer' => true,
+                'delete_prayer' => true,
+                'delete_others_prayers' => true,
+                'delete_prayers' => true,
+                'edit_prayers' => true,
+                'edit_others_prayers' => true,
+                'publish_prayers' => true,
+                'read_private_prayers' => true
             ) );
+
 
         if ( get_role( 'multiplier_leader' )) { remove_role( 'multiplier_leader' );}
         add_role( 'multiplier_leader', 'Multiplier Leader',
@@ -187,7 +221,7 @@ class Disciple_Tools_Roles {
                 'upload_files' => true,
                 // See all contacts
                 'manage_contacts' => true,
-                // Add custom caps for contacts and groups
+                // Add custom caps for contacts
                 'edit_contact' => true,
                 'read_contact' => true,
                 'delete_contact' => true,
@@ -197,6 +231,7 @@ class Disciple_Tools_Roles {
                 'edit_others_contacts' => true,
                 'publish_contacts' => true,
                 'read_private_contacts' => true,
+                // Add custom caps for groups
                 'edit_group' => true,
                 'read_group' => true,
                 'delete_group' => true,
@@ -205,7 +240,17 @@ class Disciple_Tools_Roles {
                 'edit_groups' => true,
                 'edit_others_groups' => true,
                 'publish_groups' => true,
-                'read_private_groups' => true
+                'read_private_groups' => true,
+                // Add custom caps for prayers
+                'read_prayer' => true,
+                'edit_prayer' => true,
+                'delete_prayer' => true,
+                'delete_others_prayers' => true,
+                'delete_prayers' => true,
+                'edit_prayers' => true,
+                'edit_others_prayers' => true,
+                'publish_prayers' => true,
+                'read_private_prayers' => true
             ) );
 
 
@@ -254,7 +299,6 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'publish_contacts' );
             $role->add_cap( 'read_private_contacts' );
             $role->add_cap( 'edit_group' );
-            $role->add_cap( 'edit_group' );
             $role->add_cap( 'read_group' );
             $role->add_cap( 'delete_group' );
             $role->add_cap( 'delete_others_groups' );
@@ -263,6 +307,15 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_groups' );
             $role->add_cap( 'publish_groups' );
             $role->add_cap( 'read_private_groups' );
+            $role->add_cap( 'edit_prayer' );
+            $role->add_cap( 'read_prayer' );
+            $role->add_cap( 'delete_prayer' );
+            $role->add_cap( 'delete_others_prayers' );
+            $role->add_cap( 'delete_prayers' );
+            $role->add_cap( 'edit_prayers' );
+            $role->add_cap( 'edit_others_prayers' );
+            $role->add_cap( 'publish_prayers' );
+            $role->add_cap( 'read_private_prayers' );
 
 
         }
