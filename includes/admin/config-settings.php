@@ -225,7 +225,7 @@ final class Disciple_Tools_Settings {
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
 
-		return (array)apply_filters( 'drm-settings-sections', $settings_sections );
+		return (array)apply_filters( 'disciple-tools-settings-sections', $settings_sections );
 	} // End get_settings_sections()
 
 	/**
@@ -346,7 +346,7 @@ final class Disciple_Tools_Settings {
 				break;
 		}
 
-		return (array)apply_filters( 'drm-settings-fields', $settings_fields );
+		return (array)apply_filters( 'disciple-tools-settings-fields', $settings_fields, $section);
 	} // End get_settings_fields()
 
 	/**
