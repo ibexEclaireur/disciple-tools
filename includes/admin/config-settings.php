@@ -524,8 +524,7 @@ final class Disciple_Tools_Settings {
 	 * @return  mixed Returned value.
 	 */
 	public function get_value ( $key, $default, $section ) {
-		$values = get_option( 'drm-' . $section, array() );
-
+		$values = get_option( Disciple_Tools()->token . '-' . $section, array() );
 		if ( is_array( $values ) && isset( $values[$key] ) ) {
 			$response = $values[$key];
 		} else {
@@ -553,8 +552,8 @@ final class Disciple_Tools_Settings {
 
 		if ( 0 < count( $sections ) ) {
 			foreach ( $sections as $k => $v ) {
-				$fields = $this->get_settings_fields( $v );
-				$values = get_option( 'drm-' . $v, array() );
+				$fields = $this->get_settings_fields( $k );
+				$values = get_option(Disciple_Tools()->token . '-' . $k, array());
 
 				if ( is_array( $fields ) && 0 < count( $fields ) ) {
 					foreach ( $fields as $i => $j ) {
