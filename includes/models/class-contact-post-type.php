@@ -835,7 +835,14 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'misc'
         );
 		
-		
+		$fields['source'] = array(
+			'name' => __( 'Source', 'disciple_tools'),
+			'description' => '',
+			'type' => 'text',
+			'default' => '',
+			'section' => 'misc'
+		);
+
 		
 
 		return apply_filters( 'dt_custom_fields_settings', $fields );
