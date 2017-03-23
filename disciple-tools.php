@@ -242,15 +242,17 @@ class Disciple_Tools {
         // Register Post types
         require_once ('includes/models/class-contact-post-type.php');
         require_once ('includes/models/class-group-post-type.php');
-        require_once ('includes/models/class-prayer-post-type.php');
         require_once ('includes/models/class-projectupdate-post-type.php');
-        /*require_once ( 'includes/classes/class-location-post-type.php' ); //TODO: Reactivate when ready for development*/
+        require_once ('includes/models/class-reports-post-type.php');
         require_once ('includes/models/class-taxonomy.php');
+//        require_once ('includes/models/class-prayer-post-type.php'); // TODO: Debating whether to have the posts function as the prayer post.
+//        require_once ( 'includes/models/class-location-post-type.php' ); //TODO: Reactivate when ready for development
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-        $this->post_types['prayers'] = new Disciple_Tools_Prayer_Post_Type( 'prayers', __( 'Prayers', 'disciple_tools' ), __( 'Prayers', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-heart' ) );
         $this->post_types['projectupdates'] = new Disciple_Tools_Project_Update_Post_Type( 'projectupdates', __( 'Project Updates', 'disciple_tools' ), __( 'Project Updates', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
-        /*$this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development*/
+        $this->post_types['reports'] = new Disciple_Tools_Reports_Post_Type( 'reports', __( 'Reports', 'disciple_tools' ), __( 'Reports', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-welcome-widgets-menus' ) );
+//        $this->post_types['prayers'] = new Disciple_Tools_Prayer_Post_Type( 'prayers', __( 'Prayers', 'disciple_tools' ), __( 'Prayers', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-heart' ) );
+//        $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
 
 
         // Creates the post to post relationship between the post type tables.
@@ -283,8 +285,6 @@ class Disciple_Tools {
 
         /*
          * Portal Configurations through the Disciple Tools Theme
-         *
-         *
          */
         $this->theme = wp_get_theme( );
         if ( $this->theme == 'Disciple Tools' ) {
