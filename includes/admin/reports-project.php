@@ -46,7 +46,7 @@ class Disciple_Tools_Project_Reports {
      */
     public function __construct () {
         // Load Admin menus
-        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Stats','disciple_tools'),__('Project Stats','disciple_tools'), 'manage_options','project_report' );
+        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Project Stats','disciple_tools'),__('Project Stats','disciple_tools'), 'read','project_report' );
 
         add_action('add_meta_boxes', array($this, 'page_metaboxes') );
     } // End __construct()
