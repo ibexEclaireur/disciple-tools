@@ -46,7 +46,7 @@ class Disciple_Tools_Media_Reports {
      */
     public function __construct () {
         // Load Admin menus
-        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Media Stats','disciple_tools'),__('Media Stats','disciple_tools'), 'manage_options','media_report' );
+        $this->page = new Disciple_Tools_Page_Factory('index.php',__('Media Stats','disciple_tools'),__('Media Stats','disciple_tools'), 'read','media_report' );
 
         add_action('add_meta_boxes', array($this, 'page_metaboxes') );
     } // End __construct()

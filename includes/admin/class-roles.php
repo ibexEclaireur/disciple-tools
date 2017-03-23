@@ -111,15 +111,8 @@ class Disciple_Tools_Roles {
                 'publish_projectupdates' => true,
                 'read_private_projectupdates' => true,
                 // Add custom caps for project updates
-                'read_report' => true,
-                'edit_report' => true,
-                'delete_report' => true,
-                'delete_others_reports' => true,
-                'delete_reports' => true,
-                'edit_reports' => true,
-                'edit_others_reports' => true,
-                'publish_reports' => true,
-                'read_private_reports' => true
+                'read_report' => true
+
             ) );
 
 
@@ -185,15 +178,7 @@ class Disciple_Tools_Roles {
                 'publish_projectupdates' => true,
                 'read_private_projectupdates' => true,
                 // Add custom caps for project updates
-                'read_report' => true,
-                'edit_report' => true,
-                'delete_report' => true,
-                'delete_others_reports' => true,
-                'delete_reports' => true,
-                'edit_reports' => true,
-                'edit_others_reports' => true,
-                'publish_reports' => true,
-                'read_private_reports' => true
+                'read_report' => true
             ) );
 
 
@@ -231,15 +216,7 @@ class Disciple_Tools_Roles {
                 'publish_projectupdates' => true,
                 'read_private_projectupdates' => true,
                 // Add custom caps for project updates
-                'read_report' => true,
-                'edit_report' => true,
-                'delete_report' => true,
-                'delete_others_reports' => true,
-                'delete_reports' => true,
-                'edit_reports' => true,
-                'edit_others_reports' => true,
-                'publish_reports' => true,
-                'read_private_reports' => true
+                'read_report' => true
             ) );
 
 
@@ -282,15 +259,7 @@ class Disciple_Tools_Roles {
                 'publish_projectupdates' => true,
                 'read_private_projectupdates' => true,
                 // Add custom caps for project updates
-                'read_report' => true,
-                'edit_report' => true,
-                'delete_report' => true,
-                'delete_others_reports' => true,
-                'delete_reports' => true,
-                'edit_reports' => true,
-                'edit_others_reports' => true,
-                'publish_reports' => true,
-                'read_private_reports' => true
+                'read_report' => true
             ) );
 
 

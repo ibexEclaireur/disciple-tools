@@ -432,13 +432,7 @@ class Disciple_Tools_Group_Post_Type {
             'default' => array('DBS', 'Church'),
             'section' => 'info'
         );
-        $fields['generation'] = array(
-            'name' => __( 'Generation', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', '1st Generation', '2nd Generation', '3rd Generation', '4th Generation', '5+ Generation'),
-            'section' => 'info'
-        );
+
 		$fields['address'] = array(
 		    'name' => __( 'Address', 'disciple_tools' ),
 		    'description' => '',
