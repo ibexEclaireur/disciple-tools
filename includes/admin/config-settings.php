@@ -225,7 +225,7 @@ final class Disciple_Tools_Settings {
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
 
-		return (array)apply_filters( 'drm-settings-sections', $settings_sections );
+		return (array)apply_filters( 'disciple-tools-settings-sections', $settings_sections );
 	} // End get_settings_sections()
 
 	/**
@@ -346,7 +346,7 @@ final class Disciple_Tools_Settings {
 				break;
 		}
 
-		return (array)apply_filters( 'drm-settings-fields', $settings_fields );
+		return (array)apply_filters( 'disciple-tools-settings-fields', $settings_fields, $section);
 	} // End get_settings_fields()
 
 	/**
@@ -524,8 +524,7 @@ final class Disciple_Tools_Settings {
 	 * @return  mixed Returned value.
 	 */
 	public function get_value ( $key, $default, $section ) {
-		$values = get_option( 'drm-' . $section, array() );
-
+		$values = get_option( Disciple_Tools()->token . '-' . $section, array() );
 		if ( is_array( $values ) && isset( $values[$key] ) ) {
 			$response = $values[$key];
 		} else {
@@ -553,8 +552,8 @@ final class Disciple_Tools_Settings {
 
 		if ( 0 < count( $sections ) ) {
 			foreach ( $sections as $k => $v ) {
-				$fields = $this->get_settings_fields( $v );
-				$values = get_option( 'drm-' . $v, array() );
+				$fields = $this->get_settings_fields( $k );
+				$values = get_option(Disciple_Tools()->token . '-' . $k, array());
 
 				if ( is_array( $fields ) && 0 < count( $fields ) ) {
 					foreach ( $fields as $i => $j ) {

@@ -86,7 +86,7 @@ final class Disciple_Tools_Admin {
 			<form action="options.php" method="post">
 				<?php
 					settings_fields( 'dt-settings-' . $tab );
-					do_settings_sections( 'dt-' . $tab );
+					do_settings_sections( Disciple_Tools()->token . '-' . $tab );
 					submit_button( __( 'Save Changes', 'disciple_tools' ) );
 				?>
 			</form>
@@ -104,8 +104,8 @@ final class Disciple_Tools_Admin {
 		$sections = Disciple_Tools()->settings->get_settings_sections();
 		if ( 0 < count( $sections ) ) {
 			foreach ( $sections as $k => $v ) {
-				register_setting( 'dt-settings-' . sanitize_title_with_dashes( $k ), 'dt-' . $k, array( $this, 'validate_settings' ) );
-				add_settings_section( sanitize_title_with_dashes( $k ), $v, array( $this, 'render_settings' ), 'dt-' . $k, $k, $k );
+				register_setting( 'dt-settings-' . sanitize_title_with_dashes( $k ), Disciple_Tools()->token . '-' . $k, array( $this, 'validate_settings' ) );
+				add_settings_section( sanitize_title_with_dashes( $k ), $v, array( $this, 'render_settings' ), Disciple_Tools()->token . '-' . $k, $k, $k );
 			}
 		}
 	} // End register_settings()
@@ -126,7 +126,7 @@ final class Disciple_Tools_Admin {
 				$args 		= $v;
 				$args['id'] = $k;
 
-				add_settings_field( $k, $v['name'], array( Disciple_Tools()->settings, 'render_field' ), 'dt-' . $token , $v['section'], $args );
+				add_settings_field( $k, $v['name'], array( Disciple_Tools()->settings, 'render_field' ), Disciple_Tools()->token . '-' . $token , $v['section'], $args );
 			}
 		}
 	} // End render_settings()
