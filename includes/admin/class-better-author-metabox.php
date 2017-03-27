@@ -22,10 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_BetterAuthorMetabox {
 
-//    const LANG = 'better-author-metabox';
-//    const CONFIG = 'ba-metabox-config';
-
-//    protected $plugin_dir = '';
 
     private $options;
 
@@ -55,16 +51,6 @@ class Disciple_Tools_BetterAuthorMetabox {
     } // End instance()
 
 
-//    static function init() {
-//        static $instance = false;
-//
-//        if ( !$instance ) {
-//            $instance = new BetterAuthorMetabox;
-//        }
-//
-//        return $instance;
-//    }
-
     public function __construct() {
         $this->plugin_dir = plugin_dir_path( __FILE__ );
 
@@ -87,7 +73,6 @@ class Disciple_Tools_BetterAuthorMetabox {
             array( $this, 'display_options_page' )
         );
     }
-
 
     /**
      * Changes the Author metabox so it display all users for the post types where we want this.
@@ -265,27 +250,7 @@ class Disciple_Tools_BetterAuthorMetabox {
      * @return array
      */
     public function sanitize_options($input) {
-        $safe_input = array();
-
-//        if ($input['enabled_post_types']) {
-//            foreach ($input['enabled_post_types'] as $post_type => $enabled) {
-//                // post type settings - only allowed value is 1
-//                if ($enabled == 1) {
-//                    $safe_input['enabled_post_types'][$post_type] = 1;
-//                }
-//            }
-//        }
-        $safe_input = array( 'enabled_post_types' => array('contacts' => 1, 'groups' => 1, 'prayers' => 1) );
-
-        if ($input['enabled_roles']) {
-            foreach ($input['enabled_roles'] as $role => $enabled) {
-                // user role setting - only allowed value is 1
-                if ($enabled == 1) {
-                    $safe_input['enabled_roles'][$role] = 1;
-                }
-            }
-        }
-
+        $safe_input = array( 'enabled_post_types' => array('contacts' => 1, 'groups' => 1, 'post' => 1, 'attachment' => 1), 'enabled_roles' => array('Marketer' => 1, 'Dispatcher' => 1, 'Administrator' => 1) );
         return $safe_input;
     }
 

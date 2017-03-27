@@ -176,6 +176,7 @@ class Disciple_Tools {
 		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'js/';
 		$this->plugin_css       = plugin_dir_url( __FILE__ ) . 'css/';
         $this->includes         = plugin_dir_url( __FILE__ ) . 'includes/';
+        $this->includes_path    = plugin_dir_path( __FILE__ ) . 'includes/';
         $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
 
         /* End prep variables */
@@ -268,10 +269,11 @@ class Disciple_Tools {
         /* End model configuration section */
 
 
-        // Creates the activity monitor
-        if (! class_exists('AAL_Main')) {
+        // Creates the activity monitor using the bundled 'aryo-activity-log'
+        if (! class_exists('AAL_Main')) { // tests if the aryo plugin is installed separately
             require_once ( 'includes/plugins/aryo-activity-log/aryo-activity-log.php');
         }
+
 
 
         /*

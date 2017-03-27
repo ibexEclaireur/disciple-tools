@@ -217,8 +217,8 @@ class AAL_Admin_Ui {
 	public function __construct() {
 		add_action( 'admin_menu', array( &$this, 'create_admin_menu' ), 20 );
 		add_action( 'admin_head', array( &$this, 'admin_header' ) );
-		add_action( 'admin_notices', array( &$this, 'admin_notices' ) );
-		add_action( 'wp_ajax_aal_install_elementor_set_admin_notice_viewed', array( &$this, 'ajax_aal_install_elementor_set_admin_notice_viewed' ) );
+//		add_action( 'admin_notices', array( &$this, 'admin_notices' ) );
+//		add_action( 'wp_ajax_aal_install_elementor_set_admin_notice_viewed', array( &$this, 'ajax_aal_install_elementor_set_admin_notice_viewed' ) );
 	}
 	
 	private function _is_elementor_installed() {
