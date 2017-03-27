@@ -137,8 +137,8 @@ class Disciple_Tools_Reports_Post_Type {
             'label'                 => __( 'Report', 'disciple_tools' ),
             'description'           => __( 'Daily reports on statistics', 'disciple_tools' ),
             'labels' 				=> $labels,
-            'public' 				=> true,
-            'publicly_queryable' 	=> true,
+            'public' 				=> false,
+            'publicly_queryable' 	=> false,
             'show_ui' 				=> true,
             'show_in_menu' 			=> true,
             'query_var' 			=> true,
@@ -165,7 +165,7 @@ class Disciple_Tools_Reports_Post_Type {
     } // End register_post_type()
 
     /**
-     * Register the "prayers-category" taxonomy.
+     * Register the "report-source" taxonomy.
      * @access portal
      * @since  1.3.0
      * @return void
@@ -183,47 +183,7 @@ class Disciple_Tools_Reports_Post_Type {
      */
     public function meta_box_setup () {
         add_meta_box( $this->post_type . '_date', __( 'Date', 'disciple_tools' ), array( $this, 'meta_box_date_content' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_meta', __( 'Report', 'disciple_tools' ), array( $this, 'display_meta_records_box' ), $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
-
-    /**
-     * Display Meta Records
-     * @access public
-     * @since  0.1
-     * @return void
-     */
-    public function display_meta_records_box () {
-        global $pagenow, $post_id;
-
-        // Check if creation screen
-        if($pagenow == 'post-new.php') {
-            echo "Report unavailable until record is saved.";
-            return;
-        }
-
-        // Get list of metadata records
-        $result = get_metadata('post', $post_id, $meta_key = '', $single = false);
-
-        // Cycle through the metadata returned
-        if (count($result) > 0) {
-            $html = '';
-
-            // Extract all meta records that are not private
-            foreach ($result as $key => $value) {
-                if (substr( $key, 0, 1 ) != "_") { // Checks and removes private meta records like _edit_lock and _edit_last
-                    $html .= $key . ' = ' . $value[0] . '<br>';
-                }
-            }
-
-            // If records exist print them, if not print empty
-            if (! empty($html)) {
-                echo $html;
-            } else {
-                echo "No data.";
-            }
-        }
-
-    }
 
     /**
      * Display Meta Records
@@ -271,6 +231,7 @@ class Disciple_Tools_Reports_Post_Type {
         global $post_id;
         $k = 'report_date';
         $data = get_metadata('post', $post_id, $k, true);
+        print $data;
         $v =  array(
             'name' => __( 'Report Date', 'disciple_tools' ),
             'description' => 'This is the 24 hour period that this report reflects. This can be different than the publish or modified dates.',

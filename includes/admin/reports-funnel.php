@@ -338,6 +338,7 @@ class Disciple_Tools_Funnel_Reports {
 
     public function page_notes () {
         $html = '
+            
             <p>The funnel stats report summarizes the contacts and milestones within the disciple making movement project.</p>
             <hr>
             <p>Funnel stats box highlights the critical path of seekers through the system.</p>
