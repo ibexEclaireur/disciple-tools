@@ -7,10 +7,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @see Disciple_Tools_Activity_Log_API::insert
  *
  * @param array $args
- * @return void
+ * @return mixed
  */
 function dt_report_insert( $args = array() ) {
-    Disciple_Tools()->report_api->insert($args);
+    return Disciple_Tools()->report_api->insert($args);
 }
 
 /**
@@ -21,10 +21,10 @@ function dt_report_insert( $args = array() ) {
 class Disciple_Tools_Reports_API {
 
     /**
-     * @since 1.0.0
+     * @since 0.1
      *
      * @param array $args
-     * @return void
+     * @return mixed
      */
     public function insert( $args ) {
         global $wpdb;
@@ -35,73 +35,116 @@ class Disciple_Tools_Reports_API {
                 'report_date'       => date('Y-m-d h:m:s'),
                 'report_source'     => '',
                 'report_subsource'  => '',
-                'group'             => '',
-                'meta_input'          => array(),
+                'meta_input'        => array(),
             )
         );
-
-        $user = get_user_by( 'id', get_current_user_id() );
-        if ( $user ) {
-            $args['user_caps'] = strtolower( key( $user->caps ) );
-            if ( empty( $args['user_id'] ) )
-                $args['user_id'] = $user->ID;
-        } else {
-            $args['user_caps'] = 'guest';
-            if ( empty( $args['user_id'] ) )
-                $args['user_id'] = 0;
-        }
 
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
             $wpdb->prepare(
                 'SELECT `id` FROM %1$s
-					WHERE `user_caps` = \'%2$s\'
-						AND `action` = \'%3$s\'
-						AND `object_type` = \'%4$s\'
-						AND `object_subtype` = \'%5$s\'
-						AND `object_name` = \'%6$s\'
-						AND `user_id` = \'%7$s\'
-						AND `hist_ip` = \'%8$s\'
-						AND `hist_time` = \'%9$s\'
+					WHERE `report_date` = \'%2$s\'
+						AND `report_source` = \'%3$s\'
+						AND `report_subsource` = \'%4$s\'
 				;',
-                $wpdb->activity,
-                $args['user_caps'],
-                $args['action'],
-                $args['object_type'],
-                $args['object_subtype'],
-                $args['object_name'],
-                $args['user_id'],
-                $args['hist_ip'],
-                $args['hist_time']
+                $wpdb->reports,
+                $args['report_date'],
+                $args['report_source'],
+                $args['report_subsource']
             )
         );
 
-        if ( $check_duplicate )
-            return;
+        if ( $check_duplicate ) {
+            return false;
+        }
+
 
         $wpdb->insert(
             $wpdb->reports,
             array(
-                'action'         => $args['action'],
-                'object_type'    => $args['object_type'],
-                'object_subtype' => $args['object_subtype'],
-                'object_name'    => $args['object_name'],
-                'object_id'      => $args['object_id'],
-                'user_id'        => $args['user_id'],
-                'user_caps'      => $args['user_caps'],
-                'hist_ip'        => $args['hist_ip'],
-                'hist_time'      => $args['hist_time'],
+                'report_date'       => $args['report_date'],
+                'report_source'     => $args['report_source'],
+                'report_subsource'  => $args['report_subsource'],
             ),
-            array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d' )
+            array( '%s', '%s', '%s' )
         );
 
-        if ( ! empty( $postarr['meta_input'] ) ) {
-            foreach ( $postarr['meta_input'] as $field => $value ) {
-//                update_post_meta( $post_ID, $field, $value );
+        $report_id = $wpdb->insert_id;
+
+        if ( ! empty( $args['meta_input'] ) ) {
+            foreach ( $args['meta_input'] as $field => $value ) {
+                $this->add_report_meta ( $report_id, $field, $value );
             }
         }
 
         // Final action on insert.
         do_action( 'dt_insert_report', $args );
+
+        return $report_id;
+    }
+
+    /**
+     * Add Report Metadata
+     * @since 0.1
+     *
+     * @param int $report_id
+     * @param string $field
+     * @param string $value
+     * @return void
+     */
+    private function add_report_meta ($report_id, $field, $value) {
+        global $wpdb;
+
+        $wpdb->insert(
+            $wpdb->reportmeta,
+            array(
+                'report_id'    => $report_id,
+                'meta_key'     => $field,
+                'meta_value'   => $value,
+            ),
+            array( '%d', '%s', '%s' )
+        );
+    }
+
+    public function get_reports_by_source ($report_source) {
+        global $wpdb;
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                'SELECT * FROM %1$s
+					WHERE `report_source` = \'%2$s\'
+				;',
+                $wpdb->reports,
+                $report_source
+            )
+        );
+        return $results;
+    }
+
+    public function get_report_by_id ($id) {
+        global $wpdb;
+
+        $results = $wpdb->get_row(
+            $wpdb->prepare(
+                'SELECT * FROM %1$s
+					WHERE `id` = \'%2$s\'
+				;',
+                $wpdb->reports,
+                $id
+            ),
+            ARRAY_A
+        );
+        $meta_input = $wpdb->get_results(
+            $wpdb->prepare(
+                'SELECT * FROM %1$s
+					WHERE `report_id` = \'%2$s\'
+				;',
+                $wpdb->reportmeta,
+                $id
+            ),
+            ARRAY_A
+        );
+        $results['meta_input'] = $meta_input;
+        return $results;
     }
 }

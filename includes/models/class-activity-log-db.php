@@ -61,7 +61,6 @@ class Disciple_Tools_Activity_Log_DB {
 					  `report_date` DATETIME NOT NULL,
 					  `report_source` VARCHAR(55) NOT NULL,
 					  `report_subsource` VARCHAR(100) NOT NULL,
-					  `group` VARCHAR(55),
 					  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
@@ -72,7 +71,6 @@ class Disciple_Tools_Activity_Log_DB {
 					  `report_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
 					  `meta_key` VARCHAR(255) NOT NULL,
 					  `meta_value` LONGTEXT,
-					  `type` VARCHAR(55),
 					  PRIMARY KEY (`meta_id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
