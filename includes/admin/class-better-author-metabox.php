@@ -55,7 +55,7 @@ class Disciple_Tools_BetterAuthorMetabox {
         $this->plugin_dir = plugin_dir_path( __FILE__ );
 
         // call all filters and actions
-        add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
+//        add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
         add_action( 'admin_menu', array( $this, 'reset_author_metabox' ) );
         add_action( 'admin_init', array( $this, 'init_options' ) );
 

@@ -67,7 +67,7 @@ class AAL_Settings {
 		// If no options exist, create them.
 		if ( ! get_option( $this->slug ) ) {
 			update_option( $this->slug, apply_filters( 'aal_default_options', array(
-				'logs_lifespan' => '30',
+				'logs_lifespan' => '730',
 			) ) );
 		}
 

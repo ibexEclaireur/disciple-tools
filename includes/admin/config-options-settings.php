@@ -221,7 +221,6 @@ final class Disciple_Tools_Settings {
 
 		$settings_sections['general'] = __( 'General', 'disciple_tools' );
 		$settings_sections['integrations'] = __( 'Integrations', 'disciple_tools' );
-		$settings_sections['notes'] = __( 'Notes', 'disciple_tools' );
 		// Add your new sections below here.
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
@@ -246,7 +245,7 @@ final class Disciple_Tools_Settings {
                 $settings_fields['private_site'] = array(
                     'name' => __( 'Make site private', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => 'true',
+                    'default' => true,
                     'section' => 'general',
                     'description' => __( 'Default is private.', 'disciple_tools' )
                 );

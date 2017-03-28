@@ -190,11 +190,11 @@ class Disciple_Tools {
 		 */
 		if ( is_admin() ) {
             // Disciple_Tools admin settings page configuration
-            require_once('includes/admin/config-admin.php');
+            require_once('includes/admin/config-options-admin.php');
             $this->admin = Disciple_Tools_Admin::instance();
 
 			// Disciple_Tools admin settings page configuration
-			require_once('includes/admin/config-settings.php');
+			require_once('includes/admin/config-options-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
             // Load plugin library that "requires plugins" at activation
@@ -271,8 +271,11 @@ class Disciple_Tools {
 
         // Creates the activity monitor using the bundled 'aryo-activity-log'
         if (! class_exists('AAL_Main')) { // tests if the aryo plugin is installed separately
-            require_once ( 'includes/plugins/aryo-activity-log/aryo-activity-log.php');
+            require_once ( 'includes/plugins/aryo-activity-log/aryo-activity-log.php'); // This calls the unmodified plugin
+            // activate and deactivate functions were added to /admin/class-activator & /admin/class-deactivator
         }
+        require_once ( 'includes/functions/activity-log-config.php'); // Configures the plugin for Disciple Tools use.
+        require_once ( 'includes/functions/activity-log-contacts.php'); // Logs contacts specific data.
 
 
 
