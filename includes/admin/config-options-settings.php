@@ -249,8 +249,15 @@ final class Disciple_Tools_Settings {
                     'section' => 'general',
                     'description' => __( 'Default is private.', 'disciple_tools' )
                 );
+                $settings_fields['delete_activity_db'] = array(
+                    'name' => __( 'Delete Activity Logs', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => false,
+                    'section' => 'general',
+                    'description' => __( 'Delete activity logs and disciple tools activity database on uninstall.', 'disciple_tools' )
+                );
                 $settings_fields['select'] = array(
-                    'name' => __( 'Example Select', 'disciple_tools' ),
+                    'name' => __( 'Select', 'disciple_tools' ),
                     'type' => 'select',
                     'default' => '',
                     'section' => 'standard-fields',

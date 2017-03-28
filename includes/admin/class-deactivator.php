@@ -37,6 +37,8 @@ class Disciple_Tools_Deactivator {
         require_once ( Disciple_Tools()->includes_path . 'plugins/aryo-activity-log/classes/class-aal-maintenance.php');
         AAL_Maintenance::uninstall(false);
         /* End Aryo Activity Log Plugin */
+
+
 	}
 
 

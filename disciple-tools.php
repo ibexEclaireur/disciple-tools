@@ -164,6 +164,7 @@ class Disciple_Tools {
 	 * @since   0.1
 	 */
 	public function __construct () {
+	    global $wpdb;
 		/**
 		 * Prepare variables
 		 *
@@ -178,6 +179,10 @@ class Disciple_Tools {
         $this->includes         = plugin_dir_url( __FILE__ ) . 'includes/';
         $this->includes_path    = plugin_dir_path( __FILE__ ) . 'includes/';
         $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
+
+        $wpdb->activity = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
+        $wpdb->reports = $wpdb->prefix . 'dt_reports';
+        $wpdb->reportmeta = $wpdb->prefix . 'dt_reportmeta';
 
         /* End prep variables */
 
@@ -234,8 +239,8 @@ class Disciple_Tools {
          *
          * @posttype Contacts
          * @posttype Groups
-         * @posttype Prayers
          * @posttype Project Updates
+         * @posttype Reports
          * @taxonomies
          * @service   Post to Post connections
          * @service   User groups via taxonomies
@@ -274,9 +279,15 @@ class Disciple_Tools {
             require_once ( 'includes/plugins/aryo-activity-log/aryo-activity-log.php'); // This calls the unmodified plugin
             // activate and deactivate functions were added to /admin/class-activator & /admin/class-deactivator
         }
-        require_once ( 'includes/functions/activity-log-config.php'); // Configures the plugin for Disciple Tools use.
-        require_once ( 'includes/functions/activity-log-contacts.php'); // Logs contacts specific data.
+        require_once('includes/activity/activity-log-config.php'); // Configures the plugin for Disciple Tools use.
+        /* End activity monitor section */
 
+
+        // Activity & Report Logs
+        require_once('includes/activity/class-activity-api.php');
+        $this->activity_api = new Disciple_Tools_Activity_Log_API();
+        require_once ( 'includes/activity/class-reports-api.php');
+        $this->report_api = new Disciple_Tools_Reports_API();
 
 
         /*

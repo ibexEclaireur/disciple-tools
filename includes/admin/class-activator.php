@@ -37,6 +37,14 @@ class Disciple_Tools_Activator {
         require_once ( Disciple_Tools()->includes_path . 'plugins/aryo-activity-log/classes/class-aal-maintenance.php');
         AAL_Maintenance::activate(false);
         /* End Aryo Activity Log Plugin */
+
+        /**
+         * Activate database creation for Disciple Tools Activity logs
+         * @since 0.1
+         */
+        require_once ( Disciple_Tools()->includes_path . 'models/class-activity-log-db.php');
+        Disciple_Tools_Activity_Log_DB::activate();
+        /* End Disciple Tools Activity Log */
 	}
 
 }

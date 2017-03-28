@@ -338,6 +338,8 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'publish_reports' );
             $role->add_cap( 'read_private_reports' );
 
+
+
         }
 
         return "complete";
