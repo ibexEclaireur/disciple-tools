@@ -58,7 +58,7 @@ class Disciple_Tools_Activity_Log_DB {
         /* Report Log Table */
         $sql2 = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_reports` (
 					  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-					  `report_date` DATETIME NOT NULL,
+					  `report_date` DATE NOT NULL,
 					  `report_source` VARCHAR(55) NOT NULL,
 					  `report_subsource` VARCHAR(100) NOT NULL,
 					  PRIMARY KEY (`id`)

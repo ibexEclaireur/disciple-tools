@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @return mixed
  */
 function dt_report_insert( $args = array() ) {
-    return Disciple_Tools()->report_api->insert($args);
+    Disciple_Tools()->report_api->insert($args);
 }
 
 /**
@@ -24,7 +24,6 @@ class Disciple_Tools_Reports_API {
      * @since 0.1
      *
      * @param array $args
-     * @return mixed
      */
     public function insert( $args ) {
         global $wpdb;
@@ -32,12 +31,15 @@ class Disciple_Tools_Reports_API {
         $args = wp_parse_args(
             $args,
             array(
-                'report_date'       => date('Y-m-d h:m:s'),
+                'report_date'       => date('Y-m-d'),
                 'report_source'     => '',
                 'report_subsource'  => '',
                 'meta_input'        => array(),
             )
         );
+
+        $args['report_date'] = date_create($args['report_date']); // Format submitted date
+        $args['report_date'] = date_format($args['report_date'],"Y-m-d");
 
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
@@ -54,10 +56,8 @@ class Disciple_Tools_Reports_API {
             )
         );
 
-        if ( $check_duplicate ) {
-            return false;
-        }
-
+        if ( $check_duplicate )
+            return;
 
         $wpdb->insert(
             $wpdb->reports,
@@ -80,7 +80,6 @@ class Disciple_Tools_Reports_API {
         // Final action on insert.
         do_action( 'dt_insert_report', $args );
 
-        return $report_id;
     }
 
     /**
@@ -147,4 +146,73 @@ class Disciple_Tools_Reports_API {
         $results['meta_input'] = $meta_input;
         return $results;
     }
+
+    /**
+     * Gets report ids by data
+     * @param  $date string     This is the supplied date for the report date('Y-m-d') format
+     * @param $source string    (optional) This argument limits the results to a certain source
+     * @param $subsource string (optional) This argument further limits the results to a specific subsource of the source. Source is still required, in case of subsource naming conflicts.
+     * @return array            Returns list of ids that match date and other arguments.
+     */
+    public function get_report_ids_by_date ($date, $source = null, $subsource = null) {
+        global $wpdb;
+
+        // check date for proper format
+        $date = date_create($date);
+        $date = date_format($date,"Y-m-d");
+
+        if(!empty($subsource) && !empty($source)) {
+            // Build full query
+            $sql = $wpdb->prepare(
+                'SELECT id FROM %1$s
+					WHERE `report_date` = \'%2$s\'
+						AND `report_source` = \'%3$s\'
+						AND `report_subsource` = \'%4$s\'
+				;',
+                $wpdb->reports,
+                $date,
+                $source,
+                $subsource
+            );
+        } elseif (!empty($source)) {
+            // Build limited query
+            $sql = $wpdb->prepare(
+                'SELECT id FROM %1$s
+					WHERE `report_date` = \'%2$s\'
+						AND `report_source` = \'%3$s\'
+				;',
+                $wpdb->reports,
+                $date,
+                $source
+            );
+        } else {
+            // Build date query
+            $sql = $wpdb->prepare(
+                'SELECT id FROM %1$s
+					WHERE `report_date` = \'%2$s\'
+				;',
+                $wpdb->reports,
+                $date
+            );
+        }
+
+        // Query results
+        $results = $wpdb->get_results( $sql , ARRAY_A);
+
+        return $results;
+
+    }
+
+    public function get_reports_by_date ($date, $source = null, $subsource = null) {
+        $report = array();
+        $i = 0;
+        $results = $this->get_report_ids_by_date($date, $source, $subsource);
+
+        foreach ($results as $result) {
+            $report[$i] = $this->get_report_by_id($result['id']);
+            $i++;
+        }
+        return $report;
+    }
+
 }
