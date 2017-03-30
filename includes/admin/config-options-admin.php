@@ -65,7 +65,7 @@ final class Disciple_Tools_Admin {
 	 * @return  void
 	 */
 	public function register_settings_screen () {
-		$this->_hook = add_submenu_page( 'options-general.php', __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_options', 'disciple_tools', array( $this, 'settings_screen' ) );
+		$this->_hook = add_submenu_page( 'options-general.php', __( 'Options (DT)', 'disciple_tools' ), __( 'Options (DT)', 'disciple_tools' ), 'manage_options', 'disciple_tools_options', array( $this, 'settings_screen' ) );
 	} // End register_settings_screen()
 
 	/**
@@ -220,7 +220,7 @@ final class Disciple_Tools_Admin {
 					$class .= ' nav-tab-active';
 				}
 
-				$response['content'] .= '<a href="' . admin_url( 'options-general.php?page=disciple_tools&tab=' . sanitize_title_with_dashes( $key ) ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $value ) . '</a>';
+				$response['content'] .= '<a href="' . admin_url( 'options-general.php?page=disciple_tools_options&tab=' . sanitize_title_with_dashes( $key ) ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $value ) . '</a>';
 			}
 		}
 
