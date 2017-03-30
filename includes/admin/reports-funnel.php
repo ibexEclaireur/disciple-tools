@@ -70,11 +70,13 @@ class Disciple_Tools_Funnel_Reports {
     public function critical_path_stats ( ) {
 
         // Build variables
-        $prayer = 'x';
-        $facebook = 'x';
-        $websites = 'x';
+        $prayer = Disciple_Tools()->report_api->get_meta_key_total('2017', 'Mailchimp', 'new_subscribers');
+        $mailchimp_subscribers = Disciple_Tools()->report_api->get_meta_key_total('2017', 'Mailchimp', 'new_subscribers', 'max');
+        $facebook = Disciple_Tools()->report_api->get_meta_key_total('2017', 'Facebook', 'page_likes_count');
+        $websites = Disciple_Tools()->report_api->get_meta_key_total('2017', 'Analytics', 'unique_website_visitors');
+
         $new_contacts = Disciple_Tools()->counter->contacts_post_status('publish');
-        $conacts_attempted = 'x';
+        $contacts_attempted = 'x';
         $contacts_established = 'x';
         $first_meetings = 'x';
         $baptisms = 'x';
@@ -94,50 +96,50 @@ class Disciple_Tools_Funnel_Reports {
 						</thead>
 						<tbody>
 							<tr>
-								<td><a href="#">Prayers Network</a></td>
-								<td>'.$prayer.'</td>
+								<td>Prayers Network</td>
+								<td>Total: '.$prayer.', Most Subscribers: '.$mailchimp_subscribers.'</td>
 								
 							</tr>
 							<tr>
-								<td><a href="#">Facebook Engagement</a></td>
+								<td>Facebook Engagement (2017, page_likes_count)</td>
 								<td>'.$facebook.'</td>
 								
 							</tr>
 							<tr>
-								<td><a href="#">Website Visitors</a></td>
+								<td>Website Visitors</td>
 								<td>'.$websites.'</td>
 								
 							</tr>
 							<tr>
-								<td><a href="#">New Contacts</a></td>
+								<td>New Contacts</td>
 								<td>'.$new_contacts.'</td>
 							</tr>
 							<tr>
-								<td><a href="#">Contact Attempted</a></td>
-								<td>'.$conacts_attempted.'</td>
+								<td>Contact Attempted</td>
+								<td>'.$contacts_attempted.'</td>
 							</tr>
 							<tr>
-								<td><a href="#">Contact Established</a></td>
+								<td>Contact Established</td>
 								<td>'.$contacts_established.'</td>
 							</tr>
 							<tr>
-								<td><a href="#">First Meeting Complete</a></td>
+								<td>First Meeting Complete</td>
 								<td>'.$first_meetings.'</td>
 							</tr>
 							<tr>
-								<td><a href="#">Baptisms</a></td>
+								<td>Baptisms</td>
 								<td>'.$baptisms.'</td>
 							</tr>
 							<tr>
-								<td><a href="#">Baptizers</a></td>
+								<td>Baptizers</td>
 								<td>'.$baptizers.'</td>
 							</tr>
 							<tr>
-								<td><a href="#">Active Churches</a></td>
+								<td>Active Churches</td>
 								<td>'.$active_churches.'</td>
 							</tr>
 							<tr>
-								<td><a href="#">Church Planters</a></td>
+								<td>Church Planters</td>
 								<td>'.$church_planters.'</td>
 							</tr>
 							
@@ -346,6 +348,7 @@ class Disciple_Tools_Funnel_Reports {
             <p>Generations stats box highlights the generation status of contacts through the system.</p>
             <hr>
             <p>Contacts stats box highlights the current status of contacts.</p>
+            <p><a href="/wp-admin/options-general.php?page=dtsample&tab=report">Sample Reports Page</a></p>
         ';
         echo $html;
     }

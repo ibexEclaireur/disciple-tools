@@ -166,6 +166,44 @@ class Disciple_Tools_Reports_API {
     }
 
     /**
+     * Get sum total of a meta key for a date range
+     *
+     * @param   $date       string      (required)
+     * @param   $source     string      (required)
+     * @param   $meta_key   string      (required)
+     * @param   $type       string      (optional) Takes sum, max, min, average. Defaults to sum.
+     * @returns int
+     */
+    public function get_meta_key_total ($date, $source, $meta_key, $type = 'sum') {
+        global $wpdb;
+
+        // Build full query
+        $sql = $wpdb->prepare(
+            'SELECT %6$s(meta_value) as %5$s
+                FROM %1$s
+                    RIGHT JOIN %2$s ON %1$s.id = %2$s.report_id
+                WHERE %1$s.report_date LIKE \'%3$s\'
+                    AND %1$s.report_source = \'%4$s\'
+                    AND %2$s.meta_key = \'%5$s\'
+                    ;',
+            $wpdb->reports,
+            $wpdb->reportmeta,
+            $wpdb->esc_like($date) . '%',
+            $source,
+            $meta_key,
+            $type
+        );
+
+        // Query results
+        $results = $wpdb->get_results( $sql , ARRAY_A);
+
+        $results_int = $results[0][$meta_key];
+
+        return (int) $results_int;
+
+    }
+
+    /**
      * Gets report ids by date
      *
      * @param  $date string     This is the supplied date for the report date('Y-m-d') format
@@ -176,20 +214,16 @@ class Disciple_Tools_Reports_API {
     public function get_report_ids_by_date ($date, $source = null, $subsource = null) {
         global $wpdb;
 
-        // check date for proper format
-        $date = date_create($date);
-        $date = date_format($date,"Y-m-d");
-
         if(!empty($subsource) && !empty($source)) {
             // Build full query
             $sql = $wpdb->prepare(
                 'SELECT id FROM %1$s
-					WHERE `report_date` = \'%2$s\'
+					WHERE `report_date` LIKE \'%2$s\'
 						AND `report_source` = \'%3$s\'
 						AND `report_subsource` = \'%4$s\'
 				;',
                 $wpdb->reports,
-                $date,
+                $wpdb->esc_like($date) . '%',
                 $source,
                 $subsource
             );
@@ -197,21 +231,21 @@ class Disciple_Tools_Reports_API {
             // Build limited query
             $sql = $wpdb->prepare(
                 'SELECT id FROM %1$s
-					WHERE `report_date` = \'%2$s\'
+					WHERE `report_date` LIKE \'%2$s\'
 						AND `report_source` = \'%3$s\'
 				;',
                 $wpdb->reports,
-                $date,
+                $wpdb->esc_like($date) . '%',
                 $source
             );
         } else {
             // Build date query
             $sql = $wpdb->prepare(
                 'SELECT id FROM %1$s
-					WHERE `report_date` = \'%2$s\'
+					WHERE `report_date` LIKE \'%2$s\'
 				;',
                 $wpdb->reports,
-                $date
+                $wpdb->esc_like($date) . '%'
             );
         }
 
@@ -243,7 +277,7 @@ class Disciple_Tools_Reports_API {
     }
 
     /**
-     * Get the reports for a month
+     * Get the reports for a year, month, and day ranges based on source and optional subsource
      *
      * @param   $date       string  (required)  The month is a formated year and month. 2017-03
      * @param   $source     string  (required)  The source
@@ -252,38 +286,15 @@ class Disciple_Tools_Reports_API {
      * @param   $id_only    boolean (optional)  By default this is true and will return the ids records, but if set to true it will return only IDs of reports in this date range.
      * @return  array
      */
-    public function get_month_by_source($date, $source, $range, $subsource = '', $id_only = true ) {
+    public function get_month_by_source($date, $source, $subsource = '', $id_only = true ) {
 
         global $wpdb;
         $results = array();
 
         // check required fields
-        if(empty($date) || empty($source) || empty($range)) {
+        if(empty($date) || empty($source) ) {
             $results['error'] = 'required fields error';
             return $results;
-        }
-
-        // filter the date supplied by the range designation
-        switch ($range) {
-            case 'year':
-                // Filter year
-                $date = date_create($date); // Format submitted date
-                $date = date_format($date,"Y");
-                break;
-            case 'month':
-                // Filter year
-                $date = date_create($date); // Format submitted date
-                $date = date_format($date,"Y-m");
-                break;
-            case 'day':
-                // Filter year
-                $date = date_create($date); // Format submitted date
-                $date = date_format($date,"Y-m-d");
-                break;
-            default:
-                $results['error'] = 'range error';
-                return $results;
-                break;
         }
 
         // prepare id or all setting
@@ -336,10 +347,10 @@ class Disciple_Tools_Reports_API {
      * @param   $subsource  string  (optional) If this is supplied, the source must also be supplied.
      * @return          array
      */
-    public function get_month_by_source_full ($date, $source = null, $subsource = null) {
+    public function get_month_by_source_full ($date, $source, $subsource) {
         $report = array();
         $i = 0;
-        $results = $this->get_report_ids_by_date($date, $source, $subsource);
+        $results = $this->get_month_by_source($date, $source, $subsource, true );
 
         foreach ($results as $result) {
             $report[$i] = $this->get_report_by_id($result['id']);
