@@ -20,10 +20,18 @@ function dt_report_insert( $args = array() ) {
  */
 class Disciple_Tools_Reports_API {
 
+    /***********************************************************/
+    /*            Create Section                               */
+    /***********************************************************/
+
     /**
+     * Insert Report into _reports and _reportmeta tables
      * @since 0.1
-     *
-     * @param array $args
+     * @param array     $args
+     * @param date      'report_date'
+     * @param string    'report_source'
+     * @param string    'report_subsource'
+     * @param array     'meta_input' this is an array of meta_key and meta_value
      */
     public function insert( $args ) {
         global $wpdb;
@@ -120,6 +128,16 @@ class Disciple_Tools_Reports_API {
         return $results;
     }
 
+    /***********************************************************/
+    /*            Read Section                               */
+    /***********************************************************/
+
+    /**
+     * Gets a single report including metadata by the report id
+     *
+     * @param   $id     int     (required) This is the report id.
+     * @return  array
+     */
     public function get_report_by_id ($id) {
         global $wpdb;
 
@@ -148,7 +166,8 @@ class Disciple_Tools_Reports_API {
     }
 
     /**
-     * Gets report ids by data
+     * Gets report ids by date
+     *
      * @param  $date string     This is the supplied date for the report date('Y-m-d') format
      * @param $source string    (optional) This argument limits the results to a certain source
      * @param $subsource string (optional) This argument further limits the results to a specific subsource of the source. Source is still required, in case of subsource naming conflicts.
@@ -203,7 +222,121 @@ class Disciple_Tools_Reports_API {
 
     }
 
+    /**
+     * Gets full reports with metadata for a single date, and can be filtered by source and subsource
+     *
+     * @param   $date   string      (required) This is a date formated '2017-03-22'
+     * @param   $source string      (optional) This is the source
+     * @param   $subsource  string  (optional) If this is supplied, the source must also be supplied.
+     * @return          array
+     */
     public function get_reports_by_date ($date, $source = null, $subsource = null) {
+        $report = array();
+        $i = 0;
+        $results = $this->get_report_ids_by_date($date, $source, $subsource);
+
+        foreach ($results as $result) {
+            $report[$i] = $this->get_report_by_id($result['id']);
+            $i++;
+        }
+        return $report;
+    }
+
+    /**
+     * Get the reports for a month
+     *
+     * @param   $date       string  (required)  The month is a formated year and month. 2017-03
+     * @param   $source     string  (required)  The source
+     * @param   $range      string  (required)  This is one of three ranges. year, month, or day
+     * @param   $subsource  string  (optional)  The subsource
+     * @param   $id_only    boolean (optional)  By default this is true and will return the ids records, but if set to true it will return only IDs of reports in this date range.
+     * @return  array
+     */
+    public function get_month_by_source($date, $source, $range, $subsource = '', $id_only = true ) {
+
+        global $wpdb;
+        $results = array();
+
+        // check required fields
+        if(empty($date) || empty($source) || empty($range)) {
+            $results['error'] = 'required fields error';
+            return $results;
+        }
+
+        // filter the date supplied by the range designation
+        switch ($range) {
+            case 'year':
+                // Filter year
+                $date = date_create($date); // Format submitted date
+                $date = date_format($date,"Y");
+                break;
+            case 'month':
+                // Filter year
+                $date = date_create($date); // Format submitted date
+                $date = date_format($date,"Y-m");
+                break;
+            case 'day':
+                // Filter year
+                $date = date_create($date); // Format submitted date
+                $date = date_format($date,"Y-m-d");
+                break;
+            default:
+                $results['error'] = 'range error';
+                return $results;
+                break;
+        }
+
+        // prepare id or all setting
+        if ($id_only) {
+            $columns = 'id';
+        } else {
+            $columns = '*';
+        }
+
+        // prepare sql
+        if(!empty($subsource)) {
+            // Build full query
+            $sql = $wpdb->prepare(
+                'SELECT %1$s FROM %2$s
+					WHERE `report_date` LIKE \'%3$s\'
+						AND `report_source` = \'%4$s\'
+						AND `report_subsource` = \'%5$s\'
+				;',
+                $columns,
+                $wpdb->reports,
+                $wpdb->esc_like($date) . '%',
+                $source,
+                $subsource
+            );
+        } else {
+            // Build full query
+            $sql = $wpdb->prepare(
+                'SELECT %1$s FROM %2$s
+					WHERE `report_date` LIKE \'%3$s\'
+						AND `report_source` = \'%4$s\'
+				;',
+                $columns,
+                $wpdb->reports,
+                $wpdb->esc_like($date) . '%',
+                $source
+            );
+        }
+
+        // query results
+        $results = $wpdb->get_results( $sql , ARRAY_A);
+
+        return $results;
+    }
+
+    /**
+     * Gets full reports with metadata for a single date, and can be filtered by source and subsource
+     *
+     * @param   $date   string      (required) This is a date formated '2017-03-22'
+     * @param   $source string      (optional) This is the source
+     * @param   $subsource  string  (optional) If this is supplied, the source must also be supplied.
+     * @return          array
+     */
+    public function get_month_by_source_full ($date, $source = null, $subsource = null) {
         $report = array();
         $i = 0;
         $results = $this->get_report_ids_by_date($date, $source, $subsource);
