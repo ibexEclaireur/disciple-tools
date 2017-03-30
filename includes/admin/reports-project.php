@@ -55,7 +55,6 @@ class Disciple_Tools_Project_Reports {
     //Add some metaboxes to the page
     public function page_metaboxes(){
         add_meta_box('system_stats','System Stats', array($this, 'system_stats_widget'),'dashboard_page_project_report','normal','high');
-        add_meta_box('team_stats','Team Stats', array($this, 'team_stats_widget'),'dashboard_page_project_report','normal','high');
         add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_project_report','side','high');
     }
 
@@ -165,48 +164,6 @@ class Disciple_Tools_Project_Reports {
         echo $html;
     }
 
-    public function team_stats_widget () {
-//        print '<pre>'; print_r(get_option('BAM_config')) ; print '</pre>';
-//        $html ='';
-//        echo $html;
-
-        echo '<select name="teams" id="teams_dropdown" class="">';
-
-        $results = get_terms( array( 'taxonomy' => 'user-group', 'hide_empty' => true, ) );
-                foreach ($results as $value) {
-                    echo '<option value="'.$value->term_id.'">'.$value->name.'</option>';
-                }
-        echo '</select><br> ';
-
-
-        echo '<select name="users" id="users_dropdown" class="">';
-            $args = array('role__not_in' => array('registered', 'prayer_supporter', 'project_supporter'), 'fields' => array('ID', 'display_name') );
-            $results = get_users($args);
-                foreach ($results as $value) {
-                    echo '<option value="'.$value->ID.'">'.$value->display_name.'</option>';
-                }
-        echo '</select><br>';
-
-                ?>
-<!--        <button >Test Button</button>-->
-<!--        <div id="paste"></div>-->
-<!--        <a href="javascript:void(0);" onclick="findGroupUsers('team-1');">Test link</a>-->
-        <?php
-
-
-//        print '<pre>'; print_r(get_terms( array(
-//            'taxonomy' => 'user-group',
-//            'hide_empty' => false,
-//        ) )) ; print '</pre>';
-
-//        $args = array(
-//            'taxonomy' => 'user-group',
-//            'term'     => 'team-1',
-//            'term_by'  => 'slug'
-//        );
-//        print '<pre>'; print_r(disciple_tools_get_users_of_group($args)) ; print '</pre>';
-
-    }
 
 
 }
