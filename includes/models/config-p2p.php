@@ -37,6 +37,30 @@ function my_connection_types() {
 
     ) );
 
+    p2p_register_connection_type( array(
+        'name' => 'baptizer_to_baptized',
+        'from' => 'contacts',
+        'to' => 'contacts',
+        //'admin_column' => 'any',  // TODO: This created an invalid string error.
+        'title' => array(
+            'from' => __( 'Baptized by', 'disciple_tools' ),
+            'to' => __( 'Baptized', 'disciple_tools' ),
+        ),
+        'from_labels' => array(
+            'singular_name' => __( 'Contact', 'disciple_tools' ),
+            'search_items' => __( 'Search contacts', 'disciple_tools' ),
+            'not_found' => __( 'No contacts found.', 'disciple_tools' ),
+            'create' => __( 'Add Baptism', 'disciple_tools' ),
+        ),
+        'to_labels' => array(
+            'singular_name' => __( 'Contact', 'disciple_tools' ),
+            'search_items' => __( 'Search contacts', 'disciple_tools' ),
+            'not_found' => __( 'No contacts found.', 'disciple_tools' ),
+            'create' => __( 'Add Baptizer', 'disciple_tools' ),
+        ),
+
+    ) );
+
 /*  // TODO: This section connects a contact to a user, and generates a connection column.
 	// The better way to do this is to create a one-to-one connection between the contact and user.
 
