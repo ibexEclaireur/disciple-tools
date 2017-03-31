@@ -73,7 +73,6 @@ class Disciple_Tools_Contact_Post_Type {
 		if ( is_admin() ) {
 			global $pagenow;
 
-			add_action( 'admin_menu', array( $this, 'meta_box_setup' ), 20 );
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
             add_action( 'save_post', array( $this, 'save_assigned_meta_box' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
@@ -173,6 +172,7 @@ class Disciple_Tools_Contact_Post_Type {
             'can_export'            => true,
             'exclude_from_search'   => false,
             'show_in_rest'          => true,
+            'register_meta_box_cb'  => array($this, 'meta_box_setup'),
 			'rest_base'             => 'contacts',
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
 		);
