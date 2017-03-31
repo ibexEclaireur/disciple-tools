@@ -87,42 +87,42 @@ class Disciple_Tools_Reports_Cron {
          */
         if( !wp_next_scheduled( 'build_disciple_tools_contacts_reports' ) && $options_settings['build_report_for_contacts'] ) { // Contacts
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_disciple_tools_contacts_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_disciple_tools_contacts_reports' );
         }
 
         if( !wp_next_scheduled( 'build_disciple_tools_groups_reports' ) && $options_settings['build_report_for_groups'] ) { // Groups
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_disciple_tools_groups_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_disciple_tools_groups_reports' );
         }
 
         if( !wp_next_scheduled( 'build_facebook_reports' ) && $options_settings['build_report_for_facebook'] ) { // Facebook
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_facebook_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_facebook_reports' );
         }
 
         if( !wp_next_scheduled( 'build_twitter_reports' ) && $options_settings['build_report_for_twitter'] ) { // Twitter
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_twitter_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_twitter_reports' );
         }
 
         if( !wp_next_scheduled( 'build_analytics_reports' ) && $options_settings['build_report_for_analytics'] ) { // Analytics
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_analytics_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_analytics_reports' );
         }
 
         if( !wp_next_scheduled( 'build_adwords_reports' ) && $options_settings['build_report_for_adwords'] ) { // Adwords
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_adwords_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_adwords_reports' );
         }
 
         if( !wp_next_scheduled( 'build_mailchimp_reports' ) && $options_settings['build_report_for_mailchimp'] ) { // Mailchimp
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_mailchimp_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_mailchimp_reports' );
         }
 
         if( !wp_next_scheduled( 'build_youtube_reports' ) && $options_settings['build_report_for_youtube'] ) { // Youtube
             // Schedule the event
-            wp_schedule_event( '00:00:00', 'daily', 'build_youtube_reports' );
+            wp_schedule_event( strtotime('today midnight'), 'daily', 'build_youtube_reports' );
         }
     }
 
