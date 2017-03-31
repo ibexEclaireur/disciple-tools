@@ -97,7 +97,7 @@ class Disciple_Tools_Funnel_Reports {
 						<tbody>
 							<tr>
 								<td>Prayers Network</td>
-								<td>Total: '.$prayer.', Most Subscribers: '.$mailchimp_subscribers.'</td>
+								<td>Total 2017: '.$prayer.', Most Subscribers Per Day: '.$mailchimp_subscribers.'</td>
 								
 							</tr>
 							<tr>
