@@ -117,6 +117,7 @@ class Disciple_Tools {
      * @since   0.1
      */
     private $roles;
+    public $report_cron;
 
 	/**
 	 * The admin object.
@@ -282,10 +283,14 @@ class Disciple_Tools {
 
 
         // Activity & Report Logs
-        require_once('includes/activity/class-activity-api.php');
+        require_once ( 'includes/activity/class-activity-api.php' );
         $this->activity_api = new Disciple_Tools_Activity_Log_API();
-        require_once ( 'includes/activity/class-reports-api.php');
+        require_once ( 'includes/activity/class-reports-api.php' );
         $this->report_api = new Disciple_Tools_Reports_API();
+        require_once ( 'includes/activity/class-reports-cron.php' ); // cron scheduling
+        $this->report_cron = Disciple_Tools_Reports_Cron::instance();
+        require_once ( 'includes/activity/class-integrations.php' ); // data integration for cron scheduling
+        require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
 
 
         /*
@@ -300,7 +305,6 @@ class Disciple_Tools {
          */
         require_once ('includes/functions/login.php');
         require_once ('includes/functions/private-site.php');
-
 
 
         /*

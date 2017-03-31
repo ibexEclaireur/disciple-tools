@@ -71,7 +71,7 @@ final class Disciple_Tools_Settings {
 				$method = 'validate_field_' . $fields[$k]['type'];
 
 				if ( ! method_exists( $this, $method ) ) {
-					if ( true === (bool)apply_filters( 'drm-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
+					if ( true === (bool)apply_filters( 'dt-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
 						$method = 'validate_field_text';
 					} else {
 						$method = '';
@@ -80,10 +80,10 @@ final class Disciple_Tools_Settings {
 
 				// If we have an internal method for validation, filter and apply it.
 				if ( '' != $method ) {
-					add_filter( 'drm-validate-field-' . $fields[$k]['type'], array( $this, $method ) );
+					add_filter( 'dt-validate-field-' . $fields[$k]['type'], array( $this, $method ) );
 				}
 
-				$method_output = apply_filters( 'drm-validate-field-' . $fields[$k]['type'], $v, $fields[$k] );
+				$method_output = apply_filters( 'dt-validate-field-' . $fields[$k]['type'], $v, $fields[$k] );
 
 				if ( ! is_wp_error( $method_output ) ) {
 					$input[$k] = $method_output;
@@ -197,10 +197,10 @@ final class Disciple_Tools_Settings {
 		}
 
 		// Output the description, if the current field allows it.
-		if ( isset( $args['type'] ) && ! in_array( $args['type'], (array)apply_filters( 'drm-no-description-fields', array( 'checkbox' ) ) ) ) {
+		if ( isset( $args['type'] ) && ! in_array( $args['type'], (array)apply_filters( 'dt-no-description-fields', array( 'checkbox' ) ) ) ) {
 			if ( isset( $args['description'] ) ) {
 				$description = '<p class="description">' . wp_kses_post( $args['description'] ) . '</p>' . "\n";
-				if ( in_array( $args['type'], (array)apply_filters( 'drm-new-line-description-fields', array( 'textarea', 'select' ) ) ) ) {
+				if ( in_array( $args['type'], (array)apply_filters( 'dt-new-line-description-fields', array( 'textarea', 'select' ) ) ) ) {
 					$description = wpautop( $description );
 				}
 				$html .= $description;
@@ -221,6 +221,7 @@ final class Disciple_Tools_Settings {
 
 		$settings_sections['general'] = __( 'General', 'disciple_tools' );
 		$settings_sections['integrations'] = __( 'Integrations', 'disciple_tools' );
+		$settings_sections['daily_reports'] = __( 'Daily Reports', 'disciple_tools' );
 		// Add your new sections below here.
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
@@ -348,6 +349,68 @@ final class Disciple_Tools_Settings {
 
 
 				break;
+
+            case 'daily_reports':
+
+                $settings_fields['build_report_for_contacts'] = array(
+                    'name' => __( 'Disciple Tools Contacts', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Contacts.', 'disciple_tools' )
+                );
+                $settings_fields['build_report_for_groups'] = array(
+                    'name' => __( 'Disciple Tools Groups', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Groups.', 'disciple_tools' )
+                );
+                $settings_fields['build_report_for_facebook'] = array(
+                    'name' => __( 'Facebook', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Facebook.', 'disciple_tools' )
+                );
+                $settings_fields['build_report_for_twitter'] = array(
+                    'name' => __( 'Twitter', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Twitter.', 'disciple_tools' )
+                );
+                $settings_fields['build_report_for_analytics'] = array(
+                    'name' => __( 'Google Analytics', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Analytics.', 'disciple_tools' )
+                );
+                $settings_fields['build_report_for_adwords'] = array(
+                    'name' => __( 'Adwords', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Adwords.', 'disciple_tools' )
+                );
+                $settings_fields['build_report_for_mailchimp'] = array(
+                    'name' => __( 'Mailchimp', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for Mailchimp.', 'disciple_tools' )
+                );
+                $settings_fields['build_report_for_youtube'] = array(
+                    'name' => __( 'YouTube', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => '',
+                    'section' => 'daily_reports',
+                    'description' => __( 'Default is true and enables the scheduling of daily report collection for YouTube.', 'disciple_tools' )
+                );
+
+
+                break;
 			default:
 				# code...
 				break;
@@ -518,7 +581,7 @@ final class Disciple_Tools_Settings {
 	 * @return  array Supported field type keys.
 	 */
 	public function get_supported_fields () {
-		return (array)apply_filters( 'drm-supported-fields', array( 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ) );
+		return (array)apply_filters( 'dt-supported-fields', array( 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ) );
 	} // End get_supported_fields()
 
 	/**
