@@ -835,8 +835,8 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'misc'
         );
 		
-		$fields['source'] = array(
-			'name' => __( 'Source', 'disciple_tools'),
+		$fields['source_details'] = array(
+			'name' => __( 'Source Details', 'disciple_tools'),
 			'description' => '',
 			'type' => 'text',
 			'default' => '',
