@@ -7,7 +7,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 		$title = get_the_title( $post );
 		
 		if ( empty( $title ) )
-			$title = __( '(no title)', 'aryo-activity-log' );
+			$title = __( '(no title)', 'disciple-tools' );
 		
 		return $title;
 	}
@@ -40,7 +40,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 		if ( 'nav_menu_item' === get_post_type( $post->ID ) )
 			return;
 
-		aal_insert_log(
+		dt_activity_insert(
 			array(
 				'action' => $action,
 				'object_type' => 'Post',
@@ -64,7 +64,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 		if ( 'nav_menu_item' === get_post_type( $post->ID ) )
 			return;
 
-		aal_insert_log(
+        dt_activity_insert(
 			array(
 				'action' => 'deleted',
 				'object_type' => 'Post',

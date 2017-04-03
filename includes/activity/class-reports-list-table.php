@@ -7,7 +7,7 @@ if (!class_exists('WP_List_Table')) {
 /**
  * Create a new table class that will extend the WP_List_Table
  */
-class Disciple_Tools_Activity_List_Table extends WP_List_Table
+class Disciple_Tools_Reports_List_Table extends WP_List_Table
 {
     /**
      * Prepare the items for the table to process
@@ -47,12 +47,9 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     {
         $columns = array(
             'date'        => __( 'Date', 'disciple-tools' ),
-            'author'      => __( 'Author', 'disciple-tools' ),
-            'ip'          => __( 'IP', 'disciple-tools' ),
-            'type'        => __( 'Type', 'disciple-tools' ),
-            'label'       => __( 'Label', 'disciple-tools' ),
-            'action'      => __( 'Action', 'disciple-tools' ),
-            'description' => __( 'Description', 'disciple-tools' ),
+            'source'      => __( 'Source', 'disciple-tools' ),
+            'subsource'   => __( 'SubSource', 'disciple-tools' ),
+            'meta_input'   => __( 'Records', 'disciple-tools' ),
         );
 
         return $columns;
@@ -75,7 +72,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
      */
     public function get_sortable_columns()
     {
-        return array('type' => array('type', false), 'date' => array('date', false));
+        return array('date' => array('date', false), 'source' => array('source', false));
     }
 
     /**
@@ -95,22 +92,36 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
                 'SELECT * FROM %1$s
 					ORDER BY %2$s
 				;',
-                $wpdb->activity,
-                'hist_time desc'
+                $wpdb->reports,
+                'report_date desc'
             ),
             ARRAY_A
         );
 
         foreach ($results as $result) {
             $mapped_array = array(
-                'date' => $result['hist_time'],
-                'author' => $result['user_id'],
-                'ip' => $result['hist_ip'],
-                'type' => $result['object_type'],
-                'label' => $result['object_subtype'],
-                'action' => $result['action'],
-                'description' => $result['object_name']
+                'date' => $result['report_date'],
+                'source' => $result['report_source'],
+                'subsource' => $result['report_subsource'],
             );
+
+            // Get all report detals
+            $meta_input_raw = $wpdb->get_results(
+                $wpdb->prepare(
+                    'SELECT %1$s, %2$s FROM %3$s
+                      WHERE report_id = %4$s
+					
+				;',
+                    'meta_key',
+                    'meta_value',
+                    $wpdb->reportmeta,
+                    $result['id']
+                ),
+                ARRAY_A
+            );
+
+
+            $mapped_array['meta_input'] = $meta_input_raw;
 
             $data[] = $mapped_array;
         }
@@ -130,17 +141,22 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     {
         switch ($column_name) {
             case 'date':
-            case 'author':
-            case 'ip':
-            case 'type':
-            case 'label':
-            case 'action':
-            case 'description':
+            case 'source':
+            case 'subsource':
                 return $item[$column_name];
-
+            case 'meta_input':
+                return print_r($this->build_meta_input_list( $item['meta_input'] ), true);
             default:
                 return print_r($item, true);
         }
+    }
+
+    public function build_meta_input_list ($meta_input) {
+        $html = '';
+        foreach ($meta_input as $value) {
+            $html .= $value['meta_key'] . ': ' . $value['meta_value'] . '<br>';
+        }
+        return $html;
     }
 
     /**

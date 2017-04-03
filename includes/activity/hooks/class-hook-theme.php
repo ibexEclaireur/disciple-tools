@@ -20,7 +20,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 				if ( ! empty( $_POST['theme'] ) )
 					$aal_args['object_subtype'] = $_POST['theme'];
 
-				aal_insert_log( $aal_args );
+				dt_activity_insert( $aal_args );
 			}
 		}
 
@@ -29,7 +29,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 	}
 
 	public function hooks_switch_theme( $new_name, WP_Theme $new_theme ) {
-		aal_insert_log(
+		dt_activity_insert(
 				array(
 				'action'         => 'activated',
 				'object_type'    => 'Theme',
@@ -52,7 +52,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 		if ( 'customize_preview_init' === current_filter() )
 			$aal_args['action'] = 'accessed';
 
-		aal_insert_log( $aal_args );
+		dt_activity_insert( $aal_args );
 	}
 
 	public function hooks_theme_deleted() {
@@ -71,7 +71,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 
 		$name = $delete_theme_call['args'][0];
 		
-		aal_insert_log(
+		dt_activity_insert(
 			array(
 				'action' => 'deleted',
 				'object_type' => 'Theme',
@@ -98,7 +98,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 			$name    = $theme->name;
 			$version = $theme->version;
 
-			aal_insert_log(
+			dt_activity_insert(
 				array(
 					'action' => 'installed',
 					'object_type' => 'Theme',
@@ -122,7 +122,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 				$name    = $theme['Name'];
 				$version = $theme_data['Version'];
 
-				aal_insert_log(
+				dt_activity_insert(
 					array(
 						'action' => 'updated',
 						'object_type' => 'Theme',

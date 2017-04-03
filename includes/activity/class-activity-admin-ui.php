@@ -33,7 +33,8 @@ class Disciple_Tools_Wp_List_Table
      */
     public function add_menu_activity_list_table_page()
     {
-        add_menu_page( 'Activity', 'Activity', 'manage_options', 'activity-list-table', array($this, 'list_table_page') );
+        add_submenu_page( 'index.php', 'Activity', 'Activity', 'manage_options', 'activity-list-table', array($this, 'list_table_page') );
+        add_options_page(  'Reports Log (DT)', 'Reports Log (DT)', 'manage_options', 'reports-list-table', array($this, 'reports_table_page') );
     }
 
     /**
@@ -43,13 +44,32 @@ class Disciple_Tools_Wp_List_Table
      */
     public function list_table_page()
     {
-        $exampleListTable = new Disciple_Tools_Activity_List_Table();
-        $exampleListTable->prepare_items();
+        $ListTable = new Disciple_Tools_Activity_List_Table();
+        $ListTable->prepare_items();
         ?>
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
-            <h2>Example List Table Page</h2>
-            <?php $exampleListTable->display(); ?>
+            <h2>Disciple Tools Activity Report</h2>
+            <?php $ListTable->display(); ?>
+        </div>
+        <?php
+    }
+
+    /**
+     * Display the list table page
+     *
+     * @return Void
+     */
+    public function reports_table_page()
+    {
+        $ListTable = new Disciple_Tools_Reports_List_Table();
+        $ListTable->prepare_items();
+        ?>
+        <div class="wrap">
+            <div id="icon-users" class="icon32"></div>
+            <h2>Disciple Tools Reports Log</h2>
+            <p>This table displays the ongoing reports being recorded nightly from the different integration sources.</p>
+            <?php $ListTable->display(); ?>
         </div>
         <?php
     }

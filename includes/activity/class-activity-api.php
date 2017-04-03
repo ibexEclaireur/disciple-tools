@@ -59,7 +59,7 @@ class Disciple_Tools_Activity_Log_API {
         $wpdb->query(
             $wpdb->prepare(
                 'TRUNCATE %1$s',
-                $wpdb->activity_log
+                $wpdb->activity
             )
         );
     }

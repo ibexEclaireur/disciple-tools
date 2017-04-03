@@ -7,7 +7,7 @@ class Disciple_Tools_Hook_Comments extends Disciple_Tools_Hook_Base {
 		if ( is_null( $comment ) )
 			$comment = get_comment( $id );
 		
-		aal_insert_log( array(
+		dt_activity_insert( array(
 			'action'         => $action,
 			'object_type'    => 'Comments',
 			'object_subtype' => get_post_type( $comment->comment_post_ID ),

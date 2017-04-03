@@ -23,7 +23,7 @@ class Disciple_Tools_Hook_Taxonomy extends Disciple_Tools_Hook_Base {
 				$action = 'created';
 			}
 
-			aal_insert_log( array(
+            dt_activity_insert( array(
 				'action'         => $action,
 				'object_type'    => 'Taxonomy',
 				'object_subtype' => $taxonomy,

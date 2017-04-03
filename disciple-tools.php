@@ -277,9 +277,11 @@ class Disciple_Tools {
         require_once ( 'includes/activity/class-activity-api.php' );
         $this->activity_api = new Disciple_Tools_Activity_Log_API();
         require_once ( 'includes/activity/class-activity-hooks.php' ); // contacts and groups report building
+        $this->activity_hooks = Disciple_Tools_Activity_Hooks::instance();
         if(is_admin()) {
             require_once ( 'includes/activity/class-activity-admin-ui.php' ); // contacts and groups report building
             require_once ( 'includes/activity/class-activity-list-table.php' ); // contacts and groups report building
+            require_once ( 'includes/activity/class-reports-list-table.php' ); // contacts and groups report building
         }
         // Reports and Cron Jobs
         require_once ( 'includes/activity/class-reports-api.php' );
