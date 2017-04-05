@@ -236,72 +236,72 @@ class Disciple_Tools_Counter_Factory {
 	    switch($generation_number) {
 
             case 'has_one_or_more':
-                $gen_object = new drm_connection_counter();
+                $gen_object = new Disciple_Tools_Connection_Counter();
                 $count = $gen_object->has_at_least(1, $type);
                 break;
 
             case 'has_two_or_more':
-                $gen_object = new drm_connection_counter();
+                $gen_object = new Disciple_Tools_Connection_Counter();
                 $count = $gen_object->has_at_least(2, $type);
                 break;
 
             case 'has_three_or_more':
-                $gen_object = new drm_connection_counter();
+                $gen_object = new Disciple_Tools_Connection_Counter();
                 $count = $gen_object->has_at_least(3, $type);
                 break;
 
             case 'has_0':
-                $gen_object = new drm_connection_counter();
+                $gen_object = new Disciple_Tools_Connection_Counter();
                 $count = $gen_object->has_zero($type);
                 break;
 
             case 'has_1':
-                $gen_object = new drm_connection_counter();
+                $gen_object = new Disciple_Tools_Connection_Counter();
                 $count = $gen_object->has_exactly(1, $type);
                 break;
 
             case 'has_2':
-                $gen_object = new drm_connection_counter();
+                $gen_object = new Disciple_Tools_Connection_Counter();
                 $count = $gen_object->has_exactly(2, $type);
                 break;
 
             case 'has_3':
-                $gen_object = new drm_connection_counter();
+                $gen_object = new Disciple_Tools_Connection_Counter();
                 $count = $gen_object->has_exactly(3, $type);
                 break;
 
             case 'generation_list':
-                $gen_object = new drm_generations_status_counter();
+                $gen_object = new Disciple_Tools_Generation_Status();
                 $count = $gen_object->generation_status_list();
                 break;
 
             case 'at_zero':
-                $gen_object = new drm_generations_status_counter();
+                $gen_object = new Disciple_Tools_Generation_Status();
                 $count = $gen_object->gen_level(0, $type);
                 break;
 
             case 'at_first':
-                $gen_object = new drm_generations_status_counter();
+                $gen_object = new Disciple_Tools_Generation_Status();
                 $count = $gen_object->gen_level(1, $type);
                 break;
 
             case 'at_second':
-                $gen_object = new drm_generations_status_counter();
+                $gen_object = new Disciple_Tools_Generation_Status();
                 $count = $gen_object->gen_level(2, $type);
                 break;
 
             case 'at_third':
-                $gen_object = new drm_generations_status_counter();
+                $gen_object = new Disciple_Tools_Generation_Status();
                 $count = $gen_object->gen_level(3, $type);
                 break;
 
             case 'at_fourth':
-                $gen_object = new drm_generations_status_counter();
+                $gen_object = new Disciple_Tools_Generation_Status();
                 $count = $gen_object->gen_level(4, $type);
                 break;
 
             case 'at_fifth':
-                $gen_object = new drm_generations_status_counter();
+                $gen_object = new Disciple_Tools_Generation_Status();
                 $count = $gen_object->gen_level(5, $type);
                 break;
 

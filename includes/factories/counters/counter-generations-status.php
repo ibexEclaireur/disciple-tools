@@ -10,7 +10,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class drm_generations_status_counter  {
+class Disciple_Tools_Generation_Status  {
     /**
      * Constructor function.
      * @access  public

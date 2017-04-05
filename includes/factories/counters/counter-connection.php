@@ -10,7 +10,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class drm_connection_counter  {
+class Disciple_Tools_Connection_Counter  {
 
 
     /**
