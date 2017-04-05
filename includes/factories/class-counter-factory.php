@@ -9,6 +9,7 @@
  * @license   GPL-3.0
  * @version   0.1
  */
+
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_Counter_Factory {
@@ -38,21 +39,21 @@ class Disciple_Tools_Counter_Factory {
 	/**
 	 * Constructor function
 	 *
-	 * @access  portal
+	 * @access  public
 	 * @since   0.1
 	 */
 	public function __construct ( ) {
 
 	    // Load required files
-	    require_once('counters/connection-counter.php');
-        require_once('counters/generations-status-counter.php');
+	    require_once('counters/counter-connection.php');
+        require_once('counters/counter-generations-status.php');
 
     } // End __construct
 
 	/**
 	 * Returns count of contacts publish status
 	 *
-	 * @access  portal
+	 * @access  public
 	 * @since   0.1
 	 */
 	public function contacts_post_status ($status = '') {
@@ -107,10 +108,19 @@ class Disciple_Tools_Counter_Factory {
 	}
 
 	/**
+	 * Counts meta fields that match $meta_key and $meta_value provided.
+	 *
+	 */
+	public function contacts_counter ($meta_key, $meta_value) {
+        $query = new WP_Query( array( 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'contacts', ) );
+        return $query->found_posts;
+    }
+
+	/**
 	 * Get Count from Meta Data in Contacts
 	 *
 	 * @returns number
-	 * @access  portal
+	 * @access  public
 	 * @since   0.1
 	 */
 	public function contacts_overall_status ($status = 'unassigned') {
@@ -155,6 +165,61 @@ class Disciple_Tools_Counter_Factory {
 				break;
 		}
 	}
+
+    /**
+     * Get Count Stages of the Seeker Path
+     *
+     * @returns number
+     * @access  public
+     * @since   0.1
+     */
+    public function contacts_seeker_path ($status = '') {
+
+//        $status = strtolower($status);
+
+        switch ($status) {
+
+            case 'Contact Attempted':
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => 'Contact Attempted', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+
+            case 'Contact Established':
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => 'Contact Established', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+
+            case 'Confirms Interest':
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => 'Confirms Interest', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+
+            case 'Meeting Scheduled':
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => 'Meeting Scheduled', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+
+            case 'First Meeting Complete':
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => 'First Meeting Complete', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+
+            case 'Ongoing Meetings':
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => 'Ongoing Meetings', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+
+            case 'Being Coached':
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => 'Being Coached', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+
+            default:
+                $query = new WP_Query( array( 'meta_key' => 'seeker_path', 'meta_value' => '', 'post_type' => 'contacts', ) );
+                return $query->found_posts;
+                break;
+        }
+    }
 
 	/**
 	 * Generations counting factory

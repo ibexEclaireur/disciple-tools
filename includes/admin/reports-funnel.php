@@ -76,9 +76,9 @@ class Disciple_Tools_Funnel_Reports {
         $websites = Disciple_Tools()->report_api->get_meta_key_total('2017', 'Analytics', 'unique_website_visitors');
 
         $new_contacts = Disciple_Tools()->counter->contacts_post_status('publish');
-        $contacts_attempted = 'x';
-        $contacts_established = 'x';
-        $first_meetings = 'x';
+        $contacts_attempted = Disciple_Tools()->counter->contacts_counter('seeker_path', 'Contact Attempted');
+        $contacts_established = Disciple_Tools()->counter->contacts_counter('seeker_path', 'Contact Established');
+        $first_meetings = Disciple_Tools()->counter->contacts_counter('seeker_path', 'First Meeting Complete');
         $baptisms = 'x';
         $baptizers = 'x';
         $active_churches = 'x';
