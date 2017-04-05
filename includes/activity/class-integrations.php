@@ -35,13 +35,7 @@ class Disciple_Tools_Reports_Integrations {
             'report_source' => 'Facebook',
             'report_subsource' => 'Page1',
             'meta_input' => array(
-                'page_likes_count' => rand ( 0 , 100 ),
                 'page_engagement' => rand ( 0 , 100 ),
-                'page_conversations_count' => rand ( 0 , 100 ),
-                'page_messages_in_conversation_count' => rand ( 0 , 100 ),
-                'page_post_count' => rand ( 2 , 6 ),
-                'page_post_likes_and_reactions' => rand ( 0 , 100 ),
-                'page_comments_count' => rand ( 0 , 100 ),
             )
         );
         $report[1] = array(

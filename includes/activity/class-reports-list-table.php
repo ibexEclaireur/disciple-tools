@@ -91,6 +91,7 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
             $wpdb->prepare(
                 'SELECT * FROM %1$s
 					ORDER BY %2$s
+					LIMIT 300
 				;',
                 $wpdb->reports,
                 'report_date desc'
@@ -110,6 +111,7 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
                 $wpdb->prepare(
                     'SELECT %1$s, %2$s FROM %3$s
                       WHERE report_id = %4$s
+                      
 					
 				;',
                     'meta_key',
