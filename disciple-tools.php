@@ -273,18 +273,17 @@ class Disciple_Tools {
         /* End model configuration section */
 
 
-        // Creates the activity monitor using the bundled 'aryo-activity-log'
-        if (! class_exists('AAL_Main')) { // tests if the aryo plugin is installed separately
-            require_once ( 'includes/plugins/aryo-activity-log/aryo-activity-log.php'); // This calls the unmodified plugin
-            // activate and deactivate functions were added to /admin/class-activator & /admin/class-deactivator
-        }
-        require_once('includes/activity/activity-log-config.php'); // Configures the plugin for Disciple Tools use.
-        /* End activity monitor section */
-
-
-        // Activity & Report Logs
+        // Activity Logs
         require_once ( 'includes/activity/class-activity-api.php' );
         $this->activity_api = new Disciple_Tools_Activity_Log_API();
+        require_once ( 'includes/activity/class-activity-hooks.php' ); // contacts and groups report building
+        $this->activity_hooks = Disciple_Tools_Activity_Hooks::instance();
+        if(is_admin()) {
+            require_once ( 'includes/activity/class-activity-admin-ui.php' ); // contacts and groups report building
+            require_once ( 'includes/activity/class-activity-list-table.php' ); // contacts and groups report building
+            require_once ( 'includes/activity/class-reports-list-table.php' ); // contacts and groups report building
+        }
+        // Reports and Cron Jobs
         require_once ( 'includes/activity/class-reports-api.php' );
         $this->report_api = new Disciple_Tools_Reports_API();
         require_once ( 'includes/activity/class-reports-cron.php' ); // cron scheduling

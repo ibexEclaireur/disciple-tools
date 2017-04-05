@@ -1,12 +1,12 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class AAL_Hook_Attachment extends AAL_Hook_Base {
+class Disciple_Tools_Hook_Attachment extends Disciple_Tools_Hook_Base {
 
 	protected function _add_log_attachment( $action, $attachment_id ) {
 		$post = get_post( $attachment_id );
 
-		aal_insert_log( array(
+		dt_activity_insert( array(
 			'action'         => $action,
 			'object_type'    => 'Attachment',
 			'object_subtype' => $post->post_type,

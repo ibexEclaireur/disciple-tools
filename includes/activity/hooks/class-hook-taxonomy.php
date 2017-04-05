@@ -1,7 +1,7 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class AAL_Hook_Taxonomy extends AAL_Hook_Base {
+class Disciple_Tools_Hook_Taxonomy extends Disciple_Tools_Hook_Base {
 
 	public function hooks_created_edited_deleted_term( $term_id, $tt_id, $taxonomy, $deleted_term = null ) {
 		// Make sure do not action nav menu taxonomy.
@@ -23,7 +23,7 @@ class AAL_Hook_Taxonomy extends AAL_Hook_Base {
 				$action = 'created';
 			}
 
-			aal_insert_log( array(
+            dt_activity_insert( array(
 				'action'         => $action,
 				'object_type'    => 'Taxonomy',
 				'object_subtype' => $taxonomy,

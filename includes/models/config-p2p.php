@@ -58,8 +58,28 @@ function my_connection_types() {
             'not_found' => __( 'No contacts found.', 'disciple_tools' ),
             'create' => __( 'Add Baptizer', 'disciple_tools' ),
         ),
+        'fields' => array(
+            'month' => array(
+                'title' => __( 'Month', 'disciple_tools' ),
+                'type' => 'select',
+                'values' => array( '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' ),
+                'default' => date('m')
+            ),
+            'day' => array(
+                'title' => __( 'Day', 'disciple_tools' ),
+                'type' => 'select',
+                'values' => array( '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'),
+                'default' => date('d'),
+            ),
+            'year' => array(
+                'title' => __( 'Year', 'disciple_tools' ),
+                'type' => 'text',
+                'default' => date('Y'),
+            ),
+        ),
 
     ) );
+
 
 /*  // TODO: This section connects a contact to a user, and generates a connection column.
 	// The better way to do this is to create a one-to-one connection between the contact and user.
@@ -145,3 +165,20 @@ function my_connection_types() {
 
 }
 add_action( 'p2p_init', 'my_connection_types' );
+
+function dt_years_dropdown () {
+
+    $dates_array = array();
+    $current_year = date('Y');
+    $dates_array[] = $current_year;
+    $years_count = 10;
+    $i = 0;
+
+    while($i < $years_count) {
+        $dates_array[] = $current_year - 1;
+    }
+
+
+    return $dates_array;
+
+}

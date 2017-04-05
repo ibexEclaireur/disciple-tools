@@ -366,7 +366,14 @@ class Disciple_Tools_Contact_Post_Type {
         // Start drop down
         echo '<select name="assigned_to" id="assigned_to" class="regular-text">';
 
-        if ( !empty( get_post_meta( $post_id->ID, 'assigned_to', true) ) ) { // If there is already a record
+        // Set selected state
+        $assigned_to = get_post_meta( $post_id->ID, 'assigned_to', true);
+
+        if(empty( $assigned_to) || $assigned_to == 'dispatch' ) {
+            // set default to dispatch
+            echo '<option value="dispatch" selected>Dispatch</option>';
+        }
+        elseif ( !empty( $assigned_to ) ) { // If there is already a record
             $metadata = get_post_meta($post_id->ID, 'assigned_to', true);
             $meta_array = explode('-', $metadata); // Separate the type and id
             $type = $meta_array[0]; // Build variables
@@ -387,7 +394,11 @@ class Disciple_Tools_Contact_Post_Type {
                 $exclude_group = "'exclude' => $id";
             }
 
+            echo '<option value="" disabled> --- Dispatch</option><option value="dispatch">Dispatch</option>'; // add dispatch to top of list
+
         }
+
+
 
         // Visually categorize groups
         echo '<option value="" disabled> --- Teams</option>';

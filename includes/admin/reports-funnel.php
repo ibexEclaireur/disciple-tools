@@ -349,8 +349,99 @@ class Disciple_Tools_Funnel_Reports {
             <hr>
             <p>Contacts stats box highlights the current status of contacts.</p>
             <p><a href="/wp-admin/options-general.php?page=dtsample&tab=report">Sample Reports Page</a></p>
+            <p><div class="">priorities for dashboard:</div>
+<div class="">
+<ul class="">
+ 	<li class="">what stats need to be saved and added?
+<ul class="">
+ 	<li class="">Facebook engagement</li>
+ 	<li class="">website visitors</li>
+ 	<li class=""><b class=""><span style="color: #ff2600;">new inquirers</span></b></li>
+ 	<li class=""><b class=""><span style="color: #ff2600;">assignable inquirers</span></b></li>
+ 	<li class=""><b class=""><span style="color: #ff2600;">assigned inquirers</span></b></li>
+ 	<li class=""><b class=""><span style="color: #ff2600;">accepted inquirers  </span></b></li>
+ 	<li class=""><b class=""><span style="color: #ff2600;">contact attempted</span></b></li>
+ 	<li class=""><b class=""><span style="color: #ff2600;">contact established</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">meeting scheduled</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">first meeting complete</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">ongoing meetings</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">total baptisms</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">1st generation baptisms</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">2nd generation baptisms</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">3rd generation baptisms</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">baptizers</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">total groups</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">2x2 groups</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">total active churches</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">1st generation churches</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">2nd generation churches </span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">3rd generation churches</span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">4th generation churches </span></b></li>
+ 	<li class=""><b class=""><span style="color: #0433ff;">church planters</span></b></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="">
+<ul class="">
+ 	<li class="">requirements:
+<ul class="">
+ 	<li class="">expandable generations down to the first zero</li>
+ 	<li class="">source of contacts pie chart<br class="" />
+<ul class="">
+ 	<li class="">turn off fields eventually?</li>
+ 	<li class="">put a ‘other’ field for anything less than 1%</li>
+</ul>
+</li>
+ 	<li class="">chart that displays average time frames for the progression of contacts
+<ul class="">
+ 	<li class="">contact assigned, attempted, established</li>
+</ul>
+</li>
+ 	<li class="">chart that displays the number of contacts needing updated (# with %)</li>
+ 	<li class="">faith metrics</li>
+ 	<li class="">church health (trivial pursuit)</li>
+ 	<li class="">see a generational tree (Grant H.)</li>
+</ul>
+</li>
+ 	<li class="">add later<br class="" />
+<ul class="">
+ 	<li class="">prayer network (probably added later)</li>
+ 	<li class="">Bible downloads</li>
+</ul>
+</li>
+ 	<li class="">future?
+<ul class="">
+ 	<li class="">modular option to allow people to add in different fields that can be turned on/off (twitter, instagram, other platform?)</li>
+</ul>
+<ul class="">
+ 	<li class="">Facebook module</li>
+ 	<li class="">website module (Google analytics)</li>
+ 	<li class="">Twitter module</li>
+ 	<li class="">visualization of generational progress</li>
+ 	<li class="">give multipliers 3 views for their contacts:
+<ul class="">
+ 	<li class="">contacts in general</li>
+ 	<li class="">baptized
+<ul class="">
+ 	<li class="">baptizing</li>
+ 	<li class="">grouped</li>
+ 	<li class="">grouping</li>
+ 	<li class="">churched</li>
+ 	<li class="">churching</li>
+</ul>
+</li>
+ 	<li class="">2x2 groups</li>
+ 	<li class="">churches</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></p>
         ';
         echo $html;
+
     }
 
 }

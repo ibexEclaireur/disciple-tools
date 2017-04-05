@@ -1,13 +1,13 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class AAL_Hook_Posts extends AAL_Hook_Base {
+class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 	
 	protected function _draft_or_post_title( $post = 0 ) {
 		$title = get_the_title( $post );
 		
 		if ( empty( $title ) )
-			$title = __( '(no title)', 'aryo-activity-log' );
+			$title = __( '(no title)', 'disciple-tools' );
 		
 		return $title;
 	}
@@ -40,7 +40,7 @@ class AAL_Hook_Posts extends AAL_Hook_Base {
 		if ( 'nav_menu_item' === get_post_type( $post->ID ) )
 			return;
 
-		aal_insert_log(
+		dt_activity_insert(
 			array(
 				'action' => $action,
 				'object_type' => 'Post',
@@ -64,7 +64,7 @@ class AAL_Hook_Posts extends AAL_Hook_Base {
 		if ( 'nav_menu_item' === get_post_type( $post->ID ) )
 			return;
 
-		aal_insert_log(
+        dt_activity_insert(
 			array(
 				'action' => 'deleted',
 				'object_type' => 'Post',
