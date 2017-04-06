@@ -10,7 +10,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Disciple_Tools_Generation_Status  {
+class Disciple_Tools_Counter_Generations  {
     /**
      * Constructor function.
      * @access  public

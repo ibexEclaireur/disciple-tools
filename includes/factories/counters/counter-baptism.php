@@ -10,7 +10,7 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Disciple_Tools_Baptism_Counter  {
+class Disciple_Tools_Counter_Baptism  {
 
 
     /**

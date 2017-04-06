@@ -45,9 +45,11 @@ class Disciple_Tools_Counter_Factory {
 	public function __construct ( ) {
 
 	    // Load required files
-	    require_once('counters/counter-connection.php');
+	    require_once('counters/counter-connected.php');
         require_once('counters/counter-generations-status.php');
         require_once('counters/counter-baptism.php');
+        require_once('counters/counter-groups.php');
+        require_once('counters/counter-contacts.php');
 
     } // End __construct
 
@@ -60,10 +62,10 @@ class Disciple_Tools_Counter_Factory {
 	public function contacts_post_status ($status = '') {
 
 		/**
-		 * @usage Disciple_Tools()->counter->contacts_status()
+		 * @usage Disciple_Tools()->counter->contacts_post_status()
 		 * @returns array of status counts
 		 *
-		 * @usage Disciple_Tools()->counter->contacts_status('publish')
+		 * @usage Disciple_Tools()->counter->contacts_post_status('publish')
 		 * @returns number count
 		 */
 
@@ -109,7 +111,23 @@ class Disciple_Tools_Counter_Factory {
 	}
 
 	/**
-	 * Counts meta fields that match $meta_key and $meta_value provided.
+	 * Counts the meta_data attached to a P2P connection
+	 *
+     * @param       $type    string   Can be either contacts, groups, baptisms
+	 * @param       $meta_value     string
+     * @param       $meta_key       string
+     * @return      int
+	 */
+	public function connection_type_counter ($type, $meta_value) {
+        $type = $this->set_connection_type($type);
+        $count = new Disciple_Tools_Counter_Connected();
+        $result = $count->has_meta_value($type, $meta_value);
+        return $result;
+    }
+
+
+	/**
+	 * Counts Contacts with matching $meta_key and $meta_value provided.
      * Used to retrieve the number of contacts that match the meta_key and meta_value supplied.
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
@@ -117,19 +135,38 @@ class Disciple_Tools_Counter_Factory {
 	 * @usage   Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
      * @return  int
 	 */
-	public function contacts_counter ($meta_key, $meta_value) {
+	public function contacts_meta_counter ($meta_key, $meta_value) {
         $query = new WP_Query( array( 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'contacts', ) );
         return $query->found_posts;
     }
 
+    /**
+     * Counts Contacts with matching $meta_key and $meta_value provided.
+     * Used to retrieve the number of contacts that match the meta_key and meta_value supplied.
+     *
+     * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
+     *
+     * @usage   Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
+     * @return  int
+     */
+    public function groups_meta_counter ($meta_key, $meta_value) {
+        $query = new WP_Query( array( 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'groups', ) );
+        return $query->found_posts;
+    }
+
+
+    /**
+     * Counts baptisms
+     *
+     */
     public function get_baptisms ($type) {
 	    switch ($type) {
             case 'baptisms':
-                $count = new Disciple_Tools_Baptism_Counter();
+                $count = new Disciple_Tools_Counter_Baptism();
                 $result = $count->get_number_of_baptisms();
                 break;
             case 'baptizers':
-                $count = new Disciple_Tools_Baptism_Counter();
+                $count = new Disciple_Tools_Counter_Baptism();
                 $result = $count->get_number_of_baptizers();
                 break;
             default:
@@ -154,72 +191,72 @@ class Disciple_Tools_Counter_Factory {
 	    switch($generation_number) {
 
             case 'has_one_or_more':
-                $gen_object = new Disciple_Tools_Connection_Counter();
+                $gen_object = new Disciple_Tools_Counter_Connected();
                 $count = $gen_object->has_at_least(1, $type);
                 break;
 
             case 'has_two_or_more':
-                $gen_object = new Disciple_Tools_Connection_Counter();
+                $gen_object = new Disciple_Tools_Counter_Connected();
                 $count = $gen_object->has_at_least(2, $type);
                 break;
 
             case 'has_three_or_more':
-                $gen_object = new Disciple_Tools_Connection_Counter();
+                $gen_object = new Disciple_Tools_Counter_Connected();
                 $count = $gen_object->has_at_least(3, $type);
                 break;
 
             case 'has_0':
-                $gen_object = new Disciple_Tools_Connection_Counter();
+                $gen_object = new Disciple_Tools_Counter_Connected();
                 $count = $gen_object->has_zero($type);
                 break;
 
             case 'has_1':
-                $gen_object = new Disciple_Tools_Connection_Counter();
+                $gen_object = new Disciple_Tools_Counter_Connected();
                 $count = $gen_object->has_exactly(1, $type);
                 break;
 
             case 'has_2':
-                $gen_object = new Disciple_Tools_Connection_Counter();
+                $gen_object = new Disciple_Tools_Counter_Connected();
                 $count = $gen_object->has_exactly(2, $type);
                 break;
 
             case 'has_3':
-                $gen_object = new Disciple_Tools_Connection_Counter();
+                $gen_object = new Disciple_Tools_Counter_Connected();
                 $count = $gen_object->has_exactly(3, $type);
                 break;
 
             case 'generation_list':
-                $gen_object = new Disciple_Tools_Generation_Status();
+                $gen_object = new Disciple_Tools_Counter_Generations();
                 $count = $gen_object->generation_status_list();
                 break;
 
             case 'at_zero':
-                $gen_object = new Disciple_Tools_Generation_Status();
+                $gen_object = new Disciple_Tools_Counter_Generations();
                 $count = $gen_object->gen_level(0, $type);
                 break;
 
             case 'at_first':
-                $gen_object = new Disciple_Tools_Generation_Status();
+                $gen_object = new Disciple_Tools_Counter_Generations();
                 $count = $gen_object->gen_level(1, $type);
                 break;
 
             case 'at_second':
-                $gen_object = new Disciple_Tools_Generation_Status();
+                $gen_object = new Disciple_Tools_Counter_Generations();
                 $count = $gen_object->gen_level(2, $type);
                 break;
 
             case 'at_third':
-                $gen_object = new Disciple_Tools_Generation_Status();
+                $gen_object = new Disciple_Tools_Counter_Generations();
                 $count = $gen_object->gen_level(3, $type);
                 break;
 
             case 'at_fourth':
-                $gen_object = new Disciple_Tools_Generation_Status();
+                $gen_object = new Disciple_Tools_Counter_Generations();
                 $count = $gen_object->gen_level(4, $type);
                 break;
 
             case 'at_fifth':
-                $gen_object = new Disciple_Tools_Generation_Status();
+                $gen_object = new Disciple_Tools_Counter_Generations();
                 $count = $gen_object->gen_level(5, $type);
                 break;
 
@@ -236,13 +273,15 @@ class Disciple_Tools_Counter_Factory {
      * @param   string = 'contacts' or 'groups' or 'baptisms'
      * @return  string
      */
-    public function set_connection_type ($type) {
+    protected function set_connection_type ($type) {
         if ($type == 'contacts') {
             $type = 'contacts_to_contacts';
         } elseif ($type == 'groups') {
             $type = 'groups_to_groups';
         } elseif ($type == 'baptisms') {
             $type = 'baptizer_to_baptized';
+        } elseif ($type == 'participation') {
+            $type = 'contacts_to_groups';
         } else {
             $type = '';
         }
