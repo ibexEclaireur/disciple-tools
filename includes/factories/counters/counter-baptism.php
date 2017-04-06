@@ -46,7 +46,7 @@ class Disciple_Tools_Baptism_Counter  {
     }
 
     /**
-     * Counts the number of contacts with no disciples in database
+     * Counts the number of baptizers who are not zero generation.
      *
      * @access  public
      * @since   0.1
@@ -59,7 +59,7 @@ class Disciple_Tools_Baptism_Counter  {
             'SELECT COUNT(DISTINCT %1$s) FROM %2$s
 					WHERE `p2p_type` LIKE \'%3$s\'
 				;',
-            'p2p_from',
+            'p2p_to',
             $wpdb->p2p,
             'baptizer_to_baptized'
         );

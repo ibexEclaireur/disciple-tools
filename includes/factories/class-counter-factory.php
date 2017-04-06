@@ -110,7 +110,12 @@ class Disciple_Tools_Counter_Factory {
 
 	/**
 	 * Counts meta fields that match $meta_key and $meta_value provided.
-	 *
+     * Used to retrieve the number of contacts that match the meta_key and meta_value supplied.
+     *
+     * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
+     *
+	 * @usage   Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
+     * @return  int
 	 */
 	public function contacts_counter ($meta_key, $meta_value) {
         $query = new WP_Query( array( 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'contacts', ) );
@@ -138,7 +143,7 @@ class Disciple_Tools_Counter_Factory {
 	 * Contact generations counting factory
 	 *
      * @param   number = 1,2,3 etc for $generation number
-     * @param   string = contacts or groups
+     * @param   string = contacts or groups or baptisms
 	 * @return number
 	 */
     public function get_generation( $generation_number, $type = 'contacts' ) {
@@ -228,7 +233,7 @@ class Disciple_Tools_Counter_Factory {
     /**
      * Sets the p2p_type for the where statement
      *
-     * @param   string = 'contacts' or 'groups'
+     * @param   string = 'contacts' or 'groups' or 'baptisms'
      * @return  string
      */
     public function set_connection_type ($type) {
@@ -236,6 +241,8 @@ class Disciple_Tools_Counter_Factory {
             $type = 'contacts_to_contacts';
         } elseif ($type == 'groups') {
             $type = 'groups_to_groups';
+        } elseif ($type == 'baptisms') {
+            $type = 'baptizer_to_baptized';
         } else {
             $type = '';
         }

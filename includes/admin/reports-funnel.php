@@ -56,7 +56,8 @@ class Disciple_Tools_Funnel_Reports {
     public function page_metaboxes(){
 
         add_meta_box('critical_path_stats','Critical Path', array($this, 'critical_path_stats'),'dashboard_page_funnel_report','normal','high');
-        add_meta_box('generation_stats','Generation Stats', array($this, 'generations_stats_widget'),'dashboard_page_funnel_report','normal','high');
+        add_meta_box('generation_stats','Disciple/Coach Generation Stats', array($this, 'generations_stats_widget'),'dashboard_page_funnel_report','normal','high');
+        add_meta_box('baptism_stats','Baptism Generation Stats', array($this, 'baptism_generations_stats_widget'),'dashboard_page_funnel_report','normal','high');
         add_meta_box('contact_stats','Contact Stats', array($this, 'contacts_stats_widget'),'dashboard_page_funnel_report','normal','low');
         add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_funnel_report','side','high');
     }
@@ -97,7 +98,7 @@ class Disciple_Tools_Funnel_Reports {
 						<tbody>
 							<tr>
 								<td>Prayers Network</td>
-								<td>Total 2017: '.$prayer.', Most Subscribers Per Day: '.$mailchimp_subscribers.'</td>
+								<td>'.$mailchimp_subscribers.'</td>
 								
 							</tr>
 							<tr>
@@ -291,6 +292,116 @@ class Disciple_Tools_Funnel_Reports {
     }
 
     /**
+     * Baptism Generations stats dashboard widget
+     *
+     * @since 0.1
+     * @access public
+     */
+    public function baptism_generations_stats_widget (  ) {
+
+//        print '<pre>'; print_r( Disciple_Tools()->counter->get_generation('generation_list') ); print '</pre>';
+
+        // Build counters
+        $has_at_least_1 = Disciple_Tools()->counter->get_generation('has_one_or_more', 'baptisms');
+        $has_at_least_2 = Disciple_Tools()->counter->get_generation('has_two_or_more', 'baptisms');
+        $has_more_than_2 = Disciple_Tools()->counter->get_generation('has_three_or_more', 'baptisms');
+
+        $has_0 = Disciple_Tools()->counter->get_generation('has_0', 'baptisms');
+        $has_1 = Disciple_Tools()->counter->get_generation('has_1', 'baptisms');
+        $has_2 = Disciple_Tools()->counter->get_generation('has_2', 'baptisms');
+        $has_3 = Disciple_Tools()->counter->get_generation('has_3', 'baptisms');
+
+        $con_0gen = Disciple_Tools()->counter->get_generation('at_zero', 'baptisms');
+        $con_1gen = Disciple_Tools()->counter->get_generation('at_first', 'baptisms');
+        $con_2gen = Disciple_Tools()->counter->get_generation('at_second', 'baptisms');
+        $con_3gen = Disciple_Tools()->counter->get_generation('at_third', 'baptisms');
+        $con_4gen = Disciple_Tools()->counter->get_generation('at_fourth', 'baptisms');
+        $con_5gen = Disciple_Tools()->counter->get_generation('at_fifth', 'baptisms');
+
+
+        // Build HTML of widget
+        $html = ' 
+			<table class="widefat striped ">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Count</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+						    <tr>
+								<th><strong>HAS AT LEAST</strong></th>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Has baptized at least 1 disciple</td>
+								<td>'. $has_at_least_1 .'</td>
+							</tr>
+							<tr>
+								<td>Has baptized at least 2 disciples</td>
+								<td>'. $has_at_least_2 .'</td>
+							</tr>
+							<tr>
+								<td>Has baptized more than 2 disciples</td>
+								<td>'. $has_more_than_2 .'</td>
+							</tr>
+							<tr>
+								<td><strong>HAS</strong></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Has not baptized anyone</td>
+								<td>'. $has_0 .'</td>
+							</tr>
+							<tr>
+								<td>Has baptized 1</td>
+								<td>'. $has_1 .'</td>
+							</tr>
+							<tr>
+								<td>Has baptized 2</td>
+								<td>'. $has_2 .'</td>
+							</tr>
+							<tr>
+								<td>Has baptized 3</td>
+								<td>'. $has_3 .'</td>
+							</tr>
+							<tr>
+								<th><strong>BAPTISM GENERATIONS</strong></th>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Zero Gen</td>
+								<td>'. $con_0gen .'</td>
+							</tr>
+							<tr>
+								<td>1st Gen</td>
+								<td>'. $con_1gen .'</td>
+							</tr>
+							<tr>
+								<td>2nd Gen</td>
+								<td>'. $con_2gen .'</td>
+							</tr>
+							<tr>
+								<td>3rd Gen</td>
+								<td>'. $con_3gen .'</td>
+							</tr>
+							<tr>
+								<td>4th Gen</td>
+								<td>'. $con_4gen .'</td>
+							</tr>
+							<tr>
+								<td>5th Gen</td>
+								<td>'. $con_5gen .'</td>
+							</tr>
+							
+						</tbody>
+					</table>
+			';
+        echo $html;
+    }
+
+    /**
      * Contact stats dashboard widget
      *
      * @since 0.1
@@ -300,8 +411,17 @@ class Disciple_Tools_Funnel_Reports {
 
         // Build counters
         $contacts_count = Disciple_Tools()->counter->contacts_post_status();
-        $unassigned = Disciple_Tools()->counter->contacts_overall_status('unassigned');
-        $accepted = Disciple_Tools()->counter->contacts_overall_status('accepted');
+        $unassigned = Disciple_Tools()->counter->contacts_counter('overall_status','unassigned');
+        $accepted = Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
+
+        $new_inquirers = Disciple_Tools()->counter->contacts_post_status();
+        $assigned_inquirers = Disciple_Tools()->counter->contacts_counter('overall_status','assigned');
+        $accepted_inquirers = Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
+        $contact_attempted = Disciple_Tools()->counter->contacts_counter('seeker_path','Contact Attempted');
+        $contact_established = Disciple_Tools()->counter->contacts_counter('seeker_path','Contact Established');
+        $meeting_scheduled = Disciple_Tools()->counter->contacts_counter('seeker_path','Meeting Scheduled');
+        $first_meeting_complete = Disciple_Tools()->counter->contacts_counter('seeker_path','First Meeting Complete');
+        $ongoing_meetings = Disciple_Tools()->counter->contacts_counter('seeker_path','Ongoing Meetings');
 
         // Build HTML of widget
         $html = '
@@ -310,27 +430,58 @@ class Disciple_Tools_Funnel_Reports {
 							<tr>
 								<th>Name</th>
 								<th>Progress</th>
-								
+								<th>Name</th>
+								<th>Progress</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>Active Contacts</td>
 								<td>'. $contacts_count->publish .'</td>
-								
-							</tr>
-							<tr>
 								<td>Draft Contacts</td>
 								<td>'. $contacts_count->draft .'</td>
-								
 							</tr>
 							<tr>
-								<td>Unassigned</td>
+							    <td>Unassigned</td>
 								<td>'. $unassigned .'</td>
-							</tr>
-							<tr>
 								<td>Accepted</td>
 								<td>'. $accepted .'</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>New Inquirers</td>
+								<td>'. $new_inquirers->publish .'</td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+							    <td>Assigned Inquirers</td>
+								<td>'. $assigned_inquirers .'</td>
+								<td>Accepted Inquirers</td>
+								<td>'. $accepted_inquirers .'</td>
+							</tr>
+							<tr>
+							    <td>Contact Attempted</td>
+								<td>'. $contact_attempted .'</td>
+								<td>Contact Established</td>
+								<td>'. $contact_established .'</td>
+							</tr>
+							<tr>
+							    <td>Meeting Scheduled</td>
+								<td>'. $meeting_scheduled .'</td>
+								<td>First Meeting Complete</td>
+								<td>'. $first_meeting_complete .'</td>
+							</tr>
+							<tr>
+							    <td>Ongoing Meetings</td>
+								<td>'. $ongoing_meetings .'</td>
+								<td></td>
+								<td></td>
 							</tr>
 						</tbody>
 					</table>
@@ -348,7 +499,7 @@ class Disciple_Tools_Funnel_Reports {
             <p>Generations stats box highlights the generation status of contacts through the system.</p>
             <hr>
             <p>Contacts stats box highlights the current status of contacts.</p>
-            <p><a href="/wp-admin/options-general.php?page=dtsample&tab=report">Sample Reports Page</a></p>
+            <p><a href="/wp-admin/options-general.php?page=dtsample&tab=report">Sample Reports Page</a><hr></p>
             <p><div class="">priorities for dashboard:</div>
 <div class="">
 <ul class="">

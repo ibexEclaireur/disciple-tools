@@ -30,7 +30,7 @@ class Disciple_Tools_Connection_Counter  {
         global $wpdb;
 
         $post_type = 'contacts';
-        if($type !=  'contacts_to_contacts') { $post_type = 'groups'; }
+        if($type ==  'groups_to_groups') { $post_type = 'groups'; }
 
         // Get values
         $total_contacts = wp_count_posts( $post_type )->publish;
