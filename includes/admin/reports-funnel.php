@@ -79,8 +79,8 @@ class Disciple_Tools_Funnel_Reports {
         $contacts_attempted = Disciple_Tools()->counter->contacts_counter('seeker_path', 'Contact Attempted');
         $contacts_established = Disciple_Tools()->counter->contacts_counter('seeker_path', 'Contact Established');
         $first_meetings = Disciple_Tools()->counter->contacts_counter('seeker_path', 'First Meeting Complete');
-        $baptisms = 'x';
-        $baptizers = 'x';
+        $baptisms = Disciple_Tools()->counter->get_baptisms('baptisms');
+        $baptizers = Disciple_Tools()->counter->get_baptisms('baptizers');
         $active_churches = 'x';
         $church_planters = 'x';
 
