@@ -177,19 +177,12 @@ class Disciple_Tools_Reports_Cron {
      */
     public function build_all_facebook_reports () {
         // Calculate the next date(s) needed reporting
-        $var_date = date('Y-m-d', strtotime('-1 day')); //TODO: should replace this with a foreach loop that queries that last day recorded
-        $dates = array($var_date); // array of dates
-
+        $date_of_last_record = date('Y-m-d', strtotime('-1 day')); //TODO: should get the last day recorded
+        $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($date_of_last_record);
         // Request dates needed for reporting (loop)
-        foreach ($dates as $date) {
-            // Get arrays from integrations
-            $results = Disciple_Tools_Reports_Integrations::facebook_prepared_data($date);
-
-            // Insert Report
-            $status = array(); $i = 0; // setup variables
-            foreach($results as $result) {
-                $status[$i] = dt_report_insert($result);
-            }
+        foreach ($reports as $report) {
+            // Insert Reports
+            dt_report_insert($report);
         }
     }
 
