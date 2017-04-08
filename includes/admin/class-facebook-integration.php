@@ -46,6 +46,50 @@ class Disciple_Tools_Facebook_Integration {
 	} // End __construct()
 
 
+
+	/**
+     * Setup the api routs for the plugin
+     */
+    public function add_api_routes()
+    {
+
+        register_rest_route($this->namespace, 'webhook', [
+            'methods' => 'POST',
+            'callback' => array($this, 'update_from_facebook'),
+        ]);
+        register_rest_route($this->namespace, 'webhook', [
+            'methods' => 'GET',
+            'callback' => array($this, 'verify_facebook_webhooks'),
+        ]);
+        register_rest_route($this->namespace, "auth", [
+            'methods' => "GET",
+            'callback' => array($this, 'authenticate_app')
+        ]);
+        register_rest_route($this->namespace, "add-app", [
+            'methods' => "POST",
+            'callback' => array($this, 'add_app')
+        ]);
+        register_rest_route($this->namespace, 'report', [
+            "methods" => "GET",
+            'callback' => array($this, 'generate_report')
+        ]);
+        register_rest_route($this->namespace, 'rebuild', [
+            "methods" => "GET",
+            'callback' => array($this, 'rebuild_all_data')
+        ]);
+    }
+
+
+
+    /**
+     * Facebook Settings Page Section
+     *
+     *
+     *
+     */
+
+
+
     /**
      * Add the Facebook settings to the menu
      */
@@ -245,41 +289,19 @@ class Disciple_Tools_Facebook_Integration {
         return get_site_url()."/wp-json/". $this->namespace;
     }
 
+
+    /**
+     * Facebook Authentication and webhooks
+     *
+     *
+     *
+     */
+
+
+
     // Generate authorization secret
     static function Authorize_secret() {
         return 'dt_auth_' . substr(md5(AUTH_KEY ? AUTH_KEY : get_bloginfo('url')), 0, 10);
-    }
-
-        /**
-     * Setup the api routs for the plugin
-     */
-    public function add_api_routes()
-    {
-
-        register_rest_route($this->namespace, 'webhook', [
-            'methods' => 'POST',
-            'callback' => array($this, 'update_from_facebook'),
-        ]);
-        register_rest_route($this->namespace, 'webhook', [
-            'methods' => 'GET',
-            'callback' => array($this, 'verify_facebook_webhooks'),
-        ]);
-        register_rest_route($this->namespace, "auth", [
-            'methods' => "GET",
-            'callback' => array($this, 'authenticate_app')
-        ]);
-        register_rest_route($this->namespace, "add-app", [
-            'methods' => "POST",
-            'callback' => array($this, 'add_app')
-        ]);
-        register_rest_route($this->namespace, 'report', [
-            "methods" => "GET",
-            'callback' => array($this, 'generate_report')
-        ]);
-        register_rest_route($this->namespace, 'rebuild', [
-            "methods" => "GET",
-            'callback' => array($this, 'rebuild_all_data')
-        ]);
     }
 
 
@@ -298,7 +320,7 @@ class Disciple_Tools_Facebook_Integration {
      * Because we go on to do more ajax and database calls which takes several seconds
      * we need to respond to the return right away.
      */
-    private function immediateResponse(){
+    private function immediate_response(){
         // Buffer all upcoming output...
         ob_start();
         // Send your response.
@@ -321,147 +343,6 @@ class Disciple_Tools_Facebook_Integration {
         session_write_close(); //close the session
         fastcgi_finish_request(); //this returns 200 to the user, and processing continues
     }
-
-
-    /** This is the route called by the Facebook webhook.
-     */
-    public function update_from_facebook(){
-        //respond to facebook immediately
-        $this->immediateResponse();
-
-        //decode the facebook post request from json
-        $input = json_decode(file_get_contents('php://input'), true);
-
-        foreach($input['entry'] as $entry){
-            $facebook_page_id = $entry['id'];
-            if ($entry['changes']){
-                foreach($entry['changes'] as $change){
-                    if ($change['field'] == "conversations"){
-                        //there is a new update in a conversation
-                        $thread_id = $change['value']['thread_id'];
-                        $this->get_conversation_update($facebook_page_id, $thread_id);
-
-                    } elseif ($change['field'] == "feed"){
-                        //the facebook page feed has an update
-                    }
-                }
-            }
-        }
-    }
-
-
-    /** get the conversation details from facebook
-     * @param $page_id
-     * @param $thread_id, the id for the conversation containing the messages
-     */
-    private function get_conversation_update($page_id, $thread_id){
-        //check the settings array to see if we have settings saved for the page
-        //get the access token and custom page name by looking for the page Id
-        $facebookPages = get_option("disciple_tools_facebook_pages", array());
-        //if we have the access token, get and save the conversation
-        //make sure the "sync contacts" setting is set.
-        if (isset($facebookPages[$page_id]) && isset($facebookPages[$page_id]->integrate) && $facebookPages[$page_id]->integrate == 1){
-
-            $access_token = $facebookPages[$page_id]->access_token;
-            $uriForConversations = "https://graph.facebook.com/v2.7/". $thread_id . "?fields=message_count,messages{from,created_time,message},updated_time,participants&access_token=". $access_token;
-            $response = wp_remote_get( $uriForConversations );
-            $page_name = $facebookPages[$page_id]->name;
-
-            $body = json_decode($response["body"], true);
-            if ($body){
-                $participants = $body["participants"]["data"];
-                //go through each participant to save their conversations on their contact record
-                foreach ($participants as $participant){
-                    if ((string)$participant["id"] != $page_id){
-                        $this->updateOrCreateContact($participant, $body["messages"], $body["updated_time"], $page_id, $page_name, $body["message_count"]);
-                    }
-                }
-            }
-        }
-    }
-
-
-    /** Get all the records if we don't already have them.
-     * @param $current_records, the records (messages) gotten with the initial api call
-     * @param $paging, the object containing the paging urls
-     * @param $count, the number of records facebook has
-     * @return array, all the records
-     */
-    private function getWithPaging($current_records, $paging, $count){
-        if (count($current_records) >= $count){
-            return $current_records;
-        } else {
-            $response = wp_remote_get( $paging["next"] );
-            $more_records = json_decode($response["body"], true);
-            $current_records = array_map("unserialize", array_unique(array_map("serialize", array_merge($current_records, $more_records["data"]))));
-
-            if (!isset($more_records["paging"])){
-                return $current_records;
-            } else {
-                return $this->getWithPaging($current_records, $more_records["paging"], $count );
-            }
-        }
-    }
-
-
-    /** Find the facebook id in contacts and update or create the record. Then retrieve any missing messages
-     * from the conversation.
-     * @param $participant
-     * @param $messages, the messaging object from facebook
-     * @param $updated_time, the time of the last message
-     * @param $pageId, the id of the facebook page where the conversation is happening
-     * @param $page_name, the name given to the facebook page in settings
-     * @param $message_count, the number of messages in the conversation
-     */
-    private function updateOrCreateContact($participant, $messages, $updated_time, $pageId, $page_name, $message_count){
-        $facebook_url = "https://www.facebook.com/" . $participant["id"];
-        $query = new WP_Query( array(
-            'post_type' => 'contacts',
-            'meta_key' => 'facebook',
-            'meta_value' => $facebook_url
-        ) );
-
-        $post_id = null;
-        $existing_messages = array();
-        //update contact
-        if ($query->have_posts() && $query->found_posts == 1){
-            $post = $query->post;
-            $post_id = $post->ID;
-            $fields = get_post_custom( $post_id );
-            $existing_messages = isset($fields["facebook_messages"][0]) ? unserialize($fields["facebook_messages"][0]) : array();
-            update_post_meta($post_id, "last_actual_contact", $updated_time);
-        } elseif (!$query->have_posts()) {
-            //create contact
-            $post_title = $participant["name"];
-            $post_type = 'contacts';
-            $post_content = ' ';
-            $post_status = "publish";
-            $source = "Facebook Page: " .$page_name;
-
-            $post = array(
-                "post_title" => $post_title,
-                'post_type' => $post_type,
-                "post_content" => $post_content,
-                "post_status" => $post_status,
-                "meta_input" => array(
-                    "facebook" => $facebook_url,
-                    "preferred_contact_method" => "Facebook",
-                    "source_details" => $source
-                ),
-            );
-            $post_id = wp_insert_post($post);
-        }
-
-        if ($post_id){
-            $new_messages = $messages["data"];
-            //merge the old and new messages and make sure they are unique (deduplicate)
-            $current_messages = array_map("unserialize", array_unique(array_map("serialize", array_merge($new_messages, $existing_messages))));
-            $all_messages = $this->getWithPaging($current_messages, $messages["paging"], $message_count);
-            update_post_meta($post_id, "facebook_messages", $all_messages);
-        }
-    }
-
-
 
 
 
@@ -527,7 +408,7 @@ class Disciple_Tools_Facebook_Integration {
         exit;
     }
 
-    
+
     /** redirect workfloww for authorizing the facebook app
      */
     public function add_app(){
@@ -553,6 +434,160 @@ class Disciple_Tools_Facebook_Integration {
     }
 
 
+
+
+
+    /**
+     * Handle updates from facebook via webhooks
+     * - conversations
+     *
+     *
+     */
+
+
+
+    /** This is the route called by the Facebook webhook.
+     */
+    public function update_from_facebook(){
+        //respond to facebook immediately
+        $this->immediate_response();
+
+        //decode the facebook post request from json
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        foreach($input['entry'] as $entry){
+            $facebook_page_id = $entry['id'];
+            if ($entry['changes']){
+                foreach($entry['changes'] as $change){
+                    if ($change['field'] == "conversations"){
+                        //there is a new update in a conversation
+                        $thread_id = $change['value']['thread_id'];
+                        $this->get_conversation_update($facebook_page_id, $thread_id);
+
+                    } elseif ($change['field'] == "feed"){
+                        //the facebook page feed has an update
+                    }
+                }
+            }
+        }
+    }
+
+
+    /** get the conversation details from facebook
+     * @param $page_id
+     * @param $thread_id, the id for the conversation containing the messages
+     */
+    private function get_conversation_update($page_id, $thread_id){
+        //check the settings array to see if we have settings saved for the page
+        //get the access token and custom page name by looking for the page Id
+        $facebookPages = get_option("disciple_tools_facebook_pages", array());
+        //if we have the access token, get and save the conversation
+        //make sure the "sync contacts" setting is set.
+        if (isset($facebookPages[$page_id]) && isset($facebookPages[$page_id]->integrate) && $facebookPages[$page_id]->integrate == 1){
+
+            $access_token = $facebookPages[$page_id]->access_token;
+            $uriForConversations = "https://graph.facebook.com/v2.7/". $thread_id . "?fields=message_count,messages{from,created_time,message},updated_time,participants&access_token=". $access_token;
+            $response = wp_remote_get( $uriForConversations );
+            $page_name = $facebookPages[$page_id]->name;
+
+            $body = json_decode($response["body"], true);
+            if ($body){
+                $participants = $body["participants"]["data"];
+                //go through each participant to save their conversations on their contact record
+                foreach ($participants as $participant){
+                    if ((string)$participant["id"] != $page_id){
+                        $this->update_or_create_contact($participant, $body["messages"], $body["updated_time"], $page_id, $page_name, $body["message_count"]);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /** Get all the records if we don't already have them.
+     * @param $current_records, the records (messages) gotten with the initial api call
+     * @param $paging, the object containing the paging urls
+     * @param $count, the number of records facebook has
+     * @return array, all the records
+     */
+    private function get_facebook_object_with_paging($current_records, $paging, $count){
+        if (count($current_records) >= $count){
+            return $current_records;
+        } else {
+            $response = wp_remote_get( $paging["next"] );
+            $more_records = json_decode($response["body"], true);
+            $current_records = array_map("unserialize", array_unique(array_map("serialize", array_merge($current_records, $more_records["data"]))));
+
+            if (!isset($more_records["paging"])){
+                return $current_records;
+            } else {
+                return $this->get_facebook_object_with_paging($current_records, $more_records["paging"], $count );
+            }
+        }
+    }
+
+
+    /** Find the facebook id in contacts and update or create the record. Then retrieve any missing messages
+     * from the conversation.
+     * @param $participant
+     * @param $messages, the messaging object from facebook
+     * @param $updated_time, the time of the last message
+     * @param $pageId, the id of the facebook page where the conversation is happening
+     * @param $page_name, the name given to the facebook page in settings
+     * @param $message_count, the number of messages in the conversation
+     */
+    private function update_or_create_contact($participant, $messages, $updated_time, $pageId, $page_name, $message_count){
+        $facebook_url = "https://www.facebook.com/" . $participant["id"];
+        $query = new WP_Query( array(
+            'post_type' => 'contacts',
+            'meta_key' => 'facebook',
+            'meta_value' => $facebook_url
+        ) );
+
+        $post_id = null;
+        $existing_messages = array();
+        //update contact
+        if ($query->have_posts() && $query->found_posts == 1){
+            $post = $query->post;
+            $post_id = $post->ID;
+            $fields = get_post_custom( $post_id );
+            $existing_messages = isset($fields["facebook_messages"][0]) ? unserialize($fields["facebook_messages"][0]) : array();
+            update_post_meta($post_id, "last_actual_contact", $updated_time);
+        } elseif (!$query->have_posts()) {
+            //create contact
+            $post_title = $participant["name"];
+            $post_type = 'contacts';
+            $post_content = ' ';
+            $post_status = "publish";
+            $source = "Facebook Page: " .$page_name;
+
+            $post = array(
+                "post_title" => $post_title,
+                'post_type' => $post_type,
+                "post_content" => $post_content,
+                "post_status" => $post_status,
+                "meta_input" => array(
+                    "facebook" => $facebook_url,
+                    "preferred_contact_method" => "Facebook",
+                    "source_details" => $source
+                ),
+            );
+            $post_id = wp_insert_post($post);
+        }
+
+        if ($post_id){
+            $new_messages = $messages["data"];
+            //merge the old and new messages and make sure they are unique (deduplicate)
+            $current_messages = array_map("unserialize", array_unique(array_map("serialize", array_merge($new_messages, $existing_messages))));
+            $all_messages = $this->get_facebook_object_with_paging($current_messages, $messages["paging"], $message_count);
+            update_post_meta($post_id, "facebook_messages", $all_messages);
+        }
+    }
+
+
+
+
+
     /** Hook for setting up a metabox on the contact post_type
      * @param $contact_post_type
      */
@@ -566,7 +601,7 @@ class Disciple_Tools_Facebook_Integration {
      * @param $b, date of the second message
      * @return int
      */
-    private function sortFunction( $a, $b ) {
+    private function sort_function( $a, $b ) {
         return strtotime($a["created_time"]) - strtotime($b["created_time"]);
     }
 
@@ -610,7 +645,7 @@ class Disciple_Tools_Facebook_Integration {
                             $data = unserialize($data);
                             $html .= '<strong>Messages</strong>';
                             $html .= '<ul>';
-                            usort($data, array($this, "sortFunction"));
+                            usort($data, array($this, "sort_function"));
                             foreach ($data as $o){
                                 $html .= '<li>'. $o["from"]["name"].': ' . $o["message"] . '</li>';
                             }
