@@ -203,6 +203,9 @@ class Disciple_Tools {
 			require_once('includes/admin/config-options-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
+			require_once('includes/admin/class-facebook-integration.php');
+			$this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
+
             // Load plugin library that "requires plugins" at activation
             require_once('includes/admin/config-required-plugins.php');
 
