@@ -41,19 +41,25 @@ class Disciple_Tools_Facebook_Integration {
 	    $this->namespace = $this->context . "/v" . intval($this->version);
         add_action('rest_api_init', array($this,  'add_api_routes'));
 	    add_action('admin_menu', array($this, 'add_facebook_settings_menu') );
+	    add_action('dt_contact_meta_boxes_setup', array($this, 'add_contact_meta_box' ));
 
 	} // End __construct()
 
+
+    /**
+     * Add the Facebook settings to the menu
+     */
     public function add_facebook_settings_menu () {
         add_submenu_page( 'options-general.php', __( 'Facebook (DT)', 'disciple_tools' ),
             __( 'Facebook (DT)', 'disciple_tools' ), 'manage_options', $this->context, array( $this, 'facebook_settings_page' ) );
     } // End register_settings_screen()
 
 
+    /**
+     * Render the Facebook Settings Page
+     */
     public function facebook_settings_page(){
         echo '<div class="dt_facebook_errors" style="background-color:white;">' . get_option( 'disciple_tools_facebook_error').'</div>';
-        echo $this->get_rest_url() . "/add-app";
-        echo $this->namespace;
 
         echo "<h1>Facebook Integration Settings</h1>";
         echo "<h3>Hook up Disciple tools to a Facebook app in order to get contacts or useful stats from your Facebook pages. </h3>";
@@ -97,7 +103,7 @@ class Disciple_Tools_Facebook_Integration {
         $html .=  '<br>' .
             '                        <form action="" method="post">
                         <input type="hidden" name="_wpnonce" id="_wpnonce" value="' . wp_create_nonce( 'wp_rest' ) . '" />';
-        $html .= $this->facebook_pages_function($_POST);
+        $html .= $this->facebook_settings_functions($_POST);
         $html .= '<table id="facebook_pages" class="widefat striped">
                     <thead><th>Facebook Pages </th></thead>
                     <tbody>';
@@ -130,12 +136,22 @@ class Disciple_Tools_Facebook_Integration {
         echo $html;
     }
 
+
+    /** Display an error message
+     * @param $err
+     */
     private function display_error($err){
         $err = date("Y-m-d h:i:sa") . ' ' . $err;
         echo '<div class="dt_facebook_errors" style="background-color:white;">'.$err.'</div>';
         update_option( 'disciple_tools_facebook_error', $err);
     }
-    public function facebook_pages_function($post){
+
+
+    /** Functions for the pages section of the Facebook settings
+     * @param $post
+     * @return string
+     */
+    public function facebook_settings_functions($post){
         // Check noonce
         if ( isset($post['dt_app_form_noonce']) && ! wp_verify_nonce( $post['dt_app_form_noonce'], 'dt_app_form') ) {
             return 'Are you cheating? Where did this form come from?';
@@ -266,11 +282,10 @@ class Disciple_Tools_Facebook_Integration {
         ]);
     }
 
-    public function generate_report(){
-        return "test";
-    }
 
-
+    /** called by facebook when initialising the webook
+     * @return mixed
+     */
     public function verify_facebook_webhooks(){
         if (isset($_GET["hub_verify_token"]) && $_GET["hub_verify_token"] === $this->Authorize_secret()){
             return $_GET['hub_challenge'];
@@ -468,14 +483,13 @@ class Disciple_Tools_Facebook_Integration {
             $request = wp_remote_get($url);
             if( is_wp_error( $request ) ) {
 
-                update_option( 'disciple_tools_facebook_error', $request);
-                return false; // Bail early
+                update_option( 'disciple_tools_facebook_error', $request->get_error_message());
+                return $request->errors;
             } else {
                 $body = wp_remote_retrieve_body( $request );
                 $data = json_decode( $body );
                 if( ! empty( $data ) ) {
                     if (isset($data->access_token)){
-//                        @todo extend to never expire
                         update_option( 'disciple_tools_facebook_access_token', $data->access_token );
 
                         $facebook_pages_url = "https://graph.facebook.com/v2.8/me/accounts?access_token=" . $data->access_token;
@@ -513,6 +527,7 @@ class Disciple_Tools_Facebook_Integration {
         exit;
     }
 
+    
     /** redirect workfloww for authorizing the facebook app
      */
     public function add_app(){
@@ -536,4 +551,83 @@ class Disciple_Tools_Facebook_Integration {
         }
         return "ok";
     }
+
+
+    /** Hook for setting up a metabox on the contact post_type
+     * @param $contact_post_type
+     */
+    public function add_contact_meta_box($contact_post_type){
+        add_meta_box( $contact_post_type . '_facebook', __( 'Facebook', 'disciple_tools' ), array( $this, 'load_facebook_meta_box' ), $contact_post_type, 'side', 'low', array($contact_post_type));
+    }
+
+    
+    /** Sort messages in a conversation by date
+     * @param $a, date of the first message
+     * @param $b, date of the second message
+     * @return int
+     */
+    private function sortFunction( $a, $b ) {
+        return strtotime($a["created_time"]) - strtotime($b["created_time"]);
+    }
+
+    /** Load the messages in the facebook meta_box 
+     * @param $contact_post_type
+     */
+    public function load_facebook_meta_box($contact_post_type){
+        global $post_id;
+        $fields = get_post_custom( $post_id );
+        $field_data = array();
+        $field_data['facebook_messages'] =  array(
+            'name' => __( 'Facebook Messages', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'serialized',
+            'default' => serialize(array()),
+            'section' => 'facebook'
+        );
+        $html = '';
+
+        if (!is_string($contact_post_type)){
+            $contact_post_type = $contact_post_type->post_type;
+        }
+
+        $html .= '<input type="hidden" name="dt_' . $contact_post_type . '_noonce" id="dt_' . $contact_post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+
+
+        if ( 0 < count( $field_data ) ) {
+            $html .= '<table class="form-table">' . "\n";
+            $html .= '<tbody>' . "\n";
+
+            foreach ( $field_data as $k => $v ) {
+                $data = $v['default'];
+                if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
+                    $data = $fields[$k][0];
+                }
+                $type = $v['type'];
+
+                switch ( $type ) {
+                    case 'serialized':
+                        if (gettype($data)=="string"){
+                            $data = unserialize($data);
+                            $html .= '<strong>Messages</strong>';
+                            $html .= '<ul>';
+                            usort($data, array($this, "sortFunction"));
+                            foreach ($data as $o){
+                                $html .= '<li>'. $o["from"]["name"].': ' . $o["message"] . '</li>';
+                            }
+                            $html .= '</ul>';
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            $html .= '</tbody>' . "\n";
+            $html .= '</table>' . "\n";
+        }
+
+        echo $html;
+    }
+
 }
