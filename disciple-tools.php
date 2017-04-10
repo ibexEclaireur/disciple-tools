@@ -315,6 +315,7 @@ class Disciple_Tools {
 
             // Load portal menu logic
             require_once ('includes/portal/class-portal-menu.php');
+            $this->portal_menu = Disciple_Tools_Portal_Nav::instance();
 
             // Load shortcodes
             require_once ('includes/portal/class-shortcodes.php');
