@@ -212,7 +212,7 @@ class Disciple_Tools_Facebook_Integration {
                 $body = wp_remote_retrieve_body( $request );
                 $data = json_decode( $body );
                 if( ! empty( $data ) && isset($data->data) ) {
-                    $pages = array();
+                    $pages = get_option("disciple_tools_facebook_pages", array());
                     foreach($data->data as $page){
                         $pages[$page->id] = $page;
                     }
@@ -385,7 +385,7 @@ class Disciple_Tools_Facebook_Integration {
                             $pages_data = json_decode( $pages_body );
                             if( ! empty( $pages_data ) ) {
                                 if (isset($pages_data->data)){
-                                    $pages = array();
+                                    $pages = get_option("disciple_tools_facebook_pages", array());
                                     foreach($pages_data->data as $page){
                                         $pages[$page->id] = $page;
                                     }
