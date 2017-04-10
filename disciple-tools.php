@@ -136,6 +136,14 @@ class Disciple_Tools {
 	public $settings;
 
 	/**
+	 * The facebook_integration object.
+	 * @var     object
+	 * @access  public
+	 * @since   0.1
+	 */
+	public $facebook_integration;
+
+	/**
 	 * The post types we're registering.
 	 * @var     array
 	 * @access  public
@@ -203,6 +211,7 @@ class Disciple_Tools {
 			// Disciple_Tools admin settings page configuration
 			require_once('includes/admin/config-options-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
+
 
             // Load plugin library that "requires plugins" at activation
             require_once('includes/admin/config-required-plugins.php');
@@ -323,11 +332,29 @@ class Disciple_Tools {
         /* End Portal Section */
 
 
+        /*
+         * Integrations
+         */
+         require_once('includes/admin/class-facebook-integration.php');
+        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
+
+
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-
+        // load rest api endpoints
+        add_action('rest_api_init', array($this, "add_api_routes"));
     } // End __construct()
+
+
+    /**
+     * Setup the rest api routes for the plugin
+     */
+    public function add_api_routes(){
+        // setup the facebook endpoints
+        $this->facebook_integration->add_api_routes();
+    }
+
 
 	/**
 	 * Load the localisation file.

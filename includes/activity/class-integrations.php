@@ -21,52 +21,102 @@ class Disciple_Tools_Reports_Integrations {
      */
     public function __construct () {} // End __construct()
 
+
+
+    /**
+     * @param $url, the facebook url to query for the next stats
+     * @param $since, how far back to go to get stats
+     * @param $page_id
+     * @return array()
+     */
+    private static function get_facebook_insights_with_paging($url, $since, $page_id){
+        $request = wp_remote_get($url);
+        if( !is_wp_error( $request ) ) {
+            $body = wp_remote_retrieve_body($request);
+            $data = json_decode($body);
+            if (!empty($data)) {
+                if (isset($data->error)) {
+                    return $data->error->message;
+                } elseif (isset($data->data)) {
+                    //create reports for each day in the month
+//                    return $this->create_reports_for_each_day($data->data, $page_id);
+                    $earliest = date('Y-m-d', strtotime($data->data[0]->values[0]->end_time));
+                    if ($since <= $earliest && isset($data->paging->previous)){
+                        $next_page = self::get_facebook_insights_with_paging($data->paging->previous, $since, $page_id);
+                        return array_merge($data->data, $next_page);
+                    } else {
+                        return $data->data;
+                    }
+                }
+            }
+        }
+        return array();
+    }
+
+
     /**
      * Facebook report data
      * Returns a prepared array for the dt_report_insert()
      * @see     Disciple_Tools_Reports_API
      * @return  array
      */
-    public static function facebook_prepared_data ($date) {
-        $report = array();
-        
-        $report[0] = array(
-            'report_date' => $date,
-            'report_source' => 'Facebook',
-            'report_subsource' => 'Page1',
-            'meta_input' => array(
-                'page_engagement' => rand ( 0 , 100 ),
-            )
-        );
-        $report[1] = array(
-            'report_date' => $date,
-            'report_source' => 'Facebook',
-            'report_subsource' => 'Page2',
-            'meta_input' => array(
-                'page_likes_count' => rand ( 0 , 100 ),
-                'page_engagement' => rand ( 0 , 100 ),
-                'page_conversations_count' => rand ( 0 , 100 ),
-                'page_messages_in_conversation_count' => rand ( 0 , 100 ),
-                'page_post_count' => rand ( 2 , 6 ),
-                'page_post_likes_and_reactions' => rand ( 0 , 100 ),
-                'page_comments_count' => rand ( 0 , 100 ),
-            )
-        );
-        $report[2] = array(
-            'report_date' => $date,
-            'report_source' => 'Facebook',
-            'report_subsource' => 'Page3',
-            'meta_input' => array(
-                'page_likes_count' => rand ( 0 , 100 ),
-                'page_engagement' => rand ( 0 , 100 ),
-                'page_conversations_count' => rand ( 0 , 100 ),
-                'page_messages_in_conversation_count' => rand ( 0 , 100 ),
-                'page_post_count' => rand ( 2 , 6 ),
-                'page_post_likes_and_reactions' => rand ( 0 , 100 ),
-                'page_comments_count' => rand ( 0 , 100 ),
-            )
-        );
-        return $report;
+    public static function facebook_prepared_data ($date_of_last_record) {
+
+        //get the facebook pages and access tokens from the settings
+        $facebook_pages = get_option("disciple_tools_facebook_pages", array());
+
+        $all_reports = array();
+        foreach($facebook_pages as $page_id => $facebook_page){
+            if(isset($get["since"]) && isset($facebook_page->report) && $facebook_page->report == 1){
+                $access_token = $facebook_page->access_token;
+                $url = "https://graph.facebook.com/v2.8/" . $page_id . "/insights?metric=";
+                $url .= "page_fans";
+                $url .= ",page_engaged_users";
+                $url .= ",page_admin_num_posts";
+                $url .= ",page_actions_post_reactions_total";
+                $url .= ",page_positive_feedback_by_type";
+                $url .= "&since=" . $date_of_last_record;
+                $url .= "&until=" . date('Y-m-d', strtotime('tomorrow'));
+                $url .= "&access_token=" . $access_token;
+
+                $all_page_data = self::get_facebook_insights_with_paging($url,  date('Y-m-d', strtotime($get["since"])), $page_id);
+
+                $month_metrics = array();
+                foreach($all_page_data as $metric){
+                    if ($metric->name === "page_engaged_users" && $metric->period === "day"){
+                        foreach($metric->values as $day){
+                            $month_metrics[$day->end_time]['page_engagement'] = $day->value;
+                        }
+                    }
+                    if ($metric->name === "page_fans"){
+                        foreach($metric->values as $day){
+                            $month_metrics[$day->end_time]['page_likes_count'] = isset($day->value) ? $day->value : 0;
+                        }
+                    }
+                    if ($metric->name === "page_admin_num_posts" && $metric->period === "day"){
+                        foreach($metric->values as $day){
+                            $month_metrics[$day->end_time]['page_post_count'] = $day->value;
+                        }
+                    }
+                    if ($metric->name === "page_positive_feedback_by_type" && $metric->period === "day"){
+                        foreach($metric->values as $day){
+                            $month_metrics[$day->end_time]['page_comments_count'] = $day->value->like;
+                        }
+                    }
+                }
+                foreach($month_metrics as $day => $value){
+                    array_push($all_reports, array(
+                            'report_date' =>  date('Y-m-d h:m:s', strtotime($day)),
+                            'report_source' => "Facebook",
+                            'report_subsource' => $page_id,
+                            'meta_input' => $value,
+                        )
+                    );
+                }
+
+            }
+        }
+        return $all_reports;
     }
 
     /**
