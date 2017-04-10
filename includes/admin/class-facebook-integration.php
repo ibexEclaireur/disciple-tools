@@ -157,7 +157,6 @@ class Disciple_Tools_Facebook_Integration {
                <td>
                    <label for="'.$facebook_page->name.'-integrate" >Sync Contacts </label>
                    <input name="'.$facebook_page->name.'-integrate" type="checkbox" value="' . $facebook_page->name.'" ' .checked(1, isset($facebook_page->integrate) ? $facebook_page->integrate : false, false ).'/>
-                   (requires page webhooks)
                </td>
                <td>
                    <label for="'.$facebook_page->name . '-report" >Include in Stats </label>
@@ -228,12 +227,14 @@ class Disciple_Tools_Facebook_Integration {
         if (isset($post["save_pages"])){
             $facebook_pages = get_option("disciple_tools_facebook_pages", array());
             foreach ($facebook_pages as $id => $facebook_page){
+                //if sync contact checkbox is selected
                 $integrate = str_replace(' ', '_', $facebook_page->name . "-integrate");
                 if (isset($post[$integrate])){
                     $facebook_page->integrate = 1;
                 } else {
                     $facebook_page->integrate = 0;
                 }
+                //if the include in stats checkbox is selected
                 $report = str_replace(' ', '_', $facebook_page->name . "-report");
                 if (isset($post[$report])){
                     $facebook_page->report = 1;
