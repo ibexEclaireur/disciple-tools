@@ -382,7 +382,7 @@ class Disciple_Tools_Reports_API {
      * @param   $date   string      (required) This is a date formated '2017-03-22'
      * @param   $source string      (optional) This is the source
      * @param   $subsource  string  (optional) If this is supplied, the source must also be supplied.
-     * @return          array
+     * @return  mixed
      */
     public function get_month_by_source_full ($date, $source, $subsource) {
         $report = array();
@@ -394,6 +394,33 @@ class Disciple_Tools_Reports_API {
             $i++;
         }
         return $report;
+    }
+
+    public function get_last_value ($source, $meta_key, $subsource = '') {
+
+        global $wpdb;
+        $today = date('Y-m-d');
+
+
+        if(empty($source) || empty($meta_key))
+            return false;
+
+        // check for recent date
+        if(!empty($subsource)) {
+            // loop date to find match with source and subsource
+
+            // select meta value
+            $count = 0;
+
+        } else {
+            // loop date to find all matches with source
+
+            // select meta values and add
+            $count = 0;
+        }
+
+        return $count;
+
     }
 
 }

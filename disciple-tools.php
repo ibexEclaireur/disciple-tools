@@ -193,6 +193,7 @@ class Disciple_Tools {
         $wpdb->reports = $wpdb->prefix . 'dt_reports';
         $wpdb->reportmeta = $wpdb->prefix . 'dt_reportmeta';
 
+
         /* End prep variables */
 
 
