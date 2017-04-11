@@ -36,6 +36,8 @@ class Disciple_Tools_Activator {
         require_once ( Disciple_Tools()->includes_path . 'models/class-activity-log-db.php');
         Disciple_Tools_Activity_Log_DB::activate();
         /* End Disciple Tools Activity Log */
+
+
 	}
 
 }

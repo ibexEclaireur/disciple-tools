@@ -131,7 +131,7 @@ class Disciple_Tools_Contact_Post_Type {
 			
 		);
         $rewrite = array(
-            'slug'                  => 'contact',
+            'slug'                  => 'contacts',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => false,
