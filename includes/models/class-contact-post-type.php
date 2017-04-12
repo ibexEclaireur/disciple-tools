@@ -73,7 +73,6 @@ class Disciple_Tools_Contact_Post_Type {
 		if ( is_admin() ) {
 			global $pagenow;
 
-			add_action( 'admin_menu', array( $this, 'meta_box_setup' ), 20 );
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
             add_action( 'save_post', array( $this, 'save_assigned_meta_box' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
@@ -173,6 +172,7 @@ class Disciple_Tools_Contact_Post_Type {
             'can_export'            => true,
             'exclude_from_search'   => false,
             'show_in_rest'          => true,
+            'register_meta_box_cb'  => array($this, 'meta_box_setup'),
 			'rest_base'             => 'contacts',
 			'rest_controller_class' => 'WP_REST_Posts_Controller',
 		);
@@ -352,6 +352,7 @@ class Disciple_Tools_Contact_Post_Type {
         add_meta_box( $this->post_type . '_assigned', __( 'Assigned to', 'disciple_tools' ), array( $this, 'load_assigned_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), array( $this, 'load_misc_meta_box' ), $this->post_type, 'side', 'low' );
+		do_action("dt_contact_meta_boxes_setup", $this->post_type);
 	} // End meta_box_setup()
 
     /**
@@ -846,7 +847,14 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'misc'
         );
 		
-		
+		$fields['source_details'] = array(
+			'name' => __( 'Source Details', 'disciple_tools'),
+			'description' => '',
+			'type' => 'text',
+			'default' => '',
+			'section' => 'misc'
+		);
+
 		
 
 		return apply_filters( 'dt_custom_fields_settings', $fields );

@@ -332,22 +332,6 @@ final class Disciple_Tools_Settings {
                     'default' => '',
                     'section' => 'integrations'
                 );
-                $settings_fields['facebook_page_name'] = array(
-                    'name' => __( 'Facebook Page Name', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'integrations'
-                );
-                $settings_fields['facebook_page_api'] = array(
-                    'name' => __( 'Facebook Page API', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'integrations'
-                );
-
-
-
-
 				break;
 
             case 'daily_reports':
