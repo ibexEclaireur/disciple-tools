@@ -212,7 +212,6 @@ class Disciple_Tools {
 			require_once('includes/admin/config-options-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
-
             // Load plugin library that "requires plugins" at activation
             require_once('includes/admin/config-required-plugins.php');
 
@@ -252,20 +251,21 @@ class Disciple_Tools {
          * @posttype Groups
          * @posttype Project Updates
          * @posttype Reports
+         * @posttype Locations
          * @taxonomies
          * @service   Post to Post connections
          * @service   User groups via taxonomies
          */
         // Register Post types
-        require_once ('includes/models/class-contact-post-type.php');
-        require_once ('includes/models/class-group-post-type.php');
-        require_once ('includes/models/class-projectupdate-post-type.php');
-        require_once ('includes/models/class-taxonomy.php');
+        require_once ( 'includes/models/class-contact-post-type.php' );
+        require_once ( 'includes/models/class-group-post-type.php' );
+        require_once ( 'includes/models/class-projectupdate-post-type.php' );
+        require_once ( 'includes/models/class-location-post-type.php' );
+        require_once ( 'includes/models/class-taxonomy.php' );
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
         $this->post_types['projectupdates'] = new Disciple_Tools_Project_Update_Post_Type( 'projectupdates', __( 'Project Updates', 'disciple_tools' ), __( 'Project Updates', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
-//        require_once ( 'includes/models/class-location-post-type.php' ); //TODO: Reactivate when ready for development
-//        $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
+        $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) );
 
 
         // Creates the post to post relationship between the post type tables.
@@ -330,8 +330,11 @@ class Disciple_Tools {
             require_once ('includes/portal/class-shortcodes.php');
             $this->shortcodes = Disciple_Tools_Function_Callback::instance();
         }
-        /* End Portal Section */
 
+        if (!class_exists('Nav_Menu_Roles')) {
+            require_once ( 'includes/plugins/nav-menu-roles/nav-menu-roles.php' );
+        }
+        /* End Portal Section */
 
         /*
          * Integrations

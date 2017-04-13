@@ -76,51 +76,39 @@ class Disciple_Tools_Portal_Nav {
 
             // Set up default Disciple Tools links and add them to the menu.
             wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Home'),
-                'menu-item-classes' => 'home',
+                'menu-item-title' => __('Dashboard'),
+                'menu-item-classes' => 'dashboard',
                 'menu-item-url' => home_url('/'),
                 'menu-item-status' => 'publish'));
 
             wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('My Contacts'),
+                'menu-item-title' => __('Contacts'),
                 'menu-item-classes' => 'my-contacts',
-                'menu-item-url' => home_url('/my-contacts/'),
+                'menu-item-url' => home_url('/contacts/'),
                 'menu-item-status' => 'publish'));
 
             wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Team Contacts'),
-                'menu-item-classes' => 'team-contacts',
-                'menu-item-url' => home_url('/team-contacts/'),
+                'menu-item-title' => __('Groups'),
+                'menu-item-classes' => 'groups',
+                'menu-item-url' => home_url('/groups/'),
                 'menu-item-status' => 'publish'));
 
             wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Prayer'),
-                'menu-item-classes' => 'prayer',
-                'menu-item-url' => home_url('/prayer/'),
+                'menu-item-title' => __('Reports'),
+                'menu-item-classes' => 'reports',
+                'menu-item-url' => home_url('/reports/'),
                 'menu-item-status' => 'publish'));
 
             wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Project News'),
-                'menu-item-classes' => 'project-news',
-                'menu-item-url' => home_url('/project-news/'),
+                'menu-item-title' => __('Prayer Guide'),
+                'menu-item-classes' => 'prayer-guide',
+                'menu-item-url' => home_url('/prayer-guide/'),
                 'menu-item-status' => 'publish'));
 
             wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Charts'),
-                'menu-item-classes' => 'charts',
-                'menu-item-url' => home_url('/charts/'),
-                'menu-item-status' => 'publish'));
-
-            wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Downloads'),
-                'menu-item-classes' => 'downloads',
-                'menu-item-url' => home_url('/downloads/'),
-                'menu-item-status' => 'publish'));
-
-            wp_update_nav_menu_item($menu_id, 0, array(
-                'menu-item-title' => __('Settings'),
-                'menu-item-classes' => 'settings',
-                'menu-item-url' => home_url('/settings/'),
+                'menu-item-title' => __('Profile'),
+                'menu-item-classes' => 'profile',
+                'menu-item-url' => home_url('/profile/'),
                 'menu-item-status' => 'publish'));
 
         }
