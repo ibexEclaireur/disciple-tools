@@ -240,6 +240,10 @@ class Disciple_Tools {
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/media.php');
             require_once ('includes/functions/enqueue-scripts.php');
+
+            // Profile page
+            require_once ( 'includes/admin/config-profile.php');
+            $this->profile = Disciple_Tools_Profile::instance();
         }
         /* End Admin configuration section */
 

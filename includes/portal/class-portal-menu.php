@@ -49,12 +49,20 @@ class Disciple_Tools_Portal_Nav {
      */
     public function __construct () {
 
-        // Forces nav menu installation
-        if(!wp_get_nav_menu_object($this->top_nav)) {
-            $this->add_top_nav();
-            $this->set_top_menu_to_main ();
-        }
+        if (is_admin()) {
 
+            // Forces nav menu installation
+            if(!wp_get_nav_menu_object($this->top_nav)) {
+                $this->add_top_nav();
+                $this->set_top_menu_to_main ();
+            }
+
+//            $this->add_core_pages();
+            // Adds core pages
+//            if (! $this->pages_check () ) {
+//                $this->add_core_pages ();
+//            }
+        }
 
     } // End __construct()
 
@@ -130,6 +138,117 @@ class Disciple_Tools_Portal_Nav {
             $locations[$main_nav] = $menu_id;
             set_theme_mod('nav_menu_locations', $locations);
         }
+    }
+
+    /**
+     * Installs or Resets Core Pages
+     *
+     */
+    protected function add_core_pages ()
+    {
+        $html = '';
+
+        if ( TRUE == get_post_status( 2 ) ) {	wp_delete_post(2);  } // Delete default page
+
+        $postarr = array(
+            array(
+                'post_title'    =>  'Dashboard',
+                'post_name'     =>  'dashboard',
+                'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
+                'post_status'   =>  'Publish',
+                'comment_status'    =>  'closed',
+                'ping_status'   =>  'closed',
+                'menu_order'    =>  '0',
+                'post_type'     =>  'page',
+            ),
+            array(
+                'post_title'    =>  'Contacts',
+                'post_name'     =>  'contacts',
+                'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
+                'post_status'   =>  'Publish',
+                'comment_status'    =>  'closed',
+                'ping_status'   =>  'closed',
+                'menu_order'    =>  '1',
+                'post_type'     =>  'page',
+            ),
+            array(
+                'post_title'    =>  'Groups',
+                'post_name'     =>  'groups',
+                'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
+                'post_status'   =>  'Publish',
+                'comment_status'    =>  'closed',
+                'ping_status'   =>  'closed',
+                'menu_order'    =>  '2',
+                'post_type'     =>  'page',
+            ),
+            array(
+                'post_title'    =>  'Reports',
+                'post_name'     =>  'reports',
+                'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
+                'post_status'   =>  'Publish',
+                'comment_status'    =>  'closed',
+                'ping_status'   =>  'closed',
+                'menu_order'    =>  '3',
+                'post_type'     =>  'page',
+            ),
+            array(
+                'post_title'    =>  'Prayer Guide',
+                'post_name'     =>  'prayer-guide',
+                'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
+                'post_status'   =>  'Publish',
+                'comment_status'    =>  'closed',
+                'ping_status'   =>  'closed',
+                'menu_order'    =>  '4',
+                'post_type'     =>  'page',
+            ),
+            array(
+                'post_title'    =>  'Profile',
+                'post_name'     =>  'profile',
+                'post_content'  =>  'The content of the page is controlled by the Disciple Tools plugin, but this page is required by the plugin to display the dashboard.',
+                'post_status'   =>  'Publish',
+                'comment_status'    =>  'closed',
+                'ping_status'   =>  'closed',
+                'menu_order'    =>  '4',
+                'post_type'     =>  'page',
+            ),
+
+        );
+
+        foreach ($postarr as $item) {
+            if (! post_exists ($item['post_title']) ) {
+                wp_insert_post( $item, false );
+            } else {
+                $page = get_page_by_title($item['post_title']);
+                wp_delete_post($page->ID);
+                wp_insert_post( $item, false );
+            }
+
+        }
+
+        return $html;
+    }
+
+    /**
+     * Checks the existence of core pages for Disciple Tools
+     * @return boolean
+     */
+    public function pages_check () {
+
+        $postarr = array(
+                'Dashboard',
+                'Contacts',
+                'Groups',
+                'Reports',
+                'Prayer Guide',
+                'Profile',
+        );
+
+        foreach ($postarr as $item) {
+            if (! post_exists ($item)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
