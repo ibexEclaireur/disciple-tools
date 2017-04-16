@@ -444,7 +444,7 @@ class Disciple_Tools_Contact_Post_Type {
         if (  get_post_type() != $this->post_type  ) {
             return $post_id;
         }
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
             return $post_id;
         }
 

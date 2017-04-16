@@ -144,7 +144,7 @@ class Disciple_Tools_Portal_Nav {
      * Installs or Resets Core Pages
      *
      */
-    protected function add_core_pages ()
+    public function add_core_pages ()
     {
         $html = '';
 
