@@ -276,7 +276,7 @@ class Disciple_Tools_Group_Post_Type {
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_groups' ) . '" />';
 		
 
 		if ( 0 < count( $field_data ) ) {
@@ -360,7 +360,7 @@ class Disciple_Tools_Group_Post_Type {
         if (  get_post_type() != $this->post_type  ) {
             return $post_id;
         }
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_groups' ) ) {
             return $post_id;
         }
 
