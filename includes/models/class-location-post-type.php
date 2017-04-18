@@ -58,7 +58,7 @@ class Disciple_Tools_Location_Post_Type {
 	 * @access public
 	 * @since 0.1
 	 */
-	public function __construct( $post_type = 'thing', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
+	public function __construct( $post_type = 'locations', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
 		$this->post_type = $post_type;
 		$this->singular = $singular;
 		$this->plural = $plural;
@@ -119,8 +119,8 @@ class Disciple_Tools_Location_Post_Type {
 			'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
 		);
 
-		$single_slug = apply_filters( 'drm_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
-		$archive_slug = apply_filters( 'drm_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
+		$single_slug = apply_filters( 'dt_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
+		$archive_slug = apply_filters( 'dt_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
 		$defaults = array(
 			'labels' 				=> $labels,
@@ -133,7 +133,7 @@ class Disciple_Tools_Location_Post_Type {
 			'capability_type' 		=> 'post',
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'comments' ),
+			'supports' 				=> array( 'title', 'excerpt' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
@@ -264,7 +264,7 @@ class Disciple_Tools_Location_Post_Type {
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="drm_' . $this->post_type . '_noonce" id="drm_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 		
 
 		if ( 0 < count( $field_data ) ) {
@@ -312,7 +312,7 @@ class Disciple_Tools_Location_Post_Type {
 								$increment_the_radio_button = 1;
 					            foreach ($v['default'] as $vv) {
 						            $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
-								    '<input class="drm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
+								    '<input class="dt-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
 								    if($vv == $data) { $html .= 'checked';}
 								    $html .= '>';
 								   $increment_the_radio_button++;
@@ -348,7 +348,7 @@ class Disciple_Tools_Location_Post_Type {
 		global $post, $messages;
 
 		// Verify
-		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['drm_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
 			return $post_id;
 		}
 
@@ -393,7 +393,7 @@ class Disciple_Tools_Location_Post_Type {
 	 */
 	public function enter_title_here ( $title ) {
 		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the thing title here', 'disciple_tools' );
+			$title = __( 'Enter the location title here', 'disciple_tools' );
 		}
 		return $title;
 	} // End enter_title_here()
@@ -407,22 +407,16 @@ class Disciple_Tools_Location_Post_Type {
 	public function get_custom_fields_settings () {
 		$fields = array();
 		
-		$fields['type'] = array(
-		    'name' => __( 'Types of Location', 'disciple_tools' ),
-		    'description' => __( 'Raw mapping coordinates.', 'disciple_tools' ),
-		    'type' => 'select',
-		    'default' => array('', 'Single Address', 'Polygon Area' ),
-		    'section' => 'info'
-		);
+
 		$fields['coordinates'] = array(
 		    'name' => __( 'Coordinates', 'disciple_tools' ),
-		    'description' => __( 'Raw mapping coordinates.', 'disciple_tools' ),
+		    'description' => __( 'Raw polygon or multiple polygon mapping coordinates.', 'disciple_tools' ),
 		    'type' => 'text',
 		    'default' => '',
 		    'section' => 'info'
 		);
 
-		return apply_filters( 'drm_custom_fields_settings', $fields );
+		return apply_filters( 'dt_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
 
 	/**

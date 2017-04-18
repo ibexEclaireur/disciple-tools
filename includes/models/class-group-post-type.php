@@ -66,7 +66,7 @@ class Disciple_Tools_Group_Post_Type {
 		$this->taxonomies = $taxonomies;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
-//		add_action( 'init', array( $this, 'register_taxonomy' ) );
+		add_action( 'init', array( $this, 'register_taxonomy' ) );
 
 		if ( is_admin() ) {
 			global $pagenow;
@@ -82,8 +82,6 @@ class Disciple_Tools_Group_Post_Type {
 			}
 		}
 
-		add_action( 'after_setup_theme', array( $this, 'ensure_post_thumbnails_support' ) );
-		add_action( 'after_theme_setup', array( $this, 'register_image_sizes' ) );
 	} // End __construct()
 
 	/**
@@ -145,7 +143,7 @@ class Disciple_Tools_Group_Post_Type {
             'capabilities'          => $capabilities,
 			'has_archive' 			=> $archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'thumbnail', 'comments', 'revisions' ),
+			'supports' 				=> array( 'title', 'comments', 'revisions' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
@@ -164,13 +162,10 @@ class Disciple_Tools_Group_Post_Type {
 	 * @since  1.3.0
 	 * @return void
 	 */
-//	public function register_taxonomy () {
-//
-////		TODO: commented out taxonomies until we know how we want to use them.
-////
-////      $this->taxonomies['groups-cities'] = new Disciple_Tools_Taxonomy($post_type = 'groups', $token = 'groups-cities', $singular = 'City', $plural = 'Cities', $args = array() ); // Leave arguments empty, to use the default arguments.
-////		$this->taxonomies['groups-cities']->register();
-//	} // End register_taxonomy()
+	public function register_taxonomy () {
+        $this->taxonomies['groups-type'] = new Disciple_Tools_Taxonomy($post_type = 'groups', $token = 'groups-type', $singular = 'Type', $plural = 'Types', $args = array() ); // Leave arguments empty, to use the default arguments.
+		$this->taxonomies['groups-type']->register();
+	} // End register_taxonomy()
 
 	/**
 	 * Add custom columns for the "manage" screen of this post type.
@@ -185,7 +180,6 @@ class Disciple_Tools_Group_Post_Type {
 
 		switch ( $column_name ) {
 			case 'image':
-				echo $this->get_image( $id, 40 );
 			break;
 
 			default:
@@ -480,32 +474,32 @@ class Disciple_Tools_Group_Post_Type {
 	 * @since  0.1
 	 * @return string       	<img> tag.
 	 */
-	protected function get_image ( $id, $size = 'thing-thumbnail' ) {
-		$response = '';
+//	protected function get_image ( $id, $size = 'thing-thumbnail' ) {
+//		$response = '';
+//
+//		if ( has_post_thumbnail( $id ) ) {
+//			// If not a string or an array, and not an integer, default to 150x9999.
+//			if ( ( is_int( $size ) || ( 0 < intval( $size ) ) ) && ! is_array( $size ) ) {
+//				$size = array( intval( $size ), intval( $size ) );
+//			} elseif ( ! is_string( $size ) && ! is_array( $size ) ) {
+//				$size = array( 150, 9999 );
+//			}
+//			$response = get_the_post_thumbnail( intval( $id ), $size );
+//		}
+//
+//		return $response;
+//	} // End get_image()
 
-		if ( has_post_thumbnail( $id ) ) {
-			// If not a string or an array, and not an integer, default to 150x9999.
-			if ( ( is_int( $size ) || ( 0 < intval( $size ) ) ) && ! is_array( $size ) ) {
-				$size = array( intval( $size ), intval( $size ) );
-			} elseif ( ! is_string( $size ) && ! is_array( $size ) ) {
-				$size = array( 150, 9999 );
-			}
-			$response = get_the_post_thumbnail( intval( $id ), $size );
-		}
-
-		return $response;
-	} // End get_image()
-
-	/**
-	 * Register image sizes.
-	 * @access public
-	 * @since  0.1
-	 */
-	public function register_image_sizes () {
-		if ( function_exists( 'add_image_size' ) ) {
-			add_image_size( $this->post_type . '-thumbnail', 150, 9999 ); // 150 pixels wide (and unlimited height)
-		}
-	} // End register_image_sizes()
+//	/**
+//	 * Register image sizes.
+//	 * @access public
+//	 * @since  0.1
+//	 */
+//	public function register_image_sizes () {
+//		if ( function_exists( 'add_image_size' ) ) {
+//			add_image_size( $this->post_type . '-thumbnail', 150, 9999 ); // 150 pixels wide (and unlimited height)
+//		}
+//	} // End register_image_sizes()
 
 	/**
 	 * Run on activation.
@@ -526,12 +520,12 @@ class Disciple_Tools_Group_Post_Type {
 		flush_rewrite_rules();
 	} // End flush_rewrite_rules()
 
-	/**
-	 * Ensure that "post-thumbnails" support is available for those themes that don't register it.
-	 * @access public
-	 * @since  0.1
-	 */
-	public function ensure_post_thumbnails_support () {
-		if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }
-	} // End ensure_post_thumbnails_support()
+//	/**
+//	 * Ensure that "post-thumbnails" support is available for those themes that don't register it.
+//	 * @access public
+//	 * @since  0.1
+//	 */
+//	public function ensure_post_thumbnails_support () {
+//		if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }
+//	} // End ensure_post_thumbnails_support()
 } // End Class

@@ -17,7 +17,6 @@ function my_connection_types() {
         'name' => 'contacts_to_contacts',
         'from' => 'contacts',
         'to' => 'contacts',
-        //'admin_column' => 'any',  // TODO: This created an invalid string error.
         'title' => array(
             'from' => __( 'Coached by', 'disciple_tools' ),
             'to' => __( 'Coaching', 'disciple_tools' ),
@@ -41,7 +40,6 @@ function my_connection_types() {
         'name' => 'baptizer_to_baptized',
         'from' => 'contacts',
         'to' => 'contacts',
-        //'admin_column' => 'any',  // TODO: This created an invalid string error.
         'title' => array(
             'from' => __( 'Baptized by', 'disciple_tools' ),
             'to' => __( 'Baptized', 'disciple_tools' ),
@@ -136,6 +134,56 @@ function my_connection_types() {
                     'type' => 'select',
                     'values' => array( 'Attending', 'Planting', 'Coaching' ),
                 ),
+            ),
+        )
+    );
+
+    p2p_register_connection_type(
+        array(
+            'name' => 'contacts_to_locations',
+            'from' => 'contacts',
+            'to' => 'locations',
+            'cardinality' => 'many-to-one',
+            'title' => array(
+                'from' => __( 'Location', 'disciple_tools' ),
+                'to' => __( 'Contacts', 'disciple_tools' )
+            ),
+            'to_labels' => array(
+                'singular_name' => __( 'Locations', 'disciple_tools' ),
+                'search_items' => __( 'Search locations', 'disciple_tools' ),
+                'not_found' => __( 'No locations found.', 'disciple_tools' ),
+                'create' => __( 'Connect Location', 'disciple_tools' ),
+            ),
+            'from_labels' => array(
+                'singular_name' => __( 'Contacts', 'disciple_tools' ),
+                'search_items' => __( 'Search contacts', 'disciple_tools' ),
+                'not_found' => __( 'No contacts found.', 'disciple_tools' ),
+                'create' => __( 'Create Contact', 'disciple_tools' ),
+            ),
+        )
+    );
+
+    p2p_register_connection_type(
+        array(
+            'name' => 'groups_to_locations',
+            'from' => 'groups',
+            'to' => 'locations',
+            'cardinality' => 'many-to-one',
+            'title' => array(
+                'from' => __( 'Location', 'disciple_tools' ),
+                'to' => __( 'Groups', 'disciple_tools' )
+            ),
+            'to_labels' => array(
+                'singular_name' => __( 'Locations', 'disciple_tools' ),
+                'search_items' => __( 'Search locations', 'disciple_tools' ),
+                'not_found' => __( 'No locations found.', 'disciple_tools' ),
+                'create' => __( 'Connect Location', 'disciple_tools' ),
+            ),
+            'from_labels' => array(
+                'singular_name' => __( 'Groups', 'disciple_tools' ),
+                'search_items' => __( 'Search groups', 'disciple_tools' ),
+                'not_found' => __( 'No groups found.', 'disciple_tools' ),
+                'create' => __( 'Create Group', 'disciple_tools' ),
             ),
         )
     );
