@@ -152,7 +152,7 @@ class Disciple_Tools_Prayer_Post_Type {
             'has_archive' 			=> true, //$archive_slug,
             'hierarchical' 			=> false,
             'supports' 				=> array( 'title', 'editor', 'comments', 'author', 'revisions', 'thumbnail'  ),
-            'menu_position' 		=> 4,
+            'menu_position' 		=> 9,
             'menu_icon' 			=> 'dashicons-groups',
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,

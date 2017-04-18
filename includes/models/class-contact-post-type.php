@@ -824,13 +824,6 @@ class Disciple_Tools_Contact_Post_Type {
 
 
         // Misc Information fields
-        $fields['last_actual_contact'] = array(
-            'name' => __( 'Last Actual Contact', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'misc'
-        );
 		$fields['preferred_language'] = array(
 		    'name' => __( 'Preferred Language', 'disciple_tools' ),
 		    'description' => '',
