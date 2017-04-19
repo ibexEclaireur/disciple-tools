@@ -119,9 +119,23 @@ class Disciple_Tools_Location_Post_Type {
 			'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
 		);
 
-		$single_slug = apply_filters( 'dt_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
-		$archive_slug = apply_filters( 'dt_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
-
+        $rewrite = array(
+            'slug'                  => 'locations',
+            'with_front'            => true,
+            'pages'                 => true,
+            'feeds'                 => false,
+        );
+        $capabilities = array(
+            'edit_post'             => 'edit_location',
+            'read_post'             => 'read_location',
+            'delete_post'           => 'delete_location',
+            'delete_others_posts'   => 'delete_others_locations',
+            'delete_posts'          => 'delete_locations',
+            'edit_posts'            => 'edit_locations',
+            'edit_others_posts'     => 'edit_others_locations',
+            'publish_posts'         => 'publish_locations',
+            'read_private_posts'    => 'read_private_locations',
+        );
 		$defaults = array(
 			'labels' 				=> $labels,
 			'public' 				=> true,
@@ -129,9 +143,9 @@ class Disciple_Tools_Location_Post_Type {
 			'show_ui' 				=> true,
 			'show_in_menu' 			=> true,
 			'query_var' 			=> true,
-			'rewrite' 				=> array( 'slug' => $single_slug ),
-			'capability_type' 		=> 'post',
-			'has_archive' 			=> $archive_slug,
+            'rewrite' 				=> $rewrite,
+            'capabilities'          => $capabilities,
+			'has_archive' 			=> true,
 			'hierarchical' 			=> false,
 			'supports' 				=> array( 'title', 'excerpt' ),
 			'menu_position' 		=> 5,

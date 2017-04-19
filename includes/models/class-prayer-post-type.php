@@ -124,18 +124,16 @@ class Disciple_Tools_Prayer_Post_Type {
             'feeds'                 => false,
         );
         $capabilities = array(
-            'edit_post'             => 'edit_projectupdate',
-            'read_post'             => 'read_projectupdate',
-            'delete_post'           => 'delete_projectupdate',
-            'delete_others_posts'   => 'delete_others_projectupdates',
-            'delete_posts'          => 'delete_projectupdates',
-            'edit_posts'            => 'edit_projectupdates',
-            'edit_others_posts'     => 'edit_others_projectupdates',
-            'publish_posts'         => 'publish_projectupdates',
-            'read_private_posts'    => 'read_private_projectupdates',
+            'edit_post'             => 'edit_prayer',
+            'read_post'             => 'read_prayer',
+            'delete_post'           => 'delete_prayer',
+            'delete_others_posts'   => 'delete_others_prayers',
+            'delete_posts'          => 'delete_prayers',
+            'edit_posts'            => 'edit_prayers',
+            'edit_others_posts'     => 'edit_others_prayers',
+            'publish_posts'         => 'publish_prayers',
+            'read_private_posts'    => 'read_private_prayers',
         );
-        $single_slug = apply_filters( 'dt_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
-        $archive_slug = apply_filters( 'dt_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
         $defaults = array(
             'label'                 => __( 'Prayer Guide', 'disciple_tools' ),

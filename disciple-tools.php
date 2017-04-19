@@ -304,7 +304,11 @@ class Disciple_Tools {
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once ( 'includes/activity/class-integrations.php' ); // data integration for cron scheduling
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
+        require_once('includes/admin/class-facebook-integration.php'); // integrations to facebook
+        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
 
+        // load rest api endpoints
+        add_action('rest_api_init', array($this, "add_api_routes"));
 
         /*
          * Factories
@@ -313,45 +317,9 @@ class Disciple_Tools {
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
 
-        /*
-         * Functions
-         */
-        require_once ('includes/functions/login.php');
-        require_once ('includes/functions/private-site.php');
-
-
-        /*
-         * Portal Configurations through the Disciple Tools Theme
-         */
-        $this->theme = wp_get_theme( );
-        if ( $this->theme == 'Disciple Tools' ) {
-
-            // Load portal menu logic
-            require_once ('includes/portal/class-portal-menu.php');
-            $this->portal_menu = Disciple_Tools_Portal_Nav::instance();
-
-            // Load shortcodes
-            require_once ('includes/portal/class-shortcodes.php');
-            $this->shortcodes = Disciple_Tools_Function_Callback::instance();
-        }
-
-        if (!class_exists('Nav_Menu_Roles')) {
-            require_once ( 'includes/plugins/nav-menu-roles/nav-menu-roles.php' );
-        }
-        /* End Portal Section */
-
-        /*
-         * Integrations
-         */
-         require_once('includes/admin/class-facebook-integration.php');
-        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-
-
-
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-        // load rest api endpoints
-        add_action('rest_api_init', array($this, "add_api_routes"));
+
     } // End __construct()
 
 
