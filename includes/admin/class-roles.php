@@ -120,16 +120,16 @@ class Disciple_Tools_Roles {
                 'edit_others_locations' => true,
                 'publish_locations' => true,
                 'read_private_locations' => true,
-                // Add custom caps for projects
-                'read_project' => true,
-                'edit_project' => true,
-                'delete_project' => true,
-                'delete_others_projects' => true,
-                'delete_projects' => true,
-                'edit_projects' => true,
-                'edit_others_projects' => true,
-                'publish_projects' => true,
-                'read_private_projects' => true,
+                // Add custom caps for progresss
+                'read_progress' => true,
+                'edit_progress' => true,
+                'delete_progress' => true,
+                'delete_others_progresss' => true,
+                'delete_progresss' => true,
+                'edit_progresss' => true,
+                'edit_others_progresss' => true,
+                'publish_progresss' => true,
+                'read_private_progresss' => true,
 
 
             ) );
@@ -186,7 +186,7 @@ class Disciple_Tools_Roles {
                 'edit_others_groups' => true,
                 'publish_groups' => true,
                 'read_private_groups' => true,
-                // Add custom caps for project updates
+                // Add custom caps for prayer updates
                 'read_prayer' => true,
                 'edit_prayer' => true,
                 'delete_prayer' => true,
@@ -206,16 +206,16 @@ class Disciple_Tools_Roles {
                 'edit_others_locations' => true,
                 'publish_locations' => true,
                 'read_private_locations' => true,
-                // Add custom caps for projects
-                'read_project' => true,
-                'edit_project' => true,
-                'delete_project' => true,
-                'delete_others_projects' => true,
-                'delete_projects' => true,
-                'edit_projects' => true,
-                'edit_others_projects' => true,
-                'publish_projects' => true,
-                'read_private_projects' => true,
+                // Add custom caps for progresss
+                'read_progress' => true,
+                'edit_progress' => true,
+                'delete_progress' => true,
+                'delete_others_progresss' => true,
+                'delete_progresss' => true,
+                'edit_progresss' => true,
+                'edit_others_progresss' => true,
+                'publish_progresss' => true,
+                'read_private_progresss' => true,
 
             ) );
 
@@ -247,10 +247,10 @@ class Disciple_Tools_Roles {
                 'read_location' => true,
                 'edit_location' => true,
                 'edit_locations' => true,
-                // Add custom caps for project updates
+                // Add custom caps for prayer updates
                 'read_prayer' => true,
-                // Add custom caps for projects
-                'read_project' => true,
+                // Add custom caps for progresss
+                'read_progress' => true,
 
             ) );
 
@@ -283,10 +283,10 @@ class Disciple_Tools_Roles {
                 'edit_others_groups' => true,
                 'publish_groups' => true,
                 'read_private_groups' => true,
-                // Add custom caps for project updates
+                // Add custom caps for prayer updates
                 'read_prayer' => true,
-                // Add custom caps for project updates
-                'read_project' => true
+                // Add custom caps for progress updates
+                'read_progress' => true
             ) );
 
 
@@ -303,7 +303,7 @@ class Disciple_Tools_Roles {
             array(
                 'project_supporter' => true,
                 'read_prayer' => true,
-                'read_project' => true
+                'read_progress' => true
             ) );
 
         if ( get_role( 'registered' )) { remove_role( 'registered' );}
@@ -355,15 +355,15 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_prayers' );
             $role->add_cap( 'publish_prayers' );
             $role->add_cap( 'read_private_prayers' );
-            $role->add_cap( 'edit_project' );
-            $role->add_cap( 'read_project' );
-            $role->add_cap( 'delete_project' );
-            $role->add_cap( 'delete_others_projects' );
-            $role->add_cap( 'delete_projects' );
-            $role->add_cap( 'edit_projects' );
-            $role->add_cap( 'edit_others_projects' );
-            $role->add_cap( 'publish_projects' );
-            $role->add_cap( 'read_private_projects' );
+            $role->add_cap( 'edit_progress' );
+            $role->add_cap( 'read_progress' );
+            $role->add_cap( 'delete_progress' );
+            $role->add_cap( 'delete_others_progresss' );
+            $role->add_cap( 'delete_progresss' );
+            $role->add_cap( 'edit_progresss' );
+            $role->add_cap( 'edit_others_progresss' );
+            $role->add_cap( 'publish_progresss' );
+            $role->add_cap( 'read_private_progresss' );
             $role->add_cap( 'edit_location' );
             $role->add_cap( 'read_location' );
             $role->add_cap( 'delete_location' );
