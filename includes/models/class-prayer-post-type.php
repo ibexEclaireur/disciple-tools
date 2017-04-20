@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 class Disciple_Tools_Prayer_Post_Type {
     /**
      * The post type token.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    string
      */
@@ -22,7 +22,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * The post type singular label.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    string
      */
@@ -30,7 +30,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * The post type plural label.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    string
      */
@@ -38,7 +38,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * The post type args.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    array
      */
@@ -46,7 +46,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * The taxonomies for this post type.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    array
      */
@@ -55,7 +55,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * Constructor function.
-     * @access portal
+     * @access public
      * @since 0.1
      */
     public function __construct( $post_type = 'prayer', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
@@ -86,7 +86,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * Register the post type.
-     * @access portal
+     * @access public
      * @return void
      */
     public function register_post_type () {
@@ -168,7 +168,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * Register the "projectupdates-category" taxonomy. 
-     * @access portal
+     * @access public
      * @since  1.3.0
      * @return void
      */
@@ -179,7 +179,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * Add custom columns for the "manage" screen of this post type.
-     * @access portal
+     * @access public
      * @param string $column_name
      * @param int $id
      * @since  0.1
@@ -202,7 +202,7 @@ class Disciple_Tools_Prayer_Post_Type {
 
     /**
      * Add custom column headings for the "manage" screen of this post type.
-     * @access portal
+     * @access public
      * @param array $defaults
      * @since  0.1
      * @return mixed/void
