@@ -7,22 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @package Disciple_Tools
  */
 
-/*
- * Action and Filters
- */
 
-    // Sets the default role to registered.
-    add_filter('pre_option_default_role', function($default_role){
-        // You can also add conditional tags here and return whatever
-        return 'registered'; // This is changed
-        return $default_role; // This allows default
-    });
-
-/*
- * Functions
- */
-
-
+/* Begin remove */
 /**
  * Development function. Since roles are only placed at activation, if changes are made this function can be called
  * to refresh the roles found in the the class-roles.php
@@ -36,6 +22,8 @@ function dt_reset_system_roles () {
     $roles = Disciple_Tools_Roles::instance();
     $roles->set_roles();
 }
+/* End remove */
+
 
 
 

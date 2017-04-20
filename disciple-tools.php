@@ -6,7 +6,8 @@
  * Version: 0.1
  * Author: Chasm.Solutions
  * Author URI: https://github.com/ChasmSolutions
- * Requires at least: 4.5.0
+ * Requires at least: 4.7.0
+ * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 4.7.2
  *
  * @package   Disciple_Tools
@@ -212,7 +213,6 @@ class Disciple_Tools {
 			require_once('includes/admin/config-options-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
-
             // Load plugin library that "requires plugins" at activation
             require_once('includes/admin/config-required-plugins.php');
 
@@ -241,6 +241,10 @@ class Disciple_Tools {
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/media.php');
             require_once ('includes/functions/enqueue-scripts.php');
+
+            // Profile page
+            require_once ( 'includes/admin/config-profile.php');
+            $this->profile = Disciple_Tools_Profile::instance();
         }
         /* End Admin configuration section */
 
@@ -250,22 +254,23 @@ class Disciple_Tools {
          *
          * @posttype Contacts
          * @posttype Groups
-         * @posttype Project Updates
+         * @posttype Prayer
          * @posttype Reports
+         * @posttype Locations
          * @taxonomies
          * @service   Post to Post connections
          * @service   User groups via taxonomies
          */
         // Register Post types
-        require_once ('includes/models/class-contact-post-type.php');
-        require_once ('includes/models/class-group-post-type.php');
-        require_once ('includes/models/class-projectupdate-post-type.php');
-        require_once ('includes/models/class-taxonomy.php');
+        require_once ( 'includes/models/class-contact-post-type.php' );
+        require_once ( 'includes/models/class-group-post-type.php' );
+        require_once('includes/models/class-prayer-post-type.php');
+        require_once ( 'includes/models/class-location-post-type.php' );
+        require_once ( 'includes/models/class-taxonomy.php' );
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-        $this->post_types['projectupdates'] = new Disciple_Tools_Project_Update_Post_Type( 'projectupdates', __( 'Project Updates', 'disciple_tools' ), __( 'Project Updates', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
-//        require_once ( 'includes/models/class-location-post-type.php' ); //TODO: Reactivate when ready for development
-//        $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) ); //TODO: Reactivate when ready for development
+        $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
+        $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) );
 
 
         // Creates the post to post relationship between the post type tables.
@@ -300,7 +305,12 @@ class Disciple_Tools {
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once ( 'includes/activity/class-integrations.php' ); // data integration for cron scheduling
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
+        require_once('includes/admin/class-facebook-integration.php'); // integrations to facebook
+        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
 
+        // load rest api endpoints
+        require_once ('includes/functions/disable-json-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+        add_action('rest_api_init', array($this, "add_api_routes"));
 
         /*
          * Factories
@@ -309,42 +319,9 @@ class Disciple_Tools {
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
 
-        /*
-         * Functions
-         */
-        require_once ('includes/functions/login.php');
-        require_once ('includes/functions/private-site.php');
-
-
-        /*
-         * Portal Configurations through the Disciple Tools Theme
-         */
-        $this->theme = wp_get_theme( );
-        if ( $this->theme == 'Disciple Tools' ) {
-
-            // Load portal menu logic
-            require_once ('includes/portal/class-portal-menu.php');
-            $this->portal_menu = Disciple_Tools_Portal_Nav::instance();
-
-            // Load shortcodes
-            require_once ('includes/portal/class-shortcodes.php');
-            $this->shortcodes = Disciple_Tools_Function_Callback::instance();
-        }
-        /* End Portal Section */
-
-
-        /*
-         * Integrations
-         */
-         require_once('includes/admin/class-facebook-integration.php');
-        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-
-
-
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-        // load rest api endpoints
-        add_action('rest_api_init', array($this, "add_api_routes"));
+
     } // End __construct()
 
 

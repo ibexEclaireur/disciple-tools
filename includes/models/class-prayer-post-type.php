@@ -11,10 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  * @author Chasm.Solutions & Kingdom.Training
  * @since 0.1
  */
-class Disciple_Tools_Project_Update_Post_Type {
+class Disciple_Tools_Prayer_Post_Type {
     /**
      * The post type token.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    string
      */
@@ -22,7 +22,7 @@ class Disciple_Tools_Project_Update_Post_Type {
 
     /**
      * The post type singular label.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    string
      */
@@ -30,7 +30,7 @@ class Disciple_Tools_Project_Update_Post_Type {
 
     /**
      * The post type plural label.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    string
      */
@@ -38,7 +38,7 @@ class Disciple_Tools_Project_Update_Post_Type {
 
     /**
      * The post type args.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    array
      */
@@ -46,7 +46,7 @@ class Disciple_Tools_Project_Update_Post_Type {
 
     /**
      * The taxonomies for this post type.
-     * @access portal
+     * @access public
      * @since  0.1
      * @var    array
      */
@@ -55,10 +55,10 @@ class Disciple_Tools_Project_Update_Post_Type {
 
     /**
      * Constructor function.
-     * @access portal
+     * @access public
      * @since 0.1
      */
-    public function __construct( $post_type = 'projectupdate', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
+    public function __construct( $post_type = 'prayer', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
         $this->post_type = $post_type;
         $this->singular = $singular;
         $this->plural = $plural;
@@ -76,27 +76,23 @@ class Disciple_Tools_Project_Update_Post_Type {
             add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
             add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 
-
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) == $this->post_type ) {
                 add_filter( 'manage_edit-' . $this->post_type . '_columns', array( $this, 'register_custom_column_headings' ), 10, 1 );
                 add_action( 'manage_posts_custom_column', array( $this, 'register_custom_columns' ), 10, 2 );
             }
         }
 
-        add_action( 'after_setup_theme', array( $this, 'ensure_post_thumbnails_support' ) );
-        add_action( 'after_theme_setup', array( $this, 'register_image_sizes' ) );
-
     } // End __construct()
 
     /**
      * Register the post type.
-     * @access portal
+     * @access public
      * @return void
      */
     public function register_post_type () {
         $labels = array(
-            'name' 					=> sprintf( _x( '%s', 'Project Updates', 'disciple_tools' ), $this->plural ),
-            'singular_name' 		=> sprintf( _x( '%s', 'Project Update', 'disciple_tools' ), $this->singular ),
+            'name' 					=> sprintf( _x( '%s', 'Prayer Guide', 'disciple_tools' ), $this->plural ),
+            'singular_name' 		=> sprintf( _x( '%s', 'Prayer Guide', 'disciple_tools' ), $this->singular ),
             'add_new' 				=> _x( 'Add New', $this->post_type, 'disciple_tools' ),
             'add_new_item' 			=> sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
             'edit_item' 			=> sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
@@ -122,28 +118,26 @@ class Disciple_Tools_Project_Update_Post_Type {
 
         );
         $rewrite = array(
-            'slug'                  => 'projectupdates',
+            'slug'                  => 'prayer',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => false,
         );
         $capabilities = array(
-            'edit_post'             => 'edit_projectupdate',
-            'read_post'             => 'read_projectupdate',
-            'delete_post'           => 'delete_projectupdate',
-            'delete_others_posts'   => 'delete_others_projectupdates',
-            'delete_posts'          => 'delete_projectupdates',
-            'edit_posts'            => 'edit_projectupdates',
-            'edit_others_posts'     => 'edit_others_projectupdates',
-            'publish_posts'         => 'publish_projectupdates',
-            'read_private_posts'    => 'read_private_projectupdates',
+            'edit_post'             => 'edit_prayer',
+            'read_post'             => 'read_prayer',
+            'delete_post'           => 'delete_prayer',
+            'delete_others_posts'   => 'delete_others_prayers',
+            'delete_posts'          => 'delete_prayers',
+            'edit_posts'            => 'edit_prayers',
+            'edit_others_posts'     => 'edit_others_prayers',
+            'publish_posts'         => 'publish_prayers',
+            'read_private_posts'    => 'read_private_prayers',
         );
-        $single_slug = apply_filters( 'dt_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
-        $archive_slug = apply_filters( 'dt_archive_slug', _x( sanitize_title_with_dashes( $this->plural ), 'post archive url slug', 'disciple_tools' ) );
 
         $defaults = array(
-            'label'                 => __( 'Project Update', 'disciple_tools' ),
-            'description'           => __( 'Project updates generated by the media to movement effort', 'disciple_tools' ),
+            'label'                 => __( 'Prayer Guide', 'disciple_tools' ),
+            'description'           => __( 'Prayer guide generated by the media to movement effort', 'disciple_tools' ),
             'labels' 				=> $labels,
             'public' 				=> true,
             'publicly_queryable' 	=> true,
@@ -152,18 +146,18 @@ class Disciple_Tools_Project_Update_Post_Type {
             'query_var' 			=> true,
             'rewrite' 				=> $rewrite,
             'capabilities'          => $capabilities,
-            'capability_type' 		=> 'projectupdate',
+            'capability_type' 		=> 'prayer',
             'has_archive' 			=> true, //$archive_slug,
             'hierarchical' 			=> false,
             'supports' 				=> array( 'title', 'editor', 'comments', 'author', 'revisions', 'thumbnail'  ),
-            'menu_position' 		=> 5,
+            'menu_position' 		=> 9,
             'menu_icon' 			=> 'dashicons-groups',
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => true,
             'exclude_from_search'   => false,
             'show_in_rest'          => true,
-            'rest_base'             => 'projectupdates',
+            'rest_base'             => 'prayer',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         );
 
@@ -174,18 +168,18 @@ class Disciple_Tools_Project_Update_Post_Type {
 
     /**
      * Register the "projectupdates-category" taxonomy. 
-     * @access portal
+     * @access public
      * @since  1.3.0
      * @return void
      */
     public function register_taxonomy () {
-        $this->taxonomies['project-updates-type'] = new Disciple_Tools_Taxonomy($post_type = 'projectupdates', $token = 'project-updates-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies['project-updates-type']->register();
+        $this->taxonomies['prayer-type'] = new Disciple_Tools_Taxonomy($post_type = 'prayer', $token = 'prayer-type', $singular = 'Type', $plural = 'Types', $args = array()); // Leave arguments empty, to use the default arguments.
+        $this->taxonomies['prayer-type']->register();
     } // End register_taxonomy()
 
     /**
      * Add custom columns for the "manage" screen of this post type.
-     * @access portal
+     * @access public
      * @param string $column_name
      * @param int $id
      * @since  0.1
@@ -196,7 +190,6 @@ class Disciple_Tools_Project_Update_Post_Type {
 
         switch ( $column_name ) {
             case 'image':
-                echo $this->get_image( $id, 40 );
                 break;
             case 'phone':
                 echo '';
@@ -209,19 +202,17 @@ class Disciple_Tools_Project_Update_Post_Type {
 
     /**
      * Add custom column headings for the "manage" screen of this post type.
-     * @access portal
+     * @access public
      * @param array $defaults
      * @since  0.1
      * @return mixed/void
      */
     public function register_custom_column_headings ( $defaults ) {
 
-
         $new_columns = array(); //array( 'image' => __( 'Image', 'disciple_tools' ));
 
         $last_item = array();
 
-//        if ( isset( $defaults['taxonomy-projectupdates-type'] ) ) { unset( $defaults['taxonomy-projectupdates-type'] ); }  // Removes the automatic columns generated by taxonomies
 
         if ( count( $defaults ) > 2 ) {
             $last_item = array_slice( $defaults, -1 );
@@ -277,7 +268,7 @@ class Disciple_Tools_Project_Update_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-        add_meta_box( $this->post_type . '_details', __( 'Project Update Details', 'disciple_tools' ), array( $this, 'load_projectupdate_info_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_details', __( 'Audience', 'disciple_tools' ), array( $this, 'load_prayer_info_meta_box' ), $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
 
@@ -435,7 +426,7 @@ class Disciple_Tools_Project_Update_Post_Type {
      * @access public
      * @since  0.1
      */
-    public function load_projectupdate_info_meta_box () {
+    public function load_prayer_info_meta_box () {
         echo ''. $this->meta_box_content('info');
     }
 
@@ -463,57 +454,17 @@ class Disciple_Tools_Project_Update_Post_Type {
         $fields = array();
 
         // Project Update Information Section
-        $fields['phone'] = array(
-            'name' => __( 'Phone', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
+        $fields['audience'] = array(
+            'name' => __( 'Audience', 'disciple_tools' ),
+            'description' => 'Prayer Supporters are level 1; Project Supporters are level 2. Project supporters see all prayer supporter posts, but prayer supporters do not see project supporter posts.',
+            'type' => 'select',
+            'default' => array('Prayer Supporter', 'Project Supporter'),
             'section' => 'info'
         );
-        $fields['email'] = array(
-            'name' => __( 'Email', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
+
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
-
-    /**
-     * Get the image for the given ID.
-     * @param  int 				$id   Post ID.
-     * @param  mixed $size Image dimension. (default: "thing-thumbnail")
-     * @since  0.1
-     * @return string       	<img> tag.
-     */
-    protected function get_image ( $id, $size = 'thing-thumbnail' ) {
-        $response = '';
-
-        if ( has_post_thumbnail( $id ) ) {
-            // If not a string or an array, and not an integer, default to 150x9999.
-            if ( ( is_int( $size ) || ( 0 < intval( $size ) ) ) && ! is_array( $size ) ) {
-                $size = array( intval( $size ), intval( $size ) );
-            } elseif ( ! is_string( $size ) && ! is_array( $size ) ) {
-                $size = array( 150, 9999 );
-            }
-            $response = get_the_post_thumbnail( intval( $id ), $size );
-        }
-
-        return $response;
-    } // End get_image()
-
-    /**
-     * Register image sizes.
-     * @access public
-     * @since  0.1
-     */
-    public function register_image_sizes () {
-        if ( function_exists( 'add_image_size' ) ) {
-            add_image_size( $this->post_type . '-thumbnail', 150, 9999 ); // 150 pixels wide (and unlimited height)
-        }
-    } // End register_image_sizes()
 
     /**
      * Run on activation.
@@ -533,16 +484,6 @@ class Disciple_Tools_Project_Update_Post_Type {
         $this->register_post_type();
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
-
-    /**
-     * Ensure that "post-thumbnails" support is available for those themes that don't register it.
-     * @access public
-     * @since  0.1
-     */
-    public function ensure_post_thumbnails_support () {
-        if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }
-    } // End ensure_post_thumbnails_support()
-
 
 
 } // End Class

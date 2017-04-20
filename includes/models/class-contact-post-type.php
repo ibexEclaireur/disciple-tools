@@ -444,7 +444,7 @@ class Disciple_Tools_Contact_Post_Type {
         if (  get_post_type() != $this->post_type  ) {
             return $post_id;
         }
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
             return $post_id;
         }
 
@@ -495,7 +495,7 @@ class Disciple_Tools_Contact_Post_Type {
 
 		$html = '';
 
-        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_contacts' ) . '" />';
 
 		
 		if ( 0 < count( $field_data ) ) {
@@ -504,7 +504,7 @@ class Disciple_Tools_Contact_Post_Type {
 
 			foreach ( $field_data as $k => $v ) {
 
-			    if ($v['section'] == $section) {
+			    if ($v['section'] == $section || $section == 'all') {
 
                     $data = $v['default'];
                     if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
@@ -587,7 +587,7 @@ class Disciple_Tools_Contact_Post_Type {
 		if (  get_post_type() != $this->post_type  ) {
 			return $post_id;
 		}
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
             return $post_id;
         }
 
@@ -824,13 +824,6 @@ class Disciple_Tools_Contact_Post_Type {
 
 
         // Misc Information fields
-        $fields['last_actual_contact'] = array(
-            'name' => __( 'Last Actual Contact', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'misc'
-        );
 		$fields['preferred_language'] = array(
 		    'name' => __( 'Preferred Language', 'disciple_tools' ),
 		    'description' => '',

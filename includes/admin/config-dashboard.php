@@ -44,7 +44,7 @@ final class Disciple_Tools_Dashboard {
 	public function __construct () {
 		if ( is_admin() ) {
 			/* Add dashboard widgets */
-			add_action('wp_dashboard_setup', array( $this, 'add_dmm_widgets' ) );
+			add_action('wp_dashboard_setup', array( $this, 'add_widgets' ) );
 
 			/* Remove Dashboard defaults */
 			add_action( 'admin_init', array( $this, 'remove_dashboard_meta' ) );
@@ -58,90 +58,10 @@ final class Disciple_Tools_Dashboard {
 	 * @since 0.1
 	 * @access public
 	 */
-	public function add_dmm_widgets() {
-
-
-
-		/* Add custom dashboard widgets */
-		wp_add_dashboard_widget('new_contacts_widget', 'New Contacts', array( $this, 'new_contacts_dashboard_widget' ) );
-		wp_add_dashboard_widget('updates_needed_widget', 'Updates Needed', array( $this, 'update_needed_dashboard_widget' ) );
+	public function add_widgets() {
 
 		add_meta_box( 'funnel_stats_widget', 'Funnel Stats', array( $this, 'funnel_stats_widget' ), 'dashboard', 'side', 'high' );
-
 		add_filter( 'dashboard_recent_posts_query_args', array( $this, 'add_page_to_dashboard_activity') );
-	}
-
-    function media_reports_menu() {
-        add_dashboard_page('My Plugin Dashboard', 'My Plugin', 'read', 'my-unique-identifier', 'my_plugin_function');
-    }
-
-	/**
-	 * New Contacts Dashboard Widget
-	 *
-	 * @since 0.1
-	 * @access public
-	*/
-	public function new_contacts_dashboard_widget( ) {
-		$html_content = '
-			<table class="form-table striped ">
-				<tbody>
-					<tr>
-						<td class="row-title"><a href="#">Ferran Sunnareh</a></td>
-						<td>720-212-8535</td>
-						<td>Assigned</td>
-						<td>Aug. 26, 2016</td>
-					</tr>
-					<tr>
-						<td class="row-title"><a href="#">Sherif A.</a></td>
-						<td>720-212-8535</td>
-						<td>Unassigned</td>
-						<td>Aug. 26, 2016</td>
-					</tr>
-				</tbody>
-			</table>
-			';
-		echo $html_content;
-	}
-
-	/**
-	 * Updates Needed Dashboard Widget
-	 *
-	 * @since 0.1
-	 * @access public
-	 */
-	public function update_needed_dashboard_widget( ) {
-		$html_content = '
-			<table class="form-table striped ">
-				<tbody>
-					<tr>
-						<td class="row-title">Name</td>
-						<td>Last Update</td>
-						<td>Status</td>
-					</tr>
-					<tr>
-						<td class="row-title"><a href="post.php?post=136&action=edit">Bari Waql</a></td>
-						<td>Nov 23, 2016</td>
-						<td><span style="background-color: #E36449; padding: 2px 6px;">Weak</span></td>
-					</tr>
-					<tr>
-						<td class="row-title"><a href="post.php?post=128&action=edit">Sharif Zia</a></td>
-						<td>Nov 28, 2016</td>
-						<td><span style="background-color: #E36449; padding: 2px 6px;">Weak</span></td>
-					</tr>
-					<tr>
-						<td class="row-title"><a href="post.php?post=102&action=edit">Maysa Azzam</a></td>
-						<td>Dec 25, 2016</td>
-						<td><span style="background-color: #E3BE49; padding: 2px 6px;">Fading</span></td>
-					</tr>
-					<tr>
-						<td class="row-title"><a href="post.php?post=140&action=edit">Buthaynah</a></td>
-						<td>Jan 1, 2016</td>
-						<td><span style="background-color: #E3BE49; padding: 2px 6px;">Fading</span></td>
-					</tr>
-				</tbody>
-			</table>
-			';
-		echo $html_content;
 	}
 
 	/**
@@ -154,11 +74,6 @@ final class Disciple_Tools_Dashboard {
         $html = Disciple_Tools()->reports_funnel->critical_path_stats();
         echo $html;
 	}
-
-
-
-
-
 
 	/**
 	 * Remove default dashboard widgets
@@ -178,6 +93,19 @@ final class Disciple_Tools_Dashboard {
 
 		//remove_meta_box( 'dashboard_recent_comments', 'dashboard', 'normal' );
 		//remove_meta_box( 'dashboard_activity', 'dashboard', 'normal');
+
+        // Remove_meta_box('dashboard_right_now', 'dashboard', 'core');    // Right Now Widget
+        remove_meta_box('dashboard_recent_comments', 'dashboard', 'core'); // Comments Widget
+        remove_meta_box('dashboard_incoming_links', 'dashboard', 'core');  // Incoming Links Widget
+        remove_meta_box('dashboard_plugins', 'dashboard', 'core');         // Plugins Widget
+
+        // Remove_meta_box('dashboard_quick_press', 'dashboard', 'core');  // Quick Press Widget
+        remove_meta_box('dashboard_recent_drafts', 'dashboard', 'core');   // Recent Drafts Widget
+        remove_meta_box('dashboard_primary', 'dashboard', 'core');         //
+        remove_meta_box('dashboard_secondary', 'dashboard', 'core');       //
+
+        // Removing plugin dashboard boxes
+        remove_meta_box('yoast_db_widget', 'dashboard', 'normal');         // Yoast's SEO Plugin Widget
 	}
 
 	/**
