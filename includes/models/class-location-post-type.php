@@ -148,7 +148,7 @@ class Disciple_Tools_Location_Post_Type {
 			'has_archive' 			=> true,
 			'hierarchical' 			=> false,
 			'supports' 				=> array( 'title', 'excerpt' ),
-			'menu_position' 		=> 5,
+			'menu_position' 		=> 6,
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
 			'rest_base'             => 'locations',
