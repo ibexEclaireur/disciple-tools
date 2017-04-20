@@ -150,7 +150,7 @@ class Disciple_Tools_Prayer_Post_Type {
             'has_archive' 			=> true, //$archive_slug,
             'hierarchical' 			=> false,
             'supports' 				=> array( 'title', 'editor', 'comments', 'author', 'revisions', 'thumbnail'  ),
-            'menu_position' 		=> 9,
+            'menu_position' 		=> 6,
             'menu_icon' 			=> 'dashicons-groups',
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
@@ -268,7 +268,7 @@ class Disciple_Tools_Prayer_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-        add_meta_box( $this->post_type . '_details', __( 'Audience', 'disciple_tools' ), array( $this, 'load_prayer_info_meta_box' ), $this->post_type, 'normal', 'high' );
+//        add_meta_box( $this->post_type . '_details', __( 'Audience', 'disciple_tools' ), array( $this, 'load_prayer_info_meta_box' ), $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
 

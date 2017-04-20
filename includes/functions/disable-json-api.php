@@ -31,7 +31,7 @@ if ( version_compare( $dt_dra_current_WP_version, '4.7', '>=' ) ) {
  * Forcibly raise an authentication error to the REST API if the user is not logged in
  */
 function dt_DRA_Force_Auth_Error() {
-    add_filter( 'rest_authentication_errors', 'DRA_only_allow_logged_in_rest_access' );
+    add_filter( 'rest_authentication_errors', 'dt_DRA_only_allow_logged_in_rest_access' );
 }
 
 /**
