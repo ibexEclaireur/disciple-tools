@@ -252,11 +252,11 @@ class Disciple_Tools {
         /**
          * Data model
          *
-         * @posttype Contacts
-         * @posttype Groups
-         * @posttype Prayer
-         * @posttype Reports
-         * @posttype Locations
+         * @posttype Contacts       Post type for contact storage
+         * @posttype Groups         Post type for groups storage
+         * @posttype Locations      Post type for location information.
+         * @posttype Prayer         Post type for prayer movement updates.
+         * @posttype Project        Post type for movement project updates. (These updates are intended to be for extended owners of the movement project, and different than the prayer guide published in the prayer post type.)
          * @taxonomies
          * @service   Post to Post connections
          * @service   User groups via taxonomies
@@ -264,12 +264,14 @@ class Disciple_Tools {
         // Register Post types
         require_once ( 'includes/models/class-contact-post-type.php' );
         require_once ( 'includes/models/class-group-post-type.php' );
-        require_once('includes/models/class-prayer-post-type.php');
+        require_once ( 'includes/models/class-prayer-post-type.php' );
+        require_once ( 'includes/models/class-project-post-type.php' );
         require_once ( 'includes/models/class-location-post-type.php' );
         require_once ( 'includes/models/class-taxonomy.php' );
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
+        $this->post_types['project'] = new Disciple_Tools_Project_Post_Type( 'project', __( 'Project Update', 'disciple_tools' ), __( 'Project Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-testimonial' ) );
         $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) );
 
 
