@@ -474,8 +474,8 @@ class Disciple_Tools_Contact_Post_Type {
                                     // Iterate the buttons
                                     $increment_the_radio_button = 1;
                                     foreach ($v['default'] as $vv) {
-                                        $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
-                                        '<input class="drm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
+                                        $html .= ' <label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label> ' .
+                                        '<input class="dt-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
                                         if($vv == $data) { $html .= 'checked';}
                                         $html .= '>';
                                        $increment_the_radio_button++;
@@ -485,10 +485,13 @@ class Disciple_Tools_Contact_Post_Type {
                             $html .= '</td><tr/>' . "\n";
                         break;
                         case 'checkbox':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '" class="" value="' . esc_attr( $data ) . '"';
-                                if($data) { $html .= 'checked';}
-                            $html .= '/>';
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . $v['name'] . '</label></th><td>
+                                
+                                <input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '" value="' ;
+
+                                if($data) { $html .=  esc_attr( $data ) . '" checked="checked"/>';} else { $html .= '"/>'; }
+
+                            $html .= '<p class="description">' . $v['description'] . '(' . esc_attr( $data )  . ')</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
 
@@ -707,7 +710,7 @@ class Disciple_Tools_Contact_Post_Type {
 		    'name' => __( 'Overall Status', 'disciple_tools' ),
 		    'description' => '',
 		    'type' => 'select',
-		    'default' => array('Unassigned', 'Unassignable', 'Assigned', 'Accepted', 'On Pause', 'Closed'),
+		    'default' => array('Unassigned', 'Accepted', 'Paused', 'Closed', 'Unassignable' ),
 		    'section' => 'status'
 		);
 		$fields['seeker_path'] = array(
@@ -724,11 +727,11 @@ class Disciple_Tools_Contact_Post_Type {
 		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
 		    'section' => 'status'
 		);
-        $fields['baptism_date'] = array(
-            'name' => __( 'Baptism Date', 'disciple_tools' ),
+        $fields['requires_update'] = array(
+            'name' => __( 'Requires Update', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
-            'default' => '',
+            'type' => 'select',
+            'default' => array('No', 'Yes'),
             'section' => 'status'
         );
         $fields['reason_closed'] = array(
@@ -736,13 +739,6 @@ class Disciple_Tools_Contact_Post_Type {
             'description' => '',
             'type' => 'select',
             'default' => array('', 'Duplicate', 'Hostile / Playing Games', 'Insufficient Contact Info', 'Already In Church/Connected with Others', 'No Longer Interested', 'Just wanted a book', 'Unknown'),
-            'section' => 'status'
-        );
-        $fields['requires_update'] = array(
-            'name' => __( 'Requires Update', 'disciple_tools' ),
-            'description' => 'Needs updated status of the contact.',
-            'type' => 'checkbox',
-            'default' => false,
             'section' => 'status'
         );
 
