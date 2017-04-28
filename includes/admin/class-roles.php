@@ -130,6 +130,17 @@ class Disciple_Tools_Roles {
                 'edit_others_progresss' => true,
                 'publish_progresss' => true,
                 'read_private_progresss' => true,
+                // Add custom caps for assets
+                'read_asset' => true,
+                'edit_asset' => true,
+                'delete_asset' => true,
+                'delete_others_assets' => true,
+                'delete_assets' => true,
+                'edit_assets' => true,
+                'edit_others_assets' => true,
+                'publish_assets' => true,
+                'read_private_assets' => true,
+
 
 
             ) );
@@ -204,7 +215,7 @@ class Disciple_Tools_Roles {
                 'delete_locations' => true,
                 'edit_locations' => true,
                 'edit_others_locations' => true,
-                'publish_locations' => true,
+                'publish_assets' => true,
                 'read_private_locations' => true,
                 // Add custom caps for progresss
                 'read_progress' => true,
@@ -216,6 +227,16 @@ class Disciple_Tools_Roles {
                 'edit_others_progresss' => true,
                 'publish_progresss' => true,
                 'read_private_progresss' => true,
+                // Add custom caps for assets
+                'read_asset' => true,
+                'edit_asset' => true,
+                'delete_asset' => true,
+                'delete_others_assets' => true,
+                'delete_assets' => true,
+                'edit_assets' => true,
+                'edit_others_assets' => true,
+                'publish_assets' => true,
+                'read_private_assets' => true,
 
             ) );
 
@@ -247,6 +268,13 @@ class Disciple_Tools_Roles {
                 'read_location' => true,
                 'edit_location' => true,
                 'edit_locations' => true,
+                // Add custom caps for assets
+                'read_asset' => true,
+                'edit_asset' => true,
+                'delete_asset' => true,
+                'delete_assets' => true,
+                'edit_assets' => true,
+                'publish_assets' => true,
                 // Add custom caps for prayer updates
                 'read_prayer' => true,
                 // Add custom caps for progresss
@@ -283,6 +311,16 @@ class Disciple_Tools_Roles {
                 'edit_others_groups' => true,
                 'publish_groups' => true,
                 'read_private_groups' => true,
+                // Add custom caps for assets
+                'read_asset' => true,
+                'edit_asset' => true,
+                'delete_asset' => true,
+                'delete_others_assets' => true,
+                'delete_assets' => true,
+                'edit_assets' => true,
+                'edit_others_assets' => true,
+                'publish_assets' => true,
+                'read_private_assets' => true,
                 // Add custom caps for prayer updates
                 'read_prayer' => true,
                 // Add custom caps for progress updates
@@ -373,6 +411,15 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_locations' );
             $role->add_cap( 'publish_locations' );
             $role->add_cap( 'read_private_locations' );
+            $role->add_cap( 'edit_asset' );
+            $role->add_cap( 'read_asset' );
+            $role->add_cap( 'delete_asset' );
+            $role->add_cap( 'delete_others_assets' );
+            $role->add_cap( 'delete_assets' );
+            $role->add_cap( 'edit_assets' );
+            $role->add_cap( 'edit_others_assets' );
+            $role->add_cap( 'publish_assets' );
+            $role->add_cap( 'read_private_assets' );
 
         }
 

@@ -2,16 +2,17 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 /**
- * Disciple_Tools Plugin Progress Updates Post Type Class
+ * Disciple Tools Post Type Class
  *
- * All functionality pertaining to progress update post types in Disciple_Tools.
+ * All functionality pertaining to post types in Disciple_Tools.
  *
- * @package Disciple_Tools
+ * @package WordPress
+ * @subpackage Disciple_Tools
  * @category Plugin
  * @author Chasm.Solutions & Kingdom.Training
  * @since 0.1
  */
-class Disciple_Tools_Progress_Post_Type {
+class Disciple_Tools_Asset_Post_Type {
     /**
      * The post type token.
      * @access public
@@ -52,13 +53,12 @@ class Disciple_Tools_Progress_Post_Type {
      */
     public $taxonomies;
 
-
     /**
      * Constructor function.
      * @access public
      * @since 0.1
      */
-    public function __construct( $post_type = 'progress', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
+    public function __construct( $post_type = 'asset', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
         $this->post_type = $post_type;
         $this->singular = $singular;
         $this->plural = $plural;
@@ -82,6 +82,8 @@ class Disciple_Tools_Progress_Post_Type {
             }
         }
 
+        add_action( 'after_setup_theme', array( $this, 'ensure_post_thumbnails_support' ) );
+        add_action( 'after_theme_setup', array( $this, 'register_image_sizes' ) );
     } // End __construct()
 
     /**
@@ -91,8 +93,8 @@ class Disciple_Tools_Progress_Post_Type {
      */
     public function register_post_type () {
         $labels = array(
-            'name' 					=> sprintf( _x( '%s', 'Progress Updates', 'disciple_tools' ), $this->plural ),
-            'singular_name' 		=> sprintf( _x( '%s', 'Progress Update', 'disciple_tools' ), $this->singular ),
+            'name' 					=> sprintf( _x( '%s', 'Assets', 'disciple_tools' ), $this->plural ),
+            'singular_name' 		=> sprintf( _x( '%s', 'Asset', 'disciple_tools' ), $this->singular ),
             'add_new' 				=> _x( 'Add New', $this->post_type, 'disciple_tools' ),
             'add_new_item' 			=> sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
             'edit_item' 			=> sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
@@ -110,34 +112,31 @@ class Disciple_Tools_Progress_Post_Type {
             'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
             'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
             'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
-            'insert_into_item'      => sprintf( __( 'Placed into %s', 'disciple_tools' ), $this->plural ),
+            'insert_into_item'      => sprintf( __( 'Insert into %s', 'disciple_tools' ), $this->plural ),
             'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
             'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
             'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
             'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
-
         );
+
         $rewrite = array(
-            'slug'                  => 'progress',
+            'slug'                  => 'assets',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => false,
         );
         $capabilities = array(
-            'edit_post'             => 'edit_progress',
-            'read_post'             => 'read_progress',
-            'delete_post'           => 'delete_progress',
-            'delete_others_posts'   => 'delete_others_progresss',
-            'delete_posts'          => 'delete_progresss',
-            'edit_posts'            => 'edit_progresss',
-            'edit_others_posts'     => 'edit_others_progresss',
-            'publish_posts'         => 'publish_progresss',
-            'read_private_posts'    => 'read_private_progresss',
+            'edit_post'             => 'edit_asset',
+            'read_post'             => 'read_asset',
+            'delete_post'           => 'delete_asset',
+            'delete_others_posts'   => 'delete_others_assets',
+            'delete_posts'          => 'delete_assets',
+            'edit_posts'            => 'edit_assets',
+            'edit_others_posts'     => 'edit_others_assets',
+            'publish_posts'         => 'publish_assets',
+            'read_private_posts'    => 'read_private_assets',
         );
-
         $defaults = array(
-            'label'                 => __( 'Progress Update', 'disciple_tools' ),
-            'description'           => __( 'Progress updates generated by the media to movement effort', 'disciple_tools' ),
             'labels' 				=> $labels,
             'public' 				=> true,
             'publicly_queryable' 	=> true,
@@ -146,18 +145,13 @@ class Disciple_Tools_Progress_Post_Type {
             'query_var' 			=> true,
             'rewrite' 				=> $rewrite,
             'capabilities'          => $capabilities,
-            'capability_type' 		=> 'progress',
-            'has_archive' 			=> true, //$archive_slug,
+            'has_archive' 			=> true,
             'hierarchical' 			=> false,
-            'supports' 				=> array( 'title', 'editor', 'comments', 'author', 'revisions', 'thumbnail'  ),
+            'supports' 				=> array( 'title', 'excerpt', 'editor', 'comments', 'author', 'thumbnail', 'revisions' ),
             'menu_position' 		=> 6,
-            'menu_icon' 			=> 'dashicons-groups',
-            'show_in_admin_bar'     => true,
-            'show_in_nav_menus'     => true,
-            'can_export'            => true,
-            'exclude_from_search'   => false,
+            'menu_icon' 			=> 'dashicons-smiley',
             'show_in_rest'          => true,
-            'rest_base'             => 'progress',
+            'rest_base'             => 'assets',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         );
 
@@ -167,14 +161,14 @@ class Disciple_Tools_Progress_Post_Type {
     } // End register_post_type()
 
     /**
-     * Register the "progresss-category" taxonomy.
+     * Register the "thing-category" taxonomy.
      * @access public
      * @since  1.3.0
      * @return void
      */
     public function register_taxonomy () {
-        $this->taxonomies['progress-type'] = new Disciple_Tools_Taxonomy($post_type = 'progress', $token = 'progress-type', $singular = 'Type', $plural = 'Types', $args = array()); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies['progress-type']->register();
+        $this->taxonomies['assets-type'] = new Disciple_Tools_Taxonomy($post_type = 'assets', $token = 'assets-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
+	    $this->taxonomies['assets-type']->register();
     } // End register_taxonomy()
 
     /**
@@ -190,9 +184,7 @@ class Disciple_Tools_Progress_Post_Type {
 
         switch ( $column_name ) {
             case 'image':
-                break;
-            case 'phone':
-                echo '';
+//                echo $this->get_image( $id, 40 );
                 break;
 
             default:
@@ -205,14 +197,15 @@ class Disciple_Tools_Progress_Post_Type {
      * @access public
      * @param array $defaults
      * @since  0.1
-     * @return mixed/void
+     * @return void
      */
     public function register_custom_column_headings ( $defaults ) {
-
-        $new_columns = array(); //array( 'image' => __( 'Image', 'disciple_tools' ));
+//		$new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
+        $new_columns = array(); // TODO: restore above column once we know what columns we need to show.
 
         $last_item = array();
 
+        if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
 
         if ( count( $defaults ) > 2 ) {
             $last_item = array_slice( $defaults, -1 );
@@ -243,8 +236,8 @@ class Disciple_Tools_Progress_Post_Type {
         $messages[$this->post_type] = array(
             0 => '', // Unused. Messages start at index 1.
             1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
-            2 => __( 'Progress Update updated.', 'disciple_tools' ),
-            3 => __( 'Progress Update deleted.', 'disciple_tools' ),
+            2 => __( 'Custom field updated.', 'disciple_tools' ),
+            3 => __( 'Custom field deleted.', 'disciple_tools' ),
             4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
             5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
@@ -260,7 +253,6 @@ class Disciple_Tools_Progress_Post_Type {
         return $messages;
     } // End updated_messages()
 
-
     /**
      * Setup the meta box.
      * @access public
@@ -268,17 +260,8 @@ class Disciple_Tools_Progress_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-//        add_meta_box( $this->post_type . '_details', __( 'Audience', 'disciple_tools' ), array( $this, 'load_progress_info_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '-data', __( 'Address', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
-
-    /**
-     * Meta box for Status Information
-     * @access public
-     * @since  0.1
-     */
-    public function load_progress_info_meta_box () {
-        echo ''. $this->meta_box_content('info');
-    }
 
     /**
      * The contents of our meta box.
@@ -286,7 +269,7 @@ class Disciple_Tools_Progress_Post_Type {
      * @since  0.1
      * @return void
      */
-    public function meta_box_content ( $section = 'info') {
+    public function meta_box_content () {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
@@ -301,66 +284,62 @@ class Disciple_Tools_Progress_Post_Type {
             $html .= '<tbody>' . "\n";
 
             foreach ( $field_data as $k => $v ) {
-
-                if ($v['section'] == $section) {
-
-                    $data = $v['default'];
-                    if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
-                        $data = $fields[$k][0];
-                    }
-
-                    $type = $v['type'];
-
-                    switch ( $type ) {
-
-                        case 'url':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                            break;
-                        case 'text':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
-                                <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                            break;
-                        case 'select':
-                            $html .= '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
-                                <td>
-                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
-                            // Iterate the options
-                            foreach ($v['default'] as $vv) {
-                                $html .= '<option value="' . $vv . '" ';
-                                if($vv == $data) { $html .= 'selected';}
-                                $html .= '>' .$vv . '</option>';
-                            }
-                            $html .= '</select>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                            break;
-                        case 'radio':
-                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
-                                <td><fieldset>';
-                            // Iterate the buttons
-                            $increment_the_radio_button = 1;
-                            foreach ($v['default'] as $vv) {
-                                $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
-                                    '<input class="drm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
-                                if($vv == $data) { $html .= 'checked';}
-                                $html .= '>';
-                                $increment_the_radio_button++;
-                            }
-                            $html .= '</fieldset>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                            break;
-
-                        default:
-                            break;
-                    }
-
+                $data = $v['default'];
+                if ( isset( $fields['_' . $k] ) && isset( $fields['_' . $k][0] ) ) {
+                    $data = $fields['_' . $k][0];
                 }
+
+                $type = $v['type'];
+
+                switch ( $type ) {
+
+                    case 'url':
+                        $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '</td><tr/>' . "\n";
+                        break;
+                    case 'text':
+                        $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '</td><tr/>' . "\n";
+                        break;
+                    case 'select':
+                        $html .= '<tr valign="top"><th scope="row">
+							<label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+							<td><select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+                        // Iterate the options
+                        foreach ($v['default'] as $vv) {
+                            $html .= '<option value="' . $vv . '" ';
+                            if($vv == $data) { $html .= 'selected';}
+                            $html .= '>' .$vv . '</option>';
+                        }
+                        $html .= '</select>' . "\n";
+                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '</td><tr/>' . "\n";
+                        break;
+                    case 'radio':
+                        $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+							<td><fieldset>';
+                        // Iterate the buttons
+                        $increment_the_radio_button = 1;
+                        foreach ($v['default'] as $vv) {
+                            $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
+                                '<input class="dt-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
+                            if($vv == $data) { $html .= 'checked';}
+                            $html .= '>';
+                            $increment_the_radio_button++;
+                        }
+                        $html .= '</fieldset>' . "\n";
+                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '</td><tr/>' . "\n";
+                        break;
+
+
+                    default:
+                        break;
+                }
+
+
             }
 
             $html .= '</tbody>' . "\n";
@@ -369,7 +348,6 @@ class Disciple_Tools_Progress_Post_Type {
 
         echo $html;
     } // End meta_box_content()
-
 
     /**
      * Save meta box fields.
@@ -382,11 +360,7 @@ class Disciple_Tools_Progress_Post_Type {
         global $post, $messages;
 
         // Verify
-        if (  get_post_type() != $this->post_type  ) {
-            return $post_id;
-        }
-
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+        if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
             return $post_id;
         }
 
@@ -396,12 +370,6 @@ class Disciple_Tools_Progress_Post_Type {
             }
         } else {
             if ( ! current_user_can( 'edit_post', $post_id ) ) {
-                return $post_id;
-            }
-        }
-
-        if ( isset($_GET['action']) ) {
-            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
                 return $post_id;
             }
         }
@@ -418,12 +386,12 @@ class Disciple_Tools_Progress_Post_Type {
                 ${$f} = esc_url( ${$f} );
             }
 
-            if ( get_post_meta( $post_id,  $f ) == '' ) {
-                add_post_meta( $post_id,  $f, ${$f}, true );
-            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-                update_post_meta( $post_id, $f, ${$f} );
+            if ( get_post_meta( $post_id, '_' . $f ) == '' ) {
+                add_post_meta( $post_id, '_' . $f, ${$f}, true );
+            } elseif( ${$f} != get_post_meta( $post_id, '_' . $f, true ) ) {
+                update_post_meta( $post_id, '_' . $f, ${$f} );
             } elseif ( ${$f} == '' ) {
-                delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
+                delete_post_meta( $post_id, '_' . $f, get_post_meta( $post_id, '_' . $f, true ) );
             }
         }
     } // End meta_box_save()
@@ -433,11 +401,11 @@ class Disciple_Tools_Progress_Post_Type {
      * @access public
      * @since  0.1
      * @param string $title
-     * @return string
+     * @return void
      */
     public function enter_title_here ( $title ) {
         if ( get_post_type() == $this->post_type ) {
-            $title = __( 'Enter the title here', 'disciple_tools' );
+            $title = __( 'Enter the asset title here', 'disciple_tools' );
         }
         return $title;
     } // End enter_title_here()
@@ -451,18 +419,78 @@ class Disciple_Tools_Progress_Post_Type {
     public function get_custom_fields_settings () {
         $fields = array();
 
-        // Progress Update Information Section
-        $fields['audience'] = array(
-            'name' => __( 'Audience', 'disciple_tools' ),
-            'description' => 'Prayer Supporters are level 1; Project Supporters are level 2. Project supporters see all project supporter posts, but progress supporters do not see project supporter posts.',
-            'type' => 'select',
-            'default' => array('Prayer Supporter', 'Project Supporter'),
+        $fields['address'] = array(
+            'name' => __( 'Address', 'disciple_tools' ),
+            'description' => __( '', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+        $fields['city'] = array(
+            'name' => __( 'City', 'disciple_tools' ),
+            'description' => __( '', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+        $fields['state'] = array(
+            'name' => __( 'State', 'disciple_tools' ),
+            'description' => __( '', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+        $fields['zip'] = array(
+            'name' => __( 'Zip Code', 'disciple_tools' ),
+            'description' => __( '', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
+        $fields['country'] = array(
+            'name' => __( 'Country', 'disciple_tools' ),
+            'description' => __( '', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => '',
             'section' => 'info'
         );
 
-
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
+
+    /**
+     * Get the image for the given ID.
+     * @param  int 				$id   Post ID.
+     * @param  mixed $size Image dimension. (default: "thing-thumbnail")
+     * @since  0.1
+     * @return string       	<img> tag.
+     */
+    protected function get_image ( $id, $size = 'thing-thumbnail' ) {
+        $response = '';
+
+        if ( has_post_thumbnail( $id ) ) {
+            // If not a string or an array, and not an integer, default to 150x9999.
+            if ( ( is_int( $size ) || ( 0 < intval( $size ) ) ) && ! is_array( $size ) ) {
+                $size = array( intval( $size ), intval( $size ) );
+            } elseif ( ! is_string( $size ) && ! is_array( $size ) ) {
+                $size = array( 150, 9999 );
+            }
+            $response = get_the_post_thumbnail( intval( $id ), $size );
+        }
+
+        return $response;
+    } // End get_image()
+
+    /**
+     * Register image sizes.
+     * @access public
+     * @since  0.1
+     */
+    public function register_image_sizes () {
+        if ( function_exists( 'add_image_size' ) ) {
+            add_image_size( $this->post_type . '-thumbnail', 150, 9999 ); // 150 pixels wide (and unlimited height)
+        }
+    } // End register_image_sizes()
 
     /**
      * Run on activation.
@@ -483,5 +511,12 @@ class Disciple_Tools_Progress_Post_Type {
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
 
-
+    /**
+     * Ensure that "post-thumbnails" support is available for those themes that don't register it.
+     * @access public
+     * @since  0.1
+     */
+    public function ensure_post_thumbnails_support () {
+        if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }
+    } // End ensure_post_thumbnails_support()
 } // End Class

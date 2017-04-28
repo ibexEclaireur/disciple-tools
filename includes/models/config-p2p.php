@@ -211,6 +211,29 @@ function my_connection_types() {
         ),
     ) );
 
+    p2p_register_connection_type( array(
+        'name' => 'assets_to_locations',
+        'from' => 'assets',
+        'to' => 'locations',
+        'cardinality' => 'many-to-one',
+        'title' => array(
+            'from' => __( 'Location', 'disciple_tools' ),
+            'to' => __( 'Asset', 'disciple_tools' ),
+        ),
+        'from_labels' => array(
+            'singular_name' => __( 'Assets', 'disciple_tools' ),
+            'search_items' => __( 'Search assets', 'disciple_tools' ),
+            'not_found' => __( 'No assets found.', 'disciple_tools' ),
+            'create' => __( 'Connect Assets', 'disciple_tools' ),
+        ),
+        'to_labels' => array(
+            'singular_name' => __( 'Locations', 'disciple_tools' ),
+            'search_items' => __( 'Search locations', 'disciple_tools' ),
+            'not_found' => __( 'No locations found.', 'disciple_tools' ),
+            'create' => __( 'Connect Location', 'disciple_tools' ),
+        ),
+    ) );
+
 }
 add_action( 'p2p_init', 'my_connection_types' );
 

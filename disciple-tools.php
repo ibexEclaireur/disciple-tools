@@ -266,13 +266,15 @@ class Disciple_Tools {
         require_once ( 'includes/models/class-group-post-type.php' );
         require_once ( 'includes/models/class-location-post-type.php' );
         require_once ( 'includes/models/class-prayer-post-type.php' );
-        require_once('includes/models/class-progress-post-type.php');
+        require_once ( 'includes/models/class-progress-post-type.php' );
+        require_once ( 'includes/models/class-asset-post-type.php' );
         require_once ( 'includes/models/class-taxonomy.php' );
         $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
         $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
         $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) );
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-testimonial' ) );
+        $this->post_types['assets'] = new Disciple_Tools_Asset_Post_Type( 'assets', __( 'Assets', 'disciple_tools' ), __( 'Assets', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-testimonial' ) );
 
 
         // Creates the post to post relationship between the post type tables.
