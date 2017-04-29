@@ -169,8 +169,10 @@ class Disciple_Tools_Reports_Integrations {
 
         foreach($website_unique_visits as $website => $days){
             foreach ($days as $day) {
-                $report[] = array(
-                    'report_date' => $day['date'],
+                //set report date to the day after the day of the data
+                $report_date = strtotime('+1day', $day['date']);
+                $reports[] = array(
+                    'report_date' => date('Y-m-d h:m:s', $report_date),
                     'report_source' => 'Analytics',
                     'report_subsource' => $website,
                     'meta_input' => array(

@@ -187,8 +187,15 @@ class Disciple_Tools_Reports_Cron {
     }
 
     public function build_all_analytics_reports () {
-        // Calculate the next date(s) needed reporting
-        $date_of_last_record = date('Y-m-d', strtotime('-1 day')); //TODO: should get the last day recorded
+        // Calculate last day reported
+        $last_report = Disciple_Tools_Reports_API::get_last_record_of_source('Analytics');
+
+        if ($last_report && isset($last_report->report_date)){
+            $date_of_last_record = date('Y-m-d', strtotime($last_report->report_date));
+        } else {
+            //set to yesterday to get today's report
+            $date_of_last_record = date('Y-m-d', strtotime('-1 day'));
+        }
 
         $reports = Disciple_Tools_Reports_Integrations::analytics_prepared_data($date_of_last_record);
 
