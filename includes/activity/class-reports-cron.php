@@ -177,7 +177,14 @@ class Disciple_Tools_Reports_Cron {
      */
     public function build_all_facebook_reports () {
         // Calculate the next date(s) needed reporting
-        $date_of_last_record = date('Y-m-d', strtotime('-1 day')); //TODO: should get the last day recorded
+        //@todo split by subsource in case one does not update
+        $last_facebook_report =  Disciple_Tools_Reports_API::get_last_record_of_source('Facebook');
+        if ($last_facebook_report && isset($last_facebook_report->report_date)){
+            $date_of_last_record = date('Y-m-d', strtotime($last_facebook_report->report_date));
+        } else {
+            //set to yesterday to get today's report
+            $date_of_last_record = date('Y-m-d', strtotime('-1 day'));
+        }
         $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($date_of_last_record);
         // Request dates needed for reporting (loop)
         foreach ($reports as $report) {
@@ -188,6 +195,7 @@ class Disciple_Tools_Reports_Cron {
 
     public function build_all_analytics_reports () {
         // Calculate last day reported
+        //@todo split by subsource in case one does not update
         $last_report = Disciple_Tools_Reports_API::get_last_record_of_source('Analytics');
 
         if ($last_report && isset($last_report->report_date)){
