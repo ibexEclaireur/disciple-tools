@@ -162,46 +162,27 @@ class Disciple_Tools_Reports_Integrations {
      * @see     Disciple_Tools_Reports_API
      * @return  array
      */
-    public static function analytics_prepared_data ($date) {
-        $report = array();
-        
-        $report[0] = array(
-            'report_date' => $date,
-            'report_source' => 'Analytics',
-            'report_subsource' => 'Site1', // individual web property
-            'meta_input' => array(
-                'unique_website_visitors' => rand(0, 100),
-                'platforms' => rand(0, 100),
-                'browsers' => rand(0, 100),
-                'average_time' => rand(0, 100),
-                'page_visits' => rand(0, 100),
-            )
-        );
-        $report[1] = array(
-            'report_date' => $date,
-            'report_source' => 'Analytics',
-            'report_subsource' => 'Site2', // individual web property
-            'meta_input' => array(
-                'unique_website_visitors' => rand(0, 100),
-                'platforms' => rand(0, 100),
-                'browsers' => rand(0, 100),
-                'average_time' => rand(0, 100),
-                'page_visits' => rand(0, 100),
-            )
-        );
-        $report[2] = array(
-            'report_date' => $date,
-            'report_source' => 'Analytics',
-            'report_subsource' => 'Site3', // individual web property
-            'meta_input' => array(
-                'unique_website_visitors' => rand(0, 100),
-                'platforms' => rand(0, 100),
-                'browsers' => rand(0, 100),
-                'average_time' => rand(0, 100),
-                'page_visits' => rand(0, 100),
-            )
-        );
-        return $report;
+    public static function analytics_prepared_data ($last_date_recorded) {
+        $reports = array();
+
+        $website_unique_visits = Ga_Admin::get_report_data($last_date_recorded);
+
+        foreach($website_unique_visits as $website => $days){
+            foreach ($days as $day) {
+                //set report date to the day after the day of the data
+                $report_date = strtotime('+1day', $day['date']);
+                $reports[] = array(
+                    'report_date' => date('Y-m-d h:m:s', $report_date),
+                    'report_source' => 'Analytics',
+                    'report_subsource' => $website,
+                    'meta_input' => array(
+                        'unique_website_visitors' => $day['value']
+                    )
+                );
+            }
+        }
+
+        return $reports;
     }
 
     /**
