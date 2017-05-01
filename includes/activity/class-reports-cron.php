@@ -85,42 +85,42 @@ class Disciple_Tools_Reports_Cron {
         /**
          * Schedule different sources if there is not a previous report scheduled or the option has been turned off.
          */
-        if( !wp_next_scheduled( 'build_disciple_tools_contacts_reports' ) && $options_settings['build_report_for_contacts'] ) { // Contacts
+        if( !wp_next_scheduled( 'build_disciple_tools_contacts_reports' ) && isset($options_settings['build_report_for_contacts']) ) { // Contacts
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_disciple_tools_contacts_reports' );
         }
 
-        if( !wp_next_scheduled( 'build_disciple_tools_groups_reports' ) && $options_settings['build_report_for_groups'] ) { // Groups
+        if( !wp_next_scheduled( 'build_disciple_tools_groups_reports' ) && isset($options_settings['build_report_for_groups']) ) { // Groups
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_disciple_tools_groups_reports' );
         }
 
-        if( !wp_next_scheduled( 'build_facebook_reports' ) && $options_settings['build_report_for_facebook'] ) { // Facebook
+        if( !wp_next_scheduled( 'build_facebook_reports' ) && isset($options_settings['build_report_for_facebook'] )) { // Facebook
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_facebook_reports' );
         }
 
-        if( !wp_next_scheduled( 'build_twitter_reports' ) && $options_settings['build_report_for_twitter'] ) { // Twitter
+        if( !wp_next_scheduled( 'build_twitter_reports' ) && isset($options_settings['build_report_for_twitter'] )) { // Twitter
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_twitter_reports' );
         }
 
-        if( !wp_next_scheduled( 'build_analytics_reports' ) && $options_settings['build_report_for_analytics'] ) { // Analytics
+        if( !wp_next_scheduled( 'build_analytics_reports' ) && isset($options_settings['build_report_for_analytics']) ) { // Analytics
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_analytics_reports' );
         }
 
-        if( !wp_next_scheduled( 'build_adwords_reports' ) && $options_settings['build_report_for_adwords'] ) { // Adwords
+        if( !wp_next_scheduled( 'build_adwords_reports' ) && isset($options_settings['build_report_for_adwords']) ) { // Adwords
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_adwords_reports' );
         }
 
-        if( !wp_next_scheduled( 'build_mailchimp_reports' ) && $options_settings['build_report_for_mailchimp'] ) { // Mailchimp
+        if( !wp_next_scheduled( 'build_mailchimp_reports' ) && isset($options_settings['build_report_for_mailchimp']) ) { // Mailchimp
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_mailchimp_reports' );
         }
 
-        if( !wp_next_scheduled( 'build_youtube_reports' ) && $options_settings['build_report_for_youtube'] ) { // Youtube
+        if( !wp_next_scheduled( 'build_youtube_reports' ) && isset($options_settings['build_report_for_youtube']) ) { // Youtube
             // Schedule the event
             wp_schedule_event( strtotime('today midnight'), 'daily', 'build_youtube_reports' );
         }
@@ -177,7 +177,14 @@ class Disciple_Tools_Reports_Cron {
      */
     public function build_all_facebook_reports () {
         // Calculate the next date(s) needed reporting
-        $date_of_last_record = date('Y-m-d', strtotime('-1 day')); //TODO: should get the last day recorded
+        //@todo split by subsource in case one does not update
+        $last_facebook_report =  Disciple_Tools_Reports_API::get_last_record_of_source('Facebook');
+        if ($last_facebook_report && isset($last_facebook_report->report_date)){
+            $date_of_last_record = date('Y-m-d', strtotime($last_facebook_report->report_date));
+        } else {
+            //set to yesterday to get today's report
+            $date_of_last_record = date('Y-m-d', strtotime('-1 day'));
+        }
         $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($date_of_last_record);
         // Request dates needed for reporting (loop)
         foreach ($reports as $report) {
@@ -187,20 +194,23 @@ class Disciple_Tools_Reports_Cron {
     }
 
     public function build_all_analytics_reports () {
-        // Calculate the next date(s) needed reporting
-        $var_date = date('Y-m-d', strtotime('-1 day')); //TODO: should replace this with a foreach loop that queries that last day recorded
-        $dates = array($var_date); // array of dates
+        // Calculate last day reported
+        //@todo split by subsource in case one does not update
+        $last_report = Disciple_Tools_Reports_API::get_last_record_of_source('Analytics');
+
+        if ($last_report && isset($last_report->report_date)){
+            $date_of_last_record = date('Y-m-d', strtotime($last_report->report_date));
+        } else {
+            //set to yesterday to get today's report
+            $date_of_last_record = date('Y-m-d', strtotime('-1 day'));
+        }
+
+        $reports = Disciple_Tools_Reports_Integrations::analytics_prepared_data($date_of_last_record);
 
         // Request dates needed for reporting (loop)
-        foreach ($dates as $date) {
-            // Get arrays from integrations
-            $results = Disciple_Tools_Reports_Integrations::analytics_prepared_data($date);
-
-            // Insert Report
-            $status = array(); $i = 0; // setup variables
-            foreach($results as $result) {
-                $status[$i] = dt_report_insert($result);
-            }
+        foreach ($reports as $report) {
+            // Insert Reports
+            dt_report_insert($report);
         }
     }
     public function build_all_adwords_reports () {

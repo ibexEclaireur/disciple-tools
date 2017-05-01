@@ -311,6 +311,9 @@ class Disciple_Tools {
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
         require_once('includes/admin/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
+        require_once('includes/plugins/google-analytics/disciple-tools-analytics.php');
+        require_once('includes/admin/class-google-analytics-integration.php');
+        $this->analytics_integration = Ga_Admin::instance();
 
         // load rest api endpoints
         require_once ('includes/functions/disable-json-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
