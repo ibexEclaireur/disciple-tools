@@ -125,6 +125,15 @@ function disciple_tools_remove_posts_menu(){
 
 
 
+// Removes the tools menu for the marketer
+if ( current_user_can('marketer')) {
+    add_action( 'admin_menu', 'dt_marketer_remove_tools', 99 );
+    function dt_marketer_remove_tools()
+    {
+        remove_menu_page( 'tools.php' );
+    }
+}
+
 
 
 
