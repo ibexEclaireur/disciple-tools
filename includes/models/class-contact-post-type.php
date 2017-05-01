@@ -72,7 +72,7 @@ class Disciple_Tools_Contact_Post_Type {
 			global $pagenow;
 
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
-            add_action( 'save_post', array( $this, 'save_assigned_meta_box' ) );
+//            add_action( 'save_post', array( $this, 'save_assigned_meta_box' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 			add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 			
@@ -276,8 +276,8 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'load_contact_info_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_assigned', __( 'Assigned to', 'disciple_tools' ), array( $this, 'load_assigned_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_meta_box' ), $this->post_type, 'side', 'low' );
+        add_meta_box( $this->post_type . '_path', __( 'Path', 'disciple_tools' ), array( $this, 'load_path_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), array( $this, 'load_misc_meta_box' ), $this->post_type, 'side', 'low' );
 		do_action("dt_contact_meta_boxes_setup", $this->post_type);
 	} // End meta_box_setup()
@@ -286,19 +286,27 @@ class Disciple_Tools_Contact_Post_Type {
      * Setup "assigned" meta box.
      *
      */
-    public function load_assigned_meta_box ( $post_id) {
+    public function load_status_meta_box ( $post_id) {
         $exclude_group = '';
         $exclude_user = '';
+        $html = '';
+
+
+        /*****************************************/
+        /* Assigned To Field */
+        /*****************************************/
+
+        $html .= '<div class="edit-row"><div class="edit-title-left">Assigned To</div> <div class="edit-field-right">';
 
         // Start drop down
-        echo '<select name="assigned_to" id="assigned_to" class="regular-text">';
+        $html .= '<select name="assigned_to" id="assigned_to" class="edit-input">';
 
         // Set selected state
         $assigned_to = get_post_meta( $post_id->ID, 'assigned_to', true);
 
         if(empty( $assigned_to) || $assigned_to == 'dispatch' ) {
             // set default to dispatch
-            echo '<option value="dispatch" selected>Dispatch</option>';
+            $html .= '<option value="dispatch" selected>Dispatch</option>';
         }
         elseif ( !empty( $assigned_to ) ) { // If there is already a record
             $metadata = get_post_meta($post_id->ID, 'assigned_to', true);
@@ -309,37 +317,37 @@ class Disciple_Tools_Contact_Post_Type {
             // Build option for current value
             if ( $type == 'user') {
                 $value = get_user_by( 'id', $id);
-                echo '<option value="user-'.$id.'" selected>'.$value->display_name.'</option>';
+                $html .= '<option value="user-'.$id.'" selected>'.$value->display_name.'</option>';
 
                 // exclude the current id from the $results list
                 $exclude_user = "'exclude' => $id";
             } else {
                 $value = get_term( $id);
-                echo '<option value="team-'.$value->term_id.'" selected>'.$value->name.'</option>';
+                $html .= '<option value="team-'.$value->term_id.'" selected>'.$value->name.'</option>';
 
                 // exclude the current id from the $results list
                 $exclude_group = "'exclude' => $id";
             }
 
-            echo '<option value="" disabled> --- Dispatch</option><option value="dispatch">Dispatch</option>'; // add dispatch to top of list
+            $html .= '<option value="" disabled> --- Dispatch</option><option value="dispatch">Dispatch</option>'; // add dispatch to top of list
 
         }
 
 
 
         // Visually categorize groups
-        echo '<option value="" disabled> --- Teams</option>';
+        $html .= '<option value="" disabled> --- Teams</option>';
 
         // Get groups list excluding current selection
         $results = get_terms( array( 'taxonomy' => 'user-group', 'hide_empty' => true, 'exclude' => $exclude_group ) );
 
         // Loop list of groups list
         foreach ($results as $value) {
-            echo '<option value="group-'.$value->term_id.'">'.$value->name.'</option>';
+            $html .= '<option value="group-'.$value->term_id.'">'.$value->name.'</option>';
         }
 
         // Visually separate groups from users
-        echo '<option value="" disabled> --- Users</option>';
+        $html .= '<option value="" disabled> --- Users</option>';
 
         // Collect user list
         $args = array('role__not_in' => array('registered', 'prayer_supporter', 'project_supporter'), 'fields' => array('ID', 'display_name'), 'exclude' => $exclude_user );
@@ -347,68 +355,51 @@ class Disciple_Tools_Contact_Post_Type {
 
         // Loop user list
         foreach ($results as $value) {
-            echo '<option value="user-'.$value->ID.'">'.$value->display_name.'</option>';
+            $html .= '<option value="user-'.$value->ID.'">'.$value->display_name.'</option>';
         }
 
         // End drop down
-        echo '</select>  ';
-        echo '<button type="submit">Save</button>';
+        $html .= '</select>  ';
+        $html .= '</div></div>';
 
 
-//        $term_id = get_post_meta( $post_id->ID, 'assigned_to_teams', true);
-//        print_r( get_term( '4')); //print_r(get_post_meta( $post_id->ID, 'assigned_to_teams', true) );
+
+        $fields = array();
+        $fields['overall_status'] = array(
+            'name' => __( 'Overall Status', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('Unassigned', 'Accepted', 'Paused', 'Closed', 'Unassignable' ),
+            'section' => 'status'
+        );
+        $fields['requires_update'] = array(
+            'name' => __( 'Requires Update', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('No', 'Yes'),
+            'section' => 'status'
+        );
+
+        foreach ($fields as $key => $field) {
+            $value = get_post_meta( $post_id->ID, $key, true);
+
+            $html .= '<div class="edit-row"><div class="edit-title-left">'. $field['name'].'</div><div class="edit-field-right">';
+            $html .= '<select name="'. $key .'" class="edit-input" >';
+
+            foreach ($field['default'] as $option) {
+                $html .= '<option value="' . $option . '" ';
+                if($option == $value) { $html .= 'selected';}
+                $html .= '>' .$option . '</option>';
+            }
+            $html .= '</select>';
+            $html .= '</div></div>';
+        }
+
+        echo $html;
+
     }
 
-    /**
-     * Save the contents of the Assigned To Metabox
-     *
-     * @return mixed/void
-     */
-    public function save_assigned_meta_box ( $post_id ) {
-        global $post, $messages;
 
-        // Verify
-        if (  get_post_type() != $this->post_type  ) {
-            return $post_id;
-        }
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
-            return $post_id;
-        }
-
-        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
-            if ( ! current_user_can( 'edit_page', $post_id ) ) {
-                return $post_id;
-            }
-        } else {
-            if ( ! current_user_can( 'edit_post', $post_id ) ) {
-                return $post_id;
-            }
-        }
-
-        if ( isset($_GET['action']) ) {
-            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
-                return $post_id;
-            }
-        }
-
-        $fields = array('assigned_to');
-
-
-        foreach ( $fields as $f ) {
-
-            ${$f} = strip_tags(trim($_POST[$f]));
-
-
-            if ( get_post_meta( $post_id,  $f ) == '' ) {
-                add_post_meta( $post_id,  $f, ${$f}, true );
-            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-                update_post_meta( $post_id, $f, ${$f} );
-            } elseif ( ${$f} == '' ) {
-                delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
-            }
-        }
-    }
-	
 	/**
 	 * The contents of our meta box.
 	 * @access public
@@ -548,6 +539,10 @@ class Disciple_Tools_Contact_Post_Type {
 		$field_data = $this->get_custom_fields_settings();
 		$fields = array_keys( $field_data );
 
+		$custom_fields = array('assigned_to', 'overall_status', 'requires_update');
+
+		$fields = array_merge($fields, $custom_fields);
+
 		foreach ( $fields as $f ) {
 
 			${$f} = strip_tags(trim($_POST[$f]));
@@ -572,7 +567,7 @@ class Disciple_Tools_Contact_Post_Type {
      * @access public
      * @since  0.1
      */
-    public function load_status_meta_box () {
+    public function load_path_meta_box () {
 
         echo '' . $this->meta_box_content('status');
     }
@@ -705,14 +700,9 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'info'
         );
 
+
         // Status information section
-		$fields['overall_status'] = array(
-		    'name' => __( 'Overall Status', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'select',
-		    'default' => array('Unassigned', 'Accepted', 'Paused', 'Closed', 'Unassignable' ),
-		    'section' => 'status'
-		);
+
 		$fields['seeker_path'] = array(
 		    'name' => __( 'Seeker Path', 'disciple_tools' ),
 		    'description' => '',
@@ -727,13 +717,7 @@ class Disciple_Tools_Contact_Post_Type {
 		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
 		    'section' => 'status'
 		);
-        $fields['requires_update'] = array(
-            'name' => __( 'Requires Update', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('No', 'Yes'),
-            'section' => 'status'
-        );
+
         $fields['reason_closed'] = array(
             'name' => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
@@ -761,14 +745,6 @@ class Disciple_Tools_Contact_Post_Type {
 
 
         // Misc Information fields
-		$fields['preferred_language'] = array(
-		    'name' => __( 'Preferred Language', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'select',
-		    'default' => array('', 'English', 'French', 'Arabic', 'Spanish'),
-		    'section' => 'misc'
-		);
-
         $fields['bible'] = array(
             'name' => __( 'Bible', 'disciple_tools' ),
             'description' => '',

@@ -49,10 +49,13 @@ class Disciple_Tools_Roles {
      * Install DMM Roles
      * */
     public function set_roles () {
-        if ( get_role( 'marketer' )) { remove_role( 'marketer' ); }
-        add_role( 'marketer', 'Marketer',
+
+        /* TODO: Different caps are commented out as we configure usage in development, but should be removed for distribution. */
+
+        if ( get_role( 'strategy' )) { remove_role( 'Strategy' );}
+        add_role( 'strategy', 'strategy',
             array(
-                // Standard Capabilities
+                /* Standard Capabilities */
                 'delete_others_posts' => true,
                 'delete_pages' => true,
                 'delete_posts' => true,
@@ -78,9 +81,9 @@ class Disciple_Tools_Roles {
                 'read_private_posts' => true,
                 'upload_files' => true,
                 'level_0' => true,
-                // see all contacts
+                /* See all contacts */
                 'manage_contacts' => true,
-                // Add custom caps for contacts
+                /* Add custom caps for contacts */
                 'edit_contact' => true,
                 'read_contact' => true,
                 'delete_contact' => true,
@@ -90,7 +93,7 @@ class Disciple_Tools_Roles {
                 'edit_others_contacts' => true,
                 'publish_contacts' => true,
                 'read_private_contacts' => true,
-                // Add custom caps for groups
+                /* Add custom caps for groups */
                 'edit_group' => true,
                 'read_group' => true,
                 'delete_group' => true,
@@ -100,7 +103,7 @@ class Disciple_Tools_Roles {
                 'edit_others_groups' => true,
                 'publish_groups' => true,
                 'read_private_groups' => true,
-                // Add custom caps for prayer
+                /* Add custom caps for prayer updates */
                 'read_prayer' => true,
                 'edit_prayer' => true,
                 'delete_prayer' => true,
@@ -110,7 +113,7 @@ class Disciple_Tools_Roles {
                 'edit_others_prayers' => true,
                 'publish_prayers' => true,
                 'read_private_prayers' => true,
-                // Add custom caps for locations
+                /* Add custom caps for locations */
                 'read_location' => true,
                 'edit_location' => true,
                 'delete_location' => true,
@@ -120,7 +123,7 @@ class Disciple_Tools_Roles {
                 'edit_others_locations' => true,
                 'publish_locations' => true,
                 'read_private_locations' => true,
-                // Add custom caps for progresss
+                /* Add custom caps for progresss */
                 'read_progress' => true,
                 'edit_progress' => true,
                 'delete_progress' => true,
@@ -130,7 +133,7 @@ class Disciple_Tools_Roles {
                 'edit_others_progresss' => true,
                 'publish_progresss' => true,
                 'read_private_progresss' => true,
-                // Add custom caps for assets
+                /* Add custom caps for assets */
                 'read_asset' => true,
                 'edit_asset' => true,
                 'delete_asset' => true,
@@ -141,15 +144,12 @@ class Disciple_Tools_Roles {
                 'publish_assets' => true,
                 'read_private_assets' => true,
 
-
-
             ) );
-
 
         if ( get_role( 'dispatcher' )) { remove_role( 'dispatcher' );}
         add_role( 'dispatcher', 'Dispatcher',
             array(
-                // Standard Capabilities
+                /* Standard Capabilities */
                 'delete_others_posts' => true,
                 'delete_pages' => true,
                 'delete_posts' => true,
@@ -175,9 +175,9 @@ class Disciple_Tools_Roles {
                 'read_private_posts' => true,
                 'upload_files' => true,
                 'level_0' => true,
-                // See all contacts
+                /* See all contacts */
                 'manage_contacts' => true,
-                // Add custom caps for contacts
+                /* Add custom caps for contacts */
                 'edit_contact' => true,
                 'read_contact' => true,
                 'delete_contact' => true,
@@ -187,7 +187,7 @@ class Disciple_Tools_Roles {
                 'edit_others_contacts' => true,
                 'publish_contacts' => true,
                 'read_private_contacts' => true,
-                // Add custom caps for groups
+                /* Add custom caps for groups */
                 'edit_group' => true,
                 'read_group' => true,
                 'delete_group' => true,
@@ -197,7 +197,7 @@ class Disciple_Tools_Roles {
                 'edit_others_groups' => true,
                 'publish_groups' => true,
                 'read_private_groups' => true,
-                // Add custom caps for prayer updates
+                /* Add custom caps for prayer updates */
                 'read_prayer' => true,
                 'edit_prayer' => true,
                 'delete_prayer' => true,
@@ -207,7 +207,7 @@ class Disciple_Tools_Roles {
                 'edit_others_prayers' => true,
                 'publish_prayers' => true,
                 'read_private_prayers' => true,
-                // Add custom caps for locations
+                /* Add custom caps for locations */
                 'read_location' => true,
                 'edit_location' => true,
                 'delete_location' => true,
@@ -215,9 +215,9 @@ class Disciple_Tools_Roles {
                 'delete_locations' => true,
                 'edit_locations' => true,
                 'edit_others_locations' => true,
-                'publish_assets' => true,
+                'publish_locations' => true,
                 'read_private_locations' => true,
-                // Add custom caps for progresss
+                /* Add custom caps for progresss */
                 'read_progress' => true,
                 'edit_progress' => true,
                 'delete_progress' => true,
@@ -227,7 +227,7 @@ class Disciple_Tools_Roles {
                 'edit_others_progresss' => true,
                 'publish_progresss' => true,
                 'read_private_progresss' => true,
-                // Add custom caps for assets
+                /* Add custom caps for assets */
                 'read_asset' => true,
                 'edit_asset' => true,
                 'delete_asset' => true,
@@ -241,57 +241,38 @@ class Disciple_Tools_Roles {
             ) );
 
 
-        if ( get_role( 'multiplier' )) { remove_role( 'multiplier' );}
-        add_role( 'multiplier', 'Multiplier',
+        if ( get_role( 'marketer' )) { remove_role( 'marketer' ); }
+        add_role( 'marketer', 'Marketer',
             array(
-                // Standard Capabilities
+                /* Standard Capabilities */
+//                'delete_others_posts' => true,
+                'delete_pages' => true,
+                'delete_posts' => true,
+//                'delete_private_pages' => true,
+//                'delete_private_posts' => true,
+                'delete_published_pages' => true,
+                'delete_published_posts' => true,
+//                'edit_others_pages' => true,
+//                'edit_others_posts' => true,
+                'edit_pages' => true,
+                'edit_posts' => true,
+                'edit_private_pages' => true,
+                'edit_private_posts' => true,
+                'edit_published_pages' => true,
+                'edit_published_posts' => true,
+                'manage_categories' => true,
+                'manage_links' => true,
                 'moderate_comments' => true,
+                'publish_pages' => true,
+                'publish_posts' => true,
                 'read' => true,
+                'read_private_pages' => true,
+                'read_private_posts' => true,
                 'upload_files' => true,
-                // Add custom caps for contacts
-                'edit_contact' => true,
-                'read_contact' => true,
-                'delete_contact' => true,
-                'delete_contacts' => true,
-                'edit_contacts' => true,
-                'publish_contacts' => true,
-                'read_private_contacts' => true,
-                // Add custom caps for groups
-                'edit_group' => true,
-                'read_group' => true,
-                'delete_group' => true,
-                'delete_groups' => true,
-                'edit_groups' => true,
-                'publish_groups' => true,
-                'read_private_groups' => true,
-                // Add custom caps for locations
-                'read_location' => true,
-                'edit_location' => true,
-                'edit_locations' => true,
-                // Add custom caps for assets
-                'read_asset' => true,
-                'edit_asset' => true,
-                'delete_asset' => true,
-                'delete_assets' => true,
-                'edit_assets' => true,
-                'publish_assets' => true,
-                // Add custom caps for prayer updates
-                'read_prayer' => true,
-                // Add custom caps for progresss
-                'read_progress' => true,
-
-            ) );
-
-
-        if ( get_role( 'multiplier_leader' )) { remove_role( 'multiplier_leader' );}
-        add_role( 'multiplier_leader', 'Multiplier Leader',
-            array(
-                // Standard Capabilities
-                'read' => true,
-                'upload_files' => true,
-                // See all contacts
+//                'level_0' => true,
+                /* See all contacts */
                 'manage_contacts' => true,
-                // Add custom caps for contacts
+                /* Add custom caps for contacts */
                 'edit_contact' => true,
                 'read_contact' => true,
                 'delete_contact' => true,
@@ -301,7 +282,7 @@ class Disciple_Tools_Roles {
                 'edit_others_contacts' => true,
                 'publish_contacts' => true,
                 'read_private_contacts' => true,
-                // Add custom caps for groups
+                /* Add custom caps for groups */
                 'edit_group' => true,
                 'read_group' => true,
                 'delete_group' => true,
@@ -311,7 +292,130 @@ class Disciple_Tools_Roles {
                 'edit_others_groups' => true,
                 'publish_groups' => true,
                 'read_private_groups' => true,
-                // Add custom caps for assets
+                /* Add custom caps for prayer updates */
+                'read_prayer' => true,
+                'edit_prayer' => true,
+                'delete_prayer' => true,
+//                'delete_others_prayers' => true,
+                'delete_prayers' => true,
+                'edit_prayers' => true,
+//                'edit_others_prayers' => true,
+                'publish_prayers' => true,
+                'read_private_prayers' => true,
+                /* Add custom caps for locations */
+                'read_location' => true,
+                'edit_location' => true,
+//                'delete_location' => true,
+//                'delete_others_locations' => true,
+//                'delete_locations' => true,
+                'edit_locations' => true,
+//                'edit_others_locations' => true,
+//                'publish_locations' => true,
+//                'read_private_locations' => true,
+                /* Add custom caps for progresss */
+                'read_progress' => true,
+                'edit_progress' => true,
+                'delete_progress' => true,
+//                'delete_others_progresss' => true,
+                'delete_progresss' => true,
+                'edit_progresss' => true,
+//                'edit_others_progresss' => true,
+                'publish_progresss' => true,
+//                'read_private_progresss' => true,
+                /* Add custom caps for assets */
+                'read_asset' => true,
+//                'edit_asset' => true,
+//                'delete_asset' => true,
+//                'delete_others_assets' => true,
+//                'delete_assets' => true,
+//                'edit_assets' => true,
+//                'edit_others_assets' => true,
+//                'publish_assets' => true,
+//                'read_private_assets' => true,
+            ) );
+
+        if ( get_role( 'marketer_leader' )) { remove_role( 'marketer_leader' ); }
+        add_role( 'marketer_leader', 'Marketer Leader',
+            array(
+                /* Standard Capabilities */
+                'delete_others_posts' => true,
+                'delete_pages' => true,
+                'delete_posts' => true,
+                'delete_private_pages' => true,
+                'delete_private_posts' => true,
+                'delete_published_pages' => true,
+                'delete_published_posts' => true,
+                'edit_others_pages' => true,
+                'edit_others_posts' => true,
+                'edit_pages' => true,
+                'edit_posts' => true,
+                'edit_private_pages' => true,
+                'edit_private_posts' => true,
+                'edit_published_pages' => true,
+                'edit_published_posts' => true,
+                'manage_categories' => true,
+                'manage_links' => true,
+                'moderate_comments' => true,
+                'publish_pages' => true,
+                'publish_posts' => true,
+                'read' => true,
+                'read_private_pages' => true,
+                'read_private_posts' => true,
+                'upload_files' => true,
+                'level_0' => true,
+                /* See all contacts */
+                'manage_contacts' => true,
+                /* Add custom caps for contacts */
+                'edit_contact' => true,
+                'read_contact' => true,
+                'delete_contact' => true,
+                'delete_others_contacts' => true,
+                'delete_contacts' => true,
+                'edit_contacts' => true,
+                'edit_others_contacts' => true,
+                'publish_contacts' => true,
+                'read_private_contacts' => true,
+                /* Add custom caps for groups */
+                'edit_group' => true,
+                'read_group' => true,
+                'delete_group' => true,
+                'delete_others_groups' => true,
+                'delete_groups' => true,
+                'edit_groups' => true,
+                'edit_others_groups' => true,
+                'publish_groups' => true,
+                'read_private_groups' => true,
+                /* Add custom caps for prayer updates */
+                'read_prayer' => true,
+                'edit_prayer' => true,
+                'delete_prayer' => true,
+                'delete_others_prayers' => true,
+                'delete_prayers' => true,
+                'edit_prayers' => true,
+                'edit_others_prayers' => true,
+                'publish_prayers' => true,
+                'read_private_prayers' => true,
+                /* Add custom caps for locations */
+                'read_location' => true,
+                'edit_location' => true,
+                'delete_location' => true,
+                'delete_others_locations' => true,
+                'delete_locations' => true,
+                'edit_locations' => true,
+                'edit_others_locations' => true,
+                'publish_locations' => true,
+                'read_private_locations' => true,
+                /* Add custom caps for progresss */
+                'read_progress' => true,
+                'edit_progress' => true,
+                'delete_progress' => true,
+                'delete_others_progresss' => true,
+                'delete_progresss' => true,
+                'edit_progresss' => true,
+                'edit_others_progresss' => true,
+                'publish_progresss' => true,
+                'read_private_progresss' => true,
+                /* Add custom caps for assets */
                 'read_asset' => true,
                 'edit_asset' => true,
                 'delete_asset' => true,
@@ -321,20 +425,200 @@ class Disciple_Tools_Roles {
                 'edit_others_assets' => true,
                 'publish_assets' => true,
                 'read_private_assets' => true,
-                // Add custom caps for prayer updates
-                'read_prayer' => true,
-                // Add custom caps for progress updates
-                'read_progress' => true
             ) );
 
 
 
-        if ( get_role( 'prayer_supporter' )) { remove_role( 'prayer_supporter' );}
-        add_role( 'prayer_supporter', 'Prayer Supporter',
+
+
+        if ( get_role( 'multiplier' )) { remove_role( 'multiplier' );}
+        add_role( 'multiplier', 'Multiplier',
             array(
-                'prayer_supporter' => true,
-                'read_prayer' => true
+                /* Standard Capabilities */
+//                'delete_others_posts' => true,
+//                'delete_pages' => true,
+//                'delete_posts' => true,
+//                'delete_private_pages' => true,
+//                'delete_private_posts' => true,
+//                'delete_published_pages' => true,
+//                'delete_published_posts' => true,
+//                'edit_others_pages' => true,
+//                'edit_others_posts' => true,
+//                'edit_pages' => true,
+//                'edit_posts' => true,
+//                'edit_private_pages' => true,
+//                'edit_private_posts' => true,
+//                'edit_published_pages' => true,
+//                'edit_published_posts' => true,
+//                'manage_categories' => true,
+//                'manage_links' => true,
+                'moderate_comments' => true,
+//                'publish_pages' => true,
+//                'publish_posts' => true,
+                'read' => true,
+//                'read_private_pages' => true,
+//                'read_private_posts' => true,
+                'upload_files' => true,
+//                'level_0' => true,
+                /* See all contacts */
+//                'manage_contacts' => true,
+                /* Add custom caps for contacts */
+                'edit_contact' => true,
+                'read_contact' => true,
+                'delete_contact' => true,
+//                'delete_others_contacts' => true,
+                'delete_contacts' => true,
+                'edit_contacts' => true,
+//                'edit_others_contacts' => true,
+                'publish_contacts' => true,
+                'read_private_contacts' => true,
+                /* Add custom caps for groups */
+                'edit_group' => true,
+                'read_group' => true,
+                'delete_group' => true,
+//                'delete_others_groups' => true,
+                'delete_groups' => true,
+                'edit_groups' => true,
+//                'edit_others_groups' => true,
+                'publish_groups' => true,
+                'read_private_groups' => true,
+                /* Add custom caps for prayer updates */
+                'read_prayer' => true,
+//                'edit_prayer' => true,
+//                'delete_prayer' => true,
+//                'delete_others_prayers' => true,
+//                'delete_prayers' => true,
+//                'edit_prayers' => true,
+//                'edit_others_prayers' => true,
+//                'publish_prayers' => true,
+//                'read_private_prayers' => true,
+                /* Add custom caps for locations */
+                'read_location' => true,
+                'edit_location' => true,
+//                'delete_location' => true,
+//                'delete_others_locations' => true,
+//                'delete_locations' => true,
+//                'edit_locations' => true,
+//                'edit_others_locations' => true,
+//                'publish_locations' => true,
+//                'read_private_locations' => true,
+                /* Add custom caps for progresss */
+                'read_progress' => true,
+//                'edit_progress' => true,
+//                'delete_progress' => true,
+//                'delete_others_progresss' => true,
+//                'delete_progresss' => true,
+//                'edit_progresss' => true,
+//                'edit_others_progresss' => true,
+//                'publish_progresss' => true,
+//                'read_private_progresss' => true,
+                /* Add custom caps for assets */
+                'read_asset' => true,
+                'edit_asset' => true,
+                'delete_asset' => true,
+//                'delete_others_assets' => true,
+                'delete_assets' => true,
+                'edit_assets' => true,
+//                'edit_others_assets' => true,
+                'publish_assets' => true,
+//                'read_private_assets' => true,
+
             ) );
+
+
+        if ( get_role( 'multiplier_leader' )) { remove_role( 'multiplier_leader' );}
+        add_role( 'multiplier_leader', 'Multiplier Leader',
+            array(
+                /* Standard Capabilities */
+//                'delete_others_posts' => true,
+//                'delete_pages' => true,
+//                'delete_posts' => true,
+//                'delete_private_pages' => true,
+//                'delete_private_posts' => true,
+//                'delete_published_pages' => true,
+//                'delete_published_posts' => true,
+//                'edit_others_pages' => true,
+//                'edit_others_posts' => true,
+//                'edit_pages' => true,
+//                'edit_posts' => true,
+//                'edit_private_pages' => true,
+//                'edit_private_posts' => true,
+//                'edit_published_pages' => true,
+//                'edit_published_posts' => true,
+//                'manage_categories' => true,
+//                'manage_links' => true,
+//                'moderate_comments' => true,
+//                'publish_pages' => true,
+//                'publish_posts' => true,
+                'read' => true,
+//                'read_private_pages' => true,
+//                'read_private_posts' => true,
+                'upload_files' => true,
+//                'level_0' => true,
+                /* See all contacts */
+                'manage_contacts' => true,
+                /* Add custom caps for contacts */
+                'edit_contact' => true,
+                'read_contact' => true,
+                'delete_contact' => true,
+                'delete_others_contacts' => true,
+                'delete_contacts' => true,
+                'edit_contacts' => true,
+                'edit_others_contacts' => true,
+                'publish_contacts' => true,
+                'read_private_contacts' => true,
+                /* Add custom caps for groups */
+                'edit_group' => true,
+                'read_group' => true,
+                'delete_group' => true,
+                'delete_others_groups' => true,
+                'delete_groups' => true,
+                'edit_groups' => true,
+                'edit_others_groups' => true,
+                'publish_groups' => true,
+                'read_private_groups' => true,
+                /* Add custom caps for prayer updates */
+                'read_prayer' => true,
+//                'edit_prayer' => true,
+//                'delete_prayer' => true,
+//                'delete_others_prayers' => true,
+//                'delete_prayers' => true,
+//                'edit_prayers' => true,
+//                'edit_others_prayers' => true,
+//                'publish_prayers' => true,
+//                'read_private_prayers' => true,
+//                /* Add custom caps for locations */
+                'read_location' => true,
+//                'edit_location' => true,
+//                'delete_location' => true,
+//                'delete_others_locations' => true,
+//                'delete_locations' => true,
+//                'edit_locations' => true,
+//                'edit_others_locations' => true,
+//                'publish_locations' => true,
+//                'read_private_locations' => true,
+                /* Add custom caps for progresss */
+                'read_progress' => true,
+//                'edit_progress' => true,
+//                'delete_progress' => true,
+//                'delete_others_progresss' => true,
+//                'delete_progresss' => true,
+//                'edit_progresss' => true,
+//                'edit_others_progresss' => true,
+//                'publish_progresss' => true,
+//                'read_private_progresss' => true,
+                /* Add custom caps for assets */
+                'read_asset' => true,
+//                'edit_asset' => true,
+//                'delete_asset' => true,
+//                'delete_others_assets' => true,
+//                'delete_assets' => true,
+//                'edit_assets' => true,
+//                'edit_others_assets' => true,
+//                'publish_assets' => true,
+//                'read_private_assets' => true,
+            ) );
+
 
         if ( get_role( 'project_supporter' )) { remove_role( 'project_supporter' );}
         add_role( 'project_supporter', 'Project Supporter',
@@ -344,15 +628,23 @@ class Disciple_Tools_Roles {
                 'read_progress' => true
             ) );
 
+        if ( get_role( 'prayer_supporter' )) { remove_role( 'prayer_supporter' );}
+        add_role( 'prayer_supporter', 'Prayer Supporter',
+            array(
+                'prayer_supporter' => true,
+                'read_prayer' => true
+            ) );
+
         if ( get_role( 'registered' )) { remove_role( 'registered' );}
         add_role( 'registered', 'Registered',
             array(
                 // No capabilities to this role. Must be moved to another role for permission.
             ) );
-        /*
-         * Default user role set to registered in /includes/drm-filters.php
-         * */
 
+
+        /**
+         * Default user role set to registered in /includes/drm-filters.php
+         */
         remove_role( 'subscriber' );
         remove_role( 'contributor' );
         remove_role( 'editor' );
@@ -365,6 +657,7 @@ class Disciple_Tools_Roles {
         // If the administrator role exists, add required capabilities for the plugin.
         if ( ! empty( $role ) ) {
 
+            /* Add contacts permissions */
             $role->add_cap( 'manage_contacts' );
             $role->add_cap( 'edit_contact' );
             $role->add_cap( 'read_contact' );
@@ -375,6 +668,7 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_contacts' );
             $role->add_cap( 'publish_contacts' );
             $role->add_cap( 'read_private_contacts' );
+            /* Add Groups permissions */
             $role->add_cap( 'edit_group' );
             $role->add_cap( 'read_group' );
             $role->add_cap( 'delete_group' );
@@ -384,6 +678,7 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_groups' );
             $role->add_cap( 'publish_groups' );
             $role->add_cap( 'read_private_groups' );
+            /* Add Prayer permissions*/
             $role->add_cap( 'edit_prayer' );
             $role->add_cap( 'read_prayer' );
             $role->add_cap( 'delete_prayer' );
@@ -393,6 +688,7 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_prayers' );
             $role->add_cap( 'publish_prayers' );
             $role->add_cap( 'read_private_prayers' );
+            /* Add Progress permissions */
             $role->add_cap( 'edit_progress' );
             $role->add_cap( 'read_progress' );
             $role->add_cap( 'delete_progress' );
@@ -402,6 +698,7 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_progresss' );
             $role->add_cap( 'publish_progresss' );
             $role->add_cap( 'read_private_progresss' );
+            /* Add Location permissions */
             $role->add_cap( 'edit_location' );
             $role->add_cap( 'read_location' );
             $role->add_cap( 'delete_location' );
@@ -411,6 +708,7 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_locations' );
             $role->add_cap( 'publish_locations' );
             $role->add_cap( 'read_private_locations' );
+            /* Add Asset permissions */
             $role->add_cap( 'edit_asset' );
             $role->add_cap( 'read_asset' );
             $role->add_cap( 'delete_asset' );

@@ -143,7 +143,7 @@ function my_connection_types() {
             'name' => 'contacts_to_locations',
             'from' => 'contacts',
             'to' => 'locations',
-            'cardinality' => 'many-to-one',
+//            'cardinality' => 'many-to-one',
             'title' => array(
                 'from' => __( 'Location', 'disciple_tools' ),
                 'to' => __( 'Contacts', 'disciple_tools' )
@@ -160,8 +160,16 @@ function my_connection_types() {
                 'not_found' => __( 'No contacts found.', 'disciple_tools' ),
                 'create' => __( 'Create Contact', 'disciple_tools' ),
             ),
+            'fields' => array(
+                'role' => array(
+                    'title' => __( 'Notes', 'disciple_tools' ),
+                    'type' => 'text',
+                    'values' => '',
+                ),
+            ),
         )
     );
+
 
     p2p_register_connection_type(
         array(
