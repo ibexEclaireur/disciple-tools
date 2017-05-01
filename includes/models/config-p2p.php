@@ -143,7 +143,7 @@ function my_connection_types() {
             'name' => 'contacts_to_locations',
             'from' => 'contacts',
             'to' => 'locations',
-            'cardinality' => 'many-to-one',
+//            'cardinality' => 'many-to-one',
             'title' => array(
                 'from' => __( 'Location', 'disciple_tools' ),
                 'to' => __( 'Contacts', 'disciple_tools' )
@@ -160,8 +160,15 @@ function my_connection_types() {
                 'not_found' => __( 'No contacts found.', 'disciple_tools' ),
                 'create' => __( 'Create Contact', 'disciple_tools' ),
             ),
+            'fields' => array(
+                'primary' => array(
+                    'title' => __( 'Primary', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                ),
+            ),
         )
     );
+
 
     p2p_register_connection_type(
         array(
@@ -211,6 +218,29 @@ function my_connection_types() {
         ),
     ) );
 
+    p2p_register_connection_type( array(
+        'name' => 'assets_to_locations',
+        'from' => 'assets',
+        'to' => 'locations',
+        'cardinality' => 'many-to-one',
+        'title' => array(
+            'from' => __( 'Location', 'disciple_tools' ),
+            'to' => __( 'Asset', 'disciple_tools' ),
+        ),
+        'from_labels' => array(
+            'singular_name' => __( 'Assets', 'disciple_tools' ),
+            'search_items' => __( 'Search assets', 'disciple_tools' ),
+            'not_found' => __( 'No assets found.', 'disciple_tools' ),
+            'create' => __( 'Connect Assets', 'disciple_tools' ),
+        ),
+        'to_labels' => array(
+            'singular_name' => __( 'Locations', 'disciple_tools' ),
+            'search_items' => __( 'Search locations', 'disciple_tools' ),
+            'not_found' => __( 'No locations found.', 'disciple_tools' ),
+            'create' => __( 'Connect Location', 'disciple_tools' ),
+        ),
+    ) );
+
 }
 add_action( 'p2p_init', 'my_connection_types' );
 
@@ -229,4 +259,22 @@ function dt_years_dropdown () {
 
     return $dates_array;
 
+}
+
+function dt_primary_location_check () {
+    global $post_id, $wpdb;
+
+    // query for other locations on this id
+
+    // test if there is a primary record
+
+    // if primary record exists, only offer secondary.
+    if (empty($connected)) {
+        $option = array('Primary', 'Secondary');
+    }  else {
+        $option = array( 'Secondary');
+    }
+
+//    return $option;
+    return $sql;
 }

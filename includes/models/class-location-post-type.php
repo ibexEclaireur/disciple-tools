@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
 
 /**
- * DmmCRM Plugin Post Type Class
+ * Disciple Tools Post Type Class
  *
  * All functionality pertaining to post types in Disciple_Tools.
  *
