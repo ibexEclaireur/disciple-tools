@@ -31,7 +31,16 @@ function contact_groups_page_scripts() {
         wp_enqueue_style( 'dt_admin_css' );
 
         wp_enqueue_script( 'dt_contact_scripts', Disciple_Tools()->plugin_js .'disciple-tools-admin.js', array(), '1.0.0', true  );
+
+        if (! user_can(get_current_user_id(), 'publish_locations')) {
+            wp_register_style( 'dt_marketer_css', Disciple_Tools()->plugin_css . 'marketer-styles.css' );
+            wp_enqueue_style( 'dt_marketer_css' );
+        }
     }
+
+
 }
+
+
 
 

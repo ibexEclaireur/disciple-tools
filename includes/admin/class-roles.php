@@ -52,10 +52,11 @@ class Disciple_Tools_Roles {
 
         /* TODO: Different caps are commented out as we configure usage in development, but should be removed for distribution. */
 
-        if ( get_role( 'strategy' )) { remove_role( 'Strategy' );}
-        add_role( 'strategy', 'strategy',
+        if ( get_role( 'strategy' )) { remove_role( 'strategy' );}
+        add_role( 'strategy', 'Strategy',
             array(
                 /* Standard Capabilities */
+                'list_users' => true,
                 'delete_others_posts' => true,
                 'delete_pages' => true,
                 'delete_posts' => true,
@@ -150,6 +151,7 @@ class Disciple_Tools_Roles {
         add_role( 'dispatcher', 'Dispatcher',
             array(
                 /* Standard Capabilities */
+                'list_users' => true,
                 'delete_others_posts' => true,
                 'delete_pages' => true,
                 'delete_posts' => true,
@@ -339,6 +341,7 @@ class Disciple_Tools_Roles {
         add_role( 'marketer_leader', 'Marketer Leader',
             array(
                 /* Standard Capabilities */
+                'list_users' => true,
                 'delete_others_posts' => true,
                 'delete_pages' => true,
                 'delete_posts' => true,
@@ -428,14 +431,11 @@ class Disciple_Tools_Roles {
                 'read_private_assets' => true,
             ) );
 
-
-
-
-
         if ( get_role( 'multiplier' )) { remove_role( 'multiplier' );}
         add_role( 'multiplier', 'Multiplier',
             array(
                 /* Standard Capabilities */
+//                'list_users' => true,
 //                'delete_others_posts' => true,
 //                'delete_pages' => true,
 //                'delete_posts' => true,
@@ -531,6 +531,7 @@ class Disciple_Tools_Roles {
         add_role( 'multiplier_leader', 'Multiplier Leader',
             array(
                 /* Standard Capabilities */
+//                'list_users' => true,
 //                'delete_others_posts' => true,
 //                'delete_pages' => true,
 //                'delete_posts' => true,

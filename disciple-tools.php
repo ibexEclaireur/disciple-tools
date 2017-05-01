@@ -289,6 +289,9 @@ class Disciple_Tools {
         require_once ( 'includes/functions/user-groups-common.php' );
         require_once ( 'includes/functions/user-groups-taxonomies.php' );
         require_once ( 'includes/functions/user-groups-hooks.php' );
+
+        require_once ( 'includes/admin/multi-role/multi-role.php');
+        $this->multi = Disciple_Tools_Multi_Roles::instance();
         /* End model configuration section */
 
 

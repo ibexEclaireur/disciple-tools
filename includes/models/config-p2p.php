@@ -161,10 +161,9 @@ function my_connection_types() {
                 'create' => __( 'Create Contact', 'disciple_tools' ),
             ),
             'fields' => array(
-                'role' => array(
-                    'title' => __( 'Notes', 'disciple_tools' ),
-                    'type' => 'text',
-                    'values' => '',
+                'primary' => array(
+                    'title' => __( 'Primary', 'disciple_tools' ),
+                    'type' => 'checkbox',
                 ),
             ),
         )
@@ -260,4 +259,22 @@ function dt_years_dropdown () {
 
     return $dates_array;
 
+}
+
+function dt_primary_location_check () {
+    global $post_id, $wpdb;
+
+    // query for other locations on this id
+
+    // test if there is a primary record
+
+    // if primary record exists, only offer secondary.
+    if (empty($connected)) {
+        $option = array('Primary', 'Secondary');
+    }  else {
+        $option = array( 'Secondary');
+    }
+
+//    return $option;
+    return $sql;
 }
