@@ -276,7 +276,7 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'load_contact_info_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_meta_box' ), $this->post_type, 'side', 'low' );
+        add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_meta_box' ), $this->post_type, 'side', 'high' );
         add_meta_box( $this->post_type . '_path', __( 'Path', 'disciple_tools' ), array( $this, 'load_path_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), array( $this, 'load_misc_meta_box' ), $this->post_type, 'side', 'low' );
 		do_action("dt_contact_meta_boxes_setup", $this->post_type);
@@ -717,6 +717,20 @@ class Disciple_Tools_Contact_Post_Type {
 		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
 		    'section' => 'status'
 		);
+        $fields['comprehension'] = array(
+            'name' => __( 'Gospel Comprehension', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', 'Very Strong', 'Strong', 'Unknown/Unclear', 'Weak'),
+            'section' => 'status'
+        );
+        $fields['investigating_with_others'] = array(
+            'name' => __( 'Investigating with others', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', 'Not exploring with others', 'Only with a few people', 'Openly sharing with many', 'Studying in a group'),
+            'section' => 'status'
+        );
 
         $fields['reason_closed'] = array(
             'name' => __( 'Reason Closed', 'disciple_tools' ),
@@ -725,24 +739,6 @@ class Disciple_Tools_Contact_Post_Type {
             'default' => array('', 'Duplicate', 'Hostile / Playing Games', 'Insufficient Contact Info', 'Already In Church/Connected with Others', 'No Longer Interested', 'Just wanted a book', 'Unknown'),
             'section' => 'status'
         );
-
-
-		// TODO: Not sure about these.
-		$fields['comprehension'] = array(
-		    'name' => __( 'Gospel Comprehension', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'select',
-		    'default' => array('', 'Very Strong', 'Strong', 'Unknown/Unclear', 'Weak'),
-		    'section' => 'status'
-		);
-		$fields['investigating_with_others'] = array(
-		    'name' => __( 'Investigating with others', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'select',
-		    'default' => array('', 'Not exploring with others', 'Only with a few people', 'Openly sharing with many', 'Studying in a group'),
-		    'section' => 'status'
-		);
-
 
         // Misc Information fields
         $fields['bible'] = array(

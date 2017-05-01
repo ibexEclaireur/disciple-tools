@@ -245,6 +245,7 @@ class Disciple_Tools_Roles {
         add_role( 'marketer', 'Marketer',
             array(
                 /* Standard Capabilities */
+                'list_users' => true,
 //                'delete_others_posts' => true,
                 'delete_pages' => true,
                 'delete_posts' => true,
@@ -261,7 +262,7 @@ class Disciple_Tools_Roles {
                 'edit_published_pages' => true,
                 'edit_published_posts' => true,
                 'manage_categories' => true,
-                'manage_links' => true,
+//                'manage_links' => true,
                 'moderate_comments' => true,
                 'publish_pages' => true,
                 'publish_posts' => true,
