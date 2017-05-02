@@ -18,17 +18,6 @@ add_action( 'admin_enqueue_scripts', 'dt_multi_role_admin_register_styles',  0 )
 add_filter( 'manage_users_columns',       'dt_multi_role_manage_users_columns'              );
 add_filter( 'manage_users_custom_column', 'dt_multi_role_manage_users_custom_column', 10, 3 );
 
-/**
- * Get an Underscore JS template.
- *
- * @since  1.0.0
- * @access public
- * @param  string  $name
- * @return bool
- */
-function dt_multi_role_get_underscore_template( $name ) {
-	require_once( "tmpl/{$name}.php" );
-}
 
 /**
  * Registers custom plugin scripts.
