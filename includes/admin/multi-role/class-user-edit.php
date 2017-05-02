@@ -16,7 +16,7 @@
  * @since  1.0.0
  * @access public
  */
-final class Members_Admin_User_Edit {
+final class Disciple_Tools_Admin_User_Edit {
 
 	/**
 	 * Holds the instances of this class.
@@ -194,4 +194,4 @@ final class Members_Admin_User_Edit {
 	}
 }
 
-Members_Admin_User_Edit::get_instance();
+Disciple_Tools_Admin_User_Edit::get_instance();
