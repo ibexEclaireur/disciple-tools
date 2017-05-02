@@ -14,7 +14,7 @@
 
 		<li>
 			<label>
-				<input type="checkbox" name="members_access_role[]" value="{{ data.choice }}" <# if ( -1 !== _.indexOf( data.value, choice ) ) { #> checked="checked" <# } #> />
+				<input type="checkbox" name="dt_multi_role_access_role[]" value="{{ data.choice }}" <# if ( -1 !== _.indexOf( data.value, choice ) ) { #> checked="checked" <# } #> />
 				{{ label }}
 			</label>
 		</li>

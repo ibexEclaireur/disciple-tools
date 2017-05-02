@@ -17,8 +17,8 @@
  * @access public
  * @return bool
  */
-function members_role_manager_enabled() {
-	return apply_filters( 'members_role_manager_enabled', members_get_setting( 'role_manager' ) );
+function dt_multi_role_role_manager_enabled() {
+	return apply_filters( 'dt_multi_role_role_manager_enabled', dt_multi_role_get_setting( 'role_manager' ) );
 }
 
 /**
@@ -29,8 +29,8 @@ function members_role_manager_enabled() {
  * @access public
  * @return bool
  */
-function members_explicitly_deny_caps() {
-	return apply_filters( 'members_explicitly_deny_caps', members_get_setting( 'explicit_denied_caps' ) );
+function dt_multi_role_explicitly_deny_caps() {
+	return apply_filters( 'dt_multi_role_explicitly_deny_caps', dt_multi_role_get_setting( 'explicit_denied_caps' ) );
 }
 
 /**
@@ -40,8 +40,8 @@ function members_explicitly_deny_caps() {
  * @access public
  * @return bool
  */
-function members_multiple_user_roles_enabled() {
-	return apply_filters( 'members_multiple_roles_enabled', true );
+function dt_multi_role_multiple_user_roles_enabled() {
+	return apply_filters( 'dt_multi_role_multiple_roles_enabled', true );
 }
 
 /**
@@ -51,8 +51,8 @@ function members_multiple_user_roles_enabled() {
  * @access public
  * @return bool
  */
-function members_content_permissions_enabled() {
-	return apply_filters( 'members_content_permissions_enabled', members_get_setting( 'content_permissions' ) );
+function dt_multi_role_content_permissions_enabled() {
+	return apply_filters( 'dt_multi_role_content_permissions_enabled', dt_multi_role_get_setting( 'content_permissions' ) );
 }
 
 /**
@@ -62,8 +62,8 @@ function members_content_permissions_enabled() {
  * @access public
  * @return bool
  */
-function members_login_widget_enabled() {
-	return apply_filters( 'members_login_widget_enabled', members_get_setting( 'login_form_widget' ) );
+function dt_multi_role_login_widget_enabled() {
+	return apply_filters( 'dt_multi_role_login_widget_enabled', dt_multi_role_get_setting( 'login_form_widget' ) );
 }
 
 /**
@@ -73,8 +73,8 @@ function members_login_widget_enabled() {
  * @access public
  * @return bool
  */
-function members_users_widget_enabled() {
-	return apply_filters( 'members_users_widget_enabled', members_get_setting( 'users_widget' ) );
+function dt_multi_role_users_widget_enabled() {
+	return apply_filters( 'dt_multi_role_users_widget_enabled', dt_multi_role_get_setting( 'users_widget' ) );
 }
 
 /**
@@ -84,11 +84,11 @@ function members_users_widget_enabled() {
  * @access public
  * @return mixed
  */
-function members_get_setting( $option = '' ) {
+function dt_multi_role_get_setting( $option = '' ) {
 
-	$defaults = members_get_default_settings();
+	$defaults = dt_multi_role_get_default_settings();
 
-	$settings = wp_parse_args( get_option( 'members_settings', $defaults ), $defaults );
+	$settings = wp_parse_args( get_option( 'dt_multi_role_settings', $defaults ), $defaults );
 
 	return isset( $settings[ $option ] ) ? $settings[ $option ] : false;
 }
@@ -100,7 +100,7 @@ function members_get_setting( $option = '' ) {
  * @access public
  * @return array
  */
-function members_get_default_settings() {
+function dt_multi_role_get_default_settings() {
 
 	return array(
 

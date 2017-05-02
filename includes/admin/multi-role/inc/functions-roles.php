@@ -11,15 +11,15 @@
  */
 
 /**
- * Returns the instance of the `Members_Role_Factory`.
+ * Returns the instance of the `Disciple_Tools_Multi_Role_Factory`.
  *
  * @since  1.0.0
  * @access public
  * @param  string
  * @return bool
  */
-function members_role_factory() {
-	return Members_Role_Factory::get_instance();
+function dt_multi_role_role_factory() {
+	return Disciple_Tools_Multi_Role_Factory::get_instance();
 }
 
 /* ====== Multiple Role Functions ====== */
@@ -31,19 +31,19 @@ function members_role_factory() {
  * @access public
  * @return int
  */
-function members_get_role_count() {
+function dt_multi_role_get_role_count() {
 	return count( $GLOBALS['wp_roles']->role_names );
 }
 
 /**
- * Returns an array of `Members_Role` objects.
+ * Returns an array of `Disciple_Tools_Multi_Role` objects.
  *
  * @since  1.0.0
  * @access public
  * @return array
  */
-function members_get_roles() {
-	return members_role_factory()->roles;
+function dt_multi_role_get_roles() {
+	return dt_multi_role_role_factory()->roles;
 }
 
 /**
@@ -53,10 +53,10 @@ function members_get_roles() {
  * @access public
  * @return array
  */
-function members_get_role_names() {
+function dt_multi_role_get_role_names() {
 	$roles = array();
 
-	foreach ( members_role_factory()->roles as $role )
+	foreach ( dt_multi_role_role_factory()->roles as $role )
 		$roles[ $role->slug ] = $role->name;
 
 	return $roles;
@@ -69,8 +69,8 @@ function members_get_role_names() {
  * @access public
  * @return array
  */
-function members_get_role_slugs() {
-	return array_keys( members_role_factory()->roles );
+function dt_multi_role_get_role_slugs() {
+	return array_keys( dt_multi_role_role_factory()->roles );
 }
 
 /**
@@ -80,11 +80,11 @@ function members_get_role_slugs() {
  * @access public
  * @return array
  */
-function members_get_active_role_names() {
+function dt_multi_role_get_active_role_names() {
 	$has_users = array();
 
-	foreach ( members_get_active_role_slugs() as $role )
-		$has_users[ $role ] = members_get_role_name( $role );
+	foreach ( dt_multi_role_get_active_role_slugs() as $role )
+		$has_users[ $role ] = dt_multi_role_get_role_name( $role );
 
 	return $has_users;
 }
@@ -96,11 +96,11 @@ function members_get_active_role_names() {
  * @access public
  * @return array
  */
-function members_get_active_role_slugs() {
+function dt_multi_role_get_active_role_slugs() {
 
 	$has_users = array();
 
-	foreach ( members_get_role_user_count() as $role => $count ) {
+	foreach ( dt_multi_role_get_role_user_count() as $role => $count ) {
 
 		if ( 0 < $count )
 			$has_users[] = $role;
@@ -116,8 +116,8 @@ function members_get_active_role_slugs() {
  * @access public
  * @return array
  */
-function members_get_inactive_role_names() {
-	return array_diff( members_get_role_names(), members_get_active_role_names() );
+function dt_multi_role_get_inactive_role_names() {
+	return array_diff( dt_multi_role_get_role_names(), dt_multi_role_get_active_role_names() );
 }
 
 /**
@@ -127,8 +127,8 @@ function members_get_inactive_role_names() {
  * @access public
  * @return array
  */
-function members_get_inactive_role_slugs() {
-	return array_diff( members_get_role_slugs(), members_get_active_role_slugs() );
+function dt_multi_role_get_inactive_role_slugs() {
+	return array_diff( dt_multi_role_get_role_slugs(), dt_multi_role_get_active_role_slugs() );
 }
 
 /**
@@ -138,10 +138,10 @@ function members_get_inactive_role_slugs() {
  * @access public
  * @return array
  */
-function members_get_editable_role_names() {
+function dt_multi_role_get_editable_role_names() {
 	$editable = array();
 
-	foreach ( members_role_factory()->editable as $role )
+	foreach ( dt_multi_role_role_factory()->editable as $role )
 		$editable[ $role->slug ] = $role->name;
 
 	return $editable;
@@ -154,8 +154,8 @@ function members_get_editable_role_names() {
  * @access public
  * @return array
  */
-function members_get_editable_role_slugs() {
-	return array_keys( members_role_factory()->editable );
+function dt_multi_role_get_editable_role_slugs() {
+	return array_keys( dt_multi_role_role_factory()->editable );
 }
 
 /**
@@ -165,10 +165,10 @@ function members_get_editable_role_slugs() {
  * @access public
  * @return array
  */
-function members_get_uneditable_role_names() {
+function dt_multi_role_get_uneditable_role_names() {
 	$uneditable = array();
 
-	foreach ( members_role_factory()->uneditable as $role )
+	foreach ( dt_multi_role_role_factory()->uneditable as $role )
 		$uneditable[ $role->slug ] = $role->name;
 
 	return $uneditable;
@@ -181,8 +181,8 @@ function members_get_uneditable_role_names() {
  * @access public
  * @return array
  */
-function members_get_uneditable_role_slugs() {
-	return array_keys( members_role_factory()->uneditable );
+function dt_multi_role_get_uneditable_role_slugs() {
+	return array_keys( dt_multi_role_role_factory()->uneditable );
 }
 
 /**
@@ -192,10 +192,10 @@ function members_get_uneditable_role_slugs() {
  * @access public
  * @return array
  */
-function members_get_wordpress_role_names() {
+function dt_multi_role_get_wordpress_role_names() {
 	$names = array();
 
-	foreach ( members_role_factory()->wordpress as $role )
+	foreach ( dt_multi_role_role_factory()->wordpress as $role )
 		$names[ $role->slug ] = $role->name;
 
 	return $names;
@@ -208,8 +208,8 @@ function members_get_wordpress_role_names() {
  * @access public
  * @return array
  */
-function members_get_wordpress_role_slugs() {
-	return array_keys( members_role_factory()->wordpress );
+function dt_multi_role_get_wordpress_role_slugs() {
+	return array_keys( dt_multi_role_role_factory()->wordpress );
 }
 
 /* ====== Single Role Functions ====== */
@@ -222,21 +222,21 @@ function members_get_wordpress_role_slugs() {
  * @param  string
  * @return bool
  */
-function members_role_exists( $role ) {
+function dt_multi_role_role_exists( $role ) {
 	return $GLOBALS['wp_roles']->is_role( $role );
 }
 
 /**
  * Gets a Members role object.
  *
- * @see    Members_Role
+ * @see    Disciple_Tools_Multi_Role
  * @since  1.0.0
  * @access public
  * @param  string
  * @return object
  */
-function members_get_role( $role ) {
-	return members_role_factory()->get_role( $role );
+function dt_multi_role_get_role( $role ) {
+	return dt_multi_role_role_factory()->get_role( $role );
 }
 
 /**
@@ -247,10 +247,10 @@ function members_get_role( $role ) {
  * @access public
  * @return int
  */
-function members_sanitize_role( $role ) {
+function dt_multi_role_sanitize_role( $role ) {
 	$_role = strtolower( $role );
 	$_role = preg_replace( '/[^a-z0-9_\-\s]/', '', $_role );
-	return apply_filters( 'members_sanitize_role', str_replace( ' ', '_', $_role ), $role );
+	return apply_filters( 'dt_multi_role_sanitize_role', str_replace( ' ', '_', $_role ), $role );
 }
 
 /**
@@ -266,10 +266,10 @@ function members_sanitize_role( $role ) {
  * @param  string  $role
  * @return string
  */
-function members_translate_role( $role ) {
+function dt_multi_role_translate_role( $role ) {
 	global $wp_roles;
 
-	return apply_filters( 'members_translate_role', translate_user_role( $wp_roles->role_names[ $role ] ), $role );
+	return apply_filters( 'dt_multi_role_translate_role', translate_user_role( $wp_roles->role_names[ $role ] ), $role );
 }
 
 /**
@@ -279,8 +279,8 @@ function members_translate_role( $role ) {
  * @access public
  * @return bool
  */
-function members_role_has_users( $role ) {
-	return in_array( $role, members_get_active_role_slugs() );
+function dt_multi_role_role_has_users( $role ) {
+	return in_array( $role, dt_multi_role_get_active_role_slugs() );
 }
 
 /**
@@ -290,8 +290,8 @@ function members_role_has_users( $role ) {
  * @access public
  * @return bool
  */
-function members_role_has_caps( $role ) {
-	return members_role_factory()->get_role( $role )->has_caps;
+function dt_multi_role_role_has_caps( $role ) {
+	return dt_multi_role_role_factory()->get_role( $role )->has_caps;
 }
 
 /**
@@ -303,25 +303,25 @@ function members_role_has_caps( $role ) {
  * @param  string     $role
  * @return int|array
  */
-function members_get_role_user_count( $role = '' ) {
+function dt_multi_role_get_role_user_count( $role = '' ) {
 
 	// If the count is not already set for all roles, let's get it.
-	if ( empty( members_plugin()->role_user_count ) ) {
+	if ( empty( dt_multi_role_plugin()->role_user_count ) ) {
 
 		// Count users.
 		$user_count = count_users();
 
 		// Loop through the user count by role to get a count of the users with each role.
 		foreach ( $user_count['avail_roles'] as $_role => $count )
-			members_plugin()->role_user_count[ $_role ] = $count;
+			dt_multi_role_plugin()->role_user_count[ $_role ] = $count;
 	}
 
 	// Return the role count.
 	if ( $role )
-		return isset( members_plugin()->role_user_count[ $role ] ) ? members_plugin()->role_user_count[ $role ] : 0;
+		return isset( dt_multi_role_plugin()->role_user_count[ $role ] ) ? dt_multi_role_plugin()->role_user_count[ $role ] : 0;
 
 	// If the `$role` parameter wasn't passed into this function, return the array of user counts.
-	return members_plugin()->role_user_count;
+	return dt_multi_role_plugin()->role_user_count;
 }
 
 /**
@@ -332,8 +332,8 @@ function members_get_role_user_count( $role = '' ) {
  * @param  string
  * @return int
  */
-function members_get_role_granted_cap_count( $role ) {
-	return members_role_factory()->get_role( $role )->granted_cap_count;
+function dt_multi_role_get_role_granted_cap_count( $role ) {
+	return dt_multi_role_role_factory()->get_role( $role )->granted_cap_count;
 }
 
 /**
@@ -344,8 +344,8 @@ function members_get_role_granted_cap_count( $role ) {
  * @param  string
  * @return int
  */
-function members_get_role_denied_cap_count( $role ) {
-	return members_role_factory()->get_role( $role )->denied_cap_count;
+function dt_multi_role_get_role_denied_cap_count( $role ) {
+	return dt_multi_role_role_factory()->get_role( $role )->denied_cap_count;
 }
 
 /**
@@ -356,8 +356,8 @@ function members_get_role_denied_cap_count( $role ) {
  * @param  string  $role
  * @return string
  */
-function members_get_role_name( $role ) {
-	return members_role_factory()->get_role( $role )->name;
+function dt_multi_role_get_role_name( $role ) {
+	return dt_multi_role_role_factory()->get_role( $role )->name;
 }
 
 /**
@@ -368,8 +368,8 @@ function members_get_role_name( $role ) {
  * @param  string  $role
  * @return bool
  */
-function members_is_role_editable( $role ) {
-	return members_role_factory()->get_role( $role )->is_editable;
+function dt_multi_role_is_role_editable( $role ) {
+	return dt_multi_role_role_factory()->get_role( $role )->is_editable;
 }
 
 /**
@@ -380,7 +380,7 @@ function members_is_role_editable( $role ) {
  * @param  string  $role
  * @return bool
  */
-function members_is_wordpress_role( $role ) {
+function dt_multi_role_is_wordpress_role( $role ) {
 	return in_array( $role, array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' ) );
 }
 
@@ -393,7 +393,7 @@ function members_is_wordpress_role( $role ) {
  * @access public
  * @return string
  */
-function members_get_new_role_url() {
+function dt_multi_role_get_new_role_url() {
 	return add_query_arg( 'page', 'role-new', admin_url( 'users.php' ) );
 }
 
@@ -405,8 +405,8 @@ function members_get_new_role_url() {
  * @param  string  $role
  * @return string
  */
-function members_get_clone_role_url( $role ) {
-	return add_query_arg( 'clone', $role, members_get_new_role_url() );
+function dt_multi_role_get_clone_role_url( $role ) {
+	return add_query_arg( 'clone', $role, dt_multi_role_get_new_role_url() );
 }
 
 /**
@@ -416,7 +416,7 @@ function members_get_clone_role_url( $role ) {
  * @access public
  * @return string
  */
-function members_get_edit_roles_url() {
+function dt_multi_role_get_edit_roles_url() {
 	return add_query_arg( 'page', 'roles', admin_url( 'users.php' ) );
 }
 
@@ -428,8 +428,8 @@ function members_get_edit_roles_url() {
  * @param  string  $view
  * @return string
  */
-function members_get_role_view_url( $view ) {
-	return add_query_arg( 'role_view', $view, members_get_edit_roles_url() );
+function dt_multi_role_get_role_view_url( $view ) {
+	return add_query_arg( 'role_view', $view, dt_multi_role_get_edit_roles_url() );
 }
 
 /**
@@ -440,8 +440,8 @@ function members_get_role_view_url( $view ) {
  * @param  string  $role
  * @return string
  */
-function members_get_edit_role_url( $role ) {
-	return add_query_arg( array( 'action' => 'edit', 'role' => $role ), members_get_edit_roles_url() );
+function dt_multi_role_get_edit_role_url( $role ) {
+	return add_query_arg( array( 'action' => 'edit', 'role' => $role ), dt_multi_role_get_edit_roles_url() );
 }
 
 /**
@@ -452,10 +452,10 @@ function members_get_edit_role_url( $role ) {
  * @param  string  $role
  * @return string
  */
-function members_get_delete_role_url( $role ) {
-	$url = add_query_arg( array( 'action' => 'delete', 'role' => $role ), members_get_edit_roles_url() );
+function dt_multi_role_get_delete_role_url( $role ) {
+	$url = add_query_arg( array( 'action' => 'delete', 'role' => $role ), dt_multi_role_get_edit_roles_url() );
 
-	return wp_nonce_url( $url, 'delete_role', 'members_delete_role_nonce' );
+	return wp_nonce_url( $url, 'delete_role', 'dt_multi_role_delete_role_nonce' );
 }
 
 /**
@@ -466,6 +466,6 @@ function members_get_delete_role_url( $role ) {
  * @param  string  $role
  * @return string
  */
-function members_get_role_users_url( $role ) {
+function dt_multi_role_get_role_users_url( $role ) {
 	return admin_url( add_query_arg( 'role', $role, 'users.php' ) );
 }
