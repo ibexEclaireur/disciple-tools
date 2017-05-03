@@ -38,7 +38,8 @@ class Disciple_Tools_Activity_Hooks {
 		include( 'hooks/class-hook-export.php' );
 		include( 'hooks/class-hook-comments.php' );
 		include( 'hooks/class-hook-theme.php');
-		
+		include( 'hooks/class-hook-contacts.php');
+
 		new Disciple_Tools_Hook_User();
 		new Disciple_Tools_Hook_Attachment();
 		new Disciple_Tools_Hook_Posts();
@@ -46,5 +47,6 @@ class Disciple_Tools_Activity_Hooks {
 		new Disciple_Tools_Hook_Export();
 		new Disciple_Tools_Hook_Comments();
         new Disciple_Tools_Hook_Theme();
+        new Disciple_Tools_Hook_Contacts();
 	}
 }

@@ -83,6 +83,10 @@ class Disciple_Tools_Activity_Log_API {
                 'object_id'      => '',
                 'hist_ip'        => $this->_get_ip_address(),
                 'hist_time'      => current_time( 'timestamp' ),
+                'object_note'    => '',
+                'meta_id'        => '',
+                'meta_key'       => '',
+                'meta_value'     => '',
             )
         );
 
@@ -109,6 +113,10 @@ class Disciple_Tools_Activity_Log_API {
 						AND `user_id` = \'%7$s\'
 						AND `hist_ip` = \'%8$s\'
 						AND `hist_time` = \'%9$s\'
+						AND `object_note` = \'%10$s\'
+						AND `meta_id` = \'%11$s\'
+						AND `meta_key` = \'%12$s\'
+						AND `meta_value` = \'%13$s\'
 				;',
                 $wpdb->activity,
                 $args['user_caps'],
@@ -118,7 +126,11 @@ class Disciple_Tools_Activity_Log_API {
                 $args['object_name'],
                 $args['user_id'],
                 $args['hist_ip'],
-                $args['hist_time']
+                $args['hist_time'],
+                $args['object_note'],
+                $args['meta_id'],
+                $args['meta_key'],
+                $args['meta_value']
             )
         );
 
@@ -137,8 +149,12 @@ class Disciple_Tools_Activity_Log_API {
                 'user_caps'      => $args['user_caps'],
                 'hist_ip'        => $args['hist_ip'],
                 'hist_time'      => $args['hist_time'],
+                'object_note'    => $args['object_note'],
+                'meta_id'        => $args['meta_id'],
+                'meta_key'       => $args['meta_key'],
+                'meta_value'       => $args['meta_value'],
             ),
-            array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d' )
+            array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s' )
         );
 
         // Final action on insert.

@@ -76,7 +76,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 	}
 	
 	public function __construct() {
-		add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
+//		add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
 		add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
 		
 		parent::__construct();
