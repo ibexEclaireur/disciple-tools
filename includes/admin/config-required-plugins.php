@@ -64,7 +64,7 @@ function drm_register_required_plugins() {
         array(
             'name'               => 'JSON Basic Authentication',
             'slug'               => 'Basic-Auth',
-            'source'             =>  Disciple_Tools()->includes . 'plugins/lib/Basic-Auth.zip', // The plugin source.
+            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
             'required'           => false,
         ),
         array(
