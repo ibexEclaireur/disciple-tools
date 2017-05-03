@@ -218,7 +218,7 @@ class Disciple_Tools {
 
             // Load Disciple_Tools Dashboard configurations
             require_once('includes/admin/config-dashboard.php');
-			$this->admin = Disciple_Tools_Dashboard::instance();
+			$this->dashboard = Disciple_Tools_Dashboard::instance();
 
             // Load multiple column configuration library into screen options area.
             require_once ('includes/admin/three-column-screen-layout.php');

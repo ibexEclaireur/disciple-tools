@@ -29,6 +29,8 @@ class Disciple_Tools_Activator {
         $roles = Disciple_Tools_Roles::instance();
         $roles->set_roles();
 
+
+
         /**
          * Activate database creation for Disciple Tools Activity logs
          * @since 0.1
@@ -37,6 +39,27 @@ class Disciple_Tools_Activator {
         Disciple_Tools_Activity_Log_DB::activate();
         /* End Disciple Tools Activity Log */
 
+
+
+        /**
+         * Set defaults for options page
+         */
+        $settings_sections = Disciple_Tools()->settings->get_settings_sections ( );
+
+        foreach ($settings_sections as $key => $value) {
+            $section = Disciple_Tools()->settings->get_settings_fields ( $key );
+
+            $preset = array();
+
+            foreach ($section as $field => $item) {
+                if(!empty($item['default'])) {
+                    $preset[$field] = $item['default'];
+                }
+            }
+            add_option( Disciple_Tools()->token . '-' . $key, $preset, '', 'yes'  );
+        }
+
+        /* End set defaults for options page */
 
 
 

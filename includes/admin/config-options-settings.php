@@ -242,13 +242,13 @@ final class Disciple_Tools_Settings {
 		switch ( $section ) {
 			case 'general':
 
-//                $settings_fields['dt_add_basic_auth'] = array(
-//                    'name' => __( 'Basic Auth for REST API', 'disciple_tools' ),
-//                    'type' => 'checkbox',
-//                    'default' => true,
-//                    'section' => 'general',
-//                    'description' => __( 'This is meant for development and debugging with the REST API', 'disciple_tools' )
-//                );
+                $settings_fields['clear_data_on_deactivate'] = array(
+                    'name' => __( 'Clear Data on Deactivate', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => 'false',
+                    'section' => 'general',
+                    'description' => ''
+                );
 
 //                $settings_fields['select'] = array(
 //                    'name' => __( 'Select', 'disciple_tools' ),
@@ -305,56 +305,56 @@ final class Disciple_Tools_Settings {
                 $settings_fields['build_report_for_contacts'] = array(
                     'name' => __( 'Disciple Tools Contacts', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Contacts.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_groups'] = array(
                     'name' => __( 'Disciple Tools Groups', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Groups.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_facebook'] = array(
                     'name' => __( 'Facebook', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Facebook.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_twitter'] = array(
                     'name' => __( 'Twitter', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Twitter.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_analytics'] = array(
                     'name' => __( 'Google Analytics', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Analytics.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_adwords'] = array(
                     'name' => __( 'Adwords', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Adwords.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_mailchimp'] = array(
                     'name' => __( 'Mailchimp', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Mailchimp.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_youtube'] = array(
                     'name' => __( 'YouTube', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => true,
+                    'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for YouTube.', 'disciple_tools' )
                 );
