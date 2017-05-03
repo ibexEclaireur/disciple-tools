@@ -38,7 +38,7 @@ class Disciple_Tools_Activity_Hooks {
 		include( 'hooks/class-hook-export.php' );
 		include( 'hooks/class-hook-comments.php' );
 		include( 'hooks/class-hook-theme.php');
-		
+
 		new Disciple_Tools_Hook_User();
 		new Disciple_Tools_Hook_Attachment();
 		new Disciple_Tools_Hook_Posts();

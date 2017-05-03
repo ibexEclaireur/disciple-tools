@@ -263,7 +263,15 @@ class Disciple_Tools_Location_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '-data', __( 'Location Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
 	} // End meta_box_setup()
+
+    /**
+     * Load activity metabox
+     */
+    public function load_activity_meta_box () {
+        dt_activity_meta_box (get_the_ID());
+    }
 
 	/**
 	 * The contents of our meta box.
@@ -388,12 +396,12 @@ class Disciple_Tools_Location_Post_Type {
 				${$f} = esc_url( ${$f} );
 			}
 
-			if ( get_post_meta( $post_id, '_' . $f ) == '' ) {
-				add_post_meta( $post_id, '_' . $f, ${$f}, true );
-			} elseif( ${$f} != get_post_meta( $post_id, '_' . $f, true ) ) {
-				update_post_meta( $post_id, '_' . $f, ${$f} );
+			if ( get_post_meta( $post_id, $f ) == '' ) {
+				add_post_meta( $post_id, $f, ${$f}, true );
+			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+				update_post_meta( $post_id, $f, ${$f} );
 			} elseif ( ${$f} == '' ) {
-				delete_post_meta( $post_id, '_' . $f, get_post_meta( $post_id, '_' . $f, true ) );
+				delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
 			}
 		}
 	} // End meta_box_save()

@@ -261,20 +261,15 @@ function dt_years_dropdown () {
 
 }
 
-function dt_primary_location_check () {
-    global $post_id, $wpdb;
 
-    // query for other locations on this id
+/**
+ * Sets the new connections to be published automatically.
+ * @param $args
+ * @return mixed
+ */
+function p2p_published_by_default( $args ) {
+    $args['post_status'] = 'publish';
 
-    // test if there is a primary record
-
-    // if primary record exists, only offer secondary.
-    if (empty($connected)) {
-        $option = array('Primary', 'Secondary');
-    }  else {
-        $option = array( 'Secondary');
-    }
-
-//    return $option;
-    return $sql;
+    return $args;
 }
+add_filter( 'p2p_new_post_args', 'p2p_published_by_default', 10, 1 );

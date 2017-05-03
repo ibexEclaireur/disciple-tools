@@ -17,7 +17,7 @@
  * @since  1.0.0
  * @access public
  */
-final class Members_Role_Factory {
+final class Disciple_Tools_Multi_Role_Factory {
 
 	/**
 	 * Array of roles added.
@@ -75,10 +75,10 @@ final class Members_Role_Factory {
 	public function add_role( $role ) {
 
 		// If the role exists with WP but hasn't been added.
-		if ( members_role_exists( $role ) ) {
+		if ( dt_multi_role_role_exists( $role ) ) {
 
 			// Get the role object.
-			$this->roles[ $role ] = new Members_Role( $role );
+			$this->roles[ $role ] = new Disciple_Tools_Multi_Role( $role );
 
 			// Check if role is editable.
 			if ( $this->roles[ $role ]->is_editable )
@@ -87,7 +87,7 @@ final class Members_Role_Factory {
 				$this->uneditable[ $role ] = $this->roles[ $role ];
 
 			// Is WP role?
-			if ( members_is_wordpress_role( $role ) )
+			if ( dt_multi_role_is_wordpress_role( $role ) )
 				$this->wordpress[ $role ] = $this->roles[ $role ];
 		}
 	}
@@ -156,7 +156,7 @@ final class Members_Role_Factory {
 		static $instance = null;
 
 		if ( is_null( $instance ) ) {
-			$instance = new Members_Role_Factory;
+			$instance = new Disciple_Tools_Multi_Role_Factory;
 			$instance->setup_roles();
 		}
 

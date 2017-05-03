@@ -312,11 +312,16 @@ class Disciple_Tools {
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once ( 'includes/activity/class-integrations.php' ); // data integration for cron scheduling
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
-        require_once('includes/admin/class-facebook-integration.php'); // integrations to facebook
+        require_once ( 'includes/activity/functions-activity-metabox.php'); // functions supporting the lists of activities connected to contacts and groups
+        require_once ( 'includes/admin/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-        require_once('includes/plugins/google-analytics/disciple-tools-analytics.php');
-        require_once('includes/admin/class-google-analytics-integration.php');
-        $this->analytics_integration = Ga_Admin::instance();
+
+        if(! class_exists('Ga_Autoloader')) {
+            require_once('includes/plugins/google-analytics/disciple-tools-analytics.php');
+            require_once('includes/admin/class-google-analytics-integration.php');
+            $this->analytics_integration = Ga_Admin::instance();
+        }
+
 
         // load rest api endpoints
         require_once ('includes/functions/disable-json-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
@@ -330,6 +335,15 @@ class Disciple_Tools {
 
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+
+
+		/**
+         * Development only
+         */
+		if (get_option('dt_add_basic_auth')) {
+            require_once ('includes/functions/basic-auth.php'); // Adds functions to handle basic authentication through REST API
+        }
+
 
 
     } // End __construct()

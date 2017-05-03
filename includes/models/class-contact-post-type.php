@@ -270,6 +270,7 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'load_contact_info_meta_box' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_meta_box' ), $this->post_type, 'side', 'high' );
         add_meta_box( $this->post_type . '_path', __( 'Path', 'disciple_tools' ), array( $this, 'load_path_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), array( $this, 'load_misc_meta_box' ), $this->post_type, 'side', 'low' );
@@ -393,6 +394,12 @@ class Disciple_Tools_Contact_Post_Type {
 
     }
 
+    /**
+     * Load activity metabox
+     */
+    public function load_activity_meta_box () {
+        dt_activity_meta_box (get_the_ID());
+    }
 
 	/**
 	 * The contents of our meta box.

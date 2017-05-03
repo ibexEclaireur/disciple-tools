@@ -59,7 +59,7 @@ class Disciple_Tools_Multi_Roles {
 
             // General admin functions.
             require_once( 'functions-admin.php' );
-            require_once( 'functions-help.php'  );
+//            require_once( 'functions-help.php'  );
 
             // Edit users.
             require_once( 'class-user-edit.php' );
