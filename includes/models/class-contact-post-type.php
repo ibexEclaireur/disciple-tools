@@ -398,35 +398,7 @@ class Disciple_Tools_Contact_Post_Type {
      * Load activity metabox
      */
     public function load_activity_meta_box () {
-
-        if(function_exists('dt_activity_list_for_contact')) {
-
-            global $post_id;
-            $list = dt_activity_list_for_contact(get_the_ID());
-
-            $hook_contacts = new Disciple_Tools_Hook_Contacts;
-            print "<pre>"; print_r($hook_contacts->hooks_p2p_created(21)); print '</pre>';
-
-            $html = '<table class="widefat striped" width="100%">';
-            $html .= '<tr><th>Name</th><th>Action</th><th>Note</th><th>Date</th></tr>';
-
-            foreach ($list as $item) {
-                $user = get_user_by('id', $item['user_id']);
-
-                $html .= '</tr>';
-
-                $html .= '<td>' . $user->display_name . '</td>';
-                $html .= '<td>' . $item['action'] . '</td>';
-                $html .= '<td>' . $item['object_note'] . '</td>';
-                $html .= '<td>' . date('m/d/Y h:m:s', $item['hist_time']) . '</td>';
-
-                $html .= '</tr>';
-            }
-            $html .= '</table>';
-            echo $html;
-
-
-        }
+        dt_activity_meta_box (get_the_ID());
     }
 
 	/**

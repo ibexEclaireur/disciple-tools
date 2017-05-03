@@ -220,7 +220,6 @@ final class Disciple_Tools_Settings {
 		$settings_sections = array();
 
 		$settings_sections['general'] = __( 'General', 'disciple_tools' );
-		$settings_sections['integrations'] = __( 'Integrations', 'disciple_tools' );
 		$settings_sections['daily_reports'] = __( 'Daily Reports', 'disciple_tools' );
 		// Add your new sections below here.
 		// Admin tabs will be created for each section.
@@ -243,152 +242,119 @@ final class Disciple_Tools_Settings {
 		switch ( $section ) {
 			case 'general':
 
-                $settings_fields['private_site'] = array(
-                    'name' => __( 'Make site private', 'disciple_tools' ),
+                $settings_fields['dt_add_basic_auth'] = array(
+                    'name' => __( 'Basic Auth for REST API', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => true,
                     'section' => 'general',
-                    'description' => __( 'Default is private.', 'disciple_tools' )
+                    'description' => __( 'This is meant for development and debugging with the REST API', 'disciple_tools' )
                 );
-                $settings_fields['delete_activity_db'] = array(
-                    'name' => __( 'Delete Activity Logs', 'disciple_tools' ),
-                    'type' => 'checkbox',
-                    'default' => false,
-                    'section' => 'general',
-                    'description' => __( 'Delete activity logs and disciple tools activity database on uninstall.', 'disciple_tools' )
-                );
-                $settings_fields['select'] = array(
-                    'name' => __( 'Select', 'disciple_tools' ),
-                    'type' => 'select',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'options' => array(
-                        'one' => __( 'One', 'disciple_tools' ),
-                        'two' => __( 'Two', 'disciple_tools' ),
-                        'three' => __( 'Three', 'disciple_tools' )
-                    ),
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-			    $settings_fields['text'] = array(
-                    'name' => __( 'Example Text Input', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-				$settings_fields['textarea'] = array(
-                    'name' => __( 'Example Textarea', 'disciple_tools' ),
-                    'type' => 'textarea',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-				$settings_fields['checkbox'] = array(
-                    'name' => __( 'Example Checkbox', 'disciple_tools' ),
-                    'type' => 'checkbox',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
-				$settings_fields['radio'] = array(
-                    'name' => __( 'Example Radio Buttons', 'disciple_tools' ),
-                    'type' => 'radio',
-                    'default' => '',
-                    'section' => 'standard-fields',
-                    'options' => array(
-                                        'one' => __( 'One', 'disciple_tools' ),
-                                        'two' => __( 'Two', 'disciple_tools' ),
-                                        'three' => __( 'Three', 'disciple_tools' )
-                                ),
-                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
-                );
+
+//                $settings_fields['select'] = array(
+//                    'name' => __( 'Select', 'disciple_tools' ),
+//                    'type' => 'select',
+//                    'default' => '',
+//                    'section' => 'standard-fields',
+//                    'options' => array(
+//                        'one' => __( 'One', 'disciple_tools' ),
+//                        'two' => __( 'Two', 'disciple_tools' ),
+//                        'three' => __( 'Three', 'disciple_tools' )
+//                    ),
+//                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+//                );
+//			    $settings_fields['text'] = array(
+//                    'name' => __( 'Example Text Input', 'disciple_tools' ),
+//                    'type' => 'text',
+//                    'default' => '',
+//                    'section' => 'standard-fields',
+//                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+//                );
+//				$settings_fields['textarea'] = array(
+//                    'name' => __( 'Example Textarea', 'disciple_tools' ),
+//                    'type' => 'textarea',
+//                    'default' => '',
+//                    'section' => 'standard-fields',
+//                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+//                );
+//				$settings_fields['checkbox'] = array(
+//                    'name' => __( 'Example Checkbox', 'disciple_tools' ),
+//                    'type' => 'checkbox',
+//                    'default' => '',
+//                    'section' => 'standard-fields',
+//                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+//                );
+//				$settings_fields['radio'] = array(
+//                    'name' => __( 'Example Radio Buttons', 'disciple_tools' ),
+//                    'type' => 'radio',
+//                    'default' => '',
+//                    'section' => 'standard-fields',
+//                    'options' => array(
+//                                        'one' => __( 'One', 'disciple_tools' ),
+//                                        'two' => __( 'Two', 'disciple_tools' ),
+//                                        'three' => __( 'Three', 'disciple_tools' )
+//                                ),
+//                    'description' => __( 'Place the field description text here.', 'disciple_tools' )
+//                );
 
 
 				break;
-			case 'integrations':
 
-                $settings_fields['google_api_name'] = array(
-                    'name' => __( 'Google API Name', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'integrations',
-                    'description' => __( 'Google Analytics API key to give access to the reports within the system.', 'disciple_tools' )
-                );
-                $settings_fields['google_api_key'] = array(
-                    'name' => __( 'Google API Key', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'integrations'
-                );
-                $settings_fields['google_analytics_view_1'] = array(
-                    'name' => __( 'Google Analytics View Code', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'integrations'
-                );
-                $settings_fields['google_analytics_view_2'] = array(
-                    'name' => __( 'Google Analytics View Code 2', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'integrations'
-                );
-				break;
 
             case 'daily_reports':
 
                 $settings_fields['build_report_for_contacts'] = array(
                     'name' => __( 'Disciple Tools Contacts', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Contacts.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_groups'] = array(
                     'name' => __( 'Disciple Tools Groups', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Groups.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_facebook'] = array(
                     'name' => __( 'Facebook', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Facebook.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_twitter'] = array(
                     'name' => __( 'Twitter', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Twitter.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_analytics'] = array(
                     'name' => __( 'Google Analytics', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Analytics.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_adwords'] = array(
                     'name' => __( 'Adwords', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Adwords.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_mailchimp'] = array(
                     'name' => __( 'Mailchimp', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Mailchimp.', 'disciple_tools' )
                 );
                 $settings_fields['build_report_for_youtube'] = array(
                     'name' => __( 'YouTube', 'disciple_tools' ),
                     'type' => 'checkbox',
-                    'default' => '',
+                    'default' => true,
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for YouTube.', 'disciple_tools' )
                 );

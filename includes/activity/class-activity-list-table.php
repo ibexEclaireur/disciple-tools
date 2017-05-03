@@ -50,9 +50,9 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
             'author'      => __( 'Author', 'disciple-tools' ),
             'ip'          => __( 'IP', 'disciple-tools' ),
             'type'        => __( 'Type', 'disciple-tools' ),
-            'label'       => __( 'Label', 'disciple-tools' ),
+            'label'       => __( 'SubType', 'disciple-tools' ),
             'action'      => __( 'Action', 'disciple-tools' ),
-            'description' => __( 'Description', 'disciple-tools' ),
+            'description' => __( 'ObjName', 'disciple-tools' ),
         );
 
         return $columns;
