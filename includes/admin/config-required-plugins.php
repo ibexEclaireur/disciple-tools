@@ -61,15 +61,12 @@ function drm_register_required_plugins() {
             'force_deactivation' => false,
             'is_callable'       => 'WpJumpMenu',
         ),
-//        array(
-//            'name'               => 'REST API Console',
-//            'slug'               => 'rest-api-console',
-//            'required'           => true,
-//            'version'            => '2.1',
-//            'force_activation'   => true,
-//            'force_deactivation' => true,
-//            'is_callable'        => 'WP_REST_Console',
-//        ),
+        array(
+            'name'               => 'JSON Basic Authentication',
+            'slug'               => 'Basic-Auth',
+            'source'             =>  Disciple_Tools()->includes . 'plugins/lib/Basic-Auth.zip', // The plugin source.
+            'required'           => true,
+        ),
 //        array(
 //            'name'               => 'Members',
 //            'slug'               => 'members',

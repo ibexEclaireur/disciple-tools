@@ -337,14 +337,6 @@ class Disciple_Tools {
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
 
-		/**
-         * Development only
-         */
-		if (get_option('dt_add_basic_auth')) {
-            require_once ('includes/functions/basic-auth.php'); // Adds functions to handle basic authentication through REST API
-        }
-
-
 
     } // End __construct()
 
