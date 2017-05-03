@@ -61,24 +61,20 @@ function drm_register_required_plugins() {
             'force_deactivation' => false,
             'is_callable'       => 'WpJumpMenu',
         ),
-//        array(
-//            'name'               => 'REST API Console',
-//            'slug'               => 'rest-api-console',
-//            'required'           => true,
-//            'version'            => '2.1',
-//            'force_activation'   => true,
-//            'force_deactivation' => true,
-//            'is_callable'        => 'WP_REST_Console',
-//        ),
-//        array(
-//            'name'               => 'Members',
-//            'slug'               => 'members',
-//            'required'           => true,
-//            'version'            => '1.1.2',
-//            'force_activation'   => true,
-//            'force_deactivation' => true,
-//            'is_callable'        => 'Members_Plugin',
-//        ),
+        array(
+            'name'               => 'JSON Basic Authentication',
+            'slug'               => 'Basic-Auth',
+            'source'             =>  Disciple_Tools()->includes . 'plugins/lib/Basic-Auth.zip', // The plugin source.
+            'required'           => false,
+        ),
+        array(
+            'name'               => 'Disciple Tools - Sample Data',
+            'slug'               => 'disciple-tools-sample-data',
+            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-sample-data/archive/master.zip',
+            'required'           => false,
+            'version'            => '0.1',
+            'is_callable'        => 'dt_sample_data',
+        ),
 //        array(
 //            'name'               => 'Simple Local Avatars',
 //            'slug'               => 'simple-local-avatars',
