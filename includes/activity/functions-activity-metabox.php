@@ -48,7 +48,7 @@ function dt_activity_meta_box ($id)
         $html .= '<td>' . $user->display_name . '</td>';
         $html .= '<td>' . $item['action'] . '</td>';
         $html .= '<td>' . $item['object_note'] . '</td>';
-        $html .= '<td>' . date('m/d/Y h:m:s', $item['hist_time']) . '</td>';
+        $html .= '<td>' . date('m/d/Y h:i:s', $item['hist_time']) . '</td>';
 
         $html .= '</tr>';
     }

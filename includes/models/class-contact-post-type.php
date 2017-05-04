@@ -66,7 +66,7 @@ class Disciple_Tools_Contact_Post_Type {
 		$this->taxonomies = $taxonomies;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'init', array( $this, 'register_taxonomy' ) );
+//		add_action( 'init', array( $this, 'register_taxonomy' ) );
 
 		if ( is_admin() ) {
 			global $pagenow;
@@ -631,13 +631,6 @@ class Disciple_Tools_Contact_Post_Type {
             'name' => __( 'Email', 'disciple_tools' ),
             'description' => '',
             'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['background_note'] = array(
-            'name' => __( 'Background Note', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'textarea',
             'default' => '',
             'section' => 'info'
         );
