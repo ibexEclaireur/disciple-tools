@@ -552,10 +552,10 @@ class Disciple_Tools_Contact_Post_Type {
 
 			${$f} = strip_tags(trim($_POST[$f]));
 
-			// Escape the URLs.
-			if ( 'url' == $field_data[$f]['type'] ) {
-				${$f} = esc_url( ${$f} );
-			}
+			// Escape the URLs. // TODO: Check on processing error.
+//			if ( 'url' == $field_data[$f]['type'] ) {
+//				${$f} = esc_url( ${$f} );
+//			}
 
 			if ( get_post_meta( $post_id,  $f ) == '' ) {
 				add_post_meta( $post_id,  $f, ${$f}, true );
