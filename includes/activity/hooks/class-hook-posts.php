@@ -82,14 +82,16 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 	}
 
     public function hooks_added_post_meta ($mid, $object_id, $meta_key, $meta_value) {
+        // get object info
+        $parent_post = get_post($object_id, ARRAY_A);
 
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
             return;
         }
 
-        // get object info
-        $parent_post = get_post($object_id, ARRAY_A);
+        if ( 'nav_menu_item' != $parent_post['post_type'] || 'attachment' != $parent_post['post_type'] )
+            return;
 
         dt_activity_insert(
             array(
@@ -108,13 +110,16 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function hooks_updated_post_meta ($meta_id, $object_id, $meta_key, $meta_value) {
 
+        // get object info
+        $parent_post = get_post($object_id, ARRAY_A);
+
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
             return;
         }
 
-        // get object info
-        $parent_post = get_post($object_id, ARRAY_A);
+        if ( 'nav_menu_item' != $parent_post['post_type'] || 'attachment' != $parent_post['post_type'] )
+            return;
 
         dt_activity_insert(
             array(
