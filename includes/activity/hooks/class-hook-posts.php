@@ -49,10 +49,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 				'object_subtype' => $post->post_type,
 				'object_id' => $post->ID,
 				'object_name' => $this->_draft_or_post_title( $post->ID ),
-                'meta_id'           => '',
-                'meta_key'          => '',
-                'meta_value'        => '',
-                'object_note'       => '',
+                'meta_id'           => ' ',
+                'meta_key'          => ' ',
+                'meta_value'        => ' ',
+                'object_note'       => ' ',
 			)
 		);
 	}
@@ -77,6 +77,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 				'object_subtype' => $post->post_type,
 				'object_id' => $post->ID,
 				'object_name' => $this->_draft_or_post_title( $post->ID ),
+                'meta_id'           => ' ',
+                'meta_key'          => ' ',
+                'meta_value'        => ' ',
+                'object_note'       => ' ',
 			)
 		);
 	}
@@ -90,7 +94,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        if ( 'nav_menu_item' != $parent_post['post_type'] || 'attachment' != $parent_post['post_type'] )
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] )
             return;
 
         dt_activity_insert(
@@ -118,7 +122,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        if ( 'nav_menu_item' != $parent_post['post_type'] || 'attachment' != $parent_post['post_type'] )
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] )
             return;
 
         dt_activity_insert(

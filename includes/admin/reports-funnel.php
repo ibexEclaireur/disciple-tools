@@ -58,7 +58,7 @@ class Disciple_Tools_Funnel_Reports {
         add_meta_box('critical_path_stats','Critical Path', array($this, 'critical_path_stats'),'dashboard_page_funnel_report','normal','high');
         add_meta_box('contact_stats','Contact Stats', array($this, 'contacts_stats_widget'),'dashboard_page_funnel_report','normal','low');
         add_meta_box('groups_stats','Groups Stats', array($this, 'groups_stats_widget'),'dashboard_page_funnel_report','normal','low');
-        add_meta_box('baptism_stats','Baptism Stats', array($this, 'baptism_stats_widget'),'dashboard_page_funnel_report','normal','high');
+        add_meta_box('baptism_stats','Baptism Stats', array($this, 'baptism_stats_widget'),'dashboard_page_funnel_report','normal','low');
         add_meta_box('page_notes','Notes', array($this, 'page_notes'),'dashboard_page_funnel_report','side','high');
     }
 
@@ -172,12 +172,12 @@ class Disciple_Tools_Funnel_Reports {
         $has_2 = Disciple_Tools()->counter->get_generation('has_2');
         $has_3 = Disciple_Tools()->counter->get_generation('has_3');
 
-        $con_0gen = Disciple_Tools()->counter->get_generation('at_zero');
-        $con_1gen = Disciple_Tools()->counter->get_generation('at_first');
-        $con_2gen = Disciple_Tools()->counter->get_generation('at_second');
-        $con_3gen = Disciple_Tools()->counter->get_generation('at_third');
-        $con_4gen = Disciple_Tools()->counter->get_generation('at_fourth');
-        $con_5gen = Disciple_Tools()->counter->get_generation('at_fifth');
+        $con_0gen = '';//Disciple_Tools()->counter->get_generation('at_zero');
+        $con_1gen = '';//Disciple_Tools()->counter->get_generation('at_first');
+        $con_2gen = '';//Disciple_Tools()->counter->get_generation('at_second');
+        $con_3gen = '';//Disciple_Tools()->counter->get_generation('at_third');
+        $con_4gen = '';//Disciple_Tools()->counter->get_generation('at_fourth');
+        $con_5gen = '';//Disciple_Tools()->counter->get_generation('at_fifth');
 
         // Build counters
         $contacts_count = Disciple_Tools()->counter->contacts_post_status();
@@ -322,11 +322,11 @@ class Disciple_Tools_Funnel_Reports {
         $has_2 = Disciple_Tools()->counter->get_generation('has_2', 'groups');
         $has_3 = Disciple_Tools()->counter->get_generation('has_3', 'groups');
 
-        $gr_0gen = Disciple_Tools()->counter->get_generation('at_zero', 'groups');
-        $gr_1gen = Disciple_Tools()->counter->get_generation('at_first', 'groups');
-        $gr_2gen = Disciple_Tools()->counter->get_generation('at_second', 'groups');
-        $gr_3gen = Disciple_Tools()->counter->get_generation('at_third', 'groups');
-        $gr_4gen = Disciple_Tools()->counter->get_generation('at_fourth', 'groups');
+        $gr_0gen = '';//Disciple_Tools()->counter->get_generation('at_zero', 'groups');
+        $gr_1gen = '';//Disciple_Tools()->counter->get_generation('at_first', 'groups');
+        $gr_2gen = '';//Disciple_Tools()->counter->get_generation('at_second', 'groups');
+        $gr_3gen = '';//Disciple_Tools()->counter->get_generation('at_third', 'groups');
+        $gr_4gen = '';//Disciple_Tools()->counter->get_generation('at_fourth', 'groups');
 
         $dbs = Disciple_Tools()->counter->groups_meta_counter('type', 'DBS');
         $active_churches = Disciple_Tools()->counter->groups_meta_counter('type', 'Church');
@@ -443,12 +443,12 @@ class Disciple_Tools_Funnel_Reports {
         $has_2 = Disciple_Tools()->counter->get_generation('has_2', 'baptisms');
         $has_3 = Disciple_Tools()->counter->get_generation('has_3', 'baptisms');
 
-        $con_0gen = Disciple_Tools()->counter->get_generation('at_zero', 'baptisms');
-        $con_1gen = Disciple_Tools()->counter->get_generation('at_first', 'baptisms');
-        $con_2gen = Disciple_Tools()->counter->get_generation('at_second', 'baptisms');
-        $con_3gen = Disciple_Tools()->counter->get_generation('at_third', 'baptisms');
-        $con_4gen = Disciple_Tools()->counter->get_generation('at_fourth', 'baptisms');
-        $con_5gen = Disciple_Tools()->counter->get_generation('at_fifth', 'baptisms');
+        $con_0gen = '';//Disciple_Tools()->counter->get_generation('at_zero', 'baptisms');
+        $con_1gen = '';//Disciple_Tools()->counter->get_generation('at_first', 'baptisms');
+        $con_2gen = '';//Disciple_Tools()->counter->get_generation('at_second', 'baptisms');
+        $con_3gen = '';//Disciple_Tools()->counter->get_generation('at_third', 'baptisms');
+        $con_4gen = '';//Disciple_Tools()->counter->get_generation('at_fourth', 'baptisms');
+        $con_5gen = '';//Disciple_Tools()->counter->get_generation('at_fifth', 'baptisms');
 
         $baptisms = Disciple_Tools()->counter->get_baptisms('baptisms');
         $baptizers = Disciple_Tools()->counter->get_baptisms('baptizers');
