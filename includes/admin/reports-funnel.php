@@ -103,7 +103,7 @@ class Disciple_Tools_Funnel_Reports {
 								
 							</tr>
 							<tr>
-								<td>Facebook Engagement (2017, page_likes_count)</td>
+								<td>Social Engagement</td>
 								<td>'.$facebook.'</td>
 								
 							</tr>
