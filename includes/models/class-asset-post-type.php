@@ -293,8 +293,8 @@ class Disciple_Tools_Asset_Post_Type {
 
             foreach ( $field_data as $k => $v ) {
                 $data = $v['default'];
-                if ( isset( $fields['_' . $k] ) && isset( $fields['_' . $k][0] ) ) {
-                    $data = $fields['_' . $k][0];
+                if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
+                    $data = $fields[$k][0];
                 }
 
                 $type = $v['type'];
@@ -394,12 +394,12 @@ class Disciple_Tools_Asset_Post_Type {
                 ${$f} = esc_url( ${$f} );
             }
 
-            if ( get_post_meta( $post_id, '_' . $f ) == '' ) {
-                add_post_meta( $post_id, '_' . $f, ${$f}, true );
-            } elseif( ${$f} != get_post_meta( $post_id, '_' . $f, true ) ) {
-                update_post_meta( $post_id, '_' . $f, ${$f} );
+            if ( get_post_meta( $post_id, $f ) == '' ) {
+                add_post_meta( $post_id, $f, ${$f}, true );
+            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+                update_post_meta( $post_id, $f, ${$f} );
             } elseif ( ${$f} == '' ) {
-                delete_post_meta( $post_id, '_' . $f, get_post_meta( $post_id, '_' . $f, true ) );
+                delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
             }
         }
     } // End meta_box_save()

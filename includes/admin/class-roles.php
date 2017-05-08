@@ -9,8 +9,6 @@
  * @author Chasm.Solutions & Kingdom.Training
  */
 
-//if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-
 class Disciple_Tools_Roles {
 
     /**
@@ -46,14 +44,14 @@ class Disciple_Tools_Roles {
     } // End __construct()
 
     /*
-     * Install DMM Roles
+     * Install Disciple Tools Roles
      * */
     public function set_roles () {
 
-        /* TODO: Different caps are commented out as we configure usage in development, but should be removed for distribution. */
+        /* TODO: Different capabilities are commented out below in the different roles as we configure usage in development, but should be removed for distribution. */
 
-        if ( get_role( 'strategy' )) { remove_role( 'strategy' );}
-        add_role( 'strategy', 'Strategy',
+        if ( get_role( 'strategist' )) { remove_role( 'strategist' );}
+        add_role( 'strategist', 'Strategist',
             array(
                 /* Standard Capabilities */
                 'list_users' => true,

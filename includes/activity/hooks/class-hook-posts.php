@@ -49,10 +49,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 				'object_subtype' => $post->post_type,
 				'object_id' => $post->ID,
 				'object_name' => $this->_draft_or_post_title( $post->ID ),
-                'meta_id'           => '',
-                'meta_key'          => '',
-                'meta_value'        => '',
-                'object_note'       => '',
+                'meta_id'           => ' ',
+                'meta_key'          => ' ',
+                'meta_value'        => ' ',
+                'object_note'       => ' ',
 			)
 		);
 	}
@@ -77,19 +77,25 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 				'object_subtype' => $post->post_type,
 				'object_id' => $post->ID,
 				'object_name' => $this->_draft_or_post_title( $post->ID ),
+                'meta_id'           => ' ',
+                'meta_key'          => ' ',
+                'meta_value'        => ' ',
+                'object_note'       => ' ',
 			)
 		);
 	}
 
     public function hooks_added_post_meta ($mid, $object_id, $meta_key, $meta_value) {
+        // get object info
+        $parent_post = get_post($object_id, ARRAY_A);
 
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
             return;
         }
 
-        // get object info
-        $parent_post = get_post($object_id, ARRAY_A);
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] )
+            return;
 
         dt_activity_insert(
             array(
@@ -108,13 +114,16 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function hooks_updated_post_meta ($meta_id, $object_id, $meta_key, $meta_value) {
 
+        // get object info
+        $parent_post = get_post($object_id, ARRAY_A);
+
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
             return;
         }
 
-        // get object info
-        $parent_post = get_post($object_id, ARRAY_A);
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] )
+            return;
 
         dt_activity_insert(
             array(
