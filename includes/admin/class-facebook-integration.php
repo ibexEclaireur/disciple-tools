@@ -42,7 +42,7 @@ class Disciple_Tools_Facebook_Integration {
         add_action('rest_api_init', array($this,  'add_api_routes'));
 	    add_action('admin_menu', array($this, 'add_facebook_settings_menu') );
 	    add_action('dt_contact_meta_boxes_setup', array($this, 'add_contact_meta_box' ));
-
+        add_action('admin_notices', array($this, 'dt_admin_notice'));
 	} // End __construct()
 
 
@@ -75,6 +75,14 @@ class Disciple_Tools_Facebook_Integration {
         ]);
     }
 
+    function dt_admin_notice() {
+        $error = get_option( 'disciple_tools_facebook_error', "");
+        if ($error){ ?>
+            <div class="notice notice-error is-dismissible">
+                <p><?php echo $error; ?></p>
+            </div>
+        <?php }
+    }
 
 
     /**
@@ -120,7 +128,6 @@ class Disciple_Tools_Facebook_Integration {
      * Render the Facebook Settings Page
      */
     public function facebook_settings_page(){
-        echo '<div class="dt_facebook_errors" style="background-color:white;">' . get_option( 'disciple_tools_facebook_error').'</div>';
 
         echo "<h1>Facebook Integration Settings</h1>";
         echo "<h3>Hook up Disciple tools to a Facebook app in order to get contacts or useful stats from your Facebook pages. </h3>";
@@ -201,8 +208,11 @@ class Disciple_Tools_Facebook_Integration {
      * @param $err
      */
     private function display_error($err){
-        $err = date("Y-m-d h:i:sa") . ' ' . $err;
-        echo '<div class="dt_facebook_errors" style="background-color:white;">'.$err.'</div>';
+        $err = date("Y-m-d h:i:sa") . ' ' . $err;  ?>
+        <div class="notice notice-error is-dismissible">
+                <p><?php echo $err; ?></p>
+            </div>
+        <?php
         update_option( 'disciple_tools_facebook_error', $err);
     }
 
@@ -381,8 +391,7 @@ class Disciple_Tools_Facebook_Integration {
 
             $request = wp_remote_get($url);
             if( is_wp_error( $request ) ) {
-
-                update_option( 'disciple_tools_facebook_error', $request->get_error_message());
+                $this->display_error($request->get_error_message());
                 return $request->errors;
             } else {
                 $body = wp_remote_retrieve_body( $request );
@@ -395,8 +404,7 @@ class Disciple_Tools_Facebook_Integration {
                         $pages_request = wp_remote_get($facebook_pages_url);
 
                         if( is_wp_error( $pages_request ) ) {
-
-                            update_option( 'disciple_tools_facebook_error', $pages_request);
+                            $this->display_error($pages_request);
                             echo "There was an error";
                         } else {
                             $pages_body = wp_remote_retrieve_body( $pages_request );
@@ -409,7 +417,7 @@ class Disciple_Tools_Facebook_Integration {
                                     }
                                     update_option("disciple_tools_facebook_pages", $pages);
                                 } elseif (isset($pages_data->error) && isset($pages_data->error->messages)){
-                                    update_option( 'disciple_tools_facebook_error', $data->error->message);
+                                    $this->display_error($data->error->message);
                                 }
                             }
                         }
@@ -417,7 +425,7 @@ class Disciple_Tools_Facebook_Integration {
 
                     }
                     if (isset($data->error)){
-                        update_option( 'disciple_tools_facebook_error', $data->error->message);
+                        $this->display_error($data->error->message);
                     }
                 }
             }
