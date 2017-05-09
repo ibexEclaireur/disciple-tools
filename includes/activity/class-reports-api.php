@@ -424,17 +424,10 @@ class Disciple_Tools_Reports_API {
     }
 
     public static function get_last_record_of_source ($source) {
-
         global $wpdb;
         $today = date('Y-m-d');
-
-
         if(empty($source))
             return false;
-
-
-        echo "getting results";
-        print_r("getting results");
 
 
         $results = $wpdb->get_results(
@@ -449,10 +442,6 @@ class Disciple_Tools_Reports_API {
 
             )
         );
-
-        echo '<p>res';
-        print_r($results);
-        echo '</p>';
 
         if (sizeof($results) > 0){
             return $results[0];

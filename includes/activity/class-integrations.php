@@ -61,13 +61,19 @@ class Disciple_Tools_Reports_Integrations {
      * @return  array
      */
     public static function facebook_prepared_data ($date_of_last_record) {
+        $date_of_last_record = date('Y-m-d', strtotime($date_of_last_record));
+        $since = date('Y-m-d', strtotime('-30 days'));
+        if ($date_of_last_record > $since){
+            $since = $date_of_last_record;
+        }
+
 
         //get the facebook pages and access tokens from the settings
         $facebook_pages = get_option("disciple_tools_facebook_pages", array());
 
         $all_reports = array();
         foreach($facebook_pages as $page_id => $facebook_page){
-            if(isset($get["since"]) && isset($facebook_page->report) && $facebook_page->report == 1){
+            if(isset($facebook_page->report) && $facebook_page->report == 1){
                 $access_token = $facebook_page->access_token;
                 $url = "https://graph.facebook.com/v2.8/" . $page_id . "/insights?metric=";
                 $url .= "page_fans";
@@ -75,11 +81,11 @@ class Disciple_Tools_Reports_Integrations {
                 $url .= ",page_admin_num_posts";
                 $url .= ",page_actions_post_reactions_total";
                 $url .= ",page_positive_feedback_by_type";
-                $url .= "&since=" . $date_of_last_record;
+                $url .= "&since=" . $since;
                 $url .= "&until=" . date('Y-m-d', strtotime('tomorrow'));
                 $url .= "&access_token=" . $access_token;
 
-                $all_page_data = self::get_facebook_insights_with_paging($url,  date('Y-m-d', strtotime($get["since"])), $page_id);
+                $all_page_data = self::get_facebook_insights_with_paging($url,  $date_of_last_record, $page_id);
 
                 $month_metrics = array();
                 foreach($all_page_data as $metric){
