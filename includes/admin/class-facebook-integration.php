@@ -69,16 +69,33 @@ class Disciple_Tools_Facebook_Integration {
             'methods' => "POST",
             'callback' => array($this, 'add_app')
         ]);
-        register_rest_route($this->namespace, 'report', [
-            "methods" => "GET",
-            'callback' => array($this, 'generate_report')
-        ]);
         register_rest_route($this->namespace, 'rebuild', [
             "methods" => "GET",
             'callback' => array($this, 'rebuild_all_data')
         ]);
     }
 
+
+
+    /**
+     * Reports
+     *
+     *
+     *
+     */
+
+    /**
+     * Get reports for Facebook pages with stats enabled
+     * for the past 10 years (if available)
+     */
+    public function rebuild_all_data(){
+        //@todo drop all facebook reports?
+        $long_time_ago = date('Y-m-d', strtotime('-10 years'));
+        $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($long_time_ago);
+        foreach ($reports as $report) {
+            dt_report_insert($report);
+        }
+    }
 
 
     /**
