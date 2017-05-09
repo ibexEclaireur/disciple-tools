@@ -262,7 +262,7 @@ class Disciple_Tools_Roles {
                 'edit_published_pages' => true,
                 'edit_published_posts' => true,
                 'manage_options' => false,
-                'manage_categories' => true,
+                'manage_categories' => false,
 //                'manage_links' => true,
                 'moderate_comments' => true,
 //                'publish_pages' => true,
