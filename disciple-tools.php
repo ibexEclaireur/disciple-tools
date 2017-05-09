@@ -321,8 +321,8 @@ class Disciple_Tools {
             require_once('includes/admin/class-google-analytics-integration.php');
             $this->analytics_integration = Ga_Admin::instance();
         }
-
-
+        //set permalink structure
+        add_action( 'init', array( $this, 'set_permalink_structure' ) );
         // load rest api endpoints
         require_once ('includes/functions/disable-json-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
         add_action('rest_api_init', array($this, "add_api_routes"));
@@ -340,6 +340,14 @@ class Disciple_Tools {
 
     } // End __construct()
 
+    /**
+     * Set default premalink structure
+     * Needed for the rest api url structure (for wp-json to work)
+     */
+    public function set_permalink_structure(){
+        global $wp_rewrite;
+        $wp_rewrite->set_permalink_structure( '/%postname%/' );
+    }
 
     /**
      * Setup the rest api routes for the plugin
