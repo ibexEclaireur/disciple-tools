@@ -103,11 +103,16 @@ class Disciple_Tools_Facebook_Integration {
      * for the past 10 years (if available)
      */
     public function rebuild_all_data(){
-        //@todo drop all facebook reports?
-        $long_time_ago = date('Y-m-d', strtotime('-10 years'));
-        $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($long_time_ago);
-        foreach ($reports as $report) {
-            dt_report_insert($report);
+        $this->immediate_response();
+        $facebook_pages = get_option("disciple_tools_facebook_pages", array());
+        foreach($facebook_pages as $page_id => $facebook_page){
+            if (isset($facebook_page->rebuild) && $facebook_page->rebuild == true){
+                $long_time_ago = date('Y-m-d', strtotime('-10 years'));
+                $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($long_time_ago, $facebook_page);
+                foreach ($reports as $report) {
+                    dt_report_insert($report);
+                }
+            }
         }
     }
 
@@ -182,6 +187,7 @@ class Disciple_Tools_Facebook_Integration {
                     <thead><th>Facebook Pages </th></thead>
                     <tbody>';
         $facebook_pages = get_option("disciple_tools_facebook_pages", array());
+
         foreach($facebook_pages as $id => $facebook_page){
             $html .=  '<tr><td>' . $facebook_page->name . ' (' . $id .')'. '</td>
                <td>
@@ -258,6 +264,7 @@ class Disciple_Tools_Facebook_Integration {
 
         //save changes made to the pages in the page list
         if (isset($post["save_pages"])){
+            $get_historical_data = false;
             $facebook_pages = get_option("disciple_tools_facebook_pages", array());
             foreach ($facebook_pages as $id => $facebook_page){
                 //if sync contact checkbox is selected
@@ -271,6 +278,8 @@ class Disciple_Tools_Facebook_Integration {
                 $report = str_replace(' ', '_', $facebook_page->name . "-report");
                 if (isset($post[$report])){
                     $facebook_page->report = 1;
+                    $facebook_page->rebuild = true;
+                    $get_historical_data = true;
                 } else {
                     $facebook_page->report = 0;
                 }
@@ -316,6 +325,10 @@ class Disciple_Tools_Facebook_Integration {
                 }
             }
             update_option("disciple_tools_facebook_pages", $facebook_pages);
+            //if a new page is added, get the reports for that page.
+            if ($get_historical_data === true){
+                wp_remote_get($this->get_rest_url()."/rebuild");
+            }
         }
     }
 
