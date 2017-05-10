@@ -245,9 +245,6 @@ class Disciple_Tools {
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
             $this->profile = Disciple_Tools_Profile::instance();
-
-            // Load admin JS
-            add_action( 'admin_enqueue_scripts', array($this, 'enqueue_admin_scripts') );
         }
         /* End Admin configuration section */
 
@@ -342,13 +339,6 @@ class Disciple_Tools {
 
 
     } // End __construct()
-
-    /**
-     * Load up admin scripts
-     */
-    public function enqueue_admin_scripts(){
-        wp_enqueue_script('disciple-tools-admin_script', Disciple_Tools()->plugin_js .'disciple-tools-admin.js',  array('jquery'), '1.0', true);
-    }
 
     /**
      * Setup the rest api routes for the plugin
