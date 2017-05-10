@@ -68,12 +68,12 @@ function drm_register_required_plugins() {
             'required'           => false,
         ),
         array(
-            'name'               => 'Disciple Tools - Sample Data',
-            'slug'               => 'disciple-tools-sample-data',
-            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-sample-data/archive/master.zip',
+            'name'               => 'Disciple Tools - Training',
+            'slug'               => 'disciple-tools-training',
+            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-training/archive/master.zip',
             'required'           => false,
             'version'            => '0.1',
-            'is_callable'        => 'dt_sample_data',
+            'is_callable'        => 'dt_training',
         ),
 //        array(
 //            'name'               => 'Simple Local Avatars',
