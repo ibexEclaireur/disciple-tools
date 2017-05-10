@@ -322,10 +322,8 @@ class Disciple_Tools {
             $this->analytics_integration = Ga_Admin::instance();
         }
 
-
         // load rest api endpoints
-        require_once ('includes/functions/disable-json-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-        add_action('rest_api_init', array($this, "add_api_routes"));
+        require_once ('includes/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
 
         /*
          * Factories
@@ -333,20 +331,10 @@ class Disciple_Tools {
         require_once ('includes/factories/class-counter-factory.php');
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
-
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-
-
 
     } // End __construct()
 
-    /**
-     * Setup the rest api routes for the plugin
-     */
-    public function add_api_routes(){
-        // setup the facebook endpoints
-        $this->facebook_integration->add_api_routes();
-    }
 
 
 	/**
