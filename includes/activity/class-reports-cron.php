@@ -176,20 +176,23 @@ class Disciple_Tools_Reports_Cron {
      *
      */
     public function build_all_facebook_reports () {
-        // Calculate the next date(s) needed reporting
-        //@todo split by subsource in case one does not update
-        $last_facebook_report =  Disciple_Tools_Reports_API::get_last_record_of_source('Facebook');
-        if ($last_facebook_report && isset($last_facebook_report->report_date)){
-            $date_of_last_record = date('Y-m-d', strtotime($last_facebook_report->report_date));
-        } else {
-            //set to yesterday to get today's report
-            $date_of_last_record = date('Y-m-d', strtotime('-1 day'));
-        }
-        $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($date_of_last_record);
-        // Request dates needed for reporting (loop)
-        foreach ($reports as $report) {
-            // Insert Reports
-            dt_report_insert($report);
+        //get the facebook pages and access tokens from the settings
+        $facebook_pages = get_option("disciple_tools_facebook_pages", array());
+        foreach($facebook_pages as $page_id => $facebook_page){
+            $last_facebook_report =  Disciple_Tools_Reports_API::get_last_record_of_source_and_subsource('Facebook', $page_id);
+            if ($last_facebook_report && isset($last_facebook_report->report_date)){
+                $date_of_last_record = date('Y-m-d', strtotime($last_facebook_report->report_date));
+            } else {
+                //set to yesterday to get today's report
+                $date_of_last_record = date('Y-m-d', strtotime('-1 day'));
+            }
+            $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($date_of_last_record, $facebook_page);
+            // Request dates needed for reporting (loop)
+            foreach ($reports as $report) {
+                // Insert Reports
+                dt_report_insert($report);
+            }
+
         }
     }
 

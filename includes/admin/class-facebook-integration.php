@@ -42,6 +42,8 @@ class Disciple_Tools_Facebook_Integration {
         add_action('rest_api_init', array($this,  'add_api_routes'));
 	    add_action('admin_menu', array($this, 'add_facebook_settings_menu') );
 	    add_action('dt_contact_meta_boxes_setup', array($this, 'add_contact_meta_box' ));
+        add_action('admin_notices', array($this, 'dt_admin_notice'));
+        add_action('wp_ajax_dt-facebook-notice-dismiss', array($this, 'dismiss_error'));
 
 	} // End __construct()
 
@@ -69,16 +71,50 @@ class Disciple_Tools_Facebook_Integration {
             'methods' => "POST",
             'callback' => array($this, 'add_app')
         ]);
-        register_rest_route($this->namespace, 'report', [
-            "methods" => "GET",
-            'callback' => array($this, 'generate_report')
-        ]);
         register_rest_route($this->namespace, 'rebuild', [
             "methods" => "GET",
             'callback' => array($this, 'rebuild_all_data')
         ]);
     }
 
+    function dt_admin_notice() {
+        $error = get_option( 'disciple_tools_facebook_error', "");
+        if ($error){ ?>
+            <div class="notice notice-error dt-facebook-notice is-dismissible">
+                <p><?php echo $error; ?></p>
+            </div>
+        <?php }
+    }
+
+    function dismiss_error(){
+        update_option('disciple_tools_facebook_error', "");
+    }
+
+
+    /**
+     * Reports
+     *
+     *
+     *
+     */
+
+    /**
+     * Get reports for Facebook pages with stats enabled
+     * for the past 10 years (if available)
+     */
+    public function rebuild_all_data(){
+        $this->immediate_response();
+        $facebook_pages = get_option("disciple_tools_facebook_pages", array());
+        foreach($facebook_pages as $page_id => $facebook_page){
+            if (isset($facebook_page->rebuild) && $facebook_page->rebuild == true){
+                $long_time_ago = date('Y-m-d', strtotime('-10 years'));
+                $reports = Disciple_Tools_Reports_Integrations::facebook_prepared_data($long_time_ago, $facebook_page);
+                foreach ($reports as $report) {
+                    dt_report_insert($report);
+                }
+            }
+        }
+    }
 
 
     /**
@@ -103,7 +139,6 @@ class Disciple_Tools_Facebook_Integration {
      * Render the Facebook Settings Page
      */
     public function facebook_settings_page(){
-        echo '<div class="dt_facebook_errors" style="background-color:white;">' . get_option( 'disciple_tools_facebook_error').'</div>';
 
         echo "<h1>Facebook Integration Settings</h1>";
         echo "<h3>Hook up Disciple tools to a Facebook app in order to get contacts or useful stats from your Facebook pages. </h3>";
@@ -152,6 +187,7 @@ class Disciple_Tools_Facebook_Integration {
                     <thead><th>Facebook Pages </th></thead>
                     <tbody>';
         $facebook_pages = get_option("disciple_tools_facebook_pages", array());
+
         foreach($facebook_pages as $id => $facebook_page){
             $html .=  '<tr><td>' . $facebook_page->name . ' (' . $id .')'. '</td>
                <td>
@@ -184,8 +220,11 @@ class Disciple_Tools_Facebook_Integration {
      * @param $err
      */
     private function display_error($err){
-        $err = date("Y-m-d h:i:sa") . ' ' . $err;
-        echo '<div class="dt_facebook_errors" style="background-color:white;">'.$err.'</div>';
+        $err = date("Y-m-d h:i:sa") . ' ' . $err;  ?>
+        <div class="notice notice-error is-dismissible">
+                <p><?php echo $err; ?></p>
+            </div>
+        <?php
         update_option( 'disciple_tools_facebook_error', $err);
     }
 
@@ -225,6 +264,7 @@ class Disciple_Tools_Facebook_Integration {
 
         //save changes made to the pages in the page list
         if (isset($post["save_pages"])){
+            $get_historical_data = false;
             $facebook_pages = get_option("disciple_tools_facebook_pages", array());
             foreach ($facebook_pages as $id => $facebook_page){
                 //if sync contact checkbox is selected
@@ -238,6 +278,8 @@ class Disciple_Tools_Facebook_Integration {
                 $report = str_replace(' ', '_', $facebook_page->name . "-report");
                 if (isset($post[$report])){
                     $facebook_page->report = 1;
+                    $facebook_page->rebuild = true;
+                    $get_historical_data = true;
                 } else {
                     $facebook_page->report = 0;
                 }
@@ -283,6 +325,10 @@ class Disciple_Tools_Facebook_Integration {
                 }
             }
             update_option("disciple_tools_facebook_pages", $facebook_pages);
+            //if a new page is added, get the reports for that page.
+            if ($get_historical_data === true){
+                wp_remote_get($this->get_rest_url()."/rebuild");
+            }
         }
     }
 
@@ -364,8 +410,7 @@ class Disciple_Tools_Facebook_Integration {
 
             $request = wp_remote_get($url);
             if( is_wp_error( $request ) ) {
-
-                update_option( 'disciple_tools_facebook_error', $request->get_error_message());
+                $this->display_error($request->get_error_message());
                 return $request->errors;
             } else {
                 $body = wp_remote_retrieve_body( $request );
@@ -378,8 +423,7 @@ class Disciple_Tools_Facebook_Integration {
                         $pages_request = wp_remote_get($facebook_pages_url);
 
                         if( is_wp_error( $pages_request ) ) {
-
-                            update_option( 'disciple_tools_facebook_error', $pages_request);
+                            $this->display_error($pages_request);
                             echo "There was an error";
                         } else {
                             $pages_body = wp_remote_retrieve_body( $pages_request );
@@ -392,7 +436,7 @@ class Disciple_Tools_Facebook_Integration {
                                     }
                                     update_option("disciple_tools_facebook_pages", $pages);
                                 } elseif (isset($pages_data->error) && isset($pages_data->error->messages)){
-                                    update_option( 'disciple_tools_facebook_error', $data->error->message);
+                                    $this->display_error($data->error->message);
                                 }
                             }
                         }
@@ -400,7 +444,7 @@ class Disciple_Tools_Facebook_Integration {
 
                     }
                     if (isset($data->error)){
-                        update_option( 'disciple_tools_facebook_error', $data->error->message);
+                        $this->display_error($data->error->message);
                     }
                 }
             }
