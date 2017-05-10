@@ -43,6 +43,8 @@ class Disciple_Tools_Facebook_Integration {
 	    add_action('admin_menu', array($this, 'add_facebook_settings_menu') );
 	    add_action('dt_contact_meta_boxes_setup', array($this, 'add_contact_meta_box' ));
         add_action('admin_notices', array($this, 'dt_admin_notice'));
+        add_action('wp_ajax_dt-facebook-notice-dismiss', array($this, 'dismiss_error'));
+
 	} // End __construct()
 
 
@@ -78,10 +80,14 @@ class Disciple_Tools_Facebook_Integration {
     function dt_admin_notice() {
         $error = get_option( 'disciple_tools_facebook_error', "");
         if ($error){ ?>
-            <div class="notice notice-error is-dismissible">
+            <div class="notice notice-error dt-facebook-notice is-dismissible">
                 <p><?php echo $error; ?></p>
             </div>
         <?php }
+    }
+
+    function dismiss_error(){
+        update_option('disciple_tools_facebook_error', "");
     }
 
 
