@@ -75,7 +75,7 @@ function dt_DRA_only_allow_logged_in_rest_access( $access ) {
  */
 function add_api_routes(){
     // setup the facebook endpoints
-    $this->facebook_integration->add_api_routes();
+    Disciple_Tools::instance()->facebook_integration->add_api_routes();
 }
 
 
