@@ -52,21 +52,21 @@ function drm_register_required_plugins() {
             'force_deactivation' => false,
             'is_callable'       => 'Psalm_119',
         ),
-        array(
-            'name'              => 'WP Jump Menu',
-            'slug'              => 'wp-jump-menu',
-            'required'          => true,
-            'version'            => '3.6',
-            'force_activation'  => true,
-            'force_deactivation' => false,
-            'is_callable'       => 'WpJumpMenu',
-        ),
-        array(
-            'name'               => 'JSON Basic Authentication',
-            'slug'               => 'Basic-Auth',
-            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
-            'required'           => false,
-        ),
+//        array(
+//            'name'              => 'WP Jump Menu',
+//            'slug'              => 'wp-jump-menu',
+//            'required'          => true,
+//            'version'            => '3.6',
+//            'force_activation'  => true,
+//            'force_deactivation' => false,
+//            'is_callable'       => 'WpJumpMenu',
+//        ),
+//        array(
+//            'name'               => 'JSON Basic Authentication',
+//            'slug'               => 'Basic-Auth',
+//            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
+//            'required'           => false,
+//        ),
         array(
             'name'               => 'Disciple Tools - Training',
             'slug'               => 'disciple-tools-training',
