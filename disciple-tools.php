@@ -311,7 +311,7 @@ class Disciple_Tools {
         $this->report_api = new Disciple_Tools_Reports_API();
         require_once ( 'includes/activity/class-reports-cron.php' ); // cron scheduling
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
-        require_once ( 'includes/activity/class-integrations.php' ); // data integration for cron scheduling
+        require_once('includes/activity/class-integrations.php'); // data integration for cron scheduling
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
         require_once ( 'includes/activity/functions-activity-metabox.php'); // functions supporting the lists of activities connected to contacts and groups
         require_once ( 'includes/admin/class-facebook-integration.php'); // integrations to facebook
