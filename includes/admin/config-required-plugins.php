@@ -52,28 +52,28 @@ function drm_register_required_plugins() {
             'force_deactivation' => false,
             'is_callable'       => 'Psalm_119',
         ),
+//        array(
+//            'name'              => 'WP Jump Menu',
+//            'slug'              => 'wp-jump-menu',
+//            'required'          => true,
+//            'version'            => '3.6',
+//            'force_activation'  => true,
+//            'force_deactivation' => false,
+//            'is_callable'       => 'WpJumpMenu',
+//        ),
+//        array(
+//            'name'               => 'JSON Basic Authentication',
+//            'slug'               => 'Basic-Auth',
+//            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
+//            'required'           => false,
+//        ),
         array(
-            'name'              => 'WP Jump Menu',
-            'slug'              => 'wp-jump-menu',
-            'required'          => true,
-            'version'            => '3.6',
-            'force_activation'  => true,
-            'force_deactivation' => false,
-            'is_callable'       => 'WpJumpMenu',
-        ),
-        array(
-            'name'               => 'JSON Basic Authentication',
-            'slug'               => 'Basic-Auth',
-            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
-            'required'           => false,
-        ),
-        array(
-            'name'               => 'Disciple Tools - Sample Data',
-            'slug'               => 'disciple-tools-sample-data',
-            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-sample-data/archive/master.zip',
+            'name'               => 'Disciple Tools - Training',
+            'slug'               => 'disciple-tools-training',
+            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-training/archive/master.zip',
             'required'           => false,
             'version'            => '0.1',
-            'is_callable'        => 'dt_sample_data',
+            'is_callable'        => 'dt_training',
         ),
 //        array(
 //            'name'               => 'Simple Local Avatars',

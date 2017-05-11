@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Action and Filters
  */
 add_action( 'admin_enqueue_scripts', 'contact_groups_page_scripts' );
-//add_action( 'admin_enqueue_scripts', 'group_page_scripts' );
+add_action( 'admin_enqueue_scripts', 'dismiss_notice_callback_script' );
 
 /*
  * Functions
@@ -41,6 +41,12 @@ function contact_groups_page_scripts() {
 
 }
 
+function dismiss_notice_callback_script(){
+    global $pagenow;
+    if (is_admin() && $pagenow === 'options-general.php'){
+        wp_enqueue_script('disciple-tools-admin_script', Disciple_Tools()->plugin_js .'disciple-tools-admin.js',  array('jquery'), '1.0', true);
+    }
+}
 
 
 
