@@ -246,6 +246,10 @@ class Disciple_Tools {
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
             $this->profile = Disciple_Tools_Profile::instance();
+
+            // Configurations of Post Types
+            require_once ( 'includes/admin/config-contacts.php');
+            $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
         }
         /* End Admin configuration section */
 
