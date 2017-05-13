@@ -57,13 +57,16 @@ function dt_DRA_Disable_Via_Filters() {
 }
 
 /**
- * Returning an authentication error if a user who is not logged in tries to query the REST API
+ * Returning an authentication error if a user who is not logged in tries to query tries to query a REST API endpoint that is not public
  * @param $access
  * @return WP_Error
  */
 function dt_DRA_only_allow_logged_in_rest_access( $access ) {
-
-	if( ! is_user_logged_in() ) {
+    $is_public = false;
+    if (strpos($_SERVER['REQUEST_URI'], '/public/') !== false){
+        $is_public = true;
+    }
+	if( ! is_user_logged_in() && !$is_public) {
         return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disable-json-api' ), array( 'status' => rest_authorization_required_code() ) );
     }
     return $access;
