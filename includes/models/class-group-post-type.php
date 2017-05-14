@@ -256,13 +256,21 @@ class Disciple_Tools_Group_Post_Type {
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '-data', __( 'Group Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
+        add_meta_box( $this->post_type . '_four_fields', __( 'Four Fields', 'disciple_tools' ), array( $this, 'four_fields_meta_box' ), $this->post_type, 'normal', 'high' );
 	} // End meta_box_setup()
 
     /**
      * Load activity metabox
      */
     public function load_activity_meta_box () {
-        dt_activity_meta_box (get_the_ID());
+        dt_activity_metabox()->activity_meta_box(get_the_ID());
+    }
+
+    /**
+     * Load activity metabox
+     */
+    public function four_fields_meta_box () {
+        echo dt_four_fields_metabox()->content_display();
     }
 
 	/**

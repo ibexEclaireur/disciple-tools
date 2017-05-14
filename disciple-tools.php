@@ -250,6 +250,8 @@ class Disciple_Tools {
             // Configurations of Post Types
             require_once ( 'includes/admin/config-contacts.php');
             $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
+
+
         }
         /* End Admin configuration section */
 
@@ -297,6 +299,10 @@ class Disciple_Tools {
 
         require_once ( 'includes/admin/multi-role/multi-role.php');
         $this->multi = Disciple_Tools_Multi_Roles::instance();
+
+        // Metaboxes
+        require_once ( 'includes/metaboxes/box-four-fields.php' );
+        require_once ( 'includes/metaboxes/box-activity.php');
         /* End model configuration section */
 
 
@@ -317,7 +323,6 @@ class Disciple_Tools {
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once('includes/activity/class-integrations.php'); // data integration for cron scheduling
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
-        require_once ( 'includes/activity/functions-activity-metabox.php'); // functions supporting the lists of activities connected to contacts and groups
         require_once ( 'includes/admin/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
 

@@ -344,7 +344,7 @@ class Disciple_Tools_Contact_Post_Type {
      * Load activity metabox
      */
     public function load_activity_meta_box () {
-        dt_activity_meta_box (get_the_ID());
+        dt_activity_metabox()->activity_meta_box(get_the_ID());
     }
 
 	/**
