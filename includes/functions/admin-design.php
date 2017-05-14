@@ -21,8 +21,8 @@ add_filter( 'update_footer',     '__empty_footer_string', 11 );
 add_filter( 'get_user_option_admin_color', 'change_admin_color');
 remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
 
-add_filter('manage_contacts_posts_columns', 'contacts_table_head');
-add_action( 'manage_contacts_posts_custom_column', 'contacts_table_content', 10, 2 );
+//add_filter('manage_contacts_posts_columns', 'contacts_table_head');
+//add_action( 'manage_contacts_posts_custom_column', 'contacts_table_content', 10, 2 );
 
 if( is_admin() && !current_user_can( 'administrator' ) ) {
     add_action( 'admin_menu', 'disciple_tools_remove_posts_menu' );
@@ -80,32 +80,7 @@ function change_admin_color($result) {
     return 'light';
 }
 
-/*
- * Adds columns to the all contacts screen
- * TODO: Consider moving to contacts object
- */
-function contacts_table_head( $defaults ) {
-    $defaults['phone']  = 'Phone';
-    $defaults['seeker_path']    = 'Seeker Path';
-    $defaults['seeker_milestones']    = 'Seeker Milestone';
-    return $defaults;
-}
 
-function contacts_table_content( $column_name, $post_id ) {
-    if ($column_name == 'phone') {
-        echo get_post_meta( $post_id, 'phone', true );
-        ;
-    }
-    if ($column_name == 'seeker_path') {
-        $status = get_post_meta( $post_id, 'seeker_path', true );
-        echo $status;
-    }
-
-    if ($column_name == 'seeker_milestones') {
-        echo get_post_meta( $post_id, 'seeker_milestones', true );
-    }
-
-}
 
 /**
  * Removes the Posts menu from all users but administrators

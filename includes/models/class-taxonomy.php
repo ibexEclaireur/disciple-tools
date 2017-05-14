@@ -63,7 +63,7 @@ class Disciple_Tools_Taxonomy {
 	 * @param   string $plural    Plural  name.
 	 * @param   array  $args      Array of argument overrides.
 	 */
-	public function __construct ( $post_type = 'contacts', $token = 'contacts-category', $singular = '', $plural = '', $args = array() ) {
+	public function __construct ( $post_type = '', $token = '', $singular = '', $plural = '', $args = array() ) {
 		$this->post_type = $post_type;
 		$this->token = esc_attr( $token );
 		$this->singular = esc_html( $singular );
