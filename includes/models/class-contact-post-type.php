@@ -310,14 +310,14 @@ class Disciple_Tools_Contact_Post_Type {
             'name' => __( 'Overall Status', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('Unassigned', 'Accepted', 'Paused', 'Closed', 'Unassignable' ),
+            'default' => array(__('Unassigned', 'disciple_tools' ), __('Accepted', 'disciple_tools' ), __('Paused', 'disciple_tools' ), __('Closed', 'disciple_tools' ), __('Unassignable', 'disciple_tools' ) ),
             'section' => 'status'
         );
         $fields['requires_update'] = array(
             'name' => __( 'Requires Update', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('No', 'Yes'),
+            'default' => array(__('No', 'disciple_tools' ), __('Yes', 'disciple_tools' )),
             'section' => 'status'
         );
 
@@ -573,6 +573,7 @@ class Disciple_Tools_Contact_Post_Type {
 		    'default' => '',
 		    'section' => 'info'
 		);
+
         $fields['email'] = array(
             'name' => __( 'Email', 'disciple_tools' ),
             'description' => '',
@@ -580,13 +581,28 @@ class Disciple_Tools_Contact_Post_Type {
             'default' => '',
             'section' => 'info'
         );
+        $fields['overall_status'] = array(
+            'name' => __( 'Overall Status', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array(__('Unassigned', 'disciple_tools' ), __('Accepted', 'disciple_tools' ), __('Paused', 'disciple_tools' ), __('Closed', 'disciple_tools' ), __('Unassignable', 'disciple_tools' ) ),
+            'section' => 'info'
+        );
+        $fields['requires_update'] = array(
+            'name' => __( 'Requires Update', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array(__('No', 'disciple_tools' ), __('Yes', 'disciple_tools' )),
+            'section' => 'info'
+        );
         $fields['preferred_contact_method'] = array(
             'name' => __( 'Preferred Contact Method', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('', 'Phone', 'Skype', 'Facebook', 'Mail', 'Email', 'SMS'),
+            'default' => array('', __('Phone', 'disciple_tools' ), __('Skype', 'disciple_tools' ), __('Facebook', 'disciple_tools' ), __('Mail', 'disciple_tools' ), __('Email', 'disciple_tools' ), __('SMS', 'disciple_tools' )),
             'section' => 'info'
         );
+
         $fields['skype'] = array(
             'name' => __( 'Skype', 'disciple_tools' ),
             'description' => '',
@@ -601,20 +617,14 @@ class Disciple_Tools_Contact_Post_Type {
             'default' => '',
             'section' => 'info'
         );
-        $fields['gender'] = array(
-            'name' => __( 'Gender', 'disciple_tools' ),
+        $fields['twitter'] = array(
+            'name' => __( 'Twitter', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Male', 'Female'),
+            'type' => 'text',
+            'default' => '',
             'section' => 'info'
         );
-        $fields['age'] = array(
-            'name' => __( 'Age', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Under 18 years old', '18-25 years old', '26-40 years old', 'Over 40 years old'),
-            'section' => 'info'
-        );
+
         $fields['mailing_street'] = array(
             'name' => __( 'Mailing Street', 'disciple_tools' ),
             'description' => '',
@@ -658,28 +668,28 @@ class Disciple_Tools_Contact_Post_Type {
 		    'name' => __( 'Seeker Path', 'disciple_tools' ),
 		    'description' => '',
 		    'type' => 'select',
-		    'default' => array('', 'Contact Attempted', 'Contact Established', 'Confirms Interest', 'Meeting Scheduled', 'First Meeting Complete', 'Ongoing Meetings', 'Being Coached'),
+		    'default' => array('', __('Contact Attempted', 'disciple_tools' ), __('Contact Established', 'disciple_tools' ), __('Confirms Interest', 'disciple_tools' ), __('Meeting Scheduled', 'disciple_tools' ), __('First Meeting Complete', 'disciple_tools' ), __('Ongoing Meetings', 'disciple_tools' ), __('Being Coached', 'disciple_tools' )),
 		    'section' => 'status'
 		);
 		$fields['seeker_milestones'] = array(
 		    'name' => __( 'Seeker Milestones', 'disciple_tools' ),
 		    'description' => '',
 		    'type' => 'select',
-		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
+		    'default' => array('', __('States Belief', 'disciple_tools' ), __('Can Share Gospel/Testimony', 'disciple_tools' ), __('Sharing Gospel/Testimony', 'disciple_tools' ), __('Baptized', 'disciple_tools' ), __('Baptizing', 'disciple_tools' ), __('In Church/Group', 'disciple_tools' ), __('Starting Churches', 'disciple_tools' )),
 		    'section' => 'status'
 		);
         $fields['comprehension'] = array(
             'name' => __( 'Gospel Comprehension', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('', 'Very Strong', 'Strong', 'Unknown/Unclear', 'Weak'),
+            'default' => array('', __('Very Strong', 'disciple_tools' ), __('Strong', 'disciple_tools' ), __('Unknown/Unclear', 'disciple_tools' ), __('Weak', 'disciple_tools' )),
             'section' => 'status'
         );
         $fields['investigating_with_others'] = array(
             'name' => __( 'Investigating with others', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('', 'Not exploring with others', 'Only with a few people', 'Openly sharing with many', 'Studying in a group'),
+            'default' => array('', __('Not exploring with others', 'disciple_tools' ), __('Only with a few people', 'disciple_tools' ), __('Openly sharing with many', 'disciple_tools' ), __('Studying in a group', 'disciple_tools' )),
             'section' => 'status'
         );
 
@@ -687,7 +697,7 @@ class Disciple_Tools_Contact_Post_Type {
             'name' => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('', 'Duplicate', 'Hostile / Playing Games', 'Insufficient Contact Info', 'Already In Church/Connected with Others', 'No Longer Interested', 'Just wanted a book', 'Unknown'),
+            'default' => array('', __('Duplicate', 'disciple_tools' ), __('Hostile / Playing Games', 'disciple_tools' ), __('Insufficient Contact Info', 'disciple_tools' ), __('Already In Church/Connected with Others', 'disciple_tools' ), __('No Longer Interested', 'disciple_tools' ), __('Just wanted a book', 'disciple_tools' ), __('Unknown', 'disciple_tools' )),
             'section' => 'status'
         );
 
@@ -696,10 +706,23 @@ class Disciple_Tools_Contact_Post_Type {
             'name' => __( 'Bible', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('', 'Yes - given by hand', 'Yes - already had one', 'Yes - receipt by mail confirmed', 'Bible mailed', 'Needs / Requests Bible'),
+            'default' => array('', __('Yes - given by hand', 'disciple_tools' ), __('Yes - already had one', 'disciple_tools' ), __('Yes - receipt by mail confirmed', 'disciple_tools' ), __('Bible mailed', 'disciple_tools' ), __('Needs / Requests Bible', 'disciple_tools' )),
             'section' => 'misc'
         );
-		
+        $fields['gender'] = array(
+            'name' => __( 'Gender', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Male', 'disciple_tools' ), __('Female', 'disciple_tools' )),
+            'section' => 'misc'
+        );
+        $fields['age'] = array(
+            'name' => __( 'Age', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Under 18 years old', 'disciple_tools' ), __('18-25 years old', 'disciple_tools' ), __('26-40 years old', 'disciple_tools' ), __('Over 40 years old', 'disciple_tools' )),
+            'section' => 'misc'
+        );
 		$fields['source_details'] = array(
 			'name' => __( 'Source Details', 'disciple_tools'),
 			'description' => '',

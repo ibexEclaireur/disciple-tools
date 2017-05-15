@@ -25,7 +25,7 @@ function contact_groups_page_scripts() {
 
     // If current page is post.php and post isset than query for its post type
     // if the post type is 'event' do something
-    if ( 'post.php' === $pagenow && 'contacts' === get_post_type( $post) || 'groups' === get_post_type( $post ) ) {
+    if ( 'post.php' === $pagenow || 'post-new.php' === $pagenow && 'contacts' === get_post_type( $post) || 'groups' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
         wp_enqueue_style( 'dt_admin_css' );

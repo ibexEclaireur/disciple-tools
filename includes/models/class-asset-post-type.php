@@ -429,35 +429,35 @@ class Disciple_Tools_Asset_Post_Type {
 
         $fields['address'] = array(
             'name' => __( 'Address', 'disciple_tools' ),
-            'description' => __( '', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
         );
         $fields['city'] = array(
             'name' => __( 'City', 'disciple_tools' ),
-            'description' => __( '', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
         );
         $fields['state'] = array(
             'name' => __( 'State', 'disciple_tools' ),
-            'description' => __( '', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
         );
         $fields['zip'] = array(
             'name' => __( 'Zip Code', 'disciple_tools' ),
-            'description' => __( '', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
         );
         $fields['country'] = array(
             'name' => __( 'Country', 'disciple_tools' ),
-            'description' => __( '', 'disciple_tools' ),
+            'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
