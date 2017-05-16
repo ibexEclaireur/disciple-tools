@@ -103,47 +103,7 @@ class Disciple_Tools_Api_Keys {
 				$this->admin_notice( "Application already exists", "error" );
 			}
 		}
-		?>
-      <div class="wrap">
-        <form action="" method="post">
-          <h1>Generate Token</h1>
-          <table class="">
-            <tr>
-              <th>
-                <label for="application">Application Name</label>
-              </th>
-              <td>
-                <input type="text" id="application" name="application">
-              </td>
-              <td>
-                <button type="submit">Generate Token</button>
-              </td>
-            </tr>
-          </table>
-        </form>
-        <h1>API Keys</h1>
-        <table>
-          <thead>
-          <tr>
-            <th>Client ID</th>
-            <th>Client Token</th>
-          </tr>
-          </thead>
-			<?php foreach ( $keys as $key ): ?>
-              <tbody>
-              <tr>
-                <td>
-					<?php echo $key["client_id"] ?>
-                </td>
-                <td>
-					<?php echo $key["client_token"] ?>
-                </td>
-              </tr>
-              </tbody>
-			<?php endforeach; ?>
-        </table>
-      </div>
-		<?php
+		include 'views/api-keys-view.php';
 	}
 
 }
