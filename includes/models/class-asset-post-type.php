@@ -54,16 +54,39 @@ class Disciple_Tools_Asset_Post_Type {
     public $taxonomies;
 
     /**
+     * Disciple_Tools_Asset_Post_Type The single instance of Disciple_Tools_Asset_Post_Type.
+     * @var 	object
+     * @access  private
+     * @since 	0.1
+     */
+    private static $_instance = null;
+
+    /**
+     * Main Disciple_Tools_Asset_Post_Type Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Asset_Post_Type is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Disciple_Tools_Asset_Post_Type instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
+
+    /**
      * Constructor function.
      * @access public
      * @since 0.1
      */
-    public function __construct( $post_type = 'asset', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
-        $this->post_type = $post_type;
-        $this->singular = $singular;
-        $this->plural = $plural;
-        $this->args = $args;
-        $this->taxonomies = $taxonomies;
+    public function __construct( $post_type = '', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
+        $this->post_type = 'asset';
+        $this->singular = __( 'Asset', 'disciple_tools' );
+        $this->plural = __( 'Assets', 'disciple_tools' );
+        $this->args = array( 'menu_icon' => 'dashicons-format-status' );
+        $this->taxonomies = array();
 
         add_action( 'init', array( $this, 'register_post_type' ) );
         add_action( 'init', array( $this, 'register_taxonomy' ) );

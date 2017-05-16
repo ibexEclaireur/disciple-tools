@@ -52,6 +52,29 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public $taxonomies;
 
+    /**
+     * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
+     * @var 	object
+     * @access  private
+     * @since 	0.1
+     */
+    private static $_instance = null;
+
+    /**
+     * Main Disciple_Tools_Contact_Post_Type Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Contact_Post_Type is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Disciple_Tools_Contact_Post_Type instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
+
 
 	/**
 	 * Constructor function.
@@ -59,11 +82,11 @@ class Disciple_Tools_Contact_Post_Type {
 	 * @since 0.1
 	 */
 	public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
-		$this->post_type = $post_type;
-		$this->singular = $singular;
-		$this->plural = $plural;
-		$this->args = $args;
-		$this->taxonomies = $taxonomies;
+		$this->post_type = 'contacts';
+		$this->singular = 'Contact';
+		$this->plural = 'Contacts';
+		$this->args = array( 'menu_icon' => 'dashicons-groups' );
+		$this->taxonomies = $taxonomies = array();
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
 //		add_action( 'init', array( $this, 'register_taxonomy' ) );
@@ -72,7 +95,7 @@ class Disciple_Tools_Contact_Post_Type {
 			global $pagenow;
 
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
-			add_action( 'save_post', array( $this, 'save_new_contacts' ) );
+//			add_action( 'save_post', array( $this, 'save_new_contacts' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 			add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 
@@ -173,12 +196,6 @@ class Disciple_Tools_Contact_Post_Type {
 	} // End register_taxonomy()
 
 
-    /**
-     * Column modifications and other contacts admin design features can be found in /includes/admin/config-contacts.php
-     */
-
-
-
 	/**
 	 * Update messages for the post type admin.
 	 * @since  0.1
@@ -258,21 +275,6 @@ class Disciple_Tools_Contact_Post_Type {
 
                     switch ( $type ) {
 
-//                        case 'new':
-//                            $html .= '<tr><td colspan="2"><hr></td> </tr><tr valign="top" id="new-row"><th scope="row">New: ';
-//                            $html .= '<select name="new_label" id="new_label" class="alignright" >';
-//                            // Iterate the options
-//                            foreach ($v['name'] as $vv) {
-//                                $html .= '<option value="' . $vv . '" ';
-//                                $html .= '>' .$vv . '</option>';
-//                            }
-//                            $html .= '</select>' . "\n";
-//
-//                            $html .= '</th>
-//                                <td><input name="new_field" type="text" id="new_field" class="edit-input" value="" />' . "\n";
-//                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-//                            $html .= '</td><tr/>' . "\n";
-//                            break;
                         case 'text':
                             $html .= '<tr valign="top" id="'. esc_attr( $k )  .'"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
                                 <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
@@ -366,81 +368,44 @@ class Disciple_Tools_Contact_Post_Type {
     public function add_contact_methods () {
 
         $fields = array(
-            __('Phone', 'disciple_tools'),
-            __('Mobile', 'disciple_tools'),
-            __('Facebook', 'disciple_tools'),
-            __('Twitter', 'disciple_tools'),
-            __('Instagram', 'disciple_tools'),
-            __('Skype', 'disciple_tools'),
-            __('Other', 'disciple_tools'),
+            __('Phone_Primary', 'disciple_tools'),
+            __('Phone_Mobile', 'disciple_tools'),
+            __('Phone_Work', 'disciple_tools'),
+            __('Phone_Home', 'disciple_tools'),
+            __('Phone_Other', 'disciple_tools'),
+            __('Email_Primary', 'disciple_tools'),
+            __('Email_Work', 'disciple_tools'),
+            __('Email_Other', 'disciple_tools'),
+            __('Facebook_Facebook', 'disciple_tools'), // Duplicate is required to make fields uniform for parsing.
+            __('Twitter_Twitter', 'disciple_tools'),
+            __('Instagram_Instagram', 'disciple_tools'),
+            __('Skype_Skype', 'disciple_tools'),
+            __('Other_Other', 'disciple_tools'),
         );
 
-        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-field\').toggle();"><strong>+ Contact Detail</strong></a></p>';
-        $html .= '<table class="form-table" id="new-field" style="display: none;"><tbody>' . "\n";
-        $html .= '<td><select name=new-label>';
+        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
+        $html .= '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
+
+        $html .= '<td><select name="new-key"><option value=""></option> ';
                 foreach ($fields as $field) {
-                    $html .= '<option value="'.$field.'">'.$field.'</option>';
+                    $names = explode("_", $field); // separates primary name from type tag
+
+                    $key = 'contact_' . $field;
+
+                    $html .= '<option value="'.$key.'">'.$names[0];
+
+                    if($names[0] != $names[1]) { $html .= '  (' . $names[1] . ')'; }
+
+                    $html .= '</option>';
                 }
         $html .= '</select></td>';
-        $html .= '<td><input type="text" name="new-field" class="edit-input" /> </td>';
+
+                $html .= '<td><input type="text" name="new-value" id="new-value" class="edit-input" /> </td>';
 
         $html .= '</tbody></table>';
         return $html;
 
-
-//        echo '<script>
-//                function addContactDetailField () {
-//                    var row = "<tr><td><select name=new-label><option>Phone</option><option>Phone (Primary)</option><option>Facebook</option><option>Twitter</option><option>Skype</option></select></td>" +
-//                     "<td><input type=text name=new-input /></td></tr>";
-//                    jQuery(\'#new-fields\').append(row);
-//                }
-//                </script>';
     }
-
-    public function save_new_contacts ($post_id) {
-        global $post, $messages;
-
-        // Verify
-        if (  get_post_type() != $this->post_type  ) {
-            return $post_id;
-        }
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
-            return $post_id;
-        }
-
-        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
-            if ( ! current_user_can( 'edit_page', $post_id ) ) {
-                return $post_id;
-            }
-        } else {
-            if ( ! current_user_can( 'edit_post', $post_id ) ) {
-                return $post_id;
-            }
-        }
-
-        if ( isset($_GET['action']) ) {
-            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
-                return $post_id;
-            }
-        }
-
-//        $field_data = $this->get_custom_fields_settings();
-//        $fields = array_keys( $field_data );
-//
-//        foreach ( $fields as $f ) {
-//
-//            ${$f} = strip_tags(trim($_POST[$f]));
-//
-//            if ( get_post_meta( $post_id,  $f ) == '' ) {
-//                add_post_meta( $post_id,  $f, ${$f}, true );
-//            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-//                update_post_meta( $post_id, $f, ${$f} );
-//            } elseif ( ${$f} == '' ) {
-//                delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
-//            }
-//        }
-    }
-
 
     /**
      * Save meta box fields.
@@ -479,6 +444,17 @@ class Disciple_Tools_Contact_Post_Type {
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
 
+        if ( (isset( $_POST['new-key']) && !empty($_POST['new-key']) ) && (isset( $_POST['new-value']) && !empty ($_POST['new-value']) ) ) { // catch and prepare new contact fields
+
+            $meta = get_post_meta($post_id);
+            $meta_count = count($meta);
+
+            $key = $_POST['new-key'] . '_' . $meta_count;
+            $value = $_POST['new-value'];
+
+            add_post_meta( $post_id, $key, $value, true );
+        }
+
         foreach ( $fields as $f ) {
 
             ${$f} = strip_tags(trim($_POST[$f]));
@@ -491,8 +467,8 @@ class Disciple_Tools_Contact_Post_Type {
                 delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
             }
         }
-    } // End meta_box_save()
 
+    } // End meta_box_save()
 
 
     /**
@@ -502,15 +478,12 @@ class Disciple_Tools_Contact_Post_Type {
         dt_activity_metabox()->activity_meta_box(get_the_ID());
     }
 
-
-
     /**
      * Meta box for Status Information
      * @access public
      * @since  0.1
      */
     public function load_milestone_meta_box () {
-
         echo '' . $this->meta_box_content('milestone');
     }
 
@@ -520,8 +493,10 @@ class Disciple_Tools_Contact_Post_Type {
      * @since  0.1
      */
     public function load_contact_info_meta_box () {
+        global $post_id;
         echo ''. $this->meta_box_content('info');
         echo ''. $this->add_contact_methods ();
+
     }
 
     /**
@@ -591,11 +566,10 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'status'
         );
 
-
         // Info Section
 		$methods = $this->contact_fields();
 		foreach ($methods as $k => $v) { // sets phone numbers as first
-            if($v['name'] == 'Phone') {
+            if($v['tag'] == 'Phone') {
                 $fields[$k] = array(
                     'name' => $v['name'],
                     'description' => '',
@@ -606,7 +580,7 @@ class Disciple_Tools_Contact_Post_Type {
             }
         }
         foreach ($methods as $k => $v) { // sets emails as second
-            if($v['name'] == 'Email') {
+            if($v['tag'] == 'Email') {
                 $fields[$k] = array(
                     'name' => $v['name'],
                     'description' => '',
@@ -617,7 +591,7 @@ class Disciple_Tools_Contact_Post_Type {
             }
         }
         foreach ($methods as $k => $v) { // sets all others third
-            if($v['name'] != 'Phone' || $v['name'] != 'Email') {
+            if($v['tag'] != 'Phone' || $v['name'] != 'Email') {
                 $fields[$k] = array(
                     'name' => $v['name'],
                     'description' => '',
@@ -627,14 +601,6 @@ class Disciple_Tools_Contact_Post_Type {
                 );
             }
         }
-        $fields['preferred_contact_method'] = array(
-            'name' => __( 'Preferred Contact', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', __('Phone', 'disciple_tools' ), __('Skype', 'disciple_tools' ), __('Facebook', 'disciple_tools' ), __('Mail', 'disciple_tools' ), __('Email', 'disciple_tools' ), __('SMS', 'disciple_tools' )),
-            'section' => 'info'
-        );
-
 
         // Address
         $fields['mailing_street'] = array(
@@ -777,9 +743,6 @@ class Disciple_Tools_Contact_Post_Type {
 			'default' => '',
 			'section' => 'misc'
 		);
-
-		
-
 		return apply_filters( 'dt_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
 
@@ -791,20 +754,19 @@ class Disciple_Tools_Contact_Post_Type {
 	    global $wpdb, $post;
 	    $fields = array();
 
-        $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%'", ARRAY_A );
-
-        if (empty($current_fields))  {
-            $current_fields = array( array('meta_key' => 'contact_Phone') );
-        }
+        $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
 
         foreach ($current_fields as $value) {
             $type = explode('_', $value['meta_key']);
+            $tag = null;
+
+            if ($type[1] != $type[2] ) { $tag = ' ('. $type[2] . ')'; }
 
             $fields[$value['meta_key']] = array(
-                'name' => $type[1],
+                'name' => $type[1] . $tag,
+                'tag' => $type[1],
             );
         }
-
         return $fields;
     }
 

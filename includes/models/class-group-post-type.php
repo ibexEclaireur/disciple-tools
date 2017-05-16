@@ -51,7 +51,30 @@ class Disciple_Tools_Group_Post_Type {
 	 * @since  0.1
 	 * @var    array
 	 */
-//	public $taxonomies;
+	public $taxonomies;
+
+    /**
+     * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
+     * @var 	object
+     * @access  private
+     * @since 	0.1
+     */
+    private static $_instance = null;
+
+    /**
+     * Main Disciple_Tools_Group_Post_Type Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Group_Post_Type is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Disciple_Tools_Group_Post_Type instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
 
 	/**
 	 * Constructor function.
@@ -59,10 +82,10 @@ class Disciple_Tools_Group_Post_Type {
 	 * @since 0.1
 	 */
 	public function __construct( $post_type = 'groups', $singular = '', $plural = '', $args = array(), $taxonomies = array('Cities') ) {
-		$this->post_type = $post_type;
-		$this->singular = $singular;
-		$this->plural = $plural;
-		$this->args = $args;
+		$this->post_type = 'groups';
+		$this->singular = __( 'Group', 'disciple_tools' );
+		$this->plural = __( 'Groups', 'disciple_tools' );
+		$this->args = array( 'menu_icon' => 'dashicons-admin-multisite' );
 		$this->taxonomies = $taxonomies;
 
 		add_action( 'init', array( $this, 'register_post_type' ) );

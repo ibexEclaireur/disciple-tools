@@ -12,19 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /*********************************************************************************************
  * Action and Filters
  */
+if (is_admin()) {
+    add_action( 'admin_bar_menu', 'dt_modify_admin_bar', 999 );
 
-add_action( 'admin_bar_menu', 'disciple_tools_modify_admin_bar', 999 );
+    add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
+    add_filter( 'update_footer',     '__empty_footer_string', 11 );
 
-add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
-add_filter( 'update_footer',     '__empty_footer_string', 11 );
+    add_action( 'admin_menu', 'dt_remove_post_admin_menus' );
 
-add_action( 'admin_menu', 'remove_menus' );
-
-add_filter( 'get_user_option_admin_color', 'change_admin_color');
-remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
-
-if( is_admin() && !current_user_can( 'administrator' ) ) {
-    add_action( 'admin_menu', 'disciple_tools_remove_posts_menu' );
+    add_filter( 'get_user_option_admin_color', 'dt_change_admin_color'); // sets the theme to "light"
+    remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
 }
 
 
@@ -35,7 +32,7 @@ if( is_admin() && !current_user_can( 'administrator' ) ) {
 /**
  * Modify the admin bar
  */
-function disciple_tools_modify_admin_bar( $wp_admin_bar ) {
+function dt_modify_admin_bar( $wp_admin_bar ) {
 
     // Remove Logo
     $wp_admin_bar->remove_node( 'wp-logo' );
@@ -68,7 +65,7 @@ function disciple_tools_modify_admin_bar( $wp_admin_bar ) {
  * Remove menu items
  * @see https://codex.wordpress.org/Function_Reference/remove_menu_page
  */
-function remove_menus(){
+function dt_remove_post_admin_menus(){
     remove_menu_page( 'edit.php' ); //Posts (Not using posts as a content channel for Disciple Tools, so that no data is automatically exposed by switching themes or plugin.
 }
 
@@ -83,28 +80,9 @@ function __empty_footer_string () {
 /*
  * Set the admin area color scheme
  */
-function change_admin_color($result) {
+function dt_change_admin_color($result) {
     return 'light';
 }
-
-
-
-/**
- * Removes the Posts menu from all users but administrators
- */
-if( is_admin() && !current_user_can( 'administrator' ) ) {
-
-    function remove_menus(){
-        remove_menu_page( 'edit.php' );
-    }
-    add_action( 'admin_menu', 'remove_menus' );
-}
-
-function disciple_tools_remove_posts_menu(){
-    remove_menu_page( 'edit.php' ); // Posts
-    remove_menu_page( 'edit.php?post_type=page' );    //Pages
-}
-
 
 
 // Removes the tools menu for the marketer
