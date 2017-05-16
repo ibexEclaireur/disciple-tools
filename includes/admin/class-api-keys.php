@@ -72,7 +72,7 @@ class Disciple_Tools_Api_Keys {
 	 */
 	public function api_keys_page() {
 		$keys = get_option( "dt_api_keys", array() );
-		if ( isset( $_POST["application"] ) ) {
+		if ( isset( $_POST["application"]) && !empty($_POST["application"])) {
 			$client_id= wordwrap(strtolower($_POST["application"]), 1, '-', 0);
 			$token = bin2hex( random_bytes( 32 ) );
 			if (!isset($keys[$client_id])) {
@@ -80,6 +80,11 @@ class Disciple_Tools_Api_Keys {
 				update_option( "dt_api_keys", $keys );
 			} else {
 				$this->admin_notice( "Application already exists", "error" );
+			}
+		} else if (isset($_POST["delete"])){
+			if ($keys[$_POST["delete"]]){
+				unset($keys[$_POST["delete"]]);
+				update_option( "dt_api_keys", $keys );
 			}
 		}
 		include 'views/api-keys-view.php';
