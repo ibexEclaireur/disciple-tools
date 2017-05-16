@@ -2,14 +2,16 @@
   <div id="poststuff">
     <h1>API Keys</h1>
     <p>Developers can use API keys to grant limited access to the Disciple Tools
-      API from external websites and applications</p>
+      API from external websites and applications. To get an API key, fill in what what you want to call it below.
+      We will generate Client Token and Client Id base on the name.
+    </p>
 
     <form action="" method="post">
       <h2>Token Generator</h2>
       <table class="widefat striped" style="margin-bottom:50px">
         <tr>
           <th>
-            <label for="application">Application Name</label>
+            <label for="application">Name</label>
           </th>
           <td>
             <input type="text" id="application" name="application">
@@ -26,7 +28,7 @@
         <th>Client Token</th>
       </tr>
       </thead>
-      <?php foreach ( $keys as $key ): ?>
+      <?php foreach ( $keys as $id => $key): ?>
         <tbody>
         <tr>
           <td>

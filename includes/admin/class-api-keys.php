@@ -66,28 +66,6 @@ class Disciple_Tools_Api_Keys {
 	}
 
 	/**
-	 * See if a value is in an array of values
-	 *
-	 * @param $needle , the value to find
-	 * @param $haystack , the array to look in
-	 * @param bool $strict
-	 *
-	 * @access private
-	 * @since 0.1
-	 *
-	 * @return bool
-	 */
-	private function in_array_r( $needle, $haystack, $strict = false ) {
-		foreach ( $haystack as $item ) {
-			if ( ( $strict ? $item === $needle : $item == $needle ) || ( is_array( $item ) && $this->in_array_r( $needle, $item, $strict ) ) ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * The API keys page html
 	 * @access public
 	 * @since 0.1
@@ -95,9 +73,10 @@ class Disciple_Tools_Api_Keys {
 	public function api_keys_page() {
 		$keys = get_option( "dt_api_keys", array() );
 		if ( isset( $_POST["application"] ) ) {
+			$client_id= wordwrap(strtolower($_POST["application"]), 1, '-', 0);
 			$token = bin2hex( random_bytes( 32 ) );
-			if ( ! $this->in_array_r( $_POST["application"], $keys ) ) {
-				$keys[] = array( "client_id" => $_POST["application"], "client_token" => $token );
+			if (!isset($keys[$client_id])) {
+				$keys[$client_id] = array( "client_id" => $client_id, "client_token" => $token );
 				update_option( "dt_api_keys", $keys );
 			} else {
 				$this->admin_notice( "Application already exists", "error" );
