@@ -72,6 +72,7 @@ class Disciple_Tools_Contact_Post_Type {
 			global $pagenow;
 
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
+			add_action( 'save_post', array( $this, 'save_new_contacts' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 			add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 
@@ -359,6 +360,87 @@ class Disciple_Tools_Contact_Post_Type {
         echo $html;
     } // End meta_box_content()
 
+    /**
+     * Add Contact fields
+     */
+    public function add_contact_methods () {
+
+        $fields = array(
+            __('Phone', 'disciple_tools'),
+            __('Mobile', 'disciple_tools'),
+            __('Facebook', 'disciple_tools'),
+            __('Twitter', 'disciple_tools'),
+            __('Instagram', 'disciple_tools'),
+            __('Skype', 'disciple_tools'),
+            __('Other', 'disciple_tools'),
+        );
+
+        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-field\').toggle();"><strong>+ Contact Detail</strong></a></p>';
+        $html .= '<table class="form-table" id="new-field" style="display: none;"><tbody>' . "\n";
+        $html .= '<td><select name=new-label>';
+                foreach ($fields as $field) {
+                    $html .= '<option value="'.$field.'">'.$field.'</option>';
+                }
+        $html .= '</select></td>';
+        $html .= '<td><input type="text" name="new-field" class="edit-input" /> </td>';
+
+        $html .= '</tbody></table>';
+        return $html;
+
+
+//        echo '<script>
+//                function addContactDetailField () {
+//                    var row = "<tr><td><select name=new-label><option>Phone</option><option>Phone (Primary)</option><option>Facebook</option><option>Twitter</option><option>Skype</option></select></td>" +
+//                     "<td><input type=text name=new-input /></td></tr>";
+//                    jQuery(\'#new-fields\').append(row);
+//                }
+//                </script>';
+    }
+
+    public function save_new_contacts ($post_id) {
+        global $post, $messages;
+
+        // Verify
+        if (  get_post_type() != $this->post_type  ) {
+            return $post_id;
+        }
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
+            return $post_id;
+        }
+
+        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
+            if ( ! current_user_can( 'edit_page', $post_id ) ) {
+                return $post_id;
+            }
+        } else {
+            if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                return $post_id;
+            }
+        }
+
+        if ( isset($_GET['action']) ) {
+            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
+                return $post_id;
+            }
+        }
+
+//        $field_data = $this->get_custom_fields_settings();
+//        $fields = array_keys( $field_data );
+//
+//        foreach ( $fields as $f ) {
+//
+//            ${$f} = strip_tags(trim($_POST[$f]));
+//
+//            if ( get_post_meta( $post_id,  $f ) == '' ) {
+//                add_post_meta( $post_id,  $f, ${$f}, true );
+//            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+//                update_post_meta( $post_id, $f, ${$f} );
+//            } elseif ( ${$f} == '' ) {
+//                delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
+//            }
+//        }
+    }
+
 
     /**
      * Save meta box fields.
@@ -439,10 +521,7 @@ class Disciple_Tools_Contact_Post_Type {
      */
     public function load_contact_info_meta_box () {
         echo ''. $this->meta_box_content('info');
-        echo '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').append(\'<div>Label <input>Still working on this</input> </div>\');">Add New Contact Method</a></p>
-                <div id="new-fields"></div>';
-
-        echo '<script></script>';
+        echo ''. $this->add_contact_methods ();
     }
 
     /**
@@ -515,14 +594,38 @@ class Disciple_Tools_Contact_Post_Type {
 
         // Info Section
 		$methods = $this->contact_fields();
-		foreach ($methods as $k => $v) {
-            $fields[$k] = array(
-                'name' => $v['name'],
-                'description' => '',
-                'type' => 'text',
-                'default' => '',
-                'section' => 'info'
-            );
+		foreach ($methods as $k => $v) { // sets phone numbers as first
+            if($v['name'] == 'Phone') {
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'info'
+                );
+            }
+        }
+        foreach ($methods as $k => $v) { // sets emails as second
+            if($v['name'] == 'Email') {
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'info'
+                );
+            }
+        }
+        foreach ($methods as $k => $v) { // sets all others third
+            if($v['name'] != 'Phone' || $v['name'] != 'Email') {
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'info'
+                );
+            }
         }
         $fields['preferred_contact_method'] = array(
             'name' => __( 'Preferred Contact', 'disciple_tools' ),
@@ -531,37 +634,6 @@ class Disciple_Tools_Contact_Post_Type {
             'default' => array('', __('Phone', 'disciple_tools' ), __('Skype', 'disciple_tools' ), __('Facebook', 'disciple_tools' ), __('Mail', 'disciple_tools' ), __('Email', 'disciple_tools' ), __('SMS', 'disciple_tools' )),
             'section' => 'info'
         );
-
-
-
-//        $fields['email'] = array(
-//            'name' => __( 'Email', 'disciple_tools' ),
-//            'description' => '',
-//            'type' => 'text',
-//            'default' => '',
-//            'section' => 'info'
-//        );
-//        $fields['skype'] = array(
-//            'name' => __( 'Skype', 'disciple_tools' ),
-//            'description' => '',
-//            'type' => 'text',
-//            'default' => '',
-//            'section' => 'info'
-//        );
-//        $fields['facebook'] = array(
-//            'name' => __( 'Facebook', 'disciple_tools' ),
-//            'description' => '',
-//            'type' => 'text',
-//            'default' => '',
-//            'section' => 'info'
-//        );
-//        $fields['twitter'] = array(
-//            'name' => __( 'Twitter', 'disciple_tools' ),
-//            'description' => '',
-//            'type' => 'text',
-//            'default' => '',
-//            'section' => 'info'
-//        );
 
 
         // Address
