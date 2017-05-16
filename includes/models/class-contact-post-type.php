@@ -440,9 +440,9 @@ class Disciple_Tools_Contact_Post_Type {
     public function load_contact_info_meta_box () {
         echo ''. $this->meta_box_content('info');
         echo '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').append(\'<div>Label <input>Still working on this</input> </div>\');">Add New Contact Method</a></p>
-                <div id="new-fields"></div"
+                <div id="new-fields"></div>';
 
-            ';
+        echo '<script></script>';
     }
 
     /**
