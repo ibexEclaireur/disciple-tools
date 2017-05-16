@@ -28,7 +28,7 @@ add_action( 'admin_enqueue_scripts', 'dismiss_notice_callback_script' );
 function contact_page_scripts() {
     global $pagenow, $post;
 
-    if ( 'post.php' === $pagenow || 'post-new.php' === $pagenow && 'contacts' === get_post_type( $post)) {
+    if ( ('post.php' === $pagenow || 'post-new.php' === $pagenow) && 'contacts' === get_post_type( $post)) {
 
         wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
         wp_enqueue_style( 'dt_admin_css' );
@@ -44,7 +44,7 @@ function contact_page_scripts() {
 function group_page_scripts() {
     global $pagenow, $post;
 
-    if ( 'post.php' === $pagenow || 'post-new.php' === $pagenow && 'groups' === get_post_type( $post ) ) {
+    if ( ('post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'groups' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
         wp_enqueue_style( 'dt_admin_css' );
@@ -60,7 +60,7 @@ function group_page_scripts() {
 function location_page_scripts() {
     global $pagenow, $post;
 
-    if ( 'post.php' === $pagenow || 'post-new.php' === $pagenow && 'locations' === get_post_type( $post ) ) {
+    if ( ('post.php' === $pagenow || 'post-new.php' === $pagenow) && 'locations' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
         wp_enqueue_style( 'dt_admin_css' );
@@ -76,7 +76,7 @@ function location_page_scripts() {
 function asset_page_scripts() {
     global $pagenow, $post;
 
-    if ( 'post.php' === $pagenow || 'post-new.php' === $pagenow && 'assets' === get_post_type( $post ) ) {
+    if ( ('post.php' === $pagenow || 'post-new.php' === $pagenow) && 'assets' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
         wp_enqueue_style( 'dt_admin_css' );

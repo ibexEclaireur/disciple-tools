@@ -4,8 +4,3 @@
  @since 0.1
  */
 
-// Contacts post.php page user interface utilities
-jQuery(document).ready(function($) {
-    $('#minor-publishing-actions').hide();
-    $('.misc-pub-visibility').hide();
-});

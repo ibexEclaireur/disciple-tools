@@ -18,11 +18,10 @@ add_action( 'admin_bar_menu', 'disciple_tools_modify_admin_bar', 999 );
 add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
 add_filter( 'update_footer',     '__empty_footer_string', 11 );
 
+add_action( 'admin_menu', 'remove_menus' );
+
 add_filter( 'get_user_option_admin_color', 'change_admin_color');
 remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
-
-//add_filter('manage_contacts_posts_columns', 'contacts_table_head');
-//add_action( 'manage_contacts_posts_custom_column', 'contacts_table_content', 10, 2 );
 
 if( is_admin() && !current_user_can( 'administrator' ) ) {
     add_action( 'admin_menu', 'disciple_tools_remove_posts_menu' );
@@ -66,10 +65,18 @@ function disciple_tools_modify_admin_bar( $wp_admin_bar ) {
 }
 
 /**
+ * Remove menu items
+ * @see https://codex.wordpress.org/Function_Reference/remove_menu_page
+ */
+function remove_menus(){
+    remove_menu_page( 'edit.php' ); //Posts (Not using posts as a content channel for Disciple Tools, so that no data is automatically exposed by switching themes or plugin.
+}
+
+/**
  * Remove Admin Footer and Version Number
  */
 function __empty_footer_string () {
-    // Update the text area with an empty string. TODO: see if this is better to do with CSS display:none;
+    // Update the text area with an empty string.
     return '';
 }
 
