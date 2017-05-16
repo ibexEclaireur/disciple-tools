@@ -63,7 +63,7 @@ function dt_DRA_Disable_Via_Filters() {
  */
 function dt_DRA_only_allow_logged_in_rest_access( $access ) {
     $is_public = false;
-    if (strpos($_SERVER['REQUEST_URI'], '/public/') !== false){
+    if (strpos($_SERVER['REQUEST_URI'], '/dt-public/') !== false){
         $is_public = true;
     }
 	if( ! is_user_logged_in() && !$is_public) {

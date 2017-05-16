@@ -43,7 +43,7 @@ class Public_Hooks
      * Add the api routes
      */
     public function add_api_routes(){
-        register_rest_route($this->namespace, 'create-contact', [
+        register_rest_route($this->namespace, '/dt-public/create-contact', [
             'methods' => 'POST',
             'callback' => array($this, 'create_contact'),
         ]);
@@ -51,12 +51,13 @@ class Public_Hooks
 
 
     /**
-     * @param WP_REST_Request $request
-     * @return array|WP_Error
+     * @param WP_REST_Request $request as application/json
+     * @return array|WP_Error The new contact Id on success, an error on failure
      */
     public function create_contact(WP_REST_Request $request ){
         //@todo authentication/token?
-        $fields = $request->get_body_params();
+
+        $fields = $request->get_json_params();
 
         $result =  Contact_Controller::create_contact($fields);
         if ($result["success"] == true){
