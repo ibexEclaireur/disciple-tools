@@ -324,7 +324,7 @@ class Disciple_Tools {
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
 
         //integrations
-        require_once('includes/functions/contact-controller.php');
+        require_once('includes/controllers/contact-controller.php');
         require_once('includes/integrations/class-integrations.php'); // data integration for cron scheduling
         if(! class_exists('Ga_Autoloader')) {
             require_once('includes/plugins/google-analytics/disciple-tools-analytics.php');
