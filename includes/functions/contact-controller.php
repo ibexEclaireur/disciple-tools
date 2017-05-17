@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Class Contact_Controller
  *
- * Functions for creating, finding, updated or deleting contacts
+ * Functions for creating, finding, updating or deleting contacts
  */
 
 class Contact_Controller
