@@ -32,11 +32,13 @@ class Public_Hooks
     private $version = 1.0;
     private $context = "dt-hooks";
     private $namespace;
+    private $contact_controller;
 
     public function __construct()
     {
         $this->namespace = $this->context . "/v" . intval($this->version);
         add_action('rest_api_init', array($this,  'add_api_routes'));
+        $this->contact_controller = new Contact_Controller;
     }
 
     /**
@@ -59,7 +61,7 @@ class Public_Hooks
 
         $fields = $request->get_json_params();
 
-        $result =  Contact_Controller::create_contact($fields);
+        $result =  $this->contact_controller->create_contact($fields);
         if ($result["success"] == true){
             return $result;
         } else {

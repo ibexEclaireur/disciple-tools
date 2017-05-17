@@ -9,21 +9,41 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Contact_Controller
 {
+	public $contact_fields;
+
+	public function __construct(){
+		add_action('init', function(){
+			$this->contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+		});
+
+	}
+
     /**
      * @param array $fields
      * @return array
      */
-    public static function create_contact($fields = array()){
-        //@todo check for required fields
-        //@todo search for duplicates
+    public function create_contact($fields = array()){
+	    //@todo search for duplicates
         //@todo set defaults
 
-
-        if (!isset($fields["name"])){
-            return array("success"=>false, "message"=>"contact needs a name");
+	    //required fields
+        if (!isset($fields["title"])){
+            return array("success"=>false, "message"=>"contact needs a title");
         } else {
-            $name = $fields["name"];
+            $name = $fields["title"];
         }
+
+        //check to see if each field exists
+        $bad_fields = array();
+        foreach($fields as $field => $value){
+        	if (!isset($this->contact_fields[$field])){
+        		$bad_fields[] = $field;
+	        }
+        }
+        if (!empty($bad_fields)){
+        	return array("success"=>false, "message"=>array("these fields do not exist"=>$bad_fields));
+        }
+
 
         $post = array(
             "post_title" => $name,
