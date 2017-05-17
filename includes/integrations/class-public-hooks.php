@@ -57,16 +57,18 @@ class Public_Hooks
      * @return array|WP_Error The new contact Id on success, an error on failure
      */
     public function create_contact(WP_REST_Request $request ){
-        //@todo authentication/token?
+        //@todo authentication/token
 
         $fields = $request->get_json_params();
 
-        $result =  $this->contact_controller->create_contact($fields);
+        $result =  Contact_Controller::create_contact($fields);
         if ($result["success"] == true){
             return $result;
         } else {
             return new WP_Error("contact_creation_error", $result["message"], array('status', 400));
         }
     }
+
+
 
 }
