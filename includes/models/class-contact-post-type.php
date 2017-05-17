@@ -240,7 +240,7 @@ class Disciple_Tools_Contact_Post_Type {
 	} // End meta_box_setup()
 
     /**
-     * The contents of our meta box.
+     * The contents of meta box.
      * @access public
      * @since  0.1
      * @return mixed
@@ -396,9 +396,12 @@ class Disciple_Tools_Contact_Post_Type {
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
 
-        if ( (isset( $_POST['new-key']) && !empty($_POST['new-key']) ) && (isset( $_POST['new-value']) && !empty ($_POST['new-value']) ) ) { // catch and prepare new contact fields
-
+        if ( (isset( $_POST['new-key-address']) && !empty($_POST['new-key-address']) ) && (isset( $_POST['new-value-address']) && !empty ($_POST['new-value-address']) ) ) { // catch and prepare new contact fields
             add_post_meta( $post_id, $_POST['new-key'], $_POST['new-value'], true );
+        }
+
+        if ( (isset( $_POST['new-key-contact']) && !empty($_POST['new-key-contact']) ) && (isset( $_POST['new-value-contact']) && !empty ($_POST['new-value-contact']) ) ) { // catch and prepare new contact fields
+            add_post_meta( $post_id, $_POST['new-key-contact'], $_POST['new-value-contact'], true );
         }
 
         foreach ( $fields as $f ) {
@@ -441,7 +444,7 @@ class Disciple_Tools_Contact_Post_Type {
         global $post_id;
         echo ''. $this->meta_box_content('info');
         echo ''. $this->add_new_contact_field ();
-//        print '<pre>'; print_r($this->contact_fields()); print '</pre>';
+//        print '<pre>'; print_r($_POST); print '</pre>';
 
     }
 
@@ -578,7 +581,6 @@ class Disciple_Tools_Contact_Post_Type {
 
 
         // Address
-//
         $addresses = $this->address_fields();
         foreach ($addresses as $k => $v) { // sets all others third
             $fields[$k] = array(
@@ -704,7 +706,6 @@ class Disciple_Tools_Contact_Post_Type {
     public function contact_fields () {
 	    global $wpdb, $post;
 
-
 	    $fields = array();
 	    $current_fields = array();
 
@@ -763,22 +764,22 @@ class Disciple_Tools_Contact_Post_Type {
         $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
         $html .= '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
 
-        $channels = $this->get_channels_list();
+        $channels = $this->get_channels_list('contact');
 
         $html .= '<tr><th>
-                <select name="new-key" class="edit-input"><option value=""></option> ';
-        foreach ($channels as $channel) {
+                <select name="new-key-contact" class="edit-input"><option value=""></option> ';
+                        foreach ($channels as $channel) {
 
-            $key =  $this->create_channel_metakey($channel, 'contact'); // build key
-            $names = explode("_", $key); // separates primary name from type tag
+                            $key =  $this->create_channel_metakey($channel, 'contact'); // build key
+                            $names = explode("_", $key); // separates primary name from type tag
 
-            $html .= '<option value="'.$key.'">'.$names[2];
-            if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
-            $html .= '</option>';
-        }
+                            $html .= '<option value="'.$key.'">'.$names[2];
+                            if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
+                            $html .= '</option>';
+                        }
         $html .= '</select></th>';
 
-        $html .= '<td><input type="text" name="new-value" id="new-value" class="edit-input" /></td><td><button type="submit" class="button">Save</button></td></tr>';
+        $html .= '<td><input type="text" name="new-value-contact" id="new-value" class="edit-input" /></td><td><button type="submit" class="button">Save</button></td></tr>';
 
         $html .= '</tbody></table>';
         return $html;
@@ -797,7 +798,7 @@ class Disciple_Tools_Contact_Post_Type {
         $channels = $this->get_channels_list('address');
 
         $html .= '<tr><th>
-                <select name="new-key" class="edit-input"><option value=""></option> ';
+                <select name="new-key-address" class="edit-input"><option value=""></option> ';
         foreach ($channels as $channel) {
 
             $key =  $this->create_channel_metakey($channel, 'address'); // build key
@@ -808,7 +809,7 @@ class Disciple_Tools_Contact_Post_Type {
             $html .= '</option>';
         }
         $html .= '</select></th>';
-        $html .= '<td><textarea type="text" name="new-value" id="new-address" class="edit-input" ></textarea></td><td><button type="submit" class="button">Save</button></td></tr>';
+        $html .= '<td><textarea type="text" name="new-value-address" id="new-address" class="edit-input" ></textarea></td><td><button type="submit" class="button">Save</button></td></tr>';
 
         $html .= '</tbody></table>';
         return $html;
@@ -865,15 +866,6 @@ class Disciple_Tools_Contact_Post_Type {
         }
 
     }
-
-//    public function get_addresses_list () {
-//        $addresses = array(
-//            __('Home', 'disciple_tools'),
-//            __('Work', 'disciple_tools'),
-//            __('Other', 'disciple_tools'),
-//        );
-//        return $addresses;
-//    }
 
     /**
      * Field: The 'Assigned To' dropdown controller
