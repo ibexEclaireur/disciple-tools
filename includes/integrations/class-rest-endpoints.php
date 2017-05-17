@@ -7,9 +7,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Expose some public rest api endpoints to outside sources
  */
 
-class Public_Hooks
+class Disciple_Tools_Rest_Endpoints
 {
-    //setup endpoints
 
     /**
      * @var object Public_Hooks instance variable
@@ -18,7 +17,7 @@ class Public_Hooks
 
     /**
      * Public_Hooks. Ensures only one instance of Public_Hooks is loaded or can be loaded.
-     * @return Public_Hooks instance
+     * @return Disciple_Tools_Rest_Endpoints instance
      */
     public static function instance () {
 		if ( is_null( self::$_instance ) )

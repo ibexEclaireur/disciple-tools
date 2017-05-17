@@ -333,8 +333,8 @@ class Disciple_Tools {
         }
         require_once('includes/integrations/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-        require_once('includes/integrations/class-public-hooks.php');
-        Public_Hooks::instance();
+        require_once( 'includes/integrations/class-rest-endpoints.php' );
+        Disciple_Tools_Rest_Endpoints::instance();
 
         // load rest api endpoints
         require_once ('includes/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
