@@ -41,7 +41,10 @@ final class Disciple_Tools_Admin {
 		// Register the settings screen within WordPress.
 		add_action( 'admin_menu', array( $this, 'register_settings_screen' ) );
 
+
+
 	} // End __construct()
+
 
 	/**
 	 * Main Disciple_Tools_Admin Instance

@@ -53,17 +53,40 @@ class Disciple_Tools_Location_Post_Type {
 	 */
 	public $taxonomies;
 
+    /**
+     * Disciple_Tools_Location_Post_Type The single instance of Disciple_Tools_Location_Post_Type.
+     * @var 	object
+     * @access  private
+     * @since 	0.1
+     */
+    private static $_instance = null;
+
+    /**
+     * Main Disciple_Tools_Location_Post_Type Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Location_Post_Type is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Disciple_Tools_Location_Post_Type instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
+
 	/**
 	 * Constructor function.
 	 * @access public
 	 * @since 0.1
 	 */
-	public function __construct( $post_type = 'locations', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
-		$this->post_type = $post_type;
-		$this->singular = $singular;
-		$this->plural = $plural;
-		$this->args = $args;
-		$this->taxonomies = $taxonomies;
+	public function __construct( ) {
+		$this->post_type = 'locations';
+		$this->singular = __( 'Location', 'disciple_tools' );
+		$this->plural = __( 'Locations', 'disciple_tools' );
+		$this->args = array( 'menu_icon' => 'dashicons-admin-site' );
+		$this->taxonomies = array();
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'init', array( $this, 'register_taxonomy' ) );
@@ -270,7 +293,7 @@ class Disciple_Tools_Location_Post_Type {
      * Load activity metabox
      */
     public function load_activity_meta_box () {
-        dt_activity_meta_box (get_the_ID());
+        dt_activity_metabox()->activity_meta_box(get_the_ID());
     }
 
 	/**

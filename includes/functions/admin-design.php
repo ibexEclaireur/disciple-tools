@@ -12,20 +12,16 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /*********************************************************************************************
  * Action and Filters
  */
+if (is_admin()) {
+    add_action( 'admin_bar_menu', 'dt_modify_admin_bar', 999 );
 
-add_action( 'admin_bar_menu', 'disciple_tools_modify_admin_bar', 999 );
+    add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
+    add_filter( 'update_footer',     '__empty_footer_string', 11 );
 
-add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
-add_filter( 'update_footer',     '__empty_footer_string', 11 );
+    add_action( 'admin_menu', 'dt_remove_post_admin_menus' );
 
-add_filter( 'get_user_option_admin_color', 'change_admin_color');
-remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
-
-add_filter('manage_contacts_posts_columns', 'contacts_table_head');
-add_action( 'manage_contacts_posts_custom_column', 'contacts_table_content', 10, 2 );
-
-if( is_admin() && !current_user_can( 'administrator' ) ) {
-    add_action( 'admin_menu', 'disciple_tools_remove_posts_menu' );
+    add_filter( 'get_user_option_admin_color', 'dt_change_admin_color'); // sets the theme to "light"
+    remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
 }
 
 
@@ -36,7 +32,7 @@ if( is_admin() && !current_user_can( 'administrator' ) ) {
 /**
  * Modify the admin bar
  */
-function disciple_tools_modify_admin_bar( $wp_admin_bar ) {
+function dt_modify_admin_bar( $wp_admin_bar ) {
 
     // Remove Logo
     $wp_admin_bar->remove_node( 'wp-logo' );
@@ -66,63 +62,27 @@ function disciple_tools_modify_admin_bar( $wp_admin_bar ) {
 }
 
 /**
+ * Remove menu items
+ * @see https://codex.wordpress.org/Function_Reference/remove_menu_page
+ */
+function dt_remove_post_admin_menus(){
+    remove_menu_page( 'edit.php' ); //Posts (Not using posts as a content channel for Disciple Tools, so that no data is automatically exposed by switching themes or plugin.
+}
+
+/**
  * Remove Admin Footer and Version Number
  */
 function __empty_footer_string () {
-    // Update the text area with an empty string. TODO: see if this is better to do with CSS display:none;
+    // Update the text area with an empty string.
     return '';
 }
 
 /*
  * Set the admin area color scheme
  */
-function change_admin_color($result) {
+function dt_change_admin_color($result) {
     return 'light';
 }
-
-/*
- * Adds columns to the all contacts screen
- * TODO: Consider moving to contacts object
- */
-function contacts_table_head( $defaults ) {
-    $defaults['phone']  = 'Phone';
-    $defaults['seeker_path']    = 'Seeker Path';
-    $defaults['seeker_milestones']    = 'Seeker Milestone';
-    return $defaults;
-}
-
-function contacts_table_content( $column_name, $post_id ) {
-    if ($column_name == 'phone') {
-        echo get_post_meta( $post_id, 'phone', true );
-        ;
-    }
-    if ($column_name == 'seeker_path') {
-        $status = get_post_meta( $post_id, 'seeker_path', true );
-        echo $status;
-    }
-
-    if ($column_name == 'seeker_milestones') {
-        echo get_post_meta( $post_id, 'seeker_milestones', true );
-    }
-
-}
-
-/**
- * Removes the Posts menu from all users but administrators
- */
-if( is_admin() && !current_user_can( 'administrator' ) ) {
-
-    function remove_menus(){
-        remove_menu_page( 'edit.php' );
-    }
-    add_action( 'admin_menu', 'remove_menus' );
-}
-
-function disciple_tools_remove_posts_menu(){
-    remove_menu_page( 'edit.php' ); // Posts
-    remove_menu_page( 'edit.php?post_type=page' );    //Pages
-}
-
 
 
 // Removes the tools menu for the marketer

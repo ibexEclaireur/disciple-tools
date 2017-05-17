@@ -1,20 +1,15 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
- * Require plugins wit the TGM library.
+ * Require plugins with the TGM library.
  *
  * This defines the required and suggested plugins.
- *
- *
- *
  */
 
 
 /**
  * Include the TGM_Plugin_Activation class. This class makes other plugins required for the Disciple_Tools system.
- * Refer to documentation here: https://github.com/TGMPA/TGM-Plugin-Activation
- *
- *
+ * @see https://github.com/TGMPA/TGM-Plugin-Activation
  */
 require_once (Disciple_Tools()->plugin_path . 'includes/plugins/class-tgm-plugin-activation.php');
 
@@ -36,7 +31,7 @@ require_once (Disciple_Tools()->plugin_path . 'includes/plugins/class-tgm-plugin
 //        ),
 //
  */
-function drm_register_required_plugins() {
+function dt_register_required_plugins() {
     /*
      * Array of plugin arrays. Required keys are name and slug.
      * If the source is NOT from the .org repo, then source is also required.
@@ -52,6 +47,14 @@ function drm_register_required_plugins() {
             'force_deactivation' => false,
             'is_callable'       => 'Psalm_119',
         ),
+        array(
+            'name'               => 'Disciple Tools - Training',
+            'slug'               => 'disciple-tools-training',
+            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-training/archive/master.zip',
+            'required'           => false,
+            'version'            => '0.1',
+            'is_callable'        => 'dt_training',
+        ),
 //        array(
 //            'name'              => 'WP Jump Menu',
 //            'slug'              => 'wp-jump-menu',
@@ -66,39 +69,6 @@ function drm_register_required_plugins() {
 //            'slug'               => 'Basic-Auth',
 //            'source'             =>  'https://github.com/WP-API/Basic-Auth/archive/master.zip', // The plugin source.
 //            'required'           => false,
-//        ),
-        array(
-            'name'               => 'Disciple Tools - Training',
-            'slug'               => 'disciple-tools-training',
-            'source'             => 'https://github.com/ChasmSolutions/disciple-tools-training/archive/master.zip',
-            'required'           => false,
-            'version'            => '0.1',
-            'is_callable'        => 'dt_training',
-        ),
-//        array(
-//            'name'               => 'Simple Local Avatars',
-//            'slug'               => 'simple-local-avatars',
-//            'required'           => true,
-//            'version'            => '2.0',
-//            'force_activation'   => true,
-//            'force_deactivation' => true,
-//            'is_callable'        => 'Simple_Local_Avatars',
-//        ),
-//        array(
-//            'name'               => 'WP oAuth Server',
-//            'slug'               => 'oauth2-provider',
-//            'required'           => true,
-//            'version'            => '3.2',
-//            'force_activation'   => true,
-//            'force_deactivation' => true,
-//            'is_callable'        => 'WO_Server',
-//        ),
-// Removed because it was giving an install error trying to pull from Github. Needs research.
-//        array(
-//            'name'               => 'Disciple_Tools Sample Data',
-//            'slug'               => 'dmm-crm-sample-data',
-//            'external_url'       => 'https://github.com/ChasmSolutions/dmm-crm-sample-data/archive/master.zip',
-//            'is_callable'       =>  'drm_sample_data',
 //        ),
     );
 
@@ -199,4 +169,4 @@ function drm_register_required_plugins() {
 
     tgmpa( $plugins, $config );
 }
-add_action( 'tgmpa_register', 'drm_register_required_plugins' );
+add_action( 'tgmpa_register', 'dt_register_required_plugins' );

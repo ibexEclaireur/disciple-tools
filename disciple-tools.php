@@ -246,6 +246,12 @@ class Disciple_Tools {
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
             $this->profile = Disciple_Tools_Profile::instance();
+
+            // Configurations of Post Types
+            require_once ( 'includes/admin/config-contacts.php');
+            $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
+
+
         }
         /* End Admin configuration section */
 
@@ -270,12 +276,12 @@ class Disciple_Tools {
         require_once ( 'includes/models/class-progress-post-type.php' );
         require_once ( 'includes/models/class-asset-post-type.php' );
         require_once ( 'includes/models/class-taxonomy.php' );
-        $this->post_types['contacts'] = new Disciple_Tools_Contact_Post_Type( 'contacts', __( 'Contact', 'disciple_tools' ), __( 'Contacts', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-groups' ) );
-        $this->post_types['groups'] = new Disciple_Tools_Group_Post_Type( 'groups', __( 'Group', 'disciple_tools' ), __( 'Groups', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-multisite' ) );
-        $this->post_types['locations'] = new Disciple_Tools_Location_Post_Type( 'locations', __( 'Location', 'disciple_tools' ), __( 'Locations', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-admin-site' ) );
+        $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
+        $this->post_types['groups'] = Disciple_Tools_Group_Post_Type::instance();
+        $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
+        $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
-        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-testimonial' ) );
-        $this->post_types['assets'] = new Disciple_Tools_Asset_Post_Type( 'assets', __( 'Assets', 'disciple_tools' ), __( 'Assets', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-testimonial' ) );
+        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-location' ) );
 
 
         // Creates the post to post relationship between the post type tables.
@@ -293,6 +299,10 @@ class Disciple_Tools {
 
         require_once ( 'includes/admin/multi-role/multi-role.php');
         $this->multi = Disciple_Tools_Multi_Roles::instance();
+
+        // Metaboxes
+        require_once ( 'includes/metaboxes/box-four-fields.php' );
+        require_once ( 'includes/metaboxes/box-activity.php');
         /* End model configuration section */
 
 
@@ -312,7 +322,6 @@ class Disciple_Tools {
         require_once ( 'includes/activity/class-reports-cron.php' ); // cron scheduling
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
-        require_once ( 'includes/activity/functions-activity-metabox.php'); // functions supporting the lists of activities connected to contacts and groups
 
         //integrations
         require_once('includes/functions/contact-controller.php');
@@ -329,6 +338,8 @@ class Disciple_Tools {
 
         // load rest api endpoints
         require_once ('includes/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+        require_once ('includes/admin/class-api-keys.php');
+        Disciple_Tools_Api_Keys::instance();
 
         /*
          * Factories
