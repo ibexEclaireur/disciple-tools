@@ -321,16 +321,20 @@ class Disciple_Tools {
         $this->report_api = new Disciple_Tools_Reports_API();
         require_once ( 'includes/activity/class-reports-cron.php' ); // cron scheduling
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
-        require_once('includes/activity/class-integrations.php'); // data integration for cron scheduling
         require_once ( 'includes/activity/class-reports-dt.php' ); // contacts and groups report building
-        require_once ( 'includes/admin/class-facebook-integration.php'); // integrations to facebook
-        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
 
+        //integrations
+        require_once('includes/controllers/contact-controller.php');
+        require_once('includes/integrations/class-integrations.php'); // data integration for cron scheduling
         if(! class_exists('Ga_Autoloader')) {
             require_once('includes/plugins/google-analytics/disciple-tools-analytics.php');
-            require_once('includes/admin/class-google-analytics-integration.php');
+            require_once('includes/integrations/class-google-analytics-integration.php');
             $this->analytics_integration = Ga_Admin::instance();
         }
+        require_once('includes/integrations/class-facebook-integration.php'); // integrations to facebook
+        $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
+        require_once( 'includes/integrations/class-rest-endpoints.php' );
+        Disciple_Tools_Rest_Endpoints::instance();
 
         // load rest api endpoints
         require_once ('includes/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
