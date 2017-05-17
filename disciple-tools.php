@@ -334,6 +334,8 @@ class Disciple_Tools {
 
         // load rest api endpoints
         require_once ('includes/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+        require_once ('includes/admin/class-api-keys.php');
+        Disciple_Tools_Api_Keys::instance();
 
         /*
          * Factories
