@@ -75,7 +75,6 @@ class Disciple_Tools_Contact_Post_Type {
         return self::$_instance;
     } // End instance()
 
-
 	/**
 	 * Constructor function.
 	 * @access public
@@ -195,7 +194,6 @@ class Disciple_Tools_Contact_Post_Type {
 		$this->taxonomies['contacts-type']->register();
 	} // End register_taxonomy()
 
-
 	/**
 	 * Update messages for the post type admin.
 	 * @since  0.1
@@ -224,7 +222,6 @@ class Disciple_Tools_Contact_Post_Type {
 
 		return $messages;
 	} // End updated_messages()
-	
 
 	/**
 	 * Setup the meta box.
@@ -363,111 +360,6 @@ class Disciple_Tools_Contact_Post_Type {
     } // End meta_box_content()
 
     /**
-     * Add Contact fields html for adding a new contact channel
-     * @usage Added to the bottom of the Contact Details Metabox.
-     */
-    public function add_new_contact_field () {
-
-        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
-        $html .= '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
-
-        $channels = $this->get_channels_list();
-
-        $html .= '<tr><th>
-                <select name="new-key" class="edit-input"><option value=""></option> ';
-                foreach ($channels as $channel) {
-
-                    $key =  $this->create_channel_metakey($channel, 'contact'); // build key
-                    $names = explode("_", $key); // separates primary name from type tag
-
-                    $html .= '<option value="'.$key.'">'.$names[2];
-                        if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
-                    $html .= '</option>';
-                }
-        $html .= '</select></th>';
-
-                $html .= '<td><input type="text" name="new-value" id="new-value" class="edit-input" /></td><td><button type="submit" class="button">Save</button></td></tr>';
-
-        $html .= '</tbody></table>';
-        return $html;
-
-    }
-
-    /**
-     * Add Address fields html for adding a new contact channel
-     * @usage Added to the bottom of the Contact Details Metabox.
-     */
-    public function add_new_address_field () {
-
-        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
-        $html .= '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
-
-        $channels = $this->get_addresses_list();
-
-        $html .= '<tr><th>
-                <select name="new-key" class="edit-input"><option value=""></option> ';
-        foreach ($channels as $channel) {
-
-            $key =  $this->create_channel_metakey($channel, 'address'); // build key
-            $names = explode("_", $key); // separates primary name from type tag
-
-            $html .= '<option value="'.$key.'">'.$names[2];
-            if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
-            $html .= '</option>';
-        }
-        $html .= '</select></th>';
-        $html .= '<td><textarea type="text" name="new-value" id="new-address" class="edit-input" ></textarea></td><td><button type="submit" class="button">Save</button></td></tr>';
-
-        $html .= '</tbody></table>';
-        return $html;
-    }
-
-    /**
-     * Helper function to create the unique metakey for contacts channels.
-     * @param $channel
-     * @return string
-     */
-    public function create_channel_metakey ($channel, $type) {
-        return $type . '_' . $this->unique_hash() . '_' . $channel; // build key
-    }
-
-    public function unique_hash() {
-        return substr(md5(rand(10000, 100000)), 0, 3); // create a unique 3 digit key
-    }
-
-    /**
-     * Selectable values for different channels of contact information.
-     * @return array
-     */
-    public function get_channels_list () {
-        $channels = array(
-            __('Phone', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Mobile', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Home', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
-            __('Email', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
-            __('Email', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
-            __('Email', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
-            __('Facebook', 'disciple_tools'),
-            __('Twitter', 'disciple_tools'),
-            __('Instagram', 'disciple_tools'),
-            __('Skype', 'disciple_tools'),
-            __('Other', 'disciple_tools'),
-        );
-        return $channels;
-    }
-
-    public function get_addresses_list () {
-        $addresses = array(
-            __('Home', 'disciple_tools'),
-            __('Work', 'disciple_tools'),
-            __('Other', 'disciple_tools'),
-        );
-        return $addresses;
-    }
-
-    /**
      * Save meta box fields.
      * @access public
      * @since  0.1
@@ -523,7 +415,6 @@ class Disciple_Tools_Contact_Post_Type {
         }
 
     } // End meta_box_save()
-
 
     /**
      * Load activity metabox
@@ -581,7 +472,6 @@ class Disciple_Tools_Contact_Post_Type {
     public function load_misc_meta_box () {
         echo ''. $this->meta_box_content('misc');
     }
-
 
 	/**
 	 * Get the settings for the custom fields.
@@ -863,6 +753,127 @@ class Disciple_Tools_Contact_Post_Type {
         }
         return $fields;
     }
+
+    /**
+     * Add Contact fields html for adding a new contact channel
+     * @usage Added to the bottom of the Contact Details Metabox.
+     */
+    public function add_new_contact_field () {
+
+        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
+        $html .= '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
+
+        $channels = $this->get_channels_list();
+
+        $html .= '<tr><th>
+                <select name="new-key" class="edit-input"><option value=""></option> ';
+        foreach ($channels as $channel) {
+
+            $key =  $this->create_channel_metakey($channel, 'contact'); // build key
+            $names = explode("_", $key); // separates primary name from type tag
+
+            $html .= '<option value="'.$key.'">'.$names[2];
+            if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
+            $html .= '</option>';
+        }
+        $html .= '</select></th>';
+
+        $html .= '<td><input type="text" name="new-value" id="new-value" class="edit-input" /></td><td><button type="submit" class="button">Save</button></td></tr>';
+
+        $html .= '</tbody></table>';
+        return $html;
+
+    }
+
+    /**
+     * Add Address fields html for adding a new contact channel
+     * @usage Added to the bottom of the Contact Details Metabox.
+     */
+    public function add_new_address_field () {
+
+        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
+        $html .= '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
+
+        $channels = $this->get_channels_list('address');
+
+        $html .= '<tr><th>
+                <select name="new-key" class="edit-input"><option value=""></option> ';
+        foreach ($channels as $channel) {
+
+            $key =  $this->create_channel_metakey($channel, 'address'); // build key
+            $names = explode("_", $key); // separates primary name from type tag
+
+            $html .= '<option value="'.$key.'">'.$names[2];
+            if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
+            $html .= '</option>';
+        }
+        $html .= '</select></th>';
+        $html .= '<td><textarea type="text" name="new-value" id="new-address" class="edit-input" ></textarea></td><td><button type="submit" class="button">Save</button></td></tr>';
+
+        $html .= '</tbody></table>';
+        return $html;
+    }
+
+    /**
+     * Helper function to create the unique metakey for contacts channels.
+     * @param $channel
+     * @return string
+     */
+    public function create_channel_metakey ($channel, $type) {
+        return $type . '_' . $this->unique_hash() . '_' . $channel; // build key
+    }
+
+    public function unique_hash() {
+        return substr(md5(rand(10000, 100000)), 0, 3); // create a unique 3 digit key
+    }
+
+    /**
+     * Selectable values for different channels of contact information.
+     * @return array
+     */
+    public function get_channels_list ($type = 'contact') {
+
+        switch ($type) {
+            case 'contact':
+                $channels = array(
+                    __('Phone', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
+                    __('Phone', 'disciple_tools') . '_' . __('Mobile', 'disciple_tools'),
+                    __('Phone', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
+                    __('Phone', 'disciple_tools') . '_' . __('Home', 'disciple_tools'),
+                    __('Phone', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
+                    __('Email', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
+                    __('Email', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
+                    __('Email', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
+                    __('Facebook', 'disciple_tools'),
+                    __('Twitter', 'disciple_tools'),
+                    __('Instagram', 'disciple_tools'),
+                    __('Skype', 'disciple_tools'),
+                    __('Other', 'disciple_tools'),
+                );
+                return $channels;
+                break;
+            case 'address':
+                $addresses = array(
+                    __('Home', 'disciple_tools'),
+                    __('Work', 'disciple_tools'),
+                    __('Other', 'disciple_tools'),
+                );
+                return $addresses;
+                break;
+            default:
+                break;
+        }
+
+    }
+
+//    public function get_addresses_list () {
+//        $addresses = array(
+//            __('Home', 'disciple_tools'),
+//            __('Work', 'disciple_tools'),
+//            __('Other', 'disciple_tools'),
+//        );
+//        return $addresses;
+//    }
 
     /**
      * Field: The 'Assigned To' dropdown controller
