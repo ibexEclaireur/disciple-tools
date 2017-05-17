@@ -397,7 +397,7 @@ class Disciple_Tools_Contact_Post_Type {
         $fields = array_keys( $field_data );
 
         if ( (isset( $_POST['new-key-address']) && !empty($_POST['new-key-address']) ) && (isset( $_POST['new-value-address']) && !empty ($_POST['new-value-address']) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, $_POST['new-key'], $_POST['new-value'], true );
+            add_post_meta( $post_id, $_POST['new-key-address'], $_POST['new-value-address'], true );
         }
 
         if ( (isset( $_POST['new-key-contact']) && !empty($_POST['new-key-contact']) ) && (isset( $_POST['new-value-contact']) && !empty ($_POST['new-value-contact']) ) ) { // catch and prepare new contact fields
