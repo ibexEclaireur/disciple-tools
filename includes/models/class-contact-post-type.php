@@ -754,7 +754,11 @@ class Disciple_Tools_Contact_Post_Type {
 	    global $wpdb, $post;
 	    $fields = array();
 
-        $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+
+	    $current_fields = array();
+	    if (isset($post->ID)){
+            $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+	    }
 
         foreach ($current_fields as $value) {
             $type = explode('_', $value['meta_key']);
@@ -786,7 +790,9 @@ class Disciple_Tools_Contact_Post_Type {
         $html .= '<select name="assigned_to" id="assigned_to" class="edit-input">';
 
         // Set selected state
-        $assigned_to = get_post_meta( $post->ID, 'assigned_to', true);
+	    if (isset($post->ID)){
+            $assigned_to = get_post_meta( $post->ID, 'assigned_to', true);
+	    }
 
         if(empty( $assigned_to) || $assigned_to == 'dispatch' ) {
             // set default to dispatch
