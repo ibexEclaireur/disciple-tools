@@ -52,6 +52,29 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public $taxonomies;
 
+    /**
+     * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
+     * @var 	object
+     * @access  private
+     * @since 	0.1
+     */
+    private static $_instance = null;
+
+    /**
+     * Main Disciple_Tools_Contact_Post_Type Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Contact_Post_Type is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Disciple_Tools_Contact_Post_Type instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
+
 
 	/**
 	 * Constructor function.
@@ -59,11 +82,11 @@ class Disciple_Tools_Contact_Post_Type {
 	 * @since 0.1
 	 */
 	public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
-		$this->post_type = $post_type;
-		$this->singular = $singular;
-		$this->plural = $plural;
-		$this->args = $args;
-		$this->taxonomies = $taxonomies;
+		$this->post_type = 'contacts';
+		$this->singular = 'Contact';
+		$this->plural = 'Contacts';
+		$this->args = array( 'menu_icon' => 'dashicons-groups' );
+		$this->taxonomies = $taxonomies = array();
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
 //		add_action( 'init', array( $this, 'register_taxonomy' ) );
@@ -72,6 +95,7 @@ class Disciple_Tools_Contact_Post_Type {
 			global $pagenow;
 
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
+//			add_action( 'save_post', array( $this, 'save_new_contacts' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 			add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
 
@@ -172,12 +196,6 @@ class Disciple_Tools_Contact_Post_Type {
 	} // End register_taxonomy()
 
 
-    /**
-     * Column modifications and other contacts admin design features can be found in /includes/admin/config-contacts.php
-     */
-
-
-
 	/**
 	 * Update messages for the post type admin.
 	 * @since  0.1
@@ -216,41 +234,566 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public function meta_box_setup () {
 		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'load_contact_info_meta_box' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_info_meta_box' ), $this->post_type, 'normal', 'high' );
 		add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
-        add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_meta_box' ), $this->post_type, 'side', 'high' );
-        add_meta_box( $this->post_type . '_path', __( 'Path', 'disciple_tools' ), array( $this, 'load_path_meta_box' ), $this->post_type, 'side', 'low' );
+        add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), array( $this, 'load_milestone_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), array( $this, 'load_misc_meta_box' ), $this->post_type, 'side', 'low' );
+        add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_info_meta_box' ), $this->post_type, 'side' );
 		do_action("dt_contact_meta_boxes_setup", $this->post_type);
 	} // End meta_box_setup()
 
     /**
-     * Setup "assigned" meta box.
-     *
+     * The contents of our meta box.
+     * @access public
+     * @since  0.1
+     * @return mixed
      */
-    public function load_status_meta_box ( $post_id) {
+    public function meta_box_content ( $section = 'info') {
+        global $post_id;
+        $fields = get_post_custom( $post_id );
+        $field_data = $this->get_custom_fields_settings();
+
+        $html = '';
+
+        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_contacts' ) . '" />';
+
+
+        if ( 0 < count( $field_data ) ) {
+            $html .= '<table class="form-table">' . "\n";
+            $html .= '<tbody>' . "\n";
+
+            foreach ( $field_data as $k => $v ) {
+
+                if ($v['section'] == $section || $section == 'all') {
+
+                    $data = $v['default'];
+                    if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
+                        $data = $fields[$k][0];
+                    }
+
+                    $type = $v['type'];
+
+                    switch ( $type ) {
+
+                        case 'text':
+                            $html .= '<tr valign="top" id="'. esc_attr( $k )  .'"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'textarea':
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <td><textarea name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text"  >' . esc_attr( $data ) . '</textarea>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'select':
+                            $html .= '<tr valign="top"><th scope="row">
+                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <td>
+                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+                            // Iterate the options
+                            foreach ($v['default'] as $vv) {
+                                $html .= '<option value="' . $vv . '" ';
+                                if($vv == $data) { $html .= 'selected';}
+                                $html .= '>' .$vv . '</option>';
+                            }
+                            $html .= '</select>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'key_select':
+                            $html .= '<tr valign="top"><th scope="row">
+                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <td>
+                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+                            // Iterate the options
+                            foreach ($v['default'] as $kk => $vv) {
+                                $html .= '<option value="' . $kk . '" ';
+                                if($kk == $data) { $html .= 'selected';}
+                                $html .= '>' .$vv . '</option>';
+                            }
+                            $html .= '</select>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'radio':
+                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+                                <td><fieldset>';
+                            // Iterate the buttons
+                            $increment_the_radio_button = 1;
+                            foreach ($v['default'] as $vv) {
+                                $html .= ' <label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label> ' .
+                                    '<input class="dt-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
+                                if($vv == $data) { $html .= 'checked';}
+                                $html .= '>';
+                                $increment_the_radio_button++;
+                            }
+                            $html .= '</fieldset>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'checkbox':
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . $v['name'] . '</label></th><td>
+                                
+                                <input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '" value="' ;
+
+                            if($data) { $html .=  esc_attr( $data ) . '" checked="checked"/>';} else { $html .= '"/>'; }
+
+                            $html .= '<p class="description">' . $v['description'] . '(' . $v   . ')</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'custom':
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . $v['name'] . '</label></th><td>';
+                            $html .= $v['default'];
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+
+            $html .= '</tbody>' . "\n";
+            $html .= '</table>' . "\n";
+        }
+
+        echo $html;
+    } // End meta_box_content()
+
+    /**
+     * Add Contact fields
+     */
+    public function add_contact_methods () {
+
+        $fields = array(
+            __('Phone_Primary', 'disciple_tools'),
+            __('Phone_Mobile', 'disciple_tools'),
+            __('Phone_Work', 'disciple_tools'),
+            __('Phone_Home', 'disciple_tools'),
+            __('Phone_Other', 'disciple_tools'),
+            __('Email_Primary', 'disciple_tools'),
+            __('Email_Work', 'disciple_tools'),
+            __('Email_Other', 'disciple_tools'),
+            __('Facebook_Facebook', 'disciple_tools'), // Duplicate is required to make fields uniform for parsing.
+            __('Twitter_Twitter', 'disciple_tools'),
+            __('Instagram_Instagram', 'disciple_tools'),
+            __('Skype_Skype', 'disciple_tools'),
+            __('Other_Other', 'disciple_tools'),
+        );
+
+        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
+        $html .= '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
+
+        $html .= '<td><select name="new-key"><option value=""></option> ';
+                foreach ($fields as $field) {
+                    $names = explode("_", $field); // separates primary name from type tag
+
+                    $key = 'contact_' . $field;
+
+                    $html .= '<option value="'.$key.'">'.$names[0];
+
+                    if($names[0] != $names[1]) { $html .= '  (' . $names[1] . ')'; }
+
+                    $html .= '</option>';
+                }
+        $html .= '</select></td>';
+
+                $html .= '<td><input type="text" name="new-value" id="new-value" class="edit-input" /> </td>';
+
+        $html .= '</tbody></table>';
+        return $html;
+
+    }
+
+    /**
+     * Save meta box fields.
+     * @access public
+     * @since  0.1
+     * @param int $post_id
+     * @return int $post_id
+     */
+    public function meta_box_save ( $post_id ) {
+        global $post, $messages;
+
+        // Verify
+        if (  get_post_type() != $this->post_type  ) {
+            return $post_id;
+        }
+        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
+            return $post_id;
+        }
+
+        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
+            if ( ! current_user_can( 'edit_page', $post_id ) ) {
+                return $post_id;
+            }
+        } else {
+            if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                return $post_id;
+            }
+        }
+
+        if ( isset($_GET['action']) ) {
+            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
+                return $post_id;
+            }
+        }
+
+        $field_data = $this->get_custom_fields_settings();
+        $fields = array_keys( $field_data );
+
+        if ( (isset( $_POST['new-key']) && !empty($_POST['new-key']) ) && (isset( $_POST['new-value']) && !empty ($_POST['new-value']) ) ) { // catch and prepare new contact fields
+
+            $meta = get_post_meta($post_id);
+            $meta_count = count($meta);
+
+            $key = $_POST['new-key'] . '_' . $meta_count;
+            $value = $_POST['new-value'];
+
+            add_post_meta( $post_id, $key, $value, true );
+        }
+
+        foreach ( $fields as $f ) {
+
+            ${$f} = strip_tags(trim($_POST[$f]));
+
+            if ( get_post_meta( $post_id,  $f ) == '' ) {
+                add_post_meta( $post_id,  $f, ${$f}, true );
+            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+                update_post_meta( $post_id, $f, ${$f} );
+            } elseif ( ${$f} == '' ) {
+                delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
+            }
+        }
+
+    } // End meta_box_save()
+
+
+    /**
+     * Load activity metabox
+     */
+    public function load_activity_meta_box () {
+        dt_activity_metabox()->activity_meta_box(get_the_ID());
+    }
+
+    /**
+     * Meta box for Status Information
+     * @access public
+     * @since  0.1
+     */
+    public function load_milestone_meta_box () {
+        echo '' . $this->meta_box_content('milestone');
+    }
+
+    /**
+     * Meta box for Status Information
+     * @access public
+     * @since  0.1
+     */
+    public function load_contact_info_meta_box () {
+        global $post_id;
+        echo ''. $this->meta_box_content('info');
+        echo ''. $this->add_contact_methods ();
+
+    }
+
+    /**
+     * Meta box for Status Information
+     * @access public
+     * @since  0.1
+     */
+    public function load_address_info_meta_box () {
+        echo ''. $this->meta_box_content('address');
+    }
+
+    /**
+     * Meta box for Status Information
+     * @access public
+     * @since  0.1
+     */
+    public function load_status_info_meta_box () {
+        echo ''. $this->meta_box_content('status');
+    }
+
+    /**
+     * Meta box for Status Information
+     * @access public
+     * @since  0.1
+     */
+    public function load_misc_meta_box () {
+        echo ''. $this->meta_box_content('misc');
+    }
+
+	/**
+	 * Get the settings for the custom fields.
+	 * @access public
+	 * @since  0.1
+	 * @return array
+	 */
+	public function get_custom_fields_settings () {
+	    global $post_id;
+		$fields = array();
+
+        // Status Section
+        $fields['assigned_to'] = array(
+            'name' => __( 'Assigned To', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'custom',
+            'default' => $this->assigned_to_field(),
+            'section' => 'status'
+        );
+        $fields['overall_status'] = array(
+            'name' => __( 'Overall Status', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('Unassigned', 'disciple_tools' ), '1' => __('Accepted', 'disciple_tools' ), '2' => __('Paused', 'disciple_tools' ), '3' => __('Closed', 'disciple_tools' ), '4' => __('Unassignable', 'disciple_tools' ) ),
+            'section' => 'status'
+        );
+        $fields['seeker_path'] = array(
+            'name' => __( 'Seeker Path', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('', '0' => __('Contact Attempted', 'disciple_tools' ), '1' => __('Contact Established', 'disciple_tools' ), '2' => __('Confirms Interest', 'disciple_tools' ), '3' => __('Meeting Scheduled', 'disciple_tools' ), '4' => __('First Meeting Complete', 'disciple_tools' ), '5' => __('Ongoing Meetings', 'disciple_tools' ), '6' => __('Being Coached', 'disciple_tools' )),
+            'section' => 'status'
+        );
+        $fields['requires_update'] = array(
+            'name' => __( 'Requires Update', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' =>  __('Yes', 'disciple_tools' )),
+            'section' => 'status'
+        );
+
+        // Info Section
+		$methods = $this->contact_fields();
+		foreach ($methods as $k => $v) { // sets phone numbers as first
+            if($v['tag'] == 'Phone') {
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'info'
+                );
+            }
+        }
+        foreach ($methods as $k => $v) { // sets emails as second
+            if($v['tag'] == 'Email') {
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'info'
+                );
+            }
+        }
+        foreach ($methods as $k => $v) { // sets all others third
+            if($v['tag'] != 'Phone' || $v['name'] != 'Email') {
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'info'
+                );
+            }
+        }
+
+        // Address
+        $fields['mailing_street'] = array(
+            'name' => __( 'Mailing Street', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'address'
+        );
+        $fields['mailing_city'] = array(
+            'name' => __( 'Mailing City', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'address'
+        );
+        $fields['mailing_zip'] = array(
+            'name' => __( 'Mailing Zip', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'address'
+        );
+        $fields['mailing_state'] = array(
+            'name' => __( 'Mailing State', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'address'
+        );
+        $fields['mailing_country'] = array(
+            'name' => __( 'Mailing Country', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'address'
+        );
+
+
+        // Status information section
+		$fields['milestone_belief'] = array(
+		    'name' => __( 'States Belief', 'disciple_tools' ),
+		    'description' => '',
+		    'type' => 'key_select',
+		    'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+		    'section' => 'milestone'
+		);
+        $fields['milestone_can_share'] = array(
+            'name' => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'milestone'
+        );
+        $fields['milestone_sharing'] = array(
+            'name' => __( 'Sharing Gospel/Testimony', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'milestone'
+        );
+        $fields['milestone_baptized'] = array(
+            'name' => __( 'Baptized', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'milestone'
+        );
+        $fields['milestone_baptizing'] = array(
+            'name' => __( 'Baptizing', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'milestone'
+        );
+        $fields['milestone_in_group'] = array(
+            'name' => __( 'In Church/Group', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'milestone'
+        );
+        $fields['milestone_planting'] = array(
+            'name' => __( 'Starting Churches', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'milestone'
+        );
+
+
+        // Misc Information fields
+        $fields['bible'] = array(
+            'name' => __( 'Bible', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Yes - given by hand', 'disciple_tools' ), __('Yes - already had one', 'disciple_tools' ), __('Yes - receipt by mail confirmed', 'disciple_tools' ), __('Bible mailed', 'disciple_tools' ), __('Needs / Requests Bible', 'disciple_tools' )),
+            'section' => 'misc'
+        );
+        $fields['gender'] = array(
+            'name' => __( 'Gender', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Male', 'disciple_tools' ), __('Female', 'disciple_tools' )),
+            'section' => 'misc'
+        );
+        $fields['age'] = array(
+            'name' => __( 'Age', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Under 18 years old', 'disciple_tools' ), __('18-25 years old', 'disciple_tools' ), __('26-40 years old', 'disciple_tools' ), __('Over 40 years old', 'disciple_tools' )),
+            'section' => 'misc'
+        );
+        $fields['comprehension'] = array(
+            'name' => __( 'Gospel Comprehension', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Very Strong', 'disciple_tools' ), __('Strong', 'disciple_tools' ), __('Unknown/Unclear', 'disciple_tools' ), __('Weak', 'disciple_tools' )),
+            'section' => 'misc'
+        );
+        $fields['investigating_with_others'] = array(
+            'name' => __( 'Investigating with others', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Not exploring with others', 'disciple_tools' ), __('Only with a few people', 'disciple_tools' ), __('Openly sharing with many', 'disciple_tools' ), __('Studying in a group', 'disciple_tools' )),
+            'section' => 'misc'
+        );
+
+        $fields['reason_closed'] = array(
+            'name' => __( 'Reason Closed', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'select',
+            'default' => array('', __('Duplicate', 'disciple_tools' ), __('Hostile / Playing Games', 'disciple_tools' ), __('Insufficient Contact Info', 'disciple_tools' ), __('Already In Church/Connected with Others', 'disciple_tools' ), __('No Longer Interested', 'disciple_tools' ), __('Just wanted a book', 'disciple_tools' ), __('Unknown', 'disciple_tools' )),
+            'section' => 'misc'
+        );
+		$fields['source_details'] = array(
+			'name' => __( 'Source Details', 'disciple_tools'),
+			'description' => '',
+			'type' => 'text',
+			'default' => '',
+			'section' => 'misc'
+		);
+		return apply_filters( 'dt_custom_fields_settings', $fields );
+	} // End get_custom_fields_settings()
+
+    /**
+     * Field: Contact Fields
+     * @return array
+     */
+    public function contact_fields () {
+	    global $wpdb, $post;
+	    $fields = array();
+
+        $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+
+        foreach ($current_fields as $value) {
+            $type = explode('_', $value['meta_key']);
+            $tag = null;
+
+            if ($type[1] != $type[2] ) { $tag = ' ('. $type[2] . ')'; }
+
+            $fields[$value['meta_key']] = array(
+                'name' => $type[1] . $tag,
+                'tag' => $type[1],
+            );
+        }
+        return $fields;
+    }
+
+    /**
+     * Field: The 'Assigned To' dropdown controller
+     * @return string
+     */
+    public function assigned_to_field () {
+        global $post;
+
         $exclude_group = '';
         $exclude_user = '';
         $html = '';
 
 
-        /*****************************************/
-        /* Assigned To Field */
-        /*****************************************/
-
-        $html .= '<div class="edit-row"><div class="edit-title-left">Assigned To</div> <div class="edit-field-right">';
-
         // Start drop down
         $html .= '<select name="assigned_to" id="assigned_to" class="edit-input">';
 
         // Set selected state
-        $assigned_to = get_post_meta( $post_id->ID, 'assigned_to', true);
+        $assigned_to = get_post_meta( $post->ID, 'assigned_to', true);
 
         if(empty( $assigned_to) || $assigned_to == 'dispatch' ) {
             // set default to dispatch
             $html .= '<option value="dispatch" selected>Dispatch</option>';
         }
         elseif ( !empty( $assigned_to ) ) { // If there is already a record
-            $metadata = get_post_meta($post_id->ID, 'assigned_to', true);
+            $metadata = get_post_meta($post->ID, 'assigned_to', true);
             $meta_array = explode('-', $metadata); // Separate the type and id
             $type = $meta_array[0]; // Build variables
             $id = $meta_array[1];
@@ -273,8 +816,6 @@ class Disciple_Tools_Contact_Post_Type {
             $html .= '<option value="" disabled> --- Dispatch</option><option value="dispatch">Dispatch</option>'; // add dispatch to top of list
 
         }
-
-
 
         // Visually categorize groups
         $html .= '<option value="" disabled> --- Teams</option>';
@@ -301,421 +842,23 @@ class Disciple_Tools_Contact_Post_Type {
 
         // End drop down
         $html .= '</select>  ';
-        $html .= '</div></div>';
 
-
-
-        $fields = array();
-        $fields['overall_status'] = array(
-            'name' => __( 'Overall Status', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('Unassigned', 'Accepted', 'Paused', 'Closed', 'Unassignable' ),
-            'section' => 'status'
-        );
-        $fields['requires_update'] = array(
-            'name' => __( 'Requires Update', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('No', 'Yes'),
-            'section' => 'status'
-        );
-
-        foreach ($fields as $key => $field) {
-            $value = get_post_meta( $post_id->ID, $key, true);
-
-            $html .= '<div class="edit-row"><div class="edit-title-left">'. $field['name'].'</div><div class="edit-field-right">';
-            $html .= '<select name="'. $key .'" class="edit-input" >';
-
-            foreach ($field['default'] as $option) {
-                $html .= '<option value="' . $option . '" ';
-                if($option == $value) { $html .= 'selected';}
-                $html .= '>' .$option . '</option>';
-            }
-            $html .= '</select>';
-            $html .= '</div></div>';
-        }
-
-        echo $html;
-
+        return $html;
     }
 
     /**
-     * Load activity metabox
-     */
-    public function load_activity_meta_box () {
-        dt_activity_metabox()->activity_meta_box(get_the_ID());
-    }
-
-	/**
-	 * The contents of our meta box.
-	 * @access public
-	 * @since  0.1
-	 * @return void
-	 */
-	public function meta_box_content ( $section = 'info') {
-		global $post_id;
-		$fields = get_post_custom( $post_id );
-		$field_data = $this->get_custom_fields_settings();
-
-		$html = '';
-
-        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_contacts' ) . '" />';
-
-		
-		if ( 0 < count( $field_data ) ) {
-			$html .= '<table class="form-table">' . "\n";
-			$html .= '<tbody>' . "\n";
-
-			foreach ( $field_data as $k => $v ) {
-
-			    if ($v['section'] == $section || $section == 'all') {
-
-                    $data = $v['default'];
-                    if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
-                        $data = $fields[$k][0];
-                    }
-
-                    $type = $v['type'];
-
-                    switch ( $type ) {
-
-                        case 'url':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                        break;
-                        case 'text':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
-                                <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                        break;
-                        case 'textarea':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
-                                <td><textarea name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text"  >' . esc_attr( $data ) . '</textarea>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                            break;
-                        case 'select':
-                            $html .= '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
-                                <td>
-                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
-                                        // Iterate the options
-                                        foreach ($v['default'] as $vv) {
-                                            $html .= '<option value="' . $vv . '" ';
-                                            if($vv == $data) { $html .= 'selected';}
-                                            $html .= '>' .$vv . '</option>';
-                                        }
-                            $html .= '</select>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                        break;
-                        case 'radio':
-                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
-                                <td><fieldset>';
-                                    // Iterate the buttons
-                                    $increment_the_radio_button = 1;
-                                    foreach ($v['default'] as $vv) {
-                                        $html .= ' <label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label> ' .
-                                        '<input class="dt-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
-                                        if($vv == $data) { $html .= 'checked';}
-                                        $html .= '>';
-                                       $increment_the_radio_button++;
-                                    }
-                            $html .= '</fieldset>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                        break;
-                        case 'checkbox':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . $v['name'] . '</label></th><td>
-                                
-                                <input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '" value="' ;
-
-                                if($data) { $html .=  esc_attr( $data ) . '" checked="checked"/>';} else { $html .= '"/>'; }
-
-                            $html .= '<p class="description">' . $v['description'] . '(' . esc_attr( $data )  . ')</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
-                            break;
-
-                        default:
-                        break;
-                    }
-                }
-			}
-
-			$html .= '</tbody>' . "\n";
-			$html .= '</table>' . "\n";
-		}
-
-		echo $html;
-	} // End meta_box_content()
-
-	
-	/**
-	 * Save meta box fields.
-	 * @access public
-	 * @since  0.1
-	 * @param int $post_id
-	 * @return int $post_id
-	 */
-	public function meta_box_save ( $post_id ) {
-		global $post, $messages;
-
-        // Verify
-		if (  get_post_type() != $this->post_type  ) {
-			return $post_id;
-		}
-        if ( isset($_POST['dt_' . $this->post_type . '_noonce']) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_dt_contacts' ) ) {
-            return $post_id;
-        }
-
-		if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
-			if ( ! current_user_can( 'edit_page', $post_id ) ) {
-				return $post_id;
-			}
-		} else {
-			if ( ! current_user_can( 'edit_post', $post_id ) ) {
-				return $post_id;
-			}
-		}
-
-		if ( isset($_GET['action']) ) {
-            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
-                return $post_id;
-            }
-        }
-
-		$field_data = $this->get_custom_fields_settings();
-		$fields = array_keys( $field_data );
-
-		$custom_fields = array('assigned_to', 'overall_status', 'requires_update');
-
-		$fields = array_merge($fields, $custom_fields);
-
-		foreach ( $fields as $f ) {
-
-			${$f} = strip_tags(trim($_POST[$f]));
-
-			// Escape the URLs. // TODO: Check on processing error.
-//			if ( 'url' == $field_data[$f]['type'] ) {
-//				${$f} = esc_url( ${$f} );
-//			}
-
-			if ( get_post_meta( $post_id,  $f ) == '' ) {
-				add_post_meta( $post_id,  $f, ${$f}, true );
-			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-				update_post_meta( $post_id, $f, ${$f} );
-			} elseif ( ${$f} == '' ) {
-				delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
-			}
-		}
-	} // End meta_box_save()
-
-    /**
-     * Meta box for Status Information
+     * Customise the "Enter title here" text.
      * @access public
      * @since  0.1
+     * @param string $title
+     * @return string
      */
-    public function load_path_meta_box () {
-
-        echo '' . $this->meta_box_content('status');
-    }
-
-    /**
-     * Meta box for Status Information
-     * @access public
-     * @since  0.1
-     */
-    public function load_contact_info_meta_box () {
-        echo ''. $this->meta_box_content('info');
-    }
-
-    /**
-     * Meta box for Status Information
-     * @access public
-     * @since  0.1
-     */
-    public function load_misc_meta_box () {
-        echo ''. $this->meta_box_content('misc');
-    }
-
-	
-	/**
-	 * Customise the "Enter title here" text.
-	 * @access public
-	 * @since  0.1
-	 * @param string $title
-	 * @return string
-	 */
-	public function enter_title_here ( $title ) {
-		if ( get_post_type() == $this->post_type ) {
-			$title = __( 'Enter the contact name here', 'disciple_tools' );
-		}
-		return $title;
-	} // End enter_title_here()
-
-	/**
-	 * Get the settings for the custom fields.
-	 * @access public
-	 * @since  0.1
-	 * @return array
-	 */
-	public function get_custom_fields_settings () {
-		$fields = array();
-
-		// Contact Information Section
-		$fields['phone'] = array(
-		    'name' => __( 'Phone', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'text',
-		    'default' => '',
-		    'section' => 'info'
-		);
-        $fields['email'] = array(
-            'name' => __( 'Email', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['preferred_contact_method'] = array(
-            'name' => __( 'Preferred Contact Method', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Phone', 'Skype', 'Facebook', 'Mail', 'Email', 'SMS'),
-            'section' => 'info'
-        );
-        $fields['skype'] = array(
-            'name' => __( 'Skype', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['facebook'] = array(
-            'name' => __( 'Facebook', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['gender'] = array(
-            'name' => __( 'Gender', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Male', 'Female'),
-            'section' => 'info'
-        );
-        $fields['age'] = array(
-            'name' => __( 'Age', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Under 18 years old', '18-25 years old', '26-40 years old', 'Over 40 years old'),
-            'section' => 'info'
-        );
-        $fields['mailing_street'] = array(
-            'name' => __( 'Mailing Street', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['mailing_city'] = array(
-            'name' => __( 'Mailing City', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['mailing_zip'] = array(
-            'name' => __( 'Mailing Zip', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['mailing_state'] = array(
-            'name' => __( 'Mailing State', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-        $fields['mailing_country'] = array(
-            'name' => __( 'Mailing Country', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-
-
-        // Status information section
-
-		$fields['seeker_path'] = array(
-		    'name' => __( 'Seeker Path', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'select',
-		    'default' => array('', 'Contact Attempted', 'Contact Established', 'Confirms Interest', 'Meeting Scheduled', 'First Meeting Complete', 'Ongoing Meetings', 'Being Coached'),
-		    'section' => 'status'
-		);
-		$fields['seeker_milestones'] = array(
-		    'name' => __( 'Seeker Milestones', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'select',
-		    'default' => array('', 'States Belief', 'Can Share Gospel/Testimony', 'Sharing Gospel/Testimony', 'Baptized', 'Baptizing', 'In Church/Group', 'Starting Churches'),
-		    'section' => 'status'
-		);
-        $fields['comprehension'] = array(
-            'name' => __( 'Gospel Comprehension', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Very Strong', 'Strong', 'Unknown/Unclear', 'Weak'),
-            'section' => 'status'
-        );
-        $fields['investigating_with_others'] = array(
-            'name' => __( 'Investigating with others', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Not exploring with others', 'Only with a few people', 'Openly sharing with many', 'Studying in a group'),
-            'section' => 'status'
-        );
-
-        $fields['reason_closed'] = array(
-            'name' => __( 'Reason Closed', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Duplicate', 'Hostile / Playing Games', 'Insufficient Contact Info', 'Already In Church/Connected with Others', 'No Longer Interested', 'Just wanted a book', 'Unknown'),
-            'section' => 'status'
-        );
-
-        // Misc Information fields
-        $fields['bible'] = array(
-            'name' => __( 'Bible', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'select',
-            'default' => array('', 'Yes - given by hand', 'Yes - already had one', 'Yes - receipt by mail confirmed', 'Bible mailed', 'Needs / Requests Bible'),
-            'section' => 'misc'
-        );
-		
-		$fields['source_details'] = array(
-			'name' => __( 'Source Details', 'disciple_tools'),
-			'description' => '',
-			'type' => 'text',
-			'default' => '',
-			'section' => 'misc'
-		);
-
-		
-
-		return apply_filters( 'dt_custom_fields_settings', $fields );
-	} // End get_custom_fields_settings()
-
-
-
-
+    public function enter_title_here ( $title ) {
+        if ( get_post_type() == $this->post_type ) {
+            $title = __( 'Enter the contact name here', 'disciple_tools' );
+        }
+        return $title;
+    } // End enter_title_here()
 
 	/**
 	 * Run on activation.
