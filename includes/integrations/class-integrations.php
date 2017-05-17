@@ -56,6 +56,8 @@ class Disciple_Tools_Reports_Integrations {
     }
 
 
+
+
     /**
      * Facebook report data
      * Returns a prepared array for the dt_report_insert()
