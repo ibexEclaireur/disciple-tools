@@ -444,7 +444,7 @@ class Disciple_Tools_Contact_Post_Type {
         global $post_id;
         echo ''. $this->meta_box_content('info');
         echo ''. $this->add_new_contact_field ();
-        print '<pre>'; print_r($this->get_custom_fields_settings()); print '</pre>';
+//        print '<pre>'; print_r($this->get_custom_fields_settings()); print '</pre>';
 
     }
 
