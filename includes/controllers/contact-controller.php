@@ -96,6 +96,26 @@ class Contact_Controller
         return array("success"=>true);
     }
 
+	/**
+	 * Get a single contact
+	 *
+	 * @param $contact_id , the contact post_id
+	 *
+	 * @return array, On success: the contact, else: the error message
+	 */
+    public static function get_contact($contact_id){
+
+    	$contact = get_post($contact_id);
+
+	    if ($contact){
+    	    $contact->fields = get_post_custom($contact_id);
+
+	    } else {
+		    return array("success"=>false, "message"=>"No contact with found with id:" . $contact_id);
+	    }
+    	return array("success"=>true, "contact"=>$contact);
+    }
+
     public static function find_contact(){
 
     }
@@ -103,4 +123,6 @@ class Contact_Controller
     public static function merge_contacts($base_contact, $duplicate_contact){
 
     }
+
+
 }

@@ -46,7 +46,11 @@ class Disciple_Tools_Rest_Endpoints
     public function add_api_routes(){
         register_rest_route($this->namespace, '/dt-public/create-contact', [
             'methods' => 'POST',
-            'callback' => array($this, 'create_contact'),
+            'callback' => array($this, 'public_create_contact'),
+        ]);
+        register_rest_route($this->namespace, '/get-contact', [
+        	"methods" => "GET",
+	        "callback" => array($this, 'get_contact')
         ]);
     }
 
@@ -55,7 +59,7 @@ class Disciple_Tools_Rest_Endpoints
      * @param WP_REST_Request $request as application/json
      * @return array|WP_Error The new contact Id on success, an error on failure
      */
-    public function create_contact(WP_REST_Request $request ){
+    public function public_create_contact(WP_REST_Request $request ){
         //@todo authentication/token
 
         $fields = $request->get_json_params();
@@ -68,6 +72,26 @@ class Disciple_Tools_Rest_Endpoints
         }
     }
 
+
+	/**
+	 * Get a single contact by ID
+	 * @param WP_REST_Request $request
+	 *
+	 * @return array|WP_Error
+	 */
+    public function get_contact(WP_REST_Request $request){
+    	$queries =  $request->get_query_params();
+	    if (isset($queries['id'])){
+			$result = Contact_Controller::get_contact($queries['id']);
+		    if ($result["success"] == true){
+			    return $result["contact"];
+		    } else {
+			    return new WP_Error("get_contact_error", $result["message"], array('status', 400));
+		    }
+	    } else {
+	    	return new WP_Error("get_contact_error", "Please provide a valid id", array('status', 400));
+	    }
+    }
 
 
 }
