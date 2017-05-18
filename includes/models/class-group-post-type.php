@@ -455,7 +455,6 @@ class Disciple_Tools_Group_Post_Type {
 	} // End meta_box_save()
 
 
-
 	/**
 	 * Get the settings for the custom fields.
 	 * @access public
@@ -463,6 +462,8 @@ class Disciple_Tools_Group_Post_Type {
 	 * @return array
 	 */
 	public function get_custom_fields_settings () {
+	    global $post;
+
 		$fields = array();
 
         $fields['type'] = array(
@@ -474,16 +475,35 @@ class Disciple_Tools_Group_Post_Type {
         );
 
 
-        // Address
-        $addresses = dt_address_metabox()->address_fields();
-        foreach ($addresses as $k => $v) { // sets all others third
-            $fields[$k] = array(
-                'name' => $v['name'],
-                'description' => '',
-                'type' => 'text',
-                'default' => '',
-                'section' => 'address'
-            );
+        if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
+            // Address
+            $addresses = dt_address_metabox()->address_fields();
+            foreach ($addresses as $k => $v) { // sets all others third
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'address'
+                );
+            }
+        } else {
+            $channels = dt_address_metabox ()->get_address_list($this->post_type);
+
+            foreach ($channels as $channel) {
+
+                $key =  'address_' . $channel . '_111' ;;
+                $names = explode('_', $key);
+
+
+                $fields[$key] = array(
+                    'name' => $names[1] ,
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'address'
+                );
+            }
         }
 
 

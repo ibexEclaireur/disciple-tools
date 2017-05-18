@@ -40,7 +40,7 @@ class Disciple_Tools_Metabox_Four_Fields {
         // count members at different stages.
 
 
-        $html = 'Here is content';
+        $html = '<img src="'. Disciple_Tools()->plugin_img . '4fields.png" >';
 
         return $html;
     }
