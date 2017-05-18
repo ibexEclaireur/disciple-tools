@@ -90,10 +90,14 @@ class Contact_Controller
 			return array("success"=>false, "message"=>array("these fields do not exist"=>$bad_fields));
 		}
 
+		if ($fields['title']){
+			wp_update_post(array('ID'=>$contact_id, 'post_title'=>$fields['title']));
+		}
+
 		foreach($fields as $field_id => $value){
 			update_post_meta($contact_id, $field_id, $value);
 		}
-        return array("success"=>true);
+        return array("success"=>true, "contact_id"=>$contact_id);
     }
 
 	/**
