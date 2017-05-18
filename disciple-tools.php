@@ -87,6 +87,7 @@ class Disciple_Tools {
 	 */
 	public $token;
 
+
 	/**
 	 * The version number.
 	 * @var     string
@@ -237,11 +238,11 @@ class Disciple_Tools {
             // Load Functions
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/admin-design.php');
-            require_once ('includes/functions/profile.php');
             require_once ('includes/functions/hide-contacts.php');
             require_once ('includes/functions/media.php');
             require_once ('includes/functions/enqueue-scripts.php');
             require_once ('includes/functions/structure-defaults.php');
+            require_once ('includes/functions/training.php');
 
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
