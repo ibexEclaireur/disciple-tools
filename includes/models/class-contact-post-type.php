@@ -767,29 +767,6 @@ class Disciple_Tools_Contact_Post_Type {
         return $fields;
     }
 
-    /**
-     * Field: Contact Fields
-     * @return array
-     */
-    public function address_fields () {
-	    global $wpdb, $post;
-
-	    $fields = array();
-	    $current_fields = array();
-
-	    if (isset($post->ID)){
-            $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'address_%' ORDER BY meta_key DESC", ARRAY_A );
-	    }
-
-        foreach ($current_fields as $value) {
-            $names = explode('_', $value['meta_key']);
-
-            $fields[$value['meta_key']] = array(
-                'name' => $names[1] ,
-            );
-        }
-        return $fields;
-    }
 
     /**
      * Add Contact fields html for adding a new contact channel
