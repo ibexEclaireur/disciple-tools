@@ -516,11 +516,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'status'
         );
 
-
-
         if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
-
-
             // Contact Channels Section
             $methods = $this->contact_fields();
             foreach ($methods as $k => $v) { // sets phone numbers as first

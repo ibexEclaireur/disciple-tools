@@ -81,8 +81,8 @@ class Disciple_Tools_Asset_Post_Type {
      * @access public
      * @since 0.1
      */
-    public function __construct( $post_type = '', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
-        $this->post_type = 'asset';
+    public function __construct( ) {
+        $this->post_type = 'assets';
         $this->singular = __( 'Asset', 'disciple_tools' );
         $this->plural = __( 'Assets', 'disciple_tools' );
         $this->args = array( 'menu_icon' => 'dashicons-format-status' );
