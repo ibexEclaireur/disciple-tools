@@ -48,9 +48,14 @@ class Disciple_Tools_Rest_Endpoints
             'methods' => 'POST',
             'callback' => array($this, 'public_create_contact'),
         ]);
-        register_rest_route($this->namespace, '/get-contact', [
+        register_rest_route($this->namespace, '/contact/(?P<id>\d+)', [
         	"methods" => "GET",
 	        "callback" => array($this, 'get_contact')
+        ]);
+
+        register_rest_route($this->namespace, '/user/(?P<user>[a-zA-Z0-9-]+)/contacts', [
+        	"methods" => "GET",
+	        "callback" => array($this, 'get_user_contacts')
         ]);
     }
 
@@ -80,9 +85,9 @@ class Disciple_Tools_Rest_Endpoints
 	 * @return array|WP_Error
 	 */
     public function get_contact(WP_REST_Request $request){
-    	$queries =  $request->get_query_params();
-	    if (isset($queries['id'])){
-			$result = Contact_Controller::get_contact($queries['id']);
+    	$params = $request->get_params();
+	    if (isset($params['id'])){
+			$result = Contact_Controller::get_contact($params['id']);
 		    if ($result["success"] == true){
 			    return $result["contact"];
 		    } else {
@@ -93,5 +98,22 @@ class Disciple_Tools_Rest_Endpoints
 	    }
     }
 
-
+	/**
+	 * Get Contacts assigned to a user
+	 * @param WP_REST_Request $request
+	 * @access public
+	 * @since 0.1
+	 * @return array|WP_Error return the user's contacts
+	 */
+    public function get_user_contacts(WP_REST_Request $request){
+	    $params = $request->get_params();
+	    if (isset($params['user'])){
+	    	$result = Contact_Controller::get_user_contacts($params['user']);
+	    	if ($result["success"] == true){
+			    return $result["contacts"];
+		    } else {
+			    return new WP_Error("get_user_contact_error", $result["message"], array('status', 400));
+		    }
+	    }
+    }
 }

@@ -104,7 +104,8 @@ class Contact_Controller
 	 * Get a single contact
 	 *
 	 * @param $contact_id , the contact post_id
-	 *
+	 * @access public
+	 * @since 0.1
 	 * @return array, On success: the contact, else: the error message
 	 */
     public static function get_contact($contact_id){
@@ -120,13 +121,37 @@ class Contact_Controller
     	return array("success"=>true, "contact"=>$contact);
     }
 
-    public static function find_contact(){
-
+	/**
+	 * Find Contacts with meta field value
+	 * @param $meta_field
+	 * @param $value
+	 * @access public
+	 * @since 0.1
+	 * @return array
+	 */
+    public static function find_contacts($meta_field, $value){
+    	$query = new WP_Query( array(
+            'post_type' => 'contacts',
+            'meta_key' => $meta_field,
+            'meta_value' => $value
+        ) );
+    	return $query->posts;
     }
 
     public static function merge_contacts($base_contact, $duplicate_contact){
 
     }
 
+	/**
+	 * Get Contacts assigned to a user
+	 * @param $user
+	 * @access public
+	 * @since 0.1
+	 * @return array
+	 */
+    public static function get_user_contacts($user){
+		$contacts = self::find_contacts('assigned_to', $user);
+    	return array("success"=>true, "contacts"=>$contacts);
+    }
 
 }
