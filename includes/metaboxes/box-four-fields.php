@@ -29,7 +29,19 @@ class Disciple_Tools_Metabox_Four_Fields {
     } // End __construct()
 
     public function content_display () {
+        global $post;
+
+        // get the current group
+
+
+        // get all members of the group
+
+
+        // count members at different stages.
+
+
         $html = 'Here is content';
+
         return $html;
     }
 

@@ -165,7 +165,7 @@ class Disciple_Tools_Contact_Post_Type {
 			'capability_type' 		=> 'contact',
 			'has_archive' 			=> true, //$archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'comments', 'author', 'revisions' ),
+			'supports' 				=> array( 'title', 'comments' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-groups',
             'show_in_admin_bar'     => true,
@@ -264,6 +264,7 @@ class Disciple_Tools_Contact_Post_Type {
                 if ($v['section'] == $section || $section == 'all') {
 
                     $data = $v['default'];
+
                     if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
                         $data = $fields[$k][0];
                     }

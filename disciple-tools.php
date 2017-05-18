@@ -217,9 +217,13 @@ class Disciple_Tools {
             // Load plugin library that "requires plugins" at activation
             require_once('includes/admin/config-required-plugins.php');
 
-            // Load Disciple_Tools Dashboard configurations
+            // Load Disciple_Tools Dashboard
             require_once('includes/admin/config-dashboard.php');
-			$this->dashboard = Disciple_Tools_Dashboard::instance();
+			$this->config_dashboard = Disciple_Tools_Dashboard::instance();
+            require_once ( 'includes/admin/config-contacts.php');
+            $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
+            require_once ( 'includes/admin/config-groups.php');
+            $this->config_groups = Disciple_Tools_Config_Groups::instance();
 
             // Load multiple column configuration library into screen options area.
             require_once ('includes/admin/three-column-screen-layout.php');
@@ -246,11 +250,6 @@ class Disciple_Tools {
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
             $this->profile = Disciple_Tools_Profile::instance();
-
-            // Configurations of Post Types
-            require_once ( 'includes/admin/config-contacts.php');
-            $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
-
 
         }
         /* End Admin configuration section */
@@ -303,6 +302,7 @@ class Disciple_Tools {
         // Metaboxes
         require_once ( 'includes/metaboxes/box-four-fields.php' );
         require_once ( 'includes/metaboxes/box-activity.php');
+        require_once ( 'includes/metaboxes/box-address.php');
         /* End model configuration section */
 
 
