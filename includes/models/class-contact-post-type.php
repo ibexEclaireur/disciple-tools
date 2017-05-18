@@ -444,7 +444,7 @@ class Disciple_Tools_Contact_Post_Type {
         global $post_id;
         echo ''. $this->meta_box_content('info');
         echo ''. $this->add_new_contact_field ();
-//        print '<pre>'; print_r($_POST); print '</pre>';
+        print '<pre>'; print_r($this->get_custom_fields_settings()); print '</pre>';
 
     }
 
@@ -483,6 +483,7 @@ class Disciple_Tools_Contact_Post_Type {
 	 * @return array
 	 */
 	public function get_custom_fields_settings () {
+	    global $post;
 		$fields = array();
 
         // Status Section
@@ -515,81 +516,125 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'status'
         );
 
-        // Contact Channels Section
-		$methods = $this->contact_fields();
-		foreach ($methods as $k => $v) { // sets phone numbers as first
-            $keys = explode('_', $k);
-            if($keys[2] == __('Phone','disciple_tools') && $keys[3] == __('Primary','disciple_tools')) {
-                $fields[$k] = array(
-                    'name' => $v['name'],
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'info'
-                );
+
+
+        if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
+
+
+            // Contact Channels Section
+            $methods = $this->contact_fields();
+            foreach ($methods as $k => $v) { // sets phone numbers as first
+                $keys = explode('_', $k);
+                if($keys[1] == __('Phone','disciple_tools') && $keys[2] == __('Primary','disciple_tools')) {
+                    $fields[$k] = array(
+                        'name' => $v['name'],
+                        'description' => '',
+                        'type' => 'text',
+                        'default' => '',
+                        'section' => 'info'
+                    );
+                }
             }
-        }
-        foreach ($methods as $k => $v) { // sets phone numbers as first
-            $keys = explode('_', $k);
-            if($keys[2] == __('Phone','disciple_tools') && $keys[3] != __('Primary','disciple_tools')) {
-                $fields[$k] = array(
-                    'name' => $v['name'],
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'info'
-                );
+            foreach ($methods as $k => $v) { // sets phone numbers as first
+                $keys = explode('_', $k);
+                if($keys[1] == __('Phone','disciple_tools') && $keys[2] != __('Primary','disciple_tools')) {
+                    $fields[$k] = array(
+                        'name' => $v['name'],
+                        'description' => '',
+                        'type' => 'text',
+                        'default' => '',
+                        'section' => 'info'
+                    );
+                }
             }
-        }
-        foreach ($methods as $k => $v) { // sets emails as second
-            $keys = explode('_', $k);
-            if($keys[2] == __('Email','disciple_tools') && $keys[3] == __('Primary','disciple_tools')) {
-                $fields[$k] = array(
-                    'name' => $v['name'],
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'info'
-                );
+            foreach ($methods as $k => $v) { // sets emails as second
+                $keys = explode('_', $k);
+                if($keys[1] == __('Email','disciple_tools') && $keys[2] == __('Primary','disciple_tools')) {
+                    $fields[$k] = array(
+                        'name' => $v['name'],
+                        'description' => '',
+                        'type' => 'text',
+                        'default' => '',
+                        'section' => 'info'
+                    );
+                }
             }
-        }
-        foreach ($methods as $k => $v) { // sets emails as second
-            $keys = explode('_', $k);
-            if($keys[2] == __('Email','disciple_tools') && $keys[3] != __('Primary','disciple_tools')) {
-                $fields[$k] = array(
-                    'name' => $v['name'],
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'info'
-                );
+            foreach ($methods as $k => $v) { // sets emails as second
+                $keys = explode('_', $k);
+                if($keys[1] == __('Email','disciple_tools') && $keys[2] != __('Primary','disciple_tools')) {
+                    $fields[$k] = array(
+                        'name' => $v['name'],
+                        'description' => '',
+                        'type' => 'text',
+                        'default' => '',
+                        'section' => 'info'
+                    );
+                }
             }
-        }
-        foreach ($methods as $k => $v) { // sets all others third
-            $keys = explode('_', $k);
-            if($keys[2] != __('Email','disciple_tools') && $keys[2] != __('Phone','disciple_tools') ) {
-                $fields[$k] = array(
-                    'name' => $v['name'],
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'info'
-                );
+            foreach ($methods as $k => $v) { // sets all others third
+                $keys = explode('_', $k);
+                if($keys[1] != __('Email','disciple_tools') && $keys[2] != __('Phone','disciple_tools') ) {
+                    $fields[$k] = array(
+                        'name' => $v['name'],
+                        'description' => '',
+                        'type' => 'text',
+                        'default' => '',
+                        'section' => 'info'
+                    );
+                }
             }
-        }
 
 
 
-        // Address
-        $addresses = $this->address_fields();
-        foreach ($addresses as $k => $v) { // sets all others third
-            $fields[$k] = array(
-                'name' => $v['name'],
-                'description' => '',
-                'type' => 'text',
-                'default' => '',
-                'section' => 'address'
-            );
+            // Address
+            $addresses = $this->address_fields();
+            foreach ($addresses as $k => $v) { // sets all others third
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'address'
+                );
+            }
+
+
+        } else {
+            $channels = $this->get_channels_list('contact');
+
+            foreach ($channels as $channel) {
+                $tag = null;
+
+                $key =  'contact_' . $channel . '_111' ;
+                $names = explode('_', $key);
+
+                if($names[1] != $names[2]) { $tag = ' ('. $names[2] . ')'; }
+
+                $fields[$key] = array(
+                    'name' => $names[1] . $tag,
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'info'
+                );
+            }
+
+            $channels = $this->get_channels_list('address');
+
+            foreach ($channels as $channel) {
+
+                $key =  'address_' . $channel . '_111' ;;
+                $names = explode('_', $key);
+
+
+                $fields[$key] = array(
+                    'name' => $names[1] ,
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'address'
+                );
+            }
         }
 
 
@@ -714,14 +759,14 @@ class Disciple_Tools_Contact_Post_Type {
 	    }
 
         foreach ($current_fields as $value) {
-            $type = explode('_', $value['meta_key']);
+            $names = explode('_', $value['meta_key']);
             $tag = null;
 
-            if (!empty($type[3]) ) { $tag = ' ('. $type[3] . ')'; }
+            if ($names[1] != $names[2]) { $tag = ' ('. $names[2] . ')'; }
 
             $fields[$value['meta_key']] = array(
-                'name' => $type[2] . $tag,
-                'tag' => $type[2],
+                'name' => $names[1] . $tag,
+                'tag' => $names[1],
             );
         }
         return $fields;
@@ -742,14 +787,10 @@ class Disciple_Tools_Contact_Post_Type {
 	    }
 
         foreach ($current_fields as $value) {
-            $type = explode('_', $value['meta_key']);
-            $tag = null;
-
-            if (!empty($type[3]) ) { $tag = ' ('. $type[3] . ')'; }
+            $names = explode('_', $value['meta_key']);
 
             $fields[$value['meta_key']] = array(
-                'name' => $type[2] . $tag,
-                'tag' => $type[2],
+                'name' => $names[1] ,
             );
         }
         return $fields;
@@ -773,8 +814,8 @@ class Disciple_Tools_Contact_Post_Type {
                             $key =  $this->create_channel_metakey($channel, 'contact'); // build key
                             $names = explode("_", $key); // separates primary name from type tag
 
-                            $html .= '<option value="'.$key.'">'.$names[2];
-                            if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
+                            $html .= '<option value="'.$key.'">'.$names[1];
+                            if($names[1] != $names[2]) { $html .= '  (' . $names[2] . ')'; }
                             $html .= '</option>';
                         }
         $html .= '</select></th>';
@@ -804,9 +845,7 @@ class Disciple_Tools_Contact_Post_Type {
             $key =  $this->create_channel_metakey($channel, 'address'); // build key
             $names = explode("_", $key); // separates primary name from type tag
 
-            $html .= '<option value="'.$key.'">'.$names[2];
-            if(!empty($names[3])) { $html .= '  (' . $names[3] . ')'; }
-            $html .= '</option>';
+            $html .= '<option value="'.$key.'">'.$names[1] . '</option>';
         }
         $html .= '</select></th>';
         $html .= '<td><textarea type="text" name="new-value-address" id="new-address" class="edit-input" ></textarea></td><td><button type="submit" class="button">Save</button></td></tr>';
@@ -821,7 +860,7 @@ class Disciple_Tools_Contact_Post_Type {
      * @return string
      */
     public function create_channel_metakey ($channel, $type) {
-        return $type . '_' . $this->unique_hash() . '_' . $channel; // build key
+        return $type . '_' . $channel . '_' . $this->unique_hash(); // build key
     }
 
     public function unique_hash() {
@@ -845,11 +884,11 @@ class Disciple_Tools_Contact_Post_Type {
                     __('Email', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
                     __('Email', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
                     __('Email', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
-                    __('Facebook', 'disciple_tools'),
-                    __('Twitter', 'disciple_tools'),
-                    __('Instagram', 'disciple_tools'),
-                    __('Skype', 'disciple_tools'),
-                    __('Other', 'disciple_tools'),
+                    __('Facebook', 'disciple_tools'). '_' . __('Facebook', 'disciple_tools'),
+                    __('Twitter', 'disciple_tools'). '_' . __('Twitter', 'disciple_tools'),
+                    __('Instagram', 'disciple_tools'). '_' . __('Instagram', 'disciple_tools'),
+                    __('Skype', 'disciple_tools'). '_' . __('Skype', 'disciple_tools'),
+                    __('Other', 'disciple_tools'). '_' . __('Other', 'disciple_tools'),
                 );
                 return $channels;
                 break;
