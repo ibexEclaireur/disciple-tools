@@ -277,10 +277,14 @@ class Disciple_Tools_Group_Post_Type {
 	 * @return void
 	 */
 	public function meta_box_setup () {
+
+
         add_meta_box( $this->post_type . '_type', __( 'Group Details', 'disciple_tools' ), array( $this, 'load_type_meta_box' ), $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_meta_box' ), $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_four_fields', __( 'Four Fields', 'disciple_tools' ), array( $this, 'load_four_fields_meta_box' ), $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
+
+
 	} // End meta_box_setup()
 
     /**
@@ -291,17 +295,18 @@ class Disciple_Tools_Group_Post_Type {
     }
 
     /**
-     * Load activity metabox
+     * Load type metabox
      */
     public function load_type_meta_box () {
         echo ''. $this->meta_box_content('type');
+        echo ''. dt_church_fields_metabox()->content_display();
     }
 
     /**
      * Load four fields metabox
      */
     public function load_four_fields_meta_box () {
-        echo dt_four_fields_metabox()->content_display();
+        echo ''. dt_four_fields_metabox()->content_display();
     }
 
     /**
@@ -361,6 +366,21 @@ class Disciple_Tools_Group_Post_Type {
                                         $html .= 'selected';
                                     }
                                     $html .= '>' . $vv . '</option>';
+                                }
+                                $html .= '</select>' . "\n";
+                                $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                                $html .= '</td><tr/>' . "\n";
+                                break;
+                            case 'key_select':
+                                $html .= '<tr valign="top"><th scope="row">
+                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <td>
+                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+                                // Iterate the options
+                                foreach ($v['default'] as $kk => $vv) {
+                                    $html .= '<option value="' . $kk . '" ';
+                                    if($kk == $data) { $html .= 'selected';}
+                                    $html .= '>' .$vv . '</option>';
                                 }
                                 $html .= '</select>' . "\n";
                                 $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
@@ -446,10 +466,10 @@ class Disciple_Tools_Group_Post_Type {
 
 			if ( get_post_meta( $post_id, $f ) == '' ) {
 				add_post_meta( $post_id, $f, ${$f}, true );
-			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-				update_post_meta( $post_id, $f, ${$f} );
 			} elseif ( ${$f} == '' ) {
-				delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
+                delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
+            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+				update_post_meta( $post_id, $f, ${$f} );
 			}
 		}
 	} // End meta_box_save()
@@ -466,13 +486,86 @@ class Disciple_Tools_Group_Post_Type {
 
 		$fields = array();
 
-        $fields['type'] = array(
-            'name' => __( 'Type', 'disciple_tools' ),
+		// Type
+        $fields['is_church'] = array(
+            'name' => __( 'Is a Church', 'disciple_tools' ),
             'description' => '',
             'type' => 'select',
-            'default' => array('DBS', 'Church'),
+            'default' => array( __('No', 'disciple_tools'), __('Yes', 'disciple_tools') ),
             'section' => 'type'
         );
+
+        // Church Elements
+        $type = __('Yes', 'disciple_tools');
+        if(get_post_meta($post->ID, 'is_church', true) == $type) {
+
+
+        $fields['church_baptism'] = array(
+            'name' => __( 'Baptism', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_bible'] = array(
+            'name' => __( 'Bible Study', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_communion'] = array(
+            'name' => __( 'Communion', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_fellowship'] = array(
+            'name' => __( 'Fellowship', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_tithe'] = array(
+            'name' => __( 'Tithe (Sacrificial Ministry)', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_prayer'] = array(
+            'name' => __( 'Prayer', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_praise'] = array(
+            'name' => __( 'Praise', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_sharing'] = array(
+            'name' => __( 'Sharing the Gospel', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+        $fields['church_leaders'] = array(
+            'name' => __( 'Leaders', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'type'
+        );
+
+        } // End 'Church' check
+
 
 
         if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.

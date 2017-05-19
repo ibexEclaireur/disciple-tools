@@ -105,7 +105,7 @@ function my_connection_types() {
                 'stage' => array(
                     'title' => __( 'Stage', 'disciple_tools' ),
                     'type' => 'select',
-                    'values' => array( __('Unknown', 'disciple_tools'), __('Unbelieving', 'disciple_tools'), __('Believing', 'disciple_tools'), __('Accountable', 'disciple_tools'), __('Multipying', 'disciple_tools') ),
+                    'values' => array( __('Unknown', 'disciple_tools'), __('Unbelieving', 'disciple_tools'), __('Believing', 'disciple_tools'), __('Accountable', 'disciple_tools'), __('Multiplying', 'disciple_tools') ),
                     'default' => __('Unknown', 'disciple_tools'),
                 ),
             ),

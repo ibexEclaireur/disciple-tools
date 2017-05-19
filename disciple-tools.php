@@ -301,6 +301,8 @@ class Disciple_Tools {
 
         // Metaboxes
         require_once ( 'includes/metaboxes/box-four-fields.php' );
+        require_once ( 'includes/metaboxes/box-church-fields.php' );
+        require_once ( 'includes/metaboxes/box-map.php' );
         require_once ( 'includes/metaboxes/box-activity.php');
         require_once ( 'includes/metaboxes/box-address.php');
         /* End model configuration section */

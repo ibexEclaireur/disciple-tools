@@ -28,23 +28,57 @@ class Disciple_Tools_Metabox_Four_Fields {
 
     } // End __construct()
 
+    /**
+     * @see https://github.com/scribu/wp-posts-to-posts/wiki/Connection-metadata#querying-connections-by-their-fields
+     * @return void
+     */
     public function content_display () {
-        global $post;
+        global $post, $wpdb;
+        $html = '';
 
-        // get the current group
+        $counts = $wpdb->get_results($wpdb->prepare('
+                    SELECT meta_value, count(meta_value) as count 
+                    FROM %1$s 
+                      INNER JOIN %2$s ON %1$s.p2p_id = %2$s.p2p_id 
+                    WHERE p2p_to = \'%3$d\' 
+                    AND p2p_type = \'%4$s\' 
+                    AND meta_key = \'%5$s\' 
+                    GROUP BY meta_value;',
+                    $wpdb->p2p,
+                    $wpdb->p2pmeta,
+                    $post->ID,
+                    'contacts_to_groups',
+                    'stage'
+                    ), ARRAY_A);
 
 
-        // get all members of the group
+        $stage = array();
+        $stage['Unbelieving'] = 0;
+        $stage['Believing'] = 0;
+        $stage['Accountable'] = 0;
+        $stage['Multiplying'] = 0;
+
+        foreach ($counts as $count) {
+            $stage[$count['meta_value']] = $count['count'];
+        }
+
+        $html .= '<table class="form-table"><tr><td>';
+
+        $html .= '<h1>Unbelieving  : ' . $stage['Unbelieving'] . '<br>';
+        $html .= 'Believing  : ' . $stage['Believing'] . '<br>';
+        $html .= 'Accountable  : ' . $stage['Accountable'] . '<br>';
+        $html .= 'Multiplying  : ' . $stage['Multiplying'] . '<br>';
+        $html .= 'Is Church  : ' . get_post_meta($post->ID, 'type', true) . '<br></h1>';
 
 
-        // count members at different stages.
 
+        $html .= '</td><td>';
+        $html .=  '<img src="'. Disciple_Tools()->plugin_img . '4fields.png" >';
+        $html .= '</td></tr></table>';
 
-        $html = '<img src="'. Disciple_Tools()->plugin_img . '4fields.png" >';
-
-        return $html;
+        echo $html;
+//        print'<pre>'; print_r($counts); print '</pre>';
     }
-
 
 
 }

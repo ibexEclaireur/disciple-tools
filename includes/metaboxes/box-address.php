@@ -24,14 +24,7 @@ class Disciple_Tools_Metabox_Address {
      * @access  public
      * @since   0.1
      */
-    public function __construct () {
-
-    } // End __construct()
-
-    public function content_display () {
-        $html = 'Here is content';
-        return $html;
-    }
+    public function __construct () { } // End __construct()
 
     /**
      * Add Address fields html for adding a new contact channel
@@ -100,6 +93,14 @@ class Disciple_Tools_Metabox_Address {
                 );
                 return $addresses;
                 break;
+            case 'locations':
+                $addresses = array(
+                    __('Single Address', 'disciple_tools'),
+                    __('Single (JSON)', 'disciple_tools'),
+                    __('Polygon (JSON)', 'disciple_tools'),
+                );
+                return $addresses;
+                break;
             default:
                 break;
         }
@@ -117,7 +118,13 @@ class Disciple_Tools_Metabox_Address {
         $current_fields = array();
 
         if (isset($post->ID)){
-            $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'address_%' ORDER BY meta_key DESC", ARRAY_A );
+            $current_fields = $wpdb->get_results( "
+                              SELECT meta_key 
+                              FROM $wpdb->postmeta 
+                              WHERE post_id = $post->ID 
+                                AND meta_key LIKE 'address_%' 
+                              ORDER BY meta_key DESC", ARRAY_A
+            );
         }
 
         foreach ($current_fields as $value) {

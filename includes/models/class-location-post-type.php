@@ -105,8 +105,6 @@ class Disciple_Tools_Location_Post_Type {
 			}
 		}
 
-		add_action( 'after_setup_theme', array( $this, 'ensure_post_thumbnails_support' ) );
-		add_action( 'after_theme_setup', array( $this, 'register_image_sizes' ) );
 	} // End __construct()
 
 	/**
@@ -170,7 +168,7 @@ class Disciple_Tools_Location_Post_Type {
             'capabilities'          => $capabilities,
 			'has_archive' 			=> true,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'excerpt' ),
+			'supports' 				=> array( 'title' ),
 			'menu_position' 		=> 6,
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
@@ -209,7 +207,6 @@ class Disciple_Tools_Location_Post_Type {
 
 		switch ( $column_name ) {
 			case 'image':
-				echo $this->get_image( $id, 40 );
 			break;
 
 			default:
@@ -285,7 +282,9 @@ class Disciple_Tools_Location_Post_Type {
 	 * @return void
 	 */
 	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '-data', __( 'Location Details', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
+		add_meta_box( $this->post_type . '_data', __( 'Location Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), array( $this, 'load_map_meta_box' ), $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
 	} // End meta_box_setup()
 
@@ -296,20 +295,42 @@ class Disciple_Tools_Location_Post_Type {
         dt_activity_metabox()->activity_meta_box(get_the_ID());
     }
 
+    /**
+     * Load activity metabox
+     */
+    public function load_map_meta_box () {
+        dt_map_metabox()->display_map();
+    }
+
+    /**
+     * Load activity metabox
+     */
+    public function load_details_meta_box () {
+        $this->meta_box_content('info');
+    }
+
+    /**
+     * Load address metabox
+     */
+    public function load_address_meta_box () {
+        echo ''. $this->meta_box_content('address');
+        echo ''. dt_address_metabox()->add_new_address_field();
+    }
+
 	/**
 	 * The contents of our meta box.
 	 * @access public
 	 * @since  0.1
 	 * @return void
 	 */
-	public function meta_box_content () {
+	public function meta_box_content ($section = 'info') {
 		global $post_id;
 		$fields = get_post_custom( $post_id );
 		$field_data = $this->get_custom_fields_settings();
 
 		$html = '';
 
-		$html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+		$html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_location_info' ) . '" />';
 		
 
 		if ( 0 < count( $field_data ) ) {
@@ -317,60 +338,79 @@ class Disciple_Tools_Location_Post_Type {
 			$html .= '<tbody>' . "\n";
 
 			foreach ( $field_data as $k => $v ) {
-				$data = $v['default'];
-				if ( isset( $fields['_' . $k] ) && isset( $fields['_' . $k][0] ) ) {
-					$data = $fields['_' . $k][0];
-				}
-				
-				$type = $v['type'];
-				
-				switch ( $type ) {
-					
-					case 'url':
-						$html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-						$html .= '</td><tr/>' . "\n";
-					break;
-					case 'text':
-						$html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-						$html .= '</td><tr/>' . "\n";
-					break;
-					case 'select':
-						$html .= '<tr valign="top"><th scope="row">
-							<label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
-							<td><select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
-									// Iterate the options
-						            foreach ($v['default'] as $vv) {
-							            $html .= '<option value="' . $vv . '" '; 
-							            if($vv == $data) { $html .= 'selected';}
-							            $html .= '>' .$vv . '</option>';
-						            }
-						$html .= '</select>' . "\n";
-						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-						$html .= '</td><tr/>' . "\n";
-					break;
-					case 'radio':
-						$html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+
+                if ($v['section'] == $section || $section == 'all') {
+
+                    $data = $v['default'];
+                    if (isset($fields[$k]) && isset($fields[$k][0])) {
+                        $data = $fields[$k][0];
+                    }
+
+                    $type = $v['type'];
+
+                    switch ($type) {
+
+                        case 'text':
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr($k) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr($k) . '" type="text" id="' . esc_attr($k) . '" class="regular-text" value="' . esc_attr($data) . '" />' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'select':
+                            $html .= '<tr valign="top"><th scope="row">
+							<label for="' . esc_attr($k) . '">' . $v['name'] . '</label></th>
+							<td><select name="' . esc_attr($k) . '" id="' . esc_attr($k) . '" class="regular-text">';
+                            // Iterate the options
+                            foreach ($v['default'] as $vv) {
+                                $html .= '<option value="' . $vv . '" ';
+                                if ($vv == $data) {
+                                    $html .= 'selected';
+                                }
+                                $html .= '>' . $vv . '</option>';
+                            }
+                            $html .= '</select>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'key_select':
+                            $html .= '<tr valign="top"><th scope="row">
+                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <td>
+                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+                            // Iterate the options
+                            foreach ($v['default'] as $kk => $vv) {
+                                $html .= '<option value="' . $kk . '" ';
+                                if($kk == $data) { $html .= 'selected';}
+                                $html .= '>' .$vv . '</option>';
+                            }
+                            $html .= '</select>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'radio':
+                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
 							<td><fieldset>';
-								// Iterate the buttons
-								$increment_the_radio_button = 1;
-					            foreach ($v['default'] as $vv) {
-						            $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
-								    '<input class="dt-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
-								    if($vv == $data) { $html .= 'checked';}
-								    $html .= '>';
-								   $increment_the_radio_button++;
-					            }
-						$html .= '</fieldset>' . "\n";
-						$html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-						$html .= '</td><tr/>' . "\n";
-					break;
-					
-		
-					default:
-					break;
-				}
+                            // Iterate the buttons
+                            $increment_the_radio_button = 1;
+                            foreach ($v['default'] as $vv) {
+                                $html .= '<label for="' . esc_attr($k) . '-' . $increment_the_radio_button . '">' . $vv . '</label>' .
+                                    '<input class="dt-radio" type="radio" name="' . esc_attr($k) . '" id="' . $k . '-' . $increment_the_radio_button . '" value="' . $vv . '" ';
+                                if ($vv == $data) {
+                                    $html .= 'checked';
+                                }
+                                $html .= '>';
+                                $increment_the_radio_button++;
+                            }
+                            $html .= '</fieldset>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+
+
+                        default:
+                            break;
+                    }
+
+                }
 				
 				
 			}
@@ -393,7 +433,7 @@ class Disciple_Tools_Location_Post_Type {
 		global $post, $messages;
 
 		// Verify
-		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+		if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_location_info' ) ) {
 			return $post_id;
 		}
 
@@ -410,21 +450,21 @@ class Disciple_Tools_Location_Post_Type {
 		$field_data = $this->get_custom_fields_settings();
 		$fields = array_keys( $field_data );
 
+        if ( (isset( $_POST['new-key-address']) && !empty($_POST['new-key-address']) ) && (isset( $_POST['new-value-address']) && !empty ($_POST['new-value-address']) ) ) { // catch and prepare new contact fields
+            add_post_meta( $post_id, $_POST['new-key-address'], $_POST['new-value-address'], true );
+        }
+
 		foreach ( $fields as $f ) {
 
 			${$f} = strip_tags(trim($_POST[$f]));
 
-			// Escape the URLs.
-			if ( 'url' == $field_data[$f]['type'] ) {
-				${$f} = esc_url( ${$f} );
-			}
 
 			if ( get_post_meta( $post_id, $f ) == '' ) {
 				add_post_meta( $post_id, $f, ${$f}, true );
-			} elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-				update_post_meta( $post_id, $f, ${$f} );
 			} elseif ( ${$f} == '' ) {
-				delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
+                delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
+            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+				update_post_meta( $post_id, $f, ${$f} );
 			}
 		}
 	} // End meta_box_save()
@@ -450,53 +490,51 @@ class Disciple_Tools_Location_Post_Type {
 	 * @return array
 	 */
 	public function get_custom_fields_settings () {
-		$fields = array();
-		
+		global $post;
+	    $fields = array();
 
-		$fields['coordinates'] = array(
-		    'name' => __( 'Coordinates', 'disciple_tools' ),
-		    'description' => __( 'Raw polygon or multiple polygon mapping coordinates.', 'disciple_tools' ),
-		    'type' => 'text',
-		    'default' => '',
-		    'section' => 'info'
-		);
+        if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
+            // Address
+            $addresses = dt_address_metabox()->address_fields();
+            foreach ($addresses as $k => $v) { // sets all others third
+                $fields[$k] = array(
+                    'name' => $v['name'],
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'address'
+                );
+            }
+        } else {
+            $channels = dt_address_metabox ()->get_address_list($this->post_type);
+
+            foreach ($channels as $channel) {
+
+                $key =  'address_' . $channel . '_111' ;;
+                $names = explode('_', $key);
+
+
+                $fields[$key] = array(
+                    'name' => $names[1] ,
+                    'description' => '',
+                    'type' => 'text',
+                    'default' => '',
+                    'section' => 'address'
+                );
+            }
+        }
+
+        $fields['coordinates'] = array(
+            'name' => __( 'Coordinates', 'disciple_tools' ),
+            'description' => __( 'Raw polygon or multiple polygon mapping coordinates.', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
 
 		return apply_filters( 'dt_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
 
-	/**
-	 * Get the image for the given ID.
-	 * @param  int 				$id   Post ID.
-	 * @param  mixed $size Image dimension. (default: "thing-thumbnail")
-	 * @since  0.1
-	 * @return string       	<img> tag.
-	 */
-	protected function get_image ( $id, $size = 'thing-thumbnail' ) {
-		$response = '';
-
-		if ( has_post_thumbnail( $id ) ) {
-			// If not a string or an array, and not an integer, default to 150x9999.
-			if ( ( is_int( $size ) || ( 0 < intval( $size ) ) ) && ! is_array( $size ) ) {
-				$size = array( intval( $size ), intval( $size ) );
-			} elseif ( ! is_string( $size ) && ! is_array( $size ) ) {
-				$size = array( 150, 9999 );
-			}
-			$response = get_the_post_thumbnail( intval( $id ), $size );
-		}
-
-		return $response;
-	} // End get_image()
-
-	/**
-	 * Register image sizes.
-	 * @access public
-	 * @since  0.1
-	 */
-	public function register_image_sizes () {
-		if ( function_exists( 'add_image_size' ) ) {
-			add_image_size( $this->post_type . '-thumbnail', 150, 9999 ); // 150 pixels wide (and unlimited height)
-		}
-	} // End register_image_sizes()
 
 	/**
 	 * Run on activation.
@@ -517,12 +555,5 @@ class Disciple_Tools_Location_Post_Type {
 		flush_rewrite_rules();
 	} // End flush_rewrite_rules()
 
-	/**
-	 * Ensure that "post-thumbnails" support is available for those themes that don't register it.
-	 * @access public
-	 * @since  0.1
-	 */
-	public function ensure_post_thumbnails_support () {
-		if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }
-	} // End ensure_post_thumbnails_support()
+
 } // End Class
