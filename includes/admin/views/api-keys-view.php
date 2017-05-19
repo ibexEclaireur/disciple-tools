@@ -25,6 +25,7 @@
         <tr>
           <th>Client ID</th>
           <th>Client Token</th>
+            <th></th>
         </tr>
         </thead>
         <?php foreach ( $keys as $id => $key): ?>

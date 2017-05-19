@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Disciple_Tools_Config_Contacts
- * This class serves as master configuration and modification class to the contacts post type within the admin screens.
+ * Disciple_Tools_Config_Groups
+ * This class serves as master configuration and modification class to the groups post type within the admin screens.
  *
  * @class Disciple_Tools_Config_Contacts
  * @version	0.1
@@ -13,10 +13,10 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Disciple_Tools_Config_Contacts {
+class Disciple_Tools_Config_Groups {
 
     /**
-     * Disciple_Tools_Config_Contacts The single instance of Disciple_Tools_Config_Contacts.
+     * Disciple_Tools_Config_Groups The single instance of Disciple_Tools_Config_Groups.
      * @var 	object
      * @access  private
      * @since 	0.1
@@ -24,13 +24,13 @@ class Disciple_Tools_Config_Contacts {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Config_Contacts Instance
+     * Main Disciple_Tools_Config_Groups Instance
      *
-     * Ensures only one instance of Disciple_Tools_Config_Contacts is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Config_Groups is loaded or can be loaded.
      *
      * @since 0.1
      * @static
-     * @return Disciple_Tools_Config_Contacts instance
+     * @return Disciple_Tools_Config_Groups instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) )
@@ -44,46 +44,8 @@ class Disciple_Tools_Config_Contacts {
      * @since   0.1
      */
     public function __construct () {
-
-        // Config columns
-        add_filter('manage_contacts_posts_columns', array($this, 'contacts_table_head'));
-        add_action( 'manage_contacts_posts_custom_column', array($this, 'contacts_table_content'), 10, 2 );
-
         add_action( 'admin_menu', array($this, 'remove_default_meta_boxes' ) );
-
     } // End __construct()
-
-    /**
-     * Configure Contacts column header
-     * @param $defaults
-     * @return mixed
-     */
-    public function contacts_table_head( $defaults ) {
-        $defaults['assigned_to']  = 'Assigned To';
-        $defaults['seeker_path']    = 'Seeker Path';
-        $defaults['seeker_milestones']    = 'Seeker Milestone';
-        return $defaults;
-    }
-
-    /**
-     * Configure Contacts column content
-     * @param $column_name
-     * @param $post_id
-     */
-    public function contacts_table_content( $column_name, $post_id ) {
-        if ($column_name == 'assigned_to') {
-            echo get_post_meta( $post_id, 'assigned_to', true );
-        }
-        if ($column_name == 'seeker_path') {
-            $status = get_post_meta( $post_id, 'seeker_path', true );
-            echo $status;
-        }
-
-        if ($column_name == 'seeker_milestones') {
-            echo get_post_meta( $post_id, 'seeker_milestones', true );
-        }
-
-    }
 
     /**
      * Removes default metaboxes
@@ -105,6 +67,3 @@ class Disciple_Tools_Config_Contacts {
     }
 
 }
-
-
-

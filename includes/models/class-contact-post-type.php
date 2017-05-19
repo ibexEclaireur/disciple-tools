@@ -165,7 +165,7 @@ class Disciple_Tools_Contact_Post_Type {
 			'capability_type' 		=> 'contact',
 			'has_archive' 			=> true, //$archive_slug,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'comments', 'author', 'revisions' ),
+			'supports' 				=> array( 'title', 'comments' ),
 			'menu_position' 		=> 5,
 			'menu_icon' 			=> 'dashicons-groups',
             'show_in_admin_bar'     => true,
@@ -264,6 +264,7 @@ class Disciple_Tools_Contact_Post_Type {
                 if ($v['section'] == $section || $section == 'all') {
 
                     $data = $v['default'];
+
                     if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
                         $data = $fields[$k][0];
                     }
@@ -455,7 +456,7 @@ class Disciple_Tools_Contact_Post_Type {
      */
     public function load_address_info_meta_box () {
         echo ''. $this->meta_box_content('address');
-        echo ''. $this->add_new_address_field();
+        echo ''. dt_address_metabox ()->add_new_address_field();
     }
 
     /**
@@ -516,11 +517,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'status'
         );
 
-
-
         if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
-
-
             // Contact Channels Section
             $methods = $this->contact_fields();
             foreach ($methods as $k => $v) { // sets phone numbers as first
@@ -584,10 +581,8 @@ class Disciple_Tools_Contact_Post_Type {
                 }
             }
 
-
-
             // Address
-            $addresses = $this->address_fields();
+            $addresses = dt_address_metabox ()->address_fields();
             foreach ($addresses as $k => $v) { // sets all others third
                 $fields[$k] = array(
                     'name' => $v['name'],
@@ -619,7 +614,7 @@ class Disciple_Tools_Contact_Post_Type {
                 );
             }
 
-            $channels = $this->get_channels_list('address');
+            $channels = dt_address_metabox ()->get_address_list($this->post_type);
 
             foreach ($channels as $channel) {
 
@@ -772,29 +767,6 @@ class Disciple_Tools_Contact_Post_Type {
         return $fields;
     }
 
-    /**
-     * Field: Contact Fields
-     * @return array
-     */
-    public function address_fields () {
-	    global $wpdb, $post;
-
-	    $fields = array();
-	    $current_fields = array();
-
-	    if (isset($post->ID)){
-            $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'address_%' ORDER BY meta_key DESC", ARRAY_A );
-	    }
-
-        foreach ($current_fields as $value) {
-            $names = explode('_', $value['meta_key']);
-
-            $fields[$value['meta_key']] = array(
-                'name' => $names[1] ,
-            );
-        }
-        return $fields;
-    }
 
     /**
      * Add Contact fields html for adding a new contact channel
@@ -827,32 +799,6 @@ class Disciple_Tools_Contact_Post_Type {
 
     }
 
-    /**
-     * Add Address fields html for adding a new contact channel
-     * @usage Added to the bottom of the Contact Details Metabox.
-     */
-    public function add_new_address_field () {
-
-        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
-        $html .= '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
-
-        $channels = $this->get_channels_list('address');
-
-        $html .= '<tr><th>
-                <select name="new-key-address" class="edit-input"><option value=""></option> ';
-        foreach ($channels as $channel) {
-
-            $key =  $this->create_channel_metakey($channel, 'address'); // build key
-            $names = explode("_", $key); // separates primary name from type tag
-
-            $html .= '<option value="'.$key.'">'.$names[1] . '</option>';
-        }
-        $html .= '</select></th>';
-        $html .= '<td><textarea type="text" name="new-value-address" id="new-address" class="edit-input" ></textarea></td><td><button type="submit" class="button">Save</button></td></tr>';
-
-        $html .= '</tbody></table>';
-        return $html;
-    }
 
     /**
      * Helper function to create the unique metakey for contacts channels.
@@ -873,36 +819,22 @@ class Disciple_Tools_Contact_Post_Type {
      */
     public function get_channels_list ($type = 'contact') {
 
-        switch ($type) {
-            case 'contact':
-                $channels = array(
-                    __('Phone', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
-                    __('Phone', 'disciple_tools') . '_' . __('Mobile', 'disciple_tools'),
-                    __('Phone', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
-                    __('Phone', 'disciple_tools') . '_' . __('Home', 'disciple_tools'),
-                    __('Phone', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
-                    __('Email', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
-                    __('Email', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
-                    __('Email', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
-                    __('Facebook', 'disciple_tools'). '_' . __('Facebook', 'disciple_tools'),
-                    __('Twitter', 'disciple_tools'). '_' . __('Twitter', 'disciple_tools'),
-                    __('Instagram', 'disciple_tools'). '_' . __('Instagram', 'disciple_tools'),
-                    __('Skype', 'disciple_tools'). '_' . __('Skype', 'disciple_tools'),
-                    __('Other', 'disciple_tools'). '_' . __('Other', 'disciple_tools'),
-                );
-                return $channels;
-                break;
-            case 'address':
-                $addresses = array(
-                    __('Home', 'disciple_tools'),
-                    __('Work', 'disciple_tools'),
-                    __('Other', 'disciple_tools'),
-                );
-                return $addresses;
-                break;
-            default:
-                break;
-        }
+        $channels = array(
+            __('Phone', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
+            __('Phone', 'disciple_tools') . '_' . __('Mobile', 'disciple_tools'),
+            __('Phone', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
+            __('Phone', 'disciple_tools') . '_' . __('Home', 'disciple_tools'),
+            __('Phone', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
+            __('Email', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
+            __('Email', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
+            __('Email', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
+            __('Facebook', 'disciple_tools'). '_' . __('Facebook', 'disciple_tools'),
+            __('Twitter', 'disciple_tools'). '_' . __('Twitter', 'disciple_tools'),
+            __('Instagram', 'disciple_tools'). '_' . __('Instagram', 'disciple_tools'),
+            __('Skype', 'disciple_tools'). '_' . __('Skype', 'disciple_tools'),
+            __('Other', 'disciple_tools'). '_' . __('Other', 'disciple_tools'),
+        );
+        return $channels;
 
     }
 
