@@ -349,6 +349,12 @@ class Disciple_Tools {
         require_once ('includes/factories/class-counter-factory.php');
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
+
+        /**
+         * Load Functions
+         */
+        require_once ('includes/functions/disable-xml-rpc-pingback.php');
+
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
     } // End __construct()
