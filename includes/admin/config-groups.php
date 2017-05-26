@@ -56,14 +56,14 @@ class Disciple_Tools_Config_Groups {
         remove_meta_box( 'linktargetdiv', 'link', 'normal' );
         remove_meta_box( 'linkxfndiv', 'link', 'normal' );
         remove_meta_box( 'linkadvanceddiv', 'link', 'normal' );
-        remove_meta_box( 'postexcerpt', 'contacts', 'normal' );
-        remove_meta_box( 'trackbacksdiv', 'contacts', 'normal' );
-        remove_meta_box( 'postcustom', 'contacts', 'normal' );
-        remove_meta_box( 'commentstatusdiv', 'contacts', 'normal' );
-        remove_meta_box( 'revisionsdiv', 'contacts', 'normal' );
-        remove_meta_box( 'slugdiv', 'contacts', 'normal' );
-        remove_meta_box( 'authordiv', 'contacts', 'normal' );
-        remove_meta_box( 'sqpt-meta-tags', 'contacts', 'normal' );
+        remove_meta_box( 'postexcerpt', 'groups', 'normal' );
+        remove_meta_box( 'trackbacksdiv', 'groups', 'normal' );
+        remove_meta_box( 'postcustom', 'groups', 'normal' );
+        remove_meta_box( 'commentstatusdiv', 'groups', 'normal' );
+        remove_meta_box( 'revisionsdiv', 'groups', 'normal' );
+        remove_meta_box( 'slugdiv', 'groups', 'normal' );
+        remove_meta_box( 'authordiv', 'groups', 'normal' );
+        remove_meta_box( 'sqpt-meta-tags', 'groups', 'normal' );
     }
 
 }

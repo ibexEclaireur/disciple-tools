@@ -1,13 +1,9 @@
 <?php
 /**
  * Initialization of the Post to Post library
+ * This is the key configuration file for the post-to-post system in Disciple Tools.
  *
- * https://github.com/scribu/wp-lib-posts-to-posts
- * https://github.com/scribu/wp-posts-to-posts
- *
- *
- * TODO: Figure out the contact to user. Look at the solution here for adding metabox to user profile listing assigned contacts, https://github.com/scribu/wp-posts-to-posts/issues/261
- *
+ * @see https://github.com/scribu/wp-posts-to-posts/wiki
  */
 
 function my_connection_types() {
