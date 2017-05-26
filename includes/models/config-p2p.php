@@ -211,32 +211,15 @@ function my_connection_types() {
         ),
     ) );
 
-    /*  // TODO: This section connects a contact to a user, and generates a connection column.
-	// The better way to do this is to create a one-to-one connection between the contact and user.
+    p2p_register_connection_type( array(
+        'name' => 'locations_to_locations',
+        'from' => 'locations',
+        'to' => 'locations',
+        'reciprocal' => true,
+        'title' => 'Nearby Locations',
 
-	p2p_register_connection_type( array(
-        'name' => 'users_to_contacts',
-        'from' => 'contacts',
-        'to' => 'user',
-        'admin_dropdown' => 'any',
-        'title' => array(
-            'from' => __( 'Assigned Multiplier', 'disciple_tools' ),
-            'to' => __( 'Assigned Contact', 'disciple_tools' ),
-        ),
-        'to_labels' => array(
-            'singular_name' => __( 'Multiplier', 'disciple_tools' ),
-            'search_items' => __( 'Search multipliers', 'disciple_tools' ),
-            'not_found' => __( 'No multiplier found.', 'disciple_tools' ),
-            'create' => __( 'Connect Multiplier ', 'disciple_tools' ),
-        ),
-        'from_labels' => array(
-            'singular_name' => __( 'Contact', 'disciple_tools' ),
-            'search_items' => __( 'Search contacts', 'disciple_tools' ),
-            'not_found' => __( 'No contacts found.', 'disciple_tools' ),
-            'create' => __( 'Connect Contact', 'disciple_tools' ),
-        ),
-    ) );*/
-
+    ) );
+    
 }
 add_action( 'p2p_init', 'my_connection_types' );
 
