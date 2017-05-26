@@ -219,24 +219,9 @@ function my_connection_types() {
         'title' => 'Nearby Locations',
 
     ) );
-    
+
 }
 add_action( 'p2p_init', 'my_connection_types' );
-
-function dt_years_dropdown () {
-
-    $dates_array = array();
-    $current_year = date('Y');
-    $dates_array[] = $current_year;
-    $years_count = 10;
-    $i = 0;
-
-    while($i < $years_count) {
-        $dates_array[] = $current_year - 1;
-    }
-
-    return $dates_array;
-}
 
 
 /**
