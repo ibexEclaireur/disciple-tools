@@ -1,13 +1,9 @@
 <?php
 /**
  * Initialization of the Post to Post library
+ * This is the key configuration file for the post-to-post system in Disciple Tools.
  *
- * https://github.com/scribu/wp-lib-posts-to-posts
- * https://github.com/scribu/wp-posts-to-posts
- *
- *
- * TODO: Figure out the contact to user. Look at the solution here for adding metabox to user profile listing assigned contacts, https://github.com/scribu/wp-posts-to-posts/issues/261
- *
+ * @see https://github.com/scribu/wp-posts-to-posts/wiki
  */
 
 function my_connection_types() {
@@ -215,49 +211,17 @@ function my_connection_types() {
         ),
     ) );
 
-    /*  // TODO: This section connects a contact to a user, and generates a connection column.
-	// The better way to do this is to create a one-to-one connection between the contact and user.
+    p2p_register_connection_type( array(
+        'name' => 'locations_to_locations',
+        'from' => 'locations',
+        'to' => 'locations',
+        'reciprocal' => true,
+        'title' => 'Nearby Locations',
 
-	p2p_register_connection_type( array(
-        'name' => 'users_to_contacts',
-        'from' => 'contacts',
-        'to' => 'user',
-        'admin_dropdown' => 'any',
-        'title' => array(
-            'from' => __( 'Assigned Multiplier', 'disciple_tools' ),
-            'to' => __( 'Assigned Contact', 'disciple_tools' ),
-        ),
-        'to_labels' => array(
-            'singular_name' => __( 'Multiplier', 'disciple_tools' ),
-            'search_items' => __( 'Search multipliers', 'disciple_tools' ),
-            'not_found' => __( 'No multiplier found.', 'disciple_tools' ),
-            'create' => __( 'Connect Multiplier ', 'disciple_tools' ),
-        ),
-        'from_labels' => array(
-            'singular_name' => __( 'Contact', 'disciple_tools' ),
-            'search_items' => __( 'Search contacts', 'disciple_tools' ),
-            'not_found' => __( 'No contacts found.', 'disciple_tools' ),
-            'create' => __( 'Connect Contact', 'disciple_tools' ),
-        ),
-    ) );*/
+    ) );
 
 }
 add_action( 'p2p_init', 'my_connection_types' );
-
-function dt_years_dropdown () {
-
-    $dates_array = array();
-    $current_year = date('Y');
-    $dates_array[] = $current_year;
-    $years_count = 10;
-    $i = 0;
-
-    while($i < $years_count) {
-        $dates_array[] = $current_year - 1;
-    }
-
-    return $dates_array;
-}
 
 
 /**

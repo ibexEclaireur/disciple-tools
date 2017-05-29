@@ -20,8 +20,8 @@ defined( 'ABSPATH' ) || exit;
  */
 function disciple_tools_register_default_user_group_taxonomy() {
 	new Disciple_Tools_User_Taxonomy( 'user-group', 'users/group', array(
-		'singular' => __( 'Group',  'disciple-tools' ),
-		'plural'   => __( 'Groups', 'disciple-tools' )
+		'singular' => __( 'Team',  'disciple-tools' ),
+		'plural'   => __( 'Teams', 'disciple-tools' )
 	) );
 }
 
