@@ -12,4 +12,5 @@ jQuery(document).ready(function($) {
     $('#minor-publishing-actions').hide();
     $('.misc-pub-visibility').hide();
     $('.misc-pub-post-status').hide();
+    $('.misc-pub-revisions').hide();
 });
