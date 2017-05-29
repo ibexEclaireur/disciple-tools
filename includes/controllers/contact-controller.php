@@ -149,9 +149,79 @@ class Contact_Controller
 	 * @since 0.1
 	 * @return array
 	 */
-    public static function get_user_contacts($user){
-		$contacts = self::find_contacts('assigned_to', $user);
+    public static function get_user_contacts($user_id){
+		$contacts = self::find_contacts('assigned_to', $user_id);
     	return array("success"=>true, "contacts"=>$contacts);
+    }
+
+    public static function get_team_contacts($user_id){
+	    global $wpdb;
+	    $user_connections = array();
+	    $user_connections['relation'] = 'OR';
+	    $members = array();
+
+	    // First Query
+	    // Build arrays for current groups connected to user
+	    $sql = $wpdb->prepare(
+		    'SELECT DISTINCT %1$s.%3$s
+          FROM %1$s
+          INNER JOIN %2$s ON %1$s.%3$s=%2$s.%3$s
+            WHERE object_id  = \'%4$d\'
+            AND taxonomy = \'%5$s\'
+            ',
+		    $wpdb->term_relationships,
+		    $wpdb->term_taxonomy,
+		    'term_taxonomy_id',
+		    $user_id,
+		    'user-group'
+	    );
+	    $results = $wpdb->get_results( $sql, ARRAY_A );
+
+
+	    // Loop
+	    foreach ($results as $result) {
+		    // create the meta query for the group
+		    $user_connections[] = array('key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id']  );
+
+		    // Second Query
+		    // query a member list for this group
+		    $sql = $wpdb->prepare(
+			    'SELECT %1$s.object_id 
+          FROM %1$s
+            WHERE term_taxonomy_id  = \'%2$d\'
+            ',
+			    $wpdb->term_relationships,
+			    $result['term_taxonomy_id']
+		    );
+
+		    // build list of member ids who are part of the team
+		    $results2 = $wpdb->get_results( $sql, ARRAY_A );
+
+		    // Inner Loop
+		    foreach ($results2 as $result2) {
+
+			    if($result2['object_id'] != $user_id) {
+				    $members[] = $result2['object_id'];
+			    }
+		    }
+	    }
+
+	    $members = array_unique($members);
+
+	    foreach($members as $member) {
+		    $user_connections[] = array('key' => 'assigned_to', 'value' => 'user-' . $member  );
+	    }
+
+	    $args = array(
+		    'post_type' => 'contacts',
+		    'nopaging' => true,
+		    'meta_query' => $user_connections,
+	    );
+	    $query2 = new WP_Query( $args );
+
+
+
+	    return array("success"=>true, "members"=>$user_connections, "contacts"=>$query2->posts);
     }
 
 }

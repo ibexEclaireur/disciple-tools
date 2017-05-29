@@ -52,10 +52,13 @@ class Disciple_Tools_Rest_Endpoints
         	"methods" => "GET",
 	        "callback" => array($this, 'get_contact')
         ]);
-
         register_rest_route($this->namespace, '/user/(?P<user>[a-zA-Z0-9-]+)/contacts', [
         	"methods" => "GET",
 	        "callback" => array($this, 'get_user_contacts')
+        ]);
+        register_rest_route($this->namespace, '/user/(?P<user>[a-zA-Z0-9-]+)/team/contacts', [
+        	"methods" => "GET",
+	        "callback" => array($this, 'get_team_contacts')
         ]);
     }
 
@@ -113,6 +116,29 @@ class Disciple_Tools_Rest_Endpoints
 			    return $result["contacts"];
 		    } else {
 			    return new WP_Error("get_user_contact_error", $result["message"], array('status', 400));
+		    }
+	    }
+    }
+
+	/**
+	 * Get user's team members
+	 * @param WP_REST_Request $request
+	 * @access public
+	 * @since 0.1
+	 * @return array|WP_Error return the user's team's contacts
+	 */
+    public function get_team_contacts(WP_REST_Request $request){
+    	$params = $request->get_params();
+	    $current_user_id = wp_get_current_user()->ID;
+    	if (isset($params['user'])){
+	        if ($params['user'] != $current_user_id){
+//	        	@todo check capabilities
+	        }
+    		$result = Contact_Controller::get_team_contacts($params['user']);
+		    if ($result["success"] == true){
+			    return $result;
+		    } else {
+			    return new WP_Error("get_team_contacts_error", $result["message"], array('status', 400));
 		    }
 	    }
     }
