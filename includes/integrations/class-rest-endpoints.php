@@ -121,7 +121,7 @@ class Disciple_Tools_Rest_Endpoints
     }
 
 	/**
-	 * Get user's team members
+	 * Get Contact assigned to a user's team
 	 * @param WP_REST_Request $request
 	 * @access public
 	 * @since 0.1

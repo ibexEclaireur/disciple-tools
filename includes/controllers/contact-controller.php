@@ -144,7 +144,7 @@ class Contact_Controller
 
 	/**
 	 * Get Contacts assigned to a user
-	 * @param $user
+	 * @param $user_id
 	 * @access public
 	 * @since 0.1
 	 * @return array
@@ -154,6 +154,13 @@ class Contact_Controller
     	return array("success"=>true, "contacts"=>$contacts);
     }
 
+    /**
+	 * Get Contacts assigned to a user's team
+	 * @param $user_id
+	 * @access public
+	 * @since 0.1
+	 * @return array
+	 */
     public static function get_team_contacts($user_id){
 	    global $wpdb;
 	    $user_connections = array();
