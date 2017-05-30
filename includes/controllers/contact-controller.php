@@ -81,6 +81,9 @@ class Contact_Controller
 	 */
     public static function update_contact($contact_id, $fields){
 	    $post = get_post($contact_id);
+	    if (isset($fields['id'])){
+	    	unset($fields['id']);
+	    }
 
 	    if (!$post){
             return array("success"=>false, "message"=>"Contact does not exist");

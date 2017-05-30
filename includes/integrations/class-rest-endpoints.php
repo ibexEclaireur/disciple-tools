@@ -46,10 +46,7 @@ class Disciple_Tools_Rest_Endpoints
     public function add_api_routes(){
         register_rest_route($this->namespace, '/dt-public/create-contact', [
             'methods' => 'POST',
-            'callback' => array($this, 'public_create_contact'),
-	        "permission_callback" => function () {
-		        return current_user_can( 'publish_contacts' );
-	        }
+            'callback' => array($this, 'public_create_contact')
         ]);
         register_rest_route($this->namespace, '/contact/(?P<id>\d+)', [
         	"methods" => "GET",
@@ -58,6 +55,13 @@ class Disciple_Tools_Rest_Endpoints
 		        return current_user_can( 'read_contact' );
 	        }
         ]);
+        register_rest_route($this->namespace, '/contact/(?P<id>\d+)', [
+        	"methods" => "POST",
+	        "callback" => array($this, 'update_contact'),
+	        "permission_callback" => function(){
+        	    return current_user_can("edit_contact");
+	        }
+	    ]);
         register_rest_route($this->namespace, '/user/(?P<user_id>\d+)/contacts', [
         	"methods" => "GET",
 	        "callback" => array($this, 'get_user_contacts'),
@@ -104,8 +108,9 @@ class Disciple_Tools_Rest_Endpoints
 	/**
 	 * Get a single contact by ID
 	 * @param WP_REST_Request $request
-	 *
-	 * @return array|WP_Error
+ 	 * @access public
+	 * @since 0.1
+	 * @return string|WP_Error The contact on success
 	 */
     public function get_contact(WP_REST_Request $request){
     	$params = $request->get_params();
@@ -121,6 +126,29 @@ class Disciple_Tools_Rest_Endpoints
 	    	return new WP_Error("get_contact_error", "Please provide a valid id", array('status', 400));
 	    }
     }
+
+	/**
+	 * Update a single contact by ID
+	 * @param WP_REST_Request $request
+ 	 * @access public
+	 * @since 0.1
+	 * @return string|WP_Error Contact_id on success
+	 */
+    public function update_contact(WP_REST_Request $request){
+	    $params = $request->get_params();
+    	$body = $request->get_json_params();
+	    if (isset($params['id'])){
+	    	$result = Contact_Controller::update_contact($params['id'], $body);
+	    	if ($result["success"] == true){
+			    return $result["contact_id"];
+		    } else {
+			    return new WP_Error("update_contact", $result["message"], array('status', 400));
+		    }
+	    } else {
+            return new WP_Error("update_contact", "Missing a valid contact id", array('status', 400));
+	    }
+    }
+
 
 	/**
 	 * Get Contacts assigned to a user
@@ -144,6 +172,8 @@ class Disciple_Tools_Rest_Endpoints
 		    } else {
 			    return new WP_Error("get_user_contact_error", $result["message"], array('status', 400));
 		    }
+	    } else {
+		    return new WP_Error("update_contact", "Missing a valid user id", array('status', 400));
 	    }
     }
 
@@ -168,6 +198,8 @@ class Disciple_Tools_Rest_Endpoints
 		    } else {
 			    return new WP_Error("get_team_contacts_error", $result["message"], array('status', 400));
 		    }
+	    }  else {
+		    return new WP_Error("update_contact", "Missing a valid user id", array('status', 400));
 	    }
     }
 }
