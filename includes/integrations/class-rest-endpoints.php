@@ -47,19 +47,44 @@ class Disciple_Tools_Rest_Endpoints
         register_rest_route($this->namespace, '/dt-public/create-contact', [
             'methods' => 'POST',
             'callback' => array($this, 'public_create_contact'),
+	        "permission_callback" => function () {
+		        return current_user_can( 'publish_contacts' );
+	        }
         ]);
         register_rest_route($this->namespace, '/contact/(?P<id>\d+)', [
         	"methods" => "GET",
-	        "callback" => array($this, 'get_contact')
+	        "callback" => array($this, 'get_contact'),
+	        "permission_callback" => function () {
+		        return current_user_can( 'read_contact' );
+	        }
         ]);
+
+
         register_rest_route($this->namespace, '/user/(?P<user>[a-zA-Z0-9-]+)/contacts', [
         	"methods" => "GET",
-	        "callback" => array($this, 'get_user_contacts')
+	        "callback" => array($this, 'get_user_contacts'),
+	        "permission_callback" => function () {
+	            return current_user_can( 'read_contact' );
+	        }
         ]);
         register_rest_route($this->namespace, '/user/(?P<user>[a-zA-Z0-9-]+)/team/contacts', [
         	"methods" => "GET",
-	        "callback" => array($this, 'get_team_contacts')
+	        "callback" => array($this, 'get_team_contacts'),
+	        "permission_callback" => function () {
+		      return current_user_can( 'edit_others_contacts' );
+		    }
         ]);
+    }
+
+    public function is_id_of_user_logged_in($user){
+    	$meta_array = explode('-', $user); // Separate the type and id
+        $type = $meta_array[0];
+        $id = $meta_array[1];
+        $current_user = wp_get_current_user();
+        if($type == "user" && isset($current_user->ID)){
+			return $current_user->ID == $id;
+        }
+        return false;
     }
 
 
