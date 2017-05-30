@@ -32,12 +32,14 @@ class Disciple_Tools_Rest_Endpoints
     private $context = "dt-hooks";
     private $namespace;
     private $contact_controller;
+    private $api_keys_controller;
 
     public function __construct()
     {
         $this->namespace = $this->context . "/v" . intval($this->version);
         add_action('rest_api_init', array($this,  'add_api_routes'));
         $this->contact_controller = new Contact_Controller;
+        $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }
 
     /**
@@ -47,6 +49,13 @@ class Disciple_Tools_Rest_Endpoints
         register_rest_route($this->namespace, '/dt-public/create-contact', [
             'methods' => 'POST',
             'callback' => array($this, 'public_create_contact')
+        ]);
+        register_rest_route($this->namespace, '/contact/create', [
+        	"methods" => "POST",
+	        "callback" => array($this, 'create_contact'),
+	        "permission_callback" => function () {
+		        return current_user_can( 'publish_contacts' );
+	        }
         ]);
         register_rest_route($this->namespace, '/contact/(?P<id>\d+)', [
         	"methods" => "GET",
@@ -78,6 +87,14 @@ class Disciple_Tools_Rest_Endpoints
         ]);
     }
 
+
+	/**
+	 * Check if the user id slug in the same as the currently logged in user
+	 * @param $user_id
+	 * @access public
+	 * @since 0.1
+	 * @return bool
+	 */
     public function is_id_of_user_logged_in($user_id){
         $current_user = wp_get_current_user();
         if(isset($current_user->ID)){
@@ -87,23 +104,61 @@ class Disciple_Tools_Rest_Endpoints
     }
 
 
+	/**
+	 * Check to see if the client_id and the client_token are set and see if they are valid
+	 * @param $query_params
+  	 * @access private
+	 * @since 0.1
+	 * @return bool
+	 */
+	private function check_api_token($query_params){
+		if (isset($query_params['client_id']) && isset($query_params['client_token'])){
+    	    return $this->api_keys_controller->check_api_key($query_params['client_id'], $query_params['client_token']);
+		}
+	}
+
+
     /**
+     * Create a contact from the PUBLIC api.
      * @param WP_REST_Request $request as application/json
+     * @access public
+	 * @since 0.1
      * @return array|WP_Error The new contact Id on success, an error on failure
      */
     public function public_create_contact(WP_REST_Request $request ){
-        //@todo authentication/token
-
-        $fields = $request->get_json_params();
-
-        $result =  Contact_Controller::create_contact($fields);
-        if ($result["success"] == true){
-            return $result;
-        } else {
-            return new WP_Error("contact_creation_error", $result["message"], array('status', 400));
-        }
+		$query_params = $request->get_query_params();
+		if($this->check_api_token($query_params)){
+	        $fields = $request->get_json_params();
+	        $result =  Contact_Controller::create_contact($fields);
+	        if ($result["success"] == true){
+	            return $result;
+	        } else {
+	            return new WP_Error("contact_creation_error", $result["message"], array('status', 400));
+	        }
+	    } else {
+			return new WP_Error("contact_creation_error",
+				"Invalid or missing client_id or client_token", array('status', 401)
+			);
+		}
     }
 
+
+	/**
+	 * Create a contact
+	 * @param WP_REST_Request $request
+ 	 * @access public
+	 * @since 0.1
+	 * @return string|WP_Error The contact on success
+	 */
+    public function create_contact(WP_REST_Request $request){
+    	$fields = $request->get_json_params();
+		$result = Contact_Controller::create_contact($fields);
+	    if ($result["success"] == true){
+		    return $result;
+	    } else {
+		    return new WP_Error("create_contact", $result["message"], array('status', 400));
+	    }
+    }
 
 	/**
 	 * Get a single contact by ID

@@ -307,6 +307,8 @@ class Disciple_Tools {
         require_once ( 'includes/metaboxes/box-address.php');
         /* End model configuration section */
 
+		require_once ('includes/admin/class-api-keys.php');
+		Disciple_Tools_Api_Keys::instance();
 
         // Activity Logs
         require_once ( 'includes/activity/class-activity-api.php' );
@@ -335,13 +337,12 @@ class Disciple_Tools {
         }
         require_once('includes/integrations/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-        require_once( 'includes/integrations/class-rest-endpoints.php' );
-        Disciple_Tools_Rest_Endpoints::instance();
 
         // load rest api endpoints
         require_once ('includes/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-        require_once ('includes/admin/class-api-keys.php');
-        Disciple_Tools_Api_Keys::instance();
+        require_once( 'includes/integrations/class-rest-endpoints.php' );
+        Disciple_Tools_Rest_Endpoints::instance();
+
 
         /*
          * Factories
