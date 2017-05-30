@@ -58,31 +58,26 @@ class Disciple_Tools_Rest_Endpoints
 		        return current_user_can( 'read_contact' );
 	        }
         ]);
-
-
-        register_rest_route($this->namespace, '/user/(?P<user>[a-zA-Z0-9-]+)/contacts', [
+        register_rest_route($this->namespace, '/user/(?P<user_id>\d+)/contacts', [
         	"methods" => "GET",
 	        "callback" => array($this, 'get_user_contacts'),
 	        "permission_callback" => function () {
-	            return current_user_can( 'read_contact' );
+	            return current_user_can( 'edit_contacts' );
 	        }
         ]);
-        register_rest_route($this->namespace, '/user/(?P<user>[a-zA-Z0-9-]+)/team/contacts', [
+        register_rest_route($this->namespace, '/user/(?P<user_id>\d+)/team/contacts', [
         	"methods" => "GET",
 	        "callback" => array($this, 'get_team_contacts'),
 	        "permission_callback" => function () {
-		      return current_user_can( 'edit_others_contacts' );
+		      return current_user_can( 'edit_contacts' );
 		    }
         ]);
     }
 
-    public function is_id_of_user_logged_in($user){
-    	$meta_array = explode('-', $user); // Separate the type and id
-        $type = $meta_array[0];
-        $id = $meta_array[1];
+    public function is_id_of_user_logged_in($user_id){
         $current_user = wp_get_current_user();
-        if($type == "user" && isset($current_user->ID)){
-			return $current_user->ID == $id;
+        if(isset($current_user->ID)){
+			return $current_user->ID == $user_id;
         }
         return false;
     }
@@ -115,6 +110,7 @@ class Disciple_Tools_Rest_Endpoints
     public function get_contact(WP_REST_Request $request){
     	$params = $request->get_params();
 	    if (isset($params['id'])){
+	    	//@todo restrict to only get contact's the user has access to
 			$result = Contact_Controller::get_contact($params['id']);
 		    if ($result["success"] == true){
 			    return $result["contact"];
@@ -135,8 +131,14 @@ class Disciple_Tools_Rest_Endpoints
 	 */
     public function get_user_contacts(WP_REST_Request $request){
 	    $params = $request->get_params();
-	    if (isset($params['user'])){
-	    	$result = Contact_Controller::get_user_contacts($params['user']);
+	    if (isset($params['user_id'])){
+		    if (!$this->is_id_of_user_logged_in($params["user_id"])){
+			    if (!current_user_can("edit_team_contacts")){
+				    return new WP_Error("get_user_contact_error", "You do nat have access to these contacts", array('status', 401));
+			    }
+		    }
+	    	$assigned_to_id = "user-".$params['user_id'];
+	    	$result = Contact_Controller::get_user_contacts($assigned_to_id);
 	    	if ($result["success"] == true){
 			    return $result["contacts"];
 		    } else {
@@ -154,12 +156,13 @@ class Disciple_Tools_Rest_Endpoints
 	 */
     public function get_team_contacts(WP_REST_Request $request){
     	$params = $request->get_params();
-	    $current_user_id = wp_get_current_user()->ID;
-    	if (isset($params['user'])){
-	        if ($params['user'] != $current_user_id){
-//	        	@todo check capabilities
+    	if (isset($params['user_id'])){
+	        if (!$this->is_id_of_user_logged_in($params["user_id"])){
+				if (!current_user_can("edit_team_contacts")){
+					return new WP_Error("get_team_contacts_error", "You do nat have access to these contacts", array('status', 401));
+				}
 	        }
-    		$result = Contact_Controller::get_team_contacts($params['user']);
+    		$result = Contact_Controller::get_team_contacts($params['user_id']);
 		    if ($result["success"] == true){
 			    return $result;
 		    } else {

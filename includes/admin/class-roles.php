@@ -46,10 +46,10 @@ $template = array(
 	'delete_contact' => true,
 	'delete_others_contacts' => true,
 	'delete_contacts' => true,
-	'edit_contacts' => true,
+	'edit_contacts' => true,                //edit own contacts (Same as edit_contact?)
 	'edit_team_contacts' => true,           //read and update team members contacts
 	'edit_others_contacts' => true,         //read and update all contacts
-	'publish_contacts' => true,
+	'publish_contacts' => true,             //create a new contact
 	'read_private_contacts' => true,
 	/* Add custom caps for groups */
 	'edit_group' => true,
