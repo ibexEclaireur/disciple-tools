@@ -59,7 +59,7 @@ class Disciple_Tools_Rest_Endpoints
         	"methods" => "POST",
 	        "callback" => array($this, 'update_contact'),
 	        "permission_callback" => function(){
-        	    return current_user_can("edit_contact");
+        	    return current_user_can("edit_contacts");
 	        }
 	    ]);
         register_rest_route($this->namespace, '/user/(?P<user_id>\d+)/contacts', [
