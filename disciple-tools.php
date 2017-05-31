@@ -305,6 +305,7 @@ class Disciple_Tools {
         require_once ( 'includes/metaboxes/box-map.php' );
         require_once ( 'includes/metaboxes/box-activity.php');
         require_once ( 'includes/metaboxes/box-address.php');
+        require_once ( 'includes/metaboxes/box-availability.php');
         /* End model configuration section */
 
 
