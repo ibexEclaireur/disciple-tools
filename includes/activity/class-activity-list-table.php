@@ -23,7 +23,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
         $data = $this->get_activity_data();
         usort($data, array(&$this, 'sort_data'));
 
-        $perPage = 15;
+        $perPage = 20;
         $currentPage = $this->get_pagenum();
         $totalItems = count($data);
 
@@ -47,12 +47,18 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     {
         $columns = array(
             'date'        => __( 'Date', 'disciple-tools' ),
-            'author'      => __( 'Author', 'disciple-tools' ),
-            'ip'          => __( 'IP', 'disciple-tools' ),
+            'ID'        => __( 'ID', 'disciple-tools' ),
+//            'ip'          => __( 'IP', 'disciple-tools' ),
             'type'        => __( 'Type', 'disciple-tools' ),
             'label'       => __( 'SubType', 'disciple-tools' ),
             'action'      => __( 'Action', 'disciple-tools' ),
-            'description' => __( 'ObjName', 'disciple-tools' ),
+            'description' => __( 'Description', 'disciple-tools' ),
+            'object_note' => __( 'Note', 'disciple-tools' ),
+            'meta_id' => __( 'Meta ID', 'disciple-tools' ),
+            'meta_key' => __( 'Meta Key', 'disciple-tools' ),
+            'meta_value' => __( 'Meta Value', 'disciple-tools' ),
+            'meta_parent' => __( 'Meta Parent', 'disciple-tools' ),
+            'author'      => __( 'Author', 'disciple-tools' ),
         );
 
         return $columns;
@@ -103,13 +109,19 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
 
         foreach ($results as $result) {
             $mapped_array = array(
-                'date' => $result['hist_time'],
-                'author' => $result['user_id'],
+                'date' => date('m/d/Y h:i:s', $result['hist_time']),
+                'ID' => $result['object_id'],
+                'author' => $result['user_id'],//dt_get_user_display_name($result['user_id']),
                 'ip' => $result['hist_ip'],
                 'type' => $result['object_type'],
                 'label' => $result['object_subtype'],
                 'action' => $result['action'],
-                'description' => $result['object_name']
+                'description' => $result['object_name'],
+                'meta_id' => $result['meta_id'],
+                'meta_key' => $result['meta_key'],
+                'meta_value' => $result['meta_value'],
+                'meta_parent' => $result['meta_parent'],
+                'object_note' => $result['object_note'],
             );
 
             $data[] = $mapped_array;
@@ -130,14 +142,19 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     {
         switch ($column_name) {
             case 'date':
+            case 'ID':
             case 'author':
             case 'ip':
             case 'type':
             case 'label':
             case 'action':
             case 'description':
+            case 'meta_id':
+            case 'meta_key':
+            case 'meta_value':
+            case 'meta_parent':
+            case 'object_note':
                 return $item[$column_name];
-
             default:
                 return print_r($item, true);
         }

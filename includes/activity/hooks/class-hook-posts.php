@@ -2,6 +2,17 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
+
+    public function __construct() {
+        add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
+        add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
+        add_action( "added_post_meta", array( &$this, 'hooks_added_post_meta'), 10, 4 );
+        add_action( "updated_postmeta", array( &$this, 'hooks_updated_post_meta'), 10, 4 );
+        add_action( 'p2p_created_connection', array( &$this, 'hooks_p2p_created'), 10, 1) ;
+        add_action( 'p2p_delete_connections', array( &$this, 'hooks_p2p_deleted'), 10, 1) ;
+
+        parent::__construct();
+    }
 	
 	protected function _draft_or_post_title( $post = 0 ) {
 		$title = get_the_title( $post );
@@ -52,6 +63,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_id'           => ' ',
                 'meta_key'          => ' ',
                 'meta_value'        => ' ',
+                'meta_parent'        => ' ',
                 'object_note'       => ' ',
 			)
 		);
@@ -80,6 +92,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_id'           => ' ',
                 'meta_key'          => ' ',
                 'meta_value'        => ' ',
+                'meta_parent'        => ' ',
                 'object_note'       => ' ',
 			)
 		);
@@ -88,6 +101,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function hooks_added_post_meta ($mid, $object_id, $meta_key, $meta_value) {
         // get object info
         $parent_post = get_post($object_id, ARRAY_A);
+        $contact_fields = Contact_Controller::$contact_fields;
 
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
@@ -107,7 +121,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_id'           => $mid,
                 'meta_key'          => $meta_key,
                 'meta_value'        => $meta_value,
-                'object_note'       => $meta_key . ' was changed to ' . $meta_value,
+                'meta_parent'        => $parent_post['post_parent'],
+                'object_note'       => $this->_key_name($meta_key, $contact_fields) . ' was changed to ' . $this->_value_name ($meta_key, $meta_value, $contact_fields),
             )
         );
     }
@@ -116,6 +131,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         // get object info
         $parent_post = get_post($object_id, ARRAY_A);
+        $contact_fields = Contact_Controller::$contact_fields;
 
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
@@ -135,12 +151,35 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_id'           => $meta_id,
                 'meta_key'          => $meta_key,
                 'meta_value'        => $meta_value,
-                'object_note'       => $meta_key . ' was changed to ' . $meta_value,
+                'meta_parent'        => $parent_post['post_parent'],
+                'object_note'       => $this->_key_name($meta_key, $contact_fields) . ' was changed to ' . $this->_value_name ($meta_key, $meta_value, $contact_fields),
             )
         );
     }
 
-    public function hooks_p2p_created ($p2p_id, $action = 'connected') { // I need to create two records. One for each end of the connection.
+    protected function _key_name ($meta_key, $contact_fields = null) {
+        if(is_null($contact_fields)) {
+            $contact_fields = Contact_Controller::$contact_fields;
+        }
+
+        return $contact_fields[$meta_key]['name'];
+    }
+
+    protected function _value_name ($meta_key, $meta_value, $contact_fields = null) {
+
+        if(is_null($contact_fields)) {
+            $contact_fields = Contact_Controller::$contact_fields;
+        }
+
+        if(!is_array($contact_fields[$meta_key]['default'])) {
+            return $meta_value;
+        } else {
+            return $contact_fields[$meta_key]['default'][$meta_value];
+        }
+
+    }
+
+    public function hooks_p2p_created ($p2p_id, $action = 'connected to') { // I need to create two records. One for each end of the connection.
         // Get p2p record
         $p2p_record = p2p_get_connection( $p2p_id ); // returns object
         $p2p_from = get_post($p2p_record->p2p_from, ARRAY_A);
@@ -148,13 +187,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         // Build variables
         $p2p_type = $p2p_record->p2p_type;
-        if ($action == 'disconnected') {
-            $object_note_from = $p2p_from['post_title'] . ' was disconnected from ' . $p2p_to['post_title'];
-            $object_note_to = $p2p_to['post_title'] . ' was disconnected from ' . $p2p_from['post_title'];
-        } else { // if 'connected'
-            $object_note_from = $p2p_from['post_title'] . ' was connected to ' . $p2p_to['post_title'];
-            $object_note_to = $p2p_to['post_title'] . ' was connected to ' . $p2p_from['post_title'];
-        }
+
+        $object_note_from = $p2p_from['post_title'] . ' was ' . $action . ' ' . $p2p_to['post_title'];
+        $object_note_to = $p2p_to['post_title'] . ' was ' . $action . ' ' . $p2p_from['post_title'];
+
 
         // Log for both records
         dt_activity_insert(
@@ -167,6 +203,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_id'           => $p2p_id,
                 'meta_key'          => $p2p_type,
                 'meta_value'        => $p2p_to['ID'], // i.e. the opposite record of the object in the p2p
+                'meta_parent'        => '',
                 'object_note'       => $object_note_from,
             )
         );
@@ -181,6 +218,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_id'           => $p2p_id,
                 'meta_key'          => $p2p_type,
                 'meta_value'        => $p2p_from['ID'], // i.e. the opposite record of the object in the p2p
+                'meta_parent'        => '',
                 'object_note'       => $object_note_to,
             )
         );
@@ -188,17 +226,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     }
 
     public function hooks_p2p_deleted ($p2p_id) {
-        $this->hooks_p2p_created ($p2p_id, $action = 'disconnected');
+        $this->hooks_p2p_created ($p2p_id, $action = 'disconnected from');
     }
 	
-	public function __construct() {
-		add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
-		add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
-        add_action( "added_post_meta", array( &$this, 'hooks_added_post_meta'), 10, 4 );
-        add_action( "updated_postmeta", array( &$this, 'hooks_updated_post_meta'), 10, 4 );
-        add_action( 'p2p_created_connection', array( &$this, 'hooks_p2p_created'), 10, 1) ;
-        add_action( 'p2p_delete_connections', array( &$this, 'hooks_p2p_deleted'), 10, 1) ;
-		
-		parent::__construct();
-	}
+
 }

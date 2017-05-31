@@ -133,7 +133,7 @@ class Disciple_Tools_Location_Post_Type {
 			'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
 			'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
 			'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
-			'insert_into_item'      => sprintf( __( 'Insert into %s', 'disciple_tools' ), $this->plural ),
+			'insert_into_item'      => sprintf( __( 'Insert %s', 'disciple_tools' ), $this->plural ),
 			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
 			'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
 			'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
