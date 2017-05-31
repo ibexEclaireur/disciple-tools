@@ -55,6 +55,15 @@ function dt_register_required_plugins() {
             'version'            => '0.1',
             'is_callable'        => 'dt_training',
         ),
+	    array(
+		    'name'                  => 'jwt-authentication-for-wp-rest-api',
+		    'slug'                  => 'jwt-authentication-for-wp-rest-api',
+		    'required'              => true,
+		    'version'               => '1.2.3',
+		    'force_activation'      => true,
+		    'force_deactivation'    => true,
+		    'is_callable'           => 'Jwt_Auth_Public',
+	    ),
 //        array(
 //            'name'              => 'WP Jump Menu',
 //            'slug'              => 'wp-jump-menu',
