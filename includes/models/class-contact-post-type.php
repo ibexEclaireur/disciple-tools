@@ -595,23 +595,25 @@ class Disciple_Tools_Contact_Post_Type {
 
 
         } else {
-            $channels = $this->get_channels_list('contact');
+            $channels = $this->get_channels_list();
 
-            foreach ($channels as $channel) {
-                $tag = null;
+            foreach ($channels as $channel_key => $channel) {
+            	foreach($channel["types"] as $type_key => $type){
 
-                $key =  'contact_' . $channel . '_111' ;
-                $names = explode('_', $key);
+	                $tag = null;
 
-                if($names[1] != $names[2]) { $tag = ' ('. $names[2] . ')'; }
+	                $key =  'contact_' . $channel_key . '_' . $type_key . '_111' ;
 
-                $fields[$key] = array(
-                    'name' => $names[1] . $tag,
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'info'
-                );
+	                if($channel["label"] != $type["label"]) { $tag = ' ('. $type["label"] . ')'; }
+
+	                $fields[$key] = array(
+	                    'name' => $channel["label"] . $tag,
+	                    'description' => '',
+	                    'type' => 'text',
+	                    'default' => '',
+	                    'section' => 'info'
+	                );
+	            }
             }
 
             $channels = dt_address_metabox ()->get_address_list($this->post_type);
@@ -777,19 +779,21 @@ class Disciple_Tools_Contact_Post_Type {
         $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-fields\').toggle();"><strong>+ Contact Detail</strong></a></p>';
         $html .= '<table class="form-table" id="new-fields" style="display: none;"><tbody>' . "\n";
 
-        $channels = $this->get_channels_list('contact');
+        $channels = $this->get_channels_list();
 
         $html .= '<tr><th>
-                <select name="new-key-contact" class="edit-input"><option value=""></option> ';
-                        foreach ($channels as $channel) {
+            <select name="new-key-contact" class="edit-input"><option value=""></option> ';
+                foreach ($channels as $channel_key => $channel) {
+					foreach ($channels[$channel_key]["types"] as $type_key => $type ) {
+						$key   = $this->create_channel_metakey( $channel_key, $type_key, 'contact' ); // build key
 
-                            $key =  $this->create_channel_metakey($channel, 'contact'); // build key
-                            $names = explode("_", $key); // separates primary name from type tag
-
-                            $html .= '<option value="'.$key.'">'.$names[1];
-                            if($names[1] != $names[2]) { $html .= '  (' . $names[2] . ')'; }
-                            $html .= '</option>';
-                        }
+						$html .= '<option value="' . $key . '">' . $channel["label"];
+						if ( $channel["label"] != $type["label"] ) {
+							$html .= '  (' . $type["label"] . ')';
+						}
+						$html .= '</option>';
+					}
+                }
         $html .= '</select></th>';
 
         $html .= '<td><input type="text" name="new-value-contact" id="new-value" class="edit-input" /></td><td><button type="submit" class="button">Save</button></td></tr>';
@@ -800,43 +804,84 @@ class Disciple_Tools_Contact_Post_Type {
     }
 
 
-    /**
-     * Helper function to create the unique metakey for contacts channels.
-     * @param $channel
-     * @return string
-     */
-    public function create_channel_metakey ($channel, $type) {
-        return $type . '_' . $channel . '_' . $this->unique_hash(); // build key
+	/**
+	 * Helper function to create the unique metakey for contacts channels.
+	 * @param $channel_key
+	 * @param $channel_type
+	 * @param $field_type
+	 *
+	 * @return string
+	 */
+    public function create_channel_metakey ($channel_key, $channel_type, $field_type) {
+        return $field_type . '_' . $channel_key .'_'. $channel_type . '_' . $this->unique_hash(); // build key
     }
 
     public function unique_hash() {
         return substr(md5(rand(10000, 100000)), 0, 3); // create a unique 3 digit key
     }
 
-    /**
-     * Selectable values for different channels of contact information.
-     * @return array
-     */
-    public function get_channels_list ($type = 'contact') {
 
-        $channels = array(
-            __('Phone', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Mobile', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Home', 'disciple_tools'),
-            __('Phone', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
-            __('Email', 'disciple_tools') . '_' . __('Primary', 'disciple_tools'),
-            __('Email', 'disciple_tools') . '_' . __('Work', 'disciple_tools'),
-            __('Email', 'disciple_tools') . '_' . __('Other', 'disciple_tools'),
-            __('Facebook', 'disciple_tools'). '_' . __('Facebook', 'disciple_tools'),
-            __('Twitter', 'disciple_tools'). '_' . __('Twitter', 'disciple_tools'),
-            __('Instagram', 'disciple_tools'). '_' . __('Instagram', 'disciple_tools'),
-            __('Skype', 'disciple_tools'). '_' . __('Skype', 'disciple_tools'),
-            __('Other', 'disciple_tools'). '_' . __('Other', 'disciple_tools'),
+	/**
+	 * Get a list of the contact channels and their types
+	 * @access public
+	 * @since  0.1
+	 * @return mixed
+	 */
+    public function get_channels_list(){
+        $channelList = array(
+        	"phone" => array(
+		        "label" => __('Phone', 'disciple_tools'),
+		        "types" => array(
+			        "primary" =>    array("label"=>__('Primary', 'disciple_tools')),
+			        "mobile" =>     array("label"=>__('Mobile', 'disciple_tools')),
+			        "work" =>       array("label"=>__('Work', 'disciple_tools')),
+			        "home" =>       array("label"=>__('Home', 'disciple_tools')),
+			        "other" =>      array("label"=>__('Other', 'disciple_tools')),
+	            )
+	        ),
+	        "email" => array(
+		        "label" => __('Email', 'disciple_tools'),
+		        "types" => array(
+			        "primary" =>    array("label"=>__('Primary', 'disciple_tools')),
+			        "work" =>       array("label"=>__('Work', 'disciple_tools')),
+			        "other" =>      array("label"=>__('Other', 'disciple_tools')),
+	            )
+	        ),
+	        "facebook" => array(
+	        	"label" => __('Facebook', 'disciple_tools'),
+		        "types" => array(
+		        	"facebook" => array("label"=>__('Facebook', 'disciple_tools'))
+		        )
+	        ),
+	        "twitter" => array(
+	        	"label" => __('Twitter', 'disciple_tools'),
+		        "types" => array(
+		        	"twitter" => array("label"=>__('Twitter', 'disciple_tools'))
+		        )
+	        ),
+	        "instagram" => array(
+	        	"label" => __('Instagram', 'disciple_tools'),
+		        "types" => array(
+		        	"instagram" => array("label"=>__('Instagram', 'disciple_tools'))
+		        )
+	        ),
+	        "skype" => array(
+	        	"label" => __('Skype', 'disciple_tools'),
+		        "types" => array(
+		            "skype" => array("label"=> __('Skype', 'disciple_tools'))
+		        )
+	        ),
+	        "other" => array(
+	        	"label" => __('Skype', 'disciple_tools'),
+		        "types" => array(
+		        	"other" => array("label"=> __('Skype', 'disciple_tools'))
+		        )
+	        ),
         );
-        return $channels;
-
+        return apply_filters( 'dt_custom_channels', $channelList );
     }
+
+
 
     /**
      * Field: The 'Assigned To' dropdown controller
