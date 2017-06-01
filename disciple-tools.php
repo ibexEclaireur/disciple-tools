@@ -307,6 +307,8 @@ class Disciple_Tools {
         require_once ( 'includes/metaboxes/box-address.php');
         /* End model configuration section */
 
+		require_once ('includes/admin/class-api-keys.php');
+		Disciple_Tools_Api_Keys::instance();
 
         // Activity Logs
         require_once ( 'includes/activity/class-activity-api.php' );
@@ -327,6 +329,7 @@ class Disciple_Tools {
 
         //integrations
         require_once('includes/controllers/contact-controller.php');
+        require_once('includes/controllers/group-controller.php');
         require_once('includes/integrations/class-integrations.php'); // data integration for cron scheduling
         if(! class_exists('Ga_Autoloader')) {
             require_once('includes/plugins/google-analytics/disciple-tools-analytics.php');
@@ -335,13 +338,12 @@ class Disciple_Tools {
         }
         require_once('includes/integrations/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-        require_once( 'includes/integrations/class-rest-endpoints.php' );
-        Disciple_Tools_Rest_Endpoints::instance();
 
         // load rest api endpoints
         require_once ('includes/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-        require_once ('includes/admin/class-api-keys.php');
-        Disciple_Tools_Api_Keys::instance();
+        require_once( 'includes/integrations/class-rest-endpoints.php' );
+        Disciple_Tools_Rest_Endpoints::instance();
+
 
         /*
          * Factories
@@ -349,6 +351,21 @@ class Disciple_Tools {
         require_once ('includes/factories/class-counter-factory.php');
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
+        /**
+         * Load Functions
+         */
+        require_once ('includes/functions/disable-xml-rpc-pingback.php');
+
+        /**
+         * Theme Support functions
+         */
+        require_once('includes/theme_support/user-functions-for-themes.php');
+        require_once('includes/theme_support/group-functions-for-themes.php');
+        require_once('includes/theme_support/contact-functions-for-themes.php');
+        require_once('includes/theme_support/location-functions-for-themes.php');
+        require_once('includes/theme_support/chart-functions-for-themes.php');
+
+        // Language
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
     } // End __construct()

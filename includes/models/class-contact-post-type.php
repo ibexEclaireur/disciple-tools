@@ -52,6 +52,7 @@ class Disciple_Tools_Contact_Post_Type {
 	 */
 	public $taxonomies;
 
+
     /**
      * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
      * @var 	object
@@ -94,11 +95,10 @@ class Disciple_Tools_Contact_Post_Type {
 			global $pagenow;
 
 			add_action( 'save_post', array( $this, 'meta_box_save' ) );
-//			add_action( 'save_post', array( $this, 'save_new_contacts' ) );
 			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
 			add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
-
 		}
+
 
 	} // End __construct()
 
@@ -506,7 +506,7 @@ class Disciple_Tools_Contact_Post_Type {
             'name' => __( 'Seeker Path', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
-            'default' => array('', '0' => __('Contact Attempted', 'disciple_tools' ), '1' => __('Contact Established', 'disciple_tools' ), '2' => __('Confirms Interest', 'disciple_tools' ), '3' => __('Meeting Scheduled', 'disciple_tools' ), '4' => __('First Meeting Complete', 'disciple_tools' ), '5' => __('Ongoing Meetings', 'disciple_tools' ), '6' => __('Being Coached', 'disciple_tools' )),
+            'default' => array('0' => __('No Action', 'disciple_tools'), '1' => __('Contact Attempted', 'disciple_tools' ), '2' => __('Contact Established', 'disciple_tools' ), '3' => __('Confirms Interest', 'disciple_tools' ), '4' => __('Meeting Scheduled', 'disciple_tools' ), '5' => __('First Meeting Complete', 'disciple_tools' ), '6' => __('Ongoing Meetings', 'disciple_tools' ), '7' => __('Being Coached', 'disciple_tools' )),
             'section' => 'status'
         );
         $fields['requires_update'] = array(
@@ -691,44 +691,44 @@ class Disciple_Tools_Contact_Post_Type {
         $fields['bible'] = array(
             'name' => __( 'Bible', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array('', __('Yes - given by hand', 'disciple_tools' ), __('Yes - already had one', 'disciple_tools' ), __('Yes - receipt by mail confirmed', 'disciple_tools' ), __('Bible mailed', 'disciple_tools' ), __('Needs / Requests Bible', 'disciple_tools' )),
+            'type' => 'key_select',
+            'default' => array('0' => '', '1' => __('Yes - given by hand', 'disciple_tools' ), '2' => __('Yes - already had one', 'disciple_tools' ), '3' => __('Yes - receipt by mail confirmed', 'disciple_tools' ), '4' => __('Bible mailed', 'disciple_tools' ), '5' => __('Needs / Requests Bible', 'disciple_tools' )),
             'section' => 'misc'
         );
         $fields['gender'] = array(
             'name' => __( 'Gender', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array('', __('Male', 'disciple_tools' ), __('Female', 'disciple_tools' )),
+            'type' => 'key_select',
+            'default' => array('0' => '', '1' => __('Male', 'disciple_tools' ), '2' => __('Female', 'disciple_tools' )),
             'section' => 'misc'
         );
         $fields['age'] = array(
             'name' => __( 'Age', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array('', __('Under 18 years old', 'disciple_tools' ), __('18-25 years old', 'disciple_tools' ), __('26-40 years old', 'disciple_tools' ), __('Over 40 years old', 'disciple_tools' )),
+            'type' => 'key_select',
+            'default' => array('0' => '', '1' => __('Under 18 years old', 'disciple_tools' ), '2' => __('18-25 years old', 'disciple_tools' ), '3' => __('26-40 years old', 'disciple_tools' ), '4' => __('Over 40 years old', 'disciple_tools' )),
             'section' => 'misc'
         );
         $fields['comprehension'] = array(
             'name' => __( 'Gospel Comprehension', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array('', __('Very Strong', 'disciple_tools' ), __('Strong', 'disciple_tools' ), __('Unknown/Unclear', 'disciple_tools' ), __('Weak', 'disciple_tools' )),
+            'type' => 'key_select',
+            'default' => array('0' => '', '1' => __('Very Strong', 'disciple_tools' ), '2' => __('Strong', 'disciple_tools' ), '3' => __('Unknown/Unclear', 'disciple_tools' ), '4' => __('Weak', 'disciple_tools' )),
             'section' => 'misc'
         );
         $fields['investigating_with_others'] = array(
             'name' => __( 'Investigating with others', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array('', __('Not exploring with others', 'disciple_tools' ), __('Only with a few people', 'disciple_tools' ), __('Openly sharing with many', 'disciple_tools' ), __('Studying in a group', 'disciple_tools' )),
+            'type' => 'key_select',
+            'default' => array('0' => '', '1' => __('Not exploring with others', 'disciple_tools' ), '2' => __('Only with a few people', 'disciple_tools' ), '3' => __('Openly sharing with many', 'disciple_tools' ), '4' => __('Studying in a group', 'disciple_tools' )),
             'section' => 'misc'
         );
 
         $fields['reason_closed'] = array(
             'name' => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array('', __('Duplicate', 'disciple_tools' ), __('Hostile / Playing Games', 'disciple_tools' ), __('Insufficient Contact Info', 'disciple_tools' ), __('Already In Church/Connected with Others', 'disciple_tools' ), __('No Longer Interested', 'disciple_tools' ), __('Just wanted a book', 'disciple_tools' ), __('Unknown', 'disciple_tools' )),
+            'type' => 'key_select',
+            'default' => array('0' => '', '1' => __('Duplicate', 'disciple_tools' ), '2' => __('Hostile / Playing Games', 'disciple_tools' ), '3' => __('Insufficient Contact Info', 'disciple_tools' ), '4' => __('Already In Church/Connected with Others', 'disciple_tools' ), '5' => __('No Longer Interested', 'disciple_tools' ), '6' => __('Just wanted a book', 'disciple_tools' ), '7' => __('Unknown', 'disciple_tools' )),
             'section' => 'misc'
         );
 		$fields['source_details'] = array(

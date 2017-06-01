@@ -33,42 +33,49 @@ class Disciple_Tools_Metabox_Four_Fields {
      * @return void
      */
     public function content_display () {
-        global $post, $wpdb;
+        global $post;
         $html = '';
 
-        $counts = $wpdb->get_results($wpdb->prepare('
-                    SELECT meta_value, count(meta_value) as count 
-                    FROM %1$s 
-                      INNER JOIN %2$s ON %1$s.p2p_id = %2$s.p2p_id 
-                    WHERE p2p_to = \'%3$d\' 
-                    AND p2p_type = \'%4$s\' 
-                    AND meta_key = \'%5$s\' 
-                    GROUP BY meta_value;',
-                    $wpdb->p2p,
-                    $wpdb->p2pmeta,
-                    $post->ID,
-                    'contacts_to_groups',
-                    'stage'
-                    ), ARRAY_A);
+        $unknown = new WP_Query( array(
+            'connected_type' => 'contacts_to_groups',
+            'connected_items' => $post,
+            'nopaging' => true,
+            'connected_meta' => array( 'stage' => 'Unknown' )
+        ) );
+        $unbelieving = new WP_Query( array(
+            'connected_type' => 'contacts_to_groups',
+            'connected_items' => $post,
+            'nopaging' => true,
+            'connected_meta' => array( 'stage' => 'Unbelieving' )
+        ) );
+        $believing = new WP_Query( array(
+            'connected_type' => 'contacts_to_groups',
+            'connected_items' => $post,
+            'nopaging' => true,
+            'connected_meta' => array( 'stage' => 'Believing' )
+        ) );
+        $accountable = new WP_Query( array(
+            'connected_type' => 'contacts_to_groups',
+            'connected_items' => $post,
+            'nopaging' => true,
+            'connected_meta' => array( 'stage' => 'Accountable' )
+        ) );
+        $multiplying = new WP_Query( array(
+            'connected_type' => 'contacts_to_groups',
+            'connected_items' => $post,
+            'nopaging' => true,
+            'connected_meta' => array( 'stage' => 'Multiplying' )
+        ) );
 
-
-        $stage = array();
-        $stage['Unbelieving'] = 0;
-        $stage['Believing'] = 0;
-        $stage['Accountable'] = 0;
-        $stage['Multiplying'] = 0;
-
-        foreach ($counts as $count) {
-            $stage[$count['meta_value']] = $count['count'];
-        }
 
         $html .= '<table class="form-table"><tr><td>';
 
-        $html .= '<h1>Unbelieving  : ' . $stage['Unbelieving'] . '<br>';
-        $html .= 'Believing  : ' . $stage['Believing'] . '<br>';
-        $html .= 'Accountable  : ' . $stage['Accountable'] . '<br>';
-        $html .= 'Multiplying  : ' . $stage['Multiplying'] . '<br>';
-        $html .= 'Is Church  : ' . get_post_meta($post->ID, 'type', true) . '<br></h1>';
+        $html .= '<h1>Unknown  : ' . $unknown->found_posts . '<br>';
+        $html .= 'Unbelieving  : ' . $unbelieving->found_posts . '<br>';
+        $html .= 'Believing  : ' . $believing->found_posts . '<br>';
+        $html .= 'Accountable  : ' . $accountable->found_posts . '<br>';
+        $html .= 'Multiplying  : ' . $multiplying->found_posts . '<br>';
+        $html .= 'Is Church  : ' . get_post_meta($post->ID, 'is_church', true) . '<br></h1>';
 
 
 
@@ -77,7 +84,7 @@ class Disciple_Tools_Metabox_Four_Fields {
         $html .= '</td></tr></table>';
 
         echo $html;
-//        print'<pre>'; print_r($counts); print '</pre>';
+//        print'<pre>'; print_r($multiplying); print '</pre>';
     }
 
 

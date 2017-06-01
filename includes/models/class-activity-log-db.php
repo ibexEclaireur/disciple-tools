@@ -55,6 +55,7 @@ class Disciple_Tools_Activity_Log_DB {
 					  `meta_id` BIGINT(20) NOT NULL DEFAULT '0',
 					  `meta_key` VARCHAR(100) NOT NULL DEFAULT '0',
 					  `meta_value` VARCHAR(255) NOT NULL DEFAULT '0',
+					  `meta_parent` BIGINT(20) NOT NULL DEFAULT '0',
 					  PRIMARY KEY (`histid`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 

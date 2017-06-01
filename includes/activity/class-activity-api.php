@@ -87,6 +87,7 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_id'        => '',
                 'meta_key'       => '',
                 'meta_value'     => '',
+                'meta_parent'     => '',
             )
         );
 
@@ -117,6 +118,7 @@ class Disciple_Tools_Activity_Log_API {
 						AND `meta_id` = \'%11$s\'
 						AND `meta_key` = \'%12$s\'
 						AND `meta_value` = \'%13$s\'
+						AND `meta_parent` = \'%13$s\'
 				;',
                 $wpdb->activity,
                 $args['user_caps'],
@@ -130,7 +132,8 @@ class Disciple_Tools_Activity_Log_API {
                 $args['object_note'],
                 $args['meta_id'],
                 $args['meta_key'],
-                $args['meta_value']
+                $args['meta_value'],
+                $args['meta_parent']
             )
         );
 
@@ -153,8 +156,9 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_id'        => $args['meta_id'],
                 'meta_key'       => $args['meta_key'],
                 'meta_value'       => $args['meta_value'],
+                'meta_parent'       => $args['meta_parent'],
             ),
-            array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s' )
+            array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' )
         );
 
         // Final action on insert.

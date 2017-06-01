@@ -19,6 +19,7 @@ $dt_dra_current_WP_version = get_bloginfo('version');
 if ( version_compare( $dt_dra_current_WP_version, '4.7', '>=' ) ) {
     dt_DRA_Force_Auth_Error();
     add_action('rest_api_init', "add_api_routes");
+    add_action('init', 'setup_jwt');
 } else {
     dt_DRA_Disable_Via_Filters();
 }
@@ -63,10 +64,14 @@ function dt_DRA_Disable_Via_Filters() {
  */
 function dt_DRA_only_allow_logged_in_rest_access( $access ) {
     $is_public = false;
+    $is_jwt = false;
     if (strpos($_SERVER['REQUEST_URI'], '/dt-public/') !== false){
         $is_public = true;
     }
-	if( ! is_user_logged_in() && !$is_public) {
+    if ($_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token" || $_SERVER['REQUEST_URI'] == "/wp-json/jwt-auth/v1/token/validate"){
+    	$is_jwt = true;
+    }
+	if( ! is_user_logged_in() && !$is_public && !$is_jwt) {
         return new WP_Error( 'rest_cannot_access', __( 'Only authenticated users can access the REST API.', 'disable-json-api' ), array( 'status' => rest_authorization_required_code() ) );
     }
     return $access;
@@ -81,5 +86,13 @@ function add_api_routes(){
     Disciple_Tools::instance()->facebook_integration->add_api_routes();
 }
 
-
+/**
+ * Define key for JWT authentication
+ */
+function setup_jwt(){
+	if (!defined('JWT_AUTH_SECRET_KEY')){
+		$iv = get_option("my_jwt_key");
+		define('JWT_AUTH_SECRET_KEY', $iv);
+	}
+}
 

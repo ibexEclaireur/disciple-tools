@@ -105,8 +105,6 @@ class Disciple_Tools_Asset_Post_Type {
             }
         }
 
-        add_action( 'after_setup_theme', array( $this, 'ensure_post_thumbnails_support' ) );
-        add_action( 'after_theme_setup', array( $this, 'register_image_sizes' ) );
     } // End __construct()
 
     /**
@@ -135,7 +133,7 @@ class Disciple_Tools_Asset_Post_Type {
             'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
             'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
             'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
-            'insert_into_item'      => sprintf( __( 'Insert into %s', 'disciple_tools' ), $this->plural ),
+            'insert_into_item'      => sprintf( __( 'Insert %s', 'disciple_tools' ), $this->plural ),
             'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
             'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
             'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
@@ -291,7 +289,7 @@ class Disciple_Tools_Asset_Post_Type {
      * Load activity metabox
      */
     public function load_activity_meta_box () {
-        dt_activity_meta_box (get_the_ID());
+        dt_activity_metabox()->activity_meta_box (get_the_ID());
     }
 
     /**
@@ -489,39 +487,7 @@ class Disciple_Tools_Asset_Post_Type {
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
 
-    /**
-     * Get the image for the given ID.
-     * @param  int 				$id   Post ID.
-     * @param  mixed $size Image dimension. (default: "thing-thumbnail")
-     * @since  0.1
-     * @return string       	<img> tag.
-     */
-    protected function get_image ( $id, $size = 'thing-thumbnail' ) {
-        $response = '';
 
-        if ( has_post_thumbnail( $id ) ) {
-            // If not a string or an array, and not an integer, default to 150x9999.
-            if ( ( is_int( $size ) || ( 0 < intval( $size ) ) ) && ! is_array( $size ) ) {
-                $size = array( intval( $size ), intval( $size ) );
-            } elseif ( ! is_string( $size ) && ! is_array( $size ) ) {
-                $size = array( 150, 9999 );
-            }
-            $response = get_the_post_thumbnail( intval( $id ), $size );
-        }
-
-        return $response;
-    } // End get_image()
-
-    /**
-     * Register image sizes.
-     * @access public
-     * @since  0.1
-     */
-    public function register_image_sizes () {
-        if ( function_exists( 'add_image_size' ) ) {
-            add_image_size( $this->post_type . '-thumbnail', 150, 9999 ); // 150 pixels wide (and unlimited height)
-        }
-    } // End register_image_sizes()
 
     /**
      * Run on activation.
@@ -542,12 +508,4 @@ class Disciple_Tools_Asset_Post_Type {
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
 
-    /**
-     * Ensure that "post-thumbnails" support is available for those themes that don't register it.
-     * @access public
-     * @since  0.1
-     */
-    public function ensure_post_thumbnails_support () {
-        if ( ! current_theme_supports( 'post-thumbnails' ) ) { add_theme_support( 'post-thumbnails' ); }
-    } // End ensure_post_thumbnails_support()
 } // End Class
