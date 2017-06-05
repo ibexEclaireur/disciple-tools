@@ -50,8 +50,8 @@ class Disciple_Tools_Metabox_Availability {
             .selectable_header .ui-selected { background: #F39814; color: white; }
             .selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
             .selectable_header { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-            .selectable li { margin: 3px; padding: 1px; float: left; width: 100px; height: 100px; font-size: 4em; text-align: center; }
-            .selectable_header li { margin: 3px; padding: 1px; float: left; width: 100px; height: 100px; font-size: 4em; text-align: center; }
+            .selectable li { margin: 3px; padding: 1px; float: left; width: 13%; height: 100px; font-size: 4em; text-align: center; }
+            .selectable_header li { margin: 3px; padding: 1px; float: left; width: 13%; height: 100px; font-size: 4em; text-align: center; }
         </style>
         <?php
     }
@@ -62,51 +62,53 @@ class Disciple_Tools_Metabox_Availability {
 
         $html .= '
             <div class="row">
-            
-                <ol class="selectable_header">
-                  <li class="ui-state-default">S</li>
-                  <li class="ui-state-default">M</li>
-                  <li class="ui-state-default">T</li>
-                  <li class="ui-state-default">W</li>
-                  <li class="ui-state-default">T</li>
-                  <li class="ui-state-default">F</li>
-                  <li class="ui-state-default">S</li>
-                </ol>
-                <ol class="selectable">
-                  <li class="ui-state-default" id="1-morning">M</li>
-                  <li class="ui-state-default">M</li>
-                  <li class="ui-state-default">M</li>
-                  <li class="ui-state-default">M</li>
-                  <li class="ui-state-default">M</li>
-                  <li class="ui-state-default">M</li>
-                  <li class="ui-state-default">M</li>
-                  
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  
-                  <li class="ui-state-default">E</li>
-                  <li class="ui-state-default">E</li>
-                  <li class="ui-state-default">E</li>
-                  <li class="ui-state-default">E</li>
-                  <li class="ui-state-default">E</li>
-                  <li class="ui-state-default">E</li>
-                  <li class="ui-state-default">E</li>
+                <div class="small-12 column">
+                    <h2>Availability</h2>
                 
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                  <li class="ui-state-default">N</li>
-                </ol>
+                    <ol class="selectable_header">
+                      <li class="ui-state-default">S</li>
+                      <li class="ui-state-default">M</li>
+                      <li class="ui-state-default">T</li>
+                      <li class="ui-state-default">W</li>
+                      <li class="ui-state-default">T</li>
+                      <li class="ui-state-default">F</li>
+                      <li class="ui-state-default">S</li>
+                    </ol>
+                    <ol class="selectable">
+                      <li class="ui-state-default" id="1-morning">M</li>
+                      <li class="ui-state-default">M</li>
+                      <li class="ui-state-default">M</li>
+                      <li class="ui-state-default">M</li>
+                      <li class="ui-state-default">M</li>
+                      <li class="ui-state-default">M</li>
+                      <li class="ui-state-default">M</li>
+                      
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      
+                      <li class="ui-state-default">E</li>
+                      <li class="ui-state-default">E</li>
+                      <li class="ui-state-default">E</li>
+                      <li class="ui-state-default">E</li>
+                      <li class="ui-state-default">E</li>
+                      <li class="ui-state-default">E</li>
+                      <li class="ui-state-default">E</li>
+                    
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                      <li class="ui-state-default">N</li>
+                    </ol>
                 
-                
+                </div>
             </div>
             <span id="select-result">none</span>
             
