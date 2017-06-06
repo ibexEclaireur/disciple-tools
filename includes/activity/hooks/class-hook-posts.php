@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function __construct() {
-//        add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
-//        add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
-//        add_action( "added_post_meta", array( &$this, 'hooks_added_post_meta'), 10, 4 );
-//        add_action( "updated_postmeta", array( &$this, 'hooks_updated_post_meta'), 10, 4 );
-//        add_action( 'p2p_created_connection', array( &$this, 'hooks_p2p_created'), 10, 1) ;
-//        add_action( 'p2p_delete_connections', array( &$this, 'hooks_p2p_deleted'), 10, 1) ;
+        add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
+        add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
+        add_action( "added_post_meta", array( &$this, 'hooks_added_post_meta'), 10, 4 );
+        add_action( "updated_postmeta", array( &$this, 'hooks_updated_post_meta'), 10, 4 );
+        add_action( 'p2p_created_connection', array( &$this, 'hooks_p2p_created'), 10, 1) ;
+        add_action( 'p2p_delete_connections', array( &$this, 'hooks_p2p_deleted'), 10, 1) ;
 
         parent::__construct();
     }
@@ -46,11 +46,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 			return;
 		}
 
-		if ( wp_is_post_revision( $post->ID ) )
+		if ( wp_is_post_revision( $post->ID ) )// Skip for revision.
 			return;
 
-		// Skip for menu items.
-		if ( 'nav_menu_item' === get_post_type( $post->ID ) )
+
+		if ( 'nav_menu_item' === get_post_type( $post->ID ) )// Skip for menu items.
 			return;
 
 		dt_activity_insert(
@@ -99,19 +99,39 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 	}
 
     public function hooks_added_post_meta ($mid, $object_id, $meta_key, $meta_value) {
-        // get object info
-        $parent_post = get_post($object_id, ARRAY_A);
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
-        // ignore edit lock
-        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
+        $parent_post = get_post($object_id, ARRAY_A); // get object info
+
+        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') { // ignore edit locks
             return;
         }
 
-        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] )
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] ) // ignore navigation items
             return;
 
-        dt_activity_insert(
+        switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
+            case 'contacts':
+                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+                break;
+            case 'groups':
+                $fields = Disciple_Tools_Group_Post_Type::instance()->get_custom_fields_settings();
+                break;
+            case 'locations':
+                $fields = Disciple_Tools_Location_Post_Type::instance()->get_custom_fields_settings();
+                break;
+            default:
+                $fields = '';
+                break;
+        }
+
+
+        if (!empty($fields)) { // Build object note if contact, group, location, else ignore object note
+            $object_note = $this->_key_name($meta_key, $fields) . ' was changed to ' . $this->_value_name ($meta_key, $meta_value, $fields);
+        } else {
+            $object_note = '';
+        }
+
+        dt_activity_insert( // insert activity record
             array(
                 'action'            => 'field_update',
                 'object_type'       => $parent_post['post_type'],
@@ -122,26 +142,44 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_key'          => $meta_key,
                 'meta_value'        => $meta_value,
                 'meta_parent'        => $parent_post['post_parent'],
-                'object_note'       => $this->_key_name($meta_key, $contact_fields) . ' was changed to ' . $this->_value_name ($meta_key, $meta_value, $contact_fields),
+                'object_note'       => $object_note,
             )
         );
     }
 
     public function hooks_updated_post_meta ($meta_id, $object_id, $meta_key, $meta_value) {
 
-        // get object info
-        $parent_post = get_post($object_id, ARRAY_A);
-        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+        $parent_post = get_post($object_id, ARRAY_A); // get object info
 
-        // ignore edit lock
-        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
+        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') { // ignore edit lock
             return;
         }
 
-        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] )
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] ) // ignore nav items
             return;
 
-        dt_activity_insert(
+        switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
+            case 'contacts':
+                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+                break;
+            case 'groups':
+                $fields = Disciple_Tools_Group_Post_Type::instance()->get_custom_fields_settings();
+                break;
+            case 'locations':
+                $fields = Disciple_Tools_Location_Post_Type::instance()->get_custom_fields_settings();
+                break;
+            default:
+                $fields = '';
+                break;
+        }
+
+        if (!empty($fields)) { // Build object note if contact, group, location, else ignore object note
+            $object_note = $this->_key_name($meta_key, $fields) . ' was changed to ' . $this->_value_name ($meta_key, $meta_value, $fields);
+        } else {
+            $object_note = '';
+        }
+
+        dt_activity_insert( // insert activity record
             array(
                 'action'            => 'field_update',
                 'object_type'       => $parent_post['post_type'],
@@ -152,31 +190,46 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'meta_key'          => $meta_key,
                 'meta_value'        => $meta_value,
                 'meta_parent'        => $parent_post['post_parent'],
-                'object_note'       => $this->_key_name($meta_key, $contact_fields) . ' was changed to ' . $this->_value_name ($meta_key, $meta_value, $contact_fields),
+                'object_note'       => $object_note,
             )
         );
     }
 
-    protected function _key_name ($meta_key, $contact_fields = null) {
-        if(is_null($contact_fields)) {
-            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+    /**
+     * Extract the pretty key name, if available
+     * @param $meta_key
+     * @param $fields
+     * @return mixed
+     */
+    protected function _key_name ($meta_key, $fields) {
+        if(isset($fields[$meta_key]['name'])) { // test if field exists
+            return $fields[$meta_key]['name'];
+        } else {
+            return $meta_key;
         }
 
-        return $contact_fields[$meta_key]['name'];
     }
 
-    protected function _value_name ($meta_key, $meta_value, $contact_fields = null) {
+    /**
+     * Extract the pretty value name, if available
+     * @param $meta_key
+     * @param $meta_value
+     * @param $fields
+     * @return mixed
+     */
+    protected function _value_name ($meta_key, $meta_value, $fields) {
 
-        if(is_null($contact_fields)) {
-            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-        }
+        if(isset($fields[$meta_key]['default'][$meta_value])) { // test if value exists
 
-        if(!is_array($contact_fields[$meta_key]['default'])) {
+            if(!is_array($fields[$meta_key]['default'])) { // test if array
+                return $meta_value;
+            } else {
+                return $fields[$meta_key]['default'][$meta_value];
+            }
+
+        } else { // if field not set
             return $meta_value;
-        } else {
-            return $contact_fields[$meta_key]['default'][$meta_value];
         }
-
     }
 
     public function hooks_p2p_created ($p2p_id, $action = 'connected to') { // I need to create two records. One for each end of the connection.

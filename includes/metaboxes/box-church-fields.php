@@ -34,12 +34,14 @@ class Disciple_Tools_Metabox_Church_Fields {
      */
     public function content_display () {
         global $post;
-        $type = __('Yes', 'disciple_tools');
 
-        if(get_post_meta($post->ID, 'is_church', true) == $type) {
-
+        // Shows the church graphic
+        if(get_post_meta($post->ID, 'is_church', true) == '1') {
             echo '<div class="center"><img src="' . Disciple_Tools()->plugin_img . 'church.png" style="text-align: center; margin: 0 auto;" ></div>';
         }
+
+        // Prints javascript to hide dependent fields
+
 
     }
 
