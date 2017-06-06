@@ -101,7 +101,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function hooks_added_post_meta ($mid, $object_id, $meta_key, $meta_value) {
         // get object info
         $parent_post = get_post($object_id, ARRAY_A);
-        $contact_fields = Contact_Controller::$contact_fields;
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
@@ -131,7 +131,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         // get object info
         $parent_post = get_post($object_id, ARRAY_A);
-        $contact_fields = Contact_Controller::$contact_fields;
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
 
         // ignore edit lock
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') {
@@ -159,7 +159,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     protected function _key_name ($meta_key, $contact_fields = null) {
         if(is_null($contact_fields)) {
-            $contact_fields = Contact_Controller::$contact_fields;
+            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         }
 
         return $contact_fields[$meta_key]['name'];
@@ -168,7 +168,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     protected function _value_name ($meta_key, $meta_value, $contact_fields = null) {
 
         if(is_null($contact_fields)) {
-            $contact_fields = Contact_Controller::$contact_fields;
+            $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
         }
 
         if(!is_array($contact_fields[$meta_key]['default'])) {
