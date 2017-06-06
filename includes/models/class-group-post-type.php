@@ -298,8 +298,20 @@ class Disciple_Tools_Group_Post_Type {
      * Load type metabox
      */
     public function load_type_meta_box () {
-        echo ''. $this->meta_box_content('type');
+        global $post;
+        $hidden = '';
+
+        echo ''. $this->meta_box_content('church');
+
+        if (get_post_meta($post->ID, 'is_church', true ) == '0') { $hidden = 'style="display:none;"'; } // add fields if church is true
+
+        echo '<div id="hidden-rows" '.$hidden.'>'; // visually hides fields for elements of church
+        echo ''. $this->meta_box_content('church_hidden');
         echo ''. dt_church_fields_metabox()->content_display();
+        echo '</div>';
+
+
+
     }
 
     /**
@@ -355,24 +367,8 @@ class Disciple_Tools_Group_Post_Type {
                                 $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
                                 $html .= '</td><tr/>' . "\n";
                                 break;
-                            case 'select':
-                                $html .= '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr($k) . '">' . $v['name'] . '</label></th>
-                                <td><select name="' . esc_attr($k) . '" id="' . esc_attr($k) . '" class="regular-text">';
-                                // Iterate the options
-                                foreach ($v['default'] as $vv) {
-                                    $html .= '<option value="' . $vv . '" ';
-                                    if ($vv == $data) {
-                                        $html .= 'selected';
-                                    }
-                                    $html .= '>' . $vv . '</option>';
-                                }
-                                $html .= '</select>' . "\n";
-                                $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                                $html .= '</td><tr/>' . "\n";
-                                break;
                             case 'key_select':
-                                $html .= '<tr valign="top"><th scope="row">
+                                $html .= '<tr class="'. $v['section'] .'" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
                                 <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
@@ -386,6 +382,7 @@ class Disciple_Tools_Group_Post_Type {
                                 $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
                                 $html .= '</td><tr/>' . "\n";
                                 break;
+
                             case 'radio':
                                 $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
                                 <td><fieldset>';
@@ -453,12 +450,15 @@ class Disciple_Tools_Group_Post_Type {
             }
         }
 
-		$field_data = $this->get_custom_fields_settings();
-		$fields = array_keys( $field_data );
-
         if ( (isset( $_POST['new-key-address']) && !empty($_POST['new-key-address']) ) && (isset( $_POST['new-value-address']) && !empty ($_POST['new-value-address']) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, $_POST['new-key-address'], $_POST['new-value-address'], true );
+            $key = strtolower($_POST['new-key-address']);
+            $value = $_POST['new-value-address'];
+            add_post_meta( $post_id, $key, $value, true );
+            $_POST[$key] = $value;
         }
+
+        $field_data = $this->get_custom_fields_settings();
+        $fields = array_keys( $field_data );
 
 		foreach ( $fields as $f ) {
 
@@ -486,86 +486,78 @@ class Disciple_Tools_Group_Post_Type {
 
 		$fields = array();
 
-		// Type
+		// Church
         $fields['is_church'] = array(
             'name' => __( 'Is a Church', 'disciple_tools' ),
             'description' => '',
-            'type' => 'select',
-            'default' => array( __('No', 'disciple_tools'), __('Yes', 'disciple_tools') ),
-            'section' => 'type'
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'church'
         );
-
-        // Church Elements
-        $type = __('Yes', 'disciple_tools');
-        if(get_post_meta($post->ID, 'is_church', true) == $type) {
-
 
         $fields['church_baptism'] = array(
             'name' => __( 'Baptism', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_bible'] = array(
             'name' => __( 'Bible Study', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_communion'] = array(
             'name' => __( 'Communion', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_fellowship'] = array(
             'name' => __( 'Fellowship', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_tithe'] = array(
             'name' => __( 'Tithe (Sacrificial Ministry)', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_prayer'] = array(
             'name' => __( 'Prayer', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_praise'] = array(
             'name' => __( 'Praise', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_sharing'] = array(
             'name' => __( 'Sharing the Gospel', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
         $fields['church_leaders'] = array(
             'name' => __( 'Leaders', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-            'section' => 'type'
+            'section' => 'church_hidden'
         );
-
-        } // End 'Church' check
-
 
 
         if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
@@ -573,7 +565,7 @@ class Disciple_Tools_Group_Post_Type {
             $addresses = dt_address_metabox()->address_fields();
             foreach ($addresses as $k => $v) { // sets all others third
                 $fields[$k] = array(
-                    'name' => $v['name'],
+                    'name' => ucwords($v['name']),
                     'description' => '',
                     'type' => 'text',
                     'default' => '',
@@ -585,12 +577,10 @@ class Disciple_Tools_Group_Post_Type {
 
             foreach ($channels as $channel) {
 
-                $key =  'address_' . $channel . '_111' ;;
-                $names = explode('_', $key);
-
+                $key =  strtolower('address_' . $channel . '_111') ;
 
                 $fields[$key] = array(
-                    'name' => $names[1] ,
+                    'name' => ucwords($channel) ,
                     'description' => '',
                     'type' => 'text',
                     'default' => '',
