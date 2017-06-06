@@ -95,9 +95,8 @@ class Disciple_Tools_Metabox_Address {
                 break;
             case 'locations':
                 $addresses = array(
-                    __('Single Address', 'disciple_tools'),
-                    __('Single (JSON)', 'disciple_tools'),
-                    __('Polygon (JSON)', 'disciple_tools'),
+                    __('Address', 'disciple_tools'),
+                    __('Polygon', 'disciple_tools'),
                 );
                 return $addresses;
                 break;

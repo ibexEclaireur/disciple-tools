@@ -451,7 +451,7 @@ class Disciple_Tools_Location_Post_Type {
 		$fields = array_keys( $field_data );
 
         if ( (isset( $_POST['new-key-address']) && !empty($_POST['new-key-address']) ) && (isset( $_POST['new-value-address']) && !empty ($_POST['new-value-address']) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, $_POST['new-key-address'], $_POST['new-value-address'], true );
+            add_post_meta( $post_id, strtolower($_POST['new-key-address']), $_POST['new-value-address'], true );
         }
 
 		foreach ( $fields as $f ) {
@@ -498,7 +498,7 @@ class Disciple_Tools_Location_Post_Type {
             $addresses = dt_address_metabox()->address_fields();
             foreach ($addresses as $k => $v) { // sets all others third
                 $fields[$k] = array(
-                    'name' => $v['name'],
+                    'name' => ucwords($v['name']),
                     'description' => '',
                     'type' => 'text',
                     'default' => '',
@@ -510,12 +510,10 @@ class Disciple_Tools_Location_Post_Type {
 
             foreach ($channels as $channel) {
 
-                $key =  'address_' . $channel . '_111' ;;
-                $names = explode('_', $key);
-
+                $key =  strtolower('address_' . $channel . '_111') ;
 
                 $fields[$key] = array(
-                    'name' => $names[1] ,
+                    'name' => ucwords($channel) ,
                     'description' => '',
                     'type' => 'text',
                     'default' => '',

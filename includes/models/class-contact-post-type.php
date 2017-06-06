@@ -302,7 +302,7 @@ class Disciple_Tools_Contact_Post_Type {
                             break;
                         case 'key_select':
                             $html .= '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <label for="' . esc_attr( $k ) . '">' . $v['name']  . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
@@ -398,11 +398,11 @@ class Disciple_Tools_Contact_Post_Type {
         $fields = array_keys( $field_data );
 
         if ( (isset( $_POST['new-key-address']) && !empty($_POST['new-key-address']) ) && (isset( $_POST['new-value-address']) && !empty ($_POST['new-value-address']) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, $_POST['new-key-address'], $_POST['new-value-address'], true );
+            add_post_meta( $post_id, strtolower($_POST['new-key-address']), $_POST['new-value-address'], true );
         }
 
         if ( (isset( $_POST['new-key-contact']) && !empty($_POST['new-key-contact']) ) && (isset( $_POST['new-value-contact']) && !empty ($_POST['new-value-contact']) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, $_POST['new-key-contact'], $_POST['new-value-contact'], true );
+            add_post_meta( $post_id, strtolower($_POST['new-key-contact']), $_POST['new-value-contact'], true );
         }
 
         foreach ( $fields as $f ) {
@@ -522,9 +522,9 @@ class Disciple_Tools_Contact_Post_Type {
             $methods = $this->contact_fields();
             foreach ($methods as $k => $v) { // sets phone numbers as first
                 $keys = explode('_', $k);
-                if($keys[1] == __('Phone','disciple_tools') && $keys[2] == __('Primary','disciple_tools')) {
+                if($keys[1] == 'phone' && $keys[2] == 'primary') {
                     $fields[$k] = array(
-                        'name' => $v['name'],
+                        'name' => ucwords($v['name']),
                         'description' => '',
                         'type' => 'text',
                         'default' => '',
@@ -534,9 +534,9 @@ class Disciple_Tools_Contact_Post_Type {
             }
             foreach ($methods as $k => $v) { // sets phone numbers as first
                 $keys = explode('_', $k);
-                if($keys[1] == __('Phone','disciple_tools') && $keys[2] != __('Primary','disciple_tools')) {
+                if($keys[1] == 'phone' && $keys[2] != 'primary') {
                     $fields[$k] = array(
-                        'name' => $v['name'],
+                        'name' => ucwords($v['name']),
                         'description' => '',
                         'type' => 'text',
                         'default' => '',
@@ -546,9 +546,9 @@ class Disciple_Tools_Contact_Post_Type {
             }
             foreach ($methods as $k => $v) { // sets emails as second
                 $keys = explode('_', $k);
-                if($keys[1] == __('Email','disciple_tools') && $keys[2] == __('Primary','disciple_tools')) {
+                if($keys[1] == 'email' && $keys[2] == 'primary') {
                     $fields[$k] = array(
-                        'name' => $v['name'],
+                        'name' => ucwords($v['name']),
                         'description' => '',
                         'type' => 'text',
                         'default' => '',
@@ -558,9 +558,9 @@ class Disciple_Tools_Contact_Post_Type {
             }
             foreach ($methods as $k => $v) { // sets emails as second
                 $keys = explode('_', $k);
-                if($keys[1] == __('Email','disciple_tools') && $keys[2] != __('Primary','disciple_tools')) {
+                if($keys[1] == 'email' && $keys[2] != 'primary') {
                     $fields[$k] = array(
-                        'name' => $v['name'],
+                        'name' => ucwords($v['name']),
                         'description' => '',
                         'type' => 'text',
                         'default' => '',
@@ -570,9 +570,9 @@ class Disciple_Tools_Contact_Post_Type {
             }
             foreach ($methods as $k => $v) { // sets all others third
                 $keys = explode('_', $k);
-                if($keys[1] != __('Email','disciple_tools') && $keys[2] != __('Phone','disciple_tools') ) {
+                if($keys[1] != 'email' && $keys[1] != 'phone' ) {
                     $fields[$k] = array(
-                        'name' => $v['name'],
+                        'name' => ucwords($v['name']),
                         'description' => '',
                         'type' => 'text',
                         'default' => '',
@@ -585,7 +585,7 @@ class Disciple_Tools_Contact_Post_Type {
             $addresses = dt_address_metabox ()->address_fields();
             foreach ($addresses as $k => $v) { // sets all others third
                 $fields[$k] = array(
-                    'name' => $v['name'],
+                    'name' => ucwords($v['name']),
                     'description' => '',
                     'type' => 'text',
                     'default' => '',
@@ -602,12 +602,12 @@ class Disciple_Tools_Contact_Post_Type {
 
 	                $tag = null;
 
-	                $key =  'contact_' . $channel_key . '_' . $type_key . '_111' ;
+	                $key =  strtolower('contact_' . $channel_key . '_' . $type_key . '_111') ;
 
-	                if($channel["label"] != $type["label"]) { $tag = ' ('. $type["label"] . ')'; }
+	                if($channel["label"] != $type["label"]) { $tag = ' ('. ucwords($type["label"]) . ')'; }
 
 	                $fields[$key] = array(
-	                    'name' => $channel["label"] . $tag,
+	                    'name' => ucwords($channel["label"]) . $tag,
 	                    'description' => '',
 	                    'type' => 'text',
 	                    'default' => '',
@@ -620,12 +620,10 @@ class Disciple_Tools_Contact_Post_Type {
 
             foreach ($channels as $channel) {
 
-                $key =  'address_' . $channel . '_111' ;;
-                $names = explode('_', $key);
-
+                $key =  strtolower('address_' . $channel . '_111') ;
 
                 $fields[$key] = array(
-                    'name' => $names[1] ,
+                    'name' => ucwords($channel) ,
                     'description' => '',
                     'type' => 'text',
                     'default' => '',
@@ -759,10 +757,10 @@ class Disciple_Tools_Contact_Post_Type {
             $names = explode('_', $value['meta_key']);
             $tag = null;
 
-            if ($names[1] != $names[2]) { $tag = ' ('. $names[2] . ')'; }
+            if ($names[1] != $names[2]) { $tag = ' ('. ucwords($names[2]) . ')'; }
 
             $fields[$value['meta_key']] = array(
-                'name' => $names[1] . $tag,
+                'name' => ucwords($names[1])  . $tag,
                 'tag' => $names[1],
             );
         }

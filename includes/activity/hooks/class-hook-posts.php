@@ -4,12 +4,12 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function __construct() {
-        add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
-        add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
-        add_action( "added_post_meta", array( &$this, 'hooks_added_post_meta'), 10, 4 );
-        add_action( "updated_postmeta", array( &$this, 'hooks_updated_post_meta'), 10, 4 );
-        add_action( 'p2p_created_connection', array( &$this, 'hooks_p2p_created'), 10, 1) ;
-        add_action( 'p2p_delete_connections', array( &$this, 'hooks_p2p_deleted'), 10, 1) ;
+//        add_action( 'transition_post_status', array( &$this, 'hooks_transition_post_status' ), 10, 3 );
+//        add_action( 'delete_post', array( &$this, 'hooks_delete_post' ) );
+//        add_action( "added_post_meta", array( &$this, 'hooks_added_post_meta'), 10, 4 );
+//        add_action( "updated_postmeta", array( &$this, 'hooks_updated_post_meta'), 10, 4 );
+//        add_action( 'p2p_created_connection', array( &$this, 'hooks_p2p_created'), 10, 1) ;
+//        add_action( 'p2p_delete_connections', array( &$this, 'hooks_p2p_deleted'), 10, 1) ;
 
         parent::__construct();
     }
