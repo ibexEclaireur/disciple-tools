@@ -90,4 +90,17 @@ class Disciple_Tools_Api_Keys {
 		include 'views/api-keys-view.php';
 	}
 
+
+	/**
+	 * Check to see if an api key and token exist
+	 * @param $client_Id
+	 * @param $client_token
+	 *
+	 * @return bool
+	 */
+	public function check_api_key($client_Id, $client_token){
+		$keys = get_option( "dt_api_keys", array());
+		return isset($keys[$client_Id]) && $keys[$client_Id]["client_token"] == $client_token;
+	}
+
 }
