@@ -249,6 +249,13 @@ final class Disciple_Tools_Settings {
                     'section' => 'general',
                     'description' => ''
                 );
+                $settings_fields['location_cdn_url'] = array(
+                    'name' => __( 'Location Files CDN URL', 'disciple_tools' ),
+                    'type' => 'text',
+                    'default' => 'https://s3.amazonaws.com/disciple-tools-locations/',
+                    'section' => 'general',
+                    'description' => 'temporary setting to designate the location of the file cdn source (example: http://locations.cdn:8888/)'
+                );
 
 //                $settings_fields['select'] = array(
 //                    'name' => __( 'Select', 'disciple_tools' ),
