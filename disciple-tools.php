@@ -26,23 +26,44 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * The code that runs during plugin activation.
  * This action is documented in includes/admin/class-activator.php
  */
-function activate_disciple_tools() {
+function activate_disciple_tools($network_wide) {
     require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
-    Disciple_Tools_Activator::activate();
+    Disciple_Tools_Activator::activate($network_wide);
 }
+register_activation_hook(__FILE__, 'activate_disciple_tools');
 
 /**
  * Deactivation Hook
  * The code that runs during plugin deactivation.
  * This action is documented in includes/admin/class-deactivator.php
  */
-function deactivate_disciple_tools() {
+function deactivate_disciple_tools($network_wide) {
     require_once plugin_dir_path(__FILE__) . 'includes/admin/class-deactivator.php';
-    Disciple_Tools_Deactivator::deactivate();
+    Disciple_Tools_Deactivator::deactivate($network_wide);
 }
-
-register_activation_hook(__FILE__, 'activate_disciple_tools');
 register_deactivation_hook(__FILE__, 'deactivate_disciple_tools');
+
+/**
+ * Multisite. Activating for a new blog if DT is newtork required.
+ * @param $blog_id
+ * @param $user_id
+ * @param $domain
+ * @param $path
+ * @param $site_id
+ * @param $meta
+ */
+function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+    Disciple_Tools_Activator::on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta);
+}
+add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+
+function on_delete_blog( $tables ) {
+    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+    return Disciple_Tools_Activator::on_delete_blog( $tables );
+}
+add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
+
 
 
 

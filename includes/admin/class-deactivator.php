@@ -29,7 +29,29 @@ class Disciple_Tools_Deactivator {
         $roles = Disciple_Tools_Roles::instance();
         $roles->reset_roles();
 
+        /* Determines if on deactivate you have checked to remove database content */
+        if (get_option('delete_activity_db')) {
+            self::_remove_tables();
+        }
+        self::_remove_tables();
+
 	}
+
+    /**
+     * Removes the tables for the activity and report logs.
+     * @access protected
+     */
+    protected static function _remove_tables() {
+        global $wpdb;
+
+        $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_activity_log`;" );
+        $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reports`;" );
+        $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reportmeta`;" );
+
+        delete_option( 'dt_activity_log_db_version' );
+        delete_option( 'dt_reports_db_version' );
+        delete_option( 'dt_reportmeta_db_version' );
+    }
 
 
 
