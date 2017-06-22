@@ -140,7 +140,7 @@ class Disciple_Tools_Activator {
 					  `meta_value` VARCHAR(255) NOT NULL DEFAULT '0',
 					  `meta_parent` BIGINT(20) NOT NULL DEFAULT '0',
 					  PRIMARY KEY (`histid`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4_unicode_520_ci;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
             dbDelta($sql1);
 
@@ -157,7 +157,7 @@ class Disciple_Tools_Activator {
 					  `report_source` VARCHAR(55) NOT NULL,
 					  `report_subsource` VARCHAR(100) NOT NULL,
 					  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4_unicode_520_ci;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
             dbDelta($sql2);
             update_option('dt_reports_db_version', $version);
         }
@@ -172,7 +172,7 @@ class Disciple_Tools_Activator {
 					  `meta_key` VARCHAR(255) NOT NULL,
 					  `meta_value` LONGTEXT,
 					  PRIMARY KEY (`meta_id`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4_unicode_520_ci;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
             dbDelta($sql3);
             update_option('dt_reportmeta_db_version', $version);
         }

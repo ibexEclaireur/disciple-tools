@@ -52,17 +52,17 @@ register_deactivation_hook(__FILE__, 'deactivate_disciple_tools');
  * @param $site_id
  * @param $meta
  */
-function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
-    Disciple_Tools_Activator::on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta);
-}
-add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
-
-function on_delete_blog( $tables ) {
-    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
-    return Disciple_Tools_Activator::on_delete_blog( $tables );
-}
-add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
+//function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+//    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+//    Disciple_Tools_Activator::on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta);
+//}
+//add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+//
+//function on_delete_blog( $tables ) {
+//    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+//    return Disciple_Tools_Activator::on_delete_blog( $tables );
+//}
+//add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
 
 
 
