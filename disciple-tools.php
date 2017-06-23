@@ -387,6 +387,15 @@ class Disciple_Tools {
         require_once('includes/theme_support/location-functions-for-themes.php');
         require_once('includes/theme_support/chart-functions-for-themes.php');
 
+        /**
+         * Multisite
+         */
+        if(is_multisite()) {
+            if(!class_exists('DS_More_Privacy_Options')) {
+                require_once ('includes/plugins/ds_wp3_private_blog.php'); // adds the ability to give privacy to individual sites.
+            }
+        }
+
         // Language
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
