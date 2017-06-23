@@ -21,10 +21,9 @@
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+
 /**
  * Activation Hook
- * The code that runs during plugin activation.
- * This action is documented in includes/admin/class-activator.php
  */
 function activate_disciple_tools($network_wide) {
     require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
@@ -34,8 +33,6 @@ register_activation_hook(__FILE__, 'activate_disciple_tools');
 
 /**
  * Deactivation Hook
- * The code that runs during plugin deactivation.
- * This action is documented in includes/admin/class-deactivator.php
  */
 function deactivate_disciple_tools($network_wide) {
     require_once plugin_dir_path(__FILE__) . 'includes/admin/class-deactivator.php';
@@ -44,27 +41,19 @@ function deactivate_disciple_tools($network_wide) {
 register_deactivation_hook(__FILE__, 'deactivate_disciple_tools');
 
 /**
- * Multisite. Activating for a new blog if DT is newtork required.
- * @param $blog_id
- * @param $user_id
- * @param $domain
- * @param $path
- * @param $site_id
- * @param $meta
+ * Multisite datatable maintenance
  */
-//function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-//    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
-//    Disciple_Tools_Activator::on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta);
-//}
-//add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
-//
-//function on_delete_blog( $tables ) {
-//    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
-//    return Disciple_Tools_Activator::on_delete_blog( $tables );
-//}
-//add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
-
-
+function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+    Disciple_Tools_Activator::on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta);
+}
+add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+function on_delete_blog( $tables ) {
+    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+    return Disciple_Tools_Activator::on_delete_blog( $tables );
+}
+add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
+/* End Multisite datatable maintenance */
 
 
 /**
@@ -81,7 +70,6 @@ register_deactivation_hook(__FILE__, 'deactivate_disciple_tools');
     function Disciple_Tools() {
         return Disciple_Tools::instance();
     }
-
 
 /**
  * Main Disciple_Tools Class
@@ -387,6 +375,15 @@ class Disciple_Tools {
         require_once('includes/theme_support/location-functions-for-themes.php');
         require_once('includes/theme_support/chart-functions-for-themes.php');
 
+        /**
+         * Multisite
+         */
+        if(is_multisite()) {
+            if(!class_exists('DS_More_Privacy_Options')) {
+                require_once ('includes/plugins/ds_wp3_private_blog.php'); // adds the ability to give privacy to individual sites.
+            }
+        }
+
         // Language
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
@@ -432,5 +429,6 @@ class Disciple_Tools {
 	} // End __wakeup()
 
 } // End Class
+
 
 

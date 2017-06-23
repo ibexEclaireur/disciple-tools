@@ -750,7 +750,7 @@ class Disciple_Tools_Contact_Post_Type {
 	    $current_fields = array();
 
 	    if (isset($post->ID)){
-            $current_fields = $wpdb->get_results( "SELECT meta_key FROM wp_postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+            $current_fields = $wpdb->get_results( "SELECT meta_key FROM $wpdb->postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
 	    }
 
         foreach ($current_fields as $value) {
