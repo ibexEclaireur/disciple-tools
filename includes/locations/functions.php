@@ -9,7 +9,7 @@
  */
 function dt_get_states_key_dropdown_LL () {
 
-    $dir_contents = json_decode(file_get_contents(plugin_dir_path(__DIR__) . '/json/data-file-directory.json')); // get directory & build dropdown
+    $dir_contents = json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json')); // get directory & build dropdown
 
     $dropdown = '<select name="states-dropdown">';
 
@@ -34,7 +34,7 @@ function dt_get_states_key_dropdown_LL () {
  * @return array|mixed|object
  */
 function dt_get_data_file_directory_LL () {
-    return json_decode(file_get_contents(plugin_dir_path(__DIR__) . '/json/data-file-directory.json'));
+    return json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json'));
 }
 
 /**
@@ -44,7 +44,7 @@ function dt_get_data_file_directory_LL () {
  */
 function dt_get_file_path_by_key_LL ($state) {
     $directory = dt_get_data_file_directory_LL (); // call directory
-    return plugin_dir_path(__DIR__) . 'data/' . $directory->USA_tracts->{$state}->file; // build url
+    return plugin_dir_path(__FILE__) . 'data/' . $directory->USA_tracts->{$state}->file; // build url
 }
 
 /**

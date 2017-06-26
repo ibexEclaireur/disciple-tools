@@ -79,11 +79,11 @@ class Disciple_Tools_Location_Tools_Menu {
          */
         if (isset($_GET["tab"])) {$tab = $_GET["tab"];} else {$tab = 'address_tract';}
 
-        $tab_link_pre = '<a href="tools.php?page=disciple_tools_locations&tab=';
+        $tab_link_pre = '<a href="edit.php?post_type=locations&page=disciple_tools_locations&tab=';
         $tab_link_post = '" class="nav-tab ';
 
         $html = '<div class="wrap">
-            <h2>IMPORT LOCATIONS TO DISCIPLE TOOLS</h2>
+            <h2>Import Locations</h2>
             <h2 class="nav-tab-wrapper">';
 
         $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
