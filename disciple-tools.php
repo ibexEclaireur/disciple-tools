@@ -379,9 +379,7 @@ class Disciple_Tools {
          * Multisite
          */
         if(is_multisite()) {
-            if(!class_exists('DS_More_Privacy_Options')) {
-                require_once ('includes/plugins/ds_wp3_private_blog.php'); // adds the ability to give privacy to individual sites.
-            }
+            /** Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite  */
         }
 
         // Language

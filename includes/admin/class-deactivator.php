@@ -22,7 +22,7 @@ class Disciple_Tools_Deactivator {
 	 *
 	 * @since    0.1
 	 */
-	public static function deactivate() {
+	public static function deactivate($network_wide) {
 
         // Reset roles and capabilities
         require_once('class-roles.php');
