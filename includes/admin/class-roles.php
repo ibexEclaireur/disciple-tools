@@ -749,9 +749,9 @@ class Disciple_Tools_Roles {
          * Default user role set to registered in /includes/drm-filters.php
          */
 //        remove_role( 'subscriber' ); // TODO: Removed these features because of multisite compatible
-//        remove_role( 'contributor' );
-//        remove_role( 'editor' );
-//        remove_role( 'author' );
+        remove_role( 'contributor' );
+        remove_role( 'editor' );
+        remove_role( 'author' );
 
 
         // Get the administrator role.

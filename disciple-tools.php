@@ -256,6 +256,9 @@ class Disciple_Tools {
             require_once ('includes/functions/enqueue-scripts.php');
             require_once ('includes/functions/structure-defaults.php');
 
+            require_once('includes/locations/tools-menu.php');
+            $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
+
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
             $this->profile = Disciple_Tools_Profile::instance();
@@ -300,10 +303,8 @@ class Disciple_Tools {
 
         // Creates User Groups out of Taxonomies
         require_once ( 'includes/models/class-user-taxonomy.php' );
-        require_once ( 'includes/functions/user-groups-admin.php' );
-        require_once ( 'includes/functions/user-groups-common.php' );
+        $this->user_tax = Disciple_Tools_User_Taxonomy::instance();
         require_once ( 'includes/functions/user-groups-taxonomies.php' );
-        require_once ( 'includes/functions/user-groups-hooks.php' );
 
         require_once ( 'includes/admin/multi-role/multi-role.php');
         $this->multi = Disciple_Tools_Multi_Roles::instance();
@@ -374,6 +375,22 @@ class Disciple_Tools {
         require_once('includes/theme_support/contact-functions-for-themes.php');
         require_once('includes/theme_support/location-functions-for-themes.php');
         require_once('includes/theme_support/chart-functions-for-themes.php');
+
+        /**
+         * Locations Support
+         */
+        require_once ('includes/locations/class-map.php'); // Helper
+        require_once('includes/locations/class-coordinates-kml.php');
+        require_once('includes/locations/functions.php');
+        require_once('includes/locations/class-placemark-info.php');
+        require_once('includes/locations/class-census-geolocation-api.php');// APIs
+        require_once('includes/locations/class-google-geolocation-api.php');
+        require_once('includes/locations/rest-controller.php');
+        require_once ('includes/locations/rest-api.php');
+        $this->rest = Disciple_Tools_REST_API::instance();
+        require_once('includes/locations/locations-post-type-metabox.php');
+        $this->ll_metabox = new Disciple_Tools_Metabox();
+        /** End Locations */
 
         /**
          * Multisite
