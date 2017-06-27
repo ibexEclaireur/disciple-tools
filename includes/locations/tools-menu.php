@@ -77,7 +77,7 @@ class Disciple_Tools_Location_Tools_Menu {
         /**
          * Begin Header & Tab Bar
          */
-        if (isset($_GET["tab"])) {$tab = $_GET["tab"];} else {$tab = 'address_tract';}
+        if (isset($_GET["tab"])) {$tab = $_GET["tab"];} else {$tab = 'maintenance';}
 
         $tab_link_pre = '<a href="edit.php?post_type=locations&page=disciple_tools_locations&tab=';
         $tab_link_post = '" class="nav-tab ';
@@ -86,13 +86,13 @@ class Disciple_Tools_Location_Tools_Menu {
             <h2>Import Locations</h2>
             <h2 class="nav-tab-wrapper">';
 
-        $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
-        if ($tab == 'address_tract' || !isset($tab) ) {$html .= 'nav-tab-active';}
-        $html .= '">Address to Tract</a>';
+        $html .= $tab_link_pre . 'maintenance' . $tab_link_post;
+        if ($tab == 'maintenance' || !isset($tab)) {$html .= 'nav-tab-active';}
+        $html .= '">Maintenance</a>';
 
-        $html .= $tab_link_pre . 'state' . $tab_link_post;
-        if ($tab == 'state' || !isset($tab) ) {$html .= 'nav-tab-active';}
-        $html .= '">State</a>';
+        $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
+        if ($tab == 'address_tract' ) {$html .= 'nav-tab-active';}
+        $html .= '">Address to Tract</a>';
 
         $html .= $tab_link_pre . 'ip' . $tab_link_post;
         if ($tab == 'ip') {$html .= 'nav-tab-active';}
@@ -102,13 +102,9 @@ class Disciple_Tools_Location_Tools_Menu {
         if ($tab == 'public') {$html .= 'nav-tab-active';}
         $html .= '">Public Data</a>';
 
-        $html .= $tab_link_pre . 'maintenance' . $tab_link_post;
-        if ($tab == 'maintenance') {$html .= 'nav-tab-active';}
-        $html .= '">Maintenance</a>';
-
         $html .= '</h2>';
 
-        echo $html;
+        echo $html; // Echo tabs
 
         $html = '';
         // End Tab Bar
@@ -118,35 +114,27 @@ class Disciple_Tools_Location_Tools_Menu {
          */
         switch ($tab) {
 
-            case "state":
-                $class_object = new Disciple_Tools_State();
-                $html .= ''. $class_object->page_contents();
-                break;
             case "public":
                 $class_object = new Disciple_Tools_Public_Data();
-                $html .= ''. $class_object->page_contents();
+                $html .= '' . $class_object->page_contents();
                 break;
-            case "js_tract":
+            case "address_tract":
                 $class_object = new Disciple_Tools_JS_Tract_Lookup();
-                $html .= ''. $class_object->page_contents();
+                $html .= '' . $class_object->page_contents();
                 break;
             case "ip":
                 $class_object = new Disciple_Tools_IP_Tab();
-                $html .= ''. $class_object->page_contents();
-                break;
-            case "maintenance":
-                $class_object = new Disciple_Tools_Maintenance();
-                $html .= ''. $class_object->page_contents();
+                $html .= '' . $class_object->page_contents();
                 break;
             default:
-                $class_object = new Disciple_Tools_JS_Tract_Lookup();
-                $html .= ''. $class_object->page_contents();
+                $class_object = new Disciple_Tools_Maintenance();
+                $html .= '' . $class_object->page_contents();
                 break;
         }
 
         $html .= '</div>'; // end div class wrap
 
-        echo $html;
+        echo $html; // Echo contents
     }
 
 
