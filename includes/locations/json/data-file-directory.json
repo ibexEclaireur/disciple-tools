@@ -1,4 +1,5 @@
 {
+  "base_url": "https://s3.amazonaws.com/disciple-tools-locations/",
   "countries": [
     {
       "ab": "DZA",
@@ -29,9 +30,16 @@
       "name": "Turkey",
       "level": "2",
       "file": "TUR_admin2.kml"
+    },
+    {
+      "ab": "USA",
+      "name": "USA",
+      "level": "2",
+      "file": "cb_2016_us_county_500k.kml"
     }
+
   ],
-  "USA_tracts": {
+  "USA_states": {
     "01": {
       "key": "01",
       "ab": "AL",
@@ -432,4 +440,5 @@
       "file": "cb_2016_78_tract_500k.kml"
     }
   }
+
 }

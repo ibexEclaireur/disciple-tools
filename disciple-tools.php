@@ -258,6 +258,7 @@ class Disciple_Tools {
 
             require_once('includes/locations/tools-menu.php');
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
+            require_once ('includes/locations/class-upload.php');
 
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
@@ -381,15 +382,13 @@ class Disciple_Tools {
          */
         require_once ('includes/locations/class-map.php'); // Helper
         require_once('includes/locations/class-coordinates-kml.php');
-        require_once('includes/locations/functions.php');
+        require_once('includes/locations/location-functions.php');
         require_once('includes/locations/class-placemark-info.php');
         require_once('includes/locations/class-census-geolocation-api.php');// APIs
         require_once('includes/locations/class-google-geolocation-api.php');
         require_once('includes/locations/rest-controller.php');
         require_once ('includes/locations/rest-api.php');
         $this->rest = Disciple_Tools_REST_API::instance();
-        require_once('includes/locations/locations-post-type-metabox.php');
-        $this->ll_metabox = new Disciple_Tools_Metabox();
         /** End Locations */
 
         /**

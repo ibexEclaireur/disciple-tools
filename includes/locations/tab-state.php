@@ -71,8 +71,8 @@ class Disciple_Tools_State {
         if (!empty($_POST['state_lookup'])) {
 
             $state = $_POST['states-dropdown'];
-            $directory = dt_get_data_file_directory_LL ();
-            $address = $directory->USA_tracts->{$_POST['states-dropdown']}->name;
+            $directory = dt_get_data_file_directory ();
+            $address = $directory->USA_states->{$_POST['states-dropdown']}->name;
 
             $google_result = Disciple_Tools_Google_Geolocation::query_google_api($address, $type = 'coordinates_only'); // get google api coordinates
 

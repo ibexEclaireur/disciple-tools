@@ -22,7 +22,7 @@ class Disciple_Tools_Coordinates_KML {
      */
     public static function get_tract_kml_coordinates ($geoid, $state ) {
 
-        $file = dt_get_file_path_by_key_LL ($state);
+        $file = dt_get_file_path_by_key ($state);
 
         $kml_object = simplexml_load_file($file);
 
@@ -66,7 +66,7 @@ class Disciple_Tools_Coordinates_KML {
      */
     public static function get_tract_kml_state ($state) {
 
-        $file = dt_get_file_path_by_key_LL ($state);
+        $file = dt_get_file_path_by_key ($state);
 
         $kml_object = simplexml_load_file($file);
 

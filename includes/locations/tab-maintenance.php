@@ -75,13 +75,13 @@ class Disciple_Tools_Maintenance {
                 return false;
             }
 
-            $file = dt_get_file_path_by_key_LL($_POST['states-dropdown']); // build url
+            $file = dt_get_file_path_by_key($_POST['states-dropdown']); // build url
 
             if(!file_exists($file)) { // check if file exists
                return false;
             }
 
-            $result = Disciple_Tools_UPload::upload_census_tract_kml_to_post_type($file); // run insert process
+            $result = Disciple_Tools_Upload::upload_census_tract_kml_to_post_type($file); // run insert process
 
             if($result) { $status = 'Success'; } else { $status = 'Fail. Sorry.'; } // if success, then post success box
             $html .= '<table class="widefat striped">
@@ -127,7 +127,7 @@ class Disciple_Tools_Maintenance {
                 return false;
             }
 
-            $file = dt_get_file_path_by_key_LL($_POST['states-dropdown']); // build url
+            $file = dt_get_file_path_by_key($_POST['states-dropdown']); // build url
 
             if(!file_exists($file)) { // check if file exists
                 return false;

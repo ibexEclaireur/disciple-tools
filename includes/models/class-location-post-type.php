@@ -103,6 +103,8 @@ class Disciple_Tools_Location_Post_Type {
 				add_filter( 'manage_edit-' . $this->post_type . '_columns', array( $this, 'register_custom_column_headings' ), 10, 1 );
 				add_action( 'manage_posts_custom_column', array( $this, 'register_custom_columns' ), 10, 2 );
 			}
+
+            add_action( 'admin_init', array($this, 'remove_add_new_submenu') );
 		}
 
 	} // End __construct()
@@ -282,9 +284,9 @@ class Disciple_Tools_Location_Post_Type {
 	 * @return void
 	 */
 	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '_data', __( 'Location Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_meta_box' ), $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), array( $this, 'load_map_meta_box' ), $this->post_type, 'normal', 'low' );
+//		add_meta_box( $this->post_type . '_data', __( 'Location Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_meta_box' ), $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
 	} // End meta_box_setup()
 
@@ -305,9 +307,9 @@ class Disciple_Tools_Location_Post_Type {
     /**
      * Load activity metabox
      */
-    public function load_details_meta_box () {
-        $this->meta_box_content('info');
-    }
+//    public function load_details_meta_box () {
+//        $this->meta_box_content('info');
+//    }
 
     /**
      * Load address metabox
@@ -522,14 +524,6 @@ class Disciple_Tools_Location_Post_Type {
             }
         }
 
-        $fields['coordinates'] = array(
-            'name' => __( 'Coordinates', 'disciple_tools' ),
-            'description' => __( 'Raw polygon or multiple polygon mapping coordinates.', 'disciple_tools' ),
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
-        );
-
 		return apply_filters( 'dt_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()
 
@@ -552,6 +546,18 @@ class Disciple_Tools_Location_Post_Type {
 		$this->register_post_type();
 		flush_rewrite_rules();
 	} // End flush_rewrite_rules()
+
+    /**
+     * Remove the add new submenu from the locaions menu
+     *
+     */
+    public function remove_add_new_submenu()
+    {
+        global $submenu;
+        unset(
+            $submenu['edit.php?post_type=locations'][10]
+        );
+    }
 
 
 } // End Class

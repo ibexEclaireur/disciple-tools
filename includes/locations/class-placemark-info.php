@@ -16,7 +16,7 @@ class Disciple_Tools_Placemark_Info {
      */
     public static function get_placemark_zoom ($geoid, $state ) {
 
-        $file = dt_get_file_path_by_key_LL ($state);
+        $file = dt_get_file_path_by_key ($state);
 
         $kml_object = simplexml_load_file($file);
 
