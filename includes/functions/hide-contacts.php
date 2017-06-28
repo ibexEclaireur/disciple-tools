@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /*
  * Action and Filters
  */
-//    add_filter('pre_get_posts', 'hide_posts_media_by_other');  // TODO: Not sure if it is necissary to exclude admin users from seeing the media in the media area.
+//    add_filter('pre_get_posts', 'hide_posts_media_by_other');  // TODO: Not sure if it is necessary to exclude admin users from seeing the media in the media area.
 //    add_filter( 'posts_where', 'hide_attachments_wpquery_where' );
 
 /*

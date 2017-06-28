@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * Disciple_Tools_Tabs
+ *
+ * @class Disciple_Tools_Tabs
+ * @version	0.1
+ * @since 0.1
+ * @package	Disciple_Tools_Tabs
+ * @author Chasm.Solutions
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+class Disciple_Tools_JS_Tract_Lookup {
+
+    /**
+     * Constructor function.
+     * @access  public
+     * @since   0.1
+     */
+    public function __construct () {} // End __construct()
+
+    /**
+     * Page content for the tab
+     */
+    public function page_contents() {
+        print'<div class="wrap"><h2>Address to Tract Lookup</h2>'; // Block title
+        print '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
+        print '<div id="post-body-content">';
+        /* Add content to column */
+
+        $this->address_to_tract_search ();
+
+        print '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
+        /* Add content to column */
+
+        print '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
+        /* Add content to column */
+
+        print '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
+
+    }
+
+    /**
+     * Core form for address to tract search
+     */
+    public function address_to_tract_search ()
+    {
+        ?>
+        <label for="address">Search for your census tract using your group meeting address. (required) (U.S. physical addresses only)</label>
+        <input id="address" type="text" name="address" value="" placeholder="1501 W. Mineral Ave, Littleton, CO 80120" style="width: 50%; display:inline;" required/> <button style="font-size:1.25em;" type="button" id="search-button">Search</button> <span id="spinner"></span>
+
+
+        <div id="search-response"></div>
+
+        <style>
+            /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+            #map {
+                height: 200px;;
+                width: 75%;
+            }
+            /* Optional: Makes the sample page fill the window. */
+            html, body {
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            .article-header {
+                display:none;
+            }
+            #group-create-tabs{border-bottom:1px solid #eaeaea;}
+        </style>
+        <div id="map" ></div>
+
+        <input type="text" id="tract" name="tract" placeholder="tract" value=""  required/>
+        <input type="text" id="lng" name="lng" placeholder="lng" value=""  required/>
+        <input type="text" id="lat" name="lat" placeholder="lat" value=""  required/>
+        <input type="text" id="state" name="state" placeholder="state" value=""  required/>
+        <input type="text" id="county" name="county" placeholder="county" value=""  required/>
+
+
+        <script type="text/javascript">
+
+            jQuery(document).ready(function() {
+
+                var map;
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 38.7767479, lng: -104.0954098},
+                    zoom: 3
+                });
+                jQuery('#group-creation-create').prop('disabled', true).addClass('button action');
+
+
+
+
+                jQuery('button').click( function () {
+                    jQuery('#spinner').prepend('<img src="<?php echo plugin_dir_url(__FILE__); ?>/spinner.svg" style="height:30px;" />');
+
+                    var address = jQuery('#address').val();
+                    var restURL = '<?php echo get_rest_url(null, '/lookup/v1/tract/gettractmap'); ?>';
+                    jQuery.post( restURL, { address: address })
+                        .done(function( data ) {
+                            jQuery('#spinner').html('');
+                            jQuery('#search-button').html('Search Again?');
+                            jQuery('#search-response').html('<p>Looks like you searched for <strong>' + data.formatted_address + '</strong>? <br>Therefore, <strong>' + data.geoid + '</strong> is most likely your census tract represented in the map below. </p>' );
+
+                            jQuery('#map').css('height', '475px');
+
+                            var map = new google.maps.Map(document.getElementById('map'), {
+                                zoom: data.zoom,
+                                center: {lng: data.lng, lat: data.lat},
+                                mapTypeId: 'terrain'
+                            });
+
+                            // Define the LatLng coordinates for the polygon's path.
+                            var coords = [ data.coordinates ];
+
+                            var tracts = [];
+
+                            for (i = 0; i < coords.length; i++) {
+                                tracts.push(new google.maps.Polygon({
+                                    paths: coords[i],
+                                    strokeColor: '#FF0000',
+                                    strokeOpacity: 0.5,
+                                    strokeWeight: 2,
+                                    fillColor: '',
+                                    fillOpacity: 0.2
+                                }));
+
+                                tracts[i].setMap(map);
+                            }
+
+                            jQuery('#tract').val(data.geoid);
+                            jQuery('#lng').val(data.lng);
+                            jQuery('#lat').val(data.lat);
+                            jQuery('#state').val(data.state);
+                            jQuery('#county').val(data.county);
+                            jQuery('#group-creation-create').prop('disabled', false);
+                        });
+                });
+            });
+        </script>
+        <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcddCscCo-Uyfa3HJQVe0JdBaMCORA9eY">
+        </script>
+
+        <?php
+    }
+
+
+
+}

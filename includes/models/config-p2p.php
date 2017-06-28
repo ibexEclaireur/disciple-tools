@@ -188,6 +188,19 @@ function my_connection_types() {
         ),
     ) );
 
+    /**
+     * This creates the link between members and locations for assignment purposes.
+     */
+    p2p_register_connection_type( array(
+        'name' => 'team_member_locations',
+        'from' => 'locations',
+        'to' => 'user',
+        'title' => array(
+            'from' => __( 'Team Members', 'disciple_tools' ),
+            'to' => __( 'Locations', 'disciple_tools' ),
+        ),
+    ) );
+
     p2p_register_connection_type( array(
         'name' => 'assets_to_locations',
         'from' => 'assets',
@@ -211,6 +224,11 @@ function my_connection_types() {
         ),
     ) );
 
+    /*
+     * There is no current way to know if one location is next to another, unless the location data itself from the country
+     * provides that information. So this is an alternate way to provide that "nearby" location information.
+     * TODO: Explore how geolocation data itself could provide the distance information within the Wordpress enviornment.
+     */
     p2p_register_connection_type( array(
         'name' => 'locations_to_locations',
         'from' => 'locations',
@@ -219,6 +237,10 @@ function my_connection_types() {
         'title' => 'Nearby Locations',
 
     ) );
+
+
+
+
 
 }
 add_action( 'p2p_init', 'my_connection_types' );
@@ -235,3 +257,72 @@ function p2p_published_by_default( $args ) {
     return $args;
 }
 add_filter( 'p2p_new_post_args', 'p2p_published_by_default', 10, 1 );
+
+/**
+ * Adding the connection box to the user profile
+ * @param $user
+ */
+function dt_user_p2p_connections($user) {
+
+// Find connected posts
+    $args = array(
+        'connected_type' => 'team_member_locations',
+        'connected_items' => $user,
+        'suppress_filters' => false,
+        'nopaging' => true,
+        'post_status' => 'publish'
+    ) ;
+    $connected = get_posts( $args );
+
+// Display connected posts
+    if ( count($connected) ) {
+        ?>
+        <h3>User Locations</h3>
+        <table class="form-table">
+            <tbody><tr>
+                <th>
+                    <label for="user-group">Locations</label>
+                </th>
+                <td>
+                    <table class="wp-list-table widefat fixed striped user-groups">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="manage-column column-name column-primary">Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ( $connected as $next ) { ?>
+                                <tr class="inactive">
+                                    <td class="column-primary">
+                                        <strong><?php echo $next->post_title; ?></strong>
+                                        <div class="row-actions">
+                                            <a href="<?php echo get_permalink($next->ID); ?>">View in Portal</a> | <a href="<?php echo home_url('/');?>wp-admin/post.php?post=<?php echo $next->ID; ?>&action=edit">View in Admin</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php
+                            } ?>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th scope="col" class="manage-column column-name column-primary">Name</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </td>
+            </tr>
+            </tbody></table>
+        <ul>
+
+        </ul>
+
+        <?php
+        // Prevent weirdness
+        wp_reset_postdata();
+
+    }
+}
+add_action( 'show_user_profile', 'dt_user_p2p_connections', 999 );
+add_action( 'edit_user_profile', 'dt_user_p2p_connections', 999 );

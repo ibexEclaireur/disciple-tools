@@ -49,12 +49,7 @@ class Disciple_Tools_Profile
 
         if (is_admin()) {
 
-            // Sets the default role to registered.
-            add_filter('pre_option_default_role', function ($default_role) {
-                // You can also add conditional tags here and return whatever
-                return 'registered'; // This is changed
-                return $default_role; // This allows default
-            });
+
 
             // Add elements to the contact section of the profile.
             add_filter('user_contactmethods', array($this, 'modify_profile_fields'));
