@@ -291,8 +291,8 @@ class Disciple_Tools {
         $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
         $this->post_types['groups'] = Disciple_Tools_Group_Post_Type::instance();
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
-        if(get_option('disciple_tools-general')['add_people_groups']) { // checks if people groups addon is included
-            require_once ( 'includes/models/class-people-groups-post-type.php' );
+        if(true) { // TODO: add addon filter here & in config-p2p.php
+            require_once('includes/models/class-people-groups-post-type.php');
             $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
         }
         $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
