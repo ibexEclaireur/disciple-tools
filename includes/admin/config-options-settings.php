@@ -219,8 +219,8 @@ final class Disciple_Tools_Settings {
 	public function get_settings_sections () {
 		$settings_sections = array();
 
-		$settings_sections['daily_reports'] = __( 'Daily Reports', 'disciple_tools' );
 		$settings_sections['general'] = __( 'General', 'disciple_tools' );
+		$settings_sections['daily_reports'] = __( 'Daily Reports', 'disciple_tools' );
 		// Add your new sections below here.
 		// Admin tabs will be created for each section.
 		// Don't forget to add fields for the section in the get_settings_fields() function below
@@ -256,13 +256,7 @@ final class Disciple_Tools_Settings {
                     'section' => 'general',
                     'description' => ''
                 );
-                $settings_fields['location_cdn_url'] = array(
-                    'name' => __( 'Location Files CDN URL', 'disciple_tools' ),
-                    'type' => 'text',
-                    'default' => 'https://s3.amazonaws.com/disciple-tools-locations/',
-                    'section' => 'general',
-                    'description' => 'temporary setting to designate the location of the file cdn source'
-                );
+
 
 //                $settings_fields['select'] = array(
 //                    'name' => __( 'Select', 'disciple_tools' ),
