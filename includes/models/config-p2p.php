@@ -238,7 +238,112 @@ function my_connection_types() {
 
     ) );
 
+    if(get_option('disciple_tools-general')['add_people_groups']) { // checks if people groups addon is included
+        p2p_register_connection_type(
+            array(
+                'name' => 'contacts_to_peoplegroups',
+                'from' => 'contacts',
+                'to' => 'peoplegroups',
+                'title' => array(
+                    'from' => __( 'People Groups', 'disciple_tools' ),
+                    'to' => __( 'Contacts', 'disciple_tools' )
+                ),
+                'to_labels' => array(
+                    'singular_name' => __( 'People Group', 'disciple_tools' ),
+                    'search_items' => __( 'Search People Groups', 'disciple_tools' ),
+                    'not_found' => __( 'No people groups found.', 'disciple_tools' ),
+                    'create' => __( 'Connect People Groups', 'disciple_tools' ),
+                ),
+                'from_labels' => array(
+                    'singular_name' => __( 'Contacts', 'disciple_tools' ),
+                    'search_items' => __( 'Search contacts', 'disciple_tools' ),
+                    'not_found' => __( 'No contacts found.', 'disciple_tools' ),
+                    'create' => __( 'Create Contact', 'disciple_tools' ),
+                ),
+                'fields' => array(
+                    'primary' => array(
+                        'title' => __( 'Primary', 'disciple_tools' ),
+                        'type' => 'checkbox',
+                    ),
+                ),
+            )
+        );
+        p2p_register_connection_type(
+            array(
+                'name' => 'groups_to_peoplegroups',
+                'from' => 'groups',
+                'to' => 'peoplegroups',
+                'title' => array(
+                    'from' => __( 'People Groups', 'disciple_tools' ),
+                    'to' => __( 'Groups', 'disciple_tools' )
+                ),
+                'to_labels' => array(
+                    'singular_name' => __( 'People Groups', 'disciple_tools' ),
+                    'search_items' => __( 'Search people groups', 'disciple_tools' ),
+                    'not_found' => __( 'No people groups found.', 'disciple_tools' ),
+                    'create' => __( 'Connect People Groups', 'disciple_tools' ),
+                ),
+                'from_labels' => array(
+                    'singular_name' => __( 'Groups', 'disciple_tools' ),
+                    'search_items' => __( 'Search groups', 'disciple_tools' ),
+                    'not_found' => __( 'No groups found.', 'disciple_tools' ),
+                    'create' => __( 'Create Group', 'disciple_tools' ),
+                ),
+            )
+        );
+        p2p_register_connection_type(
+            array(
+                'name' => 'peoplegroups_to_locations',
+                'from' => 'peoplegroups',
+                'to' => 'locations',
+                'title' => array(
+                    'from' => __( 'Locations', 'disciple_tools' ),
+                    'to' => __( 'People Group', 'disciple_tools' )
+                ),
+                'to_labels' => array(
+                    'singular_name' => __( 'Locations', 'disciple_tools' ),
+                    'search_items' => __( 'Search locations', 'disciple_tools' ),
+                    'not_found' => __( 'No locations found.', 'disciple_tools' ),
+                    'create' => __( 'Connect Location', 'disciple_tools' ),
+                ),
+                'from_labels' => array(
+                    'singular_name' => __( 'People Group', 'disciple_tools' ),
+                    'search_items' => __( 'Search People Groups', 'disciple_tools' ),
+                    'not_found' => __( 'No people groups found.', 'disciple_tools' ),
+                    'create' => __( 'Create People Groups', 'disciple_tools' ),
+                ),
+                'fields' => array(
+                    'primary' => array(
+                        'title' => __( 'Primary', 'disciple_tools' ),
+                        'type' => 'checkbox',
+                    ),
+                ),
+            )
+        );
+        p2p_register_connection_type( array(
+            'name' => 'assets_to_peoplegroups',
+            'from' => 'assets',
+            'to' => 'peoplegroups',
+            'title' => array(
+                'from' => __( 'People Groups', 'disciple_tools' ),
+                'to' => __( 'Assets', 'disciple_tools' ),
+            ),
+            'from_labels' => array(
+                'singular_name' => __( 'Assets', 'disciple_tools' ),
+                'search_items' => __( 'Search assets', 'disciple_tools' ),
+                'not_found' => __( 'No assets found.', 'disciple_tools' ),
+                'create' => __( 'Connect Assets', 'disciple_tools' ),
+            ),
+            'to_labels' => array(
+                'singular_name' => __( 'People Group', 'disciple_tools' ),
+                'search_items' => __( 'Search People Groups', 'disciple_tools' ),
+                'not_found' => __( 'No People Groups found.', 'disciple_tools' ),
+                'create' => __( 'Connect People Group', 'disciple_tools' ),
+            ),
+        ) );
 
+
+    }
 
 
 

@@ -291,6 +291,10 @@ class Disciple_Tools {
         $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
         $this->post_types['groups'] = Disciple_Tools_Group_Post_Type::instance();
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
+        if(get_option('disciple_tools-general')['add_people_groups']) { // checks if people groups addon is included
+            require_once ( 'includes/models/class-people-groups-post-type.php' );
+            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+        }
         $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-location' ) );

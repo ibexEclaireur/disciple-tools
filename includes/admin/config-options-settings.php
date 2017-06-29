@@ -242,6 +242,13 @@ final class Disciple_Tools_Settings {
 		switch ( $section ) {
 			case 'general':
 
+                $settings_fields['add_people_groups'] = array(
+                    'name' => __( 'People Groups Addon', 'disciple_tools' ),
+                    'type' => 'checkbox',
+                    'default' => 'false',
+                    'section' => 'general',
+                    'description' => ''
+                );
                 $settings_fields['clear_data_on_deactivate'] = array(
                     'name' => __( 'Clear Data on Deactivate', 'disciple_tools' ),
                     'type' => 'checkbox',
@@ -254,7 +261,7 @@ final class Disciple_Tools_Settings {
                     'type' => 'text',
                     'default' => 'https://s3.amazonaws.com/disciple-tools-locations/',
                     'section' => 'general',
-                    'description' => 'temporary setting to designate the location of the file cdn source (example: http://locations.cdn:8888/)'
+                    'description' => 'temporary setting to designate the location of the file cdn source'
                 );
 
 //                $settings_fields['select'] = array(

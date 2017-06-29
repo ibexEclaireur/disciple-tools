@@ -18,8 +18,7 @@ if (is_admin()) {
     add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
     add_filter( 'update_footer',     '__empty_footer_string', 11 );
 
-    add_filter( 'get_user_option_admin_color', 'dt_change_admin_color'); // sets the theme to "light"
-    remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' ); // Remove options for admin area color scheme
+
 }
 
 
@@ -67,24 +66,7 @@ function __empty_footer_string () {
     return '';
 }
 
-/*
- * Set the admin area color scheme
- */
-function dt_change_admin_color($result) {
-    return 'light';
-}
 
-
-
-
-// Removes the tools menu for the marketer
-//if ( current_user_can('marketer')) {
-//    add_action( 'admin_menu', 'dt_marketer_remove_tools', 99 );
-//    function dt_marketer_remove_tools()
-//    {
-//        remove_menu_page( 'tools.php' );
-//    }
-//}
 
 
 
