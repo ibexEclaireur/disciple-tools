@@ -75,14 +75,7 @@ function dt_change_admin_color($result) {
 }
 
 
-/**
- * Remove menu items
- * @see https://codex.wordpress.org/Function_Reference/remove_menu_page
- */
-function dt_remove_post_admin_menus(){
-    remove_menu_page( 'edit.php' ); //Posts (Not using posts as a content channel for Disciple Tools, so that no data is automatically exposed by switching themes or plugin.
-}
-add_action( 'admin_menu', 'dt_remove_post_admin_menus' );
+
 
 // Removes the tools menu for the marketer
 //if ( current_user_can('marketer')) {
