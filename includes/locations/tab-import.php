@@ -25,7 +25,7 @@ class Disciple_Tools_Locations_Tab_Import {
     /**
      * Page content for the tab
      */
-    public function page_contents() {global $wpdb;
+    public function page_contents() {
 
         $html = '';
 
