@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  * @author Chasm.Solutions & Kingdom.Training
  * @since 0.1
  */
-class Disciple_Tools_Location_Post_Type {
+class Location_Lookup_Location_Post_Type {
 	/**
 	 * The post type token.
 	 * @access public
@@ -45,16 +45,9 @@ class Disciple_Tools_Location_Post_Type {
 	 */
 	public $args;
 
-	/**
-	 * The taxonomies for this post type.
-	 * @access public
-	 * @since  0.1
-	 * @var    array
-	 */
-	public $taxonomies;
 
     /**
-     * Disciple_Tools_Location_Post_Type The single instance of Disciple_Tools_Location_Post_Type.
+     * Location_Lookup_Location_Post_Type The single instance of Location_Lookup_Location_Post_Type.
      * @var 	object
      * @access  private
      * @since 	0.1
@@ -62,13 +55,13 @@ class Disciple_Tools_Location_Post_Type {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Location_Post_Type Instance
+     * Main Location_Lookup_Location_Post_Type Instance
      *
-     * Ensures only one instance of Disciple_Tools_Location_Post_Type is loaded or can be loaded.
+     * Ensures only one instance of Location_Lookup_Location_Post_Type is loaded or can be loaded.
      *
      * @since 0.1
      * @static
-     * @return Disciple_Tools_Location_Post_Type instance
+     * @return Location_Lookup_Location_Post_Type instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) )
@@ -86,10 +79,8 @@ class Disciple_Tools_Location_Post_Type {
 		$this->singular = __( 'Location', 'disciple_tools' );
 		$this->plural = __( 'Locations', 'disciple_tools' );
 		$this->args = array( 'menu_icon' => 'dashicons-admin-site' );
-		$this->taxonomies = array();
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'init', array( $this, 'register_taxonomy' ) );
 
 		if ( is_admin() ) {
 			global $pagenow;
@@ -103,9 +94,10 @@ class Disciple_Tools_Location_Post_Type {
 				add_filter( 'manage_edit-' . $this->post_type . '_columns', array( $this, 'register_custom_column_headings' ), 10, 1 );
 				add_action( 'manage_posts_custom_column', array( $this, 'register_custom_columns' ), 10, 2 );
 			}
-
-            add_action( 'admin_init', array($this, 'remove_add_new_submenu') );
 		}
+
+        add_action( 'admin_init', array($this, 'remove_add_new_submenu') );
+
 
 	} // End __construct()
 
@@ -167,10 +159,10 @@ class Disciple_Tools_Location_Post_Type {
 			'show_in_menu' 			=> true,
 			'query_var' 			=> true,
             'rewrite' 				=> $rewrite,
-            'capabilities'          => $capabilities,
+//            'capabilities'          => $capabilities,
 			'has_archive' 			=> true,
 			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'comments' ),
+			'supports' 				=> array(  'custom-fields' ),
 			'menu_position' 		=> 6,
 			'menu_icon' 			=> 'dashicons-smiley',
 			'show_in_rest'          => true,
@@ -183,18 +175,6 @@ class Disciple_Tools_Location_Post_Type {
 		register_post_type( $this->post_type, $args );
 	} // End register_post_type()
 
-	/**
-	 * Register the "thing-category" taxonomy.
-	 * @access public
-	 * @since  1.3.0
-	 * @return void
-	 */
-	public function register_taxonomy () {
-//		TODO: commented out taxonomies until we know how we want to use them. Chris
-//
-//      $this->taxonomies['locations-type'] = new Disciple_Tools_Taxonomy($post_type = 'locations', $token = 'locations-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
-//		$this->taxonomies['locations-type']->register();
-	} // End register_taxonomy()
 
 	/**
 	 * Add custom columns for the "manage" screen of this post type.
@@ -208,7 +188,8 @@ class Disciple_Tools_Location_Post_Type {
 		global $post;
 
 		switch ( $column_name ) {
-			case 'image':
+			case 'state':
+            case 'county':
 			break;
 
 			default:
@@ -224,8 +205,7 @@ class Disciple_Tools_Location_Post_Type {
 	 * @return void
 	 */
 	public function register_custom_column_headings ( $defaults ) {
-//		$new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
-        $new_columns = array(); // TODO: restore above column once we know what columns we need to show.
+		$new_columns = array( 'state' => __( 'State', 'disciple_tools' ), 'county' => __( 'County', 'disciple_tools' ) );
 
 		$last_item = array();
 
@@ -284,40 +264,11 @@ class Disciple_Tools_Location_Post_Type {
 	 * @return void
 	 */
 	public function meta_box_setup () {
-        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), array( $this, 'load_map_meta_box' ), $this->post_type, 'normal', 'low' );
-//		add_meta_box( $this->post_type . '_data', __( 'Location Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
+//		add_meta_box( $this->post_type . '_data', __( 'Map', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
 	} // End meta_box_setup()
 
-    /**
-     * Load activity metabox
-     */
-    public function load_activity_meta_box () {
-        dt_activity_metabox()->activity_meta_box(get_the_ID());
-    }
 
-    /**
-     * Load activity metabox
-     */
-    public function load_map_meta_box () {
-        dt_map_metabox()->display_map();
-    }
 
-    /**
-     * Load activity metabox
-     */
-//    public function load_details_meta_box () {
-//        $this->meta_box_content('info');
-//    }
-
-    /**
-     * Load address metabox
-     */
-    public function load_address_meta_box () {
-        echo ''. $this->meta_box_content('address');
-        echo ''. dt_address_metabox()->add_new_address_field();
-    }
 
 	/**
 	 * The contents of our meta box.
@@ -453,7 +404,7 @@ class Disciple_Tools_Location_Post_Type {
 		$fields = array_keys( $field_data );
 
         if ( (isset( $_POST['new-key-address']) && !empty($_POST['new-key-address']) ) && (isset( $_POST['new-value-address']) && !empty ($_POST['new-value-address']) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, strtolower($_POST['new-key-address']), $_POST['new-value-address'], true );
+            add_post_meta( $post_id, $_POST['new-key-address'], $_POST['new-value-address'], true );
         }
 
 		foreach ( $fields as $f ) {
@@ -492,37 +443,15 @@ class Disciple_Tools_Location_Post_Type {
 	 * @return array
 	 */
 	public function get_custom_fields_settings () {
-		global $post;
 	    $fields = array();
 
-        if(isset($post->ID) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
-            // Address
-            $addresses = dt_address_metabox()->address_fields();
-            foreach ($addresses as $k => $v) { // sets all others third
-                $fields[$k] = array(
-                    'name' => ucwords($v['name']),
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'address'
-                );
-            }
-        } else {
-            $channels = dt_address_metabox ()->get_address_list($this->post_type);
-
-            foreach ($channels as $channel) {
-
-                $key =  strtolower('address_' . $channel . '_111') ;
-
-                $fields[$key] = array(
-                    'name' => ucwords($channel) ,
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'address'
-                );
-            }
-        }
+        $fields['coordinates'] = array(
+            'name' => __( 'Coordinates', 'disciple_tools' ),
+            'description' => __( 'Raw polygon or multiple polygon mapping coordinates.', 'disciple_tools' ),
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        );
 
 		return apply_filters( 'dt_custom_fields_settings', $fields );
 	} // End get_custom_fields_settings()

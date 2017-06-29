@@ -86,6 +86,8 @@ class Disciple_Tools_Funnel_Reports {
         $active_churches = Disciple_Tools()->counter->groups_meta_counter('type', 'Church');
         $church_planters = Disciple_Tools()->counter->connection_type_counter('participation', 'Planting');
 
+
+
         // Build html
         $html = '
 			<table class="widefat striped ">

@@ -21,29 +21,39 @@
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+
 /**
  * Activation Hook
- * The code that runs during plugin activation.
- * This action is documented in includes/admin/class-activator.php
  */
-function activate_disciple_tools() {
+function activate_disciple_tools($network_wide) {
     require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
-    Disciple_Tools_Activator::activate();
+    Disciple_Tools_Activator::activate($network_wide);
 }
+register_activation_hook(__FILE__, 'activate_disciple_tools');
 
 /**
  * Deactivation Hook
- * The code that runs during plugin deactivation.
- * This action is documented in includes/admin/class-deactivator.php
  */
-function deactivate_disciple_tools() {
+function deactivate_disciple_tools($network_wide) {
     require_once plugin_dir_path(__FILE__) . 'includes/admin/class-deactivator.php';
-    Disciple_Tools_Deactivator::deactivate();
+    Disciple_Tools_Deactivator::deactivate($network_wide);
 }
-
-register_activation_hook(__FILE__, 'activate_disciple_tools');
 register_deactivation_hook(__FILE__, 'deactivate_disciple_tools');
 
+/**
+ * Multisite datatable maintenance
+ */
+function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+    Disciple_Tools_Activator::on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta);
+}
+add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
+function on_delete_blog( $tables ) {
+    require_once plugin_dir_path(__FILE__) . 'includes/admin/class-activator.php';
+    return Disciple_Tools_Activator::on_delete_blog( $tables );
+}
+add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
+/* End Multisite datatable maintenance */
 
 
 /**
@@ -60,7 +70,6 @@ register_deactivation_hook(__FILE__, 'deactivate_disciple_tools');
     function Disciple_Tools() {
         return Disciple_Tools::instance();
     }
-
 
 /**
  * Main Disciple_Tools Class
@@ -247,6 +256,10 @@ class Disciple_Tools {
             require_once ('includes/functions/enqueue-scripts.php');
             require_once ('includes/functions/structure-defaults.php');
 
+            require_once('includes/locations/tools-menu.php');
+            $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
+            require_once ('includes/locations/class-upload.php');
+
             // Profile page
             require_once ( 'includes/admin/config-profile.php');
             $this->profile = Disciple_Tools_Profile::instance();
@@ -261,6 +274,7 @@ class Disciple_Tools {
          * @posttype Contacts       Post type for contact storage
          * @posttype Groups         Post type for groups storage
          * @posttype Locations      Post type for location information.
+         * @posttype People Groups  (optional) Post type for people groups
          * @posttype Prayer         Post type for prayer movement updates.
          * @posttype Project        Post type for movement project updates. (These updates are intended to be for extended owners of the movement project, and different than the prayer guide published in the prayer post type.)
          * @taxonomies
@@ -278,6 +292,10 @@ class Disciple_Tools {
         $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
         $this->post_types['groups'] = Disciple_Tools_Group_Post_Type::instance();
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
+        if(isset(get_option('disciple_tools-general', false)['add_people_groups'])) { /** @see config-p2p.php for the people groups connection registration */
+            require_once('includes/models/class-people-groups-post-type.php');
+            $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+        }
         $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-location' ) );
@@ -291,10 +309,8 @@ class Disciple_Tools {
 
         // Creates User Groups out of Taxonomies
         require_once ( 'includes/models/class-user-taxonomy.php' );
-        require_once ( 'includes/functions/user-groups-admin.php' );
-        require_once ( 'includes/functions/user-groups-common.php' );
+        $this->user_tax = Disciple_Tools_User_Taxonomy::instance();
         require_once ( 'includes/functions/user-groups-taxonomies.php' );
-        require_once ( 'includes/functions/user-groups-hooks.php' );
 
         require_once ( 'includes/admin/multi-role/multi-role.php');
         $this->multi = Disciple_Tools_Multi_Roles::instance();
@@ -366,6 +382,27 @@ class Disciple_Tools {
         require_once('includes/theme_support/location-functions-for-themes.php');
         require_once('includes/theme_support/chart-functions-for-themes.php');
 
+        /**
+         * Locations Support
+         */
+        require_once ('includes/locations/class-map.php'); // Helper
+        require_once('includes/locations/class-coordinates-kml.php');
+        require_once('includes/locations/location-functions.php');
+        require_once('includes/locations/class-placemark-info.php');
+        require_once('includes/locations/class-census-geolocation-api.php');// APIs
+        require_once('includes/locations/class-google-geolocation-api.php');
+//        require_once('includes/locations/rest-controller.php');
+//        require_once ('includes/locations/rest-api.php');
+//        $this->rest = Disciple_Tools_REST_API::instance();
+        /** End Locations */
+
+        /**
+         * Multisite
+         */
+        if(is_multisite()) {
+            /** Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite  */
+        }
+
         // Language
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
@@ -411,5 +448,6 @@ class Disciple_Tools {
 	} // End __wakeup()
 
 } // End Class
+
 
 
