@@ -226,8 +226,9 @@ function my_connection_types() {
 
     /**
      * People Groups addon
+     * @see disciple-tools.php for the people groups registration
      */
-    if(true) { // checks if people groups addon is included
+    if(isset(get_option(Disciple_Tools()->token.'-general', false)['add_people_groups'])) {
         p2p_register_connection_type( array(
             'name' => 'team_member_peoplegroups',
             'from' => 'peoplegroups',
