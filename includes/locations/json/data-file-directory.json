@@ -425,13 +425,6 @@
       "level": "tract",
       "file": "cb_2016_72_tract_500k.kml"
     },
-    "74": {
-      "key": "74",
-      "ab": "UM",
-      "name": "U.S. Minor Outlying Islands",
-      "level": "tract",
-      "file": "cb_2016_74_tract_500k.kml"
-    },
     "78": {
       "key": "78",
       "ab": "VI",

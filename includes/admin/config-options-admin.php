@@ -108,7 +108,7 @@ final class Disciple_Tools_Admin {
 		if ( 0 < count( $sections ) ) {
 			foreach ( $sections as $k => $v ) {
 				register_setting( 'dt-settings-' . sanitize_title_with_dashes( $k ), Disciple_Tools()->token . '-' . $k, array( $this, 'validate_settings' ) );
-				add_settings_section( sanitize_title_with_dashes( $k ), $v, array( $this, 'render_settings' ), Disciple_Tools()->token . '-' . $k, $k, $k );
+				add_settings_section( sanitize_title_with_dashes( $k ), $v, array( $this, 'render_settings' ), Disciple_Tools()->token . '-' . $k  );
 			}
 		}
 	} // End register_settings()
