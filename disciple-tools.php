@@ -386,14 +386,9 @@ class Disciple_Tools {
          * Locations Support
          */
         require_once ('includes/locations/class-map.php'); // Helper
-        require_once('includes/locations/class-coordinates-kml.php');
         require_once('includes/locations/location-functions.php');
-        require_once('includes/locations/class-placemark-info.php');
         require_once('includes/locations/class-census-geolocation-api.php');// APIs
         require_once('includes/locations/class-google-geolocation-api.php');
-//        require_once('includes/locations/rest-controller.php');
-//        require_once ('includes/locations/rest-api.php');
-//        $this->rest = Disciple_Tools_REST_API::instance();
         /** End Locations */
 
         /**

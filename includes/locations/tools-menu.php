@@ -47,11 +47,7 @@ class Disciple_Tools_Location_Tools_Menu {
      */
     public function __construct () {
         $this->path  = plugin_dir_path(__DIR__);
-        require_once ('tab-state.php');
-        require_once ('tab-public-data.php');
-        require_once ('tab-maintenance.php');
         require_once ('tab-js-tract-lookup.php');
-        require_once ('tab-ip-address.php');
         require_once ('tab-import.php');
 
         add_action( 'admin_menu', array( $this, 'load_admin_menu_item' ) );
@@ -91,21 +87,9 @@ class Disciple_Tools_Location_Tools_Menu {
         if ($tab == 'import' || !isset($tab)) {$html .= 'nav-tab-active';}
         $html .= '">Import</a>';
 
-        $html .= $tab_link_pre . 'maintenance' . $tab_link_post;
-        if ($tab == 'maintenance' ) {$html .= 'nav-tab-active';}
-        $html .= '">Maintenance</a>';
-
         $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
         if ($tab == 'address_tract' ) {$html .= 'nav-tab-active';}
         $html .= '">Address to Tract</a>';
-
-        $html .= $tab_link_pre . 'ip' . $tab_link_post;
-        if ($tab == 'ip') {$html .= 'nav-tab-active';}
-        $html .= '">IP Address</a>';
-
-        $html .= $tab_link_pre . 'public' . $tab_link_post;
-        if ($tab == 'public') {$html .= 'nav-tab-active';}
-        $html .= '">Public Data</a>';
 
         $html .= '</h2>';
 
@@ -119,20 +103,8 @@ class Disciple_Tools_Location_Tools_Menu {
          */
         switch ($tab) {
 
-            case "public":
-                $class_object = new Disciple_Tools_Public_Data();
-                $html .= '' . $class_object->page_contents();
-                break;
-            case "maintenance":
-                $class_object = new Disciple_Tools_Maintenance();
-                $html .= '' . $class_object->page_contents();
-                break;
             case "address_tract":
                 $class_object = new Disciple_Tools_JS_Tract_Lookup();
-                $html .= '' . $class_object->page_contents();
-                break;
-            case "ip":
-                $class_object = new Disciple_Tools_IP_Tab();
                 $html .= '' . $class_object->page_contents();
                 break;
             default:

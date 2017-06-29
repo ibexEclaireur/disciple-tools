@@ -69,7 +69,7 @@ class Disciple_Tools_Locations_Tab_Import {
 
         } /* end if $_POST */
 
-        $dropdown = dt_get_states_key_dropdown_LL();
+        $dropdown = dt_get_states_key_dropdown_not_installed();
 
         // return form and dropdown
 
