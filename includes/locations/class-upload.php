@@ -27,6 +27,8 @@ class Disciple_Tools_Upload {
         if(!post_type_exists( 'locations' ))
             return 'Fail: You need the locations post type installed through Disciple Tools.';
 
+        remove_action('transition_post_status', 'hooks_transition_post_status');
+
         if(!get_option('_installed_us_county_'.$state)) { // check if counties are installed for the state
 
             $counties =  dt_get_us_county_file_directory ();

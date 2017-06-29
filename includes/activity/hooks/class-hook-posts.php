@@ -106,7 +106,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type']  ) // ignore navigation items & large location imports use post_content_filtered
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] || $parent_post['post_content_filtered'] != null ) // ignore navigation items & large location imports use post_content_filtered
             return;
 
         switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
@@ -155,7 +155,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type']  ) // ignore nav items
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] || $parent_post['post_content_filtered'] != null ) // ignore nav items
             return;
 
         switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
