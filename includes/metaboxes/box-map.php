@@ -32,51 +32,33 @@ class Disciple_Tools_Metabox_Map {
 
     } // End __construct()
 
-    /**
-     * Returns filtered tract numbers which follow the patten of all numbers
-     * @param $array
-     * @return int
-     */
-    protected function filter_meta_keys ($array) {
-        return preg_match('/(\d+)/', $array);
-    }
 
     /**
      * Load activity metabox
      */
     public function display_map () {
-        global $post;
+        global $wpdb, $post;
 
-        $meta = get_post_meta($post->ID);
-        $tracts_array = array_filter($meta, array($this, 'filter_meta_keys'), ARRAY_FILTER_USE_KEY); // filters array to just tract numbers
+        $result = $wpdb->get_results("SELECT * FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE '$post->post_content_filtered%'");
         $coordinates = '';
         $last_tract = '';
-        foreach ($tracts_array as $key => $value) {
-            $coordinates .= '['.$value[0].'],';
-            $last_tract = $value[0];
-        }
-        $coordinates = substr($coordinates, 0, -1);
-        $c_array = explode('},{',substr($last_tract, 1, -1));
-        $ll_array = explode(', ', $c_array[0]);
-        $lng = explode(' ', $ll_array[1]);
-        $lat = explode(' ', $ll_array[0]);
-
-
-        $state = $meta['STATE'];
-        $county = $meta['COUNTY'];
-
-//        print '<pre>';print_r($ll_array);print '</pre>';
 
         echo '<select name="select_tract" id="select_tract">';
         echo '<option value="all">All Tracts</option>';
 
-            foreach($tracts_array as $key => $value) {
-                echo '<option value="'.$key.'">Tract: ' . substr($key,6) . '</option>';
+            foreach($result as $value) {
+                echo '<option value="'.$value->meta_key.'">Tract: ' . substr($value->meta_key,6) . '</option>';
+                $coordinates .= '['.$value->meta_value.'],';
+                $last_tract = $value->meta_value;
             }
+
         echo '</select>';
 
+        $coordinates = substr($coordinates, 0, -1);
+            $c_array = explode('},{',substr($last_tract, 1, -1));
+//        print '<pre>';print_r($c_array);print '</pre>';
 
-            ?>
+        ?>
 
 
         <div id="search-response"></div>
@@ -105,17 +87,16 @@ class Disciple_Tools_Metabox_Map {
             jQuery(document).ready(function() {
 
                 var zoom = 8;
-                var lng = <?php echo $lng[1] ?>;
-                var lat = <?php echo $lat[1] ?>;
+
 
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: zoom,
-                    center: {lng: lng, lat: lat},
+                    center: {<?php echo $c_array[0]; ?>},
                     mapTypeId: 'terrain'
                 });
 
                 // Define the LatLng coordinates for the polygon's path.
-                var coords = [ [<?php print $coordinates; ?>] ];
+                var coords = [ <?php echo $coordinates; ?> ];
 
                 var tracts = [];
 
