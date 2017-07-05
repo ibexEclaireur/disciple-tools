@@ -13,15 +13,25 @@ class Disciple_Tools_Upload {
      * @access  public
      * @since   0.1
      */
-    public function __construct () {} // End __construct()
+    public function __construct () {
+        //edit.php?post_type=locations&page=disciple_tools_locations
+        if(is_page('edit.php?post_type=locations&page=disciple_tools_locations') || is_page('edit.php?post_type=locations&page=disciple_tools_locations&tab=import')) {
+            add_action( 'wp_head', array($this, 'remove_activity_hooks'));
+        }
+    } // End __construct()
 
-
+    public function  remove_activity_hooks() {
+        remove_action( 'transition_post_status', 'hooks_transition_post_status', 10 );
+        remove_action( 'added_post_meta', 'hooks_added_post_meta', 10 );
+        remove_action( 'updated_postmeta', 'hooks_updated_post_meta', 10 );
+    }
 
     /**
      * Uploads US Census Tract KML file to Locations Post Type
      * @return boolean
      */
     public static function upload_census_tract_kml_to_post_type ($state) {
+        global $wpdb;
 
         // test if locations post type exists
         if(!post_type_exists( 'locations' ))
@@ -36,20 +46,53 @@ class Disciple_Tools_Upload {
                         "post_title" => $county->COUNTY_NAME . ', ' . $county->STUSAB,
                         'post_type' => 'locations',
                         "post_content" => '',
-                        "post_exerpt" => '',
+                        "post_excerpt" => '',
                         "post_name" => $county->STATE . $county->COUNTY,
                         "post_content_filtered" => $county->STATE . $county->COUNTY,
                         "post_status" => "publish",
                         "post_author" => get_current_user_id(),
-                        "meta_input"    => array(
-                            "STATE" => $county->STATE,
-                            "COUNTY" => $county->COUNTY,
-                            "STUSAB" => $county->STUSAB,
-                            "COUNTY_NAME" => $county->COUNTY_NAME,
+                    );
+
+                    $new_post_id = wp_insert_post($post);
+
+                    /* Metadata inserted separately to avoid activity hooks on metadata inserts. These were causing memory problems on large inserts. */
+                    // state meta
+                    $wpdb->insert(
+                        $wpdb->postmeta,
+                        array(
+                            'post_id' => $new_post_id,
+                            'meta_key' => 'STATE',
+                            'meta_value' => $county->STATE,
+                        )
+                    );
+                    // state meta
+                    $wpdb->insert(
+                        $wpdb->postmeta,
+                        array(
+                            'post_id' => $new_post_id,
+                            'meta_key' => 'COUNTY',
+                            'meta_value' => $county->COUNTY,
+                        )
+                    );
+                    // state meta
+                    $wpdb->insert(
+                        $wpdb->postmeta,
+                        array(
+                            'post_id' => $new_post_id,
+                            'meta_key' => 'STUSAB',
+                            'meta_value' => $county->STUSAB,
+                        )
+                    );
+                    // state meta
+                    $wpdb->insert(
+                        $wpdb->postmeta,
+                        array(
+                            'post_id' => $new_post_id,
+                            'meta_key' => 'COUNTY_NAME',
+                            'meta_value' => $county->COUNTY_NAME,
                         )
                     );
 
-                    wp_insert_post($post);
                 } // end if state match
             }
 
@@ -59,8 +102,6 @@ class Disciple_Tools_Upload {
         } else {
             return 'Already installed';
         }
-
-
     }
 
     public static function upload_us_state_tracts ($state) {
