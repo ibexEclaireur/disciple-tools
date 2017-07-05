@@ -13,7 +13,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_JS_Tract_Lookup {
-
     /**
      * Constructor function.
      * @access  public
@@ -46,20 +45,33 @@ class Disciple_Tools_JS_Tract_Lookup {
      * Core form for address to tract search
      */
     public function address_to_tract_search ()
+        /** TODO: Create a search that is global and adds a mark instead of a polygon */
     {
         ?>
-        <label for="address">Search for your census tract using your group meeting address. (required) (U.S. physical addresses only)</label>
-        <input id="address" type="text" name="address" value="" placeholder="1501 W. Mineral Ave, Littleton, CO 80120" style="width: 50%; display:inline;" required/> <button style="font-size:1.25em;" type="button" id="search-button">Search</button> <span id="spinner"></span>
+        <div id="map-form">
+            <input type="hidden" name="google_lookup" value="true" />
+            <table class="widefat striped">
+                <tbody>
+                <tr>
+                    <td>Address</td>
+                    <td><input type="text" name="address" id="address" value="" /> </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><button class="button" type="button" value="submit">Lookup</button> </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-
+        <br><br>
         <div id="search-response"></div>
-
         <style>
             /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
             #map {
-                height: 200px;;
-                width: 75%;
+                height: 600px;
+                width: 100%;
             }
             /* Optional: Makes the sample page fill the window. */
             html, body {
@@ -67,46 +79,16 @@ class Disciple_Tools_JS_Tract_Lookup {
                 margin: 0;
                 padding: 0;
             }
-            .article-header {
-                display:none;
-            }
-            #group-create-tabs{border-bottom:1px solid #eaeaea;}
         </style>
-        <div id="map" ></div>
-
-        <input type="text" id="tract" name="tract" placeholder="tract" value=""  required/>
-        <input type="text" id="lng" name="lng" placeholder="lng" value=""  required/>
-        <input type="text" id="lat" name="lat" placeholder="lat" value=""  required/>
-        <input type="text" id="state" name="state" placeholder="state" value=""  required/>
-        <input type="text" id="county" name="county" placeholder="county" value=""  required/>
-
+        <div id="map"></div>
 
         <script type="text/javascript">
-
             jQuery(document).ready(function() {
-
-                var map;
-                map = new google.maps.Map(document.getElementById('map'), {
-                    center: {lat: 38.7767479, lng: -104.0954098},
-                    zoom: 3
-                });
-                jQuery('#group-creation-create').prop('disabled', true).addClass('button action');
-
-
-
-
                 jQuery('button').click( function () {
-                    jQuery('#spinner').prepend('<img src="<?php echo plugin_dir_url(__FILE__); ?>/spinner.svg" style="height:30px;" />');
-
                     var address = jQuery('#address').val();
-                    var restURL = '<?php echo get_rest_url(null, '/lookup/v1/tract/gettractmap'); ?>';
-                    jQuery.post( restURL, { address: address })
+                    jQuery.post( "<?php echo get_site_url(); ?>/wp-json/lookup/v1/tract/gettractmap", { address: address })
                         .done(function( data ) {
-                            jQuery('#spinner').html('');
-                            jQuery('#search-button').html('Search Again?');
-                            jQuery('#search-response').html('<p>Looks like you searched for <strong>' + data.formatted_address + '</strong>? <br>Therefore, <strong>' + data.geoid + '</strong> is most likely your census tract represented in the map below. </p>' );
-
-                            jQuery('#map').css('height', '475px');
+                            jQuery('#search-response').html('We found that your tract is ' + data.geoid );
 
                             var map = new google.maps.Map(document.getElementById('map'), {
                                 zoom: data.zoom,
@@ -132,17 +114,11 @@ class Disciple_Tools_JS_Tract_Lookup {
                                 tracts[i].setMap(map);
                             }
 
-                            jQuery('#tract').val(data.geoid);
-                            jQuery('#lng').val(data.lng);
-                            jQuery('#lat').val(data.lat);
-                            jQuery('#state').val(data.state);
-                            jQuery('#county').val(data.county);
-                            jQuery('#group-creation-create').prop('disabled', false);
                         });
                 });
             });
         </script>
-        <script
+        <script async defer
                 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcddCscCo-Uyfa3HJQVe0JdBaMCORA9eY">
         </script>
 

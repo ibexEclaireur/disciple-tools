@@ -7,7 +7,7 @@
  * Creates a dropdown of the states with the state key as the value.
  * @return string
  */
-function dt_get_states_key_dropdown_LL () {
+function dt_get_states_key_dropdown_not_installed () {
 
     $dir_contents = json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json')); // get directory & build dropdown
 
@@ -19,6 +19,31 @@ function dt_get_states_key_dropdown_LL () {
 
         $dropdown .= '<option value="' . $value->key . '" ';
         if (get_option('_installed_us_county_'.$value->key)) {$dropdown .= ' disabled'; $disabled = ' (Installed)';}
+        elseif (isset($_POST['states-dropdown']) && $_POST['states-dropdown'] == $value->key) {$dropdown .= ' selected';}
+        $dropdown .= '>' . $value->name . $disabled;
+        $dropdown .= '</option>';
+    }
+    $dropdown .= '</select>';
+
+    return $dropdown;
+}
+
+/**
+ * Creates a dropdown of the states with the state key as the value.
+ * @return string
+ */
+function dt_get_states_key_dropdown_installed () {
+
+    $dir_contents = json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json')); // get directory & build dropdown
+
+    $dropdown = '<select name="states-dropdown">';
+
+
+    foreach ($dir_contents->USA_states as $value) {
+        $disabled = '';
+
+        $dropdown .= '<option value="' . $value->key . '" ';
+        if (!get_option('_installed_us_county_'.$value->key)) {$dropdown .= ' disabled'; $disabled = ' (Not Installed)';}
         elseif (isset($_POST['states-dropdown']) && $_POST['states-dropdown'] == $value->key) {$dropdown .= ' selected';}
         $dropdown .= '>' . $value->name . $disabled;
         $dropdown .= '</option>';
