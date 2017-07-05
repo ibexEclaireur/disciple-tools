@@ -14,17 +14,7 @@ class Disciple_Tools_Upload {
      * @since   0.1
      */
     public function __construct () {
-        //edit.php?post_type=locations&page=disciple_tools_locations
-        if(is_page('edit.php?post_type=locations&page=disciple_tools_locations') || is_page('edit.php?post_type=locations&page=disciple_tools_locations&tab=import')) {
-            add_action( 'wp_head', array($this, 'remove_activity_hooks'));
-        }
     } // End __construct()
-
-    public function  remove_activity_hooks() {
-        remove_action( 'transition_post_status', 'hooks_transition_post_status', 10 );
-        remove_action( 'added_post_meta', 'hooks_added_post_meta', 10 );
-        remove_action( 'updated_postmeta', 'hooks_updated_post_meta', 10 );
-    }
 
     /**
      * Uploads US Census Tract KML file to Locations Post Type
@@ -36,8 +26,6 @@ class Disciple_Tools_Upload {
         // test if locations post type exists
         if(!post_type_exists( 'locations' ))
             return 'Fail: You need the locations post type installed through Disciple Tools.';
-
-        remove_action('transition_post_status', 'hooks_transition_post_status');
 
         if(!get_option('_installed_us_county_'.$state)) { // check if counties are installed for the state
 
@@ -154,7 +142,7 @@ class Disciple_Tools_Upload {
                     $wpdb->postmeta,
                     array(
                         'post_id' => $post_id,
-                        'meta_key' => $geoid,
+                        'meta_key' => 'polygon_'.$geoid,
                         'meta_value' => $coordinates,
                     )
                 );
