@@ -82,7 +82,7 @@ class Disciple_Tools_Census_Geolocation {
         }
     }
 
-    public function url_get_contents ($Url) {
+    public static function url_get_contents ($Url) {
         if (!function_exists('curl_init')){
             die('CURL is not installed!');
         }
