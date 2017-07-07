@@ -96,7 +96,6 @@ class Disciple_Tools_Metabox_Address {
             case 'locations':
                 $addresses = array(
                     __('Address', 'disciple_tools'),
-                    __('Polygon', 'disciple_tools'),
                 );
                 return $addresses;
                 break;
