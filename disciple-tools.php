@@ -389,6 +389,7 @@ class Disciple_Tools {
         require_once('includes/locations/location-functions.php');
         require_once('includes/locations/class-census-geolocation-api.php');// APIs
         require_once('includes/locations/class-google-geolocation-api.php');
+        require_once('includes/locations/class-coordinates-db.php');
         /** End Locations */
 
         /**

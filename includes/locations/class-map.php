@@ -62,7 +62,7 @@ class Disciple_Tools_Map {
                     <?php
 
                         print "var coords = [";
-                        print json_encode($coordinates);
+                        print $coordinates;
                         print "];";
                     ?>
 

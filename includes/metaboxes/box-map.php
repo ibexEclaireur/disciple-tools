@@ -39,30 +39,61 @@ class Disciple_Tools_Metabox_Map {
     public function display_map () {
         global $wpdb, $post;
 
-        $result = $wpdb->get_results("SELECT * FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE '$post->post_content_filtered%'");
-        $coordinates = '';
-        $last_tract = '';
+        $result = $wpdb->get_results("SELECT * FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'polygon_$post->post_content_filtered%'");
+
+        echo 'State and County ID: ' . $post->post_content_filtered . '<br>';
 
         echo '<select name="select_tract" id="select_tract">';
         echo '<option value="all">All Tracts</option>';
-
-            foreach($result as $value) {
-                echo '<option value="'.$value->meta_key.'">Tract: ' . substr($value->meta_key,6) . '</option>';
-                $coordinates .= '['.$value->meta_value.'],';
-                $last_tract = $value->meta_value;
-            }
-
+        foreach($result as $value) {
+            echo '<option value="'.$value->meta_key.'">Tract: ' . substr($value->meta_key,8) . '</option>';
+        }
         echo '</select>';
 
-        $coordinates = substr($coordinates, 0, -1);
-            $c_array = explode('},{',substr($last_tract, 1, -1));
-//        print '<pre>';print_r($c_array);print '</pre>';
+
+        $key = substr($value->meta_key,8);
+
+        /* Get center coordinates */
+        $center_coords = $wpdb->get_var("SELECT meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key = 'polygon_$key'");
+        $coords = json_decode($center_coords);
+
+        $high_lng = -9999999; //will hold max val
+        $high_lat = -9999999; //will hold max val
+        $low_lng = 9999999; //will hold max val
+        $low_lat = 9999999; //will hold max val
+        $found_item = null; //will hold item with max val;
+
+        foreach($coords as $k=>$v)
+        {
+            if($v->lng > $high_lng)
+            {
+                $high_lng = $v->lng;
+            }
+            if($v->lng < $low_lng)
+            {
+                $low_lng = $v->lng;
+            }
+            if($v->lat > $high_lat)
+            {
+                $high_lat = $v->lat;
+            }
+            if($v->lat < $low_lat)
+            {
+                $low_lat = $v->lat;
+            }
+        }
+
+        $half_lng_difference = ($high_lng - $low_lng) / 2;
+        $center_lng = $high_lng - $half_lng_difference;
+
+        $half_lat_difference = ($high_lat - $low_lat) / 2;
+        $center_lat = $high_lat - $half_lat_difference;
+        /* End get center coordinates */
+
+        
 
         ?>
-
-
         <div id="search-response"></div>
-
         <style>
             /* Always set the map height explicitly to define the size of the div
         * element that contains the map. */
@@ -79,24 +110,28 @@ class Disciple_Tools_Metabox_Map {
             }
 
         </style>
-
         <div id="map" ></div>
-
         <script type="text/javascript">
 
             jQuery(document).ready(function() {
 
                 var zoom = 8;
 
-
                 var map = new google.maps.Map(document.getElementById('map'), {
                     zoom: zoom,
-                    center: {<?php echo $c_array[0]; ?>},
+                    center: {lng: <?php echo $center_lng; ?>, lat: <?php echo $center_lat; ?>},
                     mapTypeId: 'terrain'
                 });
 
                 // Define the LatLng coordinates for the polygon's path.
-                var coords = [ <?php echo $coordinates; ?> ];
+                var coords = [ <?php
+                                $rows = count($result);
+                                $i = 0;
+                                foreach($result as $value) {
+                                   echo $value->meta_value;
+                                   $i++;
+                                   if($rows > $i + 1) {echo ','; }
+                                } ?> ];
 
                 var tracts = [];
 
@@ -160,6 +195,8 @@ class Disciple_Tools_Metabox_Map {
         </script>
 
             <?php
+
+
 
     }
 }

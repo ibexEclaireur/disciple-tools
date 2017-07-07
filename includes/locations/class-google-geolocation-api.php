@@ -40,7 +40,8 @@ class Disciple_Tools_Google_Geolocation {
          * @see https://developers.google.com/maps/documentation/geocoding/start
          */
         $url_address = 'https://maps.googleapis.com/maps/api/geocode/json?address='.$address .'&key=AIzaSyBxUvKYE0LMTbz0VOtPxfRqHXWFyVqlF2I';
-        $details = json_decode(file_get_contents($url_address));
+        $details = json_decode(self::url_get_contents($url_address));
+
 
         if($details->status == 'ZERO_RESULTS') {
             return 'ZERO_RESULTS';
@@ -64,6 +65,18 @@ class Disciple_Tools_Google_Geolocation {
             return $details; // full_object returned
         }
 
+    }
+
+    public static function url_get_contents ($Url) {
+        if (!function_exists('curl_init')){
+            die('CURL is not installed!');
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $Url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        return $output;
     }
 
 }

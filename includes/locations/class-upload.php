@@ -108,7 +108,7 @@ class Disciple_Tools_Upload {
             $kml_object = simplexml_load_file( $directory->base_url . $file); // get xml from amazon
 
             foreach ($kml_object->Document->Folder->Placemark as $place) {
-                $coordinates = ''; //Create JSON format coordinates. Display in Google Map
+
 
                 // Parse Coordinates
                 $value = '';
@@ -124,14 +124,17 @@ class Disciple_Tools_Upload {
                 unset($value);
                 $value_array = explode(',0.0 ', $value_array); // create array from coordinates string
 
+                $coordinates = '['; //Create JSON format coordinates. Display in Google Map
                 foreach ($value_array as $va) {
                     if (!empty($va)) {
                         $coord = explode(',', $va);
-                        $coordinates .= '{lat: ' . $coord[1] . ', lng: ' . $coord[0] . '},';
+                        $coordinates .= '{"lat": ' . $coord[1] . ', "lng": ' . $coord[0] . '},';
                     }
                 }
+
                 unset($value_array);
                 $coordinates = substr(trim($coordinates), 0, -1);
+                $coordinates .= ']'; // close JSON array
 
                 // Find County Post ID
                 $geoid = $place->ExtendedData->SchemaData->SimpleData[4];
