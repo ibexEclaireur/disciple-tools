@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 class Disciple_Tools_Locations_REST_API {
 
     private $version = 1;
-    private $context = "lookup";
+    private $context = "dt";
     private $namespace;
 
     /**
@@ -88,7 +88,7 @@ class Disciple_Tools_Locations_REST_API {
     public function find_by_address (WP_REST_Request $request){
         $params = $request->get_params();
         if (isset($params['address'])){
-            $result = Location_Lookup_Controller::get_tract_by_address($params['address']);
+            $result = Disciple_Tools_Locations_Controller::get_tract_by_address($params['address']);
             if ($result["status"] == 'OK'){
                 return $result["tract"];
             } else {
@@ -109,7 +109,7 @@ class Disciple_Tools_Locations_REST_API {
     public function get_tract_map (WP_REST_Request $request){
         $params = $request->get_params();
         if (isset($params['address'])){
-            $result = Location_Lookup_Controller::get_tract_map($params['address']);
+            $result = Disciple_Tools_Locations_Controller::get_tract_map($params['address']);
             if ($result["status"] == 'OK'){
                 return $result;
             } else {
@@ -130,7 +130,7 @@ class Disciple_Tools_Locations_REST_API {
     public function get_map_by_geoid (WP_REST_Request $request){
         $params = $request->get_params();
         if (isset($params['geoid'])){
-            $result = Location_Lookup_Controller::get_map_by_geoid ($params);
+            $result = Disciple_Tools_Locations_Controller::get_map_by_geoid ($params);
             if ($result["status"] == 'OK'){
                 return $result;
             } else {

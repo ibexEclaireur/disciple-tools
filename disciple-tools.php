@@ -256,7 +256,7 @@ class Disciple_Tools {
             require_once ('includes/functions/enqueue-scripts.php');
             require_once ('includes/functions/structure-defaults.php');
 
-            require_once('includes/locations/tools-menu.php');
+            require_once('includes/locations/tab-tools-menu.php');
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
             require_once ('includes/locations/class-upload.php');
 
@@ -386,10 +386,13 @@ class Disciple_Tools {
          * Locations Support
          */
         require_once ('includes/locations/class-map.php'); // Helper
-        require_once('includes/locations/location-functions.php');
+        require_once('includes/locations/locations-functions.php');
         require_once('includes/locations/class-census-geolocation-api.php');// APIs
         require_once('includes/locations/class-google-geolocation-api.php');
         require_once('includes/locations/class-coordinates-db.php');
+        require_once('includes/locations/locations-rest-api.php'); // builds rest endpoints
+        require_once('includes/locations/locations-rest-controller.php'); // serves the locations rest endpoints
+        $this->location_api = Disciple_Tools_Locations_REST_API::instance();
         /** End Locations */
 
         /**

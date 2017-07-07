@@ -39,18 +39,23 @@ class Disciple_Tools_Metabox_Map {
     public function display_map () {
         global $wpdb, $post;
 
-        $result = $wpdb->get_results("SELECT * FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'polygon_$post->post_content_filtered%'");
+        $result = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'polygon_$post->post_content_filtered%'");
 
-
-        echo '<select name="select_tract" id="select_tract">';
-        echo '<option value="all">All Tracts</option>';
+        $html = '';
+        $html .= '<select name="select_tract" id="select_tract">';
+        $html .= '<option value="all">All Tracts</option>';
         foreach($result as $value) {
-            echo '<option value="'.$value->meta_key.'">Tract: ' . substr($value->meta_key,8) . '</option>';
+            $html .= '<option value="'.substr($value->meta_key,8).'">Tract: ' . substr($value->meta_key,8) . '</option>';
         }
-        echo '</select>';
-        echo '<span id="spinner"></span>';
+        $html .= '</select>';
+        $html .= '<span id="spinner"></span>';
+        $html .= ' <a href="javascript:location.reload();">show all</a>';
 
-        print ' <br>state/county id : ' . $post->post_content_filtered ;
+        echo $html;
+
+        $meta = dt_get_coordinates_meta ($post->post_content_filtered);
+
+        $diagnostic = ' <br>state/county id : ' . $post->post_content_filtered ;
 
         /*********************************************/
 
@@ -99,22 +104,22 @@ class Disciple_Tools_Metabox_Map {
                 }
             }
         }
-        print ' | n : '. $high_lat_n;
-        print ' | s : '. $low_lat_s;
-        print ' | e : '. $high_lng_e;
-        print ' | w : '. $low_lng_w;
+        $diagnostic .= ' | n : '. $high_lat_n;
+        $diagnostic .= ' | s : '. $low_lat_s;
+        $diagnostic .= ' | e : '. $high_lng_e;
+        $diagnostic .= ' | w : '. $low_lng_w;
 
 
         // calculate centers
         $lng_size = $high_lng_e - $low_lng_w;
         $half_lng_difference = $lng_size / 2;
         $center_lng = $high_lng_e - $half_lng_difference;
-        print ' | lng size: '.$lng_size ;
+        $diagnostic .= ' | lng size: '.$lng_size ;
 
         $lat_size = $high_lat_n - $low_lat_s;
         $half_lat_difference = $lat_size / 2;
         $center_lat = $high_lat_n - $half_lat_difference;
-        print ' | lat size: '.$lat_size ;
+        $diagnostic .= ' | lat size: '.$lat_size ;
 
         // get zoom level
         if($lat_size > 3 || $lng_size > 3) {
@@ -137,9 +142,10 @@ class Disciple_Tools_Metabox_Map {
             $zoom = 14;
         }
 
-        print ' | zoom: '.$zoom ;
+        $diagnostic .= ' | zoom: '.$zoom ;
+//        echo $diagnostic;
 
-        $meta = array("center_lng" => (float)$center_lng,"center_lat" => (float)$center_lat,"ne" => $high_lat_n.','.$high_lng_e,"sw" => $low_lat_s.','.$low_lng_w ,"zoom" => (float)$zoom);
+//        $meta = array("center_lng" => (float)$center_lng,"center_lat" => (float)$center_lat,"ne" => $high_lat_n.','.$high_lng_e,"sw" => $low_lat_s.','.$low_lng_w ,"zoom" => (float)$zoom);
 
         /*********************************************/
 
@@ -202,17 +208,16 @@ class Disciple_Tools_Metabox_Map {
                 }
 
                 jQuery('#select_tract').change( function () {
-                    jQuery('#spinner').prepend('<img src="spinner.svg" style="height:30px;" />');
+                    jQuery('#spinner').prepend('<img src="<?php echo Disciple_Tools()->plugin_img; ?>spinner.svg" style="height:30px;" />');
 
                     var tract = jQuery('#select_tract').val();
-                    var restURL = '<?php echo get_rest_url(null, '/dt/v1/locations/gettractmap'); ?>';
-                    jQuery.post( restURL, { address: address })
+                    var restURL = '<?php echo get_rest_url(null, '/dt/v1/locations/getmapbygeoid'); ?>';
+                    jQuery.post( restURL, { geoid: tract })
                         .done(function( data ) {
                             jQuery('#spinner').html('');
-                            jQuery('#search-button').html('Search Again?');
-                            jQuery('#search-response').html('<p>Looks like you searched for <strong>' + data.formatted_address + '</strong>? <br>Therefore, <strong>' + data.geoid + '</strong> is most likely your census tract represented in the map below. </p>' );
+                            jQuery('#search-response').html('<p>Therefore, <strong>' + data.geoid + '</strong> is most likely your census tract represented in the map below. </p>' );
 
-                            jQuery('#map').css('height', '475px');
+//                            jQuery('#map').css('height', '475px');
 
                             var map = new google.maps.Map(document.getElementById('map'), {
                                 zoom: data.zoom,
