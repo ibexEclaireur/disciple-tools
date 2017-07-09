@@ -415,7 +415,7 @@ class Disciple_Tools {
 	 * @since   0.1
 	 */
 	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'disciple_tools', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_plugin_textdomain( 'disciple_tools', false, dirname( plugin_basename( __FILE__ ) ) . '/dt-core/languages/' );
 	} // End load_plugin_textdomain()
 
     /**
