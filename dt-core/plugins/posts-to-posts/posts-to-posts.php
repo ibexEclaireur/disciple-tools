@@ -18,7 +18,7 @@ function _p2p_load() {
     load_plugin_textdomain( P2P_TEXTDOMAIN, '', basename( dirname( __FILE__ ) ) . '/lang' );
 
     if ( !function_exists( 'p2p_register_connection_type' ) ) {
-        require_once dirname( __FILE__ ) . '/vendor/scribu/lib-posts-to-posts/autoload.php';
+        require_once dirname(__FILE__) . '/vendor/scribu/lib-posts-to-posts/autoload.php';
     }
 
     P2P_Storage::init();
@@ -58,11 +58,11 @@ if ( is_dir( dirname( __FILE__ ) . '/vendor' ) ) {
     // Not using vendor/autload.php because scb-framework/load.php has better compatibility
 
     if (!class_exists('Mustache_Autoloader')) {
-        require_once dirname( __FILE__ ) . '/vendor/mustache/mustache/src/Mustache/Autoloader.php';
+        require_once dirname(__FILE__) . '/vendor/mustache/mustache/src/Mustache/Autoloader.php';
         Mustache_Autoloader::register();
     }
 
-    require_once dirname( __FILE__ ) . '/vendor/scribu/scb-framework/load.php';
+    require_once dirname(__FILE__) . '/vendor/scribu/scb-framework/load.php';
 }
 
 scb_init( '_p2p_load' );

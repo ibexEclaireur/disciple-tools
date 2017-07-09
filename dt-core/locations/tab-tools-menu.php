@@ -47,8 +47,8 @@ class Disciple_Tools_Location_Tools_Menu {
      */
     public function __construct () {
         $this->path  = plugin_dir_path(__DIR__);
-        require_once ('tab-js-tract-lookup.php');
-        require_once ('tab-import.php');
+        require_once('tab-js-tract-lookup.php');
+        require_once('tab-import.php');
 
         add_action( 'admin_menu', array( $this, 'load_admin_menu_item' ) );
     } // End __construct()

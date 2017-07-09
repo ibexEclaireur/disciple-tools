@@ -28,16 +28,16 @@ class Disciple_Tools_Activity_Hooks {
 	
 	public function __construct() {
 		// Load abstract class.
-		include( 'hooks/abstract-class-hook-base.php' );
+		include('hooks/abstract-class-hook-base.php');
 		
 		// Load all our hooks.
-		include( 'hooks/class-hook-user.php' );
-		include( 'hooks/class-hook-attachment.php' );
-		include( 'hooks/class-hook-posts.php' );
-		include( 'hooks/class-hook-taxonomy.php' );
-		include( 'hooks/class-hook-export.php' );
-		include( 'hooks/class-hook-comments.php' );
-		include( 'hooks/class-hook-theme.php');
+		include('hooks/class-hook-user.php');
+		include('hooks/class-hook-attachment.php');
+		include('hooks/class-hook-posts.php');
+		include('hooks/class-hook-taxonomy.php');
+		include('hooks/class-hook-export.php');
+		include('hooks/class-hook-comments.php');
+		include('hooks/class-hook-theme.php');
 
 		new Disciple_Tools_Hook_User();
 		new Disciple_Tools_Hook_Attachment();
