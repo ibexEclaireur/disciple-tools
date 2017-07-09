@@ -193,9 +193,9 @@ class Disciple_Tools {
 		$this->version 			= '0.1';
 		$this->plugin_url 		= plugin_dir_url( __FILE__ );
 		$this->plugin_path 		= plugin_dir_path( __FILE__ );
-		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'img/';
-		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'js/';
-		$this->plugin_css       = plugin_dir_url( __FILE__ ) . 'css/';
+		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/img/';
+		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/js/';
+		$this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/css/';
         $this->includes         = plugin_dir_url( __FILE__ ) . 'includes/';
         $this->includes_path    = plugin_dir_path( __FILE__ ) . 'includes/';
         $this->factories        = plugin_dir_url( __FILE__ ) . 'includes/factories/';
