@@ -1,8 +1,6 @@
 <?php
-
 /**
- * Serves the rest api response data
- *
+ * Endpoint controller file
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

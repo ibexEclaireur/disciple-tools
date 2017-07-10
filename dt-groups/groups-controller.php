@@ -1,9 +1,7 @@
 <?php
 /**
-* Class Group_Controller
-*
-* Functions for creating, finding, updating or deleting groups
-*/
+ * Endpoint controller file
+ */
 
 class Group_Controller
 {
