@@ -22,7 +22,6 @@ Author URI: http://www.stephenharris.info
 */
 
 /**
- * If you use this class please make sure you rename it :).
  *
  * The class takes the following arguments
  * * $hook - the hook of the 'parent' (menu top-level page).

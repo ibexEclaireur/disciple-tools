@@ -223,9 +223,6 @@ class Disciple_Tools {
 			require_once('dt-core/admin/config-options-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
-            // Load plugin library that "requires plugins" at activation
-            require_once('dt-core/admin/config-required-plugins.php');
-
             // Load Disciple_Tools Dashboard
             require_once('dt-core/admin/config-dashboard.php');
 			$this->config_dashboard = Disciple_Tools_Dashboard::instance();
@@ -240,19 +237,19 @@ class Disciple_Tools {
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
 
             // Load report pages
-            require_once('dt-core/factories/class-page-factory.php'); // Factory class for page building
-            require_once('dt-core/admin/reports-funnel.php');
+            require_once('dt-statistics/class-page-factory.php'); // Factory class for page building
+            require_once('dt-statistics/reports-funnel.php');
             $this->reports_funnel = Disciple_Tools_Funnel_Reports::instance();
-            require_once('dt-core/admin/reports-media.php');
+            require_once('dt-statistics/reports-media.php');
             $this->reports_media = Disciple_Tools_Media_Reports::instance();
-            require_once('dt-core/admin/reports-project.php');
+            require_once('dt-statistics/reports-project.php');
             $this->reports_project = Disciple_Tools_Project_Reports::instance();
 
             // Load Functions
-            require_once('dt-core/functions/hide-contacts.php');
-            require_once('dt-core/functions/admin-design.php');
-            require_once('dt-core/functions/hide-contacts.php');
-            require_once('dt-core/functions/media.php');
+            require_once('dt-core/functions/restrict-contacts.php');
+            require_once('dt-core/functions/admin-theme-design.php');
+            require_once('dt-core/functions/restrict-contacts.php');
+            require_once('dt-core/functions/restrict-record-access-in-admin.php');
             require_once('dt-core/functions/enqueue-scripts.php');
             require_once('dt-core/functions/structure-defaults.php');
 
@@ -304,7 +301,7 @@ class Disciple_Tools {
         // Creates the post to post relationship between the post type tables.
         // Based on the posts-to-posts project by scribu.
         require_once('dt-core/models/config-p2p.php');
-        require_once('dt-core/plugins/posts-to-posts/posts-to-posts.php');
+        require_once('dt-core/libraries/posts-to-posts/posts-to-posts.php');
 
 
         // Creates User Groups out of Taxonomies
@@ -349,7 +346,7 @@ class Disciple_Tools {
         require_once('dt-groups/groups-controller.php');
         require_once('dt-core/integrations/class-integrations.php'); // data integration for cron scheduling
         if(! class_exists('Ga_Autoloader')) {
-            require_once('dt-core/plugins/google-analytics/disciple-tools-analytics.php');
+            require_once('dt-core/libraries/google-analytics/disciple-tools-analytics.php');
             require_once('dt-core/integrations/class-google-analytics-integration.php');
             $this->analytics_integration = Ga_Admin::instance();
         }
@@ -357,7 +354,7 @@ class Disciple_Tools {
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
 
         // load rest api endpoints
-        require_once('dt-core/functions/rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+        require_once('dt-core/functions/restrict-rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
         require_once('dt-contacts/contacts-endpoints.php');
         Disciple_Tools_Rest_Endpoints::instance();
 
@@ -365,13 +362,13 @@ class Disciple_Tools {
         /*
          * Factories
          */
-        require_once('dt-core/factories/class-counter-factory.php');
+        require_once('dt-statistics/class-counter-factory.php');
         $this->counter = Disciple_Tools_Counter_Factory::instance();
 
         /**
          * Load Functions
          */
-        require_once('dt-core/functions/disable-xml-rpc-pingback.php');
+        require_once('dt-core/functions/restrict-xml-rpc-pingback.php');
 
         /**
          * Theme Support functions
