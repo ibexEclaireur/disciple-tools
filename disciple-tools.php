@@ -358,20 +358,20 @@ class Disciple_Tools {
         /**
          * dt-prayer
          */
-        require_once('dt-prayer/class-prayer-post-type.php');
+        require_once('dt-prayer/prayer-post-type.php');
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
 
 
         /**
          * dt-progress
          */
-        require_once('dt-progress/class-progress-post-type.php');
+        require_once('dt-progress/progress-post-type.php');
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-location' ) );
 
         /**
          * dt-assets
          */
-        require_once('dt-assets/class-asset-post-type.php');
+        require_once('dt-assets/assets-post-type.php');
         $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
 
         /**
@@ -380,6 +380,13 @@ class Disciple_Tools {
         require_once('dt-statistics/class-counter-factory.php');
         $this->counter = Disciple_Tools_Counter_Factory::instance();
         require_once('dt-statistics/chart-template.php');
+
+        /**
+         * dt-users
+         */
+        require_once ('dt-users/users-controller.php');
+        require_once ('dt-users/users-endpoints.php');
+        require_once ('dt-users/users-template.php');
 
 
         /**
@@ -420,16 +427,6 @@ class Disciple_Tools {
         }
         require_once('dt-core/integrations/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-
-        /**
-         * Theme Support functions
-         */
-        require_once('dt-core/theme_support/user-functions-for-themes.php');
-        require_once('dt-core/theme_support/group-functions-for-themes.php');
-        require_once('dt-core/theme_support/contact-functions-for-themes.php');
-        require_once('dt-core/theme_support/location-functions-for-themes.php');
-
-
 
 
         /**
