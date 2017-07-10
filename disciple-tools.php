@@ -218,17 +218,15 @@ class Disciple_Tools {
             // Disciple_Tools admin settings page configuration
             require_once('dt-core/admin/config-options-admin.php');
             $this->admin = Disciple_Tools_Admin::instance();
-
-			// Disciple_Tools admin settings page configuration
 			require_once('dt-core/admin/config-options-settings.php');
 			$this->settings = Disciple_Tools_Settings::instance();
 
             // Load Disciple_Tools Dashboard
             require_once('dt-core/admin/config-dashboard.php');
 			$this->config_dashboard = Disciple_Tools_Dashboard::instance();
-            require_once('dt-core/admin/config-contacts.php');
+            require_once('dt-contacts/config-contacts.php');
             $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
-            require_once('dt-core/admin/config-groups.php');
+            require_once('dt-groups/config-groups.php');
             $this->config_groups = Disciple_Tools_Config_Groups::instance();
 
             // Load multiple column configuration library into screen options area.
@@ -253,6 +251,7 @@ class Disciple_Tools {
             require_once('dt-core/functions/enqueue-scripts.php');
             require_once('dt-core/functions/structure-defaults.php');
 
+            // Locations Admin Pages
             require_once('dt-locations/tab-tools-menu.php');
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
             require_once('dt-locations/class-upload.php');
@@ -285,7 +284,7 @@ class Disciple_Tools {
         require_once('dt-prayer/class-prayer-post-type.php');
         require_once('dt-progress/class-progress-post-type.php');
         require_once('dt-assets/class-asset-post-type.php');
-        require_once('dt-core/models/class-taxonomy.php');
+        require_once('dt-core/class-taxonomy.php');
         $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
         $this->post_types['groups'] = Disciple_Tools_Group_Post_Type::instance();
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
@@ -300,15 +299,14 @@ class Disciple_Tools {
 
         // Creates the post to post relationship between the post type tables.
         // Based on the posts-to-posts project by scribu.
-        require_once('dt-core/models/config-p2p.php');
+        require_once('dt-core/config-p2p.php');
         require_once('dt-core/libraries/posts-to-posts/posts-to-posts.php');
 
 
         // Creates User Groups out of Taxonomies
-        require_once('dt-core/models/class-user-taxonomy.php');
+        require_once('dt-core/admin/user-groups/class-user-taxonomy.php');
         $this->user_tax = Disciple_Tools_User_Taxonomy::instance();
-        require_once('dt-core/functions/user-groups-taxonomies.php');
-
+        require_once('dt-core/admin/user-groups/user-groups-taxonomies.php');
         require_once('dt-core/admin/multi-role/multi-role.php');
         $this->multi = Disciple_Tools_Multi_Roles::instance();
 
@@ -334,6 +332,7 @@ class Disciple_Tools {
             require_once('dt-core/logging/class-activity-list-table.php'); // contacts and groups report building
             require_once('dt-core/logging/class-reports-list-table.php'); // contacts and groups report building
         }
+
         // Reports and Cron Jobs
         require_once('dt-core/logging/class-reports-api.php');
         $this->report_api = new Disciple_Tools_Reports_API();
@@ -341,7 +340,7 @@ class Disciple_Tools {
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once('dt-core/logging/class-reports-dt.php'); // contacts and groups report building
 
-        //integrations
+        // Integrations
         require_once('dt-contacts/contacts-controller.php');
         require_once('dt-groups/groups-controller.php');
         require_once('dt-core/integrations/class-integrations.php'); // data integration for cron scheduling
@@ -353,7 +352,7 @@ class Disciple_Tools {
         require_once('dt-core/integrations/class-facebook-integration.php'); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
 
-        // load rest api endpoints
+        // Load REST API Endpoints
         require_once('dt-core/functions/restrict-rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
         require_once('dt-contacts/contacts-endpoints.php');
         Disciple_Tools_Rest_Endpoints::instance();

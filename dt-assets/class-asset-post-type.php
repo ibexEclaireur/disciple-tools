@@ -85,7 +85,7 @@ class Disciple_Tools_Asset_Post_Type {
         $this->post_type = 'assets';
         $this->singular = __( 'Asset', 'disciple_tools' );
         $this->plural = __( 'Assets', 'disciple_tools' );
-        $this->args = array( 'menu_icon' => 'dashicons-format-status' );
+        $this->args = array( 'menu_icon' => 'dashicons-archive' );
         $this->taxonomies = array();
 
         add_action( 'init', array( $this, 'register_post_type' ) );

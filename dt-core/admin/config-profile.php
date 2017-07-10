@@ -48,12 +48,8 @@ class Disciple_Tools_Profile
     {
 
         if (is_admin()) {
-
-
-
             // Add elements to the contact section of the profile.
             add_filter('user_contactmethods', array($this, 'modify_profile_fields'));
-
         }
 
     } // End __construct()

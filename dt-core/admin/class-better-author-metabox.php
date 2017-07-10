@@ -3,7 +3,7 @@
  * Disciple Tools Author Metabox Extension
  *
  * Description: This is a modified version of the Better Author Metabox Plugin. Customized to specifically support
- * the Disciple Tools posttypes and configurations.
+ * the Disciple Tools post-types and configurations.
  *
  * @original BetterAuthorMetabox Plugin
  * @original Author: Joe Chellman
