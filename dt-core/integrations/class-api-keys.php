@@ -23,13 +23,11 @@ class Disciple_Tools_Api_Keys {
 	 * @static
 	 * @return Disciple_Tools_Api_Keys instance
 	 */
-	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
-			self::$_instance = new self();
-		}
-
-		return self::$_instance;
-	} // End instance()
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
 
 	/**
 	 * Constructor function.
