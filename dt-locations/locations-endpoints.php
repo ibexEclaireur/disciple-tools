@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Disciple_Tools_Locations_REST_API
+ * Disciple_Tools_Locations_Endpoints
  *
- * @class Disciple_Tools_Locations_REST_API
+ * @class Disciple_Tools_Locations_Endpoints
  * @version	0.1
  * @since 0.1
  * @package	Disciple_Tools
@@ -12,14 +12,14 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-class Disciple_Tools_Locations_REST_API {
+class Disciple_Tools_Locations_Endpoints {
 
     private $version = 1;
     private $context = "dt";
     private $namespace;
 
     /**
-     * Disciple_Tools_Locations_REST_API The single instance of Disciple_Tools_Locations_REST_API.
+     * Disciple_Tools_Locations_Endpoints The single instance of Disciple_Tools_Locations_Endpoints.
      * @var 	object
      * @access  private
      * @since 	0.1
@@ -27,13 +27,13 @@ class Disciple_Tools_Locations_REST_API {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Locations_REST_API Instance
+     * Main Disciple_Tools_Locations_Endpoints Instance
      *
-     * Ensures only one instance of Disciple_Tools_Locations_REST_API is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Locations_Endpoints is loaded or can be loaded.
      *
      * @since 0.1
      * @static
-     * @return Disciple_Tools_Locations_REST_API instance
+     * @return Disciple_Tools_Locations_Endpoints instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) )
