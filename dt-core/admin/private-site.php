@@ -1,5 +1,9 @@
 <?php
 /**
+ * TODO: This feature is present and force enabled in the D.T. theme. In the plugin it should be an option checkbox to enable.
+ */
+
+/**
  * Handles the private site and private feed features of the plugin.  If private site is
  * selected in the plugin settings, the plugin will redirect all non-logged-in users to the
  * login page.  If private feed is selected, all content is blocked from feeds from the site.

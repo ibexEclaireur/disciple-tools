@@ -20,18 +20,18 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  * Array
  *   (
  *       [relation] => OR
-            [0] => Array
-                (
-                    [key] => assigned_to
-                    [value] => user-1
-                )
+[0] => Array
+(
+[key] => assigned_to
+[value] => user-1
+)
 
-            [1] => Array
-                (
-                    [key] => assigned_to
-                    [value] => group-1
-                )
-    )
+[1] => Array
+(
+[key] => assigned_to
+[value] => group-1
+)
+)
  *
  * @return array
  */
@@ -74,20 +74,20 @@ function dt_get_user_associations () {
  *
  * Example return:
  * Array
-    (
-        [relation] => OR
-            [0] => Array
-                (
-                    [key] => assigned_to
-                    [value] => user-1
-                )
+(
+[relation] => OR
+[0] => Array
+(
+[key] => assigned_to
+[value] => user-1
+)
 
-            [1] => Array
-                (
-                    [key] => assigned_to
-                    [value] => group-1
-                )
-    )
+[1] => Array
+(
+[key] => assigned_to
+[value] => group-1
+)
+)
  * @return array
  */
 function dt_get_team_contacts($user_id) {
