@@ -367,12 +367,16 @@ class Disciple_Tools {
          */
         require_once('dt-progress/progress-post-type.php');
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-location' ) );
+        require_once ('dt-assets/assets-endpoints.php');
 
         /**
          * dt-assets
          */
         require_once('dt-assets/assets-post-type.php');
         $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
+        require_once ('dt-assets/assets-endpoints.php');
+        require_once ('dt-assets/assets-controller.php');
+        require_once ('dt-assets/assets-template.php');
 
         /**
          * dt-statistics
