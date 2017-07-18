@@ -313,7 +313,8 @@ class Disciple_Tools {
          */
         require_once('dt-contacts/contacts-post-type.php');
         $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
-        require_once('dt-contacts/contacts-controller.php');
+
+
         require_once('dt-contacts/contacts-endpoints.php');
         Disciple_Tools_Contacts_Endpoints::instance();
         require_once('dt-contacts/contacts-template.php'); // Functions to support theme

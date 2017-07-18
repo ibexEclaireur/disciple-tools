@@ -2,7 +2,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * Class Public_Hooks
+ * Class Disciple_Tools_Contacts_Endpoints
  *
  * Expose some public rest api endpoints to outside sources
  */
@@ -38,7 +38,10 @@ class Disciple_Tools_Contacts_Endpoints
     {
         $this->namespace = $this->context . "/v" . intval($this->version);
         add_action('rest_api_init', array($this,  'add_api_routes'));
-        $this->contact_controller = new Contact_Controller;
+
+        require_once('contacts-controller.php');
+        $this->contact_controller = new Disciple_Tools_Contacts_Controller;
+
         $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }
 
@@ -129,7 +132,7 @@ class Disciple_Tools_Contacts_Endpoints
 		$query_params = $request->get_query_params();
 		if($this->check_api_token($query_params)){
 	        $fields = $request->get_json_params();
-	        $result =  Contact_Controller::create_contact($fields);
+	        $result =  Disciple_Tools_Contacts_Controller::create_contact($fields);
 	        if ($result["success"] == true){
 	            return $result;
 	        } else {
@@ -152,7 +155,7 @@ class Disciple_Tools_Contacts_Endpoints
 	 */
     public function create_contact(WP_REST_Request $request){
     	$fields = $request->get_json_params();
-		$result = Contact_Controller::create_contact($fields);
+		$result = Disciple_Tools_Contacts_Controller::create_contact($fields);
 	    if ($result["success"] == true){
 		    return $result;
 	    } else {
@@ -171,7 +174,7 @@ class Disciple_Tools_Contacts_Endpoints
     	$params = $request->get_params();
 	    if (isset($params['id'])){
 	    	//@todo restrict to only get contact's the user has access to
-			$result = Contact_Controller::get_contact($params['id']);
+			$result = Disciple_Tools_Contacts_Controller::get_contact($params['id']);
 		    if ($result["success"] == true){
 			    return $result["contact"];
 		    } else {
@@ -193,7 +196,7 @@ class Disciple_Tools_Contacts_Endpoints
 	    $params = $request->get_params();
     	$body = $request->get_json_params();
 	    if (isset($params['id'])){
-	    	$result = Contact_Controller::update_contact($params['id'], $body);
+	    	$result = Disciple_Tools_Contacts_Controller::update_contact($params['id'], $body);
 	    	if ($result["success"] == true){
 			    return $result["contact_id"];
 		    } else {
@@ -221,7 +224,7 @@ class Disciple_Tools_Contacts_Endpoints
 			    }
 		    }
 	    	$assigned_to_id = "user-".$params['user_id'];
-	    	$result = Contact_Controller::get_user_contacts($assigned_to_id);
+	    	$result = Disciple_Tools_Contacts_Controller::get_user_contacts($assigned_to_id);
 	    	if ($result["success"] == true){
 			    return $result["contacts"];
 		    } else {
@@ -247,7 +250,7 @@ class Disciple_Tools_Contacts_Endpoints
 					return new WP_Error("get_team_contacts_error", "You do nat have access to these contacts", array('status', 401));
 				}
 	        }
-    		$result = Contact_Controller::get_team_contacts($params['user_id']);
+    		$result = Disciple_Tools_Contacts_Controller::get_team_contacts($params['user_id']);
 		    if ($result["success"] == true){
 			    return $result;
 		    } else {

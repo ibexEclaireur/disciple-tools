@@ -6,12 +6,12 @@
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
- * Class Contact_Controller
+ * Class Disciple_Tools_Contacts_Controller
  *
  * Functions for creating, finding, updating or deleting contacts
  */
 
-class Contact_Controller
+class Disciple_Tools_Contacts_Controller
 {
 	public static $contact_fields;
 
