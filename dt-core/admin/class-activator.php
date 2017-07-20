@@ -39,19 +39,19 @@ class Disciple_Tools_Activator {
 
 
         /**
-         * Set defaults for options page
+         * Set defaults for options page TODO: Need to rebuild a proper options page for DT plugin configurations.
          */
-        $settings_sections = $Disciple_Tools->settings->get_settings_sections ( );
-        foreach ($settings_sections as $key => $value) {
-            $section = $Disciple_Tools->settings->get_settings_fields ( $key );
-            $preset = array();
-            foreach ($section as $field => $item) {
-                if(!empty($item['default'])) {
-                    $preset[$field] = $item['default'];
-                }
-            }
-            add_option( $Disciple_Tools->token . '-' . $key, $preset, '', 'yes'  );
-        }
+//        $settings_sections = $Disciple_Tools->settings->get_settings_sections ( );
+//        foreach ($settings_sections as $key => $value) {
+//            $section = $Disciple_Tools->settings->get_settings_fields ( $key );
+//            $preset = array();
+//            foreach ($section as $field => $item) {
+//                if(!empty($item['default'])) {
+//                    $preset[$field] = $item['default'];
+//                }
+//            }
+//            add_option( $Disciple_Tools->token . '-' . $key, $preset, '', 'yes'  );
+//        }
 
 
 		/**
