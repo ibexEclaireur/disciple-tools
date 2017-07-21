@@ -2,6 +2,23 @@
 <ruleset name="PHP_CodeSniffer">
   <description>The coding standard for disciple-tools plugin</description>
 
+  <!-- To check the code for style issues, run:
+
+       $ phpcs
+
+       It will automatically find phpcs.xml and apply its rules.
+
+       These rules have been selected to be similar to Wordpress's style guide,
+       which we encourage you to follow:
+
+       https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
+
+       The main difference is that we use four spaces for indentation, not hard
+       tabs. I highly recommend using an editor that supports
+       http://editorconfig.org/ so that your editor automatically uses the
+       right settings for this project.
+  -->
+
   <file>.</file>
 
   <exclude-pattern>*/vendor/*</exclude-pattern>
