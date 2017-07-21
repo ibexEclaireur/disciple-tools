@@ -139,7 +139,7 @@ class Disciple_Tools_Facebook_Integration {
     public function add_facebook_settings_menu () {
         add_submenu_page(
             'options-general.php', __( 'Facebook (DT)', 'disciple_tools' ),
-            __( 'Facebook (DT)', 'disciple_tools' ), 'manage_options', $this->context, [ $this, 'facebook_settings_page' ] 
+            __( 'Facebook (DT)', 'disciple_tools' ), 'manage_options', $this->context, [ $this, 'facebook_settings_page' ]
         );
     } // End register_settings_screen()
 
@@ -188,8 +188,8 @@ class Disciple_Tools_Facebook_Integration {
                             </table>
                         </form>';
 
-        $html .=  '<br>' .
-            '                        <form action="" method="post">
+        $html .=  '<br>
+                                     <form action="" method="post">
                         <input type="hidden" name="_wpnonce" id="_wpnonce" value="' . wp_create_nonce( 'wp_rest' ) . '" />';
         $html .= $this->facebook_settings_functions( $_POST );
         $html .= '<table id="facebook_pages" class="widefat striped">
@@ -198,15 +198,15 @@ class Disciple_Tools_Facebook_Integration {
         $facebook_pages = get_option( "disciple_tools_facebook_pages", [] );
 
         foreach($facebook_pages as $id => $facebook_page){
-            $html .=  '<tr><td>' . $facebook_page->name . ' (' . $id .')'. '</td>
+            $html .=  "<tr><td>$facebook_page->name ($id)</td>
                <td>
-                   <label for="'.$facebook_page->name.'-integrate" >Sync Contacts </label>
-                   <input name="'.$facebook_page->name.'-integrate" type="checkbox" value="' . $facebook_page->name.'" ' .checked( 1, isset( $facebook_page->integrate ) ? $facebook_page->integrate : false, false ).'/>
+                   <label for=\"$facebook_page->name-integrate\" >Sync Contacts </label>
+                   <input name=\"$facebook_page->name-integrate\" type=\"checkbox\" value=\"$facebook_page->name\" " . checked( 1, isset( $facebook_page->integrate ) ? $facebook_page->integrate : false, false )."/>
                </td>
                <td>
-                   <label for="'.$facebook_page->name . '-report" >Include in Stats </label>
-                   <input name="'.$facebook_page->name.'-report" type="checkbox" value="' . $facebook_page->name.'" ' .checked( 1, isset( $facebook_page->report ) ? $facebook_page->report : false, false ).'/>
-               </td>';
+                   <label for=\"$facebook_page->name-report\" >Include in Stats </label>
+                   <input name=\"$facebook_page->name-report\" type=\"checkbox\" value=\"$facebook_page->name\" " . checked( 1, isset( $facebook_page->report ) ? $facebook_page->report : false, false )."/>
+               </td>";
         }
         $html .= '</tbody>
                 </table>
@@ -611,7 +611,7 @@ class Disciple_Tools_Facebook_Integration {
             'post_type' => 'contacts',
             'meta_key' => 'facebook',
             'meta_value' => $facebook_url
-             ] 
+             ]
         );
 
         $post_id = null;

@@ -265,7 +265,7 @@ class Disciple_Tools_Progress_Post_Type {
             9 => sprintf(
                 __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
                 // translators: Publish box date format, see http://php.net/date
-                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' 
+                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>'
             ),
             10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
         ];
@@ -361,7 +361,7 @@ class Disciple_Tools_Progress_Post_Type {
                             // Iterate the buttons
                             $increment_the_radio_button = 1;
                             foreach ($v['default'] as $vv) {
-                                $html .= '<label for="'.esc_attr( $k ).'-'.$increment_the_radio_button.'">'.$vv.'</label>' .
+                                $html .= '<label for="'.esc_attr( "$k-$increment_the_radio_button" )."\">$vv</label>" .
                                     '<input class="drm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
                                 if($vv == $data) { $html .= 'checked';}
                                 $html .= '>';

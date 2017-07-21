@@ -6,8 +6,8 @@
  * @since   0.1
  */
 
-if (!class_exists( 'run_once' )){
-    class run_once{
+if (!class_exists( 'Run_Once' )){
+    class Run_Once{
         function run( $key ){
             $test_case = get_option( 'run_once' );
             if (isset( $test_case[$key] ) && $test_case[$key]){
