@@ -4,9 +4,9 @@
  * Disciple Tools Reports for Contacts and Groups
  *
  * @class Disciple_Tools_Reports_Contacts_Groups
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 

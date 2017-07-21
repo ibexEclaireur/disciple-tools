@@ -13,90 +13,90 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         parent::__construct();
     }
-	
-	protected function _draft_or_post_title( $post = 0 ) {
-		$title = get_the_title( $post );
-		
-		if ( empty( $title ) )
-			$title = __( '(no title)', 'disciple-tools' );
-		
-		return $title;
-	}
+    
+    protected function _draft_or_post_title( $post = 0 ) {
+        $title = get_the_title( $post );
+        
+        if ( empty( $title ) )
+            $title = __( '(no title)', 'disciple-tools' );
+        
+        return $title;
+    }
 
-	public function hooks_transition_post_status( $new_status, $old_status, $post ) {
-		if ( 'auto-draft' === $old_status && ( 'auto-draft' !== $new_status && 'inherit' !== $new_status ) ) {
-			// page created
-			$action = 'created';
-		}
-		elseif ( 'auto-draft' === $new_status || ( 'new' === $old_status && 'inherit' === $new_status ) ) {
-			// nvm.. ignore it.
-			return;
-		}
-		elseif ( 'trash' === $new_status ) {
-			// page was deleted.
-			$action = 'trashed';
-		}
-		elseif ( 'trash' === $old_status ) {
-			$action = 'restored';
-		}
+    public function hooks_transition_post_status( $new_status, $old_status, $post ) {
+        if ( 'auto-draft' === $old_status && ( 'auto-draft' !== $new_status && 'inherit' !== $new_status ) ) {
+            // page created
+            $action = 'created';
+        }
+        elseif ( 'auto-draft' === $new_status || ( 'new' === $old_status && 'inherit' === $new_status ) ) {
+            // nvm.. ignore it.
+            return;
+        }
+        elseif ( 'trash' === $new_status ) {
+            // page was deleted.
+            $action = 'trashed';
+        }
+        elseif ( 'trash' === $old_status ) {
+            $action = 'restored';
+        }
         elseif ( 'draft' === $old_status && 'published' == $new_status ) {
             $action = 'published';
         }
-		else {
-			return;
-		}
+        else {
+            return;
+        }
 
-		if ( wp_is_post_revision( $post->ID ) )// Skip for revision.
-			return;
+        if ( wp_is_post_revision( $post->ID ) )// Skip for revision.
+            return;
 
 
-		if ( 'nav_menu_item' === get_post_type( $post->ID ) )// Skip for menu items.
-			return;
-
-		dt_activity_insert(
-			array(
-				'action' => $action,
-				'object_type' => 'Post',
-				'object_subtype' => $post->post_type,
-				'object_id' => $post->ID,
-				'object_name' => $this->_draft_or_post_title( $post->ID ),
-                'meta_id'           => ' ',
-                'meta_key'          => ' ',
-                'meta_value'        => ' ',
-                'meta_parent'        => ' ',
-                'object_note'       => ' ',
-			)
-		);
-	}
-
-	public function hooks_delete_post( $post_id ) {
-		if ( wp_is_post_revision( $post_id ) )
-			return;
-
-		$post = get_post( $post_id );
-
-		if ( in_array( $post->post_status, array( 'auto-draft', 'inherit' ) ) )
-			return;
-
-		// Skip for menu items.
-		if ( 'nav_menu_item' === get_post_type( $post->ID ) )
-			return;
+        if ( 'nav_menu_item' === get_post_type( $post->ID ) )// Skip for menu items.
+            return;
 
         dt_activity_insert(
-			array(
-				'action' => 'deleted',
-				'object_type' => 'Post',
-				'object_subtype' => $post->post_type,
-				'object_id' => $post->ID,
-				'object_name' => $this->_draft_or_post_title( $post->ID ),
+            array(
+                'action' => $action,
+                'object_type' => 'Post',
+                'object_subtype' => $post->post_type,
+                'object_id' => $post->ID,
+                'object_name' => $this->_draft_or_post_title( $post->ID ),
                 'meta_id'           => ' ',
                 'meta_key'          => ' ',
                 'meta_value'        => ' ',
                 'meta_parent'        => ' ',
                 'object_note'       => ' ',
-			)
-		);
-	}
+            )
+        );
+    }
+
+    public function hooks_delete_post( $post_id ) {
+        if ( wp_is_post_revision( $post_id ) )
+            return;
+
+        $post = get_post( $post_id );
+
+        if ( in_array( $post->post_status, array( 'auto-draft', 'inherit' ) ) )
+            return;
+
+        // Skip for menu items.
+        if ( 'nav_menu_item' === get_post_type( $post->ID ) )
+            return;
+
+        dt_activity_insert(
+            array(
+                'action' => 'deleted',
+                'object_type' => 'Post',
+                'object_subtype' => $post->post_type,
+                'object_id' => $post->ID,
+                'object_name' => $this->_draft_or_post_title( $post->ID ),
+                'meta_id'           => ' ',
+                'meta_key'          => ' ',
+                'meta_value'        => ' ',
+                'meta_parent'        => ' ',
+                'object_note'       => ' ',
+            )
+        );
+    }
 
     public function hooks_added_post_meta ($mid, $object_id, $meta_key, $meta_value) {
 
@@ -281,6 +281,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function hooks_p2p_deleted ($p2p_id) {
         $this->hooks_p2p_created ($p2p_id, $action = 'disconnected from');
     }
-	
+    
 
 }

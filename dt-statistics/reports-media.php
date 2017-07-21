@@ -4,9 +4,9 @@
  * Disciple_Tools_Media_Reports
  *
  * @class Disciple_Tools_Media_Reports
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -14,13 +14,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_Media_Reports {
 
-//    private $page;
+    //    private $page;
 
     /**
      * Disciple_Tools_Media_Reports The single instance of Disciple_Tools_Media_Reports.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -91,7 +91,7 @@ class Disciple_Tools_Media_Reports {
 								<th>Name</th>
 								<th>Url</th>
 								<th>Launch Date</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>
@@ -115,7 +115,7 @@ class Disciple_Tools_Media_Reports {
 								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
 								<td>Jan 1, 2017</td>
 							</tr>
-							
+
 						</tbody>
 					</table>
 			';

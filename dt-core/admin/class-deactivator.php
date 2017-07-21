@@ -8,21 +8,21 @@
  * @since      0.1
  * @package    Disciple_Tools
  * @subpackage Disciple_Tools/includes/admin
- * @author     
+ * @author
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 class Disciple_Tools_Deactivator {
 
-	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
-	 *
-	 * @since    0.1
-	 */
-	public static function deactivate($network_wide) {
+    /**
+     * Short Description. (use period)
+     *
+     * Long Description.
+     *
+     * @since    0.1
+     */
+    public static function deactivate($network_wide) {
 
         // Reset roles and capabilities
         require_once('class-roles.php');
@@ -35,7 +35,7 @@ class Disciple_Tools_Deactivator {
         }
         self::_remove_tables();
 
-	}
+    }
 
     /**
      * Removes the tables for the activity and report logs.

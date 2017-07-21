@@ -3,9 +3,9 @@
  * Disciple Tools Activity Admin UI
  *
  * @class Disciple_Tools_Activity_Admin_Ui
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

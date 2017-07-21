@@ -20,10 +20,10 @@ class Disciple_Tools_Contacts_Endpoints
      * @return Disciple_Tools_Contacts_Endpoints instance
      */
     public static function instance () {
-		if ( is_null( self::$_instance ) )
-			self::$_instance = new self();
-		return self::$_instance;
-	} // End instance()
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
 
     /**
      * The Public_Hooks rest api variables
@@ -54,210 +54,210 @@ class Disciple_Tools_Contacts_Endpoints
             'callback' => array($this, 'public_create_contact')
         ]);
         register_rest_route($this->namespace, '/contact/create', [
-        	"methods" => "POST",
-	        "callback" => array($this, 'create_contact'),
-	        "permission_callback" => function () {
-		        return current_user_can( 'publish_contacts' );
-	        }
+            "methods" => "POST",
+            "callback" => array($this, 'create_contact'),
+            "permission_callback" => function () {
+                return current_user_can( 'publish_contacts' );
+            }
         ]);
         register_rest_route($this->namespace, '/contact/(?P<id>\d+)', [
-        	"methods" => "GET",
-	        "callback" => array($this, 'get_contact'),
-	        "permission_callback" => function () {
-		        return current_user_can( 'read_contact' );
-	        }
+            "methods" => "GET",
+            "callback" => array($this, 'get_contact'),
+            "permission_callback" => function () {
+                return current_user_can( 'read_contact' );
+            }
         ]);
         register_rest_route($this->namespace, '/contact/(?P<id>\d+)', [
-        	"methods" => "POST",
-	        "callback" => array($this, 'update_contact'),
-	        "permission_callback" => function(){
-        	    return current_user_can("edit_contacts");
-	        }
-	    ]);
+            "methods" => "POST",
+            "callback" => array($this, 'update_contact'),
+            "permission_callback" => function(){
+                return current_user_can("edit_contacts");
+            }
+        ]);
         register_rest_route($this->namespace, '/user/(?P<user_id>\d+)/contacts', [
-        	"methods" => "GET",
-	        "callback" => array($this, 'get_user_contacts'),
-	        "permission_callback" => function () {
-	            return current_user_can( 'edit_contacts' );
-	        }
+            "methods" => "GET",
+            "callback" => array($this, 'get_user_contacts'),
+            "permission_callback" => function () {
+                return current_user_can( 'edit_contacts' );
+            }
         ]);
         register_rest_route($this->namespace, '/user/(?P<user_id>\d+)/team/contacts', [
-        	"methods" => "GET",
-	        "callback" => array($this, 'get_team_contacts'),
-	        "permission_callback" => function () {
-		      return current_user_can( 'edit_contacts' );
-		    }
+            "methods" => "GET",
+            "callback" => array($this, 'get_team_contacts'),
+            "permission_callback" => function () {
+                return current_user_can( 'edit_contacts' );
+            }
         ]);
     }
 
 
-	/**
-	 * Check if the user id slug in the same as the currently logged in user
-	 * @param $user_id
-	 * @access public
-	 * @since 0.1
-	 * @return bool
-	 */
+    /**
+     * Check if the user id slug in the same as the currently logged in user
+     * @param $user_id
+     * @access public
+     * @since 0.1
+     * @return bool
+     */
     public function is_id_of_user_logged_in($user_id){
         $current_user = wp_get_current_user();
         if(isset($current_user->ID)){
-			return $current_user->ID == $user_id;
+            return $current_user->ID == $user_id;
         }
         return false;
     }
 
 
-	/**
-	 * Check to see if the client_id and the client_token are set and see if they are valid
-	 * @param $query_params
-  	 * @access private
-	 * @since 0.1
-	 * @return bool
-	 */
-	private function check_api_token($query_params){
-		if (isset($query_params['client_id']) && isset($query_params['client_token'])){
-    	    return $this->api_keys_controller->check_api_key($query_params['client_id'], $query_params['client_token']);
-		}
-	}
+    /**
+     * Check to see if the client_id and the client_token are set and see if they are valid
+     * @param $query_params
+       * @access private
+     * @since 0.1
+     * @return bool
+     */
+    private function check_api_token($query_params){
+        if (isset($query_params['client_id']) && isset($query_params['client_token'])){
+            return $this->api_keys_controller->check_api_key($query_params['client_id'], $query_params['client_token']);
+        }
+    }
 
 
     /**
      * Create a contact from the PUBLIC api.
      * @param WP_REST_Request $request as application/json
      * @access public
-	 * @since 0.1
+     * @since 0.1
      * @return array|WP_Error The new contact Id on success, an error on failure
      */
     public function public_create_contact(WP_REST_Request $request ){
-		$query_params = $request->get_query_params();
-		if($this->check_api_token($query_params)){
-	        $fields = $request->get_json_params();
-	        $result =  Disciple_Tools_Contacts_Controller::create_contact($fields);
-	        if ($result["success"] == true){
-	            return $result;
-	        } else {
-	            return new WP_Error("contact_creation_error", $result["message"], array('status', 400));
-	        }
-	    } else {
-			return new WP_Error("contact_creation_error",
-				"Invalid or missing client_id or client_token", array('status', 401)
-			);
-		}
+        $query_params = $request->get_query_params();
+        if($this->check_api_token($query_params)){
+            $fields = $request->get_json_params();
+            $result =  Disciple_Tools_Contacts_Controller::create_contact($fields);
+            if ($result["success"] == true){
+                return $result;
+            } else {
+                return new WP_Error("contact_creation_error", $result["message"], array('status', 400));
+            }
+        } else {
+            return new WP_Error("contact_creation_error",
+                "Invalid or missing client_id or client_token", array('status', 401)
+            );
+        }
     }
 
 
-	/**
-	 * Create a contact
-	 * @param WP_REST_Request $request
- 	 * @access public
-	 * @since 0.1
-	 * @return string|WP_Error The contact on success
-	 */
+    /**
+     * Create a contact
+     * @param WP_REST_Request $request
+      * @access public
+     * @since 0.1
+     * @return string|WP_Error The contact on success
+     */
     public function create_contact(WP_REST_Request $request){
-    	$fields = $request->get_json_params();
-		$result = Disciple_Tools_Contacts_Controller::create_contact($fields);
-	    if ($result["success"] == true){
-		    return $result;
-	    } else {
-		    return new WP_Error("create_contact", $result["message"], array('status', 400));
-	    }
+        $fields = $request->get_json_params();
+        $result = Disciple_Tools_Contacts_Controller::create_contact($fields);
+        if ($result["success"] == true){
+            return $result;
+        } else {
+            return new WP_Error("create_contact", $result["message"], array('status', 400));
+        }
     }
 
-	/**
-	 * Get a single contact by ID
-	 * @param WP_REST_Request $request
- 	 * @access public
-	 * @since 0.1
-	 * @return string|WP_Error The contact on success
-	 */
+    /**
+     * Get a single contact by ID
+     * @param WP_REST_Request $request
+      * @access public
+     * @since 0.1
+     * @return string|WP_Error The contact on success
+     */
     public function get_contact(WP_REST_Request $request){
-    	$params = $request->get_params();
-	    if (isset($params['id'])){
-	    	//@todo restrict to only get contact's the user has access to
-			$result = Disciple_Tools_Contacts_Controller::get_contact($params['id']);
-		    if ($result["success"] == true){
-			    return $result["contact"];
-		    } else {
-			    return new WP_Error("get_contact_error", $result["message"], array('status', 400));
-		    }
-	    } else {
-	    	return new WP_Error("get_contact_error", "Please provide a valid id", array('status', 400));
-	    }
+        $params = $request->get_params();
+        if (isset($params['id'])){
+            //@todo restrict to only get contact's the user has access to
+            $result = Disciple_Tools_Contacts_Controller::get_contact($params['id']);
+            if ($result["success"] == true){
+                return $result["contact"];
+            } else {
+                return new WP_Error("get_contact_error", $result["message"], array('status', 400));
+            }
+        } else {
+            return new WP_Error("get_contact_error", "Please provide a valid id", array('status', 400));
+        }
     }
 
-	/**
-	 * Update a single contact by ID
-	 * @param WP_REST_Request $request
- 	 * @access public
-	 * @since 0.1
-	 * @return string|WP_Error Contact_id on success
-	 */
+    /**
+     * Update a single contact by ID
+     * @param WP_REST_Request $request
+      * @access public
+     * @since 0.1
+     * @return string|WP_Error Contact_id on success
+     */
     public function update_contact(WP_REST_Request $request){
-	    $params = $request->get_params();
-    	$body = $request->get_json_params();
-	    if (isset($params['id'])){
-	    	$result = Disciple_Tools_Contacts_Controller::update_contact($params['id'], $body);
-	    	if ($result["success"] == true){
-			    return $result["contact_id"];
-		    } else {
-			    return new WP_Error("update_contact", $result["message"], array('status', 400));
-		    }
-	    } else {
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if (isset($params['id'])){
+            $result = Disciple_Tools_Contacts_Controller::update_contact($params['id'], $body);
+            if ($result["success"] == true){
+                return $result["contact_id"];
+            } else {
+                return new WP_Error("update_contact", $result["message"], array('status', 400));
+            }
+        } else {
             return new WP_Error("update_contact", "Missing a valid contact id", array('status', 400));
-	    }
+        }
     }
 
 
-	/**
-	 * Get Contacts assigned to a user
-	 * @param WP_REST_Request $request
-	 * @access public
-	 * @since 0.1
-	 * @return array|WP_Error return the user's contacts
-	 */
+    /**
+     * Get Contacts assigned to a user
+     * @param WP_REST_Request $request
+     * @access public
+     * @since 0.1
+     * @return array|WP_Error return the user's contacts
+     */
     public function get_user_contacts(WP_REST_Request $request){
-	    $params = $request->get_params();
-	    if (isset($params['user_id'])){
-		    if (!$this->is_id_of_user_logged_in($params["user_id"])){
-			    if (!current_user_can("edit_team_contacts")){
-				    return new WP_Error("get_user_contact_error", "You do nat have access to these contacts", array('status', 401));
-			    }
-		    }
-	    	$assigned_to_id = "user-".$params['user_id'];
-	    	$result = Disciple_Tools_Contacts_Controller::get_user_contacts($assigned_to_id);
-	    	if ($result["success"] == true){
-			    return $result["contacts"];
-		    } else {
-			    return new WP_Error("get_user_contact_error", $result["message"], array('status', 400));
-		    }
-	    } else {
-		    return new WP_Error("update_contact", "Missing a valid user id", array('status', 400));
-	    }
+        $params = $request->get_params();
+        if (isset($params['user_id'])){
+            if (!$this->is_id_of_user_logged_in($params["user_id"])){
+                if (!current_user_can("edit_team_contacts")){
+                    return new WP_Error("get_user_contact_error", "You do nat have access to these contacts", array('status', 401));
+                }
+            }
+            $assigned_to_id = "user-".$params['user_id'];
+            $result = Disciple_Tools_Contacts_Controller::get_user_contacts($assigned_to_id);
+            if ($result["success"] == true){
+                return $result["contacts"];
+            } else {
+                return new WP_Error("get_user_contact_error", $result["message"], array('status', 400));
+            }
+        } else {
+            return new WP_Error("update_contact", "Missing a valid user id", array('status', 400));
+        }
     }
 
-	/**
-	 * Get Contact assigned to a user's team
-	 * @param WP_REST_Request $request
-	 * @access public
-	 * @since 0.1
-	 * @return array|WP_Error return the user's team's contacts
-	 */
+    /**
+     * Get Contact assigned to a user's team
+     * @param WP_REST_Request $request
+     * @access public
+     * @since 0.1
+     * @return array|WP_Error return the user's team's contacts
+     */
     public function get_team_contacts(WP_REST_Request $request){
-    	$params = $request->get_params();
-    	if (isset($params['user_id'])){
-	        if (!$this->is_id_of_user_logged_in($params["user_id"])){
-				if (!current_user_can("edit_team_contacts")){
-					return new WP_Error("get_team_contacts_error", "You do nat have access to these contacts", array('status', 401));
-				}
-	        }
-    		$result = Disciple_Tools_Contacts_Controller::get_team_contacts($params['user_id']);
-		    if ($result["success"] == true){
-			    return $result;
-		    } else {
-			    return new WP_Error("get_team_contacts_error", $result["message"], array('status', 400));
-		    }
-	    }  else {
-		    return new WP_Error("update_contact", "Missing a valid user id", array('status', 400));
-	    }
+        $params = $request->get_params();
+        if (isset($params['user_id'])){
+            if (!$this->is_id_of_user_logged_in($params["user_id"])){
+                if (!current_user_can("edit_team_contacts")){
+                    return new WP_Error("get_team_contacts_error", "You do nat have access to these contacts", array('status', 401));
+                }
+            }
+            $result = Disciple_Tools_Contacts_Controller::get_team_contacts($params['user_id']);
+            if ($result["success"] == true){
+                return $result;
+            } else {
+                return new WP_Error("get_team_contacts_error", $result["message"], array('status', 400));
+            }
+        }  else {
+            return new WP_Error("update_contact", "Missing a valid user id", array('status', 400));
+        }
     }
 }

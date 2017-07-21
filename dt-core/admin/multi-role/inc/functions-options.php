@@ -20,7 +20,7 @@
  * @return bool
  */
 function dt_multi_role_explicitly_deny_caps() {
-	return apply_filters( 'dt_multi_role_explicitly_deny_caps', false );
+    return apply_filters( 'dt_multi_role_explicitly_deny_caps', false );
 }
 
 /**
@@ -31,7 +31,7 @@ function dt_multi_role_explicitly_deny_caps() {
  * @return bool
  */
 function dt_multi_role_multiple_user_roles_enabled() {
-	return apply_filters( 'dt_multi_role_multiple_roles_enabled', true );
+    return apply_filters( 'dt_multi_role_multiple_roles_enabled', true );
 }
 
 

@@ -4,9 +4,9 @@
  * Disciple_Tools_Funnel_Reports
  *
  * @class Disciple_Tools_Funnel_Reports
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -18,9 +18,9 @@ class Disciple_Tools_Funnel_Reports {
 
     /**
      * Disciple_Tools_Connections_Reports The single instance of Disciple_Tools_Connections_Reports.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -95,24 +95,24 @@ class Disciple_Tools_Funnel_Reports {
 							<tr>
 								<th>Name</th>
 								<th>Progress</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>Prayers Network</td>
 								<td>'.$mailchimp_subscribers.'</td>
-								
+
 							</tr>
 							<tr>
 								<td>Social Engagement</td>
 								<td>'.$facebook.'</td>
-								
+
 							</tr>
 							<tr>
 								<td>Website Visitors</td>
 								<td>'.$websites.'</td>
-								
+
 							</tr>
 							<tr>
 								<td>New Contacts</td>
@@ -146,7 +146,7 @@ class Disciple_Tools_Funnel_Reports {
 								<td>Church Planters</td>
 								<td>'.$church_planters.'</td>
 							</tr>
-							
+
 						</tbody>
 					</table>
 			';
@@ -197,7 +197,7 @@ class Disciple_Tools_Funnel_Reports {
 
 
         // Build HTML of widget
-        $html = ' 
+        $html = '
 			<table class="widefat striped ">
 						<thead>
 							<tr>
@@ -335,7 +335,7 @@ class Disciple_Tools_Funnel_Reports {
 
 
         // Build HTML of widget
-        $html = ' 
+        $html = '
 			<table class="widefat striped ">
 						<thead>
 							<tr>
@@ -418,7 +418,7 @@ class Disciple_Tools_Funnel_Reports {
 								<td></td>
 								<td></td>
 							</tr>
-							
+
 						</tbody>
 					</table>
 			';
@@ -457,13 +457,13 @@ class Disciple_Tools_Funnel_Reports {
 
 
         // Build HTML of widget
-        $html = ' 
+        $html = '
 			<table class="widefat striped ">
 						<thead>
 							<tr>
 								<th>Name</th>
 								<th>Count</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>
@@ -543,7 +543,7 @@ class Disciple_Tools_Funnel_Reports {
 								<td>5th Gen</td>
 								<td>'. $con_5gen .'</td>
 							</tr>
-							
+
 						</tbody>
 					</table>
 			';
@@ -553,7 +553,7 @@ class Disciple_Tools_Funnel_Reports {
 
     public function page_notes () {
         $html = '
-            
+
             <p>The funnel stats report summarizes the contacts and milestones within the disciple making movement project.</p>
             <hr>
             <p>Funnel stats box highlights the critical path of seekers through the system.</p>
@@ -562,7 +562,7 @@ class Disciple_Tools_Funnel_Reports {
             <hr>
             <p>Contacts stats box highlights the current status of contacts.</p>
             <p><a href="/wp-admin/options-general.php?page=dtsample&tab=report">Sample Reports Page</a><hr></p>
-     
+
         ';
         echo $html;
 

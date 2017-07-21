@@ -3,7 +3,7 @@
  * Count generations status
  *
  * @package   Disciple_Tools
- * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
+ * @author       Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @license   GPL-3.0
  * @version   0.1
@@ -85,7 +85,7 @@ class Disciple_Tools_Counter_Generations  {
                         $target_inc = $parent_id;
                         $i++;
 
-                     }
+                    }
                     else { // condition failed
                         break; // leave loop
                     }

@@ -55,9 +55,9 @@ class Disciple_Tools_People_Groups_Post_Type {
 
     /**
      * Disciple_Tools_People_Groups_Post_Type The single instance of Disciple_Tools_People_Groups_Post_Type.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -117,21 +117,21 @@ class Disciple_Tools_People_Groups_Post_Type {
      */
     public function register_post_type () {
         $labels = array(
-            'name' 					=> sprintf( _x( '%s', 'post type general name', 'disciple_tools' ), $this->plural ),
-            'singular_name' 		=> sprintf( _x( '%s', 'post type singular name', 'disciple_tools' ), $this->singular ),
-            'add_new' 				=> _x( 'Add New', $this->post_type, 'disciple_tools' ),
-            'add_new_item' 			=> sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
-            'edit_item' 			=> sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
+            'name'                     => sprintf( _x( '%s', 'post type general name', 'disciple_tools' ), $this->plural ),
+            'singular_name'         => sprintf( _x( '%s', 'post type singular name', 'disciple_tools' ), $this->singular ),
+            'add_new'                 => _x( 'Add New', $this->post_type, 'disciple_tools' ),
+            'add_new_item'             => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
+            'edit_item'             => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
             'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
-            'new_item' 				=> sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
-            'all_items' 			=> sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
-            'view_item' 			=> sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
+            'new_item'                 => sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
+            'all_items'             => sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
+            'view_item'             => sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
             'view_items'            => sprintf( __( 'View %s', 'disciple_tools' ), $this->plural ),
-            'search_items' 			=> sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
-            'not_found' 			=> sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
-            'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
-            'parent_item_colon' 	=> '',
-            'menu_name' 			=> $this->plural,
+            'search_items'             => sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
+            'not_found'             => sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
+            'not_found_in_trash'     => sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
+            'parent_item_colon'     => '',
+            'menu_name'             => $this->plural,
             'featured_image'        => sprintf( __( 'Featured Image', 'disciple_tools' ), $this->plural ),
             'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
             'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
@@ -161,19 +161,19 @@ class Disciple_Tools_People_Groups_Post_Type {
             'read_private_posts'    => 'read_private_peoplegroups',
         );
         $defaults = array(
-            'labels' 				=> $labels,
-            'public' 				=> true,
-            'publicly_queryable' 	=> true,
-            'show_ui' 				=> true,
-            'show_in_menu' 			=> true,
-            'query_var' 			=> true,
-            'rewrite' 				=> $rewrite,
+            'labels'                 => $labels,
+            'public'                 => true,
+            'publicly_queryable'     => true,
+            'show_ui'                 => true,
+            'show_in_menu'             => true,
+            'query_var'             => true,
+            'rewrite'                 => $rewrite,
             'capabilities'          => $capabilities,
-            'has_archive' 			=> true,
-            'hierarchical' 			=> false,
-            'supports' 				=> array( 'title', 'comments' ),
-            'menu_position' 		=> 6,
-            'menu_icon' 			=> 'dashicons-smiley',
+            'has_archive'             => true,
+            'hierarchical'             => false,
+            'supports'                 => array( 'title', 'comments' ),
+            'menu_position'         => 6,
+            'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
             'rest_base'             => 'peoplegroups',
             'rest_controller_class' => 'WP_REST_Posts_Controller',

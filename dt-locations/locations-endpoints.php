@@ -4,9 +4,9 @@
  * Disciple_Tools_Locations_Endpoints
  *
  * @class Disciple_Tools_Locations_Endpoints
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -20,9 +20,9 @@ class Disciple_Tools_Locations_Endpoints {
 
     /**
      * Disciple_Tools_Locations_Endpoints The single instance of Disciple_Tools_Locations_Endpoints.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 

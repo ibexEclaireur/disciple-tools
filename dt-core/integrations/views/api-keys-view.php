@@ -32,10 +32,10 @@
           <tbody>
           <tr>
             <td>
-          <?php echo $key["client_id"] ?>
+            <?php echo $key["client_id"] ?>
             </td>
             <td>
-          <?php echo $key["client_token"] ?>
+            <?php echo $key["client_token"] ?>
             </td>
             <td>
               <button type="submit" class="button button-delete" name="delete" value="<?php echo $id?>">Delete <?php echo $id?></button>

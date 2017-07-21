@@ -4,9 +4,9 @@
  * Disciple_Tools_Metabox_Address
  *
  * @class Disciple_Tools_Metabox_Address
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 

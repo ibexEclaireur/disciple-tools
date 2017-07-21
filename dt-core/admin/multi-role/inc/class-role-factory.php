@@ -19,147 +19,147 @@
  */
 final class Disciple_Tools_Multi_Role_Factory {
 
-	/**
-	 * Array of roles added.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @var    array
-	 */
-	public $roles = array();
+    /**
+     * Array of roles added.
+     *
+     * @since  1.0.0
+     * @access public
+     * @var    array
+     */
+    public $roles = array();
 
-	/**
-	 * Array of editable roles.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @var    array
-	 */
-	public $editable = array();
+    /**
+     * Array of editable roles.
+     *
+     * @since  1.0.0
+     * @access public
+     * @var    array
+     */
+    public $editable = array();
 
-	/**
-	 * Array of uneditable roles.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @var    array
-	 */
-	public $uneditable = array();
+    /**
+     * Array of uneditable roles.
+     *
+     * @since  1.0.0
+     * @access public
+     * @var    array
+     */
+    public $uneditable = array();
 
-	/**
-	 * Array of core WordPress roles.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @var    array
-	 */
-	public $wordpress = array();
+    /**
+     * Array of core WordPress roles.
+     *
+     * @since  1.0.0
+     * @access public
+     * @var    array
+     */
+    public $wordpress = array();
 
-	/**
-	 * Private constructor method to prevent a new instance of the object.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	private function __construct() {}
+    /**
+     * Private constructor method to prevent a new instance of the object.
+     *
+     * @since  1.0.0
+     * @access public
+     * @return void
+     */
+    private function __construct() {}
 
-	/**
-	 * Adds a role object.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $role
-	 * @return object
-	 */
-	public function add_role( $role ) {
+    /**
+     * Adds a role object.
+     *
+     * @since  1.0.0
+     * @access public
+     * @param  string  $role
+     * @return object
+     */
+    public function add_role( $role ) {
 
-		// If the role exists with WP but hasn't been added.
-		if ( dt_multi_role_role_exists( $role ) ) {
+        // If the role exists with WP but hasn't been added.
+        if ( dt_multi_role_role_exists( $role ) ) {
 
-			// Get the role object.
-			$this->roles[ $role ] = new Disciple_Tools_Multi_Role( $role );
+            // Get the role object.
+            $this->roles[ $role ] = new Disciple_Tools_Multi_Role( $role );
 
-			// Check if role is editable.
-			if ( $this->roles[ $role ]->is_editable )
-				$this->editable[ $role ] = $this->roles[ $role ];
-			else
-				$this->uneditable[ $role ] = $this->roles[ $role ];
+            // Check if role is editable.
+            if ( $this->roles[ $role ]->is_editable )
+                $this->editable[ $role ] = $this->roles[ $role ];
+            else
+                $this->uneditable[ $role ] = $this->roles[ $role ];
 
-			// Is WP role?
-			if ( dt_multi_role_is_wordpress_role( $role ) )
-				$this->wordpress[ $role ] = $this->roles[ $role ];
-		}
-	}
+            // Is WP role?
+            if ( dt_multi_role_is_wordpress_role( $role ) )
+                $this->wordpress[ $role ] = $this->roles[ $role ];
+        }
+    }
 
-	/**
-	 * Returns a single role object.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @param  string  $role
-	 * @return object
-	 */
-	public function get_role( $role ) {
+    /**
+     * Returns a single role object.
+     *
+     * @since  1.0.0
+     * @access public
+     * @param  string  $role
+     * @return object
+     */
+    public function get_role( $role ) {
 
-		return isset( $this->roles[ $role ] ) ? $this->roles[ $role ] : false;
-	}
+        return isset( $this->roles[ $role ] ) ? $this->roles[ $role ] : false;
+    }
 
-	/**
-	 * Removes a role object (doesn't remove from DB).
-	 *
-	 * @since  1.1.0
-	 * @access public
-	 * @param  string  $role
-	 * @return void
-	 */
-	public function remove_role( $role ) {
+    /**
+     * Removes a role object (doesn't remove from DB).
+     *
+     * @since  1.1.0
+     * @access public
+     * @param  string  $role
+     * @return void
+     */
+    public function remove_role( $role ) {
 
-		if ( isset( $this->roles[ $role ] ) )
-			unset( $this->roles[ $role ] );
-	}
+        if ( isset( $this->roles[ $role ] ) )
+            unset( $this->roles[ $role ] );
+    }
 
-	/**
-	 * Returns an array of role objects.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return array
-	 */
-	public function get_roles() {
-		return $this->roles;
-	}
+    /**
+     * Returns an array of role objects.
+     *
+     * @since  1.0.0
+     * @access public
+     * @return array
+     */
+    public function get_roles() {
+        return $this->roles;
+    }
 
-	/**
-	 * Adds all the WP roles as role objects.  Rather than running this elsewhere, we're just
-	 * going to call this directly within the class when it is first constructed.
-	 *
-	 * @since  1.0.0
-	 * @access public
-	 * @return void
-	 */
-	protected function setup_roles() {
+    /**
+     * Adds all the WP roles as role objects.  Rather than running this elsewhere, we're just
+     * going to call this directly within the class when it is first constructed.
+     *
+     * @since  1.0.0
+     * @access public
+     * @return void
+     */
+    protected function setup_roles() {
 
-		foreach ( $GLOBALS['wp_roles']->role_names as $role => $name )
-			$this->add_role( $role );
-	}
+        foreach ( $GLOBALS['wp_roles']->role_names as $role => $name )
+            $this->add_role( $role );
+    }
 
-	/**
-	 * Returns the instance.
-	 *
-	 * @since  3.0.0
-	 * @access public
-	 * @return object
-	 */
-	public static function get_instance() {
+    /**
+     * Returns the instance.
+     *
+     * @since  3.0.0
+     * @access public
+     * @return object
+     */
+    public static function get_instance() {
 
-		static $instance = null;
+        static $instance = null;
 
-		if ( is_null( $instance ) ) {
-			$instance = new Disciple_Tools_Multi_Role_Factory;
-			$instance->setup_roles();
-		}
+        if ( is_null( $instance ) ) {
+            $instance = new Disciple_Tools_Multi_Role_Factory;
+            $instance->setup_roles();
+        }
 
-		return $instance;
-	}
+        return $instance;
+    }
 }

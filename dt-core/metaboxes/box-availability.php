@@ -4,9 +4,9 @@
  * Disciple Tools - Availability Meta Box
  *
  * @class Disciple_Tools_Metabox_Availability
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -133,5 +133,5 @@ class Disciple_Tools_Metabox_Availability {
         return $html;
     }
 
-// end class
+    // end class
 }

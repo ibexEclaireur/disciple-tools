@@ -12,52 +12,52 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  * @since 0.1
  */
 class Disciple_Tools_Contact_Post_Type {
-	/**
-	 * The post type token.
-	 * @access public
-	 * @since  0.1
-	 * @var    string
-	 */
-	public $post_type;
+    /**
+     * The post type token.
+     * @access public
+     * @since  0.1
+     * @var    string
+     */
+    public $post_type;
 
-	/**
-	 * The post type singular label.
-	 * @access public
-	 * @since  0.1
-	 * @var    string
-	 */
-	public $singular;
+    /**
+     * The post type singular label.
+     * @access public
+     * @since  0.1
+     * @var    string
+     */
+    public $singular;
 
-	/**
-	 * The post type plural label.
-	 * @access public
-	 * @since  0.1
-	 * @var    string
-	 */
-	public $plural;
+    /**
+     * The post type plural label.
+     * @access public
+     * @since  0.1
+     * @var    string
+     */
+    public $plural;
 
-	/**
-	 * The post type args.
-	 * @access public
-	 * @since  0.1
-	 * @var    array
-	 */
-	public $args;
+    /**
+     * The post type args.
+     * @access public
+     * @since  0.1
+     * @var    array
+     */
+    public $args;
 
-	/**
-	 * The taxonomies for this post type.
-	 * @access public
-	 * @since  0.1
-	 * @var    array
-	 */
-	public $taxonomies;
+    /**
+     * The taxonomies for this post type.
+     * @access public
+     * @since  0.1
+     * @var    array
+     */
+    public $taxonomies;
 
 
     /**
      * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -76,64 +76,64 @@ class Disciple_Tools_Contact_Post_Type {
         return self::$_instance;
     } // End instance()
 
-	/**
-	 * Constructor function.
-	 * @access public
-	 * @since 0.1
-	 */
-	public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
-		$this->post_type = 'contacts';
-		$this->singular = 'Contact';
-		$this->plural = 'Contacts';
-		$this->args = array( 'menu_icon' => 'dashicons-groups' );
-		$this->taxonomies = $taxonomies = array();
+    /**
+     * Constructor function.
+     * @access public
+     * @since 0.1
+     */
+    public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = array(), $taxonomies = array() ) {
+        $this->post_type = 'contacts';
+        $this->singular = 'Contact';
+        $this->plural = 'Contacts';
+        $this->args = array( 'menu_icon' => 'dashicons-groups' );
+        $this->taxonomies = $taxonomies = array();
 
-		add_action( 'init', array( $this, 'register_post_type' ) );
-//		add_action( 'init', array( $this, 'register_taxonomy' ) );
+        add_action( 'init', array( $this, 'register_post_type' ) );
+        //		add_action( 'init', array( $this, 'register_taxonomy' ) );
 
-		if ( is_admin() ) {
-			global $pagenow;
+        if ( is_admin() ) {
+            global $pagenow;
 
-			add_action( 'save_post', array( $this, 'meta_box_save' ) );
-			add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
-			add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
-		}
+            add_action( 'save_post', array( $this, 'meta_box_save' ) );
+            add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
+            add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
+        }
 
 
-	} // End __construct()
+    } // End __construct()
 
-	/**
-	 * Register the post type.
-	 * @access public
-	 * @return void
-	 */
-	public function register_post_type () {
-		$labels = array(
-			'name' 					=> sprintf( _x( '%s', 'Contacts', 'disciple_tools' ), $this->plural ),
-			'singular_name' 		=> sprintf( _x( '%s', 'Contact', 'disciple_tools' ), $this->singular ),
-			'add_new' 				=> _x( 'Add New', $this->post_type, 'disciple_tools' ),
-			'add_new_item' 			=> sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
-			'edit_item' 			=> sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
-			'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
-			'new_item' 				=> sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
-			'all_items' 			=> sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
-			'view_item' 			=> sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
-			'view_items'            => sprintf( __( 'View %s', 'disciple_tools' ), $this->plural ),
-			'search_items' 			=> sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
-			'not_found' 			=> sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
-			'not_found_in_trash' 	=> sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
-			'parent_item_colon' 	=> '',
-			'menu_name' 			=> $this->plural,
-			'featured_image'        => sprintf( __( 'Featured Image', 'disciple_tools' ), $this->plural ),
-			'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
-			'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
-			'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
-			'insert_into_item'      => sprintf( __( 'Placed into %s', 'disciple_tools' ), $this->plural ),
-			'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
-			'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
-			'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
-			'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
-		);
+    /**
+     * Register the post type.
+     * @access public
+     * @return void
+     */
+    public function register_post_type () {
+        $labels = array(
+            'name'                  => sprintf( _x( '%s', 'Contacts', 'disciple_tools' ), $this->plural ),
+            'singular_name'         => sprintf( _x( '%s', 'Contact', 'disciple_tools' ), $this->singular ),
+            'add_new'               => _x( 'Add New', $this->post_type, 'disciple_tools' ),
+            'add_new_item'          => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
+            'edit_item'             => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
+            'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
+            'new_item'              => sprintf( __( 'New %s', 'disciple_tools' ), $this->singular ),
+            'all_items'             => sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
+            'view_item'             => sprintf( __( 'View %s', 'disciple_tools' ), $this->singular ),
+            'view_items'            => sprintf( __( 'View %s', 'disciple_tools' ), $this->plural ),
+            'search_items'          => sprintf( __( 'Search %a', 'disciple_tools' ), $this->plural ),
+            'not_found'             => sprintf( __( 'No %s Found', 'disciple_tools' ), $this->plural ),
+            'not_found_in_trash'    => sprintf( __( 'No %s Found In Trash', 'disciple_tools' ), $this->plural ),
+            'parent_item_colon'     => '',
+            'menu_name'             => $this->plural,
+            'featured_image'        => sprintf( __( 'Featured Image', 'disciple_tools' ), $this->plural ),
+            'set_featured_image'    => sprintf( __( 'Set featured image', 'disciple_tools' ), $this->plural ),
+            'remove_featured_image' => sprintf( __( 'Remove featured image', 'disciple_tools' ), $this->plural ),
+            'use_featured_image'    => sprintf( __( 'Use as featured image', 'disciple_tools' ), $this->plural ),
+            'insert_into_item'      => sprintf( __( 'Placed into %s', 'disciple_tools' ), $this->plural ),
+            'uploaded_to_this_item' => sprintf( __( 'Uploaded to this %s', 'disciple_tools' ), $this->plural ),
+            'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
+            'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
+            'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
+        );
         $rewrite = array(
             'slug'                  => 'contacts',
             'with_front'            => true,
@@ -151,93 +151,93 @@ class Disciple_Tools_Contact_Post_Type {
             'publish_posts'         => 'publish_contacts',
             'read_private_posts'    => 'read_private_contacts',
         );
-		$defaults = array(
+        $defaults = array(
             'label'                 => __( 'Contact', 'disciple_tools' ),
             'description'           => __( 'Contacts generated by the media to movement effort', 'disciple_tools' ),
-			'labels' 				=> $labels,
-			'public' 				=> true,
-			'publicly_queryable' 	=> true,
-			'show_ui' 				=> true,
-			'show_in_menu' 			=> true,
-			'query_var' 			=> true,
-			'rewrite' 				=> $rewrite,
+            'labels'                => $labels,
+            'public'                => true,
+            'publicly_queryable'    => true,
+            'show_ui'               => true,
+            'show_in_menu'          => true,
+            'query_var'             => true,
+            'rewrite'               => $rewrite,
             'capabilities'          => $capabilities,
-			'capability_type' 		=> 'contact',
-			'has_archive' 			=> true, //$archive_slug,
-			'hierarchical' 			=> false,
-			'supports' 				=> array( 'title', 'comments' ),
-			'menu_position' 		=> 5,
-			'menu_icon' 			=> 'dashicons-groups',
+            'capability_type'       => 'contact',
+            'has_archive'           => true, //$archive_slug,
+            'hierarchical'          => false,
+            'supports'              => array( 'title', 'comments' ),
+            'menu_position'         => 5,
+            'menu_icon'             => 'dashicons-groups',
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => true,
             'exclude_from_search'   => false,
             'show_in_rest'          => true,
             'register_meta_box_cb'  => array($this, 'meta_box_setup'),
-			'rest_base'             => 'contacts',
-			'rest_controller_class' => 'WP_REST_Posts_Controller',
-		);
+            'rest_base'             => 'contacts',
+            'rest_controller_class' => 'WP_REST_Posts_Controller',
+        );
 
-		$args = wp_parse_args( $this->args, $defaults );
+        $args = wp_parse_args( $this->args, $defaults );
 
-		register_post_type( $this->post_type, $args );
-	} // End register_post_type()
+        register_post_type( $this->post_type, $args );
+    } // End register_post_type()
 
-	/**
-	 * Register the "contacts-category" taxonomy.
-	 * @access public
-	 * @since  1.3.0
-	 * @return void
-	 */
-	public function register_taxonomy () {
-		$this->taxonomies['contacts-type'] = new Disciple_Tools_Taxonomy($post_type = 'contacts', $token = 'contacts-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
-		$this->taxonomies['contacts-type']->register();
-	} // End register_taxonomy()
+    /**
+     * Register the "contacts-category" taxonomy.
+     * @access public
+     * @since  1.3.0
+     * @return void
+     */
+    public function register_taxonomy () {
+        $this->taxonomies['contacts-type'] = new Disciple_Tools_Taxonomy($post_type = 'contacts', $token = 'contacts-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
+        $this->taxonomies['contacts-type']->register();
+    } // End register_taxonomy()
 
-	/**
-	 * Update messages for the post type admin.
-	 * @since  0.1
-	 * @param  array $messages Array of messages for all post types.
-	 * @return array           Modified array.
-	 */
-	public function updated_messages ( $messages ) {
-		global $post, $post_ID;
+    /**
+     * Update messages for the post type admin.
+     * @since  0.1
+     * @param  array $messages Array of messages for all post types.
+     * @return array           Modified array.
+     */
+    public function updated_messages ( $messages ) {
+        global $post, $post_ID;
 
-		$messages[$this->post_type] = array(
-			0 => '', // Unused. Messages start at index 1.
-			1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
-			2 => __( 'Contact updated.', 'disciple_tools' ),
-			3 => __( 'Contact deleted.', 'disciple_tools' ),
-			4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-			/* translators: %s: date and time of the revision */
-			5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
-			7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-			8 => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
-			9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
-			// translators: Publish box date format, see http://php.net/date
-			'<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink($post_ID) ) . '">', '</a>' ),
-			10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
-		);
+        $messages[$this->post_type] = array(
+            0 => '', // Unused. Messages start at index 1.
+            1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
+            2 => __( 'Contact updated.', 'disciple_tools' ),
+            3 => __( 'Contact deleted.', 'disciple_tools' ),
+            4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
+            /* translators: %s: date and time of the revision */
+            5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+            6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
+            7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
+            8 => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+            9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
+            // translators: Publish box date format, see http://php.net/date
+            '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink($post_ID) ) . '">', '</a>' ),
+            10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+        );
 
-		return $messages;
-	} // End updated_messages()
+        return $messages;
+    } // End updated_messages()
 
-	/**
-	 * Setup the meta box.
-	 * @access public
-	 * @since  0.1
-	 * @return void
-	 */
-	public function meta_box_setup () {
-		add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'load_contact_info_meta_box' ), $this->post_type, 'normal', 'high' );
-		add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_info_meta_box' ), $this->post_type, 'normal', 'high' );
-		add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
+    /**
+     * Setup the meta box.
+     * @access public
+     * @since  0.1
+     * @return void
+     */
+    public function meta_box_setup () {
+        add_meta_box( $this->post_type . '_details', __( 'Contact Details', 'disciple_tools' ), array( $this, 'load_contact_info_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), array( $this, 'load_address_info_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), array( $this, 'load_milestone_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), array( $this, 'load_misc_meta_box' ), $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), array( $this, 'load_status_info_meta_box' ), $this->post_type, 'side' );
-		do_action("dt_contact_meta_boxes_setup", $this->post_type);
-	} // End meta_box_setup()
+        do_action("dt_contact_meta_boxes_setup", $this->post_type);
+    } // End meta_box_setup()
 
     /**
      * The contents of meta box.
@@ -333,7 +333,7 @@ class Disciple_Tools_Contact_Post_Type {
                             break;
                         case 'checkbox':
                             $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . $v['name'] . '</label></th><td>
-                                
+
                                 <input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '" value="' ;
 
                             if($data) { $html .=  esc_attr( $data ) . '" checked="checked"/>';} else { $html .= '"/>'; }
@@ -445,7 +445,7 @@ class Disciple_Tools_Contact_Post_Type {
         global $post_id;
         echo ''. $this->meta_box_content('info');
         echo ''. $this->add_new_contact_field ();
-//        print '<pre>'; print_r($this->get_custom_fields_settings()); print '</pre>';
+        // print '<pre>'; print_r($this->get_custom_fields_settings()); print '</pre>';
 
     }
 
@@ -477,15 +477,15 @@ class Disciple_Tools_Contact_Post_Type {
         echo ''. $this->meta_box_content('misc');
     }
 
-	/**
-	 * Get the settings for the custom fields.
-	 * @access public
-	 * @since  0.1
-	 * @return array
-	 */
-	public function get_custom_fields_settings () {
-	    global $post;
-		$fields = array();
+    /**
+     * Get the settings for the custom fields.
+     * @access public
+     * @since  0.1
+     * @return array
+     */
+    public function get_custom_fields_settings () {
+        global $post;
+        $fields = array();
 
         // Status Section
         $fields['assigned_to'] = array(
@@ -598,22 +598,22 @@ class Disciple_Tools_Contact_Post_Type {
             $channels = $this->get_channels_list();
 
             foreach ($channels as $channel_key => $channel) {
-            	foreach($channel["types"] as $type_key => $type){
+                foreach($channel["types"] as $type_key => $type){
 
-	                $tag = null;
+                    $tag = null;
 
-	                $key =  strtolower('contact_' . $channel_key . '_' . $type_key . '_111') ;
+                    $key =  strtolower('contact_' . $channel_key . '_' . $type_key . '_111') ;
 
-	                if($channel["label"] != $type["label"]) { $tag = ' ('. ucwords($type["label"]) . ')'; }
+                    if($channel["label"] != $type["label"]) { $tag = ' ('. ucwords($type["label"]) . ')'; }
 
-	                $fields[$key] = array(
-	                    'name' => ucwords($channel["label"]) . $tag,
-	                    'description' => '',
-	                    'type' => 'text',
-	                    'default' => '',
-	                    'section' => 'info'
-	                );
-	            }
+                    $fields[$key] = array(
+                        'name' => ucwords($channel["label"]) . $tag,
+                        'description' => '',
+                        'type' => 'text',
+                        'default' => '',
+                        'section' => 'info'
+                    );
+                }
             }
 
             $channels = dt_address_metabox ()->get_address_list($this->post_type);
@@ -634,13 +634,13 @@ class Disciple_Tools_Contact_Post_Type {
 
 
         // Status information section
-		$fields['milestone_belief'] = array(
-		    'name' => __( 'States Belief', 'disciple_tools' ),
-		    'description' => '',
-		    'type' => 'key_select',
-		    'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
-		    'section' => 'milestone'
-		);
+        $fields['milestone_belief'] = array(
+            'name' => __( 'States Belief', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => array('0' => __('No', 'disciple_tools' ), '1' => __('Yes', 'disciple_tools')),
+            'section' => 'milestone'
+        );
         $fields['milestone_can_share'] = array(
             'name' => __( 'Can Share Gospel/Testimony', 'disciple_tools' ),
             'description' => '',
@@ -729,29 +729,29 @@ class Disciple_Tools_Contact_Post_Type {
             'default' => array('0' => '', '1' => __('Duplicate', 'disciple_tools' ), '2' => __('Hostile / Playing Games', 'disciple_tools' ), '3' => __('Insufficient Contact Info', 'disciple_tools' ), '4' => __('Already In Church/Connected with Others', 'disciple_tools' ), '5' => __('No Longer Interested', 'disciple_tools' ), '6' => __('Just wanted a book', 'disciple_tools' ), '7' => __('Unknown', 'disciple_tools' )),
             'section' => 'misc'
         );
-		$fields['source_details'] = array(
-			'name' => __( 'Source Details', 'disciple_tools'),
-			'description' => '',
-			'type' => 'text',
-			'default' => '',
-			'section' => 'misc'
-		);
-		return apply_filters( 'dt_custom_fields_settings', $fields );
-	} // End get_custom_fields_settings()
+        $fields['source_details'] = array(
+            'name' => __( 'Source Details', 'disciple_tools'),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'misc'
+        );
+        return apply_filters( 'dt_custom_fields_settings', $fields );
+    } // End get_custom_fields_settings()
 
     /**
      * Field: Contact Fields
      * @return array
      */
     public function contact_fields () {
-	    global $wpdb, $post;
+        global $wpdb, $post;
 
-	    $fields = array();
-	    $current_fields = array();
+        $fields = array();
+        $current_fields = array();
 
-	    if (isset($post->ID)){
+        if (isset($post->ID)){
             $current_fields = $wpdb->get_results( "SELECT meta_key FROM $wpdb->postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
-	    }
+        }
 
         foreach ($current_fields as $value) {
             $names = explode('_', $value['meta_key']);
@@ -781,17 +781,17 @@ class Disciple_Tools_Contact_Post_Type {
 
         $html .= '<tr><th>
             <select name="new-key-contact" class="edit-input"><option value=""></option> ';
-                foreach ($channels as $channel_key => $channel) {
-					foreach ($channels[$channel_key]["types"] as $type_key => $type ) {
-						$key   = $this->create_channel_metakey( $channel_key, $type_key, 'contact' ); // build key
+        foreach ($channels as $channel_key => $channel) {
+            foreach ($channels[$channel_key]["types"] as $type_key => $type ) {
+                $key   = $this->create_channel_metakey( $channel_key, $type_key, 'contact' ); // build key
 
-						$html .= '<option value="' . $key . '">' . $channel["label"];
-						if ( $channel["label"] != $type["label"] ) {
-							$html .= '  (' . $type["label"] . ')';
-						}
-						$html .= '</option>';
-					}
+                $html .= '<option value="' . $key . '">' . $channel["label"];
+                if ( $channel["label"] != $type["label"] ) {
+                    $html .= '  (' . $type["label"] . ')';
                 }
+                $html .= '</option>';
+            }
+        }
         $html .= '</select></th>';
 
         $html .= '<td><input type="text" name="new-value-contact" id="new-value" class="edit-input" /></td><td><button type="submit" class="button">Save</button></td></tr>';
@@ -802,14 +802,14 @@ class Disciple_Tools_Contact_Post_Type {
     }
 
 
-	/**
-	 * Helper function to create the unique metakey for contacts channels.
-	 * @param $channel_key
-	 * @param $channel_type
-	 * @param $field_type
-	 *
-	 * @return string
-	 */
+    /**
+     * Helper function to create the unique metakey for contacts channels.
+     * @param $channel_key
+     * @param $channel_type
+     * @param $field_type
+     *
+     * @return string
+     */
     public function create_channel_metakey ($channel_key, $channel_type, $field_type) {
         return $field_type . '_' . $channel_key .'_'. $channel_type . '_' . $this->unique_hash(); // build key
     }
@@ -819,62 +819,62 @@ class Disciple_Tools_Contact_Post_Type {
     }
 
 
-	/**
-	 * Get a list of the contact channels and their types
-	 * @access public
-	 * @since  0.1
-	 * @return mixed
-	 */
+    /**
+     * Get a list of the contact channels and their types
+     * @access public
+     * @since  0.1
+     * @return mixed
+     */
     public function get_channels_list(){
         $channelList = array(
-        	"phone" => array(
-		        "label" => __('Phone', 'disciple_tools'),
-		        "types" => array(
-			        "primary" =>    array("label"=>__('Primary', 'disciple_tools')),
-			        "mobile" =>     array("label"=>__('Mobile', 'disciple_tools')),
-			        "work" =>       array("label"=>__('Work', 'disciple_tools')),
-			        "home" =>       array("label"=>__('Home', 'disciple_tools')),
-			        "other" =>      array("label"=>__('Other', 'disciple_tools')),
-	            )
-	        ),
-	        "email" => array(
-		        "label" => __('Email', 'disciple_tools'),
-		        "types" => array(
-			        "primary" =>    array("label"=>__('Primary', 'disciple_tools')),
-			        "work" =>       array("label"=>__('Work', 'disciple_tools')),
-			        "other" =>      array("label"=>__('Other', 'disciple_tools')),
-	            )
-	        ),
-	        "facebook" => array(
-	        	"label" => __('Facebook', 'disciple_tools'),
-		        "types" => array(
-		        	"facebook" => array("label"=>__('Facebook', 'disciple_tools'))
-		        )
-	        ),
-	        "twitter" => array(
-	        	"label" => __('Twitter', 'disciple_tools'),
-		        "types" => array(
-		        	"twitter" => array("label"=>__('Twitter', 'disciple_tools'))
-		        )
-	        ),
-	        "instagram" => array(
-	        	"label" => __('Instagram', 'disciple_tools'),
-		        "types" => array(
-		        	"instagram" => array("label"=>__('Instagram', 'disciple_tools'))
-		        )
-	        ),
-	        "skype" => array(
-	        	"label" => __('Skype', 'disciple_tools'),
-		        "types" => array(
-		            "skype" => array("label"=> __('Skype', 'disciple_tools'))
-		        )
-	        ),
-	        "other" => array(
-	        	"label" => __('Skype', 'disciple_tools'),
-		        "types" => array(
-		        	"other" => array("label"=> __('Skype', 'disciple_tools'))
-		        )
-	        ),
+            "phone" => array(
+                "label" => __('Phone', 'disciple_tools'),
+                "types" => array(
+                    "primary" =>    array("label"=>__('Primary', 'disciple_tools')),
+                    "mobile" =>     array("label"=>__('Mobile', 'disciple_tools')),
+                    "work" =>       array("label"=>__('Work', 'disciple_tools')),
+                    "home" =>       array("label"=>__('Home', 'disciple_tools')),
+                    "other" =>      array("label"=>__('Other', 'disciple_tools')),
+                )
+            ),
+            "email" => array(
+                "label" => __('Email', 'disciple_tools'),
+                "types" => array(
+                    "primary" =>    array("label"=>__('Primary', 'disciple_tools')),
+                    "work" =>       array("label"=>__('Work', 'disciple_tools')),
+                    "other" =>      array("label"=>__('Other', 'disciple_tools')),
+                )
+            ),
+            "facebook" => array(
+                "label" => __('Facebook', 'disciple_tools'),
+                "types" => array(
+                    "facebook" => array("label"=>__('Facebook', 'disciple_tools'))
+                )
+            ),
+            "twitter" => array(
+                "label" => __('Twitter', 'disciple_tools'),
+                "types" => array(
+                    "twitter" => array("label"=>__('Twitter', 'disciple_tools'))
+                )
+            ),
+            "instagram" => array(
+                "label" => __('Instagram', 'disciple_tools'),
+                "types" => array(
+                    "instagram" => array("label"=>__('Instagram', 'disciple_tools'))
+                )
+            ),
+            "skype" => array(
+                "label" => __('Skype', 'disciple_tools'),
+                "types" => array(
+                    "skype" => array("label"=> __('Skype', 'disciple_tools'))
+                )
+            ),
+            "other" => array(
+                "label" => __('Skype', 'disciple_tools'),
+                "types" => array(
+                    "other" => array("label"=> __('Skype', 'disciple_tools'))
+                )
+            ),
         );
         return apply_filters( 'dt_custom_channels', $channelList );
     }
@@ -897,9 +897,9 @@ class Disciple_Tools_Contact_Post_Type {
         $html .= '<select name="assigned_to" id="assigned_to" class="edit-input">';
 
         // Set selected state
-	    if (isset($post->ID)){
+        if (isset($post->ID)){
             $assigned_to = get_post_meta( $post->ID, 'assigned_to', true);
-	    }
+        }
 
         if(empty( $assigned_to) || $assigned_to == 'dispatch' ) {
             // set default to dispatch
@@ -973,26 +973,26 @@ class Disciple_Tools_Contact_Post_Type {
         return $title;
     } // End enter_title_here()
 
-	/**
-	 * Run on activation.
-	 * @access public
-	 * @since 0.1
-	 */
-	public function activation () {
-		$this->flush_rewrite_rules();
-	} // End activation()
+    /**
+     * Run on activation.
+     * @access public
+     * @since 0.1
+     */
+    public function activation () {
+        $this->flush_rewrite_rules();
+    } // End activation()
 
-	/**
-	 * Flush the rewrite rules
-	 * @access public
-	 * @since 0.1
-	 */
-	private function flush_rewrite_rules () {
-		$this->register_post_type();
-		flush_rewrite_rules();
-	} // End flush_rewrite_rules()
+    /**
+     * Flush the rewrite rules
+     * @access public
+     * @since 0.1
+     */
+    private function flush_rewrite_rules () {
+        $this->register_post_type();
+        flush_rewrite_rules();
+    } // End flush_rewrite_rules()
 
 
-				
-				
+
+
 } // End Class

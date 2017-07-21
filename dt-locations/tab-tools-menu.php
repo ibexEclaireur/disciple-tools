@@ -4,9 +4,9 @@
  * Disciple_Tools_Tabs
  *
  * @class Disciple_Tools_Tabs
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools_Tabs
+ * @package    Disciple_Tools_Tabs
  * @author Chasm.Solutions
  */
 
@@ -18,7 +18,7 @@ class Disciple_Tools_Location_Tools_Menu {
 
     /**
      * Disciple_Tools The single instance of Disciple_Tools.
-     * @var 	object
+     * @var     object
      * @access  private
      * @since  0.1
      */

@@ -22,10 +22,10 @@ class Ga_Admin
     private static $_instance = null;
 
     public static function instance () {
-		if ( is_null( self::$_instance ) )
-			self::$_instance = new self();
-		return self::$_instance;
-	} // End instance()
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
 
     /**
      * Instantiate API client.
@@ -75,19 +75,19 @@ class Ga_Admin
 
 
     /**
-	 * Init plugin actions.
-	 *
-	 */
-	public function init_admin() {
+     * Init plugin actions.
+     *
+     */
+    public function init_admin() {
 
-		if ( is_admin() ) {
-			self::add_filters();
-			self::add_actions();
+        if ( is_admin() ) {
+            self::add_filters();
+            self::add_actions();
 
             self::init_oauth();
 
-		}
-	}
+        }
+    }
 
     public function __construct () {
         $this->init_admin();
@@ -160,10 +160,10 @@ class Ga_Admin
             if(!Ga_Helper::is_authorized($account['token'])){
                 foreach($account['account_summaries'] as $account_summary){
                     $account_summary['reauth'] = true;
-//                    foreach ($account_summary->webProperties as $property){
-//                        foreach ($property->profiles as $profile){
-//                        }
-//                    }
+                    //                    foreach ($account_summary->webProperties as $property){
+                    //                        foreach ($property->profiles as $profile){
+                    //                        }
+                    //                    }
                 }
             };
         }
@@ -281,7 +281,7 @@ class Ga_Admin
             self::api_client()->set_disable_cache(true);
 
             // Try to regenerate cache if needed
-//            self::generate_stats_data();
+            //            self::generate_stats_data();
         }
     }
 
@@ -446,9 +446,9 @@ class Ga_Admin
                     foreach ($property['profiles'] as $profile){
                         if (isset($profile['include_in_stats']) && $profile['include_in_stats']==true){
                             $selected_views[] = array(
-                                'account_id'		=> $account_summary['id'],
-                                'web_property_id'	=> $property['webPropertyId'],
-                                'view_id'			=> $profile['id'],
+                                'account_id'        => $account_summary['id'],
+                                'web_property_id'    => $property['webPropertyId'],
+                                'view_id'            => $profile['id'],
                                 'token'             => $account['token'],
                                 'url'               => $property['name']
                             );

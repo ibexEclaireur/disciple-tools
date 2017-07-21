@@ -4,7 +4,7 @@
  * Counter factory for reporting
  *
  * @package   Disciple_Tools
- * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
+ * @author       Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @license   GPL-3.0
  * @version   0.1
@@ -16,9 +16,9 @@ class Disciple_Tools_Counter_Factory {
 
     /**
      * Disciple_Tools_Counter_Factory The single instance of Disciple_Tools_Counter_Factory.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -36,16 +36,16 @@ class Disciple_Tools_Counter_Factory {
         return self::$_instance;
     } // End instance()
 
-	/**
-	 * Constructor function
-	 *
-	 * @access  public
-	 * @since   0.1
-	 */
-	public function __construct ( ) {
+    /**
+     * Constructor function
+     *
+     * @access  public
+     * @since   0.1
+     */
+    public function __construct ( ) {
 
-	    // Load required files
-	    require_once('counters/counter-connected.php');
+        // Load required files
+        require_once('counters/counter-connected.php');
         require_once('counters/counter-generations-status.php');
         require_once('counters/counter-baptism.php');
         require_once('counters/counter-groups.php');
@@ -53,72 +53,72 @@ class Disciple_Tools_Counter_Factory {
 
     } // End __construct
 
-	/**
-	 * Returns count of contacts publish status
-	 *
-	 * @access  public
-	 * @since   0.1
-	 */
-	public function contacts_post_status ($status = '') {
+    /**
+     * Returns count of contacts publish status
+     *
+     * @access  public
+     * @since   0.1
+     */
+    public function contacts_post_status ($status = '') {
 
-		/**
-		 * @usage Disciple_Tools()->counter->contacts_post_status()
-		 * @returns array of status counts
-		 *
-		 * @usage Disciple_Tools()->counter->contacts_post_status('publish')
-		 * @returns number count
-		 */
+        /**
+         * @usage Disciple_Tools()->counter->contacts_post_status()
+         * @returns array of status counts
+         *
+         * @usage Disciple_Tools()->counter->contacts_post_status('publish')
+         * @returns number count
+         */
 
-		$status = strtolower($status);
+        $status = strtolower($status);
 
-		switch ($status) {
+        switch ($status) {
 
-			case 'publish':
-				$count = wp_count_posts('contacts');
-				$count = $count->publish;
-				return $count;
-				break;
+            case 'publish':
+                $count = wp_count_posts('contacts');
+                $count = $count->publish;
+                return $count;
+                break;
 
-			case 'draft':
-				$count = wp_count_posts('contacts');
-				$count = $count->draft;
-				return $count;
-				break;
+            case 'draft':
+                $count = wp_count_posts('contacts');
+                $count = $count->draft;
+                return $count;
+                break;
 
-			case 'pending':
-				$count = wp_count_posts('contacts');
-				$count = $count->pending;
-				return $count;
-				break;
+            case 'pending':
+                $count = wp_count_posts('contacts');
+                $count = $count->pending;
+                return $count;
+                break;
 
-			case 'private':
-				$count = wp_count_posts('contacts');
-				$count = $count->private;
-				return $count;
-				break;
+            case 'private':
+                $count = wp_count_posts('contacts');
+                $count = $count->private;
+                return $count;
+                break;
 
-			case 'trash':
-				$count = wp_count_posts('contacts');
-				$count = $count->trash;
-				return $count;
-				break;
+            case 'trash':
+                $count = wp_count_posts('contacts');
+                $count = $count->trash;
+                return $count;
+                break;
 
-			default:
-				return wp_count_posts('contacts');
-				break;
+            default:
+                return wp_count_posts('contacts');
+                break;
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * Counts the meta_data attached to a P2P connection
-	 *
+    /**
+     * Counts the meta_data attached to a P2P connection
+     *
      * @param       $type    string   Can be either contacts, groups, baptisms
-	 * @param       $meta_value     string
+     * @param       $meta_value     string
      * @param       $meta_key       string
      * @return      int
-	 */
-	public function connection_type_counter ($type, $meta_value) {
+     */
+    public function connection_type_counter ($type, $meta_value) {
         $type = $this->set_connection_type($type);
         $count = new Disciple_Tools_Counter_Connected();
         $result = $count->has_meta_value($type, $meta_value);
@@ -126,16 +126,16 @@ class Disciple_Tools_Counter_Factory {
     }
 
 
-	/**
-	 * Counts Contacts with matching $meta_key and $meta_value provided.
+    /**
+     * Counts Contacts with matching $meta_key and $meta_value provided.
      * Used to retrieve the number of contacts that match the meta_key and meta_value supplied.
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
-	 * @usage   Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
+     * @usage   Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
      * @return  int
-	 */
-	public function contacts_meta_counter ($meta_key, $meta_value) {
+     */
+    public function contacts_meta_counter ($meta_key, $meta_value) {
         $query = new WP_Query( array( 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'contacts', ) );
         return $query->found_posts;
     }
@@ -160,7 +160,7 @@ class Disciple_Tools_Counter_Factory {
      *
      */
     public function get_baptisms ($type) {
-	    switch ($type) {
+        switch ($type) {
             case 'baptisms':
                 $count = new Disciple_Tools_Counter_Baptism();
                 $result = $count->get_number_of_baptisms();
@@ -176,19 +176,19 @@ class Disciple_Tools_Counter_Factory {
         return $result;
     }
 
-	/**
-	 * Contact generations counting factory
-	 *
+    /**
+     * Contact generations counting factory
+     *
      * @param   number = 1,2,3 etc for $generation number
      * @param   string = contacts or groups or baptisms
-	 * @return number
-	 */
+     * @return number
+     */
     public function get_generation( $generation_number, $type = 'contacts' ) {
 
         // Set the P2P type for selecting group or contacts
         $type = $this->set_connection_type($type);
 
-	    switch($generation_number) {
+        switch($generation_number) {
 
             case 'has_one_or_more':
                 $gen_object = new Disciple_Tools_Counter_Connected();

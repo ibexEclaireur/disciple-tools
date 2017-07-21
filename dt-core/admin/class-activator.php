@@ -7,25 +7,25 @@
  * @since      0.1
  * @package    Disciple_Tools
  * @subpackage Disciple_Tools/includes/admin
- * @author     
+ * @author
  */
 
 
 class Disciple_Tools_Activator {
 
 
-	/**
-	 * Activities to run during installation.
-	 *
-	 * Long Description.
-	 *
-	 * @since    0.1
-	 */
-	public static function activate($network_wide) {
+    /**
+     * Activities to run during installation.
+     *
+     * Long Description.
+     *
+     * @since    0.1
+     */
+    public static function activate($network_wide) {
         global $wpdb;
-	    $Disciple_Tools = Disciple_Tools();
+        $Disciple_Tools = Disciple_Tools();
 
-	    /**
+        /**
          * Log version number of Disciple_Tools
          */
         $Disciple_Tools->_log_version_number();
@@ -41,31 +41,31 @@ class Disciple_Tools_Activator {
         /**
          * Set defaults for options page TODO: Need to rebuild a proper options page for DT plugin configurations.
          */
-//        $settings_sections = $Disciple_Tools->settings->get_settings_sections ( );
-//        foreach ($settings_sections as $key => $value) {
-//            $section = $Disciple_Tools->settings->get_settings_fields ( $key );
-//            $preset = array();
-//            foreach ($section as $field => $item) {
-//                if(!empty($item['default'])) {
-//                    $preset[$field] = $item['default'];
-//                }
-//            }
-//            add_option( $Disciple_Tools->token . '-' . $key, $preset, '', 'yes'  );
-//        }
+        //        $settings_sections = $Disciple_Tools->settings->get_settings_sections ( );
+        //        foreach ($settings_sections as $key => $value) {
+        //            $section = $Disciple_Tools->settings->get_settings_fields ( $key );
+        //            $preset = array();
+        //            foreach ($section as $field => $item) {
+        //                if(!empty($item['default'])) {
+        //                    $preset[$field] = $item['default'];
+        //                }
+        //            }
+        //            add_option( $Disciple_Tools->token . '-' . $key, $preset, '', 'yes'  );
+        //        }
 
 
-		/**
-		 * Setup key for JWT authentication
-		 */
-		if (!defined('JWT_AUTH_SECRET_KEY') ) {
-			if (get_option("my_jwt_key")){
-				define( 'JWT_AUTH_SECRET_KEY', get_option("my_jwt_key"));
-			} else {
-				$iv = password_hash( random_bytes(16), PASSWORD_DEFAULT);
-				update_option( 'my_jwt_key', $iv );
-				define( 'JWT_AUTH_SECRET_KEY', $iv );
-			}
-		}
+        /**
+         * Setup key for JWT authentication
+         */
+        if (!defined('JWT_AUTH_SECRET_KEY') ) {
+            if (get_option("my_jwt_key")){
+                define( 'JWT_AUTH_SECRET_KEY', get_option("my_jwt_key"));
+            } else {
+                $iv = password_hash( random_bytes(16), PASSWORD_DEFAULT);
+                update_option( 'my_jwt_key', $iv );
+                define( 'JWT_AUTH_SECRET_KEY', $iv );
+            }
+        }
 
 
         /**
@@ -83,7 +83,7 @@ class Disciple_Tools_Activator {
         } else {
             self::create_tables($Disciple_Tools->version);
         }
-	}
+    }
 
     /**
      * Creating tables whenever a new blog is created

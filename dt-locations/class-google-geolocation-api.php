@@ -4,9 +4,9 @@
  * Disciple_Tools_Tabs
  *
  * @class Disciple_Tools_Tabs
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools_Tabs
+ * @package    Disciple_Tools_Tabs
  * @author Chasm.Solutions
  */
 

@@ -4,9 +4,9 @@
  * Disciple Tools
  *
  * @class Disciple_Tools_
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -16,9 +16,9 @@ class Disciple_Tools_Reports_Cron {
 
     /**
      * Disciple_Tools_Reports_Cron The single instance of Disciple_Tools_Reports_Cron.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 

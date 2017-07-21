@@ -4,9 +4,9 @@
  * Disciple_Tools_Multi_Roles
  *
  * @class Disciple_Tools_Multi_Roles
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -16,9 +16,9 @@ class Disciple_Tools_Multi_Roles {
 
     /**
      * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -59,7 +59,7 @@ class Disciple_Tools_Multi_Roles {
 
             // General admin functions.
             require_once('functions-admin.php');
-//            require_once( 'functions-help.php'  );
+            // require_once( 'functions-help.php'  );
 
             // Edit users.
             require_once('class-user-edit.php');

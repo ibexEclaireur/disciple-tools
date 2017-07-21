@@ -4,9 +4,9 @@
  * Disciple Tools
  *
  * @class Disciple_Tools_
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -97,13 +97,13 @@ class Disciple_Tools_Metabox_Map {
                     var coords = [ <?php
                         $rows = count($result);
                         $i = 0;
-                        foreach ($result as $value) {
-                            echo $value->meta_value;
-                            if ($rows > $i + 1) {
-                                echo ',';
-                            }
-                            $i++;
-                        } ?> ];
+                    foreach ($result as $value) {
+                        echo $value->meta_value;
+                        if ($rows > $i + 1) {
+                            echo ',';
+                        }
+                        $i++;
+                    } ?> ];
 
                     var tracts = [];
 
@@ -162,7 +162,7 @@ class Disciple_Tools_Metabox_Map {
 
             <?php
         } else {
-           echo '<p>No map info available</p>';
+            echo '<p>No map info available</p>';
         } // end if no results
 
 

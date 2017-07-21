@@ -11,11 +11,11 @@
  * Tested up to: 4.7.2
  *
  * @package   Disciple_Tools
- * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
+ * @author       Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @license   GPL-3.0
  * @version   0.1
- * 
+ *
  */
 
 // If this file is called directly, abort.
@@ -63,63 +63,63 @@ add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
  * @return object Disciple_Tools
  */
 
-    // Adds the Disciple_Tools Plugin after plugins load
-    add_action( 'plugins_loaded', 'Disciple_Tools' );
+// Adds the Disciple_Tools Plugin after plugins load
+add_action( 'plugins_loaded', 'Disciple_Tools' );
 
-    // Creates the instance
-    function Disciple_Tools() {
-        return Disciple_Tools::instance();
-    }
+// Creates the instance
+function Disciple_Tools() {
+    return Disciple_Tools::instance();
+}
 
 /**
  * Main Disciple_Tools Class
  *
  * @class Disciple_Tools
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 class Disciple_Tools {
-	/**
-	 * Disciple_Tools The single instance of Disciple_Tools.
-	 * @var 	object
-	 * @access  private
-	 * @since  0.1
-	 */
-	private static $_instance = null;
+    /**
+     * Disciple_Tools The single instance of Disciple_Tools.
+     * @var     object
+     * @access  private
+     * @since  0.1
+     */
+    private static $_instance = null;
 
-	/**
-	 * The token.
-	 * @var     string
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $token;
+    /**
+     * The token.
+     * @var     string
+     * @access  public
+     * @since   0.1
+     */
+    public $token;
 
 
-	/**
-	 * The version number.
-	 * @var     string
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $version;
+    /**
+     * The version number.
+     * @var     string
+     * @access  public
+     * @since   0.1
+     */
+    public $version;
 
-	/**
-	 * The plugin directory URL.
-	 * @var     string
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $plugin_url;
+    /**
+     * The plugin directory URL.
+     * @var     string
+     * @access  public
+     * @since   0.1
+     */
+    public $plugin_url;
 
-	/**
-	 * The plugin directory path.
-	 * @var     string
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $plugin_path;
+    /**
+     * The plugin directory path.
+     * @var     string
+     * @access  public
+     * @since   0.1
+     */
+    public $plugin_path;
 
     /**
      * Activation of roles.
@@ -130,37 +130,37 @@ class Disciple_Tools {
     private $roles;
     public $report_cron;
 
-	/**
-	 * The admin object.
-	 * @var     object
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $admin;
+    /**
+     * The admin object.
+     * @var     object
+     * @access  public
+     * @since   0.1
+     */
+    public $admin;
 
-	/**
-	 * The settings object.
-	 * @var     object
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $settings;
+    /**
+     * The settings object.
+     * @var     object
+     * @access  public
+     * @since   0.1
+     */
+    public $settings;
 
-	/**
-	 * The facebook_integration object.
-	 * @var     object
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $facebook_integration;
+    /**
+     * The facebook_integration object.
+     * @var     object
+     * @access  public
+     * @since   0.1
+     */
+    public $facebook_integration;
 
-	/**
-	 * The post types we're registering.
-	 * @var     array
-	 * @access  public
-	 * @since   0.1
-	 */
-	public $post_types = array();
+    /**
+     * The post types we're registering.
+     * @var     array
+     * @access  public
+     * @since   0.1
+     */
+    public $post_types = array();
 
     /**
      * Main Disciple_Tools Instance
@@ -178,24 +178,24 @@ class Disciple_Tools {
         return self::$_instance;
     } // End instance()
 
-	/**
-	 * Constructor function.
-	 * @access  public
-	 * @since   0.1
-	 */
-	public function __construct () {
-	    global $wpdb;
+    /**
+     * Constructor function.
+     * @access  public
+     * @since   0.1
+     */
+    public function __construct () {
+        global $wpdb;
 
-	    /**
-		 * Prepare variables
-		 */
-	    $this->token 			= 'disciple_tools';
-		$this->version 			= '0.1';
-		$this->plugin_url 		= plugin_dir_url( __FILE__ );
-		$this->plugin_path 		= plugin_dir_path( __FILE__ );
-		$this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/img/';
-		$this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/js/';
-		$this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/css/';
+        /**
+         * Prepare variables
+         */
+        $this->token            = 'disciple_tools';
+        $this->version          = '0.1';
+        $this->plugin_url       = plugin_dir_url( __FILE__ );
+        $this->plugin_path      = plugin_dir_path( __FILE__ );
+        $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/img/';
+        $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/js/';
+        $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/css/';
         $this->includes         = plugin_dir_url( __FILE__ ) . 'dt-core/';
         $this->includes_path    = plugin_dir_path( __FILE__ ) . 'dt-core/';
         $this->factories        = plugin_dir_url( __FILE__ ) . 'dt-core/factories/';
@@ -206,19 +206,19 @@ class Disciple_Tools {
         /* End prep variables */
 
 
-		/**
-		 * Admin panel
+        /**
+         * Admin panel
          *
          * Contains all those features that only run if in the Admin panel
-		 * or those things directly supporting Admin panel features.
-		 */
-		if ( is_admin() ) {
+         * or those things directly supporting Admin panel features.
+         */
+        if ( is_admin() ) {
 
-		    // Administration
+            // Administration
             require_once('dt-core/admin/config-options-admin.php'); // General admin settings page
             $this->admin = Disciple_Tools_Admin::instance();
-			require_once('dt-core/admin/config-options-settings.php'); // General admin settings page
-			$this->settings = Disciple_Tools_Settings::instance();
+            require_once('dt-core/admin/config-options-settings.php'); // General admin settings page
+            $this->settings = Disciple_Tools_Settings::instance();
             require_once('dt-core/admin/enqueue-scripts.php'); // Load admin scripts
             require_once('dt-core/admin/admin-theme-design.php'); // Configures elements of the admin enviornment
             require_once('dt-core/admin/restrict-record-access-in-admin.php'); //
@@ -227,13 +227,13 @@ class Disciple_Tools {
             require_once('dt-core/admin/class-better-author-metabox.php'); // Allows multiple authors to be selected as post author
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
 
-			// Profile
+            // Profile
             require_once('dt-core/admin/config-profile.php');
             $this->profile = Disciple_Tools_Profile::instance();
 
             // Dashboard
             require_once('dt-core/admin/config-dashboard.php');
-			$this->config_dashboard = Disciple_Tools_Dashboard::instance();
+            $this->config_dashboard = Disciple_Tools_Dashboard::instance();
             require_once('dt-statistics/class-page-factory.php'); // Factory class for page building
             require_once('dt-statistics/reports-funnel.php');
             $this->reports_funnel = Disciple_Tools_Funnel_Reports::instance();
@@ -242,7 +242,7 @@ class Disciple_Tools {
             require_once('dt-statistics/reports-project.php');
             $this->reports_project = Disciple_Tools_Project_Reports::instance();
 
-			// Contacts
+            // Contacts
             require_once('dt-contacts/contacts-config.php');
             $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
 
@@ -442,20 +442,20 @@ class Disciple_Tools {
         }
 
         // Language
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+        add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
     } // End __construct()
 
 
 
-	/**
-	 * Load the localisation file.
-	 * @access  public
-	 * @since   0.1
-	 */
-	public function load_plugin_textdomain() {
-		load_plugin_textdomain( 'disciple_tools', false, dirname( plugin_basename( __FILE__ ) ) . '/dt-core/languages/' );
-	} // End load_plugin_textdomain()
+    /**
+     * Load the localisation file.
+     * @access  public
+     * @since   0.1
+     */
+    public function load_plugin_textdomain() {
+        load_plugin_textdomain( 'disciple_tools', false, dirname( plugin_basename( __FILE__ ) ) . '/dt-core/languages/' );
+    } // End load_plugin_textdomain()
 
     /**
      * Log the plugin version number.
@@ -467,23 +467,23 @@ class Disciple_Tools {
         update_option( $this->token . '-version', $this->version );
     } // End _log_version_number()
 
-	/**
-	 * Cloning is forbidden.
-	 * @access public
-	 * @since 0.1
-	 */
-	public function __clone () {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
-	} // End __clone()
+    /**
+     * Cloning is forbidden.
+     * @access public
+     * @since 0.1
+     */
+    public function __clone () {
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
+    } // End __clone()
 
-	/**
-	 * Unserializing instances of this class is forbidden.
-	 * @access public
-	 * @since 0.1
-	 */
-	public function __wakeup () {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
-	} // End __wakeup()
+    /**
+     * Unserializing instances of this class is forbidden.
+     * @access public
+     * @since 0.1
+     */
+    public function __wakeup () {
+        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
+    } // End __wakeup()
 
 } // End Class
 

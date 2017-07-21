@@ -4,52 +4,52 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 
 class Disciple_Tools_Facebook_Integration {
-	/**
-	 * Disciple_Tools_Admin The single instance of Disciple_Tools_Admin.
-	 * @var 	object
-	 * @access  private
-	 * @since  0.1
-	 */
-	private static $_instance = null;
+    /**
+     * Disciple_Tools_Admin The single instance of Disciple_Tools_Admin.
+     * @var     object
+     * @access  private
+     * @since  0.1
+     */
+    private static $_instance = null;
 
-	/**
-	 * Main Disciple_Tools_Facebook_Integration Instance
-	 *
-	 * Ensures only one instance of Disciple_Tools_Facebook_Integration is loaded or can be loaded.
-	 *
-	 * @since 0.1
-	 * @static
-	 * @return Disciple_Tools_Facebook_Integration instance
-	 */
-	public static function instance () {
-		if ( is_null( self::$_instance ) )
-			self::$_instance = new self();
-		return self::$_instance;
-	} // End instance()
+    /**
+     * Main Disciple_Tools_Facebook_Integration Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Facebook_Integration is loaded or can be loaded.
+     *
+     * @since 0.1
+     * @static
+     * @return Disciple_Tools_Facebook_Integration instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) )
+            self::$_instance = new self();
+        return self::$_instance;
+    } // End instance()
 
 
     private $version = 1.0;
     private $context = "dt-facebook";
     private $namespace;
 
-	/**
-	 * Constructor function.
-	 * @access  public
-	 * @since   0.1
-	 */
-	public function __construct () {
-	    $this->namespace = $this->context . "/v" . intval($this->version);
+    /**
+     * Constructor function.
+     * @access  public
+     * @since   0.1
+     */
+    public function __construct () {
+        $this->namespace = $this->context . "/v" . intval($this->version);
         add_action('rest_api_init', array($this,  'add_api_routes'));
-	    add_action('admin_menu', array($this, 'add_facebook_settings_menu') );
-	    add_action('dt_contact_meta_boxes_setup', array($this, 'add_contact_meta_box' ));
+        add_action('admin_menu', array($this, 'add_facebook_settings_menu') );
+        add_action('dt_contact_meta_boxes_setup', array($this, 'add_contact_meta_box' ));
         add_action('admin_notices', array($this, 'dt_admin_notice'));
         add_action('wp_ajax_dt-facebook-notice-dismiss', array($this, 'dismiss_error'));
 
-	} // End __construct()
+    } // End __construct()
 
 
 
-	/**
+    /**
      * Setup the api routs for the plugin
      */
     public function add_api_routes()
@@ -640,7 +640,7 @@ class Disciple_Tools_Facebook_Integration {
         add_meta_box( $contact_post_type . '_facebook', __( 'Facebook', 'disciple_tools' ), array( $this, 'load_facebook_meta_box' ), $contact_post_type, 'side', 'low', array($contact_post_type));
     }
 
-    
+
     /** Sort messages in a conversation by date
      * @param $a, date of the first message
      * @param $b, date of the second message
@@ -650,7 +650,7 @@ class Disciple_Tools_Facebook_Integration {
         return strtotime($a["created_time"]) - strtotime($b["created_time"]);
     }
 
-    /** Load the messages in the facebook meta_box 
+    /** Load the messages in the facebook meta_box
      * @param $contact_post_type
      */
     public function load_facebook_meta_box($contact_post_type){

@@ -30,9 +30,9 @@ class Disciple_Tools_BetterAuthorMetabox {
 
     /**
      * Disciple_Tools_BetterAuthorMetabox The single instance of Disciple_Tools_BetterAuthorMetabox.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -55,7 +55,7 @@ class Disciple_Tools_BetterAuthorMetabox {
         $this->plugin_dir = plugin_dir_path( __FILE__ );
 
         // call all filters and actions
-//        add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
+        // add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
         add_action( 'admin_menu', array( $this, 'reset_author_metabox' ) );
         add_action( 'admin_init', array( $this, 'init_options' ) );
 
@@ -261,7 +261,7 @@ class Disciple_Tools_BetterAuthorMetabox {
         // collect defaults
         $this->options = get_option( 'BAM_config' );
 
-//        include($this->plugin_dir . '/options-page.php');
+        // include($this->plugin_dir . '/options-page.php');
         $html = '<div class="wrap">
         <h2>Author Metabox</h2>
         <form method="post" action="options.php">';

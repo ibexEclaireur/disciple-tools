@@ -3,7 +3,7 @@
  * Counts Misc Contacts numbers
  *
  * @package   Disciple_Tools
- * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
+ * @author       Chasm Solutions <chasm.crew@chasm.solutions>
  * @link      https://github.com/ChasmSolutions
  * @license   GPL-3.0
  * @version   0.1

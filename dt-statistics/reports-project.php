@@ -4,9 +4,9 @@
  * Disciple_Tools_Project_Reports
  *
  * @class Disciple_Tools_Project_Reports
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
@@ -18,9 +18,9 @@ class Disciple_Tools_Project_Reports {
 
     /**
      * Disciple_Tools_Project_Reports The single instance of Disciple_Tools_Project_Reports.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
 
@@ -91,7 +91,7 @@ class Disciple_Tools_Project_Reports {
 							<tr>
 								<th>Name</th>
 								<th>Progress</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>
