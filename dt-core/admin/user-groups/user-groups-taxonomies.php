@@ -9,7 +9,8 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-/** ********************************************************************************************************************
+/**
+ ** *******************************************************************************************************************
  * REGISTER
  */
 
@@ -23,10 +24,12 @@ defined( 'ABSPATH' ) || exit;
  * @since 0.1.4
  */
 function disciple_tools_register_default_user_group_taxonomy() {
-    new Disciple_Tools_User_Taxonomy( 'user-group', 'users/group', array(
+    new Disciple_Tools_User_Taxonomy(
+        'user-group', 'users/group', [
         'singular' => __( 'Team',  'disciple-tools' ),
         'plural'   => __( 'Teams', 'disciple-tools' )
-    ) );
+         ] 
+    );
 }
 
 /**
@@ -39,13 +42,16 @@ function disciple_tools_register_default_user_group_taxonomy() {
  * @since 0.1.4
  */
 function disciple_tools_register_default_user_type_taxonomy() {
-    new Disciple_Tools_User_Taxonomy( 'user-type',  'users/type',  array(
+    new Disciple_Tools_User_Taxonomy(
+        'user-type',  'users/type',  [
         'singular' => __( 'Type',  'disciple-tools' ),
         'plural'   => __( 'Types', 'disciple-tools' )
-    ) );
+         ] 
+    );
 }
 
-/** ********************************************************************************************************************
+/**
+ ** *******************************************************************************************************************
  * HOOKS
  */
 
@@ -60,7 +66,8 @@ add_action( 'admin_head', 'disciple_tools_groups_admin_assets' );
 add_filter( 'disciple_tools_profiles_sections', 'disciple_tools_groups_add_profile_section' );
 
 
-/** ********************************************************************************************************************
+/**
+ ** *******************************************************************************************************************
  * COMMON
  */
 
@@ -69,8 +76,8 @@ add_filter( 'disciple_tools_profiles_sections', 'disciple_tools_groups_add_profi
  *
  * @since 0.1.0
  *
- * @param  mixed  $user
- * @param  int    $taxonomy
+ * @param mixed  $user
+ * @param int    $taxonomy
  *
  * @return object //corrected from boolean
  */
@@ -87,9 +94,11 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' ) {
     }
 
     // Return user terms
-    return wp_get_object_terms( $user_id, $taxonomy, array(
+    return wp_get_object_terms(
+        $user_id, $taxonomy, [
         'fields' => 'all_with_object_id'
-    ) );
+         ] 
+    );
 }
 
 /**
@@ -97,14 +106,14 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' ) {
  *
  * @since 0.1.0
  *
- * @param  int      $user_id
- * @param  string   $taxonomy
- * @param  array    $terms
- * @param  boolean  $bulk
+ * @param int      $user_id
+ * @param string   $taxonomy
+ * @param array    $terms
+ * @param boolean  $bulk
  *
  * @return boolean
  */
-function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = array(), $bulk = false ) {
+function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = [], $bulk = false ) {
 
     // Get the taxonomy
     $tax = get_taxonomy( $taxonomy );
@@ -154,12 +163,14 @@ function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = array(
  *
  * @return array A list of taxonomy names or objects.
  */
-function disciple_tools_get_user_groups( $args = array(), $output = 'names', $operator = 'and' ) {
+function disciple_tools_get_user_groups( $args = [], $output = 'names', $operator = 'and' ) {
 
     // Parse arguments
-    $r = wp_parse_args( $args, array(
+    $r = wp_parse_args(
+        $args, [
         'user_group' => true
-    ) );
+         ] 
+    );
 
     // Return user group taxonomies
     return get_taxonomies( $r, $output, $operator );
@@ -172,12 +183,12 @@ function disciple_tools_get_user_groups( $args = array(), $output = 'names', $op
  *
  * @since 0.1.5
  *
- * @param  array  $args     See disciple_tools_get_user_groups()
- * @param  string $operator See disciple_tools_get_user_groups()
+ * @param array  $args     See disciple_tools_get_user_groups()
+ * @param string $operator See disciple_tools_get_user_groups()
  *
  * @return array
  */
-function disciple_tools_get_user_group_objects( $args = array(), $operator = 'and' ) {
+function disciple_tools_get_user_group_objects( $args = [], $operator = 'and' ) {
     return disciple_tools_get_user_groups( $args, 'objects', $operator );
 }
 
@@ -186,14 +197,16 @@ function disciple_tools_get_user_group_objects( $args = array(), $operator = 'an
  *
  * @since 0.1.0
  */
-function disciple_tools_get_users_of_group( $args = array() ) {
+function disciple_tools_get_users_of_group( $args = [] ) {
 
     // Parse arguments
-    $r = wp_parse_args( $args, array(
+    $r = wp_parse_args(
+        $args, [
         'taxonomy' => 'user-type',
         'term'     => '',
         'term_by'  => 'slug'
-    ) );
+         ] 
+    );
 
     // Get user IDs in group
     $term     = get_term_by( $r['term_by'], $r['term'], $r['taxonomy'] );
@@ -201,17 +214,20 @@ function disciple_tools_get_users_of_group( $args = array() ) {
 
     // Bail if no users in this term
     if ( empty( $term ) || empty( $user_ids ) ) {
-        return array();
+        return [];
     }
 
     // Return queried users
-    return get_users( array(
+    return get_users(
+        [
         'orderby' => 'display_name',
         'include' => $user_ids,
-    ) );
+         ] 
+    );
 }
 
-/** ********************************************************************************************************************
+/**
+ ** *******************************************************************************************************************
  * ADMIN
  */
 
@@ -235,20 +251,20 @@ function disciple_tools_groups_admin_assets() {
  *
  * @param array $sections
  */
-function disciple_tools_groups_add_profile_section( $sections = array() ) {
+function disciple_tools_groups_add_profile_section( $sections = [] ) {
 
     // Copy for modifying
     $new_sections = $sections;
 
     // Add the "Activity" section
-    $new_sections['groups'] = array(
+    $new_sections['groups'] = [
         'id'    => 'groups',
         'slug'  => 'groups',
         'name'  => esc_html__( 'Groups', 'disciple_tools' ),
         'cap'   => 'edit_profile',
         'icon'  => 'dashicons-groups',
         'order' => 90
-    );
+    ];
 
     // Filter & return
     return apply_filters( 'disciple_tools_groups_add_profile_section', $new_sections, $sections );

@@ -13,12 +13,12 @@
  * @original GNUv2, or later
  *
  * @package Disciple Tools
- * @class Disciple_Tools_BetterAuthorMetabox
+ * @class   Disciple_Tools_BetterAuthorMetabox
  *
  * TODO: Clean un-necessary settings panel and define authors for contacts and groups. And determine if securing pages by author, or assigned_to is better.
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_BetterAuthorMetabox {
 
@@ -30,9 +30,10 @@ class Disciple_Tools_BetterAuthorMetabox {
 
     /**
      * Disciple_Tools_BetterAuthorMetabox The single instance of Disciple_Tools_BetterAuthorMetabox.
-     * @var     object
-     * @access  private
-     * @since     0.1
+     *
+     * @var    object
+     * @access private
+     * @since  0.1
      */
     private static $_instance = null;
 
@@ -40,13 +41,14 @@ class Disciple_Tools_BetterAuthorMetabox {
      * Main Disciple_Tools_BetterAuthorMetabox Instance
      * Ensures only one instance of Disciple_Tools_BetterAuthorMetabox is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
      * @return Disciple_Tools_BetterAuthorMetabox
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
@@ -56,8 +58,8 @@ class Disciple_Tools_BetterAuthorMetabox {
 
         // call all filters and actions
         // add_action( 'admin_menu', array( $this, 'add_settings_page' ) );
-        add_action( 'admin_menu', array( $this, 'reset_author_metabox' ) );
-        add_action( 'admin_init', array( $this, 'init_options' ) );
+        add_action( 'admin_menu', [ $this, 'reset_author_metabox' ] );
+        add_action( 'admin_init', [ $this, 'init_options' ] );
 
     }
 
@@ -66,11 +68,11 @@ class Disciple_Tools_BetterAuthorMetabox {
      */
     public function add_settings_page() {
         add_options_page(
-            __('Author Metabox Settings', 'disciple_tools'),
-            __('Author Metabox', 'disciple_tools'),
+            __( 'Author Metabox Settings', 'disciple_tools' ),
+            __( 'Author Metabox', 'disciple_tools' ),
             'manage_options',
             $this->config,
-            array( $this, 'display_options_page' )
+            [ $this, 'display_options_page' ]
         );
     }
 
@@ -79,17 +81,19 @@ class Disciple_Tools_BetterAuthorMetabox {
      */
     public function reset_author_metabox() {
         // don't do anything if the user can't edit others posts.
-        if (!current_user_can('edit_others_posts')) return;
+        if (!current_user_can( 'edit_others_posts' )) { return;
+        }
 
         $options = get_option( 'BAM_config' );
 
         // no options (yet) - forget it!
-        if (!$options || !$options['enabled_post_types']) return;
+        if (!$options || !$options['enabled_post_types']) { return;
+        }
 
         foreach ($options['enabled_post_types'] as $post_type => $val) {
             if ($val == 1) {
-                remove_meta_box('authordiv', $post_type, 'normal');
-                add_meta_box('authordiv', __('Record Owner'), array($this, 'post_author_meta_box'), $post_type);
+                remove_meta_box( 'authordiv', $post_type, 'normal' );
+                add_meta_box( 'authordiv', __( 'Record Owner' ), [$this, 'post_author_meta_box'], $post_type );
             }
         }
     }
@@ -100,27 +104,29 @@ class Disciple_Tools_BetterAuthorMetabox {
      *
      * @param $post - the post being edited
      */
-    public function post_author_meta_box($post) {
+    public function post_author_meta_box( $post ) {
         global $user_ID;
         ?>
-        <label class="screen-reader-text" for="post_author_override"><?php _e('Author'); ?></label>
+        <label class="screen-reader-text" for="post_author_override"><?php _e( 'Author' ); ?></label>
         <?php
-        $this->wp_dropdown_users( array(
+        $this->wp_dropdown_users(
+            [
             'name' => 'post_author_override',
-            'selected' => empty($post->ID) ? $user_ID : $post->post_author,
+            'selected' => empty( $post->ID ) ? $user_ID : $post->post_author,
             'include_selected' => true
-        ) );
+             ] 
+        );
     }
 
 
     /**
      * Custom version of wp_dropdown_users that will query users by multiple roles
      *
-     * @param string $args
+     * @param  string $args
      * @return mixed|void
      */
     protected function wp_dropdown_users( $args = '' ) {
-        $defaults = array(
+        $defaults = [
             'show_option_all' => '', 'show_option_none' => '', 'hide_if_only_one_author' => '',
             'orderby' => 'display_name', 'order' => 'ASC',
             'include' => '', 'exclude' => '', 'multi' => 0,
@@ -128,7 +134,7 @@ class Disciple_Tools_BetterAuthorMetabox {
             'selected' => 0, 'name' => 'user', 'class' => '', 'id' => '',
             'blog_id' => $GLOBALS['blog_id'], 'include_selected' => false,
             'option_none_value' => -1
-        );
+        ];
 
         $defaults['selected'] = is_author() ? get_query_var( 'author' ) : 0;
 
@@ -138,26 +144,26 @@ class Disciple_Tools_BetterAuthorMetabox {
         $show_option_none = $r['show_option_none'];
         $option_none_value = $r['option_none_value'];
 
-        $query_args = wp_array_slice_assoc( $r, array( 'blog_id', 'include', 'exclude', 'orderby', 'order' ) );
-        $query_args['fields'] = array( 'ID', 'user_login', $show );
+        $query_args = wp_array_slice_assoc( $r, [ 'blog_id', 'include', 'exclude', 'orderby', 'order' ] );
+        $query_args['fields'] = [ 'ID', 'user_login', $show ];
 
-        $users = array();
+        $users = [];
 
         $options = get_option( 'BAM_config' );
 
         // if roles have been selected, use them
-        if (count($options['enabled_roles'])) {
+        if (count( $options['enabled_roles'] )) {
             foreach ($options['enabled_roles'] as $role => $enabled) {
                 if ($enabled == 1) {
                     $query_args['role'] = $role;
-                    $role_users = get_users($query_args);
-                    $users = array_merge($role_users, $users);
+                    $role_users = get_users( $query_args );
+                    $users = array_merge( $role_users, $users );
                 }
             }
             // if no roles have been selected, use the default of authors
         } else {
             $query_args['who'] = 'authors';
-            $users = get_users($query_args);
+            $users = get_users( $query_args );
         }
 
         $output = '';
@@ -216,7 +222,7 @@ class Disciple_Tools_BetterAuthorMetabox {
         register_setting(
             $this->config,
             'BAM_config',
-            array( $this, 'sanitize_options' )
+            [ $this, 'sanitize_options' ]
         );
 
         add_settings_section(
@@ -228,16 +234,16 @@ class Disciple_Tools_BetterAuthorMetabox {
 
         add_settings_field(
             'enabled_post_types',
-            __('Enabled Post Types', 'disciple_tools'),
-            array( $this, 'setting_post_types' ), // Callback
+            __( 'Enabled Post Types', 'disciple_tools' ),
+            [ $this, 'setting_post_types' ], // Callback
             $this->config, // Page
             'BAM_config_main' // Section
         );
 
         add_settings_field(
             'enabled_roles',
-            __('Enabled Roles', 'disciple_tools'),
-            array( $this, 'setting_enabled_roles' ), // Callback
+            __( 'Enabled Roles', 'disciple_tools' ),
+            [ $this, 'setting_enabled_roles' ], // Callback
             $this->config, // Page
             'BAM_config_main' // Section
         );
@@ -246,11 +252,11 @@ class Disciple_Tools_BetterAuthorMetabox {
     /**
      * Sanitizes the data from the options page
      *
-     * @param $input - the incoming option data
+     * @param  $input - the incoming option data
      * @return array
      */
-    public function sanitize_options($input) {
-        $safe_input = array( 'enabled_post_types' => array('contacts' => 1, 'groups' => 1, 'post' => 1, 'attachment' => 1), 'enabled_roles' => array('Marketer' => 1, 'Dispatcher' => 1, 'Administrator' => 1) );
+    public function sanitize_options( $input ) {
+        $safe_input = [ 'enabled_post_types' => ['contacts' => 1, 'groups' => 1, 'post' => 1, 'attachment' => 1], 'enabled_roles' => ['Marketer' => 1, 'Dispatcher' => 1, 'Administrator' => 1] ];
         return $safe_input;
     }
 
@@ -268,7 +274,7 @@ class Disciple_Tools_BetterAuthorMetabox {
 
         echo $html;
 
-        settings_fields($this->config);
+        settings_fields( $this->config );
         do_settings_sections( $this->config );
         submit_button();
 
@@ -282,17 +288,19 @@ class Disciple_Tools_BetterAuthorMetabox {
      */
     public function setting_post_types() {
 
-        $post_types = get_post_types(array(
-            'show_ui' => TRUE,
-        ), 'objects');
+        $post_types = get_post_types(
+            [
+            'show_ui' => true,
+            ], 'objects'
+        );
 
         foreach ($post_types as $p) {
             $slug = $p->name;
             $label = $p->labels->singular_name . ' <small>(' . $slug . ')</small>';
             $item_id = "post_type_$slug";
 
-            $comp = isset($this->options['enabled_post_types'][$slug]) ? $this->options['enabled_post_types'][$slug] : '';
-            $checked = checked( 1, $comp, FALSE );
+            $comp = isset( $this->options['enabled_post_types'][$slug] ) ? $this->options['enabled_post_types'][$slug] : '';
+            $checked = checked( 1, $comp, false );
 
             printf(
                 '<label for="%s"><input type="checkbox" id="%s" name="BAM_config[enabled_post_types][%s]" value="1" %s /> %s</label><br />',
@@ -314,8 +322,8 @@ class Disciple_Tools_BetterAuthorMetabox {
         foreach ($wp_roles->role_names as $slug => $label) {
             $item_id = "role_$slug";
 
-            $comp = isset($this->options['enabled_roles'][$slug]) ? $this->options['enabled_roles'][$slug] : '';
-            $checked = checked( 1, $comp, FALSE );
+            $comp = isset( $this->options['enabled_roles'][$slug] ) ? $this->options['enabled_roles'][$slug] : '';
+            $checked = checked( 1, $comp, false );
 
             printf(
                 '<label for="%s"><input type="checkbox" id="%s" name="BAM_config[enabled_roles][%s]" value="1" %s /> %s</label><br />',

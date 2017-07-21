@@ -1,29 +1,31 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Disciple_Tools_Settings Class
  *
- * @class Disciple_Tools_Settings
- * @version    1.0.0
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_Settings
+ * @version 1.0.0
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 final class Disciple_Tools_Settings {
     /**
      * Disciple_Tools_Admin The single instance of Disciple_Tools_Admin.
-     * @var     object
-     * @access  private
+     *
+     * @var    object
+     * @access private
      * @since  0.1
      */
     private static $_instance = null;
 
     /**
      * Whether or not a 'select' field is present.
-     * @var     boolean
-     * @access  private
-     * @since   0.1
+     *
+     * @var    boolean
+     * @access private
+     * @since  0.1
      */
     private $_has_select;
 
@@ -32,31 +34,34 @@ final class Disciple_Tools_Settings {
      *
      * Ensures only one instance of Disciple_Tools_Settings is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
      * @return Disciple_Tools_Settings instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
     } // End __construct()
 
     /**
      * Validate the settings.
-     * @access  public
-     * @since   0.1
-     * @param   array $input Inputted data.
-     * @param   string $section field section.
-     * @return  array        Validated data.
+     *
+     * @access public
+     * @since  0.1
+     * @param  array $input Inputted data.
+     * @param  string $section field section.
+     * @return array        Validated data.
      */
     public function validate_settings ( $input, $section ) {
         if ( is_array( $input ) && 0 < count( $input ) ) {
@@ -71,7 +76,7 @@ final class Disciple_Tools_Settings {
                 $method = 'validate_field_' . $fields[$k]['type'];
 
                 if ( ! method_exists( $this, $method ) ) {
-                    if ( true === (bool)apply_filters( 'dt-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
+                    if ( true === (bool) apply_filters( 'dt-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
                         $method = 'validate_field_text';
                     } else {
                         $method = '';
@@ -80,7 +85,7 @@ final class Disciple_Tools_Settings {
 
                 // If we have an internal method for validation, filter and apply it.
                 if ( '' != $method ) {
-                    add_filter( 'dt-validate-field-' . $fields[$k]['type'], array( $this, $method ) );
+                    add_filter( 'dt-validate-field-' . $fields[$k]['type'], [ $this, $method ] );
                 }
 
                 $method_output = apply_filters( 'dt-validate-field-' . $fields[$k]['type'], $v, $fields[$k] );
@@ -95,53 +100,56 @@ final class Disciple_Tools_Settings {
 
     /**
      * Validate the given data, assuming it is from a text input field.
-     * @access  public
-     * @since   6.0.0
-     * @return  void
+     *
+     * @access public
+     * @since  6.0.0
+     * @return void
      */
     public function validate_field_text ( $v ) {
-        return (string)wp_kses_post( $v );
+        return (string) wp_kses_post( $v );
     } // End validate_field_text()
 
     /**
      * Validate the given data, assuming it is from a textarea field.
-     * @access  public
-     * @since   6.0.0
-     * @return  void
+     *
+     * @access public
+     * @since  6.0.0
+     * @return void
      */
     public function validate_field_textarea ( $v ) {
         // Allow iframe, object and embed tags in textarea fields.
         $allowed             = wp_kses_allowed_html( 'post' );
-        $allowed['iframe']     = array(
+        $allowed['iframe']     = [
                                 'src'         => true,
                                 'width'     => true,
                                 'height'     => true,
                                 'id'         => true,
                                 'class'     => true,
                                 'name'         => true
-                                );
-        $allowed['object']     = array(
+                                ];
+        $allowed['object']     = [
                                 'src'         => true,
                                 'width'     => true,
                                 'height'     => true,
                                 'id'         => true,
                                 'class'     => true,
                                 'name'         => true
-                                );
-        $allowed['embed']     = array(
+                                ];
+        $allowed['embed']     = [
                                 'src'         => true,
                                 'width'     => true,
                                 'height'     => true,
                                 'id'         => true,
                                 'class'     => true,
                                 'name'         => true
-                                );
+                                ];
 
         return wp_kses( $v, $allowed );
     } // End validate_field_textarea()
 
     /**
      * Validate the given data, assuming it is from a checkbox input field.
+     *
      * @access public
      * @since  6.0.0
      * @param  string $v
@@ -157,6 +165,7 @@ final class Disciple_Tools_Settings {
 
     /**
      * Validate the given data, assuming it is from a URL field.
+     *
      * @access public
      * @since  6.0.0
      * @param  string $v
@@ -168,14 +177,16 @@ final class Disciple_Tools_Settings {
 
     /**
      * Render a field of a given type.
-     * @access  public
-     * @since   0.1
-     * @param   array $args The field parameters.
-     * @return  void
+     *
+     * @access public
+     * @since  0.1
+     * @param  array $args The field parameters.
+     * @return void
      */
     public function render_field ( $args ) {
         $html = '';
-        if ( ! in_array( $args['type'], $this->get_supported_fields() ) ) return ''; // Supported field type sanity check.
+        if ( ! in_array( $args['type'], $this->get_supported_fields() ) ) { return ''; // Supported field type sanity check.
+        }
 
         // Make sure we have some kind of default, if the key isn't set.
         if ( ! isset( $args['default'] ) ) {
@@ -197,10 +208,10 @@ final class Disciple_Tools_Settings {
         }
 
         // Output the description, if the current field allows it.
-        if ( isset( $args['type'] ) && ! in_array( $args['type'], (array)apply_filters( 'dt-no-description-fields', array( 'checkbox' ) ) ) ) {
+        if ( isset( $args['type'] ) && ! in_array( $args['type'], (array) apply_filters( 'dt-no-description-fields', [ 'checkbox' ] ) ) ) {
             if ( isset( $args['description'] ) ) {
                 $description = '<p class="description">' . wp_kses_post( $args['description'] ) . '</p>' . "\n";
-                if ( in_array( $args['type'], (array)apply_filters( 'dt-new-line-description-fields', array( 'textarea', 'select' ) ) ) ) {
+                if ( in_array( $args['type'], (array) apply_filters( 'dt-new-line-description-fields', [ 'textarea', 'select' ] ) ) ) {
                     $description = wpautop( $description );
                 }
                 $html .= $description;
@@ -212,12 +223,13 @@ final class Disciple_Tools_Settings {
 
     /**
      * Retrieve the settings fields details
-     * @access  public
-     * @since   0.1
-     * @return  array        Settings fields.
+     *
+     * @access public
+     * @since  0.1
+     * @return array        Settings fields.
      */
     public function get_settings_sections () {
-        $settings_sections = array();
+        $settings_sections = [];
 
         $settings_sections['general'] = __( 'General', 'disciple_tools' );
         $settings_sections['daily_reports'] = __( 'Daily Reports', 'disciple_tools' );
@@ -225,37 +237,38 @@ final class Disciple_Tools_Settings {
         // Admin tabs will be created for each section.
         // Don't forget to add fields for the section in the get_settings_fields() function below
 
-        return (array)apply_filters( 'disciple-tools-settings-sections', $settings_sections );
+        return (array) apply_filters( 'disciple-tools-settings-sections', $settings_sections );
     } // End get_settings_sections()
 
     /**
      * Retrieve the settings fields details
-     * @access  public
+     *
+     * @access public
      * @param  string $section field section.
-     * @since   0.1
-     * @return  array        Settings fields.
+     * @since  0.1
+     * @return array        Settings fields.
      */
     public function get_settings_fields ( $section ) {
-        $settings_fields = array();
+        $settings_fields = [];
         // Declare the default settings fields.
 
         switch ( $section ) {
             case 'general':
 
-                $settings_fields['add_people_groups'] = array(
+                $settings_fields['add_people_groups'] = [
                     'name' => __( 'People Groups Addon', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'false',
                     'section' => 'general',
                     'description' => ''
-                );
-                $settings_fields['clear_data_on_deactivate'] = array(
+                ];
+                $settings_fields['clear_data_on_deactivate'] = [
                     'name' => __( 'Clear Data on Deactivate', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'false',
                     'section' => 'general',
                     'description' => ''
-                );
+                ];
 
 
 //                $settings_fields['select'] = array(
@@ -310,62 +323,62 @@ final class Disciple_Tools_Settings {
 
             case 'daily_reports':
 
-                $settings_fields['build_report_for_contacts'] = array(
+                $settings_fields['build_report_for_contacts'] = [
                     'name' => __( 'Disciple Tools Contacts', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Contacts.', 'disciple_tools' )
-                );
-                $settings_fields['build_report_for_groups'] = array(
+                ];
+                $settings_fields['build_report_for_groups'] = [
                     'name' => __( 'Disciple Tools Groups', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Disciple Tools Groups.', 'disciple_tools' )
-                );
-                $settings_fields['build_report_for_facebook'] = array(
+                ];
+                $settings_fields['build_report_for_facebook'] = [
                     'name' => __( 'Facebook', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Facebook.', 'disciple_tools' )
-                );
-                $settings_fields['build_report_for_twitter'] = array(
+                ];
+                $settings_fields['build_report_for_twitter'] = [
                     'name' => __( 'Twitter', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Twitter.', 'disciple_tools' )
-                );
-                $settings_fields['build_report_for_analytics'] = array(
+                ];
+                $settings_fields['build_report_for_analytics'] = [
                     'name' => __( 'Google Analytics', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Analytics.', 'disciple_tools' )
-                );
-                $settings_fields['build_report_for_adwords'] = array(
+                ];
+                $settings_fields['build_report_for_adwords'] = [
                     'name' => __( 'Adwords', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Google Adwords.', 'disciple_tools' )
-                );
-                $settings_fields['build_report_for_mailchimp'] = array(
+                ];
+                $settings_fields['build_report_for_mailchimp'] = [
                     'name' => __( 'Mailchimp', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for Mailchimp.', 'disciple_tools' )
-                );
-                $settings_fields['build_report_for_youtube'] = array(
+                ];
+                $settings_fields['build_report_for_youtube'] = [
                     'name' => __( 'YouTube', 'disciple_tools' ),
                     'type' => 'checkbox',
                     'default' => 'true',
                     'section' => 'daily_reports',
                     'description' => __( 'Default is true and enables the scheduling of daily report collection for YouTube.', 'disciple_tools' )
-                );
+                ];
 
 
                 break;
@@ -374,16 +387,17 @@ final class Disciple_Tools_Settings {
                 break;
         }
 
-        return (array)apply_filters( 'disciple-tools-settings-fields', $settings_fields, $section);
+        return (array) apply_filters( 'disciple-tools-settings-fields', $settings_fields, $section );
     } // End get_settings_fields()
 
     /**
      * Render HTML markup for the "text" field type.
-     * @access  protected
-     * @since   6.0.0
-     * @param   string $key  The unique ID of this field.
-     * @param   array $args  Arguments used to construct this field.
-     * @return  string       HTML markup for the field.
+     *
+     * @access protected
+     * @since  6.0.0
+     * @param  string $key  The unique ID of this field.
+     * @param  array $args  Arguments used to construct this field.
+     * @return string       HTML markup for the field.
      */
     protected function render_field_text ( $key, $args ) {
         $html = '<input id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '" size="40" type="text" value="' . esc_attr( $this->get_value( $args['id'], $args['default'], $args['section'] ) ) . '" />' . "\n";
@@ -392,15 +406,16 @@ final class Disciple_Tools_Settings {
 
     /**
      * Render HTML markup for the "radio" field type.
-     * @access  protected
-     * @since   6.0.0
-     * @param   string $key  The unique ID of this field.
-     * @param   array $args  Arguments used to construct this field.
-     * @return  string       HTML markup for the field.
+     *
+     * @access protected
+     * @since  6.0.0
+     * @param  string $key  The unique ID of this field.
+     * @param  array $args  Arguments used to construct this field.
+     * @return string       HTML markup for the field.
      */
     protected function render_field_radio ( $key, $args ) {
         $html = '';
-        if ( isset( $args['options'] ) && ( 0 < count( (array)$args['options'] ) ) ) {
+        if ( isset( $args['options'] ) && ( 0 < count( (array) $args['options'] ) ) ) {
             $html = '';
             foreach ( $args['options'] as $k => $v ) {
                 $html .= '<input type="radio" name="' . esc_attr( $key ) . '" value="' . esc_attr( $k ) . '"' . checked( esc_attr( $this->get_value( $args['id'], $args['default'], $args['section'] ) ), $k, false ) . ' /> ' . esc_html( $v ) . '<br />' . "\n";
@@ -411,11 +426,12 @@ final class Disciple_Tools_Settings {
 
     /**
      * Render HTML markup for the "textarea" field type.
-     * @access  protected
-     * @since   6.0.0
-     * @param   string $key  The unique ID of this field.
-     * @param   array $args  Arguments used to construct this field.
-     * @return  string       HTML markup for the field.
+     *
+     * @access protected
+     * @since  6.0.0
+     * @param  string $key  The unique ID of this field.
+     * @param  array $args  Arguments used to construct this field.
+     * @return string       HTML markup for the field.
      */
     protected function render_field_textarea ( $key, $args ) {
         // Explore how best to escape this data, as esc_textarea() strips HTML tags, it seems.
@@ -425,11 +441,12 @@ final class Disciple_Tools_Settings {
 
     /**
      * Render HTML markup for the "checkbox" field type.
-     * @access  protected
-     * @since   6.0.0
-     * @param   string $key  The unique ID of this field.
-     * @param   array $args  Arguments used to construct this field.
-     * @return  string       HTML markup for the field.
+     *
+     * @access protected
+     * @since  6.0.0
+     * @param  string $key  The unique ID of this field.
+     * @param  array $args  Arguments used to construct this field.
+     * @return string       HTML markup for the field.
      */
     protected function render_field_checkbox ( $key, $args ) {
         $has_description = false;
@@ -447,17 +464,18 @@ final class Disciple_Tools_Settings {
 
     /**
      * Render HTML markup for the "select2" field type.
-     * @access  protected
-     * @since   6.0.0
-     * @param   string $key  The unique ID of this field.
-     * @param   array $args  Arguments used to construct this field.
-     * @return  string       HTML markup for the field.
+     *
+     * @access protected
+     * @since  6.0.0
+     * @param  string $key  The unique ID of this field.
+     * @param  array $args  Arguments used to construct this field.
+     * @return string       HTML markup for the field.
      */
     protected function render_field_select ( $key, $args ) {
         $this->_has_select = true;
 
         $html = '';
-        if ( isset( $args['options'] ) && ( 0 < count( (array)$args['options'] ) ) ) {
+        if ( isset( $args['options'] ) && ( 0 < count( (array) $args['options'] ) ) ) {
             $html .= '<select id="' . esc_attr( $key ) . '" name="' . esc_attr( $key ) . '">' . "\n";
             foreach ( $args['options'] as $k => $v ) {
                 $html .= '<option value="' . esc_attr( $k ) . '"' . selected( esc_attr( $this->get_value( $args['id'], $args['default'], $args['section'] ) ), $k, false ) . '>' . esc_html( $v ) . '</option>' . "\n";
@@ -469,16 +487,17 @@ final class Disciple_Tools_Settings {
 
     /**
      * Render HTML markup for the "select_taxonomy" field type.
-     * @access  protected
-     * @since   6.0.0
-     * @param   string $key  The unique ID of this field.
-     * @param   array $args  Arguments used to construct this field.
-     * @return  string       HTML markup for the field.
+     *
+     * @access protected
+     * @since  6.0.0
+     * @param  string $key  The unique ID of this field.
+     * @param  array $args  Arguments used to construct this field.
+     * @return string       HTML markup for the field.
      */
     protected function render_field_select_taxonomy ( $key, $args ) {
         $this->_has_select = true;
 
-        $defaults = array(
+        $defaults = [
             'show_option_all'    => '',
             'show_option_none'   => '',
             'orderby'            => 'ID',
@@ -495,10 +514,10 @@ final class Disciple_Tools_Settings {
             'taxonomy'           => 'category',
             'hide_if_empty'      => false,
             'walker'             => ''
-        );
+        ];
 
         if ( ! isset( $args['options'] ) ) {
-            $args['options'] = array();
+            $args['options'] = [];
         }
 
         $args['options']             = wp_parse_args( $args['options'], $defaults );
@@ -514,45 +533,49 @@ final class Disciple_Tools_Settings {
 
     /**
      * Return an array of field types expecting an array value returned.
+     *
      * @access public
      * @since  0.1
      * @return array
      */
     public function get_array_field_types () {
-        return array();
+        return [];
     } // End get_array_field_types()
 
     /**
      * Return an array of field types where no label/header is to be displayed.
+     *
      * @access protected
      * @since  0.1
      * @return array
      */
     protected function get_no_label_field_types () {
-        return array( 'info' );
+        return [ 'info' ];
     } // End get_no_label_field_types()
 
     /**
      * Return a filtered array of supported field types.
-     * @access  public
-     * @since   0.1
-     * @return  array Supported field type keys.
+     *
+     * @access public
+     * @since  0.1
+     * @return array Supported field type keys.
      */
     public function get_supported_fields () {
-        return (array)apply_filters( 'dt-supported-fields', array( 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ) );
+        return (array) apply_filters( 'dt-supported-fields', [ 'text', 'checkbox', 'radio', 'textarea', 'select', 'select_taxonomy' ] );
     } // End get_supported_fields()
 
     /**
      * Return a value, using a desired retrieval method.
-     * @access  public
+     *
+     * @access public
      * @param  string $key option key.
      * @param  string $default default value.
      * @param  string $section field section.
-     * @since   0.1
-     * @return  mixed Returned value.
+     * @since  0.1
+     * @return mixed Returned value.
      */
     public function get_value ( $key, $default, $section ) {
-        $values = get_option( Disciple_Tools()->token . '-' . $section, array() );
+        $values = get_option( Disciple_Tools()->token . '-' . $section, [] );
         if ( is_array( $values ) && isset( $values[$key] ) ) {
             $response = $values[$key];
         } else {
@@ -564,24 +587,25 @@ final class Disciple_Tools_Settings {
 
     /**
      * Return all settings keys.
-     * @access  public
+     *
+     * @access public
      * @param  string $section field section.
-     * @since   0.1
-     * @return  mixed Returned value.
+     * @since  0.1
+     * @return mixed Returned value.
      */
     public function get_settings ( $section = '' ) {
         $response = false;
 
-        $sections = array_keys( (array)$this->get_settings_sections() );
+        $sections = array_keys( (array) $this->get_settings_sections() );
 
         if ( in_array( $section, $sections ) ) {
-            $sections = array( $section );
+            $sections = [ $section ];
         }
 
         if ( 0 < count( $sections ) ) {
             foreach ( $sections as $k => $v ) {
                 $fields = $this->get_settings_fields( $k );
-                $values = get_option(Disciple_Tools()->token . '-' . $k, array());
+                $values = get_option( Disciple_Tools()->token . '-' . $k, [] );
 
                 if ( is_array( $fields ) && 0 < count( $fields ) ) {
                     foreach ( $fields as $i => $j ) {

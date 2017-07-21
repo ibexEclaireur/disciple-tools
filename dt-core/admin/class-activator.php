@@ -19,9 +19,9 @@ class Disciple_Tools_Activator {
      *
      * Long Description.
      *
-     * @since    0.1
+     * @since 0.1
      */
-    public static function activate($network_wide) {
+    public static function activate( $network_wide ) {
         global $wpdb;
         $Disciple_Tools = Disciple_Tools();
 
@@ -33,7 +33,7 @@ class Disciple_Tools_Activator {
         /**
          * Create roles and capabilities
          */
-        require_once('class-roles.php');
+        require_once( 'class-roles.php' );
         $roles = Disciple_Tools_Roles::instance();
         $roles->set_roles();
 
@@ -57,11 +57,11 @@ class Disciple_Tools_Activator {
         /**
          * Setup key for JWT authentication
          */
-        if (!defined('JWT_AUTH_SECRET_KEY') ) {
-            if (get_option("my_jwt_key")){
-                define( 'JWT_AUTH_SECRET_KEY', get_option("my_jwt_key"));
+        if (!defined( 'JWT_AUTH_SECRET_KEY' ) ) {
+            if (get_option( "my_jwt_key" )){
+                define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
             } else {
-                $iv = password_hash( random_bytes(16), PASSWORD_DEFAULT);
+                $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
                 update_option( 'my_jwt_key', $iv );
                 define( 'JWT_AUTH_SECRET_KEY', $iv );
             }
@@ -70,6 +70,7 @@ class Disciple_Tools_Activator {
 
         /**
          * Activate database creation for Disciple Tools Activity logs
+         *
          * @since 0.1
          */
         if ( is_multisite() && $network_wide ) {
@@ -77,16 +78,17 @@ class Disciple_Tools_Activator {
             $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
             foreach ( $blog_ids as $blog_id ) {
                 switch_to_blog( $blog_id );
-                self::create_tables($Disciple_Tools->version);
+                self::create_tables( $Disciple_Tools->version );
                 restore_current_blog();
             }
         } else {
-            self::create_tables($Disciple_Tools->version);
+            self::create_tables( $Disciple_Tools->version );
         }
     }
 
     /**
      * Creating tables whenever a new blog is created
+     *
      * @param $blog_id
      * @param $user_id
      * @param $domain
@@ -98,7 +100,7 @@ class Disciple_Tools_Activator {
 
         if ( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
             switch_to_blog( $blog_id );
-            self::create_tables(Disciple_Tools()->version);
+            self::create_tables( Disciple_Tools()->version );
             restore_current_blog();
         }
     }
@@ -113,12 +115,13 @@ class Disciple_Tools_Activator {
 
     /**
      * Creates the tables for the activity and report logs.
+     *
      * @access protected
      */
-    protected static function create_tables($version) {
+    protected static function create_tables( $version ) {
         global $wpdb;
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
         /* Activity Log */
         $table_name = $wpdb->prefix . 'dt_activity_log';
@@ -142,7 +145,7 @@ class Disciple_Tools_Activator {
 					  PRIMARY KEY (`histid`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-            dbDelta($sql1);
+            dbDelta( $sql1 );
 
             update_option( 'dt_activity_log_db_version', $version );
         }
@@ -158,8 +161,8 @@ class Disciple_Tools_Activator {
 					  `report_subsource` VARCHAR(100) NOT NULL,
 					  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
-            dbDelta($sql2);
-            update_option('dt_reports_db_version', $version);
+            dbDelta( $sql2 );
+            update_option( 'dt_reports_db_version', $version );
         }
 
 
@@ -173,8 +176,8 @@ class Disciple_Tools_Activator {
 					  `meta_value` LONGTEXT,
 					  PRIMARY KEY (`meta_id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
-            dbDelta($sql3);
-            update_option('dt_reportmeta_db_version', $version);
+            dbDelta( $sql3 );
+            update_option( 'dt_reportmeta_db_version', $version );
         }
 
     }

@@ -3,14 +3,14 @@
 /**
  * Disciple Tools
  *
- * @class Disciple_Tools_
- * @version    0.1
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 
 function dt_map_metabox () {
@@ -25,8 +25,9 @@ class Disciple_Tools_Metabox_Map {
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
 
@@ -40,16 +41,16 @@ class Disciple_Tools_Metabox_Map {
         global $wpdb, $post;
 
         // get coordinates for county
-        $result = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'polygon_$post->post_content_filtered%'");
+        $result = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'polygon_$post->post_content_filtered%'" );
 
-        if(count($result) > 0) {
+        if(count( $result ) > 0) {
 
             // build subsection
             $html = '';
             $html .= '<p><select name="select_tract" id="select_tract">';
             $html .= '<option value="all">Select Subsection</option>';
             foreach ($result as $value) {
-                $html .= '<option value="' . substr($value->meta_key, 8) . '">' . substr($value->meta_key, 8) . '</option>';
+                $html .= '<option value="' . substr( $value->meta_key, 8 ) . '">' . substr( $value->meta_key, 8 ) . '</option>';
             }
             $html .= '</select>';
             $html .= ' <a href="javascript:location.reload();">show all</a>';
@@ -57,7 +58,7 @@ class Disciple_Tools_Metabox_Map {
 
             echo $html;
 
-            $meta = dt_get_coordinates_meta($post->post_content_filtered);
+            $meta = dt_get_coordinates_meta( $post->post_content_filtered );
 
 
             ?>
@@ -95,7 +96,7 @@ class Disciple_Tools_Metabox_Map {
 
                     // Define the LatLng coordinates for the polygon's path.
                     var coords = [ <?php
-                        $rows = count($result);
+                        $rows = count( $result );
                         $i = 0;
                     foreach ($result as $value) {
                         echo $value->meta_value;
@@ -124,7 +125,7 @@ class Disciple_Tools_Metabox_Map {
                         jQuery('#spinner').prepend('<img src="<?php echo Disciple_Tools()->plugin_img; ?>spinner.svg" style="height:30px;" />');
 
                         var tract = jQuery('#select_tract').val();
-                        var restURL = '<?php echo get_rest_url(null, '/dt/v1/locations/getmapbygeoid'); ?>';
+                        var restURL = '<?php echo get_rest_url( null, '/dt/v1/locations/getmapbygeoid' ); ?>';
                         jQuery.post(restURL, {geoid: tract})
                             .done(function (data) {
                                 jQuery('#spinner').html('');

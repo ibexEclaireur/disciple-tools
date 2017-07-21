@@ -89,7 +89,7 @@ class Disciple_Tools_Multi_Role {
      * @access public
      * @var    array
      */
-    public $caps = array();
+    public $caps = [];
 
     /**
      * Array of granted capabilities that the role has.
@@ -98,7 +98,7 @@ class Disciple_Tools_Multi_Role {
      * @access public
      * @var    array
      */
-    public $granted_caps = array();
+    public $granted_caps = [];
 
     /**
      * Array of denied capabilities that the role has.
@@ -107,7 +107,7 @@ class Disciple_Tools_Multi_Role {
      * @access public
      * @var    array
      */
-    public $denied_caps = array();
+    public $denied_caps = [];
 
     /**
      * Return the role string in attempts to use the object as a string.
@@ -139,8 +139,9 @@ class Disciple_Tools_Multi_Role {
         $this->slug = $_role->name;
 
         // Set the role name.
-        if ( isset( $wp_roles->role_names[ $role ] ) )
+        if ( isset( $wp_roles->role_names[ $role ] ) ) {
             $this->name = dt_multi_role_translate_role( $role );
+        }
 
         // Check whether the role is editable.
         $editable_roles    = function_exists( 'get_editable_roles' ) ? get_editable_roles() : apply_filters( 'editable_roles', $wp_roles->roles );
@@ -156,25 +157,27 @@ class Disciple_Tools_Multi_Role {
             $this->caps[ $cap ] = $grant;
 
             // If a granted cap.
-            if ( true === $grant )
+            if ( true === $grant ) {
                 $this->granted_caps[] = $cap;
+            }
 
             // If a denied cap.
-            elseif ( false === $grant )
+            elseif ( false === $grant ) {
                 $this->denied_caps[] = $cap;
+            }
         }
 
         // Remove user levels from granted/denied caps.
         $this->granted_caps = dt_multi_role_remove_old_levels( $this->granted_caps );
-        $this->denied_caps  = dt_multi_role_remove_old_levels( $this->denied_caps  );
+        $this->denied_caps  = dt_multi_role_remove_old_levels( $this->denied_caps );
 
         // Remove hidden caps from granted/denied caps.
         $this->granted_caps = dt_multi_role_remove_hidden_caps( $this->granted_caps );
-        $this->denied_caps  = dt_multi_role_remove_hidden_caps( $this->denied_caps  );
+        $this->denied_caps  = dt_multi_role_remove_hidden_caps( $this->denied_caps );
 
         // Set the cap count.
         $this->granted_cap_count = count( $this->granted_caps );
-        $this->denied_cap_count  = count( $this->denied_caps  );
+        $this->denied_cap_count  = count( $this->denied_caps );
 
         // Check if we have caps.
         $this->has_caps = 0 < $this->granted_cap_count;

@@ -1,11 +1,11 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Default Structure
  *
  * This is for default structure settings.
  *
- * @author Chasm Solutions
+ * @author  Chasm Solutions
  * @package Disciple_Tools
  */
 
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Action and Filters
  */
 
-add_action( 'init', 'set_permalink_structure');
+add_action( 'init', 'set_permalink_structure' );
 
 
 /*********************************************************************************************

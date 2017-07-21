@@ -11,7 +11,7 @@
  */
 
 # Disables the old user levels from capabilities array.
-add_filter( 'dt_multi_role_get_capabilities', 'dt_multi_role_remove_old_levels'  );
+add_filter( 'dt_multi_role_get_capabilities', 'dt_multi_role_remove_old_levels' );
 add_filter( 'dt_multi_role_get_capabilities', 'dt_multi_role_remove_hidden_caps' );
 
 /**
@@ -65,12 +65,13 @@ function dt_multi_role_is_cap_editable( $cap ) {
 function dt_multi_role_get_cap_roles( $cap ) {
     global $wp_roles;
 
-    $_roles = array();
+    $_roles = [];
 
     foreach ( $wp_roles->role_objects as $role ) {
 
-        if ( $role->has_cap( $cap ) )
+        if ( $role->has_cap( $cap ) ) {
             $_roles[] = $role->name;
+        }
     }
 
     return $_roles;
@@ -121,7 +122,7 @@ function dt_multi_role_get_role_capabilities() {
     global $wp_roles;
 
     // Set up an empty capabilities array.
-    $capabilities = array();
+    $capabilities = [];
 
     // Loop through each role object because we need to get the caps.
     foreach ( $wp_roles->role_objects as $key => $role ) {
@@ -130,8 +131,9 @@ function dt_multi_role_get_role_capabilities() {
         if ( is_array( $role->capabilities ) ) {
 
             // Add each of the role's caps (both granted and denied) to the array.
-            foreach ( $role->capabilities as $cap => $grant )
+            foreach ( $role->capabilities as $cap => $grant ) {
                 $capabilities[ $cap ] = $cap;
+            }
         }
     }
 
@@ -149,13 +151,13 @@ function dt_multi_role_get_role_capabilities() {
  */
 function dt_multi_role_get_plugin_capabilities() {
 
-    return array(
+    return [
         'list_roles',       // View roles list.
         'create_roles',       // Create new roles.
         'delete_roles',       // Delete roles.
         'edit_roles',       // Edit a role's caps.
         'restrict_content' // Restrict content (content permissions component).
-    );
+    ];
 }
 
 /**
@@ -175,7 +177,7 @@ function dt_multi_role_get_plugin_capabilities() {
  */
 function dt_multi_role_get_wp_capabilities() {
 
-    return array(
+    return [
         'activate_plugins',
         'add_users',
         'create_users',
@@ -227,7 +229,7 @@ function dt_multi_role_get_wp_capabilities() {
         'update_plugins',
         'update_themes',
         'upload_files'
-    );
+    ];
 }
 
 /**
@@ -242,8 +244,9 @@ function dt_multi_role_get_wp_capabilities() {
 function dt_multi_role_check_for_cap( $cap = '' ) {
 
     // Without a capability, we have nothing to check for.  Just return false.
-    if ( ! $cap )
+    if ( ! $cap ) {
         return false;
+    }
 
     // Check if the cap is assigned to any role.
     return in_array( $cap, dt_multi_role_get_role_capabilities() );
@@ -258,15 +261,17 @@ function dt_multi_role_check_for_cap( $cap = '' ) {
  */
 function dt_multi_role_get_hidden_caps() {
 
-    $caps = array();
+    $caps = [];
 
     // Unfiltered uploads.
-    if ( is_multisite() || ! defined( 'ALLOW_UNFILTERED_UPLOADS' ) || ! ALLOW_UNFILTERED_UPLOADS )
+    if ( is_multisite() || ! defined( 'ALLOW_UNFILTERED_UPLOADS' ) || ! ALLOW_UNFILTERED_UPLOADS ) {
         $caps[] = 'unfiltered_upload';
+    }
 
     // Unfiltered HTML.
-    if ( is_multisite() || ( defined( 'DISALLOW_UNFILTERED_HTML' ) && DISALLOW_UNFILTERED_HTML ) )
+    if ( is_multisite() || ( defined( 'DISALLOW_UNFILTERED_HTML' ) && DISALLOW_UNFILTERED_HTML ) ) {
         $caps[] = 'unfiltered_html';
+    }
 
     // File editing.
     if ( is_multisite() || ( defined( 'DISALLOW_FILE_EDIT' ) && DISALLOW_FILE_EDIT ) ) {
@@ -317,7 +322,7 @@ function dt_multi_role_remove_hidden_caps( $caps ) {
  */
 function dt_multi_role_get_old_levels() {
 
-    return array(
+    return [
         'level_0',
         'level_1',
         'level_2',
@@ -329,7 +334,7 @@ function dt_multi_role_get_old_levels() {
         'level_8',
         'level_9',
         'level_10'
-    );
+    ];
 }
 
 /**
@@ -356,7 +361,7 @@ function dt_multi_role_remove_old_levels( $caps ) {
  */
 function dt_multi_role_new_role_default_capabilities() {
 
-    return apply_filters( 'dt_multi_role_new_role_default_capabilities', array( 'read' ) );
+    return apply_filters( 'dt_multi_role_new_role_default_capabilities', [ 'read' ] );
 }
 
 /**
@@ -370,5 +375,5 @@ function dt_multi_role_new_role_default_capabilities() {
  */
 function dt_multi_role_new_role_default_caps() {
 
-    return apply_filters( 'dt_multi_role_new_role_default_caps', array( 'read' => true ) );
+    return apply_filters( 'dt_multi_role_new_role_default_caps', [ 'read' => true ] );
 }

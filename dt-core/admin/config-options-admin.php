@@ -1,29 +1,31 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * Disciple_Tools_Admin Class
  *
- * @class Disciple_Tools_Admin
- * @version    1.0.0
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_Admin
+ * @version 1.0.0
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 final class Disciple_Tools_Admin {
     /**
      * The single instance of Disciple_Tools_Admin.
-     * @var     object
-     * @access  private
+     *
+     * @var    object
+     * @access private
      * @since  0.1
      */
     private static $_instance = null;
 
     /**
      * The string containing the dynamically generated hook token.
-     * @var     string
-     * @access  private
-     * @since   0.1
+     *
+     * @var    string
+     * @access private
+     * @since  0.1
      */
     private $_hook;
 
@@ -31,15 +33,16 @@ final class Disciple_Tools_Admin {
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
         // Register the settings with WordPress.
-        add_action( 'admin_init', array( $this, 'register_settings' ) );
+        add_action( 'admin_init', [ $this, 'register_settings' ] );
 
         // Register the settings screen within WordPress.
-        add_action( 'admin_menu', array( $this, 'register_settings_screen' ) );
+        add_action( 'admin_menu', [ $this, 'register_settings_screen' ] );
     } // End __construct()
 
 
@@ -48,31 +51,34 @@ final class Disciple_Tools_Admin {
      *
      * Ensures only one instance of Disciple_Tools_Admin is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
      * @return Disciple_Tools_Admin instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
     /**
      * Register the admin screen.
-     * @access  public
-     * @since   0.1
-     * @return  void
+     *
+     * @access public
+     * @since  0.1
+     * @return void
      */
     public function register_settings_screen () {
-        $this->_hook = add_submenu_page( 'options-general.php', __( 'Options (DT)', 'disciple_tools' ), __( 'Options (DT)', 'disciple_tools' ), 'manage_options', 'disciple_tools_options', array( $this, 'settings_screen' ) );
+        $this->_hook = add_submenu_page( 'options-general.php', __( 'Options (DT)', 'disciple_tools' ), __( 'Options (DT)', 'disciple_tools' ), 'manage_options', 'disciple_tools_options', [ $this, 'settings_screen' ] );
     } // End register_settings_screen()
 
     /**
      * Output the markup for the settings screen.
-     * @access  public
-     * @since   0.1
-     * @return  void
+     *
+     * @access public
+     * @since  0.1
+     * @return void
      */
     public function settings_screen () {
         global $title;
@@ -96,26 +102,28 @@ final class Disciple_Tools_Admin {
 
     /**
      * Register the settings within the Settings API.
-     * @access  public
-     * @since   0.1
-     * @return  void
+     *
+     * @access public
+     * @since  0.1
+     * @return void
      */
     public function register_settings () {
         $sections = Disciple_Tools()->settings->get_settings_sections();
         if ( 0 < count( $sections ) ) {
             foreach ( $sections as $k => $v ) {
-                register_setting( 'dt-settings-' . sanitize_title_with_dashes( $k ), Disciple_Tools()->token . '-' . $k, array( $this, 'validate_settings' ) );
-                add_settings_section( sanitize_title_with_dashes( $k ), $v, array( $this, 'render_settings' ), Disciple_Tools()->token . '-' . $k  );
+                register_setting( 'dt-settings-' . sanitize_title_with_dashes( $k ), Disciple_Tools()->token . '-' . $k, [ $this, 'validate_settings' ] );
+                add_settings_section( sanitize_title_with_dashes( $k ), $v, [ $this, 'render_settings' ], Disciple_Tools()->token . '-' . $k );
             }
         }
     } // End register_settings()
 
     /**
      * Render the settings.
-     * @access  public
+     *
+     * @access public
      * @param  array $args arguments.
-     * @since   0.1
-     * @return  void
+     * @since  0.1
+     * @return void
      */
     public function render_settings ( $args ) {
         $token = $args['id'];
@@ -126,17 +134,18 @@ final class Disciple_Tools_Admin {
                 $args         = $v;
                 $args['id'] = $k;
 
-                add_settings_field( $k, $v['name'], array( Disciple_Tools()->settings, 'render_field' ), Disciple_Tools()->token . '-' . $token , $v['section'], $args );
+                add_settings_field( $k, $v['name'], [ Disciple_Tools()->settings, 'render_field' ], Disciple_Tools()->token . '-' . $token , $v['section'], $args );
             }
         }
     } // End render_settings()
 
     /**
      * Validate the settings.
-     * @access  public
-     * @since   0.1
-     * @param   array $input Inputted data.
-     * @return  array        Validated data.
+     *
+     * @access public
+     * @since  0.1
+     * @param  array $input Inputted data.
+     * @return array        Validated data.
      */
     public function validate_settings ( $input ) {
         $sections = Disciple_Tools()->settings->get_settings_sections();
@@ -146,25 +155,26 @@ final class Disciple_Tools_Admin {
 
     /**
      * Return marked up HTML for the header tag on the settings screen.
-     * @access  public
-     * @since   0.1
-     * @param   array  $sections Sections to scan through.
-     * @param   string $title    Title to use, if only one section is present.
-     * @return  string              The current tab key.
+     *
+     * @access public
+     * @since  0.1
+     * @param  array  $sections Sections to scan through.
+     * @param  string $title    Title to use, if only one section is present.
+     * @return string              The current tab key.
      */
     public function get_admin_header_html ( $sections, $title ) {
-        $defaults = array(
+        $defaults = [
                             'tag' => 'h2',
-                            'atts' => array( 'class' => 'dt-wrapper' ),
+                            'atts' => [ 'class' => 'dt-wrapper' ],
                             'content' => $title
-                        );
+                        ];
 
         $args = $this->_get_admin_header_data( $sections, $title );
 
         $args = wp_parse_args( $args, $defaults );
 
         $atts = '';
-        if ( 0 < count ( $args['atts'] ) ) {
+        if ( 0 < count( $args['atts'] ) ) {
             foreach ( $args['atts'] as $k => $v ) {
                 $atts .= ' ' . esc_attr( $k ) . '="' . esc_attr( $v ) . '"';
             }
@@ -177,13 +187,14 @@ final class Disciple_Tools_Admin {
 
     /**
      * Return the current tab key.
-     * @access  private
-     * @since   0.1
-     * @param   array  $sections Sections to scan through for a section key.
-     * @return  string              The current tab key.
+     *
+     * @access private
+     * @since  0.1
+     * @param  array  $sections Sections to scan through for a section key.
+     * @return string              The current tab key.
      */
-    private function _get_current_tab ( $sections = array() ) {
-        if ( isset ( $_GET['tab'] ) ) {
+    private function _get_current_tab ( $sections = [] ) {
+        if ( isset( $_GET['tab'] ) ) {
             $response = sanitize_title_with_dashes( $_GET['tab'] );
         } else {
             if ( is_array( $sections ) && ! empty( $sections ) ) {
@@ -199,14 +210,15 @@ final class Disciple_Tools_Admin {
 
     /**
      * Return an array of data, used to construct the header tag.
-     * @access  private
-     * @since   0.1
-     * @param   array  $sections Sections to scan through.
-     * @param   string $title    Title to use, if only one section is present.
-     * @return  array              An array of data with which to mark up the header HTML.
+     *
+     * @access private
+     * @since  0.1
+     * @param  array  $sections Sections to scan through.
+     * @param  string $title    Title to use, if only one section is present.
+     * @return array              An array of data with which to mark up the header HTML.
      */
     private function _get_admin_header_data ( $sections, $title ) {
-        $response = array( 'tag' => 'h2', 'atts' => array( 'class' => 'dt-wrapper' ), 'content' => $title );
+        $response = [ 'tag' => 'h2', 'atts' => [ 'class' => 'dt-wrapper' ], 'content' => $title ];
 
         if ( is_array( $sections ) && 1 < count( $sections ) ) {
             $response['content'] = '';
@@ -224,7 +236,7 @@ final class Disciple_Tools_Admin {
             }
         }
 
-        return (array)apply_filters( 'dt-get-admin-header-data', $response );
+        return (array) apply_filters( 'dt-get-admin-header-data', $response );
     } // End _get_admin_header_data()
 
 

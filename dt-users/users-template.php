@@ -3,7 +3,7 @@
  * Template file for theme support
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 /**
@@ -34,7 +34,7 @@ function dt_get_user_associations () {
 
     // Set variables
     global $wpdb;
-    $user_connections = array();
+    $user_connections = [];
 
     // Set constructor
     $user_connections['relation'] = 'OR';
@@ -42,7 +42,7 @@ function dt_get_user_associations () {
     // Get current user ID and build meta_key for current user
     $user_id = get_current_user_id();
     $user_key_value = 'user-' . $user_id;
-    $user_connections[] = array('key' => 'assigned_to', 'value' => $user_key_value ) ;
+    $user_connections[] = ['key' => 'assigned_to', 'value' => $user_key_value ] ;
 
     // Build arrays for current groups connected to user
     $sql = $wpdb->prepare(
@@ -56,7 +56,7 @@ function dt_get_user_associations () {
     $results = $wpdb->get_results( $sql, ARRAY_A );
 
     foreach ($results as $result) {
-        $user_connections[] = array('key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id']  );
+        $user_connections[] = ['key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id']  ];
     }
 
     // Return array to the meta_query
@@ -83,14 +83,15 @@ function dt_get_user_associations () {
 [value] => group-1
 )
 )
+ *
  * @return array
  */
-function dt_get_team_contacts($user_id) {
+function dt_get_team_contacts( $user_id ) {
     // get variables
     global $wpdb;
-    $user_connections = array();
+    $user_connections = [];
     $user_connections['relation'] = 'OR';
-    $members = array();
+    $members = [];
 
     // First Query
     // Build arrays for current groups connected to user
@@ -113,7 +114,7 @@ function dt_get_team_contacts($user_id) {
     // Loop
     foreach ($results as $result) {
         // create the meta query for the group
-        $user_connections[] = array('key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id']  );
+        $user_connections[] = ['key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id']  ];
 
         // Second Query
         // query a member list for this group
@@ -138,10 +139,10 @@ function dt_get_team_contacts($user_id) {
         }
     }
 
-    $members = array_unique($members);
+    $members = array_unique( $members );
 
     foreach($members as $member) {
-        $user_connections[] = array('key' => 'assigned_to', 'value' => 'user-' . $member  );
+        $user_connections[] = ['key' => 'assigned_to', 'value' => 'user-' . $member  ];
     }
 
     // return

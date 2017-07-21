@@ -1,24 +1,26 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 
     public function hooks_theme_modify( $location, $status ) {
         if ( false !== strpos( $location, 'theme-editor.php?file=' ) ) {
             if ( ! empty( $_POST ) && 'update' === $_POST['action'] ) {
-                $aal_args = array(
+                $aal_args = [
                     'action'         => 'file_updated',
                     'object_type'    => 'Theme',
                     'object_subtype' => 'theme_unknown',
                     'object_id'      => 0,
                     'object_name'    => 'file_unknown',
-                );
+                ];
 
-                if ( ! empty( $_POST['file'] ) )
+                if ( ! empty( $_POST['file'] ) ) {
                     $aal_args['object_name'] = $_POST['file'];
+                }
 
-                if ( ! empty( $_POST['theme'] ) )
+                if ( ! empty( $_POST['theme'] ) ) {
                     $aal_args['object_subtype'] = $_POST['theme'];
+                }
 
                 dt_activity_insert( $aal_args );
             }
@@ -30,27 +32,28 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 
     public function hooks_switch_theme( $new_name, WP_Theme $new_theme ) {
         dt_activity_insert(
-                array(
+            [
                 'action'         => 'activated',
                 'object_type'    => 'Theme',
                 'object_subtype' => $new_theme->get_stylesheet(),
                 'object_id'      => 0,
                 'object_name'    => $new_name,
-            )
+            ]
         );
     }
 
     public function hooks_theme_customizer_modified( WP_Customize_Manager $obj ) {
-        $aal_args = array(
+        $aal_args = [
             'action'         => 'updated',
             'object_type'    => 'Theme',
             'object_subtype' => $obj->theme()->display( 'Name' ),
             'object_id'      => 0,
             'object_name'    => 'Theme Customizer',
-        );
+        ];
 
-        if ( 'customize_preview_init' === current_filter() )
+        if ( 'customize_preview_init' === current_filter() ) {
             $aal_args['action'] = 'accessed';
+        }
 
         dt_activity_insert( $aal_args );
     }
@@ -66,17 +69,18 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
             }
         }
 
-        if ( empty( $delete_theme_call ) )
+        if ( empty( $delete_theme_call ) ) {
             return;
+        }
 
         $name = $delete_theme_call['args'][0];
         
         dt_activity_insert(
-            array(
+            [
                 'action' => 'deleted',
                 'object_type' => 'Theme',
                 'object_name' => $name,
-            )
+            ]
         );
     }
 
@@ -85,13 +89,15 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
      * @param array $extra
      */
     public function hooks_theme_install_or_update( $upgrader, $extra ) {
-        if ( ! isset( $extra['type'] ) || 'theme' !== $extra['type'] )
+        if ( ! isset( $extra['type'] ) || 'theme' !== $extra['type'] ) {
             return;
+        }
         
         if ( 'install' === $extra['action'] ) {
             $slug = $upgrader->theme_info();
-            if ( ! $slug )
+            if ( ! $slug ) {
                 return;
+            }
 
             wp_clean_themes_cache();
             $theme   = wp_get_theme( $slug );
@@ -99,49 +105,50 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
             $version = $theme->version;
 
             dt_activity_insert(
-                array(
+                [
                     'action' => 'installed',
                     'object_type' => 'Theme',
                     'object_name' => $name,
                     'object_subtype' => $version,
-                )
+                ]
             );
         }
         
         if ( 'update' === $extra['action'] ) {
-            if ( isset( $extra['bulk'] ) && true == $extra['bulk'] )
+            if ( isset( $extra['bulk'] ) && true == $extra['bulk'] ) {
                 $slugs = $extra['themes'];
-            else
-                $slugs = array( $upgrader->skin->theme );
+            } else {
+                $slugs = [ $upgrader->skin->theme ];
+            }
 
             foreach ( $slugs as $slug ) {
                 $theme      = wp_get_theme( $slug );
                 $stylesheet = $theme['Stylesheet Dir'] . '/style.css';
-                $theme_data = get_file_data( $stylesheet, array( 'Version' => 'Version' ) );
+                $theme_data = get_file_data( $stylesheet, [ 'Version' => 'Version' ] );
                 
                 $name    = $theme['Name'];
                 $version = $theme_data['Version'];
 
                 dt_activity_insert(
-                    array(
+                    [
                         'action' => 'updated',
                         'object_type' => 'Theme',
                         'object_name' => $name,
                         'object_subtype' => $version,
-                    )
+                    ]
                 );
             }
         }
     }
 
     public function __construct() {
-        add_filter( 'wp_redirect', array( &$this, 'hooks_theme_modify' ), 10, 2 );
-        add_action( 'switch_theme', array( &$this, 'hooks_switch_theme' ), 10, 2 );
-        add_action( 'delete_site_transient_update_themes', array( &$this, 'hooks_theme_deleted' ) );
-        add_action( 'upgrader_process_complete', array( &$this, 'hooks_theme_install_or_update' ), 10, 2 );
+        add_filter( 'wp_redirect', [ &$this, 'hooks_theme_modify' ], 10, 2 );
+        add_action( 'switch_theme', [ &$this, 'hooks_switch_theme' ], 10, 2 );
+        add_action( 'delete_site_transient_update_themes', [ &$this, 'hooks_theme_deleted' ] );
+        add_action( 'upgrader_process_complete', [ &$this, 'hooks_theme_install_or_update' ], 10, 2 );
 
         // Theme customizer
-        add_action( 'customize_save', array( &$this, 'hooks_theme_customizer_modified' ) );
+        add_action( 'customize_save', [ &$this, 'hooks_theme_customizer_modified' ] );
         //add_action( 'customize_preview_init', array( &$this, 'hooks_theme_customizer_modified' ) );
 
         parent::__construct();

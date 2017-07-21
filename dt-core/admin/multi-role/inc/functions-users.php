@@ -34,8 +34,9 @@ if ( dt_multi_role_explicitly_deny_caps() ) {
 function dt_user_has_cap_filter( $allcaps, $caps, $args, $user ) {
 
     // If the user doesn't have more than one role, bail.
-    if ( 1 >= count( (array) $user->roles ) )
+    if ( 1 >= count( (array) $user->roles ) ) {
         return $allcaps;
+    }
 
     // Get the denied caps.
     $denied_caps = array_keys( $allcaps, false );
@@ -47,8 +48,9 @@ function dt_user_has_cap_filter( $allcaps, $caps, $args, $user ) {
         $role_obj = get_role( $role );
 
         // If we have an object, merge it's denied caps.
-        if ( ! is_null( $role_obj ) )
+        if ( ! is_null( $role_obj ) ) {
             $denied_caps = array_merge( $denied_caps, array_keys( $role_obj->capabilities, false ) );
+        }
     }
 
     // If there are any denied caps, make sure they take precedence.
@@ -104,10 +106,11 @@ function dt_get_user_role_names( $user_id ) {
 
     $user = new WP_User( $user_id );
 
-    $names = array();
+    $names = [];
 
-    foreach ( $user->roles as $role )
+    foreach ( $user->roles as $role ) {
         $names[ $role ] = dt_multi_role_get_role_name( $role );
+    }
 
     return $names;
 }

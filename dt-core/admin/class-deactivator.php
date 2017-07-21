@@ -11,7 +11,7 @@
  * @author
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Deactivator {
 
@@ -20,17 +20,17 @@ class Disciple_Tools_Deactivator {
      *
      * Long Description.
      *
-     * @since    0.1
+     * @since 0.1
      */
-    public static function deactivate($network_wide) {
+    public static function deactivate( $network_wide ) {
 
         // Reset roles and capabilities
-        require_once('class-roles.php');
+        require_once( 'class-roles.php' );
         $roles = Disciple_Tools_Roles::instance();
         $roles->reset_roles();
 
         /* Determines if on deactivate you have checked to remove database content */
-        if (get_option('delete_activity_db')) {
+        if (get_option( 'delete_activity_db' )) {
             self::_remove_tables();
         }
         self::_remove_tables();
@@ -39,6 +39,7 @@ class Disciple_Tools_Deactivator {
 
     /**
      * Removes the tables for the activity and report logs.
+     *
      * @access protected
      */
     protected static function _remove_tables() {

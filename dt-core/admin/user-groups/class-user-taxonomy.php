@@ -4,7 +4,7 @@
  * User Groups Taxonomy
  *
  * @package Disciple Tools
- * @source http://github.com/stuttter/disciple-tools-user-groups/
+ * @source  http://github.com/stuttter/disciple-tools-user-groups/
  */
 
 // Exit if accessed directly
@@ -48,7 +48,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @var array
      */
-        public $args = array();
+        public $args = [];
 
         /**
      * Array of taxonomy labels, if you'd like to customize them completely
@@ -57,13 +57,14 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @var array
      */
-        public $labels = array();
+        public $labels = [];
 
         /**
      * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
-     * @var     object
-     * @access  private
-     * @since     0.1
+         *
+     * @var    object
+     * @access private
+     * @since  0.1
      */
         private static $_instance = null;
 
@@ -72,13 +73,14 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
      * @return Disciple_Tools_User_Taxonomy instance
      */
         public static function instance () {
-            if ( is_null( self::$_instance ) )
-            self::$_instance = new self();
+            if ( is_null( self::$_instance ) ) {
+                self::$_instance = new self();
+            }
             return self::$_instance;
         } // End instance()
 
@@ -87,19 +89,21 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param  string  $taxonomy
-     * @param  string  $slug
-     * @param  array   $args
-     * @param  array   $labels
+     * @param string  $taxonomy
+     * @param string  $slug
+     * @param array   $args
+     * @param array   $labels
      */
-        public function __construct( $taxonomy = '', $slug = '', $args = array(), $labels = array() ) {
+        public function __construct( $taxonomy = '', $slug = '', $args = [], $labels = [] ) {
 
             // Bail if no taxonomy is passed
             if ( empty( $taxonomy ) ) {
                 return;
             }
 
-            /** Class Variables ***************************************************/
+            /**
+ * Class Variables 
+***************************************************/
 
             // Set the taxonomy
             $this->taxonomy = sanitize_key( $taxonomy );
@@ -111,7 +115,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $this->tax_singular     = $args['singular'];
             $this->tax_plural       = $args['plural'];
             $this->tax_singular_low = strtolower( $this->tax_singular );
-            $this->tax_plural_low   = strtolower( $this->tax_plural   );
+            $this->tax_plural_low   = strtolower( $this->tax_plural );
 
             // Register the taxonomy
             $this->register_user_taxonomy();
@@ -131,43 +135,43 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         protected function hooks() {
 
             // Bulk edit
-            add_filter( 'admin_notices',             array( $this, 'bulk_notice'         )        );
-            add_filter( 'bulk_actions-users',        array( $this, 'bulk_actions'        )        );
-            add_filter( 'bulk_actions-users',        array( $this, 'bulk_actions_sort'   ), 99    );
-            add_action( 'handle_bulk_actions-users', array( $this, 'handle_bulk_actions' ), 10, 3 );
+            add_filter( 'admin_notices',             [ $this, 'bulk_notice'         ] );
+            add_filter( 'bulk_actions-users',        [ $this, 'bulk_actions'        ] );
+            add_filter( 'bulk_actions-users',        [ $this, 'bulk_actions_sort'   ], 99 );
+            add_action( 'handle_bulk_actions-users', [ $this, 'handle_bulk_actions' ], 10, 3 );
 
             // Include users by taxonomy term in users.php
-            add_action( 'pre_get_users', array( $this, 'pre_get_users' ) );
+            add_action( 'pre_get_users', [ $this, 'pre_get_users' ] );
 
             // Custom list-table views
-            add_filter( 'views_users', array( $this, 'list_table_views' ) );
+            add_filter( 'views_users', [ $this, 'list_table_views' ] );
 
             // Column styling
-            add_action( 'admin_head', array( $this, 'admin_head'     ) );
-            add_action( 'admin_menu', array( $this, 'add_admin_page' ) );
+            add_action( 'admin_head', [ $this, 'admin_head'     ] );
+            add_action( 'admin_menu', [ $this, 'add_admin_page' ] );
 
             // WP User Profile support
-            add_action( 'disciple_tools_profiles_add_meta_boxes', array( $this, 'add_meta_box' ), 10, 2 );
+            add_action( 'disciple_tools_profiles_add_meta_boxes', [ $this, 'add_meta_box' ], 10, 2 );
 
             // Taxonomy columns
-            add_action( "manage_{$this->taxonomy}_custom_column", array( $this, 'manage_custom_column'     ), 10, 3 );
-            add_filter( "manage_edit-{$this->taxonomy}_columns",  array( $this, 'manage_edit_users_column' ) );
+            add_action( "manage_{$this->taxonomy}_custom_column", [ $this, 'manage_custom_column'     ], 10, 3 );
+            add_filter( "manage_edit-{$this->taxonomy}_columns",  [ $this, 'manage_edit_users_column' ] );
 
             // User columns
-            add_filter( 'manage_users_columns',       array( $this, 'add_manage_users_columns' ), 15, 1 );
-            add_action( 'manage_users_custom_column', array( $this, 'user_column_data'         ), 15, 3 );
+            add_filter( 'manage_users_columns',       [ $this, 'add_manage_users_columns' ], 15, 1 );
+            add_action( 'manage_users_custom_column', [ $this, 'user_column_data'         ], 15, 3 );
 
             // Update the groups when the edit user page is updated
-            add_action( 'personal_options_update',  array( $this, 'save_terms_for_user' ) );
-            add_action( 'edit_user_profile_update', array( $this, 'save_terms_for_user' ) );
+            add_action( 'personal_options_update',  [ $this, 'save_terms_for_user' ] );
+            add_action( 'edit_user_profile_update', [ $this, 'save_terms_for_user' ] );
 
             // Add section to the edit user page in the admin to select group
-            add_action( 'show_user_profile', array( $this, 'edit_user_relationships' ), 99 );
-            add_action( 'edit_user_profile', array( $this, 'edit_user_relationships' ), 99 );
+            add_action( 'show_user_profile', [ $this, 'edit_user_relationships' ], 99 );
+            add_action( 'edit_user_profile', [ $this, 'edit_user_relationships' ], 99 );
 
             // Cleanup stuff
-            add_action( 'delete_user',   array( $this, 'delete_term_relationships' ) );
-            add_filter( 'sanitize_user', array( $this, 'disable_username'          ) );
+            add_action( 'delete_user',   [ $this, 'delete_term_relationships' ] );
+            add_filter( 'sanitize_user', [ $this, 'disable_username'          ] );
         }
 
         /**
@@ -186,21 +190,21 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             }
 
             // URL for the taxonomy
-            $url = add_query_arg( array( 'taxonomy' => $tax->name ), 'edit-tags.php' );
+            $url = add_query_arg( [ 'taxonomy' => $tax->name ], 'edit-tags.php' );
 
             // Add page to users
             add_users_page(
-            esc_attr( $tax->labels->menu_name ),
-            esc_attr( $tax->labels->menu_name ),
-            $tax->cap->manage_terms,
-            $url
+                esc_attr( $tax->labels->menu_name ),
+                esc_attr( $tax->labels->menu_name ),
+                $tax->cap->manage_terms,
+                $url
             );
 
             // Hook into early actions to load custom CSS and our init handler.
-            add_action( 'load-users.php',     array( $this, 'admin_load' ) );
-            add_action( 'load-edit-tags.php', array( $this, 'admin_load' ) );
-            add_action( 'load-term.php',      array( $this, 'admin_menu_highlight' ) );
-            add_action( 'load-edit-tags.php', array( $this, 'admin_menu_highlight' ) );
+            add_action( 'load-users.php',     [ $this, 'admin_load' ] );
+            add_action( 'load-edit-tags.php', [ $this, 'admin_load' ] );
+            add_action( 'load-term.php',      [ $this, 'admin_menu_highlight' ] );
+            add_action( 'load-edit-tags.php', [ $this, 'admin_menu_highlight' ] );
         }
 
         /**
@@ -226,7 +230,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      * @since 0.1.0
      */
         public function admin_load() {
-            add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
+            add_filter( 'admin_body_class', [ $this, 'admin_body_class' ] );
         }
 
         /**
@@ -234,8 +238,8 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param   string $classes
-     * @return  string
+     * @param  string $classes
+     * @return string
      */
         public function admin_body_class( $classes = '' ) {
 
@@ -300,23 +304,25 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             }
 
             // Get the terms of the taxonomy.
-            $terms = get_terms( $this->taxonomy, array(
-            'hide_empty' => false
-            ) );
+            $terms = get_terms(
+                $this->taxonomy, [
+                'hide_empty' => false
+                 ] 
+            );
 
             // Maybe add the metabox
             add_meta_box(
-            'disciple_tools_taxonomy_' . $this->taxonomy,
-            $tax->label,
-            array( $this, 'user_profile_metabox' ),
-            $hooks[0],
-            'normal',
-            'default',
-            array(
+                'disciple_tools_taxonomy_' . $this->taxonomy,
+                $tax->label,
+                [ $this, 'user_profile_metabox' ],
+                $hooks[0],
+                'normal',
+                'default',
+                [
                 'user_id' => $user_id,
                 'tax'     => $tax,
                 'terms'   => $terms
-            )
+                ]
             );
         }
 
@@ -354,7 +360,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @param int $user_id
      */
-        public function update_term_user_count( $terms = array(), $taxonomy = '' ) {
+        public function update_term_user_count( $terms = [], $taxonomy = '' ) {
 
             // Fallback to this taxonomy
             if ( empty( $taxonomy ) ) {
@@ -370,10 +376,10 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param   array $columns
-     * @return  array
+     * @param  array $columns
+     * @return array
      */
-        public function manage_edit_users_column( $columns = array() ) {
+        public function manage_edit_users_column( $columns = [] ) {
 
             // Unset the "Posts" column
             unset( $columns['posts'] );
@@ -399,7 +405,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             // Users column gets custom content
             if ( 'users' === $column ) {
                 $term  = get_term( $term_id, $this->taxonomy );
-                $args  = array( $this->taxonomy => $term->slug );
+                $args  = [ $this->taxonomy => $term->slug ];
                 $users = admin_url( 'users.php' );
                 $url   = add_query_arg( $args, $users );
                 $text  = number_format_i18n( $term->count );
@@ -412,7 +418,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param  mixed  $user
+     * @param mixed  $user
      */
         public function edit_user_relationships( $user = false ) {
 
@@ -429,9 +435,11 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             }
 
             // Get the terms of the taxonomy.
-            $terms = get_terms( $this->taxonomy, array(
-            'hide_empty' => false
-            ) ); ?>
+            $terms = get_terms(
+                $this->taxonomy, [
+                'hide_empty' => false
+                 ] 
+            ); ?>
 
             <?php
 
@@ -470,7 +478,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.6
      */
-        public function user_profile_metabox( $user = null, $args = array() ) {
+        public function user_profile_metabox( $user = null, $args = [] ) {
             $this->table_contents( $user, $args['args']['tax'], $args['args']['terms'] );
         }
 
@@ -557,12 +565,12 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @param object $term
      */
-        protected function row_actions( $tax = array(), $term = false ) {
-            $actions = array();
+        protected function row_actions( $tax = [], $term = false ) {
+            $actions = [];
 
             // View users
             if ( current_user_can( 'list_users' ) ) {
-                $args      = array( $tax->name => $term->slug );
+                $args      = [ $tax->name => $term->slug ];
                 $users     = admin_url( 'users.php' );
                 $url       = add_query_arg( $args, $users );
                 $actions[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'View', 'disciple-tools-user-groups' ) . '</a>';
@@ -570,7 +578,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
 
             // Edit term
             if ( current_user_can( $tax->cap->assign_terms ) ) {
-                $args      = array( 'action' => 'edit', 'taxonomy' => $tax->name, 'tag_ID' => $term->term_id, 'post_type' => 'post' );
+                $args      = [ 'action' => 'edit', 'taxonomy' => $tax->name, 'tag_ID' => $term->term_id, 'post_type' => 'post' ];
                 $edit_tags = admin_url( 'edit-tags.php' );
                 $url       = add_query_arg( $args, $edit_tags );
                 $actions[] = '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Edit', 'disciple-tools-user-groups' ) . '</a>';
@@ -587,8 +595,8 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param   string  $username
-     * @return  string
+     * @param  string  $username
+     * @return string
      */
         public function disable_username( $username = '' ) {
 
@@ -612,7 +620,9 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             wp_delete_object_term_relationships( $user_id, $this->taxonomy );
         }
 
-        /** Post Type *************************************************************/
+        /**
+ * Post Type 
+*************************************************************/
 
         /**
      * Register the taxonomy
@@ -621,9 +631,9 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      */
         protected function register_user_taxonomy() {
             register_taxonomy(
-            $this->taxonomy,
-            'user',
-            $this->parse_options()
+                $this->taxonomy,
+                'user',
+                $this->parse_options()
             );
         }
 
@@ -635,27 +645,29 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      * @return array
      */
         protected function parse_labels() {
-            return wp_parse_args( $this->labels, array(
-            'menu_name'                  => $this->tax_plural,
-            'name'                       => $this->tax_plural,
-            'singular_name'              => $this->tax_singular,
-            'search_items'               => sprintf( __( 'Search %s', 'disciple-tools-user-groups' ),                $this->tax_plural ),
-            'popular_items'              => sprintf( __( 'Popular %s', 'disciple-tools-user-groups' ),               $this->tax_plural ),
-            'all_items'                  => sprintf( __( 'All %s', 'disciple-tools-user-groups' ),                   $this->tax_plural ),
-            'parent_item'                => sprintf( __( 'Parent %s', 'disciple-tools-user-groups' ),                $this->tax_singular ),
-            'parent_item_colon'          => sprintf( __( 'Parent %s:', 'disciple-tools-user-groups' ),               $this->tax_singular ),
-            'edit_item'                  => sprintf( __( 'Edit %s', 'disciple-tools-user-groups' ),                  $this->tax_singular ),
-            'view_item'                  => sprintf( __( 'View %s', 'disciple-tools-user-groups' ),                  $this->tax_singular ),
-            'update_item'                => sprintf( __( 'Update %s', 'disciple-tools-user-groups' ),                $this->tax_singular ),
-            'add_new_item'               => sprintf( __( 'Add New %s', 'disciple-tools-user-groups' ),               $this->tax_singular ),
-            'new_item_name'              => sprintf( __( 'New %s Name', 'disciple-tools-user-groups' ),              $this->tax_singular ),
-            'separate_items_with_commas' => sprintf( __( 'Separate %s with commas', 'disciple-tools-user-groups' ),  $this->tax_plural_low ),
-            'add_or_remove_items'        => sprintf( __( 'Add or remove %s', 'disciple-tools-user-groups' ),         $this->tax_plural_low ),
-            'choose_from_most_used'      => sprintf( __( 'Choose from most used %s', 'disciple-tools-user-groups' ), $this->tax_plural_low ),
-            'not_found'                  => sprintf( __( 'No %s found', 'disciple-tools-user-groups' ),              $this->tax_plural_low ),
-            'no_item'                    => sprintf( __( 'No %s', 'disciple-tools-user-groups' ),                    $this->tax_singular ),
-            'no_items'                   => sprintf( __( 'No %s', 'disciple-tools-user-groups' ),                    $this->tax_plural_low )
-            ) );
+            return wp_parse_args(
+                $this->labels, [
+                'menu_name'                  => $this->tax_plural,
+                'name'                       => $this->tax_plural,
+                'singular_name'              => $this->tax_singular,
+                'search_items'               => sprintf( __( 'Search %s', 'disciple-tools-user-groups' ),                $this->tax_plural ),
+                'popular_items'              => sprintf( __( 'Popular %s', 'disciple-tools-user-groups' ),               $this->tax_plural ),
+                'all_items'                  => sprintf( __( 'All %s', 'disciple-tools-user-groups' ),                   $this->tax_plural ),
+                'parent_item'                => sprintf( __( 'Parent %s', 'disciple-tools-user-groups' ),                $this->tax_singular ),
+                'parent_item_colon'          => sprintf( __( 'Parent %s:', 'disciple-tools-user-groups' ),               $this->tax_singular ),
+                'edit_item'                  => sprintf( __( 'Edit %s', 'disciple-tools-user-groups' ),                  $this->tax_singular ),
+                'view_item'                  => sprintf( __( 'View %s', 'disciple-tools-user-groups' ),                  $this->tax_singular ),
+                'update_item'                => sprintf( __( 'Update %s', 'disciple-tools-user-groups' ),                $this->tax_singular ),
+                'add_new_item'               => sprintf( __( 'Add New %s', 'disciple-tools-user-groups' ),               $this->tax_singular ),
+                'new_item_name'              => sprintf( __( 'New %s Name', 'disciple-tools-user-groups' ),              $this->tax_singular ),
+                'separate_items_with_commas' => sprintf( __( 'Separate %s with commas', 'disciple-tools-user-groups' ),  $this->tax_plural_low ),
+                'add_or_remove_items'        => sprintf( __( 'Add or remove %s', 'disciple-tools-user-groups' ),         $this->tax_plural_low ),
+                'choose_from_most_used'      => sprintf( __( 'Choose from most used %s', 'disciple-tools-user-groups' ), $this->tax_plural_low ),
+                'not_found'                  => sprintf( __( 'No %s found', 'disciple-tools-user-groups' ),              $this->tax_plural_low ),
+                'no_item'                    => sprintf( __( 'No %s', 'disciple-tools-user-groups' ),                    $this->tax_singular ),
+                'no_items'                   => sprintf( __( 'No %s', 'disciple-tools-user-groups' ),                    $this->tax_plural_low )
+                 ] 
+            );
         }
 
         /**
@@ -666,31 +678,35 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      * @return array
      */
         protected function parse_options() {
-            return wp_parse_args( $this->args, array(
-            'user_group'   => true, // Custom
-            'hierarchical' => true,
-            'public'       => false,
-            'show_ui'      => true,
-            'meta_box_cb'  => '',
-            'labels'       => $this->parse_labels(),
-            'rewrite'      => array(
+            return wp_parse_args(
+                $this->args, [
+                'user_group'   => true, // Custom
+                'hierarchical' => true,
+                'public'       => false,
+                'show_ui'      => true,
+                'meta_box_cb'  => '',
+                'labels'       => $this->parse_labels(),
+                'rewrite'      => [
                 'with_front'   => false,
                 'slug'         => $this->slug,
                 'hierarchical' => true
-            ),
-            'capabilities' => array(
+                ],
+                'capabilities' => [
                 'manage_terms' => 'list_users',
                 'edit_terms'   => 'list_users',
                 'delete_terms' => 'list_users',
                 'assign_terms' => 'read',
-            ),
+                ],
 
-            // @see _update_post_term_count()
-            'update_count_callback' => array( $this, 'update_term_user_count' )
-            ) );
+                // @see _update_post_term_count()
+                'update_count_callback' => [ $this, 'update_term_user_count' ]
+                 ] 
+            );
         }
 
-        /** Bulk Edit *************************************************************/
+        /**
+ * Bulk Edit 
+*************************************************************/
 
         /**
      * Add custom bulk actions
@@ -701,13 +717,15 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @return array
      */
-        public function bulk_actions( $actions = array() ) {
+        public function bulk_actions( $actions = [] ) {
 
             // Get taxonomy & terms
             $tax   = get_taxonomy( $this->taxonomy );
-            $terms = get_terms( $this->taxonomy, array(
-            'hide_empty' => false
-            ) );
+            $terms = get_terms(
+                $this->taxonomy, [
+                'hide_empty' => false
+                 ] 
+            );
 
             // Add to bulk actions array
             if ( ! empty( $terms ) ) {
@@ -728,10 +746,10 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @param array $actions
      */
-        public function bulk_actions_sort( $actions = array() ) {
+        public function bulk_actions_sort( $actions = [] ) {
 
             // Actions array
-            $old_actions = $add_actions = $rem_actions = array();
+            $old_actions = $add_actions = $rem_actions = [];
 
             // Loop through and separate out actions
             foreach ( $actions as $key => $name ) {
@@ -760,12 +778,14 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 1.0.0
      */
-        public function handle_bulk_actions( $redirect_to = '', $action = '', $user_ids = array() ) {
+        public function handle_bulk_actions( $redirect_to = '', $action = '', $user_ids = [] ) {
 
             // Get terms
-            $terms = get_terms( $this->taxonomy, array(
-            'hide_empty' => false
-            ) );
+            $terms = get_terms(
+                $this->taxonomy, [
+                'hide_empty' => false
+                 ] 
+            );
 
             // Bail if no users or terms to work with
             if ( empty( $user_ids ) || empty( $terms ) ) {
@@ -773,7 +793,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             }
 
             // New actions array
-            $actions = array();
+            $actions = [];
 
             // Compile available actions
             foreach ( $terms as $term ) {
@@ -831,10 +851,12 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
 
             // Add count to redirection
             if ( ! empty( $update_terms ) ) {
-                $redirect_to = add_query_arg( array(
-                'user_groups_count' => count( $user_ids ),
-                'action_type'       => $type
-                ), $redirect_to );
+                $redirect_to = add_query_arg(
+                    [
+                    'user_groups_count' => count( $user_ids ),
+                    'action_type'       => $type
+                     ], $redirect_to 
+                );
             }
 
             // Return redirection
@@ -876,7 +898,9 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             </p></div><?php
         }
 
-        /** Views *****************************************************************/
+        /**
+ * Views 
+*****************************************************************/
 
         /**
      * Output an additional list-table view section that replaces the "h1" when
@@ -887,10 +911,10 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      * @param  array $views
      * @return array
      */
-        public function list_table_views( $views = array() ) {
+        public function list_table_views( $views = [] ) {
 
             // Get tax & terms
-            $terms   = get_terms( $this->taxonomy, array( 'hide_empty' => false ) );
+            $terms   = get_terms( $this->taxonomy, [ 'hide_empty' => false ] );
             $slugs   = wp_list_pluck( $terms, 'slug' );
             $current = isset( $_GET[ $this->taxonomy ] ) ? sanitize_key( $_GET[ $this->taxonomy ] ) : '';
             $viewing = array_search( $current, $slugs, true );
@@ -900,11 +924,11 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
 
                 // Assemble the "Edit" h1 link
                 $edit = admin_url( 'edit-tags.php' );
-                $args = array(
+                $args = [
                 'action'   => 'edit',
                 'taxonomy' => $this->taxonomy,
                 'tag_ID'   => $terms[ $viewing ]->term_id,
-                );
+                ];
                 $url = add_query_arg( $args, $edit ); ?>
 
                 <div id="<?php echo esc_attr( $this->taxonomy ); ?>-header">
@@ -938,9 +962,9 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @global  string  $pagenow
+     * @global string  $pagenow
      *
-     * @param   object  $user_query
+     * @param object  $user_query
      */
         public function pre_get_users( $user_query ) {
             global $pagenow;
@@ -966,7 +990,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
 
             // If no users are in this group, pass a 0 user ID
             if ( empty( $user_ids ) ) {
-                $user_ids = array( 0 );
+                $user_ids = [ 0 ];
             }
 
             // Set IDs to be included
@@ -978,7 +1002,7 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param  object  $user_query
+     * @param object  $user_query
      */
         public function user_tax_query( $user_query = '' ) {
             return get_tax_sql( $user_query->tax_query, $GLOBALS['wpdb']->users, 'ID' );
@@ -989,8 +1013,8 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param  mixed  $user
-     * @param  string $page
+     * @param mixed  $user
+     * @param string $page
      *
      * @return string
      */
@@ -1004,14 +1028,14 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 return false;
             }
 
-            $in  = array();
+            $in  = [];
             $url = admin_url( 'users.php' );
 
             // Loop through terms
             foreach ( $terms as $term ) {
-                $args = array( $this->taxonomy => $term->slug );
+                $args = [ $this->taxonomy => $term->slug ];
                 $href = empty( $page )
-                ? add_query_arg( $args, $url  )
+                ? add_query_arg( $args, $url )
                 : add_query_arg( $args, $page );
 
                 // Add link to array
@@ -1058,11 +1082,11 @@ if ( ! class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
      *
      * @since 0.1.0
      *
-     * @param   array $defaults
+     * @param array $defaults
      *
-     * @return  array
+     * @return array
      */
-        public function add_manage_users_columns( $defaults = array() ) {
+        public function add_manage_users_columns( $defaults = [] ) {
 
             // Get the taxonomy
             $tax = get_taxonomy( $this->taxonomy );

@@ -3,14 +3,14 @@
 /**
  * Disciple Tools - Availability Meta Box
  *
- * @class Disciple_Tools_Metabox_Availability
- * @version    0.1
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_Metabox_Availability
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 function dt_availability_metabox () {
     $object = new Disciple_Tools_Metabox_Availability();
@@ -21,8 +21,9 @@ class Disciple_Tools_Metabox_Availability {
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
 

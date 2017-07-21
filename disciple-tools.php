@@ -10,46 +10,45 @@
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 4.7.2
  *
- * @package   Disciple_Tools
- * @author       Chasm Solutions <chasm.crew@chasm.solutions>
- * @link      https://github.com/ChasmSolutions
- * @license   GPL-3.0
- * @version   0.1
- *
+ * @package Disciple_Tools
+ * @author  Chasm Solutions <chasm.crew@chasm.solutions>
+ * @link    https://github.com/ChasmSolutions
+ * @license GPL-3.0
+ * @version 0.1
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 
 /**
  * Activation Hook
  */
-function activate_disciple_tools($network_wide) {
-    require_once plugin_dir_path(__FILE__) . 'dt-core/admin/class-activator.php';
-    Disciple_Tools_Activator::activate($network_wide);
+function activate_disciple_tools( $network_wide ) {
+    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
+    Disciple_Tools_Activator::activate( $network_wide );
 }
-register_activation_hook(__FILE__, 'activate_disciple_tools');
+register_activation_hook( __FILE__, 'activate_disciple_tools' );
 
 /**
  * Deactivation Hook
  */
-function deactivate_disciple_tools($network_wide) {
-    require_once plugin_dir_path(__FILE__) . 'dt-core/admin/class-deactivator.php';
-    Disciple_Tools_Deactivator::deactivate($network_wide);
+function deactivate_disciple_tools( $network_wide ) {
+    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-deactivator.php';
+    Disciple_Tools_Deactivator::deactivate( $network_wide );
 }
-register_deactivation_hook(__FILE__, 'deactivate_disciple_tools');
+register_deactivation_hook( __FILE__, 'deactivate_disciple_tools' );
 
 /**
  * Multisite datatable maintenance
  */
 function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-    require_once plugin_dir_path(__FILE__) . 'dt-core/admin/class-activator.php';
-    Disciple_Tools_Activator::on_create_blog($blog_id, $user_id, $domain, $path, $site_id, $meta);
+    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
+    Disciple_Tools_Activator::on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta );
 }
 add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
 function on_delete_blog( $tables ) {
-    require_once plugin_dir_path(__FILE__) . 'dt-core/admin/class-activator.php';
+    require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
     return Disciple_Tools_Activator::on_delete_blog( $tables );
 }
 add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
@@ -74,114 +73,126 @@ function Disciple_Tools() {
 /**
  * Main Disciple_Tools Class
  *
- * @class Disciple_Tools
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 class Disciple_Tools {
     /**
      * Disciple_Tools The single instance of Disciple_Tools.
-     * @var     object
-     * @access  private
+     *
+     * @var    object
+     * @access private
      * @since  0.1
      */
     private static $_instance = null;
 
     /**
      * The token.
-     * @var     string
-     * @access  public
-     * @since   0.1
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
      */
     public $token;
 
 
     /**
      * The version number.
-     * @var     string
-     * @access  public
-     * @since   0.1
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
      */
     public $version;
 
     /**
      * The plugin directory URL.
-     * @var     string
-     * @access  public
-     * @since   0.1
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
      */
     public $plugin_url;
 
     /**
      * The plugin directory path.
-     * @var     string
-     * @access  public
-     * @since   0.1
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
      */
     public $plugin_path;
 
     /**
      * Activation of roles.
-     * @var     string
-     * @access  public
-     * @since   0.1
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
      */
     private $roles;
     public $report_cron;
 
     /**
      * The admin object.
-     * @var     object
-     * @access  public
-     * @since   0.1
+     *
+     * @var    object
+     * @access public
+     * @since  0.1
      */
     public $admin;
 
     /**
      * The settings object.
-     * @var     object
-     * @access  public
-     * @since   0.1
+     *
+     * @var    object
+     * @access public
+     * @since  0.1
      */
     public $settings;
 
     /**
      * The facebook_integration object.
-     * @var     object
-     * @access  public
-     * @since   0.1
+     *
+     * @var    object
+     * @access public
+     * @since  0.1
      */
     public $facebook_integration;
 
     /**
      * The post types we're registering.
-     * @var     array
-     * @access  public
-     * @since   0.1
+     *
+     * @var    array
+     * @access public
+     * @since  0.1
      */
-    public $post_types = array();
+    public $post_types = [];
 
     /**
      * Main Disciple_Tools Instance
      *
      * Ensures only one instance of Disciple_Tools is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
-     * @see Disciple_Tools()
+     * @see    Disciple_Tools()
      * @return Disciple_Tools instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
         global $wpdb;
@@ -215,45 +226,45 @@ class Disciple_Tools {
         if ( is_admin() ) {
 
             // Administration
-            require_once('dt-core/admin/config-options-admin.php'); // General admin settings page
+            require_once( 'dt-core/admin/config-options-admin.php' ); // General admin settings page
             $this->admin = Disciple_Tools_Admin::instance();
-            require_once('dt-core/admin/config-options-settings.php'); // General admin settings page
+            require_once( 'dt-core/admin/config-options-settings.php' ); // General admin settings page
             $this->settings = Disciple_Tools_Settings::instance();
-            require_once('dt-core/admin/enqueue-scripts.php'); // Load admin scripts
-            require_once('dt-core/admin/admin-theme-design.php'); // Configures elements of the admin enviornment
-            require_once('dt-core/admin/restrict-record-access-in-admin.php'); //
-            require_once('dt-core/admin/config-site-defaults.php'); // Force required site configurations
-            require_once('dt-core/admin/three-column-screen-layout.php'); // Adds multicolumn configuration to screen options
-            require_once('dt-core/admin/class-better-author-metabox.php'); // Allows multiple authors to be selected as post author
+            require_once( 'dt-core/admin/enqueue-scripts.php' ); // Load admin scripts
+            require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
+            require_once( 'dt-core/admin/restrict-record-access-in-admin.php' ); //
+            require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
+            require_once( 'dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
+            require_once( 'dt-core/admin/class-better-author-metabox.php' ); // Allows multiple authors to be selected as post author
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
 
             // Profile
-            require_once('dt-core/admin/config-profile.php');
+            require_once( 'dt-core/admin/config-profile.php' );
             $this->profile = Disciple_Tools_Profile::instance();
 
             // Dashboard
-            require_once('dt-core/admin/config-dashboard.php');
+            require_once( 'dt-core/admin/config-dashboard.php' );
             $this->config_dashboard = Disciple_Tools_Dashboard::instance();
-            require_once('dt-statistics/class-page-factory.php'); // Factory class for page building
-            require_once('dt-statistics/reports-funnel.php');
+            require_once( 'dt-statistics/class-page-factory.php' ); // Factory class for page building
+            require_once( 'dt-statistics/reports-funnel.php' );
             $this->reports_funnel = Disciple_Tools_Funnel_Reports::instance();
-            require_once('dt-statistics/reports-media.php');
+            require_once( 'dt-statistics/reports-media.php' );
             $this->reports_media = Disciple_Tools_Media_Reports::instance();
-            require_once('dt-statistics/reports-project.php');
+            require_once( 'dt-statistics/reports-project.php' );
             $this->reports_project = Disciple_Tools_Project_Reports::instance();
 
             // Contacts
-            require_once('dt-contacts/contacts-config.php');
+            require_once( 'dt-contacts/contacts-config.php' );
             $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
 
             // Groups
-            require_once('dt-groups/groups-config.php');
+            require_once( 'dt-groups/groups-config.php' );
             $this->config_groups = Disciple_Tools_Config_Groups::instance();
 
             // Locations
-            require_once('dt-locations/tab-tools-menu.php');
+            require_once( 'dt-locations/tab-tools-menu.php' );
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
-            require_once('dt-locations/class-upload.php');
+            require_once( 'dt-locations/class-upload.php' );
 
             // People Groups
 
@@ -268,9 +279,9 @@ class Disciple_Tools {
 
 
             // Logging
-            require_once('dt-core/logging/class-activity-admin-ui.php'); // contacts and groups report building
-            require_once('dt-core/logging/class-activity-list-table.php'); // contacts and groups report building
-            require_once('dt-core/logging/class-reports-list-table.php'); // contacts and groups report building
+            require_once( 'dt-core/logging/class-activity-admin-ui.php' ); // contacts and groups report building
+            require_once( 'dt-core/logging/class-activity-list-table.php' ); // contacts and groups report building
+            require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
 
         }
         /* End Admin configuration section */
@@ -278,159 +289,159 @@ class Disciple_Tools {
         /**
          * Rest API Support
          */
-        require_once('dt-core/integrations/class-api-keys.php'); // API keys for remote access
+        require_once( 'dt-core/integrations/class-api-keys.php' ); // API keys for remote access
         $this->api_keys = Disciple_Tools_Api_Keys::instance();
-        require_once('dt-core/admin/restrict-rest-api.php'); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
-        require_once('dt-core/admin/restrict-xml-rpc-pingback.php'); // protect against DDOS attacks.
+        require_once( 'dt-core/admin/restrict-rest-api.php' ); // sets authentication requirement for rest end points. Disables rest for pre-wp-4.7 sites.
+        require_once( 'dt-core/admin/restrict-xml-rpc-pingback.php' ); // protect against DDOS attacks.
 
         /**
          * User Groups & Multi Roles
          */
-        require_once('dt-core/admin/user-groups/class-user-taxonomy.php');
+        require_once( 'dt-core/admin/user-groups/class-user-taxonomy.php' );
         $this->user_tax = Disciple_Tools_User_Taxonomy::instance();
-        require_once('dt-core/admin/user-groups/user-groups-taxonomies.php');
-        require_once('dt-core/admin/multi-role/multi-role.php');
+        require_once( 'dt-core/admin/user-groups/user-groups-taxonomies.php' );
+        require_once( 'dt-core/admin/multi-role/multi-role.php' );
         $this->multi = Disciple_Tools_Multi_Roles::instance();
 
 
         /**
          * Data model
          *
-         * @posttype Contacts       Post type for contact storage
-         * @posttype Groups         Post type for groups storage
-         * @posttype Locations      Post type for location information.
-         * @posttype People Groups  (optional) Post type for people groups
-         * @posttype Prayer         Post type for prayer movement updates.
-         * @posttype Project        Post type for movement project updates. (These updates are intended to be for extended owners of the movement project, and different than the prayer guide published in the prayer post type.)
+         * @posttype   Contacts       Post type for contact storage
+         * @posttype   Groups         Post type for groups storage
+         * @posttype   Locations      Post type for location information.
+         * @posttype   People Groups  (optional) Post type for people groups
+         * @posttype   Prayer         Post type for prayer movement updates.
+         * @posttype   Project        Post type for movement project updates. (These updates are intended to be for extended owners of the movement project, and different than the prayer guide published in the prayer post type.)
          * @taxonomies
-         * @service   Post to Post connections
-         * @service   User groups via taxonomies
+         * @service    Post to Post connections
+         * @service    User groups via taxonomies
          */
-        require_once('dt-core/class-taxonomy.php');
+        require_once( 'dt-core/class-taxonomy.php' );
 
         /**
          * dt-contacts
          */
-        require_once('dt-contacts/contacts-post-type.php');
+        require_once( 'dt-contacts/contacts-post-type.php' );
         $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
 
 
-        require_once('dt-contacts/contacts-endpoints.php');
+        require_once( 'dt-contacts/contacts-endpoints.php' );
         Disciple_Tools_Contacts_Endpoints::instance();
-        require_once('dt-contacts/contacts-template.php'); // Functions to support theme
+        require_once( 'dt-contacts/contacts-template.php' ); // Functions to support theme
 
 
         /**
          * dt-groups
          */
-        require_once('dt-groups/groups-post-type.php');
+        require_once( 'dt-groups/groups-post-type.php' );
         $this->post_types['groups'] = Disciple_Tools_Group_Post_Type::instance();
-        require_once('dt-groups/groups-controller.php');
-        require_once('dt-groups/groups-endpoints.php');
-        require_once('dt-groups/groups-template.php'); // Functions to support theme
+        require_once( 'dt-groups/groups-controller.php' );
+        require_once( 'dt-groups/groups-endpoints.php' );
+        require_once( 'dt-groups/groups-template.php' ); // Functions to support theme
 
 
         /**
          * dt-locations
          */
-        require_once('dt-locations/locations-post-type.php');
+        require_once( 'dt-locations/locations-post-type.php' );
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
-        require_once('dt-locations/class-map.php'); // Helper
-        require_once('dt-locations/locations-functions.php');
-        require_once('dt-locations/locations-template.php');
-        require_once('dt-locations/class-census-geolocation-api.php');// APIs
-        require_once('dt-locations/class-google-geolocation-api.php');
-        require_once('dt-locations/class-coordinates-db.php');
-        require_once('dt-locations/locations-endpoints.php'); // builds rest endpoints
-        require_once('dt-locations/locations-controller.php'); // serves the locations rest endpoints
+        require_once( 'dt-locations/class-map.php' ); // Helper
+        require_once( 'dt-locations/locations-functions.php' );
+        require_once( 'dt-locations/locations-template.php' );
+        require_once( 'dt-locations/class-census-geolocation-api.php' );// APIs
+        require_once( 'dt-locations/class-google-geolocation-api.php' );
+        require_once( 'dt-locations/class-coordinates-db.php' );
+        require_once( 'dt-locations/locations-endpoints.php' ); // builds rest endpoints
+        require_once( 'dt-locations/locations-controller.php' ); // serves the locations rest endpoints
         $this->location_api = Disciple_Tools_Locations_Endpoints::instance();
 
 
         /**
          * dt-people-groups
          */
-        require_once('dt-people-groups/people-groups-post-type.php');
+        require_once( 'dt-people-groups/people-groups-post-type.php' );
         $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
-        require_once ('dt-people-groups/people-groups-template.php');
-        require_once ('dt-people-groups/people-groups-controller.php');
-        require_once ('dt-people-groups/people-groups-endpoints.php');
+        require_once( 'dt-people-groups/people-groups-template.php' );
+        require_once( 'dt-people-groups/people-groups-controller.php' );
+        require_once( 'dt-people-groups/people-groups-endpoints.php' );
 
 
         /**
          * dt-prayer
          */
-        require_once('dt-prayer/prayer-post-type.php');
-        $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-format-status' ) );
+        require_once( 'dt-prayer/prayer-post-type.php' );
+        $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-format-status' ] );
 
 
         /**
          * dt-progress
          */
-        require_once('dt-progress/progress-post-type.php');
-        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), array( 'menu_icon' => 'dashicons-location' ) );
-        require_once ('dt-assets/assets-endpoints.php');
+        require_once( 'dt-progress/progress-post-type.php' );
+        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-location' ] );
+        require_once( 'dt-assets/assets-endpoints.php' );
 
         /**
          * dt-assets
          */
-        require_once('dt-assets/assets-post-type.php');
+        require_once( 'dt-assets/assets-post-type.php' );
         $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
-        require_once ('dt-assets/assets-endpoints.php');
-        require_once ('dt-assets/assets-controller.php');
-        require_once ('dt-assets/assets-template.php');
+        require_once( 'dt-assets/assets-endpoints.php' );
+        require_once( 'dt-assets/assets-controller.php' );
+        require_once( 'dt-assets/assets-template.php' );
 
         /**
          * dt-statistics
          */
-        require_once('dt-statistics/class-counter-factory.php');
+        require_once( 'dt-statistics/class-counter-factory.php' );
         $this->counter = Disciple_Tools_Counter_Factory::instance();
-        require_once('dt-statistics/chart-template.php');
+        require_once( 'dt-statistics/chart-template.php' );
 
         /**
          * dt-users
          */
-        require_once ('dt-users/users-controller.php');
-        require_once ('dt-users/users-endpoints.php');
-        require_once ('dt-users/users-template.php');
+        require_once( 'dt-users/users-controller.php' );
+        require_once( 'dt-users/users-endpoints.php' );
+        require_once( 'dt-users/users-template.php' );
 
 
         /**
          * Metaboxes
          */
-        require_once('dt-core/config-p2p.php');// Creates the post to post relationship between the post type tables.
-        require_once('dt-core/libraries/posts-to-posts/posts-to-posts.php'); // P2P library/plugin
-        require_once('dt-core/metaboxes/box-four-fields.php');
-        require_once('dt-core/metaboxes/box-church-fields.php');
-        require_once('dt-core/metaboxes/box-map.php');
-        require_once('dt-core/metaboxes/box-activity.php');
-        require_once('dt-core/metaboxes/box-address.php');
-        require_once('dt-core/metaboxes/box-availability.php');
+        require_once( 'dt-core/config-p2p.php' );// Creates the post to post relationship between the post type tables.
+        require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin
+        require_once( 'dt-core/metaboxes/box-four-fields.php' );
+        require_once( 'dt-core/metaboxes/box-church-fields.php' );
+        require_once( 'dt-core/metaboxes/box-map.php' );
+        require_once( 'dt-core/metaboxes/box-activity.php' );
+        require_once( 'dt-core/metaboxes/box-address.php' );
+        require_once( 'dt-core/metaboxes/box-availability.php' );
 
 
         /**
          * Logging
          */
-        require_once('dt-core/logging/class-activity-api.php');
+        require_once( 'dt-core/logging/class-activity-api.php' );
         $this->activity_api = new Disciple_Tools_Activity_Log_API();
-        require_once('dt-core/logging/class-activity-hooks.php'); // contacts and groups report building
+        require_once( 'dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
         $this->activity_hooks = Disciple_Tools_Activity_Hooks::instance();
-        require_once('dt-core/logging/class-reports-api.php');
+        require_once( 'dt-core/logging/class-reports-api.php' );
         $this->report_api = new Disciple_Tools_Reports_API();
-        require_once('dt-core/logging/class-reports-cron.php'); // Cron scheduling for nightly builds of reports
+        require_once( 'dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
-        require_once('dt-core/logging/class-reports-dt.php'); // contacts and groups report building
+        require_once( 'dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
 
 
         /**
          * Integrations
          */
-        require_once('dt-core/integrations/class-integrations.php'); // data integration for cron scheduling
-        if(! class_exists('Ga_Autoloader')) {
-            require_once('dt-core/libraries/google-analytics/disciple-tools-analytics.php');
-            require_once('dt-core/integrations/class-google-analytics-integration.php');
+        require_once( 'dt-core/integrations/class-integrations.php' ); // data integration for cron scheduling
+        if(! class_exists( 'Ga_Autoloader' )) {
+            require_once( 'dt-core/libraries/google-analytics/disciple-tools-analytics.php' );
+            require_once( 'dt-core/integrations/class-google-analytics-integration.php' );
             $this->analytics_integration = Ga_Admin::instance();
         }
-        require_once('dt-core/integrations/class-facebook-integration.php'); // integrations to facebook
+        require_once( 'dt-core/integrations/class-facebook-integration.php' ); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
 
 
@@ -438,11 +449,13 @@ class Disciple_Tools {
          * Multisite
          */
         if(is_multisite()) {
-            /** Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite  */
+            /**
+ * Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite  
+*/
         }
 
         // Language
-        add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+        add_action( 'init', [ $this, 'load_plugin_textdomain' ] );
 
     } // End __construct()
 
@@ -450,8 +463,9 @@ class Disciple_Tools {
 
     /**
      * Load the localisation file.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function load_plugin_textdomain() {
         load_plugin_textdomain( 'disciple_tools', false, dirname( plugin_basename( __FILE__ ) ) . '/dt-core/languages/' );
@@ -459,8 +473,9 @@ class Disciple_Tools {
 
     /**
      * Log the plugin version number.
-     * @access  private
-     * @since   0.1
+     *
+     * @access private
+     * @since  0.1
      */
     public function _log_version_number () {
         // Log the version number.
@@ -469,8 +484,9 @@ class Disciple_Tools {
 
     /**
      * Cloning is forbidden.
+     *
      * @access public
-     * @since 0.1
+     * @since  0.1
      */
     public function __clone () {
         _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
@@ -478,8 +494,9 @@ class Disciple_Tools {
 
     /**
      * Unserializing instances of this class is forbidden.
+     *
      * @access public
-     * @since 0.1
+     * @since  0.1
      */
     public function __wakeup () {
         _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );

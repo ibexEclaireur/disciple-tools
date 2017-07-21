@@ -54,10 +54,11 @@ function dt_multi_role_get_roles() {
  * @return array
  */
 function dt_multi_role_get_role_names() {
-    $roles = array();
+    $roles = [];
 
-    foreach ( dt_multi_role_role_factory()->roles as $role )
+    foreach ( dt_multi_role_role_factory()->roles as $role ) {
         $roles[ $role->slug ] = $role->name;
+    }
 
     return $roles;
 }
@@ -81,10 +82,11 @@ function dt_multi_role_get_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_active_role_names() {
-    $has_users = array();
+    $has_users = [];
 
-    foreach ( dt_multi_role_get_active_role_slugs() as $role )
+    foreach ( dt_multi_role_get_active_role_slugs() as $role ) {
         $has_users[ $role ] = dt_multi_role_get_role_name( $role );
+    }
 
     return $has_users;
 }
@@ -98,12 +100,13 @@ function dt_multi_role_get_active_role_names() {
  */
 function dt_multi_role_get_active_role_slugs() {
 
-    $has_users = array();
+    $has_users = [];
 
     foreach ( dt_multi_role_get_role_user_count() as $role => $count ) {
 
-        if ( 0 < $count )
+        if ( 0 < $count ) {
             $has_users[] = $role;
+        }
     }
 
     return $has_users;
@@ -139,10 +142,11 @@ function dt_multi_role_get_inactive_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_editable_role_names() {
-    $editable = array();
+    $editable = [];
 
-    foreach ( dt_multi_role_role_factory()->editable as $role )
+    foreach ( dt_multi_role_role_factory()->editable as $role ) {
         $editable[ $role->slug ] = $role->name;
+    }
 
     return $editable;
 }
@@ -166,10 +170,11 @@ function dt_multi_role_get_editable_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_uneditable_role_names() {
-    $uneditable = array();
+    $uneditable = [];
 
-    foreach ( dt_multi_role_role_factory()->uneditable as $role )
+    foreach ( dt_multi_role_role_factory()->uneditable as $role ) {
         $uneditable[ $role->slug ] = $role->name;
+    }
 
     return $uneditable;
 }
@@ -193,10 +198,11 @@ function dt_multi_role_get_uneditable_role_slugs() {
  * @return array
  */
 function dt_multi_role_get_wordpress_role_names() {
-    $names = array();
+    $names = [];
 
-    foreach ( dt_multi_role_role_factory()->wordpress as $role )
+    foreach ( dt_multi_role_role_factory()->wordpress as $role ) {
         $names[ $role->slug ] = $role->name;
+    }
 
     return $names;
 }
@@ -312,13 +318,15 @@ function dt_multi_role_get_role_user_count( $role = '' ) {
         $user_count = count_users();
 
         // Loop through the user count by role to get a count of the users with each role.
-        foreach ( $user_count['avail_roles'] as $_role => $count )
+        foreach ( $user_count['avail_roles'] as $_role => $count ) {
             dt_multi_role_plugin()->role_user_count[ $_role ] = $count;
+        }
     }
 
     // Return the role count.
-    if ( $role )
+    if ( $role ) {
         return isset( dt_multi_role_plugin()->role_user_count[ $role ] ) ? dt_multi_role_plugin()->role_user_count[ $role ] : 0;
+    }
 
     // If the `$role` parameter wasn't passed into this function, return the array of user counts.
     return dt_multi_role_plugin()->role_user_count;
@@ -381,7 +389,7 @@ function dt_multi_role_is_role_editable( $role ) {
  * @return bool
  */
 function dt_multi_role_is_wordpress_role( $role ) {
-    return in_array( $role, array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' ) );
+    return in_array( $role, [ 'administrator', 'editor', 'author', 'contributor', 'subscriber' ] );
 }
 
 /* ====== URLs ====== */
@@ -441,7 +449,7 @@ function dt_multi_role_get_role_view_url( $view ) {
  * @return string
  */
 function dt_multi_role_get_edit_role_url( $role ) {
-    return add_query_arg( array( 'action' => 'edit', 'role' => $role ), dt_multi_role_get_edit_roles_url() );
+    return add_query_arg( [ 'action' => 'edit', 'role' => $role ], dt_multi_role_get_edit_roles_url() );
 }
 
 /**
@@ -453,7 +461,7 @@ function dt_multi_role_get_edit_role_url( $role ) {
  * @return string
  */
 function dt_multi_role_get_delete_role_url( $role ) {
-    $url = add_query_arg( array( 'action' => 'delete', 'role' => $role ), dt_multi_role_get_edit_roles_url() );
+    $url = add_query_arg( [ 'action' => 'delete', 'role' => $role ], dt_multi_role_get_edit_roles_url() );
 
     return wp_nonce_url( $url, 'delete_role', 'dt_multi_role_delete_role_nonce' );
 }

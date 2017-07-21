@@ -1,20 +1,21 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /**
  * Disciple Tools Post Type Class
  *
  * All functionality pertaining to post types in Disciple_Tools.
  *
- * @package WordPress
+ * @package    WordPress
  * @subpackage Disciple_Tools
- * @category Plugin
- * @author Chasm.Solutions & Kingdom.Training
- * @since 0.1
+ * @category   Plugin
+ * @author     Chasm.Solutions & Kingdom.Training
+ * @since      0.1
  */
 class Disciple_Tools_Asset_Post_Type {
     /**
      * The post type token.
+     *
      * @access public
      * @since  0.1
      * @var    string
@@ -23,6 +24,7 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * The post type singular label.
+     *
      * @access public
      * @since  0.1
      * @var    string
@@ -31,6 +33,7 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * The post type plural label.
+     *
      * @access public
      * @since  0.1
      * @var    string
@@ -39,6 +42,7 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * The post type args.
+     *
      * @access public
      * @since  0.1
      * @var    array
@@ -47,6 +51,7 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * The taxonomies for this post type.
+     *
      * @access public
      * @since  0.1
      * @var    array
@@ -55,9 +60,10 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Disciple_Tools_Asset_Post_Type The single instance of Disciple_Tools_Asset_Post_Type.
-     * @var     object
-     * @access  private
-     * @since     0.1
+     *
+     * @var    object
+     * @access private
+     * @since  0.1
      */
     private static $_instance = null;
 
@@ -66,42 +72,44 @@ class Disciple_Tools_Asset_Post_Type {
      *
      * Ensures only one instance of Disciple_Tools_Asset_Post_Type is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
      * @return Disciple_Tools_Asset_Post_Type instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
     /**
      * Constructor function.
+     *
      * @access public
-     * @since 0.1
+     * @since  0.1
      */
-    public function __construct( ) {
+    public function __construct() {
         $this->post_type = 'assets';
         $this->singular = __( 'Asset', 'disciple_tools' );
         $this->plural = __( 'Assets', 'disciple_tools' );
-        $this->args = array( 'menu_icon' => 'dashicons-archive' );
-        $this->taxonomies = array();
+        $this->args = [ 'menu_icon' => 'dashicons-archive' ];
+        $this->taxonomies = [];
 
-        add_action( 'init', array( $this, 'register_post_type' ) );
-        add_action( 'init', array( $this, 'register_taxonomy' ) );
+        add_action( 'init', [ $this, 'register_post_type' ] );
+        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
         if ( is_admin() ) {
             global $pagenow;
 
-            add_action( 'admin_menu', array( $this, 'meta_box_setup' ), 20 );
-            add_action( 'save_post', array( $this, 'meta_box_save' ) );
-            add_filter( 'enter_title_here', array( $this, 'enter_title_here' ) );
-            add_filter( 'post_updated_messages', array( $this, 'updated_messages' ) );
+            add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
+            add_action( 'save_post', [ $this, 'meta_box_save' ] );
+            add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
+            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) == $this->post_type ) {
-                add_filter( 'manage_edit-' . $this->post_type . '_columns', array( $this, 'register_custom_column_headings' ), 10, 1 );
-                add_action( 'manage_posts_custom_column', array( $this, 'register_custom_columns' ), 10, 2 );
+                add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
+                add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
             }
         }
 
@@ -109,11 +117,12 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Register the post type.
+     *
      * @access public
      * @return void
      */
     public function register_post_type () {
-        $labels = array(
+        $labels = [
             'name'                  => sprintf( _x( '%s', 'Assets', 'disciple_tools' ), $this->plural ),
             'singular_name'         => sprintf( _x( '%s', 'Asset', 'disciple_tools' ), $this->singular ),
             'add_new'               => _x( 'Add New', $this->post_type, 'disciple_tools' ),
@@ -138,15 +147,15 @@ class Disciple_Tools_Asset_Post_Type {
             'items_list'            => sprintf( __( '%s list', 'disciple_tools' ), $this->plural ),
             'items_list_navigation' => sprintf( __( '%s list navigation', 'disciple_tools' ), $this->plural ),
             'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
-        );
+        ];
 
-        $rewrite = array(
+        $rewrite = [
             'slug'                  => 'assets',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => false,
-        );
-        $capabilities = array(
+        ];
+        $capabilities = [
             'edit_post'             => 'edit_asset',
             'read_post'             => 'read_asset',
             'delete_post'           => 'delete_asset',
@@ -156,8 +165,8 @@ class Disciple_Tools_Asset_Post_Type {
             'edit_others_posts'     => 'edit_others_assets',
             'publish_posts'         => 'publish_assets',
             'read_private_posts'    => 'read_private_assets',
-        );
-        $defaults = array(
+        ];
+        $defaults = [
             'labels'                => $labels,
             'public'                => true,
             'publicly_queryable'    => true,
@@ -168,13 +177,13 @@ class Disciple_Tools_Asset_Post_Type {
             'capabilities'          => $capabilities,
             'has_archive'           => true,
             'hierarchical'          => false,
-            'supports'              => array( 'title', 'excerpt', 'editor', 'comments', 'author', 'thumbnail', 'revisions' ),
+            'supports'              => [ 'title', 'excerpt', 'editor', 'comments', 'author', 'thumbnail', 'revisions' ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
             'rest_base'             => 'assets',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
-        );
+        ];
 
         $args = wp_parse_args( $this->args, $defaults );
 
@@ -183,20 +192,22 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Register the "thing-category" taxonomy.
+     *
      * @access public
      * @since  1.3.0
      * @return void
      */
     public function register_taxonomy () {
-        $this->taxonomies['assets-type'] = new Disciple_Tools_Taxonomy($post_type = 'assets', $token = 'assets-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
+        $this->taxonomies['assets-type'] = new Disciple_Tools_Taxonomy( $post_type = 'assets', $token = 'assets-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
         $this->taxonomies['assets-type']->register();
     } // End register_taxonomy()
 
     /**
      * Add custom columns for the "manage" screen of this post type.
+     *
      * @access public
-     * @param string $column_name
-     * @param int $id
+     * @param  string $column_name
+     * @param  int $id
      * @since  0.1
      * @return void
      */
@@ -215,16 +226,17 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Add custom column headings for the "manage" screen of this post type.
+     *
      * @access public
-     * @param array $defaults
+     * @param  array $defaults
      * @since  0.1
      * @return void
      */
     public function register_custom_column_headings ( $defaults ) {
         // $new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
-        $new_columns = array(); // TODO: restore above column once we know what columns we need to show.
+        $new_columns = []; // TODO: restore above column once we know what columns we need to show.
 
-        $last_item = array();
+        $last_item = [];
 
         if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
 
@@ -247,6 +259,7 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Update messages for the post type admin.
+     *
      * @since  0.1
      * @param  array $messages Array of messages for all post types.
      * @return array           Modified array.
@@ -254,46 +267,50 @@ class Disciple_Tools_Asset_Post_Type {
     public function updated_messages ( $messages ) {
         global $post, $post_ID;
 
-        $messages[$this->post_type] = array(
+        $messages[$this->post_type] = [
             0 => '', // Unused. Messages start at index 1.
             1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
             2 => __( 'Custom field updated.', 'disciple_tools' ),
             3 => __( 'Custom field deleted.', 'disciple_tools' ),
             4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
-            5 => isset($_GET['revision']) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+            5 => isset( $_GET['revision'] ) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
             6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
             7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
             8 => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
-            9 => sprintf( __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
+            9 => sprintf(
+                __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
                 // translators: Publish box date format, see http://php.net/date
-                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink($post_ID) ) . '">', '</a>' ),
+                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' 
+            ),
             10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
-        );
+        ];
 
         return $messages;
     } // End updated_messages()
 
     /**
      * Setup the meta box.
+     *
      * @access public
      * @since  0.1
      * @return void
      */
     public function meta_box_setup () {
-        add_meta_box( $this->post_type . '-data', __( 'Address', 'disciple_tools' ), array( $this, 'meta_box_content' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), array( $this, 'load_activity_meta_box' ), $this->post_type, 'normal', 'low' );
+        add_meta_box( $this->post_type . '-data', __( 'Address', 'disciple_tools' ), [ $this, 'meta_box_content' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
 
     /**
      * Load activity metabox
      */
     public function load_activity_meta_box () {
-        dt_activity_metabox()->activity_meta_box (get_the_ID());
+        dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
 
     /**
      * The contents of our meta box.
+     *
      * @access public
      * @since  0.1
      * @return void
@@ -380,9 +397,10 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Save meta box fields.
+     *
      * @access public
      * @since  0.1
-     * @param int $post_id
+     * @param  int $post_id
      * @return int $post_id
      */
     public function meta_box_save ( $post_id ) {
@@ -408,7 +426,7 @@ class Disciple_Tools_Asset_Post_Type {
 
         foreach ( $fields as $f ) {
 
-            ${$f} = strip_tags(trim($_POST[$f]));
+            ${$f} = strip_tags( trim( $_POST[$f] ) );
 
             // Escape the URLs.
             if ( 'url' == $field_data[$f]['type'] ) {
@@ -427,9 +445,10 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Customise the "Enter title here" text.
+     *
      * @access public
      * @since  0.1
-     * @param string $title
+     * @param  string $title
      * @return void
      */
     public function enter_title_here ( $title ) {
@@ -441,48 +460,49 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Get the settings for the custom fields.
+     *
      * @access public
      * @since  0.1
      * @return array
      */
     public function get_custom_fields_settings () {
-        $fields = array();
+        $fields = [];
 
-        $fields['address'] = array(
+        $fields['address'] = [
             'name' => __( 'Address', 'disciple_tools' ),
             'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
-        );
-        $fields['city'] = array(
+        ];
+        $fields['city'] = [
             'name' => __( 'City', 'disciple_tools' ),
             'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
-        );
-        $fields['state'] = array(
+        ];
+        $fields['state'] = [
             'name' => __( 'State', 'disciple_tools' ),
             'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
-        );
-        $fields['zip'] = array(
+        ];
+        $fields['zip'] = [
             'name' => __( 'Zip Code', 'disciple_tools' ),
             'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
-        );
-        $fields['country'] = array(
+        ];
+        $fields['country'] = [
             'name' => __( 'Country', 'disciple_tools' ),
             'description' => '',
             'type' => 'text',
             'default' => '',
             'section' => 'info'
-        );
+        ];
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
@@ -491,8 +511,9 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Run on activation.
+     *
      * @access public
-     * @since 0.1
+     * @since  0.1
      */
     public function activation () {
         $this->flush_rewrite_rules();
@@ -500,8 +521,9 @@ class Disciple_Tools_Asset_Post_Type {
 
     /**
      * Flush the rewrite rules
+     *
      * @access public
-     * @since 0.1
+     * @since  0.1
      */
     private function flush_rewrite_rules () {
         $this->register_post_type();

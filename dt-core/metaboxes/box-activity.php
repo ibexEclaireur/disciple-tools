@@ -3,14 +3,14 @@
 /**
  * Disciple Tools
  *
- * @class Disciple_Tools_
- * @version    0.1
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 
 function dt_activity_metabox () {
@@ -22,8 +22,9 @@ class Disciple_Tools_Metabox_Activity {
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
 
@@ -32,9 +33,10 @@ class Disciple_Tools_Metabox_Activity {
 
     /**
      * Gets an array of activities for a contact record
+     *
      * @return array
      */
-    public function activity_list_for_id ($id, $order = 'DESC') {
+    public function activity_list_for_id ( $id, $order = 'DESC' ) {
         global $wpdb;
 
         // Query activity with the contact id
@@ -57,24 +59,25 @@ class Disciple_Tools_Metabox_Activity {
 
     /**
      * Echos the list contents of the activity metabox
+     *
      * @param $id
      */
-    public function activity_meta_box ($id)
+    public function activity_meta_box ( $id )
     {
-        $list = $this->activity_list_for_id($id);
+        $list = $this->activity_list_for_id( $id );
 
         $html = '<table class="widefat striped" width="100%">';
         $html .= '<tr><th>Name</th><th>Action</th><th>Note</th><th>Date</th></tr>';
 
         foreach ($list as $item) {
-            $user = get_user_by('id', $item['user_id']);
+            $user = get_user_by( 'id', $item['user_id'] );
 
             $html .= '</tr>';
 
             $html .= '<td>' . $user->display_name . '</td>';
             $html .= '<td>' . $item['action'] . '</td>';
             $html .= '<td>' . $item['object_note'] . '</td>';
-            $html .= '<td>' . date('m/d/Y h:i:s', $item['hist_time']) . '</td>';
+            $html .= '<td>' . date( 'm/d/Y h:i:s', $item['hist_time'] ) . '</td>';
 
             $html .= '</tr>';
         }

@@ -15,7 +15,7 @@ add_action( 'admin_enqueue_scripts', 'dt_multi_role_admin_register_scripts', 0 )
 add_action( 'admin_enqueue_scripts', 'dt_multi_role_admin_register_styles',  0 );
 
 # Custom manage users columns.
-add_filter( 'manage_users_columns',       'dt_multi_role_manage_users_columns'              );
+add_filter( 'manage_users_columns',       'dt_multi_role_manage_users_columns' );
 add_filter( 'manage_users_custom_column', 'dt_multi_role_manage_users_custom_column', 10, 3 );
 
 
@@ -30,17 +30,17 @@ function dt_multi_role_admin_register_scripts() {
 
     $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-    wp_register_script( 'members-settings',  "js/settings{$min}.js",  array( 'jquery'  ), '', true );
-    wp_register_script( 'members-edit-role', "js/edit-role{$min}.js", array( 'postbox', 'wp-util' ), '', true );
+    wp_register_script( 'members-settings',  "js/settings{$min}.js",  [ 'jquery'  ], '', true );
+    wp_register_script( 'members-edit-role', "js/edit-role{$min}.js", [ 'postbox', 'wp-util' ], '', true );
 
     // Localize our script with some text we want to pass in.
-    $i18n = array(
+    $i18n = [
         'button_role_edit' => esc_html__( 'Edit',                'members' ),
         'button_role_ok'   => esc_html__( 'OK',                  'members' ),
         'label_grant_cap'  => esc_html__( 'Grant %s capability', 'members' ),
         'label_deny_cap'   => esc_html__( 'Deny %s capability',  'members' ),
         'ays_delete_role'  => esc_html__( 'Are you sure you want to delete this role? This is a permanent action and cannot be undone.', 'members' )
-    );
+    ];
 
     wp_localize_script( 'members-edit-role', 'dt_multi_role_i18n', $i18n );
 }
@@ -75,11 +75,12 @@ function dt_multi_role_delete_role( $role ) {
     $default_role = get_option( 'default_role' );
 
     // Don't delete the default role. Site admins should change the default before attempting to delete the role.
-    if ( $role == $default_role )
+    if ( $role == $default_role ) {
         return;
+    }
 
     // Get all users with the role to be deleted.
-    $users = get_users( array( 'role' => $role ) );
+    $users = get_users( [ 'role' => $role ] );
 
     // Check if there are any users with the role we're deleting.
     if ( is_array( $users ) ) {
@@ -88,12 +89,14 @@ function dt_multi_role_delete_role( $role ) {
         foreach ( $users as $user ) {
 
             // If the user has the role and no other roles, set their role to the default.
-            if ( $user->has_cap( $role ) && 1 >= count( $user->roles ) )
+            if ( $user->has_cap( $role ) && 1 >= count( $user->roles ) ) {
                 $user->set_role( $default_role );
+            }
 
             // Else, remove the role.
-            else if ( $user->has_cap( $role ) )
+            else if ( $user->has_cap( $role ) ) {
                 $user->remove_role( $role );
+            }
         }
     }
 
@@ -129,12 +132,14 @@ function dt_multi_role_get_user_meta_keys() {
 function dt_multi_role_manage_users_columns( $columns ) {
 
     // If multiple roles per user is not enabled, bail.
-    if ( ! dt_multi_role_multiple_user_roles_enabled() )
+    if ( ! dt_multi_role_multiple_user_roles_enabled() ) {
         return $columns;
+    }
 
     // Unset the core WP `role` column.
-    if ( isset( $columns['role'] ) )
+    if ( isset( $columns['role'] ) ) {
         unset( $columns['role'] );
+    }
 
     // Add our new roles column.
     $columns['roles'] = esc_html__( 'Roles', 'members' );
@@ -165,15 +170,16 @@ function dt_multi_role_manage_users_custom_column( $output, $column, $user_id ) 
 
         $user = new WP_User( $user_id );
 
-        $user_roles = array();
+        $user_roles = [];
         $output = esc_html__( 'None', 'members' );
 
         if ( is_array( $user->roles ) ) {
 
             foreach ( $user->roles as $role ) {
 
-                if ( dt_multi_role_role_exists( $role ) )
+                if ( dt_multi_role_role_exists( $role ) ) {
                     $user_roles[] = dt_multi_role_translate_role( $role );
+                }
             }
 
             $output = join( ', ', $user_roles );

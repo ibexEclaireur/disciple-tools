@@ -4,22 +4,23 @@
  * Disciple_Tools_Config_Contacts
  * This class serves as master configuration and modification class to the contacts post type within the admin screens.
  *
- * @class Disciple_Tools_Config_Contacts
- * @version    0.1
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_Config_Contacts
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Config_Contacts {
 
     /**
      * Disciple_Tools_Config_Contacts The single instance of Disciple_Tools_Config_Contacts.
-     * @var     object
-     * @access  private
-     * @since     0.1
+     *
+     * @var    object
+     * @access private
+     * @since  0.1
      */
     private static $_instance = null;
 
@@ -28,34 +29,37 @@ class Disciple_Tools_Config_Contacts {
      *
      * Ensures only one instance of Disciple_Tools_Config_Contacts is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
      * @return Disciple_Tools_Config_Contacts instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
 
         // Config columns
-        add_filter('manage_contacts_posts_columns', array($this, 'contacts_table_head'));
-        add_action( 'manage_contacts_posts_custom_column', array($this, 'contacts_table_content'), 10, 2 );
+        add_filter( 'manage_contacts_posts_columns', [$this, 'contacts_table_head'] );
+        add_action( 'manage_contacts_posts_custom_column', [$this, 'contacts_table_content'], 10, 2 );
 
-        add_action( 'admin_menu', array($this, 'remove_default_meta_boxes' ) );
+        add_action( 'admin_menu', [$this, 'remove_default_meta_boxes' ] );
 
     } // End __construct()
 
     /**
      * Configure Contacts column header
-     * @param $defaults
+     *
+     * @param  $defaults
      * @return mixed
      */
     public function contacts_table_head( $defaults ) {
@@ -67,6 +71,7 @@ class Disciple_Tools_Config_Contacts {
 
     /**
      * Configure Contacts column content
+     *
      * @param $column_name
      * @param $post_id
      */
@@ -87,6 +92,7 @@ class Disciple_Tools_Config_Contacts {
 
     /**
      * Removes default metaboxes
+     *
      * @see https://codex.wordpress.org/Function_Reference/remove_meta_box
      */
     public function remove_default_meta_boxes() {

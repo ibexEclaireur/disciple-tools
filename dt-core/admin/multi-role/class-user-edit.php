@@ -37,7 +37,7 @@ final class Disciple_Tools_Admin_User_Edit {
     public function __construct() {
 
         // Only run our customization on the 'user-edit.php' page in the admin.
-        add_action( 'load-user-edit.php', array( $this, 'load_user_edit' ) );
+        add_action( 'load-user-edit.php', [ $this, 'load_user_edit' ] );
     }
 
     /**
@@ -49,13 +49,13 @@ final class Disciple_Tools_Admin_User_Edit {
      */
     public function load_user_edit() {
 
-        add_action( 'admin_head', array( $this, 'print_styles' ) );
+        add_action( 'admin_head', [ $this, 'print_styles' ] );
 
-        add_action( 'show_user_profile', array( $this, 'profile_fields' ) );
-        add_action( 'edit_user_profile', array( $this, 'profile_fields' ) );
+        add_action( 'show_user_profile', [ $this, 'profile_fields' ] );
+        add_action( 'edit_user_profile', [ $this, 'profile_fields' ] );
 
         // Must use `profile_update` to change role. Otherwise, WP will wipe it out.
-        add_action( 'profile_update',  array( $this, 'role_update' ) );
+        add_action( 'profile_update',  [ $this, 'role_update' ] );
     }
 
     /**
@@ -69,8 +69,9 @@ final class Disciple_Tools_Admin_User_Edit {
     public function profile_fields( $user ) {
         global $wp_roles;
 
-        if ( ! current_user_can( 'promote_users' ) || ! current_user_can( 'edit_user', $user->ID ) )
+        if ( ! current_user_can( 'promote_users' ) || ! current_user_can( 'edit_user', $user->ID ) ) {
             return;
+        }
 
         $user_roles = (array) $user->roles;
 
@@ -117,12 +118,14 @@ final class Disciple_Tools_Admin_User_Edit {
     public function role_update( $user_id ) {
 
         // If the current user can't promote users or edit this particular user, bail.
-        if ( ! current_user_can( 'promote_users' ) || ! current_user_can( 'edit_user', $user_id ) )
+        if ( ! current_user_can( 'promote_users' ) || ! current_user_can( 'edit_user', $user_id ) ) {
             return;
+        }
 
         // Is this a role change?
-        if ( ! isset( $_POST['dt_multi_role_new_user_roles_nonce'] ) || ! wp_verify_nonce( $_POST['dt_multi_role_new_user_roles_nonce'], 'new_user_roles' ) )
+        if ( ! isset( $_POST['dt_multi_role_new_user_roles_nonce'] ) || ! wp_verify_nonce( $_POST['dt_multi_role_new_user_roles_nonce'], 'new_user_roles' ) ) {
             return;
+        }
 
         // Create a new user object.
         $user = new WP_User( $user_id );
@@ -140,16 +143,18 @@ final class Disciple_Tools_Admin_User_Edit {
             foreach ( $new_roles as $new_role ) {
 
                 // If the user doesn't already have the role, add it.
-                if ( dt_multi_role_is_role_editable( $new_role ) && ! in_array( $new_role, (array) $user->roles ) )
+                if ( dt_multi_role_is_role_editable( $new_role ) && ! in_array( $new_role, (array) $user->roles ) ) {
                     $user->add_role( $new_role );
+                }
             }
 
             // Loop through the current user roles.
             foreach ( $old_roles as $old_role ) {
 
                 // If the role is editable and not in the new roles array, remove it.
-                if ( dt_multi_role_is_role_editable( $old_role ) && ! in_array( $old_role, $new_roles ) )
+                if ( dt_multi_role_is_role_editable( $old_role ) && ! in_array( $old_role, $new_roles ) ) {
                     $user->remove_role( $old_role );
+                }
             }
 
             // If the posted roles are empty.
@@ -159,8 +164,9 @@ final class Disciple_Tools_Admin_User_Edit {
             foreach ( (array) $user->roles as $old_role ) {
 
                 // Remove the role if it is editable.
-                if ( dt_multi_role_is_role_editable( $old_role ) )
+                if ( dt_multi_role_is_role_editable( $old_role ) ) {
                     $user->remove_role( $old_role );
+                }
             }
         }
     }
@@ -187,8 +193,9 @@ final class Disciple_Tools_Admin_User_Edit {
      */
     public static function get_instance() {
 
-        if ( ! self::$instance )
+        if ( ! self::$instance ) {
             self::$instance = new self;
+        }
 
         return self::$instance;
     }

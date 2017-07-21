@@ -26,7 +26,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $roles = array();
+    public $roles = [];
 
     /**
      * Array of editable roles.
@@ -35,7 +35,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $editable = array();
+    public $editable = [];
 
     /**
      * Array of uneditable roles.
@@ -44,7 +44,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $uneditable = array();
+    public $uneditable = [];
 
     /**
      * Array of core WordPress roles.
@@ -53,7 +53,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @access public
      * @var    array
      */
-    public $wordpress = array();
+    public $wordpress = [];
 
     /**
      * Private constructor method to prevent a new instance of the object.
@@ -81,14 +81,16 @@ final class Disciple_Tools_Multi_Role_Factory {
             $this->roles[ $role ] = new Disciple_Tools_Multi_Role( $role );
 
             // Check if role is editable.
-            if ( $this->roles[ $role ]->is_editable )
+            if ( $this->roles[ $role ]->is_editable ) {
                 $this->editable[ $role ] = $this->roles[ $role ];
-            else
+            } else {
                 $this->uneditable[ $role ] = $this->roles[ $role ];
+            }
 
             // Is WP role?
-            if ( dt_multi_role_is_wordpress_role( $role ) )
+            if ( dt_multi_role_is_wordpress_role( $role ) ) {
                 $this->wordpress[ $role ] = $this->roles[ $role ];
+            }
         }
     }
 
@@ -115,8 +117,9 @@ final class Disciple_Tools_Multi_Role_Factory {
      */
     public function remove_role( $role ) {
 
-        if ( isset( $this->roles[ $role ] ) )
+        if ( isset( $this->roles[ $role ] ) ) {
             unset( $this->roles[ $role ] );
+        }
     }
 
     /**
@@ -140,8 +143,9 @@ final class Disciple_Tools_Multi_Role_Factory {
      */
     protected function setup_roles() {
 
-        foreach ( $GLOBALS['wp_roles']->role_names as $role => $name )
+        foreach ( $GLOBALS['wp_roles']->role_names as $role => $name ) {
             $this->add_role( $role );
+        }
     }
 
     /**

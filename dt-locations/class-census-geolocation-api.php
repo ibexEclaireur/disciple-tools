@@ -3,48 +3,50 @@
 /**
  * Disciple_Tools_Tabs
  *
- * @class Disciple_Tools_Tabs
- * @version    0.1
- * @since 0.1
- * @package    Disciple_Tools_Tabs
- * @author Chasm.Solutions
+ * @class   Disciple_Tools_Tabs
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools_Tabs
+ * @author  Chasm.Solutions
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Census_Geolocation {
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {} // End __construct()
 
     /**
      * Gets the census data query object using longitude and latitude
-     * @param $lng
-     * @param $lat
-     * @param $type
+     *
+     * @param  $lng
+     * @param  $lat
+     * @param  $type
      * @return array|mixed|object
      */
-    public static function query_census_api ($lng, $lat, $type = 'full_object') {
+    public static function query_census_api ( $lng, $lat, $type = 'full_object' ) {
 
         $tract_address = 'https://geocoding.geo.census.gov/geocoder/geographies/coordinates?x='.$lng.'&y='.$lat.'&benchmark=4&vintage=4&format=json';
-        $census_result = json_decode(self::url_get_contents($tract_address));
+        $census_result = json_decode( self::url_get_contents( $tract_address ) );
 //        return $census_result;
 
-        if($census_result == '' || !isset($census_result->result->geographies->{'Census Tracts'}[0]->STATE)) { /* Census API gives false errors. This is attempting to try a couple times before returning error. */
+        if($census_result == '' || !isset( $census_result->result->geographies->{'Census Tracts'}[0]->STATE )) { /* Census API gives false errors. This is attempting to try a couple times before returning error. */
 
-            $census_result = json_decode(file_get_contents($tract_address));
+            $census_result = json_decode( file_get_contents( $tract_address ) );
 
-            if($census_result == '' || !isset($census_result->result->geographies->{'Census Tracts'}[0]->STATE)) {
+            if($census_result == '' || !isset( $census_result->result->geographies->{'Census Tracts'}[0]->STATE )) {
 
-                sleep ( 1 ); // wait 1 second, then try again
+                sleep( 1 ); // wait 1 second, then try again
 
-                $census_result = json_decode(file_get_contents($tract_address));
+                $census_result = json_decode( file_get_contents( $tract_address ) );
 
-                if($census_result == '' || !isset($census_result->result->geographies->{'Census Tracts'}[0]->STATE)) {
+                if($census_result == '' || !isset( $census_result->result->geographies->{'Census Tracts'}[0]->STATE )) {
                     return 'ZERO_RESULTS';
                 }
             }
@@ -59,9 +61,9 @@ class Disciple_Tools_Census_Geolocation {
             $tract_lat = $census_result->result->geographies->{'Census Tracts'}[0]->CENTLAT;
             $tract_size = $census_result->result->geographies->{'Census Tracts'}[0]->AREALAND;
 
-            $zoom = dt_get_zoom_size_LL ($tract_size);
+            $zoom = dt_get_zoom_size_LL( $tract_size );
 
-            return array(
+            return [
                 'state' => $state_code,
                 'county' => $tract_county,
                 'geoid' => $tract_geoid,
@@ -69,7 +71,7 @@ class Disciple_Tools_Census_Geolocation {
                 'lng' => $tract_lng,
                 'size' => $tract_size,
                 'zoom' => $zoom,
-            );
+            ];
 
         } elseif ($type == 'geoid') {
             if($census_result->result->geographies->{'Census Tracts'}[0]) {
@@ -82,16 +84,16 @@ class Disciple_Tools_Census_Geolocation {
         }
     }
 
-    public static function url_get_contents ($Url) {
-        if (!function_exists('curl_init')){
-            die('CURL is not installed!');
+    public static function url_get_contents ( $Url ) {
+        if (!function_exists( 'curl_init' )){
+            die( 'CURL is not installed!' );
         }
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_URL, $Url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $output = curl_exec($ch);
-        curl_close($ch);
+        curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch, CURLOPT_URL, $Url );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+        $output = curl_exec( $ch );
+        curl_close( $ch );
         return $output;
     }
 

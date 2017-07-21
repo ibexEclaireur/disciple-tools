@@ -1,7 +1,7 @@
 <?php
 // WP_List_Table is not loaded automatically so we need to load it in our application
-if (!class_exists('WP_List_Table')) {
-    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
+if (!class_exists( 'WP_List_Table' )) {
+    require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
 /**
@@ -21,20 +21,22 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
         $sortable = $this->get_sortable_columns();
 
         $data = $this->get_activity_data();
-        usort($data, array(&$this, 'sort_data'));
+        usort( $data, [&$this, 'sort_data'] );
 
         $perPage = 20;
         $currentPage = $this->get_pagenum();
-        $totalItems = count($data);
+        $totalItems = count( $data );
 
-        $this->set_pagination_args(array(
+        $this->set_pagination_args(
+            [
             'total_items' => $totalItems,
             'per_page' => $perPage
-        ));
+            ]
+        );
 
-        $data = array_slice($data, (($currentPage - 1) * $perPage), $perPage);
+        $data = array_slice( $data, (($currentPage - 1) * $perPage), $perPage );
 
-        $this->_column_headers = array($columns, $hidden, $sortable);
+        $this->_column_headers = [$columns, $hidden, $sortable];
         $this->items = $data;
     }
 
@@ -45,7 +47,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
      */
     public function get_columns()
     {
-        $columns = array(
+        $columns = [
             'date'        => __( 'Date', 'disciple-tools' ),
             'ID'        => __( 'ID', 'disciple-tools' ),
 //            'ip'          => __( 'IP', 'disciple-tools' ),
@@ -59,7 +61,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
             'meta_value' => __( 'Meta Value', 'disciple-tools' ),
             'meta_parent' => __( 'Meta Parent', 'disciple-tools' ),
             'author'      => __( 'Author', 'disciple-tools' ),
-        );
+        ];
 
         return $columns;
     }
@@ -71,7 +73,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
      */
     public function get_hidden_columns()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -81,7 +83,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
      */
     public function get_sortable_columns()
     {
-        return array('type' => array('type', false), 'date' => array('date', false));
+        return ['type' => ['type', false], 'date' => ['date', false]];
     }
 
     /**
@@ -93,7 +95,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     {
         global $wpdb;
 
-        $data = array();
+        $data = [];
 
         // Get all report detals
         $results = $wpdb->get_results(
@@ -108,8 +110,8 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
         );
 
         foreach ($results as $result) {
-            $mapped_array = array(
-                'date' => date('m/d/Y h:i:s', $result['hist_time']),
+            $mapped_array = [
+                'date' => date( 'm/d/Y h:i:s', $result['hist_time'] ),
                 'ID' => $result['object_id'],
                 'author' => $result['user_id'],//dt_get_user_display_name($result['user_id']),
                 'ip' => $result['hist_ip'],
@@ -122,7 +124,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
                 'meta_value' => $result['meta_value'],
                 'meta_parent' => $result['meta_parent'],
                 'object_note' => $result['object_note'],
-            );
+            ];
 
             $data[] = $mapped_array;
         }
@@ -133,12 +135,12 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     /**
      * Define what data to show on each column of the table
      *
-     * @param  Array $item Data
-     * @param  String $column_name - Current column name
+     * @param Array $item Data
+     * @param String $column_name - Current column name
      *
      * @return Mixed
      */
-    public function column_default($item, $column_name)
+    public function column_default( $item, $column_name )
     {
         switch ($column_name) {
             case 'date':
@@ -156,7 +158,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
             case 'object_note':
                 return $item[$column_name];
             default:
-                return print_r($item, true);
+                return print_r( $item, true );
         }
     }
 
@@ -165,24 +167,24 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
      *
      * @return Mixed
      */
-    private function sort_data($a, $b)
+    private function sort_data( $a, $b )
     {
         // Set defaults
         $orderby = 'date';
         $order = 'desc';
 
         // If orderby is set, use this as the sort column
-        if (!empty($_GET['orderby'])) {
+        if (!empty( $_GET['orderby'] )) {
             $orderby = $_GET['orderby'];
         }
 
         // If order is set use this as the order
-        if (!empty($_GET['order'])) {
+        if (!empty( $_GET['order'] )) {
             $order = $_GET['order'];
         }
 
 
-        $result = strcmp($a[$orderby], $b[$orderby]);
+        $result = strcmp( $a[$orderby], $b[$orderby] );
 
         if ($order === 'asc') {
             return $result;

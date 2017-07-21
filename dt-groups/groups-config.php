@@ -4,22 +4,23 @@
  * Disciple_Tools_Config_Groups
  * This class serves as master configuration and modification class to the groups post type within the admin screens.
  *
- * @class Disciple_Tools_Config_Contacts
- * @version    0.1
- * @since 0.1
- * @package    Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_Config_Contacts
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Config_Groups {
 
     /**
      * Disciple_Tools_Config_Groups The single instance of Disciple_Tools_Config_Groups.
-     * @var     object
-     * @access  private
-     * @since     0.1
+     *
+     * @var    object
+     * @access private
+     * @since  0.1
      */
     private static $_instance = null;
 
@@ -28,27 +29,30 @@ class Disciple_Tools_Config_Groups {
      *
      * Ensures only one instance of Disciple_Tools_Config_Groups is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since  0.1
      * @static
      * @return Disciple_Tools_Config_Groups instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {
-        add_action( 'admin_menu', array($this, 'remove_default_meta_boxes' ) );
+        add_action( 'admin_menu', [$this, 'remove_default_meta_boxes' ] );
     } // End __construct()
 
     /**
      * Removes default metaboxes
+     *
      * @see https://codex.wordpress.org/Function_Reference/remove_meta_box
      */
     public function remove_default_meta_boxes() {

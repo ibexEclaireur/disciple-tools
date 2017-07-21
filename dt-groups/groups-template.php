@@ -3,7 +3,7 @@
  * Template file for theme support
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /**
  *
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  */
 function dt_get_group_edit_form () {
 
-    if(class_exists('Disciple_Tools')) {
+    if(class_exists( 'Disciple_Tools' )) {
 
         // Create the title field
         $html = '<table class="form-table">' . "\n";
@@ -35,22 +35,21 @@ function dt_get_group_edit_form () {
 
 /**
  * Save contact
- *
  */
-function dt_save_group($post) {
-    if(class_exists('Disciple_Tools')) {
+function dt_save_group( $post ) {
+    if(class_exists( 'Disciple_Tools' )) {
 
         if($post['post_title'] != get_the_title()) {
-            $my_post = array(
+            $my_post = [
                 'ID'           => get_the_ID(),
                 'post_title'   => $post['post_title'],
-            );
+            ];
             wp_update_post( $my_post );
         }
 
         $group = Disciple_Tools_Group_Post_Type::instance();
-        $group->meta_box_save(get_the_ID());
+        $group->meta_box_save( get_the_ID() );
 
-        wp_redirect(get_permalink());
+        wp_redirect( get_permalink() );
     }
 }
