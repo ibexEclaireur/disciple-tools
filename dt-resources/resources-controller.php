@@ -1,0 +1,5 @@
+<?php
+/**
+ * Endpoint controller file
+ */
+

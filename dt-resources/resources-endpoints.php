@@ -9,6 +9,6 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Disciple_Tools_Prayer_Endpoints {
+class Disciple_Tools_Resource_Endpoints {
 
 }
