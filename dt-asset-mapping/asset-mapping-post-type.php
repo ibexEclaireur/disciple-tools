@@ -150,21 +150,21 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
         ];
 
         $rewrite = [
-            'slug'                  => 'assetmappings',
+            'slug'                  => 'assetmap',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => false,
         ];
         $capabilities = [
-            'edit_post'             => 'edit_assetmapping',
-            'read_post'             => 'read_assetmapping',
-            'delete_post'           => 'delete_assetmapping',
-            'delete_others_posts'   => 'delete_others_assetmappings',
-            'delete_posts'          => 'delete_assetmappings',
-            'edit_posts'            => 'edit_assetmappings',
-            'edit_others_posts'     => 'edit_others_assetmappings',
-            'publish_posts'         => 'publish_assetmappings',
-            'read_private_posts'    => 'read_private_assetmappings',
+            'edit_post'             => 'edit_assetmap',
+            'read_post'             => 'read_assetmap',
+            'delete_post'           => 'delete_assetmap',
+            'delete_others_posts'   => 'delete_others_assetmaps',
+            'delete_posts'          => 'delete_assetmaps',
+            'edit_posts'            => 'edit_assetmaps',
+            'edit_others_posts'     => 'edit_others_assetmaps',
+            'publish_posts'         => 'publish_assetmaps',
+            'read_private_posts'    => 'read_private_assetmaps',
         ];
         $defaults = [
             'labels'                => $labels,
@@ -181,7 +181,7 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
-            'rest_base'             => 'assetmappings',
+            'rest_base'             => 'assetmap',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         ];
 
@@ -198,8 +198,8 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @return void
      */
     public function register_taxonomy () {
-        $this->taxonomies['assetmappings-type'] = new Disciple_Tools_Taxonomy( $post_type = 'assetmappings', $token = 'assetmappings-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies['assetmappings-type']->register();
+        $this->taxonomies['assetmapping-type'] = new Disciple_Tools_Taxonomy( $post_type = 'assetmapping', $token = 'assetmapping-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
+        $this->taxonomies['assetmapping-type']->register();
     } // End register_taxonomy()
 
     /**

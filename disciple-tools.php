@@ -371,7 +371,7 @@ class Disciple_Tools {
          * dt-resources
          */
         require_once( 'dt-resources/resources-post-type.php' );
-        $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+        $this->post_types['resources'] = Disciple_Tools_Resources_Post_Type::instance();
         require_once( 'dt-resources/resources-template.php' );
         require_once( 'dt-resources/resources-controller.php' );
         require_once( 'dt-resources/resources-endpoints.php' );

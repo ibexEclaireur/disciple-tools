@@ -176,7 +176,7 @@ class Disciple_Tools_Resources_Post_Type {
             'capability_type'         => 'resource',
             'has_archive'             => true, //$archive_slug,
             'hierarchical'             => false,
-            'supports'                 => [ 'title', 'editor', 'comments', 'author', 'revisions', 'thumbnail'  ],
+            'supports'                 => [ 'title', 'editor', 'comments', 'author', 'revisions', 'thumbnail', 'post-formats'  ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-groups',
             'show_in_admin_bar'     => true,
@@ -493,13 +493,13 @@ class Disciple_Tools_Resources_Post_Type {
         $fields = [];
 
         // Project Update Information Section
-        $fields['audience'] = [
-            'name' => __( 'Audience', 'disciple_tools' ),
-            'description' => 'resource Supporters are level 1; Project Supporters are level 2. Project supporters see all resource supporter posts, but resource supporters do not see project supporter posts.',
-            'type' => 'select',
-            'default' => ['Project Supporter', 'Project Supporter'],
-            'section' => 'info'
-        ];
+//        $fields['audience'] = [
+//            'name' => __( 'Audience', 'disciple_tools' ),
+//            'description' => 'resource Supporters are level 1; Project Supporters are level 2. Project supporters see all resource supporter posts, but resource supporters do not see project supporter posts.',
+//            'type' => 'select',
+//            'default' => ['Project Supporter', 'Project Supporter'],
+//            'section' => 'info'
+//        ];
 
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
