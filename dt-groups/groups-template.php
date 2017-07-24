@@ -30,7 +30,7 @@ function dt_get_group_edit_form () {
 
 
         // Call the metadata fields
-        $group = Disciple_Tools_Group_Post_Type::instance();
+        $group = Disciple_Tools_Groups_Post_Type::instance();
 
         echo ''.$group->load_type_meta_box();
 
@@ -53,7 +53,7 @@ function dt_save_group( $post ) {
             wp_update_post( $my_post );
         }
 
-        $group = Disciple_Tools_Group_Post_Type::instance();
+        $group = Disciple_Tools_Groups_Post_Type::instance();
         $group->meta_box_save( get_the_ID() );
 
         wp_redirect( get_permalink() );

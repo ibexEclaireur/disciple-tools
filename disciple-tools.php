@@ -259,7 +259,7 @@ class Disciple_Tools {
 
             // Groups
             require_once( 'dt-groups/groups-config.php' );
-            $this->config_groups = Disciple_Tools_Config_Groups::instance();
+            $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
             // Locations
             require_once( 'dt-locations/tab-tools-menu.php' );
@@ -335,7 +335,7 @@ class Disciple_Tools {
          * dt-groups
          */
         require_once( 'dt-groups/groups-post-type.php' );
-        $this->post_types['groups'] = Disciple_Tools_Group_Post_Type::instance();
+        $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
         require_once( 'dt-groups/groups-controller.php' );
         require_once( 'dt-groups/groups-endpoints.php' );
         require_once( 'dt-groups/groups-template.php' ); // Functions to support theme
@@ -368,10 +368,23 @@ class Disciple_Tools {
 
 
         /**
+         * dt-resources
+         */
+        require_once( 'dt-resources/resources-post-type.php' );
+        $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
+        require_once( 'dt-resources/resources-template.php' );
+        require_once( 'dt-resources/resources-controller.php' );
+        require_once( 'dt-resources/resources-endpoints.php' );
+
+
+        /**
          * dt-prayer
          */
         require_once( 'dt-prayer/prayer-post-type.php' );
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-format-status' ] );
+        require_once( 'dt-prayer/prayer-template.php' );
+        require_once( 'dt-prayer/prayer-controller.php' );
+        require_once( 'dt-prayer/prayer-endpoints.php' );
 
 
         /**
@@ -379,16 +392,16 @@ class Disciple_Tools {
          */
         require_once( 'dt-progress/progress-post-type.php' );
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-location' ] );
-        require_once( 'dt-assets/assets-endpoints.php' );
+        require_once('dt-asset-mapping/asset-mapping-endpoints.php');
 
         /**
          * dt-assets
          */
-        require_once( 'dt-assets/assets-post-type.php' );
-        $this->post_types['assets'] = Disciple_Tools_Asset_Post_Type::instance();
-        require_once( 'dt-assets/assets-endpoints.php' );
-        require_once( 'dt-assets/assets-controller.php' );
-        require_once( 'dt-assets/assets-template.php' );
+        require_once('dt-asset-mapping/asset-mapping-post-type.php');
+        $this->post_types['assetmapping'] = Disciple_Tools_Asset_Mapping_Post_Type::instance();
+        require_once('dt-asset-mapping/asset-mapping-endpoints.php');
+        require_once('dt-asset-mapping/asset-mapping-controller.php');
+        require_once('dt-asset-mapping/asset-mapping-template.php');
 
         /**
          * dt-statistics

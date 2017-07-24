@@ -211,8 +211,8 @@ function my_connection_types() {
 
     p2p_register_connection_type(
         [
-        'name' => 'assets_to_locations',
-        'from' => 'assets',
+        'name' => 'assetmapping_to_locations',
+        'from' => 'assetmapping',
         'to' => 'locations',
         'cardinality' => 'many-to-one',
         'title' => [
@@ -334,8 +334,8 @@ function my_connection_types() {
         );
         p2p_register_connection_type(
             [
-            'name' => 'assets_to_peoplegroups',
-            'from' => 'assets',
+            'name' => 'assetmapping_to_peoplegroups',
+            'from' => 'assetmapping',
             'to' => 'peoplegroups',
             'title' => [
                 'from' => __( 'People Groups', 'disciple_tools' ),

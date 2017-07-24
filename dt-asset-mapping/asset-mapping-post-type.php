@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  * @author     Chasm.Solutions & Kingdom.Training
  * @since      0.1
  */
-class Disciple_Tools_Asset_Post_Type {
+class Disciple_Tools_Asset_Mapping_Post_Type {
     /**
      * The post type token.
      *
@@ -59,7 +59,7 @@ class Disciple_Tools_Asset_Post_Type {
     public $taxonomies;
 
     /**
-     * Disciple_Tools_Asset_Post_Type The single instance of Disciple_Tools_Asset_Post_Type.
+     * Disciple_Tools_Asset_Mapping_Post_Type The single instance of Disciple_Tools_Asset_Mapping_Post_Type.
      *
      * @var    object
      * @access private
@@ -68,13 +68,13 @@ class Disciple_Tools_Asset_Post_Type {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Asset_Post_Type Instance
+     * Main Disciple_Tools_Asset_Mapping_Post_Type Instance
      *
-     * Ensures only one instance of Disciple_Tools_Asset_Post_Type is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Asset_Mapping_Post_Type is loaded or can be loaded.
      *
      * @since  0.1
      * @static
-     * @return Disciple_Tools_Asset_Post_Type instance
+     * @return Disciple_Tools_Asset_Mapping_Post_Type instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) ) {
@@ -90,9 +90,9 @@ class Disciple_Tools_Asset_Post_Type {
      * @since  0.1
      */
     public function __construct() {
-        $this->post_type = 'assets';
-        $this->singular = __( 'Asset', 'disciple_tools' );
-        $this->plural = __( 'Assets', 'disciple_tools' );
+        $this->post_type = 'assetmapping';
+        $this->singular = __( 'Asset Map', 'disciple_tools' );
+        $this->plural = __( 'Asset Mapping', 'disciple_tools' );
         $this->args = [ 'menu_icon' => 'dashicons-archive' ];
         $this->taxonomies = [];
 
@@ -150,21 +150,21 @@ class Disciple_Tools_Asset_Post_Type {
         ];
 
         $rewrite = [
-            'slug'                  => 'assets',
+            'slug'                  => 'assetmappings',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => false,
         ];
         $capabilities = [
-            'edit_post'             => 'edit_asset',
-            'read_post'             => 'read_asset',
-            'delete_post'           => 'delete_asset',
-            'delete_others_posts'   => 'delete_others_assets',
-            'delete_posts'          => 'delete_assets',
-            'edit_posts'            => 'edit_assets',
-            'edit_others_posts'     => 'edit_others_assets',
-            'publish_posts'         => 'publish_assets',
-            'read_private_posts'    => 'read_private_assets',
+            'edit_post'             => 'edit_assetmapping',
+            'read_post'             => 'read_assetmapping',
+            'delete_post'           => 'delete_assetmapping',
+            'delete_others_posts'   => 'delete_others_assetmappings',
+            'delete_posts'          => 'delete_assetmappings',
+            'edit_posts'            => 'edit_assetmappings',
+            'edit_others_posts'     => 'edit_others_assetmappings',
+            'publish_posts'         => 'publish_assetmappings',
+            'read_private_posts'    => 'read_private_assetmappings',
         ];
         $defaults = [
             'labels'                => $labels,
@@ -181,7 +181,7 @@ class Disciple_Tools_Asset_Post_Type {
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
-            'rest_base'             => 'assets',
+            'rest_base'             => 'assetmappings',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         ];
 
@@ -198,8 +198,8 @@ class Disciple_Tools_Asset_Post_Type {
      * @return void
      */
     public function register_taxonomy () {
-        $this->taxonomies['assets-type'] = new Disciple_Tools_Taxonomy( $post_type = 'assets', $token = 'assets-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies['assets-type']->register();
+        $this->taxonomies['assetmappings-type'] = new Disciple_Tools_Taxonomy( $post_type = 'assetmappings', $token = 'assetmappings-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
+        $this->taxonomies['assetmappings-type']->register();
     } // End register_taxonomy()
 
     /**
@@ -453,7 +453,7 @@ class Disciple_Tools_Asset_Post_Type {
      */
     public function enter_title_here ( $title ) {
         if ( get_post_type() == $this->post_type ) {
-            $title = __( 'Enter the asset title here', 'disciple_tools' );
+            $title = __( 'Enter the assetmapping title here', 'disciple_tools' );
         }
         return $title;
     } // End enter_title_here()

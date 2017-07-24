@@ -12,7 +12,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  * @author     Chasm.Solutions & Kingdom.Training
  * @since      0.1
  */
-class Disciple_Tools_Group_Post_Type {
+class Disciple_Tools_Groups_Post_Type {
     /**
      * The post type token.
      *
@@ -68,13 +68,13 @@ class Disciple_Tools_Group_Post_Type {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Group_Post_Type Instance
+     * Main Disciple_Tools_Groups_Post_Type Instance
      *
-     * Ensures only one instance of Disciple_Tools_Group_Post_Type is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Groups_Post_Type is loaded or can be loaded.
      *
      * @since  0.1
      * @static
-     * @return Disciple_Tools_Group_Post_Type instance
+     * @return Disciple_Tools_Groups_Post_Type instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) ) {

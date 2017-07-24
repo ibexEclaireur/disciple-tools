@@ -126,8 +126,8 @@ class Disciple_Tools_People_Groups_Post_Type {
      */
     public function register_post_type () {
         $labels = [
-            'name'                     => sprintf( _x( '%s', 'post type general name', 'disciple_tools' ), $this->plural ),
-            'singular_name'         => sprintf( _x( '%s', 'post type singular name', 'disciple_tools' ), $this->singular ),
+            'name'                     => sprintf( _x( '%s', 'People Groups', 'disciple_tools' ), $this->plural ),
+            'singular_name'         => sprintf( _x( '%s', 'People Group', 'disciple_tools' ), $this->singular ),
             'add_new'                 => _x( 'Add New', $this->post_type, 'disciple_tools' ),
             'add_new_item'             => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
             'edit_item'             => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
@@ -301,23 +301,10 @@ class Disciple_Tools_People_Groups_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-//		add_meta_box( $this->post_type . '_data', __( 'peoplegroup Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
+		add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
-    /**
-     * Load activity metabox
-     */
-    public function load_activity_meta_box () {
-        dt_activity_metabox()->activity_meta_box( get_the_ID() );
-    }
 
-    /**
-     * Load activity metabox
-     */
-    public function load_map_meta_box () {
-        dt_map_metabox()->display_map();
-    }
 
     /**
      * Load activity metabox
@@ -508,13 +495,13 @@ class Disciple_Tools_People_Groups_Post_Type {
         global $post;
         $fields = [];
 
-        $fields['overall_status'] = [
-            'name' => __( 'Overall Status', 'disciple_tools' ),
-            'description' => '',
-            'type' => 'key_select',
-            'default' => ['0' => __( 'Unassigned', 'disciple_tools' ), '1' => __( 'Accepted', 'disciple_tools' ), '2' => __( 'Paused', 'disciple_tools' ), '3' => __( 'Closed', 'disciple_tools' ), '4' => __( 'Unassignable', 'disciple_tools' ) ],
-            'section' => 'status'
-        ];
+//        $fields['overall_status'] = [
+//            'name' => __( 'Overall Status', 'disciple_tools' ),
+//            'description' => '',
+//            'type' => 'key_select',
+//            'default' => ['0' => __( 'Unassigned', 'disciple_tools' ), '1' => __( 'Accepted', 'disciple_tools' ), '2' => __( 'Paused', 'disciple_tools' ), '3' => __( 'Closed', 'disciple_tools' ), '4' => __( 'Unassignable', 'disciple_tools' ) ],
+//            'section' => 'status'
+//        ];
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()

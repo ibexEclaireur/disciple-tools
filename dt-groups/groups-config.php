@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Disciple_Tools_Config_Groups
+ * Disciple_Tools_Groups_Config
  * This class serves as master configuration and modification class to the groups post type within the admin screens.
  *
  * @class   Disciple_Tools_Config_Contacts
@@ -13,10 +13,10 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-class Disciple_Tools_Config_Groups {
+class Disciple_Tools_Groups_Config {
 
     /**
-     * Disciple_Tools_Config_Groups The single instance of Disciple_Tools_Config_Groups.
+     * Disciple_Tools_Groups_Config The single instance of Disciple_Tools_Groups_Config.
      *
      * @var    object
      * @access private
@@ -25,13 +25,13 @@ class Disciple_Tools_Config_Groups {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Config_Groups Instance
+     * Main Disciple_Tools_Groups_Config Instance
      *
-     * Ensures only one instance of Disciple_Tools_Config_Groups is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Groups_Config is loaded or can be loaded.
      *
      * @since  0.1
      * @static
-     * @return Disciple_Tools_Config_Groups instance
+     * @return Disciple_Tools_Groups_Config instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) ) {
