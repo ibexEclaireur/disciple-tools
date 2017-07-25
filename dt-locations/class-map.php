@@ -3,33 +3,35 @@
 /**
  * Disciple Tools
  *
- * @class Disciple_Tools_
- * @version	0.1
- * @since 0.1
- * @package	Disciple_Tools
- * @author Chasm.Solutions & Kingdom.Training
+ * @class   Disciple_Tools_
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools
+ * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Map {
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {} // End __construct()
 
     /**
      * Generate tract map
-     * @param $zoom     int Numeric value of the zoom level 1-16
-     * @param $tract_lng    int     Longitute coordinates
-     * @param $tract_lat    int     Latitude coordinates
-     * @param $coordinates  string  formated string of coordinates for the google map. {lat: x, lng: x},
+     *
+     * @param  $zoom     int Numeric value of the zoom level 1-16
+     * @param  $tract_lng    int     Longitute coordinates
+     * @param  $tract_lat    int     Latitude coordinates
+     * @param  $coordinates  string  formated string of coordinates for the google map. {lat: x, lng: x},
      * @return mixed
      */
-    public static function get_map ($zoom, $tract_lng, $tract_lat, $coordinates ) {
+    public static function get_map ( $zoom, $tract_lng, $tract_lat, $coordinates ) {
 
             ?>
             <style>

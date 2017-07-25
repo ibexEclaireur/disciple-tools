@@ -3,20 +3,21 @@
 /**
  * Disciple_Tools_Tabs
  *
- * @class Disciple_Tools_Tabs
- * @version	0.1
- * @since 0.1
- * @package	Disciple_Tools_Tabs
- * @author Chasm.Solutions
+ * @class   Disciple_Tools_Tabs
+ * @version 0.1
+ * @since   0.1
+ * @package Disciple_Tools_Tabs
+ * @author  Chasm.Solutions
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_JS_Tract_Lookup {
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () {} // End __construct()
 
@@ -29,7 +30,7 @@ class Disciple_Tools_JS_Tract_Lookup {
         print '<div id="post-body-content">';
         /* Add content to column */
 
-        $this->address_to_tract_search ();
+        $this->address_to_tract_search();
 
         print '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         /* Add content to column */
@@ -45,7 +46,9 @@ class Disciple_Tools_JS_Tract_Lookup {
      * Core form for address to tract search
      */
     public function address_to_tract_search ()
-        /** TODO: Create a search that is global and adds a mark instead of a polygon */
+        /**
+ * TODO: Create a search that is global and adds a mark instead of a polygon 
+*/
     {
         ?>
         <div id="map-form">
@@ -86,7 +89,7 @@ class Disciple_Tools_JS_Tract_Lookup {
             jQuery(document).ready(function() {
                 jQuery('button').click( function () {
                     var address = jQuery('#address').val();
-                    var restURL = '<?php echo get_rest_url(null, '/dt/v1/locations/gettractmap'); ?>';
+                    var restURL = '<?php echo get_rest_url( null, '/dt/v1/locations/gettractmap' ); ?>';
                     jQuery.post( restURL, { address: address })
                         .done(function( data ) {
                             jQuery('#search-response').html('We found that your tract is ' + data.geoid );

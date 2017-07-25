@@ -2,13 +2,13 @@
 /**
  * Chart functions for themes is a collection of support functions to support theme development
  *
- * @package Disciple_Tools
+ * @package  Disciple_Tools
  * @category Plugin
- * @author Chasm.Solutions & Kingdom.Training
- * @since 0.1
+ * @author   Chasm.Solutions & Kingdom.Training
+ * @since    0.1
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly.
  */
 function dt_chart_wordtree () {
     echo '<div id="wordtree_basic" style="width: 900px; height: 500px;"></div>';
-    add_action('wp_footer', 'dt_chart_wordtree_relationships');
+    add_action( 'wp_footer', 'dt_chart_wordtree_relationships' );
 }
 
 function dt_chart_wordtree_relationships () {
@@ -62,10 +62,9 @@ function dt_chart_wordtree_relationships () {
 /**
  * Combo Graph
  * call by dt_chart_combograph() and use in conjunction with echo '<div id="chart_combo_div" style="width: 900px; height: 500px;" ></div>';
- *
  */
 function dt_chart_dounut () {
-    add_action('wp_footer', 'dt_chart_dounut_script');
+    add_action( 'wp_footer', 'dt_chart_dounut_script' );
 }
 
 function dt_chart_dounut_script () {
@@ -108,7 +107,7 @@ function dt_chart_bargraph () {
     echo '<div id="chart_dounut_div" style="width: 900px; height: 500px;" ></div>';
     echo '<div id="chart_line_div" style="width: 900px; height: 500px;" ></div>';
     echo '<div id="chart_combo_div" style="width: 900px; height: 500px;" ></div>';
-    add_action('wp_footer', 'dt_chart_bargraph_script');
+    add_action( 'wp_footer', 'dt_chart_bargraph_script' );
 }
 
 function dt_chart_bargraph_script () {

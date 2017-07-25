@@ -12,7 +12,7 @@
 
 // Filter `user_has_cap` if denied caps should take precedence.
 if ( dt_multi_role_explicitly_deny_caps() ) {
-	add_filter( 'user_has_cap', 'dt_user_has_cap_filter', 10, 4 );
+    add_filter( 'user_has_cap', 'dt_user_has_cap_filter', 10, 4 );
 }
 
 /**
@@ -33,34 +33,36 @@ if ( dt_multi_role_explicitly_deny_caps() ) {
  */
 function dt_user_has_cap_filter( $allcaps, $caps, $args, $user ) {
 
-	// If the user doesn't have more than one role, bail.
-	if ( 1 >= count( (array) $user->roles ) )
-		return $allcaps;
+    // If the user doesn't have more than one role, bail.
+    if ( 1 >= count( (array) $user->roles ) ) {
+        return $allcaps;
+    }
 
-	// Get the denied caps.
-	$denied_caps = array_keys( $allcaps, false );
+    // Get the denied caps.
+    $denied_caps = array_keys( $allcaps, false );
 
-	// Loop through the user's roles and find any denied caps.
-	foreach ( (array) $user->roles as $role ) {
+    // Loop through the user's roles and find any denied caps.
+    foreach ( (array) $user->roles as $role ) {
 
-		// Get the role object.
-		$role_obj = get_role( $role );
+        // Get the role object.
+        $role_obj = get_role( $role );
 
-		// If we have an object, merge it's denied caps.
-		if ( ! is_null( $role_obj ) )
-			$denied_caps = array_merge( $denied_caps, array_keys( $role_obj->capabilities, false ) );
-	}
+        // If we have an object, merge it's denied caps.
+        if ( ! is_null( $role_obj ) ) {
+            $denied_caps = array_merge( $denied_caps, array_keys( $role_obj->capabilities, false ) );
+        }
+    }
 
-	// If there are any denied caps, make sure they take precedence.
-	if ( $denied_caps ) {
+    // If there are any denied caps, make sure they take precedence.
+    if ( $denied_caps ) {
 
-		foreach ( $denied_caps as $denied_cap ) {
-			$allcaps[ $denied_cap ] = false;
-		}
-	}
+        foreach ( $denied_caps as $denied_cap ) {
+            $allcaps[ $denied_cap ] = false;
+        }
+    }
 
-	// Return all the user caps.
-	return $allcaps;
+    // Return all the user caps.
+    return $allcaps;
 }
 
 /**
@@ -74,9 +76,9 @@ function dt_user_has_cap_filter( $allcaps, $caps, $args, $user ) {
  */
 function dt_user_has_role( $user_id, $role ) {
 
-	$user = new WP_User( $user_id );
+    $user = new WP_User( $user_id );
 
-	return in_array( $role, (array) $user->roles );
+    return in_array( $role, (array) $user->roles );
 }
 
 /**
@@ -89,7 +91,7 @@ function dt_user_has_role( $user_id, $role ) {
  */
 function dt_current_user_has_role( $role ) {
 
-	return is_user_logged_in() ? dt_user_has_role( get_current_user_id(), $role ) : false;
+    return is_user_logged_in() ? dt_user_has_role( get_current_user_id(), $role ) : false;
 }
 
 /**
@@ -102,12 +104,13 @@ function dt_current_user_has_role( $role ) {
  */
 function dt_get_user_role_names( $user_id ) {
 
-	$user = new WP_User( $user_id );
+    $user = new WP_User( $user_id );
 
-	$names = array();
+    $names = [];
 
-	foreach ( $user->roles as $role )
-		$names[ $role ] = dt_multi_role_get_role_name( $role );
+    foreach ( $user->roles as $role ) {
+        $names[ $role ] = dt_multi_role_get_role_name( $role );
+    }
 
-	return $names;
+    return $names;
 }

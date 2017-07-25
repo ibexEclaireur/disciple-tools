@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
  * @since 1.0.0
@@ -9,14 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @param array $args
  * @return void
  */
-function dt_activity_insert( $args = array() ) {
-    Disciple_Tools()->activity_api->insert($args);
+function dt_activity_insert( $args = [] ) {
+    Disciple_Tools()->activity_api->insert( $args );
 }
 
 /**
  * Disciple_Tools_Activity_Log_API
  * This handles the insert and other functions for the table _dt_activity_log
- *
  */
 class Disciple_Tools_Activity_Log_API {
 
@@ -29,7 +28,7 @@ class Disciple_Tools_Activity_Log_API {
      * @return string real address IP
      */
     protected function _get_ip_address() {
-        $server_ip_keys = array(
+        $server_ip_keys = [
             'HTTP_CLIENT_IP',
             'HTTP_X_FORWARDED_FOR',
             'HTTP_X_FORWARDED',
@@ -37,7 +36,7 @@ class Disciple_Tools_Activity_Log_API {
             'HTTP_FORWARDED_FOR',
             'HTTP_FORWARDED',
             'REMOTE_ADDR',
-        );
+        ];
 
         foreach ( $server_ip_keys as $key ) {
             if ( isset( $_SERVER[ $key ] ) && filter_var( $_SERVER[ $key ], FILTER_VALIDATE_IP ) ) {
@@ -75,7 +74,7 @@ class Disciple_Tools_Activity_Log_API {
 
         $args = wp_parse_args(
             $args,
-            array(
+            [
                 'action'         => '',
                 'object_type'    => '',
                 'object_subtype' => '',
@@ -88,18 +87,20 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_key'       => '',
                 'meta_value'     => '',
                 'meta_parent'     => '',
-            )
+            ]
         );
 
         $user = get_user_by( 'id', get_current_user_id() );
         if ( $user ) {
             $args['user_caps'] = strtolower( key( $user->caps ) );
-            if ( empty( $args['user_id'] ) )
+            if ( empty( $args['user_id'] ) ) {
                 $args['user_id'] = $user->ID;
+            }
         } else {
             $args['user_caps'] = 'guest';
-            if ( empty( $args['user_id'] ) )
+            if ( empty( $args['user_id'] ) ) {
                 $args['user_id'] = 0;
+            }
         }
 
         // Make sure for non duplicate.
@@ -137,12 +138,13 @@ class Disciple_Tools_Activity_Log_API {
             )
         );
 
-        if ( $check_duplicate )
+        if ( $check_duplicate ) {
             return;
+        }
 
         $wpdb->insert(
             $wpdb->activity,
-            array(
+            [
                 'action'         => $args['action'],
                 'object_type'    => $args['object_type'],
                 'object_subtype' => $args['object_subtype'],
@@ -157,8 +159,8 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_key'       => $args['meta_key'],
                 'meta_value'       => $args['meta_value'],
                 'meta_parent'       => $args['meta_parent'],
-            ),
-            array( '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' )
+            ],
+            [ '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' ]
         );
 
         // Final action on insert.

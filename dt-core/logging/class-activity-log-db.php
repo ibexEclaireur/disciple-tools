@@ -7,37 +7,40 @@
  * @since 0.1
  * @class Disciple_Tools_Activity_Log_DB
  */
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Activity_Log_DB {
 
     /**
      * Create table preprocessor
+     *
      * @access static public
      */
-    public static function activate(  ) {
+    public static function activate() {
         // add activation logic here
         self::_create_tables();
     }
 
     /**
      * Delete table preprocessor
+     *
      * @access static public
      */
-    public static function uninstall(  ) {
-        if (get_option('delete_activity_db')) {
+    public static function uninstall() {
+        if (get_option( 'delete_activity_db' )) {
             self::_remove_tables();
         }
     }
 
     /**
      * Creates the tables for the activity and report logs.
+     *
      * @access protected
      */
     protected static function _create_tables() {
         global $wpdb;
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
         /* Activity Log */
         $sql1 = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_activity_log` (
@@ -91,6 +94,7 @@ class Disciple_Tools_Activity_Log_DB {
 
     /**
      * Removes the tables for the activity and report logs.
+     *
      * @access protected
      */
     protected static function _remove_tables() {

@@ -1,11 +1,11 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Admin design
  *
  * This restricts the admin panel view of contacts, groups, and media to the those owned by the logged in user.
  *
- * @author Chasm Solutions
+ * @author  Chasm Solutions
  * @package Disciple_Tools
  */
 
@@ -42,18 +42,19 @@ function dt_modify_admin_bar( $wp_admin_bar ) {
     if ( 0 != $user_id ) {
         /* Add the "My Account" menu */
         $avatar = get_avatar( $user_id, 28 );
-        $howdy = sprintf( __('Welcome, %1$s'), $current_user->display_name );
+        $howdy = sprintf( __( 'Welcome, %1$s' ), $current_user->display_name );
         $class = empty( $avatar ) ? '' : 'with-avatar';
 
-        $wp_admin_bar->add_menu( array(
+        $wp_admin_bar->add_menu(
+            [
                 'id' => 'my-account',
                 'parent' => 'top-secondary',
                 'title' => $howdy . $avatar,
                 'href' => $profile_url,
-                'meta' => array(
+                'meta' => [
                     'class' => $class,
-                ),
-            )
+                ],
+             ]
         );
     } // end if
 }

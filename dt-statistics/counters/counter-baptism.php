@@ -2,29 +2,30 @@
 /**
  * Counts Baptism statistics in database
  *
- * @package   Disciple_Tools
- * @author 	  Chasm Solutions <chasm.crew@chasm.solutions>
- * @link      https://github.com/ChasmSolutions
- * @license   GPL-3.0
- * @version   0.1
+ * @package Disciple_Tools
+ * @author  Chasm Solutions <chasm.crew@chasm.solutions>
+ * @link    https://github.com/ChasmSolutions
+ * @license GPL-3.0
+ * @version 0.1
  */
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Counter_Baptism  {
 
 
     /**
      * Constructor function.
-     * @access  public
-     * @since   0.1
+     *
+     * @access public
+     * @since  0.1
      */
     public function __construct () { } // End __construct()
 
     /**
      * Counts the number of contacts with no disciples in database
      *
-     * @access  public
-     * @since   0.1
+     * @access public
+     * @since  0.1
      */
     public function get_number_of_baptisms () {
         global $wpdb;
@@ -48,8 +49,8 @@ class Disciple_Tools_Counter_Baptism  {
     /**
      * Counts the number of baptizers who are not zero generation.
      *
-     * @access  public
-     * @since   0.1
+     * @access public
+     * @since  0.1
      */
     public function get_number_of_baptizers () {
         global $wpdb;

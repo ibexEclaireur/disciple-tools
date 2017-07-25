@@ -5,11 +5,12 @@
 
 /**
  * Creates a dropdown of the states with the state key as the value.
+ *
  * @return string
  */
 function dt_get_states_key_dropdown_not_installed () {
 
-    $dir_contents = json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json')); // get directory & build dropdown
+    $dir_contents = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/data-file-directory.json' ) ); // get directory & build dropdown
 
     $dropdown = '<select name="states-dropdown">';
 
@@ -18,8 +19,9 @@ function dt_get_states_key_dropdown_not_installed () {
         $disabled = '';
 
         $dropdown .= '<option value="' . $value->key . '" ';
-        if (get_option('_installed_us_county_'.$value->key)) {$dropdown .= ' disabled'; $disabled = ' (Installed)';}
-        elseif (isset($_POST['states-dropdown']) && $_POST['states-dropdown'] == $value->key) {$dropdown .= ' selected';}
+        if (get_option( '_installed_us_county_'.$value->key )) {$dropdown .= ' disabled';
+            $disabled = ' (Installed)';}
+        elseif (isset( $_POST['states-dropdown'] ) && $_POST['states-dropdown'] == $value->key) {$dropdown .= ' selected';}
         $dropdown .= '>' . $value->name . $disabled;
         $dropdown .= '</option>';
     }
@@ -30,11 +32,12 @@ function dt_get_states_key_dropdown_not_installed () {
 
 /**
  * Creates a dropdown of the states with the state key as the value.
+ *
  * @return string
  */
 function dt_get_states_key_dropdown_installed () {
 
-    $dir_contents = json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json')); // get directory & build dropdown
+    $dir_contents = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/data-file-directory.json' ) ); // get directory & build dropdown
 
     $dropdown = '<select name="states-dropdown">';
 
@@ -43,8 +46,9 @@ function dt_get_states_key_dropdown_installed () {
         $disabled = '';
 
         $dropdown .= '<option value="' . $value->key . '" ';
-        if (!get_option('_installed_us_county_'.$value->key)) {$dropdown .= ' disabled'; $disabled = ' (Not Installed)';}
-        elseif (isset($_POST['states-dropdown']) && $_POST['states-dropdown'] == $value->key) {$dropdown .= ' selected';}
+        if (!get_option( '_installed_us_county_'.$value->key )) {$dropdown .= ' disabled';
+            $disabled = ' (Not Installed)';}
+        elseif (isset( $_POST['states-dropdown'] ) && $_POST['states-dropdown'] == $value->key) {$dropdown .= ' selected';}
         $dropdown .= '>' . $value->name . $disabled;
         $dropdown .= '</option>';
     }
@@ -55,17 +59,18 @@ function dt_get_states_key_dropdown_installed () {
 
 /**
  * Creates a dropdown for the countries
+ *
  * @return string
  */
 function dt_get_country_key_dropdown () {
 
-    $dir_contents = json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json')); // get directory & build dropdown
+    $dir_contents = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/data-file-directory.json' ) ); // get directory & build dropdown
 
     $dropdown = '<select name="country-dropdown">';
 
     foreach ($dir_contents->countries as $value) {
         $dropdown .= '<option value="' . $value->key . '" ';
-        if (isset($_POST['country-dropdown']) && $_POST['country-dropdown'] == $value->key) {$dropdown .= 'selected';}
+        if (isset( $_POST['country-dropdown'] ) && $_POST['country-dropdown'] == $value->key) {$dropdown .= 'selected';}
         $dropdown .= '>' . $value->name;
         $dropdown .= '</option>';
     }
@@ -78,35 +83,37 @@ function dt_get_country_key_dropdown () {
 /**
  * Returns directory in an array
  *
- * @usage           $directory = dt_get_data_file_directory ();
+ * @usage $directory = dt_get_data_file_directory ();
                     print_r($directory->USA_states->{'08'}->name);
  *
  * @return array|mixed|object
  */
 function dt_get_data_file_directory () {
-    return json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/data-file-directory.json'));
+    return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/data-file-directory.json' ) );
 }
 
 function dt_get_us_county_file_directory () {
-    return json_decode(file_get_contents(plugin_dir_path(__FILE__) . 'json/usa-county-codes.json'));
+    return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-county-codes.json' ) );
 }
 
 /**
  * Returns the full file path for KML file using the state key
- * @param $key
+ *
+ * @param  $key
  * @return string
  */
-function dt_get_file_path_by_key ($state) {
-    $directory = dt_get_data_file_directory (); // call directory
-    return plugin_dir_path(__FILE__) . 'data/' . $directory->USA_states->{$state}->file; // build url
+function dt_get_file_path_by_key ( $state ) {
+    $directory = dt_get_data_file_directory(); // call directory
+    return plugin_dir_path( __FILE__ ) . 'data/' . $directory->USA_states->{$state}->file; // build url
 }
 
 /**
  * Gets zoom size for chart
- * @param int   Number supplied from the AREALAND attribute of the census data. Based on this number we can calculate approximate zoom level.
+ *
+ * @param  int   Number supplied from the AREALAND attribute of the census data. Based on this number we can calculate approximate zoom level.
  * @return int
  */
-function dt_get_zoom_size_LL ($tract_size) {
+function dt_get_zoom_size_LL ( $tract_size ) {
     if($tract_size > 1000000000) {
         return 8;
     } elseif ($tract_size > 100000000) {
@@ -122,17 +129,18 @@ function dt_get_zoom_size_LL ($tract_size) {
 
 /**
  * Gets the meta information for a polygon or array of polygons
- * @param $geoid        (int) Can be full 9 digit geoid or 5 digit state/county code
+ *
+ * @param  $geoid        (int) Can be full 9 digit geoid or 5 digit state/county code
  * @return array
  */
-function dt_get_coordinates_meta ($geoid) {
+function dt_get_coordinates_meta ( $geoid ) {
     global $wpdb;
 
     //* query */
-    $county_coords = $wpdb->get_results("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key LIKE 'polygon_$geoid%'", ARRAY_A);
+    $county_coords = $wpdb->get_results( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key LIKE 'polygon_$geoid%'", ARRAY_A );
 
     /* build full json of coodinates*/
-    $rows = count($county_coords);
+    $rows = count( $county_coords );
     $string = '[';
     $i = 0;
     foreach($county_coords as $value) {
@@ -142,7 +150,7 @@ function dt_get_coordinates_meta ($geoid) {
     }
     $string .= ']';
 
-    $coords_objects = json_decode($string);
+    $coords_objects = json_decode( $string );
 
     /* set values */
     $high_lng_e = -9999999; //will hold max val
@@ -212,22 +220,23 @@ function dt_get_coordinates_meta ($geoid) {
 
 //    print ' | zoom: '.$zoom ;
 
-    $meta = array("center_lng" => (float)$center_lng,"center_lat" => (float)$center_lat,"ne" => $high_lat_n.','.$high_lng_e,"sw" => $low_lat_s.','.$low_lng_w ,"zoom" => (float)$zoom);
+    $meta = ["center_lng" => (float) $center_lng,"center_lat" => (float) $center_lat,"ne" => $high_lat_n.','.$high_lng_e,"sw" => $low_lat_s.','.$low_lng_w ,"zoom" => (float) $zoom];
 
     return $meta;
 }
 
 /**
  * Get coordinates from KML file
- * @param $state
- * @param $geoid
+ *
+ * @param  $state
+ * @param  $geoid
  * @return string
  */
-function dt_get_placemark_zoom ($geoid, $state ) {
+function dt_get_placemark_zoom ( $geoid, $state ) {
 
-    $file = get_file_path_by_key_LL ($state);
+    $file = get_file_path_by_key_LL( $state );
 
-    $kml_object = simplexml_load_file($file);
+    $kml_object = simplexml_load_file( $file );
 
     $ALAND = '';
 
@@ -239,7 +248,7 @@ function dt_get_placemark_zoom ($geoid, $state ) {
         }
     }
 
-    $zoom = get_zoom_size_LL($ALAND);
+    $zoom = get_zoom_size_LL( $ALAND );
 
     return $zoom;
 }

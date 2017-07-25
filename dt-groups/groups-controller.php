@@ -1,17 +1,14 @@
 <?php
 /**
- * Endpoint controller file
+ * Custom controller file
+ *
+ * @package  Disciple_Tools
+ * @category Plugin
+ * @author   Chasm.Solutions & Kingdom.Training
+ * @since    0.1
  */
+if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Group_Controller
-{
-    public static $group_fields;
+class Disciple_Tools_Groups_Controller {
 
-    public function __construct()
-    {
-        add_action('init', function () {
-            self::$group_fields = Disciple_Tools_Group_Post_Type::instance()->get_custom_fields_settings();
-        });
-
-    }
 }

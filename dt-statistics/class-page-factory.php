@@ -22,7 +22,6 @@ Author URI: http://www.stephenharris.info
 */
 
 /**
- *
  * The class takes the following arguments
  * * $hook - the hook of the 'parent' (menu top-level page).
  * * $title - the browser window title of the page
@@ -48,6 +47,7 @@ class Disciple_Tools_Page_Factory
 
     /**
      * Constructor class for the Simple Admin Metabox
+     *
      *@param $hook - (string) parent page hook
      *@param $title - (string) the browser window title of the page
      *@param $menu - (string)  the page title as it appears in the menuk
@@ -55,7 +55,7 @@ class Disciple_Tools_Page_Factory
      *@param $slug - (string) a slug identifier for this page
      *@param $body_content_cb - (callback)  (optional) a callback that prints to the page, above the metaboxes. See the tutorial for more details.
      */
-    function __construct($hook, $title, $menu, $permissions, $slug, $body_content_cb = null){
+    function __construct( $hook, $title, $menu, $permissions, $slug, $body_content_cb = null ){
         $this->hook = $hook;
         $this->title = $title;
         $this->menu = $menu;
@@ -64,7 +64,7 @@ class Disciple_Tools_Page_Factory
         $this->body_content_cb = $body_content_cb;
 
         /* Add the page */
-        add_action('admin_menu', array($this,'add_page'));
+        add_action( 'admin_menu', [$this,'add_page'] );
     }
 
 
@@ -75,11 +75,11 @@ class Disciple_Tools_Page_Factory
     function add_page(){
 
         /* Add the page */
-        $this->page = add_submenu_page($this->hook,$this->title, $this->menu, $this->permissions,$this->slug,  array($this,'render_page'));
+        $this->page = add_submenu_page( $this->hook,$this->title, $this->menu, $this->permissions,$this->slug,  [$this,'render_page'] );
 
         /* Add callbacks for this screen only */
-        add_action('load-'.$this->page,  array($this,'page_actions'),9);
-        add_action('admin_footer-'.$this->page,array($this,'footer_scripts'));
+        add_action( 'load-'.$this->page,  [$this,'page_actions'],9 );
+        add_action( 'admin_footer-'.$this->page,[$this,'footer_scripts'] );
     }
 
     /**
@@ -100,14 +100,14 @@ class Disciple_Tools_Page_Factory
     * This calls the add_meta_boxes hooks, adds screen options and enqueues the postbox.js script.
     */
     function page_actions(){
-        do_action('add_meta_boxes_'.$this->page, null);
-        do_action('add_meta_boxes', $this->page, null);
+        do_action( 'add_meta_boxes_'.$this->page, null );
+        do_action( 'add_meta_boxes', $this->page, null );
 
         /* User can choose between 1 or 2 columns (default 2) */
-        add_screen_option('layout_columns', array('max' => 2, 'default' => 2) );
+        add_screen_option( 'layout_columns', ['max' => 2, 'default' => 2] );
 
         /* Enqueue WordPress' script for handling the metaboxes */
-        wp_enqueue_script('postbox');
+        wp_enqueue_script( 'postbox' );
     }
 
 
@@ -120,7 +120,7 @@ class Disciple_Tools_Page_Factory
 
             <?php screen_icon(); ?>
 
-            <h2> <?php echo esc_html($this->title);?> </h2>
+            <h2> <?php echo esc_html( $this->title );?> </h2>
 
             <form name="my_form" method="post">
                 <input type="hidden" name="action" value="some-action">
@@ -136,17 +136,17 @@ class Disciple_Tools_Page_Factory
 
                         <?php if ($this->body_content_cb != null) : ?>
                         <div id="post-body-content">
-                            <?php call_user_func($this->body_content_cb); ?>
+                            <?php call_user_func( $this->body_content_cb ); ?>
                         </div>
                         <?php endif; ?>
 
                         <div id="postbox-container-1" class="postbox-container">
-                            <?php do_meta_boxes('','side',null); ?>
+                            <?php do_meta_boxes( '','side',null ); ?>
                         </div>
 
                         <div id="postbox-container-2" class="postbox-container">
-                            <?php do_meta_boxes('','normal',null);  ?>
-                            <?php do_meta_boxes('','advanced',null); ?>
+                            <?php do_meta_boxes( '','normal',null );  ?>
+                            <?php do_meta_boxes( '','advanced',null ); ?>
                         </div>
 
                     </div> <!-- #post-body -->

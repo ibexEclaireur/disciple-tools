@@ -7,25 +7,25 @@
  * @since      0.1
  * @package    Disciple_Tools
  * @subpackage Disciple_Tools/includes/admin
- * @author     
+ * @author
  */
 
 
 class Disciple_Tools_Activator {
 
 
-	/**
-	 * Activities to run during installation.
-	 *
-	 * Long Description.
-	 *
-	 * @since    0.1
-	 */
-	public static function activate($network_wide) {
+    /**
+     * Activities to run during installation.
+     *
+     * Long Description.
+     *
+     * @since 0.1
+     */
+    public static function activate( $network_wide ) {
         global $wpdb;
-	    $Disciple_Tools = Disciple_Tools();
+        $Disciple_Tools = Disciple_Tools();
 
-	    /**
+        /**
          * Log version number of Disciple_Tools
          */
         $Disciple_Tools->_log_version_number();
@@ -33,7 +33,7 @@ class Disciple_Tools_Activator {
         /**
          * Create roles and capabilities
          */
-        require_once('class-roles.php');
+        require_once( 'class-roles.php' );
         $roles = Disciple_Tools_Roles::instance();
         $roles->set_roles();
 
@@ -41,35 +41,36 @@ class Disciple_Tools_Activator {
         /**
          * Set defaults for options page TODO: Need to rebuild a proper options page for DT plugin configurations.
          */
-//        $settings_sections = $Disciple_Tools->settings->get_settings_sections ( );
-//        foreach ($settings_sections as $key => $value) {
-//            $section = $Disciple_Tools->settings->get_settings_fields ( $key );
-//            $preset = array();
-//            foreach ($section as $field => $item) {
-//                if(!empty($item['default'])) {
-//                    $preset[$field] = $item['default'];
-//                }
-//            }
-//            add_option( $Disciple_Tools->token . '-' . $key, $preset, '', 'yes'  );
-//        }
+        //        $settings_sections = $Disciple_Tools->settings->get_settings_sections ( );
+        //        foreach ($settings_sections as $key => $value) {
+        //            $section = $Disciple_Tools->settings->get_settings_fields ( $key );
+        //            $preset = array();
+        //            foreach ($section as $field => $item) {
+        //                if(!empty($item['default'])) {
+        //                    $preset[$field] = $item['default'];
+        //                }
+        //            }
+        //            add_option( $Disciple_Tools->token . '-' . $key, $preset, '', 'yes'  );
+        //        }
 
 
-		/**
-		 * Setup key for JWT authentication
-		 */
-		if (!defined('JWT_AUTH_SECRET_KEY') ) {
-			if (get_option("my_jwt_key")){
-				define( 'JWT_AUTH_SECRET_KEY', get_option("my_jwt_key"));
-			} else {
-				$iv = password_hash( random_bytes(16), PASSWORD_DEFAULT);
-				update_option( 'my_jwt_key', $iv );
-				define( 'JWT_AUTH_SECRET_KEY', $iv );
-			}
-		}
+        /**
+         * Setup key for JWT authentication
+         */
+        if (!defined( 'JWT_AUTH_SECRET_KEY' ) ) {
+            if (get_option( "my_jwt_key" )){
+                define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
+            } else {
+                $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
+                update_option( 'my_jwt_key', $iv );
+                define( 'JWT_AUTH_SECRET_KEY', $iv );
+            }
+        }
 
 
         /**
          * Activate database creation for Disciple Tools Activity logs
+         *
          * @since 0.1
          */
         if ( is_multisite() && $network_wide ) {
@@ -77,16 +78,17 @@ class Disciple_Tools_Activator {
             $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
             foreach ( $blog_ids as $blog_id ) {
                 switch_to_blog( $blog_id );
-                self::create_tables($Disciple_Tools->version);
+                self::create_tables( $Disciple_Tools->version );
                 restore_current_blog();
             }
         } else {
-            self::create_tables($Disciple_Tools->version);
+            self::create_tables( $Disciple_Tools->version );
         }
-	}
+    }
 
     /**
      * Creating tables whenever a new blog is created
+     *
      * @param $blog_id
      * @param $user_id
      * @param $domain
@@ -98,7 +100,7 @@ class Disciple_Tools_Activator {
 
         if ( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
             switch_to_blog( $blog_id );
-            self::create_tables(Disciple_Tools()->version);
+            self::create_tables( Disciple_Tools()->version );
             restore_current_blog();
         }
     }
@@ -113,12 +115,13 @@ class Disciple_Tools_Activator {
 
     /**
      * Creates the tables for the activity and report logs.
+     *
      * @access protected
      */
-    protected static function create_tables($version) {
+    protected static function create_tables( $version ) {
         global $wpdb;
 
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
         /* Activity Log */
         $table_name = $wpdb->prefix . 'dt_activity_log';
@@ -142,7 +145,7 @@ class Disciple_Tools_Activator {
 					  PRIMARY KEY (`histid`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
-            dbDelta($sql1);
+            dbDelta( $sql1 );
 
             update_option( 'dt_activity_log_db_version', $version );
         }
@@ -158,8 +161,8 @@ class Disciple_Tools_Activator {
 					  `report_subsource` VARCHAR(100) NOT NULL,
 					  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
-            dbDelta($sql2);
-            update_option('dt_reports_db_version', $version);
+            dbDelta( $sql2 );
+            update_option( 'dt_reports_db_version', $version );
         }
 
 
@@ -173,8 +176,8 @@ class Disciple_Tools_Activator {
 					  `meta_value` LONGTEXT,
 					  PRIMARY KEY (`meta_id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
-            dbDelta($sql3);
-            update_option('dt_reportmeta_db_version', $version);
+            dbDelta( $sql3 );
+            update_option( 'dt_reportmeta_db_version', $version );
         }
 
     }
