@@ -319,12 +319,12 @@ class Disciple_Tools_Groups_Post_Type {
 
         echo ''. $this->meta_box_content( 'church' );
 
-        if (get_post_meta( $post->ID, 'is_church', true ) == '0') { $hidden = 'style="display:none;"'; } // add fields if church is true
+//        if (get_post_meta( $post->ID, 'is_church', true ) == '0') { $hidden = 'style="display:none;"'; } // add fields if church is true
 
-        echo '<div id="hidden-rows" '.$hidden.'>'; // visually hides fields for elements of church
+//        echo '<div id="hidden-rows" '.$hidden.'>'; // visually hides fields for elements of church
         echo ''. $this->meta_box_content( 'church_hidden' );
         echo ''. dt_church_fields_metabox()->content_display();
-        echo '</div>';
+//        echo '</div>';
 
 
 

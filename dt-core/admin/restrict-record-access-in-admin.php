@@ -11,7 +11,7 @@ function dt_make_filename_hash( $filename ) {
     $name = basename( $filename, $ext );
     return md5( $name ) . $ext;
 }
-add_filter( 'sanitize_file_name', 'dt_make_filename_hash', 10 );
+//add_filter( 'sanitize_file_name', 'dt_make_filename_hash', 10 );
 
 /**
  * Add Categories to Attachments

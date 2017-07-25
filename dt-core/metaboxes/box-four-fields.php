@@ -43,7 +43,7 @@ class Disciple_Tools_Metabox_Four_Fields {
             'connected_items' => $post,
             'nopaging' => true,
             'connected_meta' => [ 'stage' => 'Unknown' ]
-             ] 
+             ]
         );
         $unbelieving = new WP_Query(
             [
@@ -51,7 +51,7 @@ class Disciple_Tools_Metabox_Four_Fields {
             'connected_items' => $post,
             'nopaging' => true,
             'connected_meta' => [ 'stage' => 'Unbelieving' ]
-             ] 
+             ]
         );
         $believing = new WP_Query(
             [
@@ -59,7 +59,7 @@ class Disciple_Tools_Metabox_Four_Fields {
             'connected_items' => $post,
             'nopaging' => true,
             'connected_meta' => [ 'stage' => 'Believing' ]
-             ] 
+             ]
         );
         $accountable = new WP_Query(
             [
@@ -67,7 +67,7 @@ class Disciple_Tools_Metabox_Four_Fields {
             'connected_items' => $post,
             'nopaging' => true,
             'connected_meta' => [ 'stage' => 'Accountable' ]
-             ] 
+             ]
         );
         $multiplying = new WP_Query(
             [
@@ -75,7 +75,7 @@ class Disciple_Tools_Metabox_Four_Fields {
             'connected_items' => $post,
             'nopaging' => true,
             'connected_meta' => [ 'stage' => 'Multiplying' ]
-             ] 
+             ]
         );
 
 
@@ -91,7 +91,7 @@ class Disciple_Tools_Metabox_Four_Fields {
 
 
         $html .= '</td><td>';
-        $html .=  '<img src="'. Disciple_Tools()->plugin_img . '4fields.png" >';
+//        $html .=  '<img src="'. Disciple_Tools()->plugin_img . '4fields.png" >';
         $html .= '</td></tr></table>';
 
         echo $html;
