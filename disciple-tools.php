@@ -392,16 +392,16 @@ class Disciple_Tools {
          */
         require_once( 'dt-progress/progress-post-type.php' );
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-location' ] );
-        require_once('dt-asset-mapping/asset-mapping-endpoints.php');
+        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' );
 
         /**
          * dt-assets
          */
-        require_once('dt-asset-mapping/asset-mapping-post-type.php');
+        require_once( 'dt-asset-mapping/asset-mapping-post-type.php' );
         $this->post_types['assetmapping'] = Disciple_Tools_Asset_Mapping_Post_Type::instance();
-        require_once('dt-asset-mapping/asset-mapping-endpoints.php');
-        require_once('dt-asset-mapping/asset-mapping-controller.php');
-        require_once('dt-asset-mapping/asset-mapping-template.php');
+        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' );
+        require_once( 'dt-asset-mapping/asset-mapping-controller.php' );
+        require_once( 'dt-asset-mapping/asset-mapping-template.php' );
 
         /**
          * dt-statistics
@@ -463,7 +463,7 @@ class Disciple_Tools {
          */
         if(is_multisite()) {
             /**
- * Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite  
+ * Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite
 */
         }
 

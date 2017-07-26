@@ -30,7 +30,7 @@ class Disciple_Tools_Contacts_Endpoints
     /**
      * The Public_Hooks rest api variables
      */
-    private $version = 1.0;
+    private $version = 1;
     private $context = "dt-hooks";
     private $namespace;
     private $contact_controller;
@@ -245,15 +245,16 @@ class Disciple_Tools_Contacts_Endpoints
                     return new WP_Error( "get_user_contact_error", "You do nat have access to these contacts", ['status', 401] );
                 }
             }
-            $assigned_to_id = "user-".$params['user_id'];
-            $result = Disciple_Tools_Contacts_Controller::get_user_contacts( $assigned_to_id );
-            if ($result["success"] == true){
-                return $result["contacts"];
-            } else {
-                return new WP_Error( "get_user_contact_error", $result["message"], ['status', 400] );
+            $contacts = Disciple_Tools_Contacts_Controller::get_user_contacts( (int) $params['user_id'] );
+            $rv = array();
+            foreach ($contacts as $contact) {
+                $contact_array = $contact->to_array();
+                $contact_array['permalink'] = get_post_permalink( $contact->ID );
+                $rv[] = $contact_array;
             }
+            return $rv;
         } else {
-            return new WP_Error( "update_contact", "Missing a valid user id", ['status', 400] );
+            return new WP_Error( "get_user_contacts", "Missing a valid user id", ['status', 400] );
         }
     }
 
@@ -280,7 +281,7 @@ class Disciple_Tools_Contacts_Endpoints
                 return new WP_Error( "get_team_contacts_error", $result["message"], ['status', 400] );
             }
         }  else {
-            return new WP_Error( "update_contact", "Missing a valid user id", ['status', 400] );
+            return new WP_Error( "get_team_contacts", "Missing a valid user id", ['status', 400] );
         }
     }
 }

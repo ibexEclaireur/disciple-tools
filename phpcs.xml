@@ -33,7 +33,6 @@
        the sniffs in a standard, run phpcs -e \-\-standard=STANDARD -->
 
   <!-- Keeping these ones: -->
-  <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
   <rule ref="Generic.ControlStructures.InlineControlStructure"/>
   <rule ref="Generic.Debug.ClosureLinter"/>
   <rule ref="Generic.Files.ByteOrderMark"/>
@@ -86,6 +85,7 @@
   <!-- <rule ref="PEAR.NamingConventions.ValidVariableName"/> -->
   <!-- <rule ref="PSR2.Files.ClosingTag"/> -->
   <!-- <rule ref="Squiz.PHP.ForbiddenFunctions"/> -->
+  <!-- <rule ref="Generic.Arrays.DisallowLongArraySyntax"/> -->
 
 </ruleset>
 

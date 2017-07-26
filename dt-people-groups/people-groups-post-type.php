@@ -301,7 +301,7 @@ class Disciple_Tools_People_Groups_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-		add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
 

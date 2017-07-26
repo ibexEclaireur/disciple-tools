@@ -152,7 +152,7 @@ class Disciple_Tools_Contacts_Controller
             'post_type' => 'contacts',
             'meta_key' => $meta_field,
             'meta_value' => $value
-             ] 
+             ]
         );
         return $query->posts;
     }
@@ -169,9 +169,9 @@ class Disciple_Tools_Contacts_Controller
      * @since  0.1
      * @return array
      */
-    public static function get_user_contacts( $user_id ){
-        $contacts = self::find_contacts( 'assigned_to', $user_id );
-        return ["success"=>true, "contacts"=>$contacts];
+    public static function get_user_contacts( int $user_id ): array {
+        $contacts = self::find_contacts( 'assigned_to', "user-$user_id" );
+        return $contacts;
     }
 
     /**
