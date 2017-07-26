@@ -98,6 +98,8 @@ class Disciple_Tools_Contact_Post_Type {
 
         add_action( 'init', [ $this, 'register_post_type' ] );
         //		add_action( 'init', array( $this, 'register_taxonomy' ) );
+        add_action( 'init', [$this, 'contacts_rewrites_init'] );
+        add_filter( 'post_type_link', [$this,'contacts_permalink'], 1, 3 );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -1023,7 +1025,16 @@ class Disciple_Tools_Contact_Post_Type {
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
 
-
+    public function contacts_permalink( $post_link, $post ) {
+        if ($post->post_type === "contacts"){
+            return home_url( "contacts/" . $post->ID .'/' );
+        } else {
+            return $post_link;
+        }
+    }
+    function contacts_rewrites_init(){
+        add_rewrite_rule( 'contacts/([0-9]+)?$', 'index.php?post_type=contacts&p=$matches[1]', 'top' );
+    }
 
 
 } // End Class
