@@ -31,7 +31,7 @@ function my_connection_types() {
             'create' => __( 'Connect Coach', 'disciple_tools' ),
         ],
 
-         ] 
+         ]
     );
 
     p2p_register_connection_type(
@@ -75,7 +75,7 @@ function my_connection_types() {
             ],
         ],
 
-         ] 
+         ]
     );
 
     p2p_register_connection_type(
@@ -191,7 +191,7 @@ function my_connection_types() {
             'not_found' => __( 'No groups found.', 'disciple_tools' ),
             'create' => __( 'Connect Parent Group', 'disciple_tools' ),
         ],
-         ] 
+         ]
     );
 
     /**
@@ -206,7 +206,7 @@ function my_connection_types() {
             'from' => __( 'Team Members', 'disciple_tools' ),
             'to' => __( 'Locations', 'disciple_tools' ),
         ],
-         ] 
+         ]
     );
 
     p2p_register_connection_type(
@@ -217,7 +217,7 @@ function my_connection_types() {
         'cardinality' => 'many-to-one',
         'title' => [
             'from' => __( 'Location', 'disciple_tools' ),
-            'to' => __( 'Asset', 'disciple_tools' ),
+            'to' => __( 'Assets', 'disciple_tools' ),
         ],
         'from_labels' => [
             'singular_name' => __( 'Assets', 'disciple_tools' ),
@@ -231,7 +231,7 @@ function my_connection_types() {
             'not_found' => __( 'No locations found.', 'disciple_tools' ),
             'create' => __( 'Connect Location', 'disciple_tools' ),
         ],
-         ] 
+         ]
     );
 
     /**
@@ -249,7 +249,7 @@ function my_connection_types() {
                 'from' => __( 'Team Members', 'disciple_tools' ),
                 'to' => __( 'People Groups', 'disciple_tools' ),
             ],
-             ] 
+             ]
         );
         p2p_register_connection_type(
             [
@@ -310,7 +310,7 @@ function my_connection_types() {
                 'to' => 'locations',
                 'title' => [
                     'from' => __( 'Locations', 'disciple_tools' ),
-                    'to' => __( 'People Group', 'disciple_tools' )
+                    'to' => __( 'People Groups', 'disciple_tools' )
                 ],
                 'to_labels' => [
                     'singular_name' => __( 'Locations', 'disciple_tools' ),
@@ -319,7 +319,7 @@ function my_connection_types() {
                     'create' => __( 'Connect Location', 'disciple_tools' ),
                 ],
                 'from_labels' => [
-                    'singular_name' => __( 'People Group', 'disciple_tools' ),
+                    'singular_name' => __( 'People Groups', 'disciple_tools' ),
                     'search_items' => __( 'Search People Groups', 'disciple_tools' ),
                     'not_found' => __( 'No people groups found.', 'disciple_tools' ),
                     'create' => __( 'Create People Groups', 'disciple_tools' ),
@@ -353,7 +353,7 @@ function my_connection_types() {
                 'not_found' => __( 'No People Groups found.', 'disciple_tools' ),
                 'create' => __( 'Connect People Group', 'disciple_tools' ),
             ],
-             ] 
+             ]
         );
 
 
