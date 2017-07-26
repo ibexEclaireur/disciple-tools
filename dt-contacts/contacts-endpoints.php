@@ -30,7 +30,7 @@ class Disciple_Tools_Contacts_Endpoints
     /**
      * The Public_Hooks rest api variables
      */
-    private $version = 1.0;
+    private $version = 1;
     private $context = "dt-hooks";
     private $namespace;
     private $contact_controller;
@@ -253,7 +253,7 @@ class Disciple_Tools_Contacts_Endpoints
                 return new WP_Error( "get_user_contact_error", $result["message"], ['status', 400] );
             }
         } else {
-            return new WP_Error( "update_contact", "Missing a valid user id", ['status', 400] );
+            return new WP_Error( "get_user_contacts", "Missing a valid user id", ['status', 400] );
         }
     }
 
@@ -280,7 +280,7 @@ class Disciple_Tools_Contacts_Endpoints
                 return new WP_Error( "get_team_contacts_error", $result["message"], ['status', 400] );
             }
         }  else {
-            return new WP_Error( "update_contact", "Missing a valid user id", ['status', 400] );
+            return new WP_Error( "get_team_contacts", "Missing a valid user id", ['status', 400] );
         }
     }
 }
