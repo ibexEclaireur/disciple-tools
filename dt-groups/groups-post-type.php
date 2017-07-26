@@ -97,7 +97,7 @@ class Disciple_Tools_Groups_Post_Type {
         $this->taxonomies = $taxonomies;
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        add_action( 'init', [ $this, 'register_taxonomy' ] );
+//        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
         if ( is_admin() ) {
             global $pagenow;
