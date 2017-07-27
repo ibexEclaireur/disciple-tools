@@ -33,7 +33,7 @@ class Disciple_Tools_Contacts_Endpoints
     private $version = 1;
     private $context = "dt-hooks";
     private $namespace;
-    private $contact_controller;
+    private $contacts_instance;
     private $api_keys_controller;
 
     public function __construct()
@@ -41,8 +41,8 @@ class Disciple_Tools_Contacts_Endpoints
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [$this,  'add_api_routes'] );
 
-        require_once( 'contacts-controller.php' );
-        $this->contact_controller = new Disciple_Tools_Contacts_Controller;
+        require_once( 'contacts.php' );
+        $this->contacts_instance = new Disciple_Tools_Contacts;
 
         $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }
@@ -149,7 +149,7 @@ class Disciple_Tools_Contacts_Endpoints
         $query_params = $request->get_query_params();
         if($this->check_api_token( $query_params )){
             $fields = $request->get_json_params();
-            $result =  Disciple_Tools_Contacts_Controller::create_contact( $fields );
+            $result =  Disciple_Tools_Contacts::create_contact( $fields );
             if ($result["success"] == true){
                 return $result;
             } else {
@@ -174,7 +174,7 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function create_contact( WP_REST_Request $request ){
         $fields = $request->get_json_params();
-        $result = Disciple_Tools_Contacts_Controller::create_contact( $fields );
+        $result = Disciple_Tools_Contacts::create_contact( $fields );
         if ($result["success"] == true){
             return $result;
         } else {
@@ -194,7 +194,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         if (isset( $params['id'] )){
             //@todo restrict to only get contact's the user has access to
-            $result = Disciple_Tools_Contacts_Controller::get_contact( $params['id'] );
+            $result = Disciple_Tools_Contacts::get_contact( $params['id'] );
             if ($result["success"] == true){
                 return $result["contact"];
             } else {
@@ -217,7 +217,7 @@ class Disciple_Tools_Contacts_Endpoints
         $params = $request->get_params();
         $body = $request->get_json_params();
         if (isset( $params['id'] )){
-            $result = Disciple_Tools_Contacts_Controller::update_contact( $params['id'], $body );
+            $result = Disciple_Tools_Contacts::update_contact( $params['id'], $body );
             if ($result["success"] == true){
                 return $result["contact_id"];
             } else {
@@ -245,7 +245,7 @@ class Disciple_Tools_Contacts_Endpoints
                     return new WP_Error( "get_user_contact_error", "You do nat have access to these contacts", ['status', 401] );
                 }
             }
-            $contacts = Disciple_Tools_Contacts_Controller::get_user_contacts( (int) $params['user_id'] );
+            $contacts = Disciple_Tools_Contacts::get_user_contacts( (int) $params['user_id'] );
             $rv = array();
             foreach ($contacts as $contact) {
                 $contact_array = $contact->to_array();
@@ -274,7 +274,7 @@ class Disciple_Tools_Contacts_Endpoints
                     return new WP_Error( "get_team_contacts_error", "You do nat have access to these contacts", ['status', 401] );
                 }
             }
-            $result = Disciple_Tools_Contacts_Controller::get_team_contacts( $params['user_id'] );
+            $result = Disciple_Tools_Contacts::get_team_contacts( $params['user_id'] );
             if ($result["success"] == true){
                 return $result;
             } else {

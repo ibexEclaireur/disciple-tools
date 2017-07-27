@@ -65,7 +65,7 @@ class Disciple_Tools_Locations_Endpoints {
                 'methods'         => WP_REST_Server::CREATABLE,
                 'callback'        => [ $this, 'find_by_address' ],
             ],
-             ] 
+             ]
         );
         register_rest_route(
             $namespace, '/' . $base. '/gettractmap', [
@@ -74,7 +74,7 @@ class Disciple_Tools_Locations_Endpoints {
                 'callback'        => [ $this, 'get_tract_map' ],
 
             ],
-             ] 
+             ]
         );
         register_rest_route(
             $namespace, '/' . $base. '/getmapbygeoid', [
@@ -83,7 +83,7 @@ class Disciple_Tools_Locations_Endpoints {
                 'callback'        => [ $this, 'get_map_by_geoid' ],
 
             ],
-             ] 
+             ]
         );
     }
 
@@ -98,7 +98,7 @@ class Disciple_Tools_Locations_Endpoints {
     public function find_by_address ( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['address'] )){
-            $result = Disciple_Tools_Locations_Controller::get_tract_by_address( $params['address'] );
+            $result = Disciple_Tools_Locations::get_tract_by_address( $params['address'] );
             if ($result["status"] == 'OK'){
                 return $result["tract"];
             } else {
@@ -120,7 +120,7 @@ class Disciple_Tools_Locations_Endpoints {
     public function get_tract_map ( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['address'] )){
-            $result = Disciple_Tools_Locations_Controller::get_tract_map( $params['address'] );
+            $result = Disciple_Tools_Locations::get_tract_map( $params['address'] );
             if ($result["status"] == 'OK'){
                 return $result;
             } else {
@@ -142,7 +142,7 @@ class Disciple_Tools_Locations_Endpoints {
     public function get_map_by_geoid ( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['geoid'] )){
-            $result = Disciple_Tools_Locations_Controller::get_map_by_geoid( $params );
+            $result = Disciple_Tools_Locations::get_map_by_geoid( $params );
             if ($result["status"] == 'OK'){
                 return $result;
             } else {

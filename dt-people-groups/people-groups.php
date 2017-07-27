@@ -1,6 +1,7 @@
 <?php
 /**
- * Custom controller file
+ * Contains create, update and delete functions for people groups, wrapping access to
+ * the database
  *
  * @package  Disciple_Tools
  * @category Plugin
@@ -9,6 +10,6 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Disciple_Tools_Resources_Controller {
+class Disciple_Tools_People_Groups {
 
 }

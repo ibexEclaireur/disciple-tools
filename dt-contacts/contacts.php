@@ -1,7 +1,5 @@
 <?php
 /**
- * Custom controller file
- *
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
@@ -10,12 +8,12 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /**
- * Class Disciple_Tools_Contacts_Controller
+ * Class Disciple_Tools_Contacts
  *
  * Functions for creating, finding, updating or deleting contacts
  */
 
-class Disciple_Tools_Contacts_Controller
+class Disciple_Tools_Contacts
 {
     public static $contact_fields;
 

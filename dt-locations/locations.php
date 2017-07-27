@@ -1,6 +1,7 @@
 <?php
 /**
- * Custom controller file
+ * Contains create, update and delete functions for locations, wrapping access to
+ * the database
  *
  * @package  Disciple_Tools
  * @category Plugin
@@ -10,7 +11,7 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
-class Disciple_Tools_Locations_Controller {
+class Disciple_Tools_Locations {
 
     /**
      * Returns the tract geoid from an address
