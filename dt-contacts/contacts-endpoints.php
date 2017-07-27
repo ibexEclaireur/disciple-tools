@@ -67,9 +67,6 @@ class Disciple_Tools_Contacts_Endpoints
             $this->namespace, '/contact/(?P<id>\d+)', [
             "methods" => "GET",
             "callback" => [$this, 'get_contact'],
-            "permission_callback" => function () {
-                return current_user_can( 'read_contact' );
-            }
             ]
         );
         register_rest_route(
@@ -174,18 +171,13 @@ class Disciple_Tools_Contacts_Endpoints
      * @param  WP_REST_Request $request
       * @access public
      * @since  0.1
-     * @return string|WP_Error The contact on success
+     * @return array|WP_Error The contact on success
      */
     public function get_contact( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['id'] )){
-            //@todo restrict to only get contact's the user has access to
-            $result = Disciple_Tools_Contacts::get_contact( $params['id'] );
-            if ($result["success"] == true){
-                return $result["contact"];
-            } else {
-                return new WP_Error( "get_contact_error", $result["message"], ['status' => 400] );
-            }
+            $result = Disciple_Tools_Contacts::get_contact( $params['id'], true );
+            return $result; // Could be permission WP_Error
         } else {
             return new WP_Error( "get_contact_error", "Please provide a valid id", ['status' => 400] );
         }

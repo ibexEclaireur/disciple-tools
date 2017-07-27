@@ -122,22 +122,27 @@ class Disciple_Tools_Contacts
     /**
      * Get a single contact
      *
-     * @param  $contact_id , the contact post_id
+     * @param  int $contact_id , the contact post_id
+     * @param  bool $check_permissions
      * @access public
      * @since  0.1
-     * @return array, On success: the contact, else: the error message
+     * @return array or WP_Error, On success: the contact, else: the error message
      */
-    public static function get_contact( $contact_id ){
+    public static function get_contact( int $contact_id, bool $check_permissions = true ){
+
+        //@todo restrict to only get contact's the user has access to
+
+        if ($check_permissions && ! current_user_can( 'read_contact' )) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), ['status' => 403] );
+        }
 
         $contact = get_post( $contact_id );
-
         if ($contact){
             $contact->fields = get_post_custom( $contact_id );
-
+            return $contact;
         } else {
-            return ["success"=>false, "message"=>"No contact with found with id:" . $contact_id];
+            return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), ['contact_id' => $contact_id] );
         }
-        return ["success"=>true, "contact"=>$contact];
     }
 
     /**
