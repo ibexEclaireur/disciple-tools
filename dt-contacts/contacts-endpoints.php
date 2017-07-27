@@ -61,9 +61,6 @@ class Disciple_Tools_Contacts_Endpoints
             $this->namespace, '/contact/create', [
             "methods" => "POST",
             "callback" => [$this, 'create_contact'],
-            "permission_callback" => function () {
-                return current_user_can( 'publish_contacts' );
-            }
             ]
         );
         register_rest_route(
@@ -146,12 +143,8 @@ class Disciple_Tools_Contacts_Endpoints
         $query_params = $request->get_query_params();
         if($this->check_api_token( $query_params )){
             $fields = $request->get_json_params();
-            $result =  Disciple_Tools_Contacts::create_contact( $fields );
-            if ($result["success"] == true){
-                return $result;
-            } else {
-                return new WP_Error( "contact_creation_error", $result["message"], ['status' => 400] );
-            }
+            $result = Disciple_Tools_Contacts::create_contact( $fields, true );
+            return $result; // Could be permission WP_Error
         } else {
             return new WP_Error(
                 "contact_creation_error",
@@ -171,12 +164,8 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function create_contact( WP_REST_Request $request ){
         $fields = $request->get_json_params();
-        $result = Disciple_Tools_Contacts::create_contact( $fields );
-        if ($result["success"] == true){
-            return $result;
-        } else {
-            return new WP_Error( "create_contact", $result["message"], ['status' => 400] );
-        }
+        $result = Disciple_Tools_Contacts::create_contact( $fields, true );
+        return $result; // Could be permission WP_Error
     }
 
     /**

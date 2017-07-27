@@ -30,21 +30,26 @@ class Disciple_Tools_Contacts
      * Create a new Contact
      *
      * @param  array $fields, the new contact's data
+     * @param  bool $check_permissions
      * @access private
      * @since  0.1
-     * @return array
+     * @return int or WP_Error
      */
-    public static function create_contact( $fields = [] ){
+    public static function create_contact( array $fields = [], bool $check_permissions = true ) {
         //@todo search for duplicates
         //@todo set defaults
 
+        if ($check_permissions && ! current_user_can( 'publish_contacts' )) {
+            return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), ['status' => 403] );
+        }
+
         //required fields
         if (!isset( $fields["title"] )){
-            return ["success"=>false, "message"=>"contact needs a title", "fields"=>$fields];
+            return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), ['fields' => $fields] );
         }
         $bad_fields = self::check_for_invalid_fields( $fields );
         if (!empty( $bad_fields )){
-            return ["success"=>false, "message"=>["these fields do not exist"=>$bad_fields]];
+            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
         }
 
         $post = [
@@ -55,7 +60,7 @@ class Disciple_Tools_Contacts
         ];
 
         $post_id = wp_insert_post( $post );
-        return ["success"=>true, "contact_id"=>$post_id];
+        return $post_id;
     }
 
     /**
