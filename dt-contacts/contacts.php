@@ -165,7 +165,8 @@ class Disciple_Tools_Contacts
             [
             'post_type' => 'contacts',
             'meta_key' => $meta_field,
-            'meta_value' => $value
+            'meta_value' => $value,
+            'orderby' => 'ID',
              ]
         );
         return $query->posts;
