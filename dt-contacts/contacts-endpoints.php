@@ -88,9 +88,6 @@ class Disciple_Tools_Contacts_Endpoints
             $this->namespace, '/user/(?P<user_id>\d+)/contacts', [
             "methods" => "GET",
             "callback" => [$this, 'get_user_contacts'],
-            "permission_callback" => function () {
-                return current_user_can( 'edit_contacts' );
-            }
             ]
         );
         register_rest_route(
@@ -240,12 +237,10 @@ class Disciple_Tools_Contacts_Endpoints
     public function get_user_contacts( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['user_id'] )){
-            if (!$this->is_id_of_user_logged_in( $params["user_id"] )){
-                if (!current_user_can( "edit_team_contacts" )){
-                    return new WP_Error( "get_user_contact_error", "You do nat have access to these contacts", ['status' => 401] );
-                }
-            }
             $contacts = Disciple_Tools_Contacts::get_user_contacts( (int) $params['user_id'] );
+            if (is_wp_error( $contacts )) {
+                return $contacts;
+            }
             $rv = array();
             foreach ($contacts as $contact) {
                 $contact_array = $contact->to_array();

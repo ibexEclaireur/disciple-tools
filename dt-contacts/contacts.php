@@ -163,11 +163,21 @@ class Disciple_Tools_Contacts
      * Get Contacts assigned to a user
      *
      * @param  $user_id
+     * @param  $check_permissions
      * @access public
      * @since  0.1
-     * @return array
+     * @return array or WP_Error
      */
-    public static function get_user_contacts( int $user_id ): array {
+    public static function get_user_contacts( int $user_id, bool $check_permissions = true ) {
+        if ($check_permissions) {
+            $current_user = wp_get_current_user();
+            // TODO: the current permissions required don't make sense
+            if (! current_user_can( 'edit_contacts' )
+                || ($user_id != $current_user->ID && ! current_user_can( 'edit_team_contacts' )))
+            {
+                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
+            }
+        }
         $contacts = self::find_contacts( 'assigned_to', "user-$user_id" );
         return $contacts;
     }
