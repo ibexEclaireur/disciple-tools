@@ -102,10 +102,10 @@ class Disciple_Tools_Locations_Endpoints {
             if ($result["status"] == 'OK'){
                 return $result["tract"];
             } else {
-                return new WP_Error( "tract_status_error", $result["message"], ['status', 400] );
+                return new WP_Error( "tract_status_error", $result["message"], ['status' => 400] );
             }
         } else {
-            return new WP_Error( "tract_param_error", "Please provide a valid address", ['status', 400] );
+            return new WP_Error( "tract_param_error", "Please provide a valid address", ['status' => 400] );
         }
     }
 
@@ -124,10 +124,10 @@ class Disciple_Tools_Locations_Endpoints {
             if ($result["status"] == 'OK'){
                 return $result;
             } else {
-                return new WP_Error( "map_status_error", $result["message"], ['status', 400] );
+                return new WP_Error( "map_status_error", $result["message"], ['status' => 400] );
             }
         } else {
-            return new WP_Error( "map_param_error", "Please provide a valid address", ['status', 400] );
+            return new WP_Error( "map_param_error", "Please provide a valid address", ['status' => 400] );
         }
     }
 
@@ -146,10 +146,10 @@ class Disciple_Tools_Locations_Endpoints {
             if ($result["status"] == 'OK'){
                 return $result;
             } else {
-                return new WP_Error( "map_status_error", $result["message"], ['status', 400] );
+                return new WP_Error( "map_status_error", $result["message"], ['status' => 400] );
             }
         } else {
-            return new WP_Error( "map_param_error", "Please provide a valid address", ['status', 400] );
+            return new WP_Error( "map_param_error", "Please provide a valid address", ['status' => 400] );
         }
     }
 

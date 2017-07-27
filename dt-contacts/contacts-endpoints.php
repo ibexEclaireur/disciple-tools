@@ -153,12 +153,12 @@ class Disciple_Tools_Contacts_Endpoints
             if ($result["success"] == true){
                 return $result;
             } else {
-                return new WP_Error( "contact_creation_error", $result["message"], ['status', 400] );
+                return new WP_Error( "contact_creation_error", $result["message"], ['status' => 400] );
             }
         } else {
             return new WP_Error(
                 "contact_creation_error",
-                "Invalid or missing client_id or client_token", ['status', 401]
+                "Invalid or missing client_id or client_token", ['status' => 401]
             );
         }
     }
@@ -178,7 +178,7 @@ class Disciple_Tools_Contacts_Endpoints
         if ($result["success"] == true){
             return $result;
         } else {
-            return new WP_Error( "create_contact", $result["message"], ['status', 400] );
+            return new WP_Error( "create_contact", $result["message"], ['status' => 400] );
         }
     }
 
@@ -198,10 +198,10 @@ class Disciple_Tools_Contacts_Endpoints
             if ($result["success"] == true){
                 return $result["contact"];
             } else {
-                return new WP_Error( "get_contact_error", $result["message"], ['status', 400] );
+                return new WP_Error( "get_contact_error", $result["message"], ['status' => 400] );
             }
         } else {
-            return new WP_Error( "get_contact_error", "Please provide a valid id", ['status', 400] );
+            return new WP_Error( "get_contact_error", "Please provide a valid id", ['status' => 400] );
         }
     }
 
@@ -221,10 +221,10 @@ class Disciple_Tools_Contacts_Endpoints
             if ($result["success"] == true){
                 return $result["contact_id"];
             } else {
-                return new WP_Error( "update_contact", $result["message"], ['status', 400] );
+                return new WP_Error( "update_contact", $result["message"], ['status' => 400] );
             }
         } else {
-            return new WP_Error( "update_contact", "Missing a valid contact id", ['status', 400] );
+            return new WP_Error( "update_contact", "Missing a valid contact id", ['status' => 400] );
         }
     }
 
@@ -242,7 +242,7 @@ class Disciple_Tools_Contacts_Endpoints
         if (isset( $params['user_id'] )){
             if (!$this->is_id_of_user_logged_in( $params["user_id"] )){
                 if (!current_user_can( "edit_team_contacts" )){
-                    return new WP_Error( "get_user_contact_error", "You do nat have access to these contacts", ['status', 401] );
+                    return new WP_Error( "get_user_contact_error", "You do nat have access to these contacts", ['status' => 401] );
                 }
             }
             $contacts = Disciple_Tools_Contacts::get_user_contacts( (int) $params['user_id'] );
@@ -254,7 +254,7 @@ class Disciple_Tools_Contacts_Endpoints
             }
             return $rv;
         } else {
-            return new WP_Error( "get_user_contacts", "Missing a valid user id", ['status', 400] );
+            return new WP_Error( "get_user_contacts", "Missing a valid user id", ['status' => 400] );
         }
     }
 
@@ -271,17 +271,17 @@ class Disciple_Tools_Contacts_Endpoints
         if (isset( $params['user_id'] )){
             if (!$this->is_id_of_user_logged_in( $params["user_id"] )){
                 if (!current_user_can( "edit_team_contacts" )){
-                    return new WP_Error( "get_team_contacts_error", "You do nat have access to these contacts", ['status', 401] );
+                    return new WP_Error( "get_team_contacts_error", "You do nat have access to these contacts", ['status' => 401] );
                 }
             }
             $result = Disciple_Tools_Contacts::get_team_contacts( $params['user_id'] );
             if ($result["success"] == true){
                 return $result;
             } else {
-                return new WP_Error( "get_team_contacts_error", $result["message"], ['status', 400] );
+                return new WP_Error( "get_team_contacts_error", $result["message"], ['status' => 400] );
             }
         }  else {
-            return new WP_Error( "get_team_contacts", "Missing a valid user id", ['status', 400] );
+            return new WP_Error( "get_team_contacts", "Missing a valid user id", ['status' => 400] );
         }
     }
 }
