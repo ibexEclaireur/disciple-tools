@@ -89,24 +89,30 @@ class Disciple_Tools_Contacts
     /**
      * Update an existing Contact
      *
-     * @param  $contact_id, the post id for the contact
-     * @param  $fields, the meta fields
+     * @param  int $contact_id, the post id for the contact
+     * @param  array $fields, the meta fields
+     * @param  bool $check_permissions
      * @access public
      * @since  0.1
-     * @return array success|error
+     * @return int of contact ID, or WP_Error
      */
-    public static function update_contact( $contact_id, $fields ){
+    public static function update_contact( int $contact_id, array $fields, bool $check_permissions = true ){
+
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+
         $post = get_post( $contact_id );
         if (isset( $fields['id'] )){
             unset( $fields['id'] );
         }
 
         if (!$post){
-            return ["success"=>false, "message"=>"Contact does not exist"];
+            return new WP_Error( __FUNCTION__, __( "Contact does not exist" ) );
         }
         $bad_fields = self::check_for_invalid_fields( $fields );
         if (!empty( $bad_fields )){
-            return ["success"=>false, "message"=>["these fields do not exist"=>$bad_fields]];
+            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
         }
 
         if ($fields['title']){
@@ -116,7 +122,7 @@ class Disciple_Tools_Contacts
         foreach($fields as $field_id => $value){
             update_post_meta( $contact_id, $field_id, $value );
         }
-        return ["success"=>true, "contact_id"=>$contact_id];
+        return $contact_id;
     }
 
     /**
@@ -195,12 +201,22 @@ class Disciple_Tools_Contacts
     /**
      * Get Contacts assigned to a user's team
      *
-     * @param  $user_id
+     * @param  int $user_id
+     * @param  bool $check_permissions
      * @access public
      * @since  0.1
-     * @return array
+     * @return array or WP_Error
      */
-    public static function get_team_contacts( $user_id ){
+    public static function get_team_contacts( int $user_id, bool $check_permissions = true ) {
+        if ($check_permissions) {
+            $current_user = wp_get_current_user();
+            // TODO: the current permissions required don't make sense
+            if (! current_user_can( 'edit_contacts' )
+                || ($user_id != $current_user->ID && ! current_user_can( 'edit_team_contacts' )))
+            {
+                return new WP_Error( __FUNCTION__, __( "You do not have permission" ), ['status' => 404] );
+            }
+        }
         global $wpdb;
         $user_connections = [];
         $user_connections['relation'] = 'OR';
@@ -264,10 +280,10 @@ class Disciple_Tools_Contacts
             'meta_query' => $user_connections,
         ];
         $query2 = new WP_Query( $args );
-
-
-
-        return ["success"=>true, "members"=>$user_connections, "contacts"=>$query2->posts];
+        return [
+            "members" => $user_connections,
+            "contacts" => $query2->posts,
+        ];
     }
 
 }
