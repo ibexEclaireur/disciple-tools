@@ -196,7 +196,7 @@ class Disciple_Tools_Contacts_Endpoints
                 return $contacts;
             }
             $rv = array();
-            foreach ($contacts as $contact) {
+            foreach ($contacts->posts as $contact) {
                 $contact_array = $contact->to_array();
                 $contact_array['permalink'] = get_post_permalink( $contact->ID );
                 $rv[] = $contact_array;

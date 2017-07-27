@@ -27,6 +27,52 @@ class Disciple_Tools_Contacts
     }
 
     /**
+     * Helper method for creating a WP_Query with pagination and ordering
+     * separated into a separate argument for validation.
+     *
+     * These two statements are equivalent in this example:
+     *
+     * $query = self::query_with_pagination( [ "post_type" => "contacts" ], [ "orderby" => "ID" ] );
+     * // equivalent to:
+     * $query = new WP_Query( [ "post_type" => "contacts", "orderby" => "ID" ] );
+     *
+     * The second argument, $query_pagination_args, may only contain keys
+     * related to ordering and pagination, if it doesn't, this method will
+     * return a WP_Error instance. This is useful in case you want to allow a
+     * caller to modify pagination and ordering, but not anything else, in
+     * order to keep permission checking valid. If $query_pagination_args is
+     * specified with at least one value, then all pagination-related keys in
+     * the first argument are ignored.
+     *
+     * @param array $query_args
+     * @param array $query_pagination_args
+     * @param access private
+     * @return WP_Query or WP_Error
+     */
+    private static function query_with_pagination( array $query_args, array $query_pagination_args ) {
+        $allowed_keys = array(
+            'order', 'orderby', 'nopaging', 'posts_per_page', 'posts_per_archive_page', 'offset',
+            'paged', 'page', 'ignore_sticky_posts',
+        );
+        $error = new WP_Error();
+        foreach ($query_pagination_args as $key => $value) {
+            if (! in_array( $key, $allowed_keys ) ) {
+                $error->add( __FUNCTION__, __( "Key $key was an unexpected pagination key" ) );
+            }
+        }
+        if ( count( $error->errors ) ) {
+            return $error;
+        }
+        if ( count( $query_pagination_args ) ) {
+            foreach ($allowed_keys as $pagination_key => $value) {
+                unset( $query_args[$pagination_key] );
+            }
+        }
+        return new WP_Query( array_merge( $query_args, $query_pagination_args ) );
+    }
+
+
+    /**
      * Create a new Contact
      *
      * @param  array $fields, the new contact's data
@@ -151,27 +197,6 @@ class Disciple_Tools_Contacts
         }
     }
 
-    /**
-     * Find Contacts with meta field value
-     *
-     * @param  $meta_field
-     * @param  $value
-     * @access public
-     * @since  0.1
-     * @return array
-     */
-    public static function find_contacts( $meta_field, $value ){
-        $query = new WP_Query(
-            [
-            'post_type' => 'contacts',
-            'meta_key' => $meta_field,
-            'meta_value' => $value,
-            'orderby' => 'ID',
-             ]
-        );
-        return $query->posts;
-    }
-
     public static function merge_contacts( $base_contact, $duplicate_contact ){
 
     }
@@ -181,11 +206,12 @@ class Disciple_Tools_Contacts
      *
      * @param  $user_id
      * @param  $check_permissions
+     * @param  $query_pagination_args Pass in pagination and ordering parameters if wanted.
      * @access public
      * @since  0.1
-     * @return array or WP_Error
+     * @return WP_Query or WP_Error
      */
-    public static function get_user_contacts( int $user_id, bool $check_permissions = true ) {
+    public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] ) {
         if ($check_permissions) {
             $current_user = wp_get_current_user();
             // TODO: the current permissions required don't make sense
@@ -195,8 +221,15 @@ class Disciple_Tools_Contacts
                 return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
             }
         }
-        $contacts = self::find_contacts( 'assigned_to', "user-$user_id" );
-        return $contacts;
+
+        $query_args = array(
+            'post_type' => 'contacts',
+            'meta_key' => $meta_field,
+            'meta_value' => $value,
+            'orderby' => 'ID',
+            'nopaging' => true,
+        );
+        return self::query_with_pagination( $query_args, $query_pagination_args );
     }
 
     /**
