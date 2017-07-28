@@ -199,6 +199,7 @@ class Disciple_Tools_Contacts_Endpoints
             foreach ($contacts->posts as $contact) {
                 $contact_array = $contact->to_array();
                 $contact_array['permalink'] = get_post_permalink( $contact->ID );
+                $contacts_array['assigned_name'] = dt_get_assigned_name( $contact->ID );
                 $rv[] = $contact_array;
             }
             return $rv;
