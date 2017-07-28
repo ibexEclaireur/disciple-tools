@@ -117,5 +117,13 @@ class Disciple_Tools_Locations {
         ];
     }
 
-
+    public static function get_locations (){
+        $query_args = array(
+            'post_type' => 'locations',
+            'orderby' => 'ID',
+            'nopaging' => true,
+        );
+        $query = new WP_Query($query_args);
+        return $query->posts;
+    }
 }
