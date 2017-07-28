@@ -301,7 +301,8 @@ class Disciple_Tools_People_Groups_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-        add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
+//        add_meta_box( $this->post_type . '_data', __( 'People Group Details', 'disciple_tools' ), [ $this, 'load_details_meta_box' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_jp', __( 'Joshua Project Info', 'disciple_tools' ), [ $this, 'load_jp_meta_box' ], $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
 
@@ -311,6 +312,21 @@ class Disciple_Tools_People_Groups_Post_Type {
      */
     public function load_details_meta_box () {
         $this->meta_box_content( 'info' );
+    }
+
+    /**
+     * Load activity metabox
+     */
+    public function load_jp_meta_box () {
+        global $wpdb, $post;
+
+        echo '<table class="widefat striped"><tbody>';
+        $jp_results = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'jp_%'");
+        foreach($jp_results as $value) {
+            echo '<tr><td style="max-width: 150px">' . substr($value->meta_key, 3) . '</td><td style="max-width: 150px">' . $value->meta_value . '</td></tr>';
+        }
+        echo '</tbody></table>';
+
     }
 
 
