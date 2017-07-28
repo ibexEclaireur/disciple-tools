@@ -224,8 +224,8 @@ class Disciple_Tools_Contacts
 
         $query_args = array(
             'post_type' => 'contacts',
-            'meta_key' => $meta_field,
-            'meta_value' => $value,
+            'meta_key' => 'assigned_to',
+            'meta_value' => "user-$user_id",
             'orderby' => 'ID',
             'nopaging' => true,
         );
