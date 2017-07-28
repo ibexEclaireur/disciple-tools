@@ -506,6 +506,30 @@ class Disciple_Tools_People_Groups_Post_Type {
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
 
+    /**
+     * Field: People Group Fields
+     *
+     * @return array
+     */
+    public function people_group_fields () {
+        global $wpdb, $post;
+        $fields = [];
+        $current_fields = [];
+        if (isset( $post->ID )){
+            $current_fields = $wpdb->get_results( "SELECT meta_key FROM $wpdb->postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+        }
+        foreach ($current_fields as $value) {
+            $names = explode( '_', $value['meta_key'] );
+            $tag = null;
+            if ($names[1] != $names[2]) { $tag = ' ('. ucwords( $names[2] ) . ')'; }
+            $fields[$value['meta_key']] = [
+                'name' => ucwords( $names[1] )  . $tag,
+                'tag' => $names[1],
+            ];
+        }
+        return $fields;
+    }
+
 
     /**
      * Run on activation.
