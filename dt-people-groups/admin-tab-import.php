@@ -22,6 +22,7 @@ class Disciple_Tools_People_Groups_Tab_Import {
         $this->jp_api_key = 'vinskxSNWQKH'; // Joshua Project API Key /* TODO: Currently using Chasm JP Key (vinskxSNWQKH). Should we have each project get their own key? */
 
         // File paths
+        $this->jp_json_path = plugin_dir_path( __FILE__ ) . 'json/';
         $this->jp_countries_path = plugin_dir_path( __FILE__ ) . 'json/jp_countries.json';
 
         // REST URLs
@@ -66,9 +67,7 @@ class Disciple_Tools_People_Groups_Tab_Import {
             if(isset( $_POST['jp-countries-dropdown'] )) { // check if file is correctly set
                 $jp_install_request = $_POST['jp-countries-dropdown'];
 
-                $result = json_decode($this->install_jp_country( $jp_install_request ) ) ;
-//                print $result->meta->pagination->total_pages;
-                print '<pre>'; print_r($result->meta->pagination->total_pages); print '</pre>';
+                $jp_install_result = $this->install_jp_country( $jp_install_request );
             }
 
             if(isset( $_POST['jp-countries-refresh'] )) { // check if file is correctly set
@@ -103,11 +102,11 @@ class Disciple_Tools_People_Groups_Tab_Import {
                 </table>';
 
         // Displays success/fail message for the import selection.
-        if(!empty( $jp_install_request ) ) {
+        if(!empty( $jp_install_result ) ) {
             $html .= '<table class="widefat striped">
                         <tbody>
                             <tr>
-                                <td>JP Install Request: '.$jp_install_request.'</td>
+                                <td>JP Install Request for '.$jp_install_request.': '.$jp_install_result.'</td>
                             </tr>
                         </tbody>
                     </table>';
@@ -241,18 +240,64 @@ class Disciple_Tools_People_Groups_Tab_Import {
     }
 
     public function install_jp_country( $jp_install_request ) {
+        global $wpdb;
+        $all_records = [];
+
         // get people group data for the country
-        $jp_pg_by_country = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3='. $jp_install_request );
-        
-        $results = json_decode( $jp_pg_by_country );
-        if($results->meta->pagination->total_pages > 1) {
-            // loop through second page
+        $jp_pg_by_country_json = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3='. $jp_install_request );
+
+        if(!$jp_pg_by_country_json) {
+            return new WP_Error('failed_api_call', 'Failed to get API data from Joshua Project');
         }
-        return $jp_pg_by_country;
-        // save people group data locally
 
-        // loop installation of people group data
+        $results = json_decode( $jp_pg_by_country_json );
 
+//        if($results->meta->pagination->total_pages > 1) {
+//
+//            $pages = $results->meta->pagination->total_pages;
+//            $i = 1;
+//            while( $pages >= $i) {
+//                $all_records[] = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3='. $jp_install_request . '&page='. $i );
+//                $json_file = $this->jp_json_path . 'jp_pg_country_' . $jp_install_request . '_' . $i . '.json';
+//                file_put_contents( $json_file, $jp_pg_by_country_json );
+//                $i++;
+//            }
+//        } else {
+//            $all_records[] = $results;
+//
+//
+//        }
+
+        $json_file = $this->jp_json_path . 'jp_pg_country_' . $jp_install_request . '.json';
+        file_put_contents( $json_file, $jp_pg_by_country_json );
+
+
+            foreach($results->data as $people_group) {
+                $post = [
+                    "post_title" => $people_group->PeopNameInCountry,
+                    'post_type' => 'peoplegroups',
+                    "post_content" => '',
+                    "post_excerpt" => '',
+                    "post_name" => $people_group->ROP3,
+                    "post_status" => "publish",
+                    "post_author" => get_current_user_id(),
+                ];
+
+                $new_post_id = wp_insert_post( $post );
+
+                foreach($people_group as $key => $value) {
+                    $wpdb->insert(
+                        $wpdb->postmeta,
+                        [
+                            'post_id' => $new_post_id,
+                            'meta_key' => 'jp_'.$key,
+                            'meta_value' => $value,
+                        ]
+                    );
+                }
+            } // end group loop
+
+        return true;
 
     }
 
