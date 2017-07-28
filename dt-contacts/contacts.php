@@ -47,7 +47,7 @@ class Disciple_Tools_Contacts
      * @param array $query_args
      * @param array $query_pagination_args
      * @param access private
-     * @return WP_Query or WP_Error
+     * @return WP_Query | WP_Error
      */
     private static function query_with_pagination( array $query_args, array $query_pagination_args ) {
         $allowed_keys = array(
@@ -79,7 +79,7 @@ class Disciple_Tools_Contacts
      * @param  bool $check_permissions
      * @access private
      * @since  0.1
-     * @return int or WP_Error
+     * @return int | WP_Error
      */
     public static function create_contact( array $fields = [], bool $check_permissions = true ) {
         //@todo search for duplicates
@@ -140,7 +140,7 @@ class Disciple_Tools_Contacts
      * @param  bool $check_permissions
      * @access public
      * @since  0.1
-     * @return int of contact ID, or WP_Error
+     * @return int | WP_Error of contact ID
      */
     public static function update_contact( int $contact_id, array $fields, bool $check_permissions = true ){
 
@@ -178,7 +178,7 @@ class Disciple_Tools_Contacts
      * @param  bool $check_permissions
      * @access public
      * @since  0.1
-     * @return array or WP_Error, On success: the contact, else: the error message
+     * @return array | WP_Error, On success: the contact, else: the error message
      */
     public static function get_contact( int $contact_id, bool $check_permissions = true ){
 
@@ -209,7 +209,7 @@ class Disciple_Tools_Contacts
      * @param  $query_pagination_args Pass in pagination and ordering parameters if wanted.
      * @access public
      * @since  0.1
-     * @return WP_Query or WP_Error
+     * @return WP_Query | WP_Error
      */
     public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] ) {
         if ($check_permissions) {
@@ -239,7 +239,7 @@ class Disciple_Tools_Contacts
      * @param  bool $check_permissions
      * @access public
      * @since  0.1
-     * @return array or WP_Error
+     * @return array | WP_Error
      */
     public static function get_team_contacts( int $user_id, bool $check_permissions = true ) {
         if ($check_permissions) {
