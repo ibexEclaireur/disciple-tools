@@ -178,7 +178,7 @@ class Disciple_Tools_Contacts
      * @param  bool $check_permissions
      * @access public
      * @since  0.1
-     * @return array | WP_Error, On success: the contact, else: the error message
+     * @return WP_Post| WP_Error, On success: the contact, else: the error message
      */
     public static function get_contact( int $contact_id, bool $check_permissions = true ){
 
@@ -190,7 +190,21 @@ class Disciple_Tools_Contacts
 
         $contact = get_post( $contact_id );
         if ($contact){
-            $contact->fields = get_post_custom( $contact_id );
+            $fields = [];
+            $meta_fields = get_post_custom( $contact_id );
+            foreach($meta_fields as $key => $value){
+                if ( strpos( $key, "contact_phone" ) === 0 ){
+                    $fields[ "phone_numbers" ][$key] = $value;
+                } elseif ( strpos( $key, "contact_email" ) === 0){
+                    $fields[ "emails" ][$key] = $value;
+                } elseif ( strpos( $key, "address" ) === 0){
+                    $fields[ "address" ][$key] = $value;
+                } else {
+                    $fields[$key] = $value;
+                }
+            }
+            $contact->fields = $fields;
+
             return $contact;
         } else {
             return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), ['contact_id' => $contact_id] );
