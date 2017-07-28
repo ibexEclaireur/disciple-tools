@@ -289,6 +289,8 @@ class Disciple_Tools {
             require_once( 'dt-locations/class-upload.php' );
 
             // People Groups
+            require_once( 'dt-people-groups/admin-menu.php' );
+            $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
 
 
             // Assets
