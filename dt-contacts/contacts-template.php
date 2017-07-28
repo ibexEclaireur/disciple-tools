@@ -113,12 +113,17 @@ function dt_update_overall_status ( $post ) {
 }
 
 /**
- * Gets the name of the Group or User
+ * Prints the name of the Group or User
  * Used in the loop to get a friendly name of the 'assigned_to' field of the contact
  *
- * @return void
+ * If $return is true, then return the name instead of printing it. (Similar to
+ * the $return argument in var_export.)
+ *
+ * @param  int  $contact_id
+ * @param  bool $return
+ * @return void | string
  */
-function dt_get_assigned_name ( $contact_id ) {
+function dt_get_assigned_name ( int $contact_id, bool $return = false ) {
 
     $metadata = get_post_meta( $contact_id, $key = 'assigned_to', true );
 
@@ -129,10 +134,15 @@ function dt_get_assigned_name ( $contact_id ) {
 
         if($type == 'user') {
             $value = get_user_by( 'id', $id );
-            echo $value->display_name;
+            $rv = $value->display_name;
         } else {
             $value = get_term( $id );
-            echo $value->name;
+            $rv = $value->name;
+        }
+        if ($return) {
+            return $rv;
+        } else {
+            echo $rv;
         }
     }
 
