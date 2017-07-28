@@ -64,7 +64,7 @@ class Disciple_Tools_Contacts
             return $error;
         }
         if ( count( $query_pagination_args ) ) {
-            foreach ($allowed_keys as $pagination_key => $value) {
+            foreach ($allowed_keys as $pagination_key) {
                 unset( $query_args[$pagination_key] );
             }
         }
