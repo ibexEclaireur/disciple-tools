@@ -321,9 +321,9 @@ class Disciple_Tools_People_Groups_Post_Type {
         global $wpdb, $post;
 
         echo '<table class="widefat striped"><tbody>';
-        $jp_results = $wpdb->get_results("SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'jp_%'");
-        foreach($jp_results as $value) {
-            echo '<tr><td style="max-width: 150px">' . substr($value->meta_key, 3) . '</td><td style="max-width: 150px">' . $value->meta_value . '</td></tr>';
+        $jp_results = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'jp_%'" );
+        foreach( $jp_results as $value ) {
+            echo '<tr><td style="max-width: 150px">' . substr( $value->meta_key, 3 ) . '</td><td style="max-width: 150px">' . $value->meta_value . '</td></tr>';
         }
         echo '</tbody></table>';
 

@@ -94,7 +94,7 @@ class Disciple_Tools_People_Groups_Tab_Import {
                                 
                                 <form action="" method="POST">
                                 ' . wp_nonce_field( 'jp_country_nonce_validate', 'jp_country_nonce', true, false ) .  '
-                                    <button type="submit" class="button" value="submit" name="jp-countries-refresh">Refresh JP Countries Data</button> (Countries file is from '.date( "m-d-Y", filemtime( $this->jp_countries_path )).' )
+                                    <button type="submit" class="button" value="submit" name="jp-countries-refresh">Refresh JP Countries Data</button> (Countries file is from '.date( "m-d-Y", filemtime( $this->jp_countries_path ) ).' )
                                     
                                 </form>
                                 
@@ -218,14 +218,14 @@ class Disciple_Tools_People_Groups_Tab_Import {
      */
     public function check_data_age( $file ) {
 
-        $one_month_ago = date( "Ymd",mktime( 0, 0, 0, date("m")-1, date("d"), date("Y") ) );
+        $one_month_ago = date( "Ymd", mktime( 0, 0, 0, date( "m" )-1, date( "d" ), date( "Y" ) ) );
 
         switch ( $file ) {
             case 'jp_countries':
 
                 // Static country data should not be older than 30 days.
                 if(file_exists( $this->jp_countries_path )) {
-                    $jp_countries_json_age = date( "Ymd", filemtime( $this->jp_countries_path ));
+                    $jp_countries_json_age = date( "Ymd", filemtime( $this->jp_countries_path ) );
 
                     if( $jp_countries_json_age < $one_month_ago ) {
                         $this->json_refresh( 'jp_countries' );
@@ -249,55 +249,39 @@ class Disciple_Tools_People_Groups_Tab_Import {
         $jp_pg_by_country_json = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3='. $jp_install_request );
 
         if(!$jp_pg_by_country_json) {
-            return new WP_Error('failed_api_call', 'Failed to get API data from Joshua Project');
+            return new WP_Error( 'failed_api_call', 'Failed to get API data from Joshua Project' );
         }
 
         $results = json_decode( $jp_pg_by_country_json );
-
-//        if($results->meta->pagination->total_pages > 1) {
-//
-//            $pages = $results->meta->pagination->total_pages;
-//            $i = 1;
-//            while( $pages >= $i) {
-//                $all_records[] = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3='. $jp_install_request . '&page='. $i );
-//                $json_file = $this->jp_json_path . 'jp_pg_country_' . $jp_install_request . '_' . $i . '.json';
-//                file_put_contents( $json_file, $jp_pg_by_country_json );
-//                $i++;
-//            }
-//        } else {
-//            $all_records[] = $results;
-//
-//
-//        }
 
         $json_file = $this->jp_json_path . 'jp_pg_country_' . $jp_install_request . '.json';
         file_put_contents( $json_file, $jp_pg_by_country_json );
 
 
-            foreach($results->data as $people_group) {
-                $post = [
-                    "post_title" => $people_group->PeopNameInCountry,
-                    'post_type' => 'peoplegroups',
-                    "post_content" => '',
-                    "post_excerpt" => '',
-                    "post_name" => $people_group->ROP3,
-                    "post_status" => "publish",
-                    "post_author" => get_current_user_id(),
-                ];
+        foreach($results->data as $people_group) {
+            $post = [
+                "post_title" => $people_group->PeopNameInCountry,
+                'post_type' => 'peoplegroups',
+                "post_content" => '',
+                "post_excerpt" => '',
+                "post_name" => $people_group->ROP3,
+                "post_status" => "publish",
+                "post_author" => get_current_user_id(),
+            ];
 
-                $new_post_id = wp_insert_post( $post );
+            $new_post_id = wp_insert_post( $post );
 
-                foreach($people_group as $key => $value) {
-                    $wpdb->insert(
-                        $wpdb->postmeta,
-                        [
-                            'post_id' => $new_post_id,
-                            'meta_key' => 'jp_'.$key,
-                            'meta_value' => $value,
-                        ]
-                    );
-                }
-            } // end group loop
+            foreach($people_group as $key => $value) {
+                $wpdb->insert(
+                    $wpdb->postmeta,
+                    [
+                        'post_id' => $new_post_id,
+                        'meta_key' => 'jp_'.$key,
+                        'meta_value' => $value,
+                    ]
+                );
+            }
+        } // end group loop
 
         return true;
 
