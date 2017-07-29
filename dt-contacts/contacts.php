@@ -192,45 +192,53 @@ class Disciple_Tools_Contacts
         if ($contact) {
             $fields = [];
 
-            $locations = get_posts( [
+            $locations = get_posts(
+                [
                 'connected_type' => 'contacts_to_locations',
                 'connected_items' => $contact,
                 'nopaging' => true,
                 'suppress_filters' => false
-            ] );
+                ]
+            );
             foreach($locations as $l) {
                 $l->permalink = get_permalink( $l->ID );
             }
             $fields[ "locations" ] = $locations;
-            $fields[ "groups" ] = get_posts( [
+            $fields[ "groups" ] = get_posts(
+                [
                 'connected_type' => 'contacts_to_groups',
                 'connected_items' => $contact,
                 'nopaging' => true,
                 'suppress_filters' => false
-            ] );
-            $fields[ "baptized" ] = get_posts( [
+                ]
+            );
+            $fields[ "baptized" ] = get_posts(
+                [
                 'connected_type' => 'contacts_to_baptized',
                 'connected_items' => $contact,
                 'nopaging' => true,
                 'suppress_filters' => false
-            ] );
-            $fields[ "relationships" ] = get_posts( [
+                ]
+            );
+            $fields[ "relationships" ] = get_posts(
+                [
                 'connected_type' => 'contacts_to_contacts',
                 'connected_items' => $contact,
                 'nopaging' => true,
                 'suppress_filters' => false
-            ] );
+                ]
+            );
 
 
             $meta_fields = get_post_custom( $contact_id );
-            foreach( $meta_fields as $key => $value){
+            foreach( $meta_fields as $key => $value) {
                 if ( strpos( $key, "contact_phone" ) === 0 ){
                     $fields[ "phone_numbers" ][$key] = $value;
                 } elseif ( strpos( $key, "contact_email" ) === 0){
                     $fields[ "emails" ][$key] = $value;
                 } elseif ( strpos( $key, "address" ) === 0){
                     $fields[ "address" ][$key] = $value;
-                } elseif( isset( self::$contact_fields[$key]) && self::$contact_fields[$key]["type"] == "key_select" ){
+                } elseif ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
                     $fields[$key] = [ "key"=>$value[0], "label"=>self::$contact_fields[$key]["default"][$value[0]] ];
                 } else {
                     $fields[$key] = $value[0];
