@@ -123,7 +123,7 @@ class Disciple_Tools_Locations {
             'orderby' => 'ID',
             'nopaging' => true,
         );
-        $query = new WP_Query($query_args);
+        $query = new WP_Query( $query_args );
         return $query->posts;
     }
 }

@@ -28,7 +28,7 @@ function disciple_tools_register_default_user_group_taxonomy() {
         'user-group', 'users/group', [
         'singular' => __( 'Team',  'disciple-tools' ),
         'plural'   => __( 'Teams', 'disciple-tools' )
-         ] 
+         ]
     );
 }
 
@@ -46,7 +46,7 @@ function disciple_tools_register_default_user_type_taxonomy() {
         'user-type',  'users/type',  [
         'singular' => __( 'Type',  'disciple-tools' ),
         'plural'   => __( 'Types', 'disciple-tools' )
-         ] 
+         ]
     );
 }
 
@@ -97,7 +97,7 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' ) {
     return wp_get_object_terms(
         $user_id, $taxonomy, [
         'fields' => 'all_with_object_id'
-         ] 
+         ]
     );
 }
 
@@ -169,7 +169,7 @@ function disciple_tools_get_user_groups( $args = [], $output = 'names', $operato
     $r = wp_parse_args(
         $args, [
         'user_group' => true
-         ] 
+         ]
     );
 
     // Return user group taxonomies
@@ -205,7 +205,7 @@ function disciple_tools_get_users_of_group( $args = [] ) {
         'taxonomy' => 'user-type',
         'term'     => '',
         'term_by'  => 'slug'
-         ] 
+         ]
     );
 
     // Get user IDs in group
@@ -222,7 +222,7 @@ function disciple_tools_get_users_of_group( $args = [] ) {
         [
         'orderby' => 'display_name',
         'include' => $user_ids,
-         ] 
+         ]
     );
 }
 
@@ -240,7 +240,7 @@ function disciple_tools_groups_admin_assets() {
     $url = Disciple_Tools()->plugin_url;
     $ver = Disciple_Tools()->version;
 
-    wp_enqueue_style( 'disciple_tools_groups', $url. 'css/user-groups.css', false, $ver, false );
+    wp_enqueue_style( 'disciple_tools_groups', $url. 'dt-core/css/user-groups.css', false, $ver, false );
 }
 
 
