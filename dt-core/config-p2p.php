@@ -102,11 +102,9 @@ function my_connection_types() {
                 'create' => __( 'Connect Member', 'disciple_tools' ),
             ],
             'fields' => [
-                'stage' => [
-                    'title' => __( 'Stage', 'disciple_tools' ),
-                    'type' => 'select',
-                    'values' => [ __( 'Unknown', 'disciple_tools' ), __( 'Unbelieving', 'disciple_tools' ), __( 'Believing', 'disciple_tools' ), __( 'Accountable', 'disciple_tools' ), __( 'Multiplying', 'disciple_tools' ) ],
-                    'default' => __( 'Unknown', 'disciple_tools' ),
+                'leader' => [
+                    'title' => __( 'Leader', 'disciple_tools' ),
+                    'type' => 'checkbox',
                 ],
             ],
         ]

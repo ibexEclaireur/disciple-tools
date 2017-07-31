@@ -195,12 +195,17 @@ class Disciple_Tools_Contacts_Endpoints
             if (is_wp_error( $contacts )) {
                 return $contacts;
             }
+            p2p_type( 'contacts_to_locations' )->each_connected( $contacts );
             $rv = array();
             foreach ($contacts->posts as $contact) {
                 $contact_array = $contact->to_array();
                 $contact_array['permalink'] = get_post_permalink( $contact->ID );
                 $contact_array['assigned_name'] = dt_get_assigned_name( $contact->ID, true );
                 $contact_array['status_number'] = (int) get_post_meta( $contact->ID, 'overall_status', true );
+                $contact_array['locations'] = array();
+                foreach ( $contact->connected as $location ) {
+                    $contact_array['locations'][] = $location->post_title;
+                }
                 $rv[] = $contact_array;
             }
             return $rv;
