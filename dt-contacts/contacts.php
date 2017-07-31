@@ -72,6 +72,10 @@ class Disciple_Tools_Contacts
     }
 
 
+    public static function get_contact_fields(){
+        return self::$contact_fields;
+    }
+
     /**
      * Create a new Contact
      *
