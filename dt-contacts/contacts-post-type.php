@@ -508,7 +508,7 @@ class Disciple_Tools_Contact_Post_Type {
      * @since  0.1
      * @return array
      */
-    public function get_custom_fields_settings () {
+    public function get_custom_fields_settings( bool $include_current_post = true ) {
         global $post;
         $fields = [];
 
@@ -542,7 +542,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'status'
         ];
 
-        if(isset( $post->ID ) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
+        if ($include_current_post && isset( $post->ID ) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
             // Contact Channels Section
             $methods = $this->contact_fields();
             foreach ($methods as $k => $v) { // sets phone numbers as first
@@ -620,6 +620,8 @@ class Disciple_Tools_Contact_Post_Type {
 
 
         } else {
+            // TODO: I don't understand why this is only run when we're not
+            // getting info for the current post
             $channels = $this->get_channels_list();
 
             foreach ($channels as $channel_key => $channel) {

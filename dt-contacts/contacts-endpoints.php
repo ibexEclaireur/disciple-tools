@@ -200,6 +200,7 @@ class Disciple_Tools_Contacts_Endpoints
                 $contact_array = $contact->to_array();
                 $contact_array['permalink'] = get_post_permalink( $contact->ID );
                 $contact_array['assigned_name'] = dt_get_assigned_name( $contact->ID, true );
+                $contact_array['status_number'] = (int) get_post_meta( $contact->ID, 'overall_status', true );
                 $rv[] = $contact_array;
             }
             return $rv;
