@@ -295,6 +295,7 @@ class Disciple_Tools_Groups_Post_Type {
     public function meta_box_setup () {
         add_meta_box( $this->post_type . '_type', __( 'Group Details', 'disciple_tools' ), [ $this, 'load_type_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_meta_box' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_info', __( 'Info', 'disciple_tools' ), [ $this, 'load_info_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
 
@@ -312,6 +313,12 @@ class Disciple_Tools_Groups_Post_Type {
         echo ''. $this->meta_box_content( 'church' );
         echo ''. $this->meta_box_content( 'church_hidden' );
         echo ''. dt_church_fields_metabox()->content_display();
+    }
+    /**
+     * Load type metabox
+     */
+    public function load_info_meta_box () {
+        echo ''. $this->meta_box_content( 'info' );
     }
 
 
@@ -554,6 +561,20 @@ class Disciple_Tools_Groups_Post_Type {
             'type' => 'key_select',
             'default' => ['0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' )],
             'section' => 'church_hidden'
+        ];
+        $fields['group_start_date'] = [
+            'name' => __( 'Start Date', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
+        ];
+        $fields['group_end_date'] = [
+            'name' => __( 'End Date', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'info'
         ];
 
 
