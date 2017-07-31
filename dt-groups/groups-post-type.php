@@ -293,14 +293,9 @@ class Disciple_Tools_Groups_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-
-
         add_meta_box( $this->post_type . '_type', __( 'Group Details', 'disciple_tools' ), [ $this, 'load_type_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_four_fields', __( 'Four Fields', 'disciple_tools' ), [ $this, 'load_four_fields_meta_box' ], $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
-
-
     } // End meta_box_setup()
 
     /**
@@ -314,28 +309,11 @@ class Disciple_Tools_Groups_Post_Type {
      * Load type metabox
      */
     public function load_type_meta_box () {
-        global $post;
-        $hidden = '';
-
         echo ''. $this->meta_box_content( 'church' );
-
-//        if (get_post_meta( $post->ID, 'is_church', true ) == '0') { $hidden = 'style="display:none;"'; } // add fields if church is true
-
-//        echo '<div id="hidden-rows" '.$hidden.'>'; // visually hides fields for elements of church
         echo ''. $this->meta_box_content( 'church_hidden' );
         echo ''. dt_church_fields_metabox()->content_display();
-//        echo '</div>';
-
-
-
     }
 
-    /**
-     * Load four fields metabox
-     */
-    public function load_four_fields_meta_box () {
-        echo ''. dt_four_fields_metabox()->content_display();
-    }
 
     /**
      * Load address metabox
