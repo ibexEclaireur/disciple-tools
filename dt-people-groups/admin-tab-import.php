@@ -243,7 +243,6 @@ class Disciple_Tools_People_Groups_Tab_Import {
 
     public function install_jp_country( $jp_install_request ) {
         global $wpdb;
-        $all_records = [];
 
         // get people group data for the country
         $jp_pg_by_country_json = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3='. $jp_install_request );
@@ -260,7 +259,7 @@ class Disciple_Tools_People_Groups_Tab_Import {
 
         foreach($results->data as $people_group) {
             $post = [
-                "post_title" => $people_group->PeopNameInCountry,
+                "post_title" => $people_group->PeopNameInCountry . ' (' . $people_group->CtryShort . ' | ' . $people_group->ROP3 . ') ',
                 'post_type' => 'peoplegroups',
                 "post_content" => '',
                 "post_excerpt" => '',

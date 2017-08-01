@@ -3,3 +3,10 @@
  @see /includes/functions/enqueue-scripts.php
  @since 0.1
  */
+
+
+jQuery(document).ready(function () {
+  jQuery('.datepicker').datepicker({
+    dateFormat: 'yy-mm-dd'
+  });
+});

@@ -1,0 +1,10 @@
+{
+  "ArcGIS": {
+    "Name": "ArcGIS REST Services Directory",
+    "Home": "http://api.imb.org/arcgis/rest/services"
+  },
+  "Joshua Project": {
+    "Name": "",
+    "Home": ""
+  }
+}
