@@ -32,8 +32,9 @@ class Disciple_Tools_Upload {
 
         if(!get_option( '_installed_us_county_'.$state )) { // check if counties are installed for the state
 
-            $counties =  dt_get_us_county_file_directory();
-            foreach($counties as $county) {
+            $counties =  dt_get_data_file_directory();
+            
+            foreach($counties->USA_counties as $county) {
                 if($county->STATE == $state) {
                     $post = [
                         "post_title" => $county->COUNTY_NAME . ', ' . $county->STUSAB,
@@ -96,7 +97,12 @@ class Disciple_Tools_Upload {
             return 'Already installed';
         }
     }
-
+    
+    /**
+     * Import US State Tracks.
+     * @param $state
+     * @return string
+     */
     public static function upload_us_state_tracts ( $state ) {
         global $wpdb;
 
@@ -167,12 +173,8 @@ class Disciple_Tools_Upload {
         }
     }
 
-
-
-
     /**
      * The box for deleting locations
-     *
      * @return string
      */
     public function delete_locations_box () {
@@ -199,7 +201,6 @@ class Disciple_Tools_Upload {
 
     /**
      * Delete all locations in database
-     *
      * @return string
      */
     public function delete_locations () {

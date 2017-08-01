@@ -26,8 +26,8 @@ class Disciple_Tools_People_Groups_Tab_Import {
         $this->jp_countries_path = plugin_dir_path( __FILE__ ) . 'json/jp_countries.json';
 
         // REST URLs
-        $this->jp_query_countries_all = 'http://joshuaproject.net/api/v2/countries?api_key='.$this->jp_api_key.'&limit=300';
-        $this->jp_query_pg_by_country_all = 'http://joshuaproject.net/api/v2/people_groups?api_key='.$this->jp_api_key.'&limit=1000';
+        $this->jp_query_countries_all = 'https://joshuaproject.net/api/v2/countries?api_key='.$this->jp_api_key.'&limit=300';
+        $this->jp_query_pg_by_country_all = 'https://joshuaproject.net/api/v2/people_groups?api_key='.$this->jp_api_key.'&limit=1000';
 
         $this->check_data_age( 'jp_countries' );
 
