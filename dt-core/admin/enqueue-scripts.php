@@ -49,14 +49,14 @@ function group_page_scripts() {
         wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css . 'disciple-tools-admin-styles.css' );
         wp_enqueue_style( 'dt_admin_css' );
 
-        wp_enqueue_script( 'dt_group_scripts', Disciple_Tools()->plugin_js .'dt-groups.js', ['jquery', 'jquery-ui-core'], '1.0.0', true );
+        wp_enqueue_script( 'dt_group_scripts', Disciple_Tools()->plugin_js .'dt-groups.js', [ 'jquery', 'jquery-ui-core' ], '1.0.0', true );
         wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js .'dt-shared.js', [], '1.0.0', true );
         
         
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-datepicker',[ 'jquery' ] );
         
-        wp_register_style('jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css');
+        wp_register_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
     }
 }
