@@ -314,13 +314,13 @@ class Disciple_Tools_Groups_Post_Type {
         echo ''. $this->meta_box_content( 'church_hidden' );
         echo ''. dt_church_fields_metabox()->content_display();
     }
+    
     /**
      * Load type metabox
      */
     public function load_info_meta_box () {
         echo ''. $this->meta_box_content( 'info' );
     }
-
 
     /**
      * Load address metabox
@@ -572,7 +572,7 @@ class Disciple_Tools_Groups_Post_Type {
             'name' => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
             'type' => 'date',
-            'default' => '',
+            'default' => date( 'Y-m-d' ),
             'section' => 'info'
         ];
         $fields['group_end_date'] = [
