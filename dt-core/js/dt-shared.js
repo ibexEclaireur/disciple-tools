@@ -14,3 +14,4 @@ jQuery(document).ready(function($) {
     $('.misc-pub-post-status').hide();
     $('.misc-pub-revisions').hide();
 });
+

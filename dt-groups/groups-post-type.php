@@ -341,7 +341,7 @@ class Disciple_Tools_Groups_Post_Type {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
-
+        
         $html = '';
 
         $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_groups' ) . '" />';
@@ -368,6 +368,12 @@ class Disciple_Tools_Groups_Post_Type {
                             $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
                             $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'date':
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            $html .= '<p class="description">' . $v['description']  .'</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            
                             break;
                         case 'key_select':
                             $html .= '<tr class="'. $v['section'] .'" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
@@ -565,14 +571,14 @@ class Disciple_Tools_Groups_Post_Type {
         $fields['group_start_date'] = [
             'name' => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
+            'type' => 'date',
             'default' => '',
             'section' => 'info'
         ];
         $fields['group_end_date'] = [
             'name' => __( 'End Date', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
+            'type' => 'date',
             'default' => '',
             'section' => 'info'
         ];
