@@ -361,7 +361,7 @@ class Disciple_Tools {
         require_once( 'dt-groups/groups-post-type.php' );
         $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
         require_once( 'dt-groups/groups.php' );
-        require_once( 'dt-groups/groups-endpoints.php' );
+        require_once( 'dt-groups/groups-endpoints.php' ); // builds rest endpoints
         require_once( 'dt-groups/groups-template.php' ); // Functions to support theme
 
 
@@ -371,7 +371,6 @@ class Disciple_Tools {
         require_once( 'dt-locations/locations-post-type.php' );
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
         require_once( 'dt-locations/class-map.php' ); // Helper
-        require_once( 'dt-locations/locations-functions.php' );
         require_once( 'dt-locations/locations-template.php' );
         require_once( 'dt-locations/class-census-geolocation-api.php' );// APIs
         require_once( 'dt-locations/class-google-geolocation-api.php' );
@@ -388,7 +387,7 @@ class Disciple_Tools {
         $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
         require_once( 'dt-people-groups/people-groups-template.php' );
         require_once( 'dt-people-groups/people-groups.php' );
-        require_once( 'dt-people-groups/people-groups-endpoints.php' );
+        require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
 
 
         /**
@@ -398,7 +397,7 @@ class Disciple_Tools {
         $this->post_types['resources'] = Disciple_Tools_Resources_Post_Type::instance();
         require_once( 'dt-resources/resources-template.php' );
         require_once( 'dt-resources/resources.php' );
-        require_once( 'dt-resources/resources-endpoints.php' );
+        require_once( 'dt-resources/resources-endpoints.php' ); // builds rest endpoints
 
 
         /**
@@ -408,7 +407,7 @@ class Disciple_Tools {
         $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-format-status' ] );
         require_once( 'dt-prayer/prayer-template.php' );
         require_once( 'dt-prayer/prayer.php' );
-        require_once( 'dt-prayer/prayer-endpoints.php' );
+        require_once( 'dt-prayer/prayer-endpoints.php' ); // builds rest endpoints
 
 
         /**
@@ -416,14 +415,14 @@ class Disciple_Tools {
          */
         require_once( 'dt-progress/progress-post-type.php' );
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-location' ] );
-        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' );
+        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
 
         /**
          * dt-assets
          */
         require_once( 'dt-asset-mapping/asset-mapping-post-type.php' );
         $this->post_types['assetmapping'] = Disciple_Tools_Asset_Mapping_Post_Type::instance();
-        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' );
+        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
         require_once( 'dt-asset-mapping/asset-mapping.php' );
         require_once( 'dt-asset-mapping/asset-mapping-template.php' );
 
