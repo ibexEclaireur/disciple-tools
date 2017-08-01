@@ -11,11 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /** Functions to output data for the theme. @see Buddypress bp-members-template.php or bp-groups-template.php for an example of the role of this page  */
     
-    /**
-     * Creates a dropdown of the states with the state key as the value.
-     *
-     * @return string
-     */
+/**
+ * Creates a dropdown of the states with the state key as the value.
+ * @usage USA locations
+ *        
+ * @return string
+ */
 function dt_get_states_key_dropdown_not_installed () {
         
     $dir_contents = dt_get_usa_meta();
@@ -37,11 +38,12 @@ function dt_get_states_key_dropdown_not_installed () {
     return $dropdown;
 }
     
-    /**
-     * Creates a dropdown of the states with the state key as the value.
-     *
-     * @return string
-     */
+/**
+ * Creates a dropdown of the states with the state key as the value.
+ * @usage USA locations
+ *
+ * @return string
+ */
 function dt_get_states_key_dropdown_installed () {
         
     $dir_contents = dt_get_usa_meta(); // get directory & build dropdown
@@ -63,44 +65,26 @@ function dt_get_states_key_dropdown_installed () {
         
     return $dropdown;
 }
+
     
-    /**
-     * Creates a dropdown for the countries
-     *
-     * @return string
-     */
-function dt_get_country_key_dropdown () {
-        
-    $dir_contents = dt_get_usa_meta(); // get directory & build dropdown
-        
-    $dropdown = '<select name="country-dropdown">';
-        
-    foreach ($dir_contents->countries as $value) {
-        $dropdown .= '<option value="' . $value->key . '" ';
-        if (isset( $_POST['country-dropdown'] ) && $_POST['country-dropdown'] == $value->key) {$dropdown .= 'selected';}
-        $dropdown .= '>' . $value->name;
-        $dropdown .= '</option>';
-    }
-    $dropdown .= '</select>';
-        
-    return $dropdown;
-}
-    
-    /**
-     * Get the master json file with USA states and counties names, ids, and file locations.
-     * @return array|mixed|object
-     */
+/**
+ * Get the master json file with USA states and counties names, ids, and file locations.
+ * @usage USA locations
+ *
+ * @return array|mixed|object
+ */
 function dt_get_usa_meta() {
     return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-meta.json' ) );
 }
     
     
-    /**
-     * Gets the meta information for a polygon or array of polygons
-     *
-     * @param  $geoid        (int) Can be full 9 digit geoid or 5 digit state/county code
-     * @return array
-     */
+/**
+ * Gets the meta information for a polygon or array of polygons
+ * @usage USA locations
+ *
+ * @param  $geoid        (int) Can be full 9 digit geoid or 5 digit state/county code
+ * @return array
+ */
 function dt_get_coordinates_meta ( $geoid ) {
     global $wpdb;
         
@@ -193,13 +177,14 @@ function dt_get_coordinates_meta ( $geoid ) {
     return $meta;
 }
     
-    /**
-     * Get coordinates from KML file
-     *
-     * @param  $state
-     * @param  $geoid
-     * @return string
-     */
+/**
+ * Get coordinates from KML file
+ * @usage USA locations
+ *
+ * @param  $state
+ * @param  $geoid
+ * @return string
+ */
 function dt_get_placemark_zoom ( $geoid, $state ) {
         
     $file = get_file_path_by_key_LL( $state );
