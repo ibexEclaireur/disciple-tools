@@ -166,14 +166,18 @@ class Disciple_Tools_Contacts_Endpoints
      * @param  WP_REST_Request $request
       * @access public
      * @since  0.1
-     * @return int|WP_Error Contact_id on success
+     * @return WP_REST_Response|WP_Error Contact_id on success
      */
     public function update_contact( WP_REST_Request $request ){
         $params = $request->get_params();
         $body = $request->get_json_params();
         if (isset( $params['id'] )){
             $result = Disciple_Tools_Contacts::update_contact( $params['id'], $body, true );
-            return $result; // Could be permission WP_Error
+            if (is_wp_error($result)){
+                return $result;
+            } else {
+                return new WP_REST_Response($result);
+            }
         } else {
             return new WP_Error( "update_contact", "Missing a valid contact id", ['status' => 400] );
         }
