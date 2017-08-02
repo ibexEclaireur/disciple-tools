@@ -1,0 +1,9 @@
+[
+  {
+    "source_name": "OmegaZones082016",
+    "source_description": "This is the omega zone project by YWAM 4K",
+    "api_url": "https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer",
+    "api_query_example": "https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/query?layerDefs=%7B%220%22%3A%22CntyID%3D%27TUN%27%22%7D&geometry=&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects&outSR=&returnGeometry=true&maxAllowableOffset=&geometryPrecision=&returnIdsOnly=false&returnCountOnly=false&returnDistinctValues=false&returnZ=false&returnM=false&sqlFormat=none&f=pjson&token=",
+    "api_query_builder": "https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/query"
+  }
+]
