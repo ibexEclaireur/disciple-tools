@@ -134,7 +134,7 @@ class Disciple_Tools_Locations_Tab_Import
     
         $dir_contents =  dt_get_oz_country_list();
         foreach ( $dir_contents as $value ) {
-            $disabled = ''; // if get option exists 
+            $disabled = ''; // if get option exists
             
             if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
                 
