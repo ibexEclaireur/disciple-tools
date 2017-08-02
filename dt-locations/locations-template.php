@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 /**
  * Creates a dropdown of the states with the state key as the value.
  * @usage USA locations
- *        
+ *
  * @return string
  */
 function dt_get_states_key_dropdown_not_installed () {
@@ -49,7 +49,6 @@ function dt_get_states_key_dropdown_installed () {
     $dir_contents = dt_get_usa_meta(); // get directory & build dropdown
         
     $dropdown = '<select name="states-dropdown">';
-        
         
     foreach ($dir_contents->USA_states as $value) {
         $disabled = '';
