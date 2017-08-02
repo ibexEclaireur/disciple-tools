@@ -32,7 +32,7 @@ class Disciple_Tools_Upload {
 
         if(!get_option( '_installed_us_county_'.$state )) { // check if counties are installed for the state
 
-            $counties =  dt_get_data_file_directory();
+            $counties =  dt_get_usa_meta();
             
             foreach($counties->USA_counties as $county) {
                 if($county->STATE == $state) {
@@ -112,7 +112,7 @@ class Disciple_Tools_Upload {
 
         if(!get_option( '_installed_us_tracts_'.$state )) { // check if counties are installed for the state
 
-            $directory = dt_get_data_file_directory(); // get directory;
+            $directory = dt_get_usa_meta(); // get directory;
             $file = $directory->USA_states->{$state}->file;
 
             $kml_object = simplexml_load_file( $directory->base_url . $file ); // get xml from amazon

@@ -12,7 +12,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-class Disciple_Tools_JS_Tract_Lookup {
+class Disciple_Tools_Locations_USA_Tract_Lookup {
     /**
      * Constructor function.
      *
@@ -47,7 +47,7 @@ class Disciple_Tools_JS_Tract_Lookup {
      */
     public function address_to_tract_search ()
         /**
- * TODO: Create a search that is global and adds a mark instead of a polygon 
+ * TODO: Create a search that is global and adds a mark instead of a polygon
 */
     {
         ?>

@@ -284,9 +284,11 @@ class Disciple_Tools {
             $this->config_groups = Disciple_Tools_Groups_Config::instance();
 
             // Locations
-            require_once( 'dt-locations/tab-tools-menu.php' );
+            require_once( 'dt-locations/admin-menu.php' );
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
-            require_once( 'dt-locations/class-upload.php' );
+            require_once( 'dt-locations/class-import.php' ); // import class
+            require_once( 'dt-locations/admin-tab-import.php' ); // import tab page
+            require_once( 'dt-locations/admin-tab-usa-lookup.php' ); // testing page, not intended for production
 
             // People Groups
             require_once( 'dt-people-groups/admin-menu.php' );

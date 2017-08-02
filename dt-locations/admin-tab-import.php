@@ -139,42 +139,14 @@ class Disciple_Tools_Locations_Tab_Import
                 </table>';
         return $html;
         
-        // check if $_POST to change option
-        //        if (!empty( $_POST['country_nonce'] ) && isset( $_POST['country_nonce'] ) && wp_verify_nonce( $_POST['country_nonce'], 'country_nonce_validate' )) {
-        //
-        //            if (!isset( $_POST['country-dropdown'] )) { // check if file is correctly set
-        //                return false;
-        //            }
-        //
-        ////            $file = dt_get_file_path_by_key( $_POST['country-dropdown'] ); // build url
-        //
-        //            if (!file_exists( $file )) { // check if file exists
-        //                return false;
-        //            }
-        //
-        ////            $result = Disciple_Tools_Upload::upload_country_kml_to_post_type( $file ); // run insert process
-        //
-        //            if ($result) {
-        //                $status = 'Success';
-        //            } else {
-        //                $status = 'Fail. Sorry.';
-        //            } // if success, then post success box
-        //
-        //
-        //            $html .= '<table class="widefat striped">
-        //                        <thead><th>Result</th></thead>
-        //                        <tbody>
-        //                            <tr>
-        //                                <td>' . $status . '</td>
-        //                            </tr>
-        //                        </tbody>
-        //                    </table>';
-        //
-        //
-        //        } /* end if $_POST */
-        //
-        //
-        //    }
         
+    }
+    
+    /**
+     * Get Omega Zone list of Countries
+     * @return array|mixed|object
+     */
+    protected function get_oz_country_list() {
+        return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/_oz_country_list.json' ) );
     }
 }
