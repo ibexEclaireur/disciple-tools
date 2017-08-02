@@ -173,10 +173,10 @@ class Disciple_Tools_Contacts_Endpoints
         $body = $request->get_json_params();
         if (isset( $params['id'] )){
             $result = Disciple_Tools_Contacts::update_contact( $params['id'], $body, true );
-            if (is_wp_error($result)){
+            if ( is_wp_error( $result ) ){
                 return $result;
             } else {
-                return new WP_REST_Response($result);
+                return new WP_REST_Response( $result );
             }
         } else {
             return new WP_Error( "update_contact", "Missing a valid contact id", ['status' => 400] );
