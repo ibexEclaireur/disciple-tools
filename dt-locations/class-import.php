@@ -9,15 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Upload {
 
     /**
-     * Constructor function.
-     *
-     * @access public
-     * @since  0.1
-     */
-    public function __construct () {
-    } // End __construct()
-
-    /**
      * Uploads US Census Tract KML file to Locations Post Type
      *
      * @return boolean

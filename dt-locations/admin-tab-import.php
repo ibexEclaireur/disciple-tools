@@ -16,16 +16,6 @@ class Disciple_Tools_Locations_Tab_Import
 {
     
     /**
-     * Constructor function.
-     *
-     * @access public
-     * @since  0.1
-     */
-    public function __construct()
-    {
-    } // End __construct()
-    
-    /**
      * Page content for the tab
      */
     public function page_contents()
@@ -38,7 +28,7 @@ class Disciple_Tools_Locations_Tab_Import
         $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         $html .= '<div id="post-body-content">';
         $html .= $this->select_us_census_data_dropdown() . '<br>';
-        $html .= $this->select_country_data_dropdown() . '<br>';
+        $html .= $this->select_oz_data_dropdown() . '<br>';
         
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         $html .= '<br>'; /* Add content to column */
@@ -81,7 +71,7 @@ class Disciple_Tools_Locations_Tab_Import
         // return form and dropdown
         
         $html .= '<table class="widefat ">
-                    <thead><th>US Census Data </th></thead>
+                    <thead><th>Zume Project - USA Census Data </th></thead>
                     <tbody>
                         <tr>
                             <td>
@@ -91,37 +81,121 @@ class Disciple_Tools_Locations_Tab_Import
                                     <button type="submit" class="button" value="submit">Upload State</button>
                                 </form>
                             </td>
-                        </tr>
-                    </tbody>
-                </table>';
+                        </tr>';
+                    
         
         if ( !empty( $result ) || !empty( $result2 ) ) {
-            $html .= '<table class="widefat striped">
-                        <thead><th>Result</th></thead>
-                        <tbody>
-                            <tr>
-                                <td>State Counties: ' . $result . '<br>State Tracts: ' . $result2 . '</td>
-                            </tr>
-                        </tbody>
-                    </table>';
+            $html .= '<tr>
+                            <td>State Counties: ' . $result . '<br>State Tracts: ' . $result2 . '</td>
+                      </tr>';
         }
         
+        $html .= '</tbody>
+                </table>';
         
         return $html;
     }
     
     
     /**
-     * Creates drop down for uploading state xml files
+     * Creates drop down meta box for loading Omega Zone files
      *
      * @return mixed
      */
-    public function select_country_data_dropdown()
+    public function select_oz_data_dropdown()
     {
+        /*********************************/
+        /* Create load dropdown */
+        /*********************************/
+        $load = '<select name="load-oz-countries">';
         
-        $country_dropdown = 'dropdown';
+        $dir_contents =  dt_get_oz_country_list();
+        foreach ( $dir_contents as $value ) {
+            $installed = '';
+    
+            $load .= '<option value="' . $value->CntyID . '" ';
+            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
+                $load .= ' disabled';
+                $installed = ' (Installed)';
+            }
+            elseif ( isset( $_POST['load-oz-countries'] ) && $_POST['load-oz-countries'] == $value->CntyID ) {
+                $load .= ' selected';
+            }
+            $load .= '>' . $value->Cnty_Name . $installed;
+            $load .= '</option>';
+        }
+        $load .= '</select>';
+        /* End load dropdown */
+    
+        /*********************************/
+        /* Begin Admin 1 Create Dropdown */
+        /*********************************/
+        $admin1 = '<select name="oz-import-admin1-dropdown">';
+    
+        $dir_contents =  dt_get_oz_country_list();
+        foreach ( $dir_contents as $value ) {
+            $disabled = ''; // if get option exists 
+            
+            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
+                
+                $admin1 .= '<option value="' . $value->CntyID . '" ';
+            
+                $admin1 .= '>' . $value->Cnty_Name . $disabled;
+                $admin1 .= '</option>';
+            }
+        }
+        $admin1 .= '</select>';
+        /* End Admin 1 Create Dropdown */
+    
+        /*********************************/
+        /* Begin Admin 2 Create Dropdown */
+        /*********************************/
+        $admin2 = '<select name="oz-import-admin2-dropdown">';
+    
+        $dir_contents =  dt_get_oz_country_list();
+        foreach ( $dir_contents as $value ) {
+            $disabled = '';
+    
+            $admin2 .= '<option value="' . $value->CntyID . '" ';
+            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
+                $admin2 .= ' disabled';
+                $disabled = ' (Installed)';
+            }
+            elseif ( isset( $_POST['oz-countries-dropdown'] ) && $_POST['oz-countries-dropdown'] == $value->CntyID ) {
+                $admin2 .= ' selected';
+            }
+            $admin2 .= '>' . $value->Cnty_Name . $disabled;
+            $admin2 .= '</option>';
+        }
+        $admin2 .= '</select>';
+        /* End Admin 2 Create Dropdown */
+    
+        /*********************************/
+        /* Begin Admin 3 Create Dropdown */
+        /*********************************/
+        $admin3 = '<select name="oz-import-admin2-dropdown">';
+    
+        $dir_contents =  dt_get_oz_country_list();
+        foreach ( $dir_contents as $value ) {
+            $disabled = '';
         
-        // return form and dropdown
+            $admin3 .= '<option value="' . $value->CntyID . '" ';
+            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
+                $admin3 .= ' disabled';
+                $disabled = ' (Installed)';
+            }
+            elseif ( isset( $_POST['oz-countries-dropdown'] ) && $_POST['oz-countries-dropdown'] == $value->CntyID ) {
+                $admin3 .= ' selected';
+            }
+            $admin3 .= '>' . $value->Cnty_Name . $disabled;
+            $admin3 .= '</option>';
+        }
+        $admin3 .= '</select>';
+        /* End Admin 3 Create Dropdown */
+    
+        /*********************************/
+        /* Build form box                */
+        /*********************************/
         $html = '';
         $html .= '<table class="widefat ">
                     <thead><th>Import Omega Zones</th></thead>
@@ -129,24 +203,46 @@ class Disciple_Tools_Locations_Tab_Import
                         <tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'country_nonce_validate', 'country_nonce', true, false ) . $country_dropdown . '
+                                    ' . wp_nonce_field( 'load_oz_nonce_validate', 'load_oz_nonce', true, false ) . $load . '
                                     
-                                    <button type="submit" class="button" value="submit">Import Country</button>
+                                    <button type="submit" class="button" value="submit">Load Country</button>
                                 </form>
                             </td>
-                        </tr>
-                    </tbody>
+                        </tr>';
+        $html .=        '<tr>
+                            <td>
+                                <form action="" method="POST">
+                                    ' . wp_nonce_field( 'install_1_oz_nonce_validate', 'install_1_oz_nonce', true, false ) . $admin1 . '
+                                    
+                                    <button type="submit" class="button" value="submit">Install Country (Admin 1)</button>
+                                </form>
+                            </td>
+                        </tr>';
+        $html .=        '<tr>
+                            <td>
+                                <form action="" method="POST">
+                                    ' . wp_nonce_field( 'install_2_oz_nonce_validate', 'install_2_oz_nonce', true, false ) . $admin2 . '
+                                    
+                                    <button type="submit" class="button" value="submit">Install Country (Admin 2)</button>
+                                </form>
+                            </td>
+                        </tr>';
+        $html .=        '<tr>
+                            <td>
+                                <form action="" method="POST">
+                                    ' . wp_nonce_field( 'install_3_oz_nonce_validate', 'install_3_oz_nonce', true, false ) . $admin3 . '
+                                    
+                                    <button type="submit" class="button" value="submit">Install Country (Admin 3)</button>
+                                </form>
+                            </td>
+                        </tr>';
+        
+        $html .= '</tbody>
                 </table>';
+        /* End Build Form Box */
+        
         return $html;
-        
-        
     }
     
-    /**
-     * Get Omega Zone list of Countries
-     * @return array|mixed|object
-     */
-    protected function get_oz_country_list() {
-        return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/_oz_country_list.json' ) );
-    }
+    
 }

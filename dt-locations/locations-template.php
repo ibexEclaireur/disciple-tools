@@ -75,6 +75,14 @@ function dt_get_states_key_dropdown_installed () {
 function dt_get_usa_meta() {
     return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-meta.json' ) );
 }
+
+/**
+ * Get the master list of countries for omega zones including country abbreviation, country name, and zone.
+ * @return array|mixed|object
+ */
+function dt_get_oz_country_list() {
+    return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/_oz_country_list.json' ) );
+}
     
     
 /**
