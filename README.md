@@ -12,6 +12,10 @@ There needs to exist a simple, low-cost, highly distributable DRM that is tailor
 ## Platform
 We are building on the Wordpress platform because of its open-source availability, simplicity of installation, numerous low cost hosting options, multi-lingual support, substantial configurability and customization, giant development community and resources, (soon to be) native REST API, mobile readiness, and healthy market place for distributing themes and plugins.
 
+## Wiki
+
+Don't forget, we have a [wiki for Disciple Tools](https://github.com/ChasmSolutions/disciple-tools/wiki).
+
 ---
 
 ## How to Install
@@ -39,7 +43,7 @@ You now have a complete disciple-making CRM for your movement. Blessings!
 
 ## How to Contribute
 
-Follow these steps. 
+Follow these steps.
 
 1. Fork it!
 1. Create your feature branch: `git checkout -b my-new-feature`
