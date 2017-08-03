@@ -243,7 +243,8 @@ class Disciple_Tools_Contacts
                 } elseif ( strpos( $key, "address" ) === 0){
                     $fields[ "address" ][$key] = $value;
                 } elseif ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
-                    $fields[$key] = [ "key"=>$value[0], "label"=>self::$contact_fields[$key]["default"][$value[0]] ];
+                    $label = self::$contact_fields[$key]["default"][$value[0]] ?? current( self::$contact_fields[$key]["default"] );
+                    $fields[$key] = [ "key"=>$value[0], "label"=>$label ];
                 } else {
                     $fields[$key] = $value[0];
                 }
