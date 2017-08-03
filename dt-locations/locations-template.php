@@ -213,3 +213,21 @@ function dt_get_placemark_zoom ( $geoid, $state ) {
         
     return $zoom;
 }
+
+/**
+ * Get the full country name from key
+ * @param $key
+ * @return mixed
+ */
+function dt_locations_match_country_to_key( $key ) {
+    
+    $countries = dt_get_oz_country_list();
+    
+    foreach($countries as $country) {
+        if($country->CntyID == $key) {
+            return $country->Cnty_Name;
+        }
+    }
+    
+    return false;
+}

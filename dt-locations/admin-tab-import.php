@@ -27,8 +27,8 @@ class Disciple_Tools_Locations_Tab_Import
         
         $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         $html .= '<div id="post-body-content">';
-        $html .= $this->select_us_census_data_dropdown() . '<br>';
         $html .= $this->select_oz_data_dropdown() . '<br>';
+        $html .= $this->select_us_census_data_dropdown() . '<br>';
         
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         $html .= '<br>'; /* Add content to column */
@@ -104,101 +104,160 @@ class Disciple_Tools_Locations_Tab_Import
      */
     public function select_oz_data_dropdown()
     {
+        
         /*********************************/
         /* POST */
         /*********************************/
-        if ( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_nonce' ], 'state_nonce_validate' ) ) {
+        if ( !empty( $_POST[ 'oz_nonce' ] ) && isset( $_POST[ 'oz_nonce' ] ) && wp_verify_nonce( $_POST[ 'oz_nonce' ], 'oz_nonce_validate' ) ) {
             
+            if( !empty( $_POST[ 'load-oz-admin1' ] ) ) {
+    
+                
+                
+                // Update option.
+                $option = get_option( '_dt_oz_installed' );
+                $option['Adm1ID'][] = $_POST[ 'load-oz-admin1' ];
+                update_option( '_dt_oz_installed', $option );
+                
+            }
+    
+            if( !empty( $_POST[ 'load-oz-admin2' ] ) ) {
+    
+                // Update option.
+                $option = get_option( '_dt_oz_installed' );
+                $option['Adm2ID'][] = $_POST[ 'load-oz-admin2' ];
+                update_option( '_dt_oz_installed', $option );
+                
+            }
+    
+            if( !empty( $_POST[ 'load-oz-admin3' ] ) ) {
+    
+                // Update option.
+                $option = get_option( '_dt_oz_installed' );
+                $option['Adm3ID'][] = $_POST[ 'load-oz-admin3' ];
+                update_option( '_dt_oz_installed', $option );
+            }
+    
+            if( !empty( $_POST[ 'load-oz-admin4' ] ) ) {
+    
+                // Update option.
+                $option = get_option( '_dt_oz_installed' );
+                $option['Adm4ID'][] = $_POST[ 'load-oz-admin4' ];
+                update_option( '_dt_oz_installed', $option );
+            }
         }
         /* End POST */
-        
-        /*********************************/
-        /* Create load dropdown */
-        /*********************************/
-        $load = '<select name="load-oz-countries">';
-        
-        $dir_contents =  dt_get_oz_country_list();
-        foreach ( $dir_contents as $value ) {
-            $installed = '';
     
-            $load .= '<option value="' . $value->CntyID . '" ';
-            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
-                $load .= ' disabled';
-                $installed = ' (Installed)';
-            }
-            elseif ( isset( $_POST['load-oz-countries'] ) && $_POST['load-oz-countries'] == $value->CntyID ) {
-                $load .= ' selected';
-            }
-            $load .= '>' . $value->Cnty_Name . $installed;
-            $load .= '</option>';
+        /*********************************/
+        /* Load or Create Options        */
+        /*********************************/
+        if( get_option( '_dt_oz_installed' ) ) {
+            $currently_installed = get_option( '_dt_oz_installed' );
+        } else {
+            $currently_installed = [
+                'Adm1ID' => [ ],
+                'Adm2ID' => [ ],
+                'Adm3ID' => [ ],
+                'Adm4ID' => [ ],
+            ];
+            add_option( '_dt_oz_installed', $currently_installed, '', false );
         }
-        $load .= '</select>';
-        /* End load dropdown */
-    
+        print '<pre>';
+        print_r( $currently_installed );
+        print '</pre>'; // testing
+        
+        
         /*********************************/
         /* Begin Admin 1 Create Dropdown */
         /*********************************/
-        $admin1 = '<select name="oz-import-admin1-dropdown">';
-    
+        
         $dir_contents =  dt_get_oz_country_list();
+        
+        $admin1 = '<select name="load-oz-admin1" class="regular-text">';
+        $admin1 .= '<option >- Choose</option>';
+        
         foreach ( $dir_contents as $value ) {
-            $disabled = ''; // if get option exists
-            
-            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
-                
+            $test = array_search( $value->CntyID , $currently_installed[ 'Adm1ID' ] );
+            if ( !($test) && !($test === 0)) {
                 $admin1 .= '<option value="' . $value->CntyID . '" ';
-            
-                $admin1 .= '>' . $value->Cnty_Name . $disabled;
+                $admin1 .= '>' . $value->Cnty_Name;
                 $admin1 .= '</option>';
             }
         }
+        
         $admin1 .= '</select>';
-        /* End Admin 1 Create Dropdown */
+        /* End load dropdown */
     
         /*********************************/
         /* Begin Admin 2 Create Dropdown */
         /*********************************/
-        $admin2 = '<select name="oz-import-admin2-dropdown">';
-    
-        $dir_contents =  dt_get_oz_country_list();
-        foreach ( $dir_contents as $value ) {
-            $disabled = '';
-    
-            $admin2 .= '<option value="' . $value->CntyID . '" ';
-            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
-                $admin2 .= ' disabled';
-                $disabled = ' (Installed)';
+        $admin2 = '<select name="load-oz-admin2" class="regular-text">';
+        
+        if(!empty( $currently_installed['Adm1ID'] ) && isset( $currently_installed['Adm1ID'] )) {
+            
+            $admin2 .= '<option>- Choose</option>';
+            
+            foreach ( $currently_installed['Adm1ID'] as $value ) {
+                $test = array_search( $value , $currently_installed[ 'Adm2ID' ] );
+                if ( !($test) && !($test === 0)) {
+                    $admin2 .= '<option value="' . $value . '" ';
+                    $admin2 .= '>' . dt_locations_match_country_to_key( $value );
+                    $admin2 .= '</option>';
+                }
             }
-            elseif ( isset( $_POST['oz-countries-dropdown'] ) && $_POST['oz-countries-dropdown'] == $value->CntyID ) {
-                $admin2 .= ' selected';
-            }
-            $admin2 .= '>' . $value->Cnty_Name . $disabled;
-            $admin2 .= '</option>';
+        } else {
+            $admin2 .= '<option selected>- Unavailable</option>';
         }
+    
         $admin2 .= '</select>';
-        /* End Admin 2 Create Dropdown */
+        /* End Admin 1 Create Dropdown */
     
         /*********************************/
         /* Begin Admin 3 Create Dropdown */
         /*********************************/
-        $admin3 = '<select name="oz-import-admin2-dropdown">';
+        $admin3 = '<select name="load-oz-admin3" class="regular-text">';
     
-        $dir_contents =  dt_get_oz_country_list();
-        foreach ( $dir_contents as $value ) {
-            $disabled = '';
+        if(!empty( $currently_installed['Adm2ID'] ) && isset( $currently_installed['Adm2ID'] )) {
         
-            $admin3 .= '<option value="' . $value->CntyID . '" ';
-            if ( file_exists( plugin_dir_path( __FILE__ ) . 'json/oz/' . $value->CntyID . '.json' ) ) {
-                $admin3 .= ' disabled';
-                $disabled = ' (Installed)';
+            $admin3 .= '<option>- Choose</option>';
+        
+            foreach ( $currently_installed['Adm2ID'] as $value ) {
+                $test = array_search( $value , $currently_installed[ 'Adm3ID' ] );
+                if ( !($test) && !($test === 0)) {
+                    $admin3 .= '<option value="' . $value . '" ';
+                    $admin3 .= '>' . dt_locations_match_country_to_key( $value );
+                    $admin3 .= '</option>';
+                }
             }
-            elseif ( isset( $_POST['oz-countries-dropdown'] ) && $_POST['oz-countries-dropdown'] == $value->CntyID ) {
-                $admin3 .= ' selected';
-            }
-            $admin3 .= '>' . $value->Cnty_Name . $disabled;
-            $admin3 .= '</option>';
+        } else {
+            $admin3 .= '<option selected>- Unavailable</option>';
         }
+    
         $admin3 .= '</select>';
+        /* End Admin 2 Create Dropdown */
+    
+        /*********************************/
+        /* Begin Admin 4 Create Dropdown */
+        /*********************************/
+        $admin4 = '<select name="load-oz-admin4" class="regular-text">';
+    
+        if(!empty( $currently_installed['Adm3ID'] ) && isset( $currently_installed['Adm3ID'] )) {
+        
+            $admin4 .= '<option>- Choose</option>';
+        
+            foreach ( $currently_installed['Adm3ID'] as $value ) {
+                $test = array_search( $value , $currently_installed[ 'Adm4ID' ] );
+                if ( !($test) && !($test === 0)) {
+                    $admin4 .= '<option value="' . $value . '" ';
+                    $admin4 .= '>' . dt_locations_match_country_to_key( $value );
+                    $admin4 .= '</option>';
+                }
+            }
+        } else {
+            $admin4 .= '<option selected>- Unavailable</option>';
+        }
+    
+        $admin4 .= '</select>';
         /* End Admin 3 Create Dropdown */
     
         /*********************************/
@@ -211,36 +270,36 @@ class Disciple_Tools_Locations_Tab_Import
                         <tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'load_oz_nonce_validate', 'load_oz_nonce', true, false ) . $load . '
+                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin1 . '
                                     
-                                    <button type="submit" class="button" value="submit">Load Country</button>
+                                    <button type="submit" class="button" value="submit">Load Admin Level 1</button>
                                 </form>
                             </td>
                         </tr>';
         $html .=        '<tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'install_1_oz_nonce_validate', 'install_1_oz_nonce', true, false ) . $admin1 . '
+                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin2 . '
                                     
-                                    <button type="submit" class="button" value="submit">Install Country (Admin 1)</button>
+                                    <button type="submit" class="button" value="submit">Load Admin Level 2</button>
                                 </form>
                             </td>
                         </tr>';
         $html .=        '<tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'install_2_oz_nonce_validate', 'install_2_oz_nonce', true, false ) . $admin2 . '
+                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin3 . '
                                     
-                                    <button type="submit" class="button" value="submit">Install Country (Admin 2)</button>
+                                    <button type="submit" class="button" value="submit">Load Admin Level 3</button>
                                 </form>
                             </td>
                         </tr>';
         $html .=        '<tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'install_3_oz_nonce_validate', 'install_3_oz_nonce', true, false ) . $admin3 . '
+                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin4 . '
                                     
-                                    <button type="submit" class="button" value="submit">Install Country (Admin 3)</button>
+                                    <button type="submit" class="button" value="submit">Load Admin Level 4</button>
                                 </form>
                             </td>
                         </tr>';
@@ -251,6 +310,8 @@ class Disciple_Tools_Locations_Tab_Import
         
         return $html;
     }
+    
+    
     
     
 }
