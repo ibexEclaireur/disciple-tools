@@ -763,6 +763,58 @@ class Disciple_Tools_Contact_Post_Type {
             'default' => '',
             'section' => 'misc'
         ];
+
+        // contact buttons
+        $fields['contact_quick_button_no_answer'] = [
+            'name' => __( 'No Answer', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'quick_buttons',
+            'icon' => "no-answer.svg"
+        ];
+        $fields['contact_quick_button_phone_off'] = [
+            'name' => __( 'Phone Off', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'quick_buttons',
+            'icon' => "no-answer.svg"
+        ];
+        $fields['contact_quick_button_contact_established'] = [
+            'name' => __( 'Contact Established', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'quick_buttons',
+            'icon' => "successful-conversation.svg"
+        ];
+        $fields['contact_quick_button_meeting_scheduled'] = [
+            'name' => __( 'Meeting Scheduled', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'quick_buttons',
+            'icon' => "meeting-scheduled.svg"
+        ];
+        $fields['contact_quick_button_meeting_complete'] = [
+            'name' => __( 'Meeting Complete', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'quick_buttons',
+            'icon' => "meeting-complete.svg"
+        ];
+        $fields['contact_quick_button_no_show'] = [
+            'name' => __( 'Meeting No-show', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'number',
+            'default' => 0,
+            'section' => 'quick_buttons',
+            'icon' => "no-show.svg"
+        ];
+
+
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
 
