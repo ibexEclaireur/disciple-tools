@@ -50,8 +50,6 @@ class Disciple_Tools_Location_Tools_Menu {
      */
     public function __construct () {
         $this->path  = plugin_dir_path( __DIR__ );
-        require_once( 'tab-js-tract-lookup.php' );
-        require_once( 'tab-import.php' );
 
         add_action( 'admin_menu', [ $this, 'load_admin_menu_item' ] );
     } // End __construct()
@@ -94,7 +92,7 @@ class Disciple_Tools_Location_Tools_Menu {
 
         $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
         if ($tab == 'address_tract' ) {$html .= 'nav-tab-active';}
-        $html .= '">Address to Tract</a>';
+        $html .= '">USA Tract Search</a>';
 
         $html .= '</h2>';
 
@@ -109,7 +107,7 @@ class Disciple_Tools_Location_Tools_Menu {
         switch ($tab) {
 
             case "address_tract":
-                $class_object = new Disciple_Tools_JS_Tract_Lookup();
+                $class_object = new Disciple_Tools_Locations_USA_Tract_Lookup();
                 $html .= '' . $class_object->page_contents();
                 break;
             default:
@@ -122,7 +120,4 @@ class Disciple_Tools_Location_Tools_Menu {
 
         echo $html; // Echo contents
     }
-
-
-
 }
