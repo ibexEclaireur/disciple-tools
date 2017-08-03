@@ -379,4 +379,25 @@ class Disciple_Tools_Contacts
         ];
     }
 
+    public static function quick_contact_update( int $contact_id, array $field, bool $check_permissions = true ){
+        $updated = self::update_contact( $contact_id, $field, true );
+        if ($updated != $contact_id){
+            return $updated;
+        } else {
+            $update = [];
+            if ( $field[ "contact_quick_button_no_answer" ] == 1 || $field[ "contact_quick_button_phone_off" ] == 1){
+                $update["seeker_path"] = "1";
+            } else if ($field[ "contact_quick_button_contact_established" ] == 1) {
+                $update["seeker_path"] = "2";
+            } else if ($field[ "contact_quick_button_meeting_scheduled" ] == 1) {
+                $update["seeker_path"] = "4";
+            } else if ($field[ "contact_quick_button_meeting_complete" ] == 1) {
+                $update["seeker_path"] = "5";
+            }
+            if ( !empty( $update )){
+                return self::update_contact( $contact_id, $update );
+            }
+        }
+    }
+
 }
