@@ -162,9 +162,9 @@ class Disciple_Tools_Locations_Tab_Import
             ];
             add_option( '_dt_oz_installed', $currently_installed, '', false );
         }
-        print '<pre>';
-        print_r( $currently_installed );
-        print '</pre>'; // testing
+//        print '<pre>';
+//        print_r( $currently_installed );
+//        print '</pre>'; // testing
         
         
         /*********************************/
@@ -250,6 +250,10 @@ class Disciple_Tools_Locations_Tab_Import
                 if ( !($test) && !($test === 0)) {
                     $admin4 .= '<option value="' . $value . '" ';
                     $admin4 .= '>' . dt_locations_match_country_to_key( $value );
+                    $admin4 .= '</option>';
+                } else {
+                    $admin4 .= '<option value="' . $value . '" disabled';
+                    $admin4 .= '>' . dt_locations_match_country_to_key( $value ) . ' (Installed)';
                     $admin4 .= '</option>';
                 }
             }
