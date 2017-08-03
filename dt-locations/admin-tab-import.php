@@ -105,6 +105,14 @@ class Disciple_Tools_Locations_Tab_Import
     public function select_oz_data_dropdown()
     {
         /*********************************/
+        /* POST */
+        /*********************************/
+        if ( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_nonce' ], 'state_nonce_validate' ) ) {
+            
+        }
+        /* End POST */
+        
+        /*********************************/
         /* Create load dropdown */
         /*********************************/
         $load = '<select name="load-oz-countries">';

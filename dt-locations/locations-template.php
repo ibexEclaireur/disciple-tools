@@ -81,7 +81,8 @@ function dt_get_usa_meta() {
  * @return array|mixed|object
  */
 function dt_get_oz_country_list() {
-    return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/_oz_country_list.json' ) );
+    $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_cnty.json' ) );
+    return $result->RECORDS;
 }
     
     
