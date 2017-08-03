@@ -426,14 +426,16 @@ class Disciple_Tools_Contact_Post_Type {
 
         foreach ( $fields as $f ) {
 
-            ${$f} = strip_tags( trim( $_POST[$f] ) );
+            if ( isset( $_POST[$f] )){
+                ${$f} = strip_tags( trim( $_POST[$f] ) );
 
-            if ( get_post_meta( $post_id,  $f ) == '' ) {
-                add_post_meta( $post_id,  $f, ${$f}, true );
-            } elseif ( ${$f} == '' ) {
-                delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
-            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
-                update_post_meta( $post_id, $f, ${$f} );
+                if ( get_post_meta( $post_id,  $f ) == '' ) {
+                    add_post_meta( $post_id,  $f, ${$f}, true );
+                } elseif ( ${$f} == '' ) {
+                    delete_post_meta( $post_id, $f, get_post_meta( $post_id,  $f, true ) );
+                } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+                    update_post_meta( $post_id, $f, ${$f} );
+                }
             }
         }
 
