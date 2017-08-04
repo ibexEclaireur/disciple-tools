@@ -165,7 +165,7 @@ class Disciple_Tools_Contacts
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
         }
 
-        if ($fields['title']){
+        if ( isset( $fields['title'] ) ){
             wp_update_post( ['ID'=>$contact_id, 'post_title'=>$fields['title']] );
         }
 
@@ -380,24 +380,48 @@ class Disciple_Tools_Contacts
         ];
     }
 
-    public static function quick_contact_update( int $contact_id, array $field, bool $check_permissions = true ){
-        $updated = self::update_contact( $contact_id, $field, true );
-        if ($updated != $contact_id){
-            return $updated;
+
+    public static function update_seeker_path( int $contact_id, string $path_option, bool $check_permissions = true ){
+        $seeker_path_options = self::$contact_fields["seeker_path"]["default"];
+        $option_keys = array_keys( $seeker_path_options );
+        $current_seeker_path = get_post_meta( $contact_id, "seeker_path", true );
+        $current_index = array_search( $current_seeker_path, $option_keys );
+        $new_index = array_search( $path_option,  $option_keys );
+        if ($new_index > $current_index){
+            $current_index = $new_index;
+            $update = self::update_contact( $contact_id, ["seeker_path"=> $path_option], $check_permissions );
+            if ( is_wp_error( $update ) ){
+                return $update;
+            }
+        }
+        return [
+            "current"=>  $seeker_path_options[$option_keys[$current_index]],
+            "next" => isset( $option_keys[$current_index+1] ) ? $seeker_path_options[$option_keys[$current_index+1]] : ""
+        ];
+
+    }
+
+    public static function quick_action_button( int $contact_id, array $field, bool $check_permissions = true ){
+        $response = self::update_contact( $contact_id, $field, true );
+        if ($response != $contact_id){
+            return $response;
         } else {
             $update = [];
-            if ( $field[ "contact_quick_button_no_answer" ] == 1 || $field[ "contact_quick_button_phone_off" ] == 1){
-                $update["seeker_path"] = "1";
-            } else if ($field[ "contact_quick_button_contact_established" ] == 1) {
-                $update["seeker_path"] = "2";
-            } else if ($field[ "contact_quick_button_meeting_scheduled" ] == 1) {
-                $update["seeker_path"] = "4";
-            } else if ($field[ "contact_quick_button_meeting_complete" ] == 1) {
-                $update["seeker_path"] = "5";
+            $key = key( $field );
+
+            if ( $key == "contact_quick_button_no_answer") {
+                $update["seeker_path"] = "attempted";
+            } else if ($key == "contact_quick_button_phone_off"){
+                $update["seeker_path"] = "attempted";
+            } else if ($key == "contact_quick_button_contact_established") {
+                $update["seeker_path"] = "established";
+            } else if ($key == "contact_quick_button_meeting_scheduled"){
+                $update["seeker_path"] = "scheduled";
+            } else if ( $key == "contact_quick_button_meeting_complete"){
+                $update["seeker_path"] = "met";
             }
-            if ( !empty( $update )){
-                return self::update_contact( $contact_id, $update );
-            }
+
+            return $response = self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
         }
     }
 
