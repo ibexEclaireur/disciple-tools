@@ -238,13 +238,32 @@ class Disciple_Tools_Contacts
             foreach( $meta_fields as $key => $value) {
                 if ( strpos( $key, "contact_phone" ) === 0 ){
                     $fields[ "phone_numbers" ][$key] = $value;
-                } elseif ( strpos( $key, "contact_email" ) === 0){
+                } else if ( strpos( $key, "contact_email" ) === 0){
                     $fields[ "emails" ][$key] = $value;
-                } elseif ( strpos( $key, "address" ) === 0){
+                } else if ( strpos( $key, "address" ) === 0){
                     $fields[ "address" ][$key] = $value;
-                } elseif ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
+                } else if ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
                     $label = self::$contact_fields[$key]["default"][$value[0]] ?? current( self::$contact_fields[$key]["default"] );
                     $fields[$key] = [ "key"=>$value[0], "label"=>$label ];
+                } else if ($key === "assigned_to") {
+                    if ($value){
+                        if ($value[0] == "dispatch"){
+                            $fields[$key] = ["display" => "Dispatch"];
+                        } else {
+                            $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                            $type = $meta_array[0]; // Build variables
+                            $id = $meta_array[1];
+
+                            if ( $type == "dispatch" ){
+                            } else if ( $type == 'user') {
+                                $user = get_user_by( 'id', $id );
+                                $fields[$key] = ["id"=>$id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0]];
+                            } else {
+                                $assigned = get_term( $id );
+                                $fields[$key] = ["id" => $id, "type" => $type, "display" => $assigned->name, "assigned-to" => $value[0]];
+                            }
+                        }
+                    }
                 } else {
                     $fields[$key] = $value[0];
                 }
