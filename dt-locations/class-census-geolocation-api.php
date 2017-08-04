@@ -61,7 +61,18 @@ class Disciple_Tools_Census_Geolocation {
             $tract_lat = $census_result->result->geographies->{'Census Tracts'}[0]->CENTLAT;
             $tract_size = $census_result->result->geographies->{'Census Tracts'}[0]->AREALAND;
 
-            $zoom = dt_get_zoom_size_LL( $tract_size );
+            
+            if($tract_size > 1000000000) {
+                $zoom = 8;
+            } elseif ($tract_size > 100000000) {
+                $zoom = 10;
+            } elseif ($tract_size > 50000000) {
+                $zoom = 12;
+            } elseif ($tract_size > 10000000) {
+                $zoom = 13;
+            } else {
+                $zoom = 14;
+            }
 
             return [
                 'state' => $state_code,
