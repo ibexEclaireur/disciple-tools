@@ -268,6 +268,9 @@ class Disciple_Tools_Contacts
                     $fields[$key] = $value[0];
                 }
             }
+
+            $comments = get_comments( ['post_id'=>$contact_id] );
+            $fields["comments"] = $comments;
             $contact->fields = $fields;
 
             return $contact;
@@ -442,6 +445,34 @@ class Disciple_Tools_Contacts
 
             return $response = self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
         }
+    }
+
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){
+//        @todo better permissions?
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        $user = wp_get_current_user();
+        $user_id = get_current_user_id();
+        $comment_data = [
+            'comment_post_ID' => $contact_id,
+            'comment_content' => $comment,
+            'user_id' => $user_id,
+            'comment_author' => $user->display_name,
+            'comment_author_url' => $user->user_url,
+            'comment_author_email' => $user->user_email
+        ];
+
+        return wp_new_comment( $comment_data );
+    }
+
+    public static function get_comments ( int $contact_id, bool $check_permissions = true ){
+        //@todo restrict to only get contact's the user has access to
+        if ($check_permissions && ! current_user_can( 'read_contact' )) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), ['status' => 403] );
+        }
+        $comments = get_comments( ['post_id'=>$contact_id] );
+        return $comments;
     }
 
 }
