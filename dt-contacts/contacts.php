@@ -165,7 +165,7 @@ class Disciple_Tools_Contacts
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
         }
 
-        if ($fields['title']){
+        if ( isset( $fields['title'] ) ){
             wp_update_post( ['ID'=>$contact_id, 'post_title'=>$fields['title']] );
         }
 
@@ -238,17 +238,39 @@ class Disciple_Tools_Contacts
             foreach( $meta_fields as $key => $value) {
                 if ( strpos( $key, "contact_phone" ) === 0 ){
                     $fields[ "phone_numbers" ][$key] = $value;
-                } elseif ( strpos( $key, "contact_email" ) === 0){
+                } else if ( strpos( $key, "contact_email" ) === 0){
                     $fields[ "emails" ][$key] = $value;
-                } elseif ( strpos( $key, "address" ) === 0){
+                } else if ( strpos( $key, "address" ) === 0){
                     $fields[ "address" ][$key] = $value;
-                } elseif ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
+                } else if ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
                     $label = self::$contact_fields[$key]["default"][$value[0]] ?? current( self::$contact_fields[$key]["default"] );
                     $fields[$key] = [ "key"=>$value[0], "label"=>$label ];
+                } else if ($key === "assigned_to") {
+                    if ($value){
+                        if ($value[0] == "dispatch"){
+                            $fields[$key] = ["display" => "Dispatch"];
+                        } else {
+                            $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                            $type = $meta_array[0]; // Build variables
+                            $id = $meta_array[1];
+
+                            if ( $type == "dispatch" ){
+                            } else if ( $type == 'user') {
+                                $user = get_user_by( 'id', $id );
+                                $fields[$key] = ["id"=>$id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0]];
+                            } else {
+                                $assigned = get_term( $id );
+                                $fields[$key] = ["id" => $id, "type" => $type, "display" => $assigned->name, "assigned-to" => $value[0]];
+                            }
+                        }
+                    }
                 } else {
                     $fields[$key] = $value[0];
                 }
             }
+
+            $comments = get_comments( ['post_id'=>$contact_id] );
+            $fields["comments"] = $comments;
             $contact->fields = $fields;
 
             return $contact;
@@ -380,25 +402,77 @@ class Disciple_Tools_Contacts
         ];
     }
 
-    public static function quick_contact_update( int $contact_id, array $field, bool $check_permissions = true ){
-        $updated = self::update_contact( $contact_id, $field, true );
-        if ($updated != $contact_id){
-            return $updated;
-        } else {
-            $update = [];
-            if ( $field[ "contact_quick_button_no_answer" ] == 1 || $field[ "contact_quick_button_phone_off" ] == 1){
-                $update["seeker_path"] = "1";
-            } else if ($field[ "contact_quick_button_contact_established" ] == 1) {
-                $update["seeker_path"] = "2";
-            } else if ($field[ "contact_quick_button_meeting_scheduled" ] == 1) {
-                $update["seeker_path"] = "4";
-            } else if ($field[ "contact_quick_button_meeting_complete" ] == 1) {
-                $update["seeker_path"] = "5";
-            }
-            if ( !empty( $update )){
-                return self::update_contact( $contact_id, $update );
+
+    public static function update_seeker_path( int $contact_id, string $path_option, bool $check_permissions = true ){
+        $seeker_path_options = self::$contact_fields["seeker_path"]["default"];
+        $option_keys = array_keys( $seeker_path_options );
+        $current_seeker_path = get_post_meta( $contact_id, "seeker_path", true );
+        $current_index = array_search( $current_seeker_path, $option_keys );
+        $new_index = array_search( $path_option,  $option_keys );
+        if ($new_index > $current_index){
+            $current_index = $new_index;
+            $update = self::update_contact( $contact_id, ["seeker_path"=> $path_option], $check_permissions );
+            if ( is_wp_error( $update ) ){
+                return $update;
             }
         }
+        return [
+            "current"=>  $seeker_path_options[$option_keys[$current_index]],
+            "next" => isset( $option_keys[$current_index+1] ) ? $seeker_path_options[$option_keys[$current_index+1]] : ""
+        ];
+
+    }
+
+    public static function quick_action_button( int $contact_id, array $field, bool $check_permissions = true ){
+        $response = self::update_contact( $contact_id, $field, true );
+        if ($response != $contact_id){
+            return $response;
+        } else {
+            $update = [];
+            $key = key( $field );
+
+            if ( $key == "contact_quick_button_no_answer") {
+                $update["seeker_path"] = "attempted";
+            } else if ($key == "contact_quick_button_phone_off"){
+                $update["seeker_path"] = "attempted";
+            } else if ($key == "contact_quick_button_contact_established") {
+                $update["seeker_path"] = "established";
+            } else if ($key == "contact_quick_button_meeting_scheduled"){
+                $update["seeker_path"] = "scheduled";
+            } else if ( $key == "contact_quick_button_meeting_complete"){
+                $update["seeker_path"] = "met";
+            }
+
+            return $response = self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
+        }
+    }
+
+    public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){
+//        @todo better permissions?
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        $user = wp_get_current_user();
+        $user_id = get_current_user_id();
+        $comment_data = [
+            'comment_post_ID' => $contact_id,
+            'comment_content' => $comment,
+            'user_id' => $user_id,
+            'comment_author' => $user->display_name,
+            'comment_author_url' => $user->user_url,
+            'comment_author_email' => $user->user_email
+        ];
+
+        return wp_new_comment( $comment_data );
+    }
+
+    public static function get_comments ( int $contact_id, bool $check_permissions = true ){
+        //@todo restrict to only get contact's the user has access to
+        if ($check_permissions && ! current_user_can( 'read_contact' )) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), ['status' => 403] );
+        }
+        $comments = get_comments( ['post_id'=>$contact_id] );
+        return $comments;
     }
 
 }

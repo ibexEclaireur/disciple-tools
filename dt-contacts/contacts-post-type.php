@@ -535,6 +535,8 @@ class Disciple_Tools_Contact_Post_Type {
             ],
             'section' => 'status'
         ];
+
+        //these fields must stay in order of importance
         $fields['seeker_path'] = [
             'name' => __( 'Seeker Path', 'disciple_tools' ),
             'description' => '',

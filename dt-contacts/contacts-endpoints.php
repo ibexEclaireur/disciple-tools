@@ -87,6 +87,24 @@ class Disciple_Tools_Contacts_Endpoints
             "callback" => [$this, 'get_team_contacts'],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/quick_action_button', [
+            "methods" => "POST",
+            "callback" => [$this, 'quick_action_button'],
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/comment', [
+                "methods" => "POST",
+                "callback" => [$this, 'post_comment']
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/comments', [
+                "methods" => "GET",
+                "callback" => [$this, 'get_comments']
+            ]
+        );
     }
 
 
@@ -245,5 +263,53 @@ class Disciple_Tools_Contacts_Endpoints
         }  else {
             return new WP_Error( "get_team_contacts", "Missing a valid user id", ['status' => 400] );
         }
+    }
+
+
+    public function quick_action_button( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::quick_action_button( $params['id'], $body, true );
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( ["seeker_path"=>$result] );
+            }
+        } else {
+            return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
+        }
+    }
+
+    public function post_comment( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::add_comment( $params['id'], $body["comment"], true );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( ["comment_id"=>$result] );
+            }
+        } else {
+            return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
+        }
+
+    }
+    public function get_comments( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::get_comments( $params['id'], true );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
+        }
+
     }
 }
