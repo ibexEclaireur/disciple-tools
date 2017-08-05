@@ -236,7 +236,7 @@ class Disciple_Tools_Locations_Import {
                 }
             }
             
-            if ( !empty($country_name) || !empty( $country_id )) {
+            if ( !empty( $country_name ) || !empty( $country_id )) {
                 $post = [
                     "post_title" => $country_name . ' ( ' . $country_id . ' )',
                     'post_type' => 'locations',
