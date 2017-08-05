@@ -29,12 +29,6 @@ class Disciple_Tools_Locations_Tab_Import
         $html .= '<div id="post-body-content">';
         $html .= $this->select_oz_data_dropdown() . '<br>';
         $html .= $this->select_us_census_data_dropdown() . '<br>';
-    
-//        $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-counties.json' ) );
-//        foreach ($result as $location) {
-//            echo $location->STATEAB . ',' . $location->STATE . ',' . $location->COUNTY . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 3)) . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 2)) . substr($location->COUNTY, -1) .  '<br>';
-//        }
-        
         
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         $html .= '<br>'; /* Add content to column */
