@@ -109,7 +109,7 @@ class Disciple_Tools_Locations_Stats {
                             'Cen_y' => $item->attributes->Cen_y,
                             'Region' => $item->attributes->Region,
                             'Field' => $item->attributes->Field,
-                            'geometry' => json_encode($item->geometry->rings),
+                            'geometry' => json_encode( $item->geometry->rings ),
                         ),
                         array( 'WorldID' => $item->attributes->WorldID ),
                         array(
