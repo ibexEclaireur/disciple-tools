@@ -29,6 +29,12 @@ class Disciple_Tools_Locations_Tab_Import
         $html .= '<div id="post-body-content">';
         $html .= $this->select_oz_data_dropdown() . '<br>';
         $html .= $this->select_us_census_data_dropdown() . '<br>';
+    
+//        $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-counties.json' ) );
+//        foreach ($result as $location) {
+//            echo $location->STATEAB . ',' . $location->STATE . ',' . $location->COUNTY . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 3)) . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 2)) . substr($location->COUNTY, -1) .  '<br>';
+//        }
+        
         
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         $html .= '<br>'; /* Add content to column */
@@ -45,7 +51,6 @@ class Disciple_Tools_Locations_Tab_Import
     
     /**
      * Creates drop down for uploading state xml files
-     *
      * @return mixed
      */
     public function select_us_census_data_dropdown()
@@ -61,8 +66,8 @@ class Disciple_Tools_Locations_Tab_Import
                 return false;
             }
             
-            $result = Disciple_Tools_Upload::upload_census_tract_kml_to_post_type( $_POST[ 'states-dropdown' ] ); // run insert process TODO make this a javascript call with a spinner.
-            $result2 = Disciple_Tools_Upload::upload_us_state_tracts( $_POST[ 'states-dropdown' ] );
+            $result = Disciple_Tools_Locations_Import::upload_census_tract_kml_to_post_type( $_POST[ 'states-dropdown' ] ); // run insert process TODO make this a javascript call with a spinner.
+            $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts( $_POST[ 'states-dropdown' ] );
             
         } /* end if $_POST */
         
@@ -99,7 +104,6 @@ class Disciple_Tools_Locations_Tab_Import
     
     /**
      * Creates drop down meta box for loading Omega Zone files
-     *
      * @return mixed
      */
     public function select_oz_data_dropdown()
@@ -112,7 +116,9 @@ class Disciple_Tools_Locations_Tab_Import
             
             if( !empty( $_POST[ 'load-oz-admin1' ] ) ) {
     
-                
+                // insert records
+                $import = new Disciple_Tools_Locations_Import();
+                $import->insert_location_oz( $_POST[ 'load-oz-admin1' ], 'admin1' );
                 
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
@@ -123,6 +129,10 @@ class Disciple_Tools_Locations_Tab_Import
     
             if( !empty( $_POST[ 'load-oz-admin2' ] ) ) {
     
+                // insert records
+                $import = new Disciple_Tools_Locations_Import();
+                $import->insert_location_oz( $_POST[ 'load-oz-admin2' ], 'admin2' );
+    
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
                 $option['Adm2ID'][] = $_POST[ 'load-oz-admin2' ];
@@ -132,6 +142,10 @@ class Disciple_Tools_Locations_Tab_Import
     
             if( !empty( $_POST[ 'load-oz-admin3' ] ) ) {
     
+                // insert records
+                $import = new Disciple_Tools_Locations_Import();
+                $import->insert_location_oz( $_POST[ 'load-oz-admin3' ], 'admin3' );
+    
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
                 $option['Adm3ID'][] = $_POST[ 'load-oz-admin3' ];
@@ -139,6 +153,10 @@ class Disciple_Tools_Locations_Tab_Import
             }
     
             if( !empty( $_POST[ 'load-oz-admin4' ] ) ) {
+    
+                // insert records
+                $import = new Disciple_Tools_Locations_Import();
+                $import->insert_location_oz( $_POST[ 'load-oz-admin4' ], 'admin4' );
     
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
@@ -162,9 +180,6 @@ class Disciple_Tools_Locations_Tab_Import
             ];
             add_option( '_dt_oz_installed', $currently_installed, '', false );
         }
-//        print '<pre>';
-//        print_r( $currently_installed );
-//        print '</pre>'; // testing
         
         
         /*********************************/
@@ -269,7 +284,7 @@ class Disciple_Tools_Locations_Tab_Import
         /*********************************/
         $html = '';
         $html .= '<table class="widefat ">
-                    <thead><th>Import Omega Zones</th></thead>
+                    <thead><th>Import Omega Zones/2414/Zume International</th></thead>
                     <tbody>
                         <tr>
                             <td>
