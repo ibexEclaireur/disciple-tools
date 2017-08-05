@@ -6,7 +6,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-class Disciple_Tools_Upload {
+class Disciple_Tools_Locations_Import {
 
     /**
      * Uploads US Census Tract KML file to Locations Post Type
@@ -211,4 +211,73 @@ class Disciple_Tools_Upload {
         $wpdb->get_results( "DELETE FROM $wpdb->postmeta WHERE NOT EXISTS (SELECT NULL FROM $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id)" );
         return 'Locations deleted';
     }
+    
+    /**
+     * Import Omega Zone locations
+     * @param $admin
+     */
+    public function insert_location_oz( $cntyID, $admin ) {
+        
+        $list = dt_get_oz_country_list( $admin );
+        $parent_postID = '';
+    
+        // Install single top level country record for Admin1 only
+        if ( $admin == 'admin1') {
+    
+            $country_list = dt_get_oz_country_list( 'cnty' );
+            $country_name = '';
+            $country_id = '';
+    
+            foreach ( $country_list as $value ) {
+                if ( $value->CntyID == $cntyID) {
+                    $country_name = $value->Zone_Name;
+                    $country_id = $value->WorldID;
+                    break;
+                }
+            }
+            
+            if ( !empty($country_name) || !empty( $country_id )) {
+                $post = [
+                    "post_title" => $country_name . ' ( ' . $country_id . ' )',
+                    'post_type' => 'locations',
+                    "post_content" => '',
+                    "post_excerpt" => '',
+                    "post_name" => $country_id,
+                    "post_status" => "publish",
+                    "post_author" => get_current_user_id(),
+                ];
+    
+                $parent_postID = wp_insert_post( $post );
+            }
+            
+        }
+    
+        // Loop the admin level list
+        foreach ($list as $item ) {
+            
+            if ( $item->CntyID == $cntyID ) {
+                
+                $content = '';
+                
+                foreach ( $item as $key => $value ) {
+                    $content .= $key . ': ' . $value . '<br>';
+                }
+        
+                $post = [
+                    "post_title" => $item->Zone_Name . ' ( ' . $item->WorldID . ' )',
+                    'post_type' => 'locations',
+                    "post_content" => $content,
+                    "post_excerpt" => '',
+                    "post_parent" => $parent_postID,
+                    "post_name" => $item->WorldID,
+                    "post_status" => "publish",
+                    "post_author" => get_current_user_id(),
+                ];
+        
+                $new_post_id = wp_insert_post( $post );
+            
+            }
+        }
+    }
+    
 }
