@@ -26,14 +26,8 @@ class Disciple_Tools_Locations_Stats {
         $html .= '<div id="post-body-content">';
         $html .= $this->sync_4k_data();
     
-        //        $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-counties.json' ) );
-        //        foreach ($result as $location) {
-        //            echo $location->STATEAB . ',' . $location->STATE . ',' . $location->COUNTY . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 3)) . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 2)) . substr($location->COUNTY, -1) .  '<br>';
-        //        }
-    
-    
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
-        $html .= '<br>'; /* Add content to column */
+        $html .= $this->locations_currently_installed (); /* Add content to column */
     
         $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
         $html .= '';/* Add content to column */
@@ -52,37 +46,10 @@ class Disciple_Tools_Locations_Stats {
     
             if ( !empty( $_POST[ 'sync-4k' ] ) ) {
         
-                // https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/query?layerDefs={"0":"CntyID="}&returnGeometry=true&f=pjson
                 $result =  json_decode( file_get_contents( 'https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/query?layerDefs={"0":"CntyID=\''.$_POST[ 'sync-4k' ].'\'"}&returnGeometry=true&f=pjson' ) );
-                
-//                print '<pre>'; print_r($result->layers[0]->features); print '</pre>';
                 
                 // build a parsing loop
                 foreach($result->layers[0]->features as $item) {
-//                    print $item->attributes->OBJECTID_1 . '<br>';
-//                    print $item->attributes->OBJECTID . '<br>';
-//                    print $item->attributes->WorldID . '<br>';
-//                    print $item->attributes->Zone_Name . '<br>';
-//                    print $item->attributes->World . '<br>';
-//                    print $item->attributes->Adm4ID . '<br>';
-//                    print $item->attributes->Adm3ID . '<br>';
-//                    print $item->attributes->Adm2ID . '<br>';
-//                    print $item->attributes->Adm1ID . '<br>';
-//                    print $item->attributes->CntyID . '<br>';
-//                    print $item->attributes->Adm4_Name . '<br>';
-//                    print $item->attributes->Adm3_Name . '<br>';
-//                    print $item->attributes->Adm2_Name . '<br>';
-//                    print $item->attributes->Adm1_Name . '<br>';
-//                    print $item->attributes->Cnty_Name . '<br>';
-//                    print $item->attributes->Population . '<br>';
-//                    print $item->attributes->Shape_Leng . '<br>';
-//                    print $item->attributes->Cen_x . '<br>';
-//                    print $item->attributes->Cen_y . '<br>';
-//                    print $item->attributes->Region . '<br>';
-//                    print $item->attributes->Field . '<br>';
-//                    print '<pre>'; print_r($item->geometry->rings); print '</pre>';
-//                    print json_encode($item->geometry->rings);
-                    
                     
                     // insert/update megazone table
                     $wpdb->update(
@@ -140,9 +107,6 @@ class Disciple_Tools_Locations_Stats {
                     
                     print '<br><br>Records updated: ' . $wpdb->rows_affected . ' | ' . $item->attributes->Cnty_Name;
                 }
-    
-                
-        
             }
         }
     
@@ -154,9 +118,9 @@ class Disciple_Tools_Locations_Stats {
         foreach ( $dir_contents as $value ) {
             
                 $admin1 .= '<option value="' . $value->CntyID . '" ';
+                if ( isset( $_POST[ 'sync-4k' ] ) && $_POST[ 'sync-4k' ] == $value->CntyID  ) { $admin1 .= ' selected'; }
                 $admin1 .= '>' . $value->Cnty_Name;
                 $admin1 .= '</option>';
-            
         }
     
         $admin1 .= '</select>';
@@ -174,6 +138,45 @@ class Disciple_Tools_Locations_Stats {
                                 </form>
                             </td>
                         </tr>';
+        $html .= '</tbody>
+                </table>';
+    
+        return $html;
+    }
+    
+    public function locations_currently_installed () {
+        $html = '';
+        
+        // Search for currently installed locations
+        
+        $html .= '<table class="widefat ">
+                    <thead><th>Currently Installed</th></thead>
+                    <tbody>
+                        <tr>
+                            <td>';
+        // Total number of locations in database
+        $html .= 'Total number of location posts: ' . wp_count_posts('locations')->publish . '<br>';
+        
+        // Total number of countries
+        
+        
+        
+        // Total number of admin1
+        
+        
+        // Total number of admin2
+        
+        
+        // Total number of admin3
+        
+        
+        // Total number of admin4
+        
+        
+        
+        $html .= '      </td>
+                        </tr>';
+        
         $html .= '</tbody>
                 </table>';
     
