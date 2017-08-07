@@ -27,7 +27,7 @@ class Disciple_Tools_Locations_Stats {
         $html .= $this->sync_4k_data();
     
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
-        $html .= $this->locations_currently_installed (); /* Add content to column */
+        $html .= ''; /* Add content to column */
     
         $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
         $html .= '';/* Add content to column */
@@ -46,6 +46,7 @@ class Disciple_Tools_Locations_Stats {
     
             if ( !empty( $_POST[ 'sync-4k' ] ) ) {
         
+                $result =  json_decode( file_get_contents( 'https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/query?layerDefs={"0":"CntyID=\''.$_POST[ 'sync-4k' ].'\'"}&returnGeometry=true&f=pjson' ) );
                 $result =  json_decode( file_get_contents( 'https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/query?layerDefs={"0":"CntyID=\''.$_POST[ 'sync-4k' ].'\'"}&returnGeometry=true&f=pjson' ) );
                 
                 // build a parsing loop
@@ -134,8 +135,9 @@ class Disciple_Tools_Locations_Stats {
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin1 . '
                                     
-                                    <button type="submit" class="button" value="submit">Upload State</button>
+                                    <button type="submit" class="button" value="submit">Sync 4k to omegazones_v1 table</button>
                                 </form>
+                                <br><a href="https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/query">4K Query Server</a>
                             </td>
                         </tr>';
         $html .= '</tbody>
@@ -144,44 +146,7 @@ class Disciple_Tools_Locations_Stats {
         return $html;
     }
     
-    public function locations_currently_installed () {
-        $html = '';
-        
-        // Search for currently installed locations
-        
-        $html .= '<table class="widefat ">
-                    <thead><th>Currently Installed</th></thead>
-                    <tbody>
-                        <tr>
-                            <td>';
-        // Total number of locations in database
-        $html .= 'Total number of location posts: ' . wp_count_posts('locations')->publish . '<br>';
-        
-        // Total number of countries
-        
-        
-        
-        // Total number of admin1
-        
-        
-        // Total number of admin2
-        
-        
-        // Total number of admin3
-        
-        
-        // Total number of admin4
-        
-        
-        
-        $html .= '      </td>
-                        </tr>';
-        
-        $html .= '</tbody>
-                </table>';
     
-        return $html;
-    }
     
     
 }
