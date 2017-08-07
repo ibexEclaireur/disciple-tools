@@ -224,7 +224,7 @@ class Disciple_Tools_Contacts_Endpoints
                 $contact_array = $contact->to_array();
                 $contact_array['permalink'] = get_post_permalink( $contact->ID );
                 $contact_array['assigned_name'] = dt_get_assigned_name( $contact->ID, true );
-                $contact_array['status_number'] = (int) get_post_meta( $contact->ID, 'overall_status', true );
+                $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
                 $contact_array['locations'] = array();
                 foreach ( $contact->connected as $location ) {
                     $contact_array['locations'][] = $location->post_title;
@@ -234,9 +234,9 @@ class Disciple_Tools_Contacts_Endpoints
                     if ( strpos( $meta_key, "contact_phone" ) === 0 ) {
                         $contact_array['phone_numbers'] = array_merge( $contact_array['phone_numbers'], $meta_value );
                     } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
-                        $contact_array[$meta_key] = (int) $meta_value[0];
+                        $contact_array[$meta_key] = $meta_value[0] === "yes";
                     } elseif ( $meta_key === "seeker_path" ) {
-                        $contact_array[$meta_key] = (int) $meta_value[0];
+                        $contact_array[$meta_key] = $meta_value[0];
                     }
                 }
                 $rv[] = $contact_array;
