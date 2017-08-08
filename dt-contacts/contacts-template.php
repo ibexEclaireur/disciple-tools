@@ -22,7 +22,7 @@ function dt_get_contact_edit_form () {
 
         // Create the title field
         $html = '<input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce" value="' . wp_create_nonce( 'update_dt_contacts' ) . '" />';
-        $html .= '<input name="post_title" type="text" id="post_title" class="regular-text" value="'. get_the_title() .'" />' ;
+        $html .= '<input name="post_title" type="text" id="post_title" class="regular-text" value="'. esc_html( get_the_title() ) .'" />' ;
         echo $html;
 
 
