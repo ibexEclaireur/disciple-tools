@@ -510,7 +510,7 @@ class Disciple_Tools_Contact_Post_Type {
      * @since  0.1
      * @return array
      */
-    public function get_custom_fields_settings( bool $include_current_post = true ) {
+    public function get_custom_fields_settings( bool $include_current_post = true, int $post_id = null ) {
         global $post;
         $fields = [];
 
@@ -560,9 +560,10 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'status'
         ];
 
-        if ($include_current_post && isset( $post->ID ) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
+        $id = $post->ID ?? $post_id;
+        if ( $include_current_post && ( $id || ( isset( $post->ID ) && $post->post_status != 'auto-draft' ))) { // if being called for a specific record or new record.
             // Contact Channels Section
-            $methods = $this->contact_fields();
+            $methods = $this->contact_fields( $id );
             foreach ($methods as $k => $v) { // sets phone numbers as first
                 $keys = explode( '_', $k );
                 if($keys[1] == 'phone' && $keys[2] == 'primary') {
@@ -853,14 +854,15 @@ class Disciple_Tools_Contact_Post_Type {
      *
      * @return array
      */
-    public function contact_fields () {
+    public function contact_fields ( int $post_id ) {
         global $wpdb, $post;
 
         $fields = [];
         $current_fields = [];
 
-        if (isset( $post->ID )){
-            $current_fields = $wpdb->get_results( "SELECT meta_key FROM $wpdb->postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+        $id = $post->ID ?? $post_id;
+        if (isset( $post->ID ) || isset( $post_id )){
+            $current_fields = $wpdb->get_results( "SELECT meta_key FROM $wpdb->postmeta WHERE post_id = $id AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
         }
 
         foreach ($current_fields as $value) {

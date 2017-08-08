@@ -118,18 +118,17 @@ class Disciple_Tools_Contacts
      * Make sure the field values are the correct format
      *
      * @param  $fields, the contact meta fields
+     * @param  $post_id, the id of the contact
      * @access private
      * @since  0.1
      * @return array
      */
-    private static function check_for_invalid_fields( $fields ){
+    private static function check_for_invalid_fields( $fields, int $post_id = null ){
         $bad_fields = [];
-        $contact_model_fields = self::$contact_fields;
-        //some fields are not in the model
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $contact_model_fields['title'] = "";
         foreach($fields as $field => $value){
-            //	    	@todo check for invald values by type
-            if (!isset( $contact_model_fields[$field] )){
+            if (!isset( $contact_fields[$field] )){
                 $bad_fields[] = $field;
             }
         }
@@ -160,7 +159,7 @@ class Disciple_Tools_Contacts
         if (!$post){
             return new WP_Error( __FUNCTION__, __( "Contact does not exist" ) );
         }
-        $bad_fields = self::check_for_invalid_fields( $fields );
+        $bad_fields = self::check_for_invalid_fields( $fields, $contact_id );
         if (!empty( $bad_fields )){
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
         }
