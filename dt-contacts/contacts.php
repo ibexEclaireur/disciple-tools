@@ -179,6 +179,22 @@ class Disciple_Tools_Contacts
         return $contact_id;
     }
 
+
+
+    public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ){
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if ($key === "new-number"){
+            $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( "phone", "contact" );
+            update_post_meta( $contact_id, $new_meta_key, $value );
+            $details = ["type"=>"primary", "verified"=>false];
+            update_post_meta( $contact_id, $new_meta_key . "_details", $details );
+            return $new_meta_key;
+        }
+        return $contact_id;
+    }
+
     /**
      * Get a single contact
      *
@@ -242,11 +258,12 @@ class Disciple_Tools_Contacts
             foreach( $meta_fields as $key => $value) {
                 if ( strpos( $key, "contact_phone" ) === 0 && strpos( $key, "details" ) === false ){
                     $phone_details = ["type"=>"primary"];
-                    if ( isset( $meta_fields[$key.'_details'] )){
-                        $phone_details = $meta_fields[$key.'_details'];
+                    if ( isset( $meta_fields[$key.'_details'][0] )){
+                        $phone_details = unserialize( $meta_fields[$key.'_details'][0] );
                     }
                     $phone_details["number"] = $value[0];
                     $phone_details["key"] = $key;
+                    $phone_details["type_label"] = self::$channel_list["phone"]["types"][$phone_details["type"]]["label"];
                     $fields[ "phone_numbers" ][] = $phone_details;
                 } else if ( strpos( $key, "contact_email" ) === 0 && strpos( $key, "details" ) === false){
                     $email_details = ["type"=>"primary"];

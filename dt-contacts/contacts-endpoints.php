@@ -76,6 +76,12 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/details', [
+                "methods" => "POST",
+                "callback" => [$this, 'add_contact_details'],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/user/(?P<user_id>\d+)/contacts', [
             "methods" => "GET",
             "callback" => [$this, 'get_user_contacts'],
@@ -201,6 +207,23 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
+
+    public function add_contact_details( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if (isset( $params['id'] )){
+            reset( $body );
+            $field = key( $body );
+            $result = Disciple_Tools_Contacts::add_contact_detail( $params['id'], $field, $body[$field], true );
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
+        }
+    }
 
     /**
      * Get Contacts assigned to a user
