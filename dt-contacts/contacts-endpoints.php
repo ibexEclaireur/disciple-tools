@@ -217,7 +217,8 @@ class Disciple_Tools_Contacts_Endpoints
             if (is_wp_error( $contacts )) {
                 return $contacts;
             }
-            p2p_type( 'contacts_to_locations' )->each_connected( $contacts );
+            p2p_type( 'contacts_to_locations' )->each_connected( $contacts, array(), 'locations' );
+            p2p_type( 'contacts_to_groups' )->each_connected( $contacts, array(), 'groups' );
             $rv = array();
             foreach ($contacts->posts as $contact) {
                 $meta_fields = get_post_custom( $contact->ID );
@@ -226,8 +227,12 @@ class Disciple_Tools_Contacts_Endpoints
                 $contact_array['assigned_name'] = dt_get_assigned_name( $contact->ID, true );
                 $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
                 $contact_array['locations'] = array();
-                foreach ( $contact->connected as $location ) {
+                foreach ( $contact->locations as $location ) {
                     $contact_array['locations'][] = $location->post_title;
+                }
+                $contact_array['groups'] = array();
+                foreach ( $contact->groups as $group ) {
+                    $contact_array['groups'][] = $group->post_title;
                 }
                 $contact_array['phone_numbers'] = array();
                 foreach ( $meta_fields as $meta_key => $meta_value ) {
