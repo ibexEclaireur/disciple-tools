@@ -16,11 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 class Disciple_Tools_Contacts
 {
     public static $contact_fields;
+    public static $channel_list;
 
     public function __construct(){
         add_action(
             'init', function(){
                 self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+                self::$channel_list =  Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
             }
         );
 
@@ -74,6 +76,9 @@ class Disciple_Tools_Contacts
 
     public static function get_contact_fields(){
         return self::$contact_fields;
+    }
+    public static function get_channel_list(){
+        return self::$channel_list;
     }
 
     /**
