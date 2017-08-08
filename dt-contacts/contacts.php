@@ -314,6 +314,37 @@ class Disciple_Tools_Contacts
     }
 
     /**
+     * Get Contacts viewable by a user
+     *
+     * @param  $check_permissions
+     * @param  $query_pagination_args Pass in pagination and ordering parameters if wanted.
+     * @access public
+     * @since  0.1
+     * @return WP_Query | WP_Error
+     */
+    public static function get_viewable_contacts( bool $check_permissions = true, array $query_pagination_args = [] ) {
+        $current_user = wp_get_current_user();
+        if ($check_permissions) {
+            // TODO: improve permission model
+            if (! current_user_can( 'edit_contacts' )) {
+                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
+            }
+        } else {
+            // Does this function even make sense without checking permissions,
+            // since we're getting the contacts viewable by this user?
+            return new WP_Error( __FUNCTION__, __( "Unimplemented" ) );
+        }
+
+        $query_args = array(
+            'post_type' => 'contacts',
+            'nopaging' => true,
+        );
+        return self::query_with_pagination( $query_args, $query_pagination_args );
+    }
+
+
+
+    /**
      * Get Contacts assigned to a user's team
      *
      * @param  int $user_id
