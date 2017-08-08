@@ -88,6 +88,12 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/contacts', [
+            "methods" => "GET",
+            "callback" => [$this, 'get_viewable_contacts'],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/user/(?P<user_id>\d+)/team/contacts', [
             "methods" => "GET",
             "callback" => [$this, 'get_team_contacts'],
@@ -207,6 +213,48 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
+    private function add_related_info_to_contacts( WP_Query $contacts ): array {
+        p2p_type( 'contacts_to_locations' )->each_connected( $contacts, array(), 'locations' );
+        p2p_type( 'contacts_to_groups' )->each_connected( $contacts, array(), 'groups' );
+        $rv = array();
+        foreach ($contacts->posts as $contact) {
+            $meta_fields = get_post_custom( $contact->ID );
+            $contact_array = $contact->to_array();
+            $contact_array['permalink'] = get_post_permalink( $contact->ID );
+            $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
+            $contact_array['locations'] = array();
+            foreach ( $contact->locations as $location ) {
+                $contact_array['locations'][] = $location->post_title;
+            }
+            $contact_array['groups'] = array();
+            foreach ( $contact->groups as $group ) {
+                $contact_array['groups'][] = $group->post_title;
+            }
+            $contact_array['phone_numbers'] = array();
+            foreach ( $meta_fields as $meta_key => $meta_value ) {
+                if ( strpos( $meta_key, "contact_phone" ) === 0 && strpos( $meta_key, "details" ) === false) {
+                    $contact_array['phone_numbers'] = array_merge( $contact_array['phone_numbers'], $meta_value );
+                } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
+                    $contact_array[$meta_key] = $meta_value[0] === "yes";
+                } elseif ( $meta_key === "seeker_path" ) {
+                    $contact_array[$meta_key] = $meta_value[0];
+                } elseif ( $meta_key == "assigned_to" ) {
+                    $type_and_id = explode( '-', $meta_value[0] );
+                    $contact_array['assigned_to'] = array(
+                        'type' => $type_and_id[0],
+                        'id' => (int) $type_and_id[1],
+                    );
+                    if ($type_and_id[0] === 'user') {
+                        $contact_array['assigned_to']['name'] = get_user_by( 'id', (int) $type_and_id[1] )->display_name;
+                        $contact_array['assigned_to']['user_login'] = get_user_by( 'id', (int) $type_and_id[1] )->user_login;
+                    }
+                }
+            }
+            $rv[] = $contact_array;
+        }
+        return $rv;
+    }
+
 
     public function add_contact_details( WP_REST_Request $request ){
         $params = $request->get_params();
@@ -240,40 +288,28 @@ class Disciple_Tools_Contacts_Endpoints
             if (is_wp_error( $contacts )) {
                 return $contacts;
             }
-            p2p_type( 'contacts_to_locations' )->each_connected( $contacts, array(), 'locations' );
-            p2p_type( 'contacts_to_groups' )->each_connected( $contacts, array(), 'groups' );
-            $rv = array();
-            foreach ($contacts->posts as $contact) {
-                $meta_fields = get_post_custom( $contact->ID );
-                $contact_array = $contact->to_array();
-                $contact_array['permalink'] = get_post_permalink( $contact->ID );
-                $contact_array['assigned_name'] = dt_get_assigned_name( $contact->ID, true );
-                $contact_array['overall_status'] = get_post_meta( $contact->ID, 'overall_status', true );
-                $contact_array['locations'] = array();
-                foreach ( $contact->locations as $location ) {
-                    $contact_array['locations'][] = $location->post_title;
-                }
-                $contact_array['groups'] = array();
-                foreach ( $contact->groups as $group ) {
-                    $contact_array['groups'][] = $group->post_title;
-                }
-                $contact_array['phone_numbers'] = array();
-                foreach ( $meta_fields as $meta_key => $meta_value ) {
-                    if ( strpos( $meta_key, "contact_phone" ) === 0 && strpos( $meta_key, "details" ) === false) {
-                        $contact_array['phone_numbers'] = array_merge( $contact_array['phone_numbers'], $meta_value );
-                    } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
-                        $contact_array[$meta_key] = $meta_value[0] === "yes";
-                    } elseif ( $meta_key === "seeker_path" ) {
-                        $contact_array[$meta_key] = $meta_value[0];
-                    }
-                }
-                $rv[] = $contact_array;
-            }
-            return $rv;
+            return $this->add_related_info_to_contacts( $contacts );
         } else {
             return new WP_Error( "get_user_contacts", "Missing a valid user id", ['status' => 400] );
         }
     }
+
+    /**
+     * Get Contacts viewable by a user
+     *
+     * @param  WP_REST_Request $request
+     * @access public
+     * @since  0.1
+     * @return array|WP_Error return the user's contacts
+     */
+    public function get_viewable_contacts( WP_REST_Request $request ) {
+        $contacts = Disciple_Tools_Contacts::get_viewable_contacts( true );
+        if (is_wp_error( $contacts )) {
+            return $contacts;
+        }
+        return $this->add_related_info_to_contacts( $contacts );
+    }
+
 
     /**
      * Get Contact assigned to a user's team
