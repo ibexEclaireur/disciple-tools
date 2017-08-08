@@ -80,9 +80,34 @@ function dt_get_usa_meta() {
  * Get the master list of countries for omega zones including country abbreviation, country name, and zone.
  * @return array|mixed|object
  */
-function dt_get_oz_country_list() {
-    $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_cnty.json' ) );
-    return $result->RECORDS;
+function dt_get_oz_country_list( $admin = 'cnty' ) {
+    
+    switch ( $admin ) {
+        case 'cnty':
+            $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_cnty.json' ) );
+            return $result->RECORDS;
+            break;
+        case 'admin1':
+            $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin1.json' ) );
+            return $result->RECORDS;
+            break;
+        case 'admin2':
+            $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin2.json' ) );
+            return $result->RECORDS;
+            break;
+        case 'admin3':
+            $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin3.json' ) );
+            return $result->RECORDS;
+            break;
+        case 'admin4':
+            $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin4.json' ) );
+            return $result->RECORDS;
+            break;
+        default:
+            break;
+    }
+    
+    return false;
 }
     
     

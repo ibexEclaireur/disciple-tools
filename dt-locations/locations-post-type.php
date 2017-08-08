@@ -179,7 +179,7 @@ class Disciple_Tools_Location_Post_Type {
             'capabilities'           => $capabilities,
             'has_archive'            => true,
             'hierarchical'           => false,
-            'supports'               => [ 'title', 'comments', 'page-attributes' ],
+            'supports'               => [ 'title', 'comments', 'editor' ],
             'menu_position'          => 6,
             'menu_icon'              => 'dashicons-smiley',
             'show_in_rest'           => true,
