@@ -231,7 +231,7 @@ class Disciple_Tools_Contacts_Endpoints
                 }
                 $contact_array['phone_numbers'] = array();
                 foreach ( $meta_fields as $meta_key => $meta_value ) {
-                    if ( strpos( $meta_key, "contact_phone" ) === 0 ) {
+                    if ( strpos( $meta_key, "contact_phone" ) === 0 && strpos( $meta_key, "details" ) === false) {
                         $contact_array['phone_numbers'] = array_merge( $contact_array['phone_numbers'], $meta_value );
                     } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
                         $contact_array[$meta_key] = $meta_value[0] === "yes";

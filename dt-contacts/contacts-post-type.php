@@ -421,7 +421,14 @@ class Disciple_Tools_Contact_Post_Type {
         }
 
         if ( (isset( $_POST['new-key-contact'] ) && !empty( $_POST['new-key-contact'] ) ) && (isset( $_POST['new-value-contact'] ) && !empty( $_POST['new-value-contact'] ) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, strtolower( $_POST['new-key-contact'] ), $_POST['new-value-contact'], true );
+            $k = explode( "_",  $_POST['new-key-contact'] );
+            $channel = $k[0];
+            $type = $k[1];
+            $number_key = $this->create_channel_metakey( $channel, "contact" );
+            $details_key = $number_key . "_details";
+            $details = ['type'=>$type, 'verified'=>false];
+            add_post_meta( $post_id, strtolower( $number_key ), $_POST['new-value-contact'], true );
+            add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
 
         foreach ( $fields as $f ) {
@@ -566,7 +573,7 @@ class Disciple_Tools_Contact_Post_Type {
             $methods = $this->contact_fields( $id );
             foreach ($methods as $k => $v) { // sets phone numbers as first
                 $keys = explode( '_', $k );
-                if($keys[1] == 'phone' && $keys[2] == 'primary') {
+                if($keys[1] == 'phone') {
                     $fields[$k] = [
                         'name' => ucwords( $v['name'] ),
                         'description' => '',
@@ -576,33 +583,10 @@ class Disciple_Tools_Contact_Post_Type {
                     ];
                 }
             }
-            foreach ($methods as $k => $v) { // sets phone numbers as first
-                $keys = explode( '_', $k );
-                if($keys[1] == 'phone' && $keys[2] != 'primary') {
-                    $fields[$k] = [
-                        'name' => ucwords( $v['name'] ),
-                        'description' => '',
-                        'type' => 'text',
-                        'default' => '',
-                        'section' => 'info'
-                    ];
-                }
-            }
+
             foreach ($methods as $k => $v) { // sets emails as second
                 $keys = explode( '_', $k );
-                if($keys[1] == 'email' && $keys[2] == 'primary') {
-                    $fields[$k] = [
-                        'name' => ucwords( $v['name'] ),
-                        'description' => '',
-                        'type' => 'text',
-                        'default' => '',
-                        'section' => 'info'
-                    ];
-                }
-            }
-            foreach ($methods as $k => $v) { // sets emails as second
-                $keys = explode( '_', $k );
-                if($keys[1] == 'email' && $keys[2] != 'primary') {
+                if($keys[1] == 'email') {
                     $fields[$k] = [
                         'name' => ucwords( $v['name'] ),
                         'description' => '',
@@ -869,12 +853,19 @@ class Disciple_Tools_Contact_Post_Type {
             $names = explode( '_', $value['meta_key'] );
             $tag = null;
 
-            if ($names[1] != $names[2]) { $tag = ' ('. ucwords( $names[2] ) . ')'; }
+            if ($names[1] != $names[2] && strpos( $value["meta_key"], "details" ) == false ){
+                $details = get_post_meta( $post_id, $value['meta_key'] . "_details", true );
+                if ($details){
+                    $tag =  ' ('. ucwords( $details["type"] ) . ')';
+                }
+            }
 
-            $fields[$value['meta_key']] = [
-                'name' => ucwords( $names[1] )  . $tag,
-                'tag' => $names[1],
-            ];
+            if ( strpos( $value["meta_key"], "details" ) == false ){
+                $fields[$value['meta_key']] = [
+                    'name' => ucwords( $names[1] )  . $tag,
+                    'tag' => $names[1],
+                ];
+            }
         }
         return $fields;
     }
@@ -896,7 +887,8 @@ class Disciple_Tools_Contact_Post_Type {
             <select name="new-key-contact" class="edit-input"><option value=""></option> ';
         foreach ($channels as $channel_key => $channel) {
             foreach ($channels[$channel_key]["types"] as $type_key => $type ) {
-                $key   = $this->create_channel_metakey( $channel_key, $type_key, 'contact' ); // build key
+//                $key   = $this->create_channel_metakey( $channel_key, 'contact' ); // build key
+                $key = $channel_key . '_' . $type_key;
 
                 $html .= '<option value="' . $key . '">' . $channel["label"];
                 if ( $channel["label"] != $type["label"] ) {
@@ -907,7 +899,14 @@ class Disciple_Tools_Contact_Post_Type {
         }
         $html .= '</select></th>';
 
-        $html .= '<td><input type="text" name="new-value-contact" id="new-value" class="edit-input" /></td><td><button type="submit" class="button">Save</button></td></tr>';
+        $html .=
+            '<td>
+                <input type="text" name="new-value-contact" id="new-value" class="edit-input" />
+            </td>
+            <td>
+                <button type="submit" class="button">Save</button>
+            </td>
+            </tr>';
 
         $html .= '</tbody></table>';
         return $html;
@@ -919,13 +918,12 @@ class Disciple_Tools_Contact_Post_Type {
      * Helper function to create the unique metakey for contacts channels.
      *
      * @param $channel_key
-     * @param $channel_type
      * @param $field_type
      *
      * @return string
      */
-    public function create_channel_metakey ( $channel_key, $channel_type, $field_type ) {
-        return $field_type . '_' . $channel_key .'_'. $channel_type . '_' . $this->unique_hash(); // build key
+    public function create_channel_metakey ( $channel_key, $field_type ) {
+        return $field_type . '_' . $channel_key .'_' . $this->unique_hash(); // build key
     }
 
     public function unique_hash() {

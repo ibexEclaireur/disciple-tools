@@ -240,10 +240,22 @@ class Disciple_Tools_Contacts
 
             $meta_fields = get_post_custom( $contact_id );
             foreach( $meta_fields as $key => $value) {
-                if ( strpos( $key, "contact_phone" ) === 0 ){
-                    $fields[ "phone_numbers" ][$key] = $value;
-                } else if ( strpos( $key, "contact_email" ) === 0){
-                    $fields[ "emails" ][$key] = $value;
+                if ( strpos( $key, "contact_phone" ) === 0 && strpos( $key, "details" ) === false ){
+                    $phone_details = ["type"=>"primary"];
+                    if ( isset( $meta_fields[$key.'_details'] )){
+                        $phone_details = $meta_fields[$key.'_details'];
+                    }
+                    $phone_details["number"] = $value[0];
+                    $phone_details["key"] = $key;
+                    $fields[ "phone_numbers" ][] = $phone_details;
+                } else if ( strpos( $key, "contact_email" ) === 0 && strpos( $key, "details" ) === false){
+                    $email_details = ["type"=>"primary"];
+                    if ( isset( $meta_fields[$key.'_details'] )){
+                        $email_details = $meta_fields[$key.'_details'];
+                    }
+                    $email_details["email"] = $value[0];
+                    $email_details["key"] = $key;
+                    $fields[ "emails" ][] = $email_details;
                 } else if ( strpos( $key, "address" ) === 0){
                     $fields[ "address" ][$key] = $value;
                 } else if ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
