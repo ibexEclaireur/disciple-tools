@@ -185,7 +185,9 @@ class Disciple_Tools_Contacts
         if ($check_permissions && ! current_user_can( "edit_contacts" )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
-        if ($key === "new-number"){
+        //check if this is a new field and is in the channel list
+        if ( strpos( $key, "new-" ) === 0 &&
+            isset( self::$channel_list[explode( '-', $key )[1]] )){
             $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( "phone", "contact" );
             update_post_meta( $contact_id, $new_meta_key, $value );
             $details = ["type"=>"primary", "verified"=>false];
@@ -256,23 +258,12 @@ class Disciple_Tools_Contacts
 
             $meta_fields = get_post_custom( $contact_id );
             foreach( $meta_fields as $key => $value) {
-                if ( strpos( $key, "contact_phone" ) === 0 && strpos( $key, "details" ) === false ){
-                    $phone_details = ["type"=>"primary"];
-                    if ( isset( $meta_fields[$key.'_details'][0] )){
-                        $phone_details = unserialize( $meta_fields[$key.'_details'][0] );
+                //if is contact details and is in a channel
+                if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[explode( '_', $key )[1]] ) ) {
+                    if ( strpos( $key, "details" ) === false ) {
+                        $type = explode( '_', $key )[1];
+                        $fields["contact_" . $type][] = self::format_contact_details( $meta_fields, $type, $key, $value[0] );
                     }
-                    $phone_details["number"] = $value[0];
-                    $phone_details["key"] = $key;
-                    $phone_details["type_label"] = self::$channel_list["phone"]["types"][$phone_details["type"]]["label"];
-                    $fields[ "phone_numbers" ][] = $phone_details;
-                } else if ( strpos( $key, "contact_email" ) === 0 && strpos( $key, "details" ) === false){
-                    $email_details = ["type"=>"primary"];
-                    if ( isset( $meta_fields[$key.'_details'] )){
-                        $email_details = $meta_fields[$key.'_details'];
-                    }
-                    $email_details["email"] = $value[0];
-                    $email_details["key"] = $key;
-                    $fields[ "emails" ][] = $email_details;
                 } else if ( strpos( $key, "address" ) === 0){
                     $fields[ "address" ][$key] = $value;
                 } else if ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
@@ -310,6 +301,20 @@ class Disciple_Tools_Contacts
         } else {
             return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), [ 'contact_id' => $contact_id ] );
         }
+    }
+
+    public static function format_contact_details( $meta_fields, $type, $key, $value ){
+
+        $details = [];
+        if ( isset( $meta_fields[$key.'_details'][0] )){
+            $details = unserialize( $meta_fields[$key.'_details'][0] );
+        }
+        $details["value"] = $value;
+        $details["key"] = $key;
+        if ( isset( $details["type"] )){
+            $details["type_label"] = self::$channel_list[$type]["types"][$details["type"]]["label"];
+        }
+        return $details ;
     }
 
     public static function merge_contacts( $base_contact, $duplicate_contact ){
@@ -495,15 +500,15 @@ class Disciple_Tools_Contacts
             $update = [];
             $key = key( $field );
 
-            if ( $key == "contact_quick_button_no_answer") {
+            if ( $key == "quick_button_no_answer") {
                 $update["seeker_path"] = "attempted";
-            } else if ($key == "contact_quick_button_phone_off"){
+            } else if ($key == "quick_button_phone_off"){
                 $update["seeker_path"] = "attempted";
-            } else if ($key == "contact_quick_button_contact_established") {
+            } else if ($key == "quick_button_contact_established") {
                 $update["seeker_path"] = "established";
-            } else if ($key == "contact_quick_button_meeting_scheduled"){
+            } else if ($key == "quick_button_meeting_scheduled"){
                 $update["seeker_path"] = "scheduled";
-            } else if ( $key == "contact_quick_button_meeting_complete"){
+            } else if ( $key == "quick_button_meeting_complete"){
                 $update["seeker_path"] = "met";
             }
 

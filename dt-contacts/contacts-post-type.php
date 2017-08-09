@@ -780,7 +780,7 @@ class Disciple_Tools_Contact_Post_Type {
         ];
 
         // contact buttons
-        $fields['contact_quick_button_no_answer'] = [
+        $fields['quick_button_no_answer'] = [
             'name' => __( 'No Answer', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -788,7 +788,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "no-answer.svg"
         ];
-        $fields['contact_quick_button_phone_off'] = [
+        $fields['quick_button_phone_off'] = [
             'name' => __( 'Phone Off', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -796,7 +796,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "no-answer.svg"
         ];
-        $fields['contact_quick_button_contact_established'] = [
+        $fields['quick_button_contact_established'] = [
             'name' => __( 'Contact Established', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -804,7 +804,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "successful-conversation.svg"
         ];
-        $fields['contact_quick_button_meeting_scheduled'] = [
+        $fields['quick_button_meeting_scheduled'] = [
             'name' => __( 'Meeting Scheduled', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -812,7 +812,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "meeting-scheduled.svg"
         ];
-        $fields['contact_quick_button_meeting_complete'] = [
+        $fields['quick_button_meeting_complete'] = [
             'name' => __( 'Meeting Complete', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -820,7 +820,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "meeting-complete.svg"
         ];
-        $fields['contact_quick_button_no_show'] = [
+        $fields['quick_button_no_show'] = [
             'name' => __( 'Meeting No-show', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -853,14 +853,13 @@ class Disciple_Tools_Contact_Post_Type {
             $names = explode( '_', $value['meta_key'] );
             $tag = null;
 
-            if ($names[1] != $names[2] && strpos( $value["meta_key"], "details" ) == false ){
+            if (strpos( $value["meta_key"], "details" ) == false ){
                 $details = get_post_meta( $post_id, $value['meta_key'] . "_details", true );
                 if ($details){
-                    $tag =  ' ('. ucwords( $details["type"] ) . ')';
+                    if ($names[1] != $details["type"]){
+                        $tag =  ' ('. ucwords( $details["type"] ) . ')';
+                    }
                 }
-            }
-
-            if ( strpos( $value["meta_key"], "details" ) == false ){
                 $fields[$value['meta_key']] = [
                     'name' => ucwords( $names[1] )  . $tag,
                     'tag' => $names[1],
@@ -887,7 +886,6 @@ class Disciple_Tools_Contact_Post_Type {
             <select name="new-key-contact" class="edit-input"><option value=""></option> ';
         foreach ($channels as $channel_key => $channel) {
             foreach ($channels[$channel_key]["types"] as $type_key => $type ) {
-//                $key   = $this->create_channel_metakey( $channel_key, 'contact' ); // build key
                 $key = $channel_key . '_' . $type_key;
 
                 $html .= '<option value="' . $key . '">' . $channel["label"];
@@ -983,9 +981,9 @@ class Disciple_Tools_Contact_Post_Type {
                 ]
             ],
             "other" => [
-                "label" => __( 'Skype', 'disciple_tools' ),
+                "label" => __( 'Other', 'disciple_tools' ),
                 "types" => [
-                    "other" => ["label"=> __( 'Skype', 'disciple_tools' )]
+                    "other" => ["label"=> __( 'Other', 'disciple_tools' )]
                 ]
             ],
         ];
