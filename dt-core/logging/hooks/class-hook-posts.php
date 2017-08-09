@@ -13,14 +13,14 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         parent::__construct();
     }
-    
+
     protected function _draft_or_post_title( $post = 0 ) {
         $title = get_the_title( $post );
-        
+
         if ( empty( $title ) ) {
             $title = __( '(no title)', 'disciple-tools' );
         }
-        
+
         return $title;
     }
 
@@ -147,7 +147,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'object_name'       => $parent_post['post_title'],
                 'meta_id'           => $mid,
                 'meta_key'          => $meta_key,
-                'meta_value'        => $meta_value,
+                'meta_value'        => is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value,
                 'meta_parent'        => $parent_post['post_parent'],
                 'object_note'       => $object_note,
             ]
@@ -228,6 +228,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      * @return mixed
      */
     protected function _value_name ( $meta_key, $meta_value, $fields ) {
+        if ( is_array( $meta_value )){
+            return serialize( $meta_value );
+        }
 
         if(isset( $fields[$meta_key]['default'][$meta_value] )) { // test if value exists
 
@@ -291,6 +294,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function hooks_p2p_deleted ( $p2p_id ) {
         $this->hooks_p2p_created( $p2p_id, $action = 'disconnected from' );
     }
-    
+
 
 }

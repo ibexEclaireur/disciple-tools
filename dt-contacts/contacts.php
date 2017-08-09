@@ -16,11 +16,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 class Disciple_Tools_Contacts
 {
     public static $contact_fields;
+    public static $channel_list;
 
     public function __construct(){
         add_action(
             'init', function(){
                 self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+                self::$channel_list =  Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
             }
         );
 
@@ -75,6 +77,9 @@ class Disciple_Tools_Contacts
     public static function get_contact_fields(){
         return self::$contact_fields;
     }
+    public static function get_channel_list(){
+        return self::$channel_list;
+    }
 
     /**
      * Create a new Contact
@@ -118,18 +123,17 @@ class Disciple_Tools_Contacts
      * Make sure the field values are the correct format
      *
      * @param  $fields, the contact meta fields
+     * @param  $post_id, the id of the contact
      * @access private
      * @since  0.1
      * @return array
      */
-    private static function check_for_invalid_fields( $fields ){
+    private static function check_for_invalid_fields( $fields, int $post_id = null ){
         $bad_fields = [];
-        $contact_model_fields = self::$contact_fields;
-        //some fields are not in the model
+        $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $contact_model_fields['title'] = "";
         foreach($fields as $field => $value){
-            //	    	@todo check for invald values by type
-            if (!isset( $contact_model_fields[$field] )){
+            if (!isset( $contact_fields[$field] )){
                 $bad_fields[] = $field;
             }
         }
@@ -160,7 +164,7 @@ class Disciple_Tools_Contacts
         if (!$post){
             return new WP_Error( __FUNCTION__, __( "Contact does not exist" ) );
         }
-        $bad_fields = self::check_for_invalid_fields( $fields );
+        $bad_fields = self::check_for_invalid_fields( $fields, $contact_id );
         if (!empty( $bad_fields )){
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
         }
@@ -171,6 +175,22 @@ class Disciple_Tools_Contacts
 
         foreach($fields as $field_id => $value){
             update_post_meta( $contact_id, $field_id, $value );
+        }
+        return $contact_id;
+    }
+
+
+
+    public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ){
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if ($key === "new-number"){
+            $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( "phone", "contact" );
+            update_post_meta( $contact_id, $new_meta_key, $value );
+            $details = ["type"=>"primary", "verified"=>false];
+            update_post_meta( $contact_id, $new_meta_key . "_details", $details );
+            return $new_meta_key;
         }
         return $contact_id;
     }
@@ -236,10 +256,23 @@ class Disciple_Tools_Contacts
 
             $meta_fields = get_post_custom( $contact_id );
             foreach( $meta_fields as $key => $value) {
-                if ( strpos( $key, "contact_phone" ) === 0 ){
-                    $fields[ "phone_numbers" ][$key] = $value;
-                } else if ( strpos( $key, "contact_email" ) === 0){
-                    $fields[ "emails" ][$key] = $value;
+                if ( strpos( $key, "contact_phone" ) === 0 && strpos( $key, "details" ) === false ){
+                    $phone_details = ["type"=>"primary"];
+                    if ( isset( $meta_fields[$key.'_details'][0] )){
+                        $phone_details = unserialize( $meta_fields[$key.'_details'][0] );
+                    }
+                    $phone_details["number"] = $value[0];
+                    $phone_details["key"] = $key;
+                    $phone_details["type_label"] = self::$channel_list["phone"]["types"][$phone_details["type"]]["label"];
+                    $fields[ "phone_numbers" ][] = $phone_details;
+                } else if ( strpos( $key, "contact_email" ) === 0 && strpos( $key, "details" ) === false){
+                    $email_details = ["type"=>"primary"];
+                    if ( isset( $meta_fields[$key.'_details'] )){
+                        $email_details = $meta_fields[$key.'_details'];
+                    }
+                    $email_details["email"] = $value[0];
+                    $email_details["key"] = $key;
+                    $fields[ "emails" ][] = $email_details;
                 } else if ( strpos( $key, "address" ) === 0){
                     $fields[ "address" ][$key] = $value;
                 } else if ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
@@ -313,6 +346,95 @@ class Disciple_Tools_Contacts
         );
         return self::query_with_pagination( $query_args, $query_pagination_args );
     }
+
+    /**
+     * Get Contacts assigned to a user that match a certain priority
+     *
+     * @param  int    $user_id
+     * @param  string $priority One of "update_needed", "meeting_scheduled" and "contact_unattempted"
+     * @param  bool   $check_permissions
+     * @param  array  $query_pagination_args Pass in pagination and ordering parameters if wanted.
+     * @access public
+     * @since  0.1
+     * @return WP_Query | WP_Error
+     */
+    public static function get_user_prioritized_contacts( int $user_id, string $priority, bool $check_permissions = true, array $query_pagination_args = [] ) {
+        if ($check_permissions) {
+            $current_user = wp_get_current_user();
+            // TODO: the current permissions required don't make sense
+            if (! current_user_can( 'edit_contacts' )) {
+                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
+            }
+        }
+
+        $query_args = array(
+            'post_type' => 'contacts',
+            'meta_query' => array(
+                'relation' => 'AND',
+                'assigned_clause' => array(
+                    'key' => 'assigned_to',
+                    'value' => "user-$user_id",
+                ),
+                'status_clause' => array(
+                    'key' => 'overall_status',
+                    'value' => 'accepted',
+                ),
+            ),
+        );
+
+        if ( $priority === 'update_needed' ) {
+            $query_args['meta_query']['requires_update_clause'] = array(
+                'key' => 'requires_update',
+                'value' => 'yes',
+            );
+        } elseif ( $priority === 'meeting_scheduled' ) {
+            $query_args['meta_query']['meeting_scheduled_clause'] = array(
+                'key' => 'seeker_path',
+                'value' => 'scheduled',
+            );
+        } elseif ( $priority === 'contact_unattempted' ) {
+            $query_args['meta_query']['contact_unattempted_clause'] = array(
+                'key' => 'seeker_path',
+                'value' => ['none', null],
+                'compare' => 'IN',
+            );
+        } else {
+            return new WP_Error( "Unrecognised priority argument" );
+        }
+
+        return self::query_with_pagination( $query_args, $query_pagination_args );
+    }
+
+    /**
+     * Get Contacts viewable by a user
+     *
+     * @param  $check_permissions
+     * @param  $query_pagination_args Pass in pagination and ordering parameters if wanted.
+     * @access public
+     * @since  0.1
+     * @return WP_Query | WP_Error
+     */
+    public static function get_viewable_contacts( bool $check_permissions = true, array $query_pagination_args = [] ) {
+        $current_user = wp_get_current_user();
+        if ($check_permissions) {
+            // TODO: improve permission model
+            if (! current_user_can( 'edit_contacts' )) {
+                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
+            }
+        } else {
+            // Does this function even make sense without checking permissions,
+            // since we're getting the contacts viewable by this user?
+            return new WP_Error( __FUNCTION__, __( "Unimplemented" ) );
+        }
+
+        $query_args = array(
+            'post_type' => 'contacts',
+            'nopaging' => true,
+        );
+        return self::query_with_pagination( $query_args, $query_pagination_args );
+    }
+
+
 
     /**
      * Get Contacts assigned to a user's team
