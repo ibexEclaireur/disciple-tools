@@ -314,7 +314,7 @@ class Disciple_Tools_Groups_Post_Type {
         echo ''. $this->meta_box_content( 'church_hidden' );
         echo ''. dt_church_fields_metabox()->content_display();
     }
-    
+
     /**
      * Load type metabox
      */
@@ -341,7 +341,7 @@ class Disciple_Tools_Groups_Post_Type {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
-        
+
         $html = '';
 
         $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_groups' ) . '" />';
@@ -373,7 +373,7 @@ class Disciple_Tools_Groups_Post_Type {
                             $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
                             $html .= '<p class="description">' . $v['description']  .'</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
-                            
+
                             break;
                         case 'key_select':
                             $html .= '<tr class="'. $v['section'] .'" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
@@ -459,15 +459,20 @@ class Disciple_Tools_Groups_Post_Type {
             }
         }
 
-        if ( (isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && (isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
-            $key = strtolower( $_POST['new-key-address'] );
-            $value = $_POST['new-value-address'];
-            add_post_meta( $post_id, $key, $value, true );
-            $_POST[$key] = $value;
-        }
-
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
+
+        if ( (isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && (isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
+            $k = explode( "_",  $_POST['new-key-address'] );
+            $type = $k[1];
+            $number_key = dt_address_metabox()->create_channel_metakey( "address" );
+            $details_key = $number_key . "_details";
+            $details = ['type'=>$type, 'verified'=>false];
+            //save the field and the field details
+            add_post_meta( $post_id, strtolower( $number_key ), $_POST['new-value-address'], true );
+            add_post_meta( $post_id, strtolower( $details_key ), $details, true );
+        }
+
 
         foreach ( $fields as $f ) {
 
@@ -586,7 +591,7 @@ class Disciple_Tools_Groups_Post_Type {
 
         if(isset( $post->ID ) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
             // Address
-            $addresses = dt_address_metabox()->address_fields();
+            $addresses = dt_address_metabox()->address_fields( $post->ID );
             foreach ($addresses as $k => $v) { // sets all others third
                 $fields[$k] = [
                     'name' => ucwords( $v['name'] ),
@@ -597,20 +602,22 @@ class Disciple_Tools_Groups_Post_Type {
                 ];
             }
         } else {
-            $channels = dt_address_metabox()->get_address_list( $this->post_type );
 
-            foreach ($channels as $channel) {
-
-                $key =  strtolower( 'address_' . $channel . '_111' );
-
-                $fields[$key] = [
-                    'name' => ucwords( $channel ) ,
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'address'
-                ];
-            }
+            //TODO Determine use of this section
+//            $channels = dt_address_metabox()->get_address_list( $this->post_type );
+//
+//            foreach ($channels as $channel) {
+//
+//                $key =  strtolower( 'address_' . $channel . '_111' );
+//
+//                $fields[$key] = [
+//                    'name' => ucwords( $channel ) ,
+//                    'description' => '',
+//                    'type' => 'text',
+//                    'default' => '',
+//                    'section' => 'address'
+//                ];
+//            }
         }
 
 

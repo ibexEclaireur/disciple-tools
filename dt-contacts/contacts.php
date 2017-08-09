@@ -17,12 +17,14 @@ class Disciple_Tools_Contacts
 {
     public static $contact_fields;
     public static $channel_list;
+    public static $address_types;
 
     public function __construct(){
         add_action(
             'init', function(){
                 self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
                 self::$channel_list =  Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+                self::$address_types = dt_address_metabox()->get_address_type_list( "contacts" );
             }
         );
 
@@ -265,7 +267,19 @@ class Disciple_Tools_Contacts
                         $fields["contact_" . $type][] = self::format_contact_details( $meta_fields, $type, $key, $value[0] );
                     }
                 } else if ( strpos( $key, "address" ) === 0){
-                    $fields[ "address" ][$key] = $value;
+                    if ( strpos( $key, "_details" ) === false ){
+
+                        $details = [];
+                        if ( isset( $meta_fields[$key.'_details'][0] )){
+                            $details = unserialize( $meta_fields[$key.'_details'][0] );
+                        }
+                        $details["value"] = $value[0];
+                        $details["key"] = $key;
+                        if ( isset( $details["type"] )){
+                            $details["type_label"] = self::$address_types[$details["type"]]["label"];
+                        }
+                        $fields[ "address" ][] = $details;
+                    }
                 } else if ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
                     $label = self::$contact_fields[$key]["default"][$value[0]] ?? current( self::$contact_fields[$key]["default"] );
                     $fields[$key] = [ "key"=>$value[0], "label"=>$label ];
