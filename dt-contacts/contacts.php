@@ -205,6 +205,27 @@ class Disciple_Tools_Contacts
         return $contact_id;
     }
 
+
+
+    public static function update_contact_details( int $contact_id, string $key, array $values, bool $check_permissions ){
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
+            strpos( $key, "_details" ) === false
+        ){
+            $details_key = $key . "_details";
+            $details = get_post_meta( $contact_id, $details_key, true );
+            $details = $details ?? [];
+            foreach($values as $detail_key => $detail_value){
+                $details[$detail_key] = $detail_value;
+            }
+            update_post_meta( $contact_id, $details_key, $details );
+        }
+
+        return $contact_id;
+    }
+
     /**
      * Get a single contact
      *
