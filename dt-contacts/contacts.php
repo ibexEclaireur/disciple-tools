@@ -17,12 +17,14 @@ class Disciple_Tools_Contacts
 {
     public static $contact_fields;
     public static $channel_list;
+    public static $address_types;
 
     public function __construct(){
         add_action(
             'init', function(){
                 self::$contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
                 self::$channel_list =  Disciple_Tools_Contact_Post_Type::instance()->get_channels_list();
+                self::$address_types = dt_address_metabox()->get_address_type_list( "contacts" );
             }
         );
 
@@ -180,18 +182,77 @@ class Disciple_Tools_Contacts
     }
 
 
+    public static function add_location_to_contact( $contact_id, $location_id ){
+        $connect = p2p_type( 'contacts_to_locations' )->connect(
+            $location_id, $contact_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+        if ( is_wp_error( $connect ) ){
+            return $connect;
+        } else {
+            $location = get_post( $location_id );
+            $location->permalink = get_permalink( $location_id );
+            return $location;
+        }
+    }
+    public static function remove_location_from_contact( $contact_id, $location_id ){
+        return p2p_type( 'contacts_to_locations' )->disconnect( $location_id, $contact_id );
+    }
+
 
     public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ){
         if ($check_permissions && ! current_user_can( "edit_contacts" )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
-        if ($key === "new-number"){
-            $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( "phone", "contact" );
+        if (strpos( $key, "new-" ) === 0 ){
+            $type = explode( '-', $key )[1];
+
+            if ($key === "new-address") {
+                $new_meta_key = dt_address_metabox()->create_channel_metakey( "address" );
+            } else if (isset( self::$channel_list[$type] )){
+                //check if this is a new field and is in the channel list
+                $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( $type, "contact" );
+            }
             update_post_meta( $contact_id, $new_meta_key, $value );
-            $details = ["type"=>"primary", "verified"=>false];
+            $details = ["verified"=>false];
             update_post_meta( $contact_id, $new_meta_key . "_details", $details );
             return $new_meta_key;
         }
+        if ($key == "locations"){
+            return self::add_location_to_contact( $contact_id, $value );
+        }
+
+        return $contact_id;
+    }
+
+
+
+    public static function update_contact_details( int $contact_id, string $key, array $values, bool $check_permissions ){
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
+            strpos( $key, "_details" ) === false
+        ){
+            $details_key = $key . "_details";
+            $details = get_post_meta( $contact_id, $details_key, true );
+            $details = $details ?? [];
+            foreach($values as $detail_key => $detail_value){
+                $details[$detail_key] = $detail_value;
+            }
+            update_post_meta( $contact_id, $details_key, $details );
+        }
+
+        return $contact_id;
+    }
+    public static function delete_contact_details( int $contact_id, string $key, string $value, bool $check_permissions ){
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if ( $key === "locations" ){
+            return self::remove_location_from_contact( $contact_id, $value );
+        }
+
         return $contact_id;
     }
 
@@ -256,25 +317,26 @@ class Disciple_Tools_Contacts
 
             $meta_fields = get_post_custom( $contact_id );
             foreach( $meta_fields as $key => $value) {
-                if ( strpos( $key, "contact_phone" ) === 0 && strpos( $key, "details" ) === false ){
-                    $phone_details = ["type"=>"primary"];
-                    if ( isset( $meta_fields[$key.'_details'][0] )){
-                        $phone_details = unserialize( $meta_fields[$key.'_details'][0] );
+                //if is contact details and is in a channel
+                if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[explode( '_', $key )[1]] ) ) {
+                    if ( strpos( $key, "details" ) === false ) {
+                        $type = explode( '_', $key )[1];
+                        $fields["contact_" . $type][] = self::format_contact_details( $meta_fields, $type, $key, $value[0] );
                     }
-                    $phone_details["number"] = $value[0];
-                    $phone_details["key"] = $key;
-                    $phone_details["type_label"] = self::$channel_list["phone"]["types"][$phone_details["type"]]["label"];
-                    $fields[ "phone_numbers" ][] = $phone_details;
-                } else if ( strpos( $key, "contact_email" ) === 0 && strpos( $key, "details" ) === false){
-                    $email_details = ["type"=>"primary"];
-                    if ( isset( $meta_fields[$key.'_details'] )){
-                        $email_details = $meta_fields[$key.'_details'];
-                    }
-                    $email_details["email"] = $value[0];
-                    $email_details["key"] = $key;
-                    $fields[ "emails" ][] = $email_details;
                 } else if ( strpos( $key, "address" ) === 0){
-                    $fields[ "address" ][$key] = $value;
+                    if ( strpos( $key, "_details" ) === false ){
+
+                        $details = [];
+                        if ( isset( $meta_fields[$key.'_details'][0] )){
+                            $details = unserialize( $meta_fields[$key.'_details'][0] );
+                        }
+                        $details["value"] = $value[0];
+                        $details["key"] = $key;
+                        if ( isset( $details["type"] )){
+                            $details["type_label"] = self::$address_types[$details["type"]]["label"];
+                        }
+                        $fields[ "address" ][] = $details;
+                    }
                 } else if ( isset( self::$contact_fields[$key] ) && self::$contact_fields[$key]["type"] == "key_select" ) {
                     $label = self::$contact_fields[$key]["default"][$value[0]] ?? current( self::$contact_fields[$key]["default"] );
                     $fields[$key] = [ "key"=>$value[0], "label"=>$label ];
@@ -310,6 +372,20 @@ class Disciple_Tools_Contacts
         } else {
             return new WP_Error( __FUNCTION__, __( "No contact found with ID" ), [ 'contact_id' => $contact_id ] );
         }
+    }
+
+    public static function format_contact_details( $meta_fields, $type, $key, $value ){
+
+        $details = [];
+        if ( isset( $meta_fields[$key.'_details'][0] )){
+            $details = unserialize( $meta_fields[$key.'_details'][0] );
+        }
+        $details["value"] = $value;
+        $details["key"] = $key;
+        if ( isset( $details["type"] )){
+            $details["type_label"] = self::$channel_list[$type]["types"][$details["type"]]["label"];
+        }
+        return $details ;
     }
 
     public static function merge_contacts( $base_contact, $duplicate_contact ){
@@ -553,20 +629,25 @@ class Disciple_Tools_Contacts
             $update = [];
             $key = key( $field );
 
-            if ( $key == "contact_quick_button_no_answer") {
+            if ( $key == "quick_button_no_answer") {
                 $update["seeker_path"] = "attempted";
-            } else if ($key == "contact_quick_button_phone_off"){
+            } else if ($key == "quick_button_phone_off"){
                 $update["seeker_path"] = "attempted";
-            } else if ($key == "contact_quick_button_contact_established") {
+            } else if ($key == "quick_button_contact_established") {
                 $update["seeker_path"] = "established";
-            } else if ($key == "contact_quick_button_meeting_scheduled"){
+            } else if ($key == "quick_button_meeting_scheduled"){
                 $update["seeker_path"] = "scheduled";
-            } else if ( $key == "contact_quick_button_meeting_complete"){
+            } else if ( $key == "quick_button_meeting_complete"){
                 $update["seeker_path"] = "met";
             }
 
             return $response = self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
         }
+    }
+
+    public static function get_assignable_users( $contact_id ){
+        $users = get_users();
+        return $users;
     }
 
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){

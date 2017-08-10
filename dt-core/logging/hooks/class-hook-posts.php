@@ -291,8 +291,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     }
 
-    public function hooks_p2p_deleted ( $p2p_id ) {
-        $this->hooks_p2p_created( $p2p_id, $action = 'disconnected from' );
+    //note: delete is given an array of ids
+    public function hooks_p2p_deleted ( $p2p_ids ) {
+        $this->hooks_p2p_created( $p2p_ids[0], $action = 'disconnected from' );
     }
 
 

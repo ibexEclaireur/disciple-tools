@@ -38,19 +38,24 @@ class Disciple_Tools_Metabox_Address {
         $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
         $html .= '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
 
-        $channels = $this->get_address_list( $post->post_type );
+        $address_types = $this->get_address_type_list( $post->post_type );
 
         $html .= '<tr><th>
                 <select name="new-key-address" class="edit-input"><option value=""></option> ';
-        foreach ($channels as $channel) {
+        foreach ($address_types as $type => $value) {
 
-            $key =  $this->create_channel_metakey( $channel, 'address' ); // build key
-            $names = explode( "_", $key ); // separates primary name from type tag
+            $key =  "address_" . $type;
 
-            $html .= '<option value="'.$key.'">'.$names[1] . '</option>';
+            $html .= '<option value="'.$key.'">'. $value["label"] . '</option>';
         }
         $html .= '</select></th>';
-        $html .= '<td><input type="text" name="new-value-address" id="new-address" class="edit-input" placeholder="i.e. 888 West Street, Los Angelos CO 90210" /></td><td><button type="submit" class="button">Save</button></td></tr>';
+        $html .= '<td>
+                <input type="text" name="new-value-address" id="new-address" class="edit-input" placeholder="i.e. 888 West Street, Los Angelos CO 90210" />
+            </td>
+            <td>
+                <button type="submit" class="button">Save</button>
+            </td>
+            </tr>';
 
         $html .= '</tbody></table>';
         return $html;
@@ -62,8 +67,8 @@ class Disciple_Tools_Metabox_Address {
      * @param  $channel
      * @return string
      */
-    public function create_channel_metakey ( $channel, $type ) {
-        return $type . '_' . $channel . '_' . $this->unique_hash(); // build key
+    public function create_channel_metakey ( $channel ) {
+        return $channel . '_' . $this->unique_hash(); // build key
     }
 
     /**
@@ -80,27 +85,27 @@ class Disciple_Tools_Metabox_Address {
      *
      * @return array
      */
-    public function get_address_list ( $post_type ) {
+    public function get_address_type_list ( $post_type ) {
 
         switch ($post_type) {
             case 'contacts':
                 $addresses = [
-                    __( 'Home', 'disciple_tools' ),
-                    __( 'Work', 'disciple_tools' ),
-                    __( 'Other', 'disciple_tools' ),
+                    "home" => ["label" => __( 'Home', 'disciple_tools' )],
+                    "work" => ["label" => __( 'Work', 'disciple_tools' )],
+                    "other"=> ["label" => __( 'Other', 'disciple_tools' )],
                 ];
                 return $addresses;
                 break;
             case 'groups':
                 $addresses = [
-                    __( 'Main', 'disciple_tools' ),
-                    __( 'Alternate', 'disciple_tools' ),
+                    "main" => ["label" => __( 'Main', 'disciple_tools' )],
+                    "alternate" => ["label" => __( 'Alternate', 'disciple_tools' )],
                 ];
                 return $addresses;
                 break;
             case 'locations':
                 $addresses = [
-                    __( 'Address', 'disciple_tools' ),
+                    "main" => ["label" => __( 'Main', 'disciple_tools' )],
                 ];
                 return $addresses;
                 break;
@@ -115,29 +120,35 @@ class Disciple_Tools_Metabox_Address {
      *
      * @return array
      */
-    public function address_fields () {
+    public function address_fields ( $post_id ) {
         global $wpdb, $post;
 
         $fields = [];
         $current_fields = [];
 
-        if (isset( $post->ID )){
+        $id = $post->ID ?? $post_id;
+        if (isset( $id )){
             $current_fields = $wpdb->get_results(
                 "
                               SELECT meta_key 
                               FROM $wpdb->postmeta 
-                              WHERE post_id = $post->ID 
+                              WHERE post_id = $id 
                                 AND meta_key LIKE 'address_%' 
                               ORDER BY meta_key DESC", ARRAY_A
             );
         }
 
         foreach ($current_fields as $value) {
-            $names = explode( '_', $value['meta_key'] );
-
-            $fields[$value['meta_key']] = [
-                'name' => $names[1] ,
-            ];
+            if ( strpos( $value["meta_key"], "_details" ) == false ){
+                $details = get_post_meta( $id, $value['meta_key'] . "_details", true );
+                $name = "";
+                if ($details && isset( $details["type"] )){
+                    $name = $details["type"];
+                }
+                $fields[$value['meta_key']] = [
+                    'name' => $name ,
+                ];
+            }
         }
         return $fields;
     }

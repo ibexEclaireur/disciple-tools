@@ -417,7 +417,14 @@ class Disciple_Tools_Contact_Post_Type {
         $fields = array_keys( $field_data );
 
         if ( (isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && (isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, strtolower( $_POST['new-key-address'] ), $_POST['new-value-address'], true );
+            $k = explode( "_",  $_POST['new-key-address'] );
+            $type = $k[1];
+            $number_key = dt_address_metabox()->create_channel_metakey( "address" );
+            $details_key = $number_key . "_details";
+            $details = ['type'=>$type, 'verified'=>false];
+            //save the field and the field details
+            add_post_meta( $post_id, strtolower( $number_key ), $_POST['new-value-address'], true );
+            add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
 
         if ( (isset( $_POST['new-key-contact'] ) && !empty( $_POST['new-key-contact'] ) ) && (isset( $_POST['new-value-contact'] ) && !empty( $_POST['new-value-contact'] ) ) ) { // catch and prepare new contact fields
@@ -427,6 +434,7 @@ class Disciple_Tools_Contact_Post_Type {
             $number_key = $this->create_channel_metakey( $channel, "contact" );
             $details_key = $number_key . "_details";
             $details = ['type'=>$type, 'verified'=>false];
+            //save the field and the field details
             add_post_meta( $post_id, strtolower( $number_key ), $_POST['new-value-contact'], true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
@@ -609,8 +617,21 @@ class Disciple_Tools_Contact_Post_Type {
                 }
             }
 
+            foreach ($methods as $k => $v) { // address
+                $keys = explode( '_', $k );
+                if($keys[0] == 'address_' && sizeof( $keys ) === 2 ) {
+                    $fields[$k] = [
+                        'name' => ucwords( $v['name'] ),
+                        'description' => '',
+                        'type' => 'text',
+                        'default' => '',
+                        'section' => 'info'
+                    ];
+                }
+            }
+
             // Address
-            $addresses = dt_address_metabox()->address_fields();
+            $addresses = dt_address_metabox()->address_fields( $id );
             foreach ($addresses as $k => $v) { // sets all others third
                 $fields[$k] = [
                     'name' => ucwords( $v['name'] ),
@@ -625,41 +646,44 @@ class Disciple_Tools_Contact_Post_Type {
         } else {
             // TODO: I don't understand why this is only run when we're not
             // getting info for the current post
-            $channels = $this->get_channels_list();
+//            I commented this code out because it appears it is not being used
 
-            foreach ($channels as $channel_key => $channel) {
-                foreach($channel["types"] as $type_key => $type){
 
-                    $tag = null;
+//            $channels = $this->get_channels_list();
 
-                    $key =  strtolower( 'contact_' . $channel_key . '_' . $type_key . '_111' );
+//            foreach ($channels as $channel_key => $channel) {
+//                foreach($channel["types"] as $type_key => $type){
+//
+//                    $tag = null;
+//
+//                    $key =  strtolower( 'contact_' . $channel_key . '_' . $type_key . '_111' );
+//
+//                    if($channel["label"] != $type["label"]) { $tag = ' ('. ucwords( $type["label"] ) . ')'; }
+//
+//                    $fields[$key] = [
+//                        'name' => ucwords( $channel["label"] ) . $tag,
+//                        'description' => '',
+//                        'type' => 'text',
+//                        'default' => '',
+//                        'section' => 'info'
+//                    ];
+//                }
+//            }
 
-                    if($channel["label"] != $type["label"]) { $tag = ' ('. ucwords( $type["label"] ) . ')'; }
+//            $address_types = dt_address_metabox()->get_address_type_list( $this->post_type );
 
-                    $fields[$key] = [
-                        'name' => ucwords( $channel["label"] ) . $tag,
-                        'description' => '',
-                        'type' => 'text',
-                        'default' => '',
-                        'section' => 'info'
-                    ];
-                }
-            }
-
-            $channels = dt_address_metabox()->get_address_list( $this->post_type );
-
-            foreach ($channels as $channel) {
-
-                $key =  strtolower( 'address_' . $channel . '_111' );
-
-                $fields[$key] = [
-                    'name' => ucwords( $channel ) ,
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'address'
-                ];
-            }
+//            foreach ($address_types as $key => $type) {
+//
+//                $key =  strtolower( 'address_11' . $index );
+//
+//                $fields[$key] = [
+//                    'name' => ucwords( $type ) ,
+//                    'description' => '',
+//                    'type' => 'text',
+//                    'default' => '',
+//                    'section' => 'address'
+//                ];
+//            }
         }
 
 
@@ -780,7 +804,7 @@ class Disciple_Tools_Contact_Post_Type {
         ];
 
         // contact buttons
-        $fields['contact_quick_button_no_answer'] = [
+        $fields['quick_button_no_answer'] = [
             'name' => __( 'No Answer', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -788,7 +812,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "no-answer.svg"
         ];
-        $fields['contact_quick_button_phone_off'] = [
+        $fields['quick_button_phone_off'] = [
             'name' => __( 'Phone Off', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -796,7 +820,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "no-answer.svg"
         ];
-        $fields['contact_quick_button_contact_established'] = [
+        $fields['quick_button_contact_established'] = [
             'name' => __( 'Contact Established', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -804,7 +828,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "successful-conversation.svg"
         ];
-        $fields['contact_quick_button_meeting_scheduled'] = [
+        $fields['quick_button_meeting_scheduled'] = [
             'name' => __( 'Meeting Scheduled', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -812,7 +836,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "meeting-scheduled.svg"
         ];
-        $fields['contact_quick_button_meeting_complete'] = [
+        $fields['quick_button_meeting_complete'] = [
             'name' => __( 'Meeting Complete', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -820,7 +844,7 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'quick_buttons',
             'icon' => "meeting-complete.svg"
         ];
-        $fields['contact_quick_button_no_show'] = [
+        $fields['quick_button_no_show'] = [
             'name' => __( 'Meeting No-show', 'disciple_tools' ),
             'description' => '',
             'type' => 'number',
@@ -846,21 +870,26 @@ class Disciple_Tools_Contact_Post_Type {
 
         $id = $post->ID ?? $post_id;
         if (isset( $post->ID ) || isset( $post_id )){
-            $current_fields = $wpdb->get_results( "SELECT meta_key FROM $wpdb->postmeta WHERE post_id = $id AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+            $current_fields = $wpdb->get_results(
+                "SELECT meta_key 
+                FROM $wpdb->postmeta 
+                WHERE post_id = $id 
+                AND meta_key LIKE 'contact_%' 
+                ORDER BY meta_key DESC", ARRAY_A
+            );
         }
 
         foreach ($current_fields as $value) {
             $names = explode( '_', $value['meta_key'] );
             $tag = null;
 
-            if ($names[1] != $names[2] && strpos( $value["meta_key"], "details" ) == false ){
-                $details = get_post_meta( $post_id, $value['meta_key'] . "_details", true );
-                if ($details){
-                    $tag =  ' ('. ucwords( $details["type"] ) . ')';
+            if (strpos( $value["meta_key"], "_details" ) == false ){
+                $details = get_post_meta( $id, $value['meta_key'] . "_details", true );
+                if ($details && isset( $details["type"] )){
+                    if ($names[1] != $details["type"]){
+                        $tag =  ' ('. ucwords( $details["type"] ) . ')';
+                    }
                 }
-            }
-
-            if ( strpos( $value["meta_key"], "details" ) == false ){
                 $fields[$value['meta_key']] = [
                     'name' => ucwords( $names[1] )  . $tag,
                     'tag' => $names[1],
@@ -887,7 +916,6 @@ class Disciple_Tools_Contact_Post_Type {
             <select name="new-key-contact" class="edit-input"><option value=""></option> ';
         foreach ($channels as $channel_key => $channel) {
             foreach ($channels[$channel_key]["types"] as $type_key => $type ) {
-//                $key   = $this->create_channel_metakey( $channel_key, 'contact' ); // build key
                 $key = $channel_key . '_' . $type_key;
 
                 $html .= '<option value="' . $key . '">' . $channel["label"];
@@ -983,9 +1011,9 @@ class Disciple_Tools_Contact_Post_Type {
                 ]
             ],
             "other" => [
-                "label" => __( 'Skype', 'disciple_tools' ),
+                "label" => __( 'Other', 'disciple_tools' ),
                 "types" => [
-                    "other" => ["label"=> __( 'Skype', 'disciple_tools' )]
+                    "other" => ["label"=> __( 'Other', 'disciple_tools' )]
                 ]
             ],
         ];

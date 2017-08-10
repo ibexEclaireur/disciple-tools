@@ -467,7 +467,14 @@ class Disciple_Tools_People_Groups_Post_Type {
         $fields = array_keys( $field_data );
 
         if ( (isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && (isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
-            add_post_meta( $post_id, strtolower( $_POST['new-key-address'] ), $_POST['new-value-address'], true );
+            $k = explode( "_",  $_POST['new-key-address'] );
+            $type = $k[1];
+            $number_key = dt_address_metabox()->create_channel_metakey( "address" );
+            $details_key = $number_key . "_details";
+            $details = ['type'=>$type, 'verified'=>false];
+            //save the field and the field details
+            add_post_meta( $post_id, strtolower( $number_key ), $_POST['new-value-address'], true );
+            add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
 
         foreach ( $fields as $f ) {
