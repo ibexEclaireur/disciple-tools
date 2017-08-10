@@ -182,6 +182,23 @@ class Disciple_Tools_Contacts
     }
 
 
+    public static function add_location_to_contact( $contact_id, $location_id ){
+        $connect = p2p_type( 'contacts_to_locations' )->connect(
+            $location_id, $contact_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+        if ( is_wp_error( $connect ) ){
+            return $connect;
+        } else {
+            $location = get_post( $location_id );
+            $location->permalink = get_permalink( $location_id );
+            return $location;
+        }
+    }
+    public static function remove_location_from_contact( $contact_id, $location_id ){
+        return p2p_type( 'contacts_to_locations' )->disconnect( $location_id, $contact_id );
+    }
+
 
     public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ){
         if ($check_permissions && ! current_user_can( "edit_contacts" )) {
@@ -200,6 +217,9 @@ class Disciple_Tools_Contacts
             $details = ["verified"=>false];
             update_post_meta( $contact_id, $new_meta_key . "_details", $details );
             return $new_meta_key;
+        }
+        if ($key == "locations"){
+            return self::add_location_to_contact( $contact_id, $value );
         }
 
         return $contact_id;
@@ -221,6 +241,16 @@ class Disciple_Tools_Contacts
                 $details[$detail_key] = $detail_value;
             }
             update_post_meta( $contact_id, $details_key, $details );
+        }
+
+        return $contact_id;
+    }
+    public static function delete_contact_details( int $contact_id, string $key, string $value, bool $check_permissions ){
+        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if ( $key === "locations" ){
+            return self::remove_location_from_contact( $contact_id, $value );
         }
 
         return $contact_id;
