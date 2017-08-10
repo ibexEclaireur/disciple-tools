@@ -615,6 +615,11 @@ class Disciple_Tools_Contacts
         }
     }
 
+    public static function get_assignable_users( $contact_id ){
+        $users = get_users();
+        return $users;
+    }
+
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){
 //        @todo better permissions?
         if ($check_permissions && ! current_user_can( "edit_contacts" )) {
