@@ -187,15 +187,21 @@ class Disciple_Tools_Contacts
         if ($check_permissions && ! current_user_can( "edit_contacts" )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
-        //check if this is a new field and is in the channel list
-        if ( strpos( $key, "new-" ) === 0 &&
-            isset( self::$channel_list[explode( '-', $key )[1]] )){
-            $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( "phone", "contact" );
+        if (strpos( $key, "new-" ) === 0 ){
+            $type = explode( '-', $key )[1];
+
+            if ($key === "new-address") {
+                $new_meta_key = dt_address_metabox()->create_channel_metakey( "address" );
+            } else if (isset( self::$channel_list[$type] )){
+                //check if this is a new field and is in the channel list
+                $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( $type, "contact" );
+            }
             update_post_meta( $contact_id, $new_meta_key, $value );
-            $details = ["type"=>"primary", "verified"=>false];
+            $details = ["verified"=>false];
             update_post_meta( $contact_id, $new_meta_key . "_details", $details );
             return $new_meta_key;
         }
+
         return $contact_id;
     }
 

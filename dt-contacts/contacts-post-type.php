@@ -885,7 +885,7 @@ class Disciple_Tools_Contact_Post_Type {
 
             if (strpos( $value["meta_key"], "_details" ) == false ){
                 $details = get_post_meta( $id, $value['meta_key'] . "_details", true );
-                if ($details){
+                if ($details && isset( $details["type"] )){
                     if ($names[1] != $details["type"]){
                         $tag =  ' ('. ucwords( $details["type"] ) . ')';
                     }
