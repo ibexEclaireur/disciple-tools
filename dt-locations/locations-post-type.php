@@ -534,22 +534,23 @@ class Disciple_Tools_Location_Post_Type {
                     'section' => 'address'
                 ];
             }
-        } else {
-            $channels = dt_address_metabox()->get_address_list( $this->post_type );
-
-            foreach ($channels as $channel) {
-
-                $key =  strtolower( 'address_' . $channel . '_111' );
-
-                $fields[$key] = [
-                    'name' => ucwords( $channel ) ,
-                    'description' => '',
-                    'type' => 'text',
-                    'default' => '',
-                    'section' => 'address'
-                ];
-            }
         }
+//        else {
+//            $channels = dt_address_metabox()->get_address_list( $this->post_type );
+//
+//            foreach ($channels as $channel) {
+//
+//                $key =  strtolower( 'address_' . $channel . '_111' );
+//
+//                $fields[$key] = [
+//                    'name' => ucwords( $channel ) ,
+//                    'description' => '',
+//                    'type' => 'text',
+//                    'default' => '',
+//                    'section' => 'address'
+//                ];
+//            }
+//        }
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
