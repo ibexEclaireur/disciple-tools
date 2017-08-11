@@ -15,6 +15,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 add_action( 'init', 'set_permalink_structure' );
 add_action( 'permalink_structure_changed', 'permalink_structure_changed_callback' );
+//unconditionally allow duplicate comments
+add_filter( 'duplicate_comment_id', '__return_false' );
+
 
 
 /*********************************************************************************************
