@@ -400,7 +400,8 @@ class Disciple_Tools_Contacts_Endpoints
             if ( is_wp_error( $result ) ){
                 return $result;
             } else {
-                return new WP_REST_Response( ["comment_id"=>$result] );
+                $comment = get_comment( $result );
+                return new WP_REST_Response( ["comment_id"=>$result, "comment"=>$comment] );
             }
         } else {
             return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
