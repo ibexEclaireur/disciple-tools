@@ -255,7 +255,6 @@ class Disciple_Tools {
             require_once( 'dt-core/admin/enqueue-scripts.php' ); // Load admin scripts
             require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
             require_once( 'dt-core/admin/restrict-record-access-in-admin.php' ); //
-            require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
             require_once( 'dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
             require_once( 'dt-core/admin/class-better-author-metabox.php' ); // Allows multiple authors to be selected as post author
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
@@ -311,6 +310,8 @@ class Disciple_Tools {
 
         }
         /* End Admin configuration section */
+
+        require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
 
         /**
          * Rest API Support

@@ -289,7 +289,7 @@ class Disciple_Tools_Contacts
                 $l->permalink = get_permalink( $l->ID );
             }
             $fields[ "locations" ] = $locations;
-            $fields[ "groups" ] = get_posts(
+            $groups = get_posts(
                 [
                 'connected_type' => 'contacts_to_groups',
                 'connected_items' => $contact,
@@ -297,23 +297,64 @@ class Disciple_Tools_Contacts
                 'suppress_filters' => false
                 ]
             );
-            $fields[ "baptized" ] = get_posts(
+            foreach($groups as $g) {
+                $g->permalink = get_permalink( $g->ID );
+            }
+            $fields[ "groups" ] = $groups;
+            $baptized = get_posts(
                 [
-                'connected_type' => 'contacts_to_baptized',
+                'connected_type' => 'baptizer_to_baptized',
+                'connected_direction' => 'to',
                 'connected_items' => $contact,
                 'nopaging' => true,
                 'suppress_filters' => false
                 ]
             );
-            $fields[ "relationships" ] = get_posts(
+            foreach($baptized as $b) {
+                $b->fields = p2p_get_meta( $b->p2p_id );
+                $b->permalink = get_permalink( $b->ID );
+            }
+            $fields[ "baptized" ] = $baptized;
+            $baptized_by = get_posts(
+                [
+                'connected_type' => 'baptizer_to_baptized',
+                'connected_direction' => 'from',
+                'connected_items' => $contact,
+                'nopaging' => true,
+                'suppress_filters' => false
+                ]
+            );
+            foreach($baptized_by as $b) {
+                $b->fields = p2p_get_meta( $b->p2p_id );
+                $b->permalink = get_permalink( $b->ID );
+            }
+            $fields[ "baptized_by" ] = $baptized_by;
+            $coaching = get_posts(
                 [
                 'connected_type' => 'contacts_to_contacts',
+                'connected_direction' => 'to',
                 'connected_items' => $contact,
                 'nopaging' => true,
                 'suppress_filters' => false
                 ]
             );
-
+            foreach($coaching as $c) {
+                $c->permalink = get_permalink( $c->ID );
+            }
+            $fields[ "coaching" ] = $coaching;
+            $coached_by = get_posts(
+                [
+                'connected_type' => 'contacts_to_contacts',
+                'connected_direction' => 'from',
+                'connected_items' => $contact,
+                'nopaging' => true,
+                'suppress_filters' => false
+                ]
+            );
+            foreach($coached_by as $c) {
+                $c->permalink = get_permalink( $c->ID );
+            }
+            $fields[ "coached_by" ] = $coached_by;
 
             $meta_fields = get_post_custom( $contact_id );
             foreach( $meta_fields as $key => $value) {

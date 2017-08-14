@@ -779,6 +779,19 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'misc'
         ];
 
+
+        $fields['reason_paused'] = [
+            'name' => __( 'Reason Paused' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => [
+                'none' => '',
+                'vacation' => __( 'On Vacation', 'disciple_tools' ),
+                'not-responding' => __( 'Not Responding', 'disciple_tools' )
+            ],
+            'section' => 'misc'
+        ];
+
         $fields['reason_closed'] = [
             'name' => __( 'Reason Closed', 'disciple_tools' ),
             'description' => '',
