@@ -93,6 +93,10 @@ class Disciple_Tools_Location_Tools_Menu {
         $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
         if ($tab == 'address_tract' ) {$html .= 'nav-tab-active';}
         $html .= '">USA Tract Search</a>';
+    
+        $html .= $tab_link_pre . 'stats' . $tab_link_post;
+        if ($tab == 'stats' ) {$html .= 'nav-tab-active';}
+        $html .= '">Stats</a>';
 
         $html .= '</h2>';
 
@@ -108,6 +112,11 @@ class Disciple_Tools_Location_Tools_Menu {
 
             case "address_tract":
                 $class_object = new Disciple_Tools_Locations_USA_Tract_Lookup();
+                $html .= '' . $class_object->page_contents();
+                break;
+            case "stats":
+                require_once 'admin-tab-stats.php';
+                $class_object = new Disciple_Tools_Locations_Stats();
                 $html .= '' . $class_object->page_contents();
                 break;
             default:
