@@ -29,15 +29,9 @@ class Disciple_Tools_Locations_Tab_Import
         $html .= '<div id="post-body-content">';
         $html .= $this->select_oz_data_dropdown() . '<br>';
         $html .= $this->select_us_census_data_dropdown() . '<br>';
-    
-//        $result =  json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-counties.json' ) );
-//        foreach ($result as $location) {
-//            echo $location->STATEAB . ',' . $location->STATE . ',' . $location->COUNTY . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 3)) . ',' . strtoupper(substr($location->COUNTY_NAME, 0, 2)) . substr($location->COUNTY, -1) .  '<br>';
-//        }
-        
         
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
-        $html .= '<br>'; /* Add content to column */
+        $html .= $this->locations_currently_installed(); /* Add content to column */
         
         $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
         $html .= '';/* Add content to column */
@@ -326,6 +320,54 @@ class Disciple_Tools_Locations_Tab_Import
         $html .= '</tbody>
                 </table>';
         /* End Build Form Box */
+        
+        return $html;
+    }
+    
+    
+    public function locations_currently_installed () {
+        global $wpdb;
+        $count = [];
+        $html = '';
+        
+        // Search for currently installed locations
+        
+        $html .= '<table class="widefat ">
+                    <thead><th>Currently Installed</th></thead>
+                    <tbody>
+                        <tr>
+                            <td>';
+        // Total number of locations in database
+        $html .= 'Total number of location posts: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
+        
+        // Total number of countries
+        $count['countries'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
+        $html .= 'Total number of countries (admin0): <br>' . $count['countries'] . '<br>';
+        
+        
+        // Total number of admin1
+        $count['admin1'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
+        $html .= 'Total number of Admin1: <br>' . $count['admin1'] . '<br>';
+        
+        
+        // Total number of admin2
+        $count['admin2'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
+        $html .= 'Total number of Admin2: <br>' . $count['admin2'] . '<br>';
+        
+        // Total number of admin3
+        $count['admin3'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
+        $html .= 'Total number of Admin3: <br>' . $count['admin3'] . '<br>';
+        
+        // Total number of admin4
+        $count['admin4'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
+        $html .= 'Total number of Admin4: <br>' . $count['admin4'] . '<br>';
+        
+        
+        $html .= '      </td>
+                        </tr>';
+        
+        $html .= '</tbody>
+                </table>';
         
         return $html;
     }
