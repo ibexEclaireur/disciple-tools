@@ -183,20 +183,60 @@ class Disciple_Tools_Contacts
 
 
     public static function add_location_to_contact( $contact_id, $location_id ){
-        $connect = p2p_type( 'contacts_to_locations' )->connect(
+        return p2p_type( 'contacts_to_locations' )->connect(
             $location_id, $contact_id,
             array('date' => current_time( 'mysql' ) )
         );
-        if ( is_wp_error( $connect ) ){
-            return $connect;
-        } else {
-            $location = get_post( $location_id );
-            $location->permalink = get_permalink( $location_id );
-            return $location;
-        }
     }
+
+    public static function add_group_to_contact( $contact_id, $group_id ){
+        return p2p_type( 'contacts_to_groups' )->connect(
+            $group_id, $contact_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
+    public static function add_baptized_by_to_contact( $contact_id, $baptized_by ){
+        return p2p_type( 'baptizer_to_baptized' )->connect(
+            $contact_id, $baptized_by,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
+    public static function add_baptized_to_contact( $contact_id, $baptized ){
+        return p2p_type( 'baptizer_to_baptized' )->connect(
+            $baptized, $contact_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
+    public static function add_coached_by_to_contact( $contact_id, $coached_by ){
+        return p2p_type( 'contacts_to_contacts' )->connect(
+            $contact_id, $coached_by,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
+    public static function add_coaching_to_contact( $contact_id, $coaching ){
+        return p2p_type( 'contacts_to_contacts' )->connect(
+            $coaching, $contact_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
+
     public static function remove_location_from_contact( $contact_id, $location_id ){
         return p2p_type( 'contacts_to_locations' )->disconnect( $location_id, $contact_id );
+    }
+    public static function remove_group_from_contact( $contact_id, $group_id ){
+        return p2p_type( 'contacts_to_groups' )->disconnect( $group_id, $contact_id );
+    }
+    public static function remove_baptized_by_from_contact( $contact_id, $baptized_by ){
+        return p2p_type( 'baptizer_to_baptized' )->disconnect( $contact_id, $baptized_by );
+    }
+    public static function remove_baptized_from_contact( $contact_id, $baptized ){
+        return p2p_type( 'baptizer_to_baptized' )->disconnect( $baptized, $contact_id );
+    }
+    public static function remove_coached_by_from_contact( $contact_id, $coached_by ){
+        return p2p_type( 'contacts_to_contacts' )->disconnect( $contact_id, $coached_by );
+    }
+    public static function remove_coaching_from_contact( $contact_id, $coaching ){
+        return p2p_type( 'contacts_to_contacts' )->disconnect( $coaching, $contact_id );
     }
 
 
@@ -218,11 +258,30 @@ class Disciple_Tools_Contacts
             update_post_meta( $contact_id, $new_meta_key . "_details", $details );
             return $new_meta_key;
         }
-        if ($key == "locations"){
-            return self::add_location_to_contact( $contact_id, $value );
+        $connect = null;
+        if ($key === "locations"){
+            $connect = self::add_location_to_contact( $contact_id, $value );
+        } else if ($key === "groups"){
+            $connect =  self::add_group_to_contact( $contact_id, $value );
+        } else if ($key === "baptized_by"){
+            $connect = self::add_baptized_by_to_contact( $contact_id, $value );
+        } else if ($key === "baptized"){
+            $connect = self::add_baptized_to_contact( $contact_id, $value );
+        } else if ($key === "coached_by"){
+            $connect = self::add_coached_by_to_contact( $contact_id, $value );
+        } else if ($key === "coaching"){
+            $connect = self::add_coaching_to_contact( $contact_id, $value );
+        }
+        if (is_wp_error( $connect )){
+            return $connect;
+        }
+        if ($connect){
+            $connection = get_post( $value );
+            $connection->permalink = get_permalink( $value );
+            return $connection;
         }
 
-        return $contact_id;
+        return new WP_Error( "add_contact_detail", "Field not recognized", ["status"=>400] );
     }
 
 
@@ -251,9 +310,19 @@ class Disciple_Tools_Contacts
         }
         if ( $key === "locations" ){
             return self::remove_location_from_contact( $contact_id, $value );
+        } else if( $key === "groups" )  {
+            return self::remove_group_from_contact( $contact_id, $value );
+        } else if ( $key === "baptized_by" ){
+            return self::remove_baptized_by_from_contact( $contact_id, $value );
+        } else if ( $key === "baptized" ){
+            return self::remove_baptized_from_contact( $contact_id, $value );
+        } else if ( $key === "coached_by" ){
+            return self::remove_coached_by_from_contact( $contact_id, $value );
+        } else if ( $key === "coaching" ){
+            return self::remove_coaching_from_contact( $contact_id, $value );
         }
 
-        return $contact_id;
+        return false;
     }
 
     /**

@@ -311,6 +311,8 @@ class Disciple_Tools_Contacts_Endpoints
             $result = Disciple_Tools_Contacts::delete_contact_details( $params['id'], $field_key, $value, true );
             if ( is_wp_error( $result ) ){
                 return $result;
+            } else if ( $result == 0){
+                return new WP_Error( "delete_contact_details", "Could not update contact", ['status' => 400] );
             } else {
                 return new WP_REST_Response( $result );
             }

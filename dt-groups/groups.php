@@ -13,4 +13,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class Disciple_Tools_Groups {
 
+    public static function get_groups (){
+        $query_args = array(
+            'post_type' => 'groups',
+            'orderby' => 'ID',
+            'nopaging' => true,
+        );
+        $query = new WP_Query( $query_args );
+        return $query->posts;
+    }
 }
