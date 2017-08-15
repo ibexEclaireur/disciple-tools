@@ -252,13 +252,14 @@ class Disciple_Tools_Contacts_Endpoints
                     $contact_array[$meta_key] = $meta_value[0];
                 } elseif ( $meta_key == "assigned_to" ) {
                     $type_and_id = explode( '-', $meta_value[0] );
-                    $contact_array['assigned_to'] = array(
-                        'type' => $type_and_id[0],
-                        'id' => (int) $type_and_id[1],
-                    );
-                    if ($type_and_id[0] === 'user') {
-                        $contact_array['assigned_to']['name'] = get_user_by( 'id', (int) $type_and_id[1] )->display_name;
-                        $contact_array['assigned_to']['user_login'] = get_user_by( 'id', (int) $type_and_id[1] )->user_login;
+                    if ( $type_and_id[0] == "dispatch" ){
+                        $contact_array["assigned_to"] = ["type"=>"dispatch", "name"=>"Dispatch"];
+                    } else if ( $type_and_id[0] == 'user') {
+                        $user = get_user_by( 'id', (int) $type_and_id[1] );
+                        $contact_array["assigned_to"] = ["id"=>$type_and_id[1], "type" => $type_and_id[0], "name" => $user->display_name, 'user_login' => $user->user_login];
+                    } else {
+                        $assigned = get_term( $type_and_id[1] );
+                        $contact_array["assigned_to"] = ["id" => $type_and_id[1], "type" => $type_and_id[0], "name" => $assigned->name];
                     }
                 }
             }
