@@ -502,6 +502,21 @@ class Disciple_Tools_Contacts
 
     }
 
+    public static function get_activity( $contact_id ){
+        global $wpdb;
+
+        $q = $wpdb->prepare(
+            'SELECT * from %1$s
+            WHERE `object_type` = "contacts"
+            AND `object_id` = "%2$s"
+            ;',
+            $wpdb->activity,
+            $contact_id
+        );
+        $activity = $wpdb->get_results( $q );
+        return $activity;
+    }
+
     /**
      * Get Contacts assigned to a user
      *

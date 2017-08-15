@@ -129,6 +129,12 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [$this, 'get_comments']
             ]
         );
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/activity', [
+                "methods" => "GET",
+                "callback" => [$this, 'get_activity']
+            ]
+        );
     }
 
 
@@ -422,7 +428,21 @@ class Disciple_Tools_Contacts_Endpoints
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
+            return new WP_Error( "get_comments", "Missing a valid contact id", ['status' => 400] );
+        }
+
+    }
+    public function get_activity( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::get_activity( $params['id'], true );
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "get_activity", "Missing a valid contact id", ['status' => 400] );
         }
 
     }
