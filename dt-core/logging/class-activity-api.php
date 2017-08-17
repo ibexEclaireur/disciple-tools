@@ -162,6 +162,10 @@ class Disciple_Tools_Activity_Log_API {
             [ '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' ]
         );
 
+        if ( isset( $args["object_id"] ) && isset( $args["object_subtype"] ) && $args["object_subtype"] !== "last_modified" ){
+            update_post_meta( $args["object_id"], "last_modified", time() );
+        }
+
         // Final action on insert.
         do_action( 'dt_insert_activity', $args );
     }

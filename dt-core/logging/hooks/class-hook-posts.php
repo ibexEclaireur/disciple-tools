@@ -7,7 +7,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         add_action( 'transition_post_status', [ &$this, 'hooks_transition_post_status' ], 10, 3 );
         add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
         add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta'], 10, 4 );
-        add_action( "updated_postmeta", [ &$this, 'hooks_updated_post_meta'], 10, 4 );
+        add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta'], 10, 4 );
         add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created'], 10, 1 );
         add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted'], 10, 1 );
 
@@ -108,7 +108,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
 
-        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') { // ignore edit locks
+        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last' || $meta_key == "last_modified") { // ignore edit locks
             return;
         }
 
@@ -158,7 +158,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
 
-        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last') { // ignore edit lock
+        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last' || $meta_key == "last_modified") { // ignore edit lock
             return;
         }
 
