@@ -81,7 +81,7 @@ class Disciple_Tools_Activity_Log_API {
                 'object_name'    => '',
                 'object_id'      => '',
                 'hist_ip'        => $this->_get_ip_address(),
-                'hist_time'      => current_time( 'timestamp' ),
+                'hist_time'      => time(),
                 'object_note'    => '',
                 'meta_id'        => '',
                 'meta_key'       => '',
@@ -89,7 +89,7 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_parent'     => '',
             ]
         );
-
+//        $temp = date("h:i:sa");
         $user = get_user_by( 'id', get_current_user_id() );
         if ( $user ) {
             $args['user_caps'] = strtolower( key( $user->caps ) );
