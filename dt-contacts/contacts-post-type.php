@@ -779,6 +779,20 @@ class Disciple_Tools_Contact_Post_Type {
             'section' => 'misc'
         ];
 
+        $fields["reason_unassignable"] = [
+            'name' => __( 'Reason Unassaginable' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => [
+                'none' => '',
+                'insufficient' => __( 'Insufficient Contact Information' ),
+                'location' => __( 'Unknown Location' ),
+                'media' => __( 'Only wants media' ),
+                'outside_area' => __( 'Outside Area' ),
+                'needs_review' => __( 'Needs Review' ),
+            ],
+            'section' => 'misc'
+        ];
 
         $fields['reason_paused'] = [
             'name' => __( 'Reason Paused' ),
