@@ -154,7 +154,7 @@ class Disciple_Tools_Contacts
      */
     public static function update_contact( int $contact_id, array $fields, bool $check_permissions = true ){
 
-        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+        if ($check_permissions && ! self::can_update_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
 
@@ -241,7 +241,7 @@ class Disciple_Tools_Contacts
 
 
     public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ){
-        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+        if ($check_permissions && ! self::can_update_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
         if (strpos( $key, "new-" ) === 0 ){
@@ -287,7 +287,7 @@ class Disciple_Tools_Contacts
 
 
     public static function update_contact_details( int $contact_id, string $key, array $values, bool $check_permissions ){
-        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+        if ($check_permissions && ! self::can_update_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
         if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
@@ -305,7 +305,7 @@ class Disciple_Tools_Contacts
         return $contact_id;
     }
     public static function delete_contact_details( int $contact_id, string $key, string $value, bool $check_permissions ){
-        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+        if ($check_permissions && ! self::can_update_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
         if ( $key === "locations" ){
@@ -335,10 +335,7 @@ class Disciple_Tools_Contacts
      * @return WP_Post| WP_Error, On success: the contact, else: the error message
      */
     public static function get_contact( int $contact_id, bool $check_permissions = true ){
-
-        //@todo restrict to only get contact's the user has access to
-
-        if ($check_permissions && ! current_user_can( 'read_contact' )) {
+        if ($check_permissions && ! self::can_view_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), ['status' => 403] );
         }
 
@@ -533,14 +530,8 @@ class Disciple_Tools_Contacts
      * @return WP_Query | WP_Error
      */
     public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] ) {
-        if ($check_permissions) {
-            $current_user = wp_get_current_user();
-            // TODO: the current permissions required don't make sense
-            if (! current_user_can( 'edit_contacts' )
-                || ($user_id != $current_user->ID && ! current_user_can( 'edit_team_contacts' )))
-            {
-                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
-            }
+        if ($check_permissions && ! self::can_access_contacts()) {
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
         }
 
         $query_args = array(
@@ -566,9 +557,7 @@ class Disciple_Tools_Contacts
      */
     public static function get_user_prioritized_contacts( int $user_id, string $priority, bool $check_permissions = true, array $query_pagination_args = [] ) {
         if ($check_permissions) {
-            $current_user = wp_get_current_user();
-            // TODO: the current permissions required don't make sense
-            if (! current_user_can( 'edit_contacts' )) {
+            if (! self::can_access_contacts() ) {
                 return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
             }
         }
@@ -621,22 +610,20 @@ class Disciple_Tools_Contacts
      * @return WP_Query | WP_Error
      */
     public static function get_viewable_contacts( bool $check_permissions = true, array $query_pagination_args = [] ) {
-        $current_user = wp_get_current_user();
-        if ($check_permissions) {
-            // TODO: improve permission model
-            if (! current_user_can( 'edit_contacts' )) {
-                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
-            }
-        } else {
-            // Does this function even make sense without checking permissions,
-            // since we're getting the contacts viewable by this user?
-            return new WP_Error( __FUNCTION__, __( "Unimplemented" ) );
+        if ($check_permissions && !self::can_access_contacts()) {
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
         }
+        $current_user = wp_get_current_user();
 
         $query_args = array(
             'post_type' => 'contacts',
             'nopaging' => true,
         );
+        if (!self::can_view_all_contacts()){
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-". $current_user->ID;
+
+        }
         return self::query_with_pagination( $query_args, $query_pagination_args );
     }
 
@@ -655,7 +642,7 @@ class Disciple_Tools_Contacts
         if ($check_permissions) {
             $current_user = wp_get_current_user();
             // TODO: the current permissions required don't make sense
-            if (! current_user_can( 'edit_contacts' )
+            if (! self::can_access_contacts()
                 || ($user_id != $current_user->ID && ! current_user_can( 'edit_team_contacts' )))
             {
                 return new WP_Error( __FUNCTION__, __( "You do not have permission" ), ['status' => 404] );
@@ -782,7 +769,7 @@ class Disciple_Tools_Contacts
 
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){
 //        @todo better permissions?
-        if ($check_permissions && ! current_user_can( "edit_contacts" )) {
+        if ($check_permissions && ! self::can_update_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
         $user = wp_get_current_user();
@@ -793,7 +780,8 @@ class Disciple_Tools_Contacts
             'user_id' => $user_id,
             'comment_author' => $user->display_name,
             'comment_author_url' => $user->user_url,
-            'comment_author_email' => $user->user_email
+            'comment_author_email' => $user->user_email,
+            'comment_type' => 'comment'
         ];
 
         return wp_new_comment( $comment_data );
@@ -801,11 +789,56 @@ class Disciple_Tools_Contacts
 
     public static function get_comments ( int $contact_id, bool $check_permissions = true ){
         //@todo restrict to only get contact's the user has access to
-        if ($check_permissions && ! current_user_can( 'read_contact' )) {
+        if ($check_permissions && ! self::can_view_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), ['status' => 403] );
         }
         $comments = get_comments( ['post_id'=>$contact_id] );
         return $comments;
     }
 
+
+    public static function can_access_contacts(){
+        return current_user_can( "access_contacts" );
+    }
+
+    public static function can_view_contact( int $contact_id ){
+        if ( current_user_can( 'view_any_contact' )){
+            return true;
+        } else {
+            $user = wp_get_current_user();
+            $assigned_to = get_post_meta( $contact_id, "assigned_to", true );
+            if ( $assigned_to === "user-".$user->ID ){
+                return true;
+            }
+//          @todo check if the user is following this contact
+        }
+        return false;
+    }
+
+    public static function can_update_contact( int $contact_id ){
+        if ( current_user_can( 'update_any_contact' )){
+            return true;
+        } else {
+            $user = wp_get_current_user();
+            $assigned_to = get_post_meta( $contact_id, "assigned_to", true );
+            if ( $assigned_to === "user-".$user->ID ){
+                return true;
+            }
+//          @todo check if the user is following this contact and can update
+
+        }
+        return false;
+    }
+
+    public static function can_delete_contact( int $contact_id ){
+        return current_user_can( 'delete_any_contact' );
+    }
+
+    public static function can_create_contact(){
+        return current_user_can( 'create_contacts' );
+    }
+
+    public static function can_view_all_contacts(){
+        return current_user_can( 'view_any_contact' );
+    }
 }

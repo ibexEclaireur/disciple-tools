@@ -152,15 +152,15 @@ class Disciple_Tools_Contact_Post_Type {
             'feeds'                 => false,
         ];
         $capabilities = [
-            'edit_post'             => 'edit_contact',
-            'read_post'             => 'read_contact',
-            'delete_post'           => 'delete_contact',
-            'delete_others_posts'   => 'delete_others_contacts',
-            'delete_posts'          => 'delete_contacts',
-            'edit_posts'            => 'edit_contacts',
-            'edit_others_posts'     => 'edit_others_contacts',
-            'publish_posts'         => 'publish_contacts',
-            'read_private_posts'    => 'read_private_contacts',
+            'edit_post'             => 'access_contacts',
+            'read_post'             => 'access_contacts',
+            'delete_post'           => 'delete_any_contact',
+            'delete_others_posts'   => 'delete_any_contact',
+            'delete_posts'          => 'delete_any_contact',
+            'edit_posts'            => 'access_contacts',
+            'edit_others_posts'     => 'update_any_contact',
+            'publish_posts'         => 'create_contacts',
+            'read_private_posts'    => 'view_any_contact',
         ];
         $defaults = [
             'label'                 => __( 'Contact', 'disciple_tools' ),
