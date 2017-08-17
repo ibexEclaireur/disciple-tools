@@ -246,7 +246,11 @@ class Disciple_Tools_Contacts_Endpoints
             }
             $contact_array['groups'] = array();
             foreach ( $contact->groups as $group ) {
-                $contact_array['groups'][] = $group->post_title;
+                $contact_array['groups'][] = array(
+                    'id' => $group->ID,
+                    'post_title' => $group->post_title,
+                    'permalink' => get_permalink( $group->ID ),
+                );
             }
             $contact_array['phone_numbers'] = array();
             $contact_array['requires_update'] = false;
