@@ -758,7 +758,11 @@ class Disciple_Tools_Contacts
                 $update["seeker_path"] = "met";
             }
 
-            return $response = self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
+            if ( isset( $update["seeker_path"] )){
+                return $response = self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
+            } else {
+                return $contact_id;
+            }
         }
     }
 
