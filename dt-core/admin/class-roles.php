@@ -540,17 +540,14 @@ class Disciple_Tools_Roles {
         if ( ! empty( $role ) ) {
 
             /* Add contacts permissions */
-            $role->add_cap( 'manage_contacts' );
-            $role->add_cap( 'edit_contact' );
-            $role->add_cap( 'read_contact' );
-            $role->add_cap( 'delete_contact' );
-            $role->add_cap( 'delete_others_contacts' );
-            $role->add_cap( 'delete_contacts' );
-            $role->add_cap( 'edit_contacts' );
-            $role->add_cap( 'edit_others_contacts' );
-            $role->add_cap( 'edit_team_contacts' );
-            $role->add_cap( 'publish_contacts' );
-            $role->add_cap( 'read_private_contacts' );
+            $role->add_cap( 'access_contacts' );
+            $role->add_cap( 'create_contacts' );
+            $role->add_cap( 'update_contacts' );
+            $role->add_cap( 'update_shared_contacts' );
+            $role->add_cap( 'view_any_contact' );
+            $role->add_cap( 'assign_any_contact' );
+            $role->add_cap( 'update_any_contact' );
+            $role->add_cap( 'delete_any_contact' );
             /* Add Groups permissions */
             $role->add_cap( 'edit_group' );
             $role->add_cap( 'read_group' );
