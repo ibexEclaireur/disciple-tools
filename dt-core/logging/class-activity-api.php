@@ -89,7 +89,6 @@ class Disciple_Tools_Activity_Log_API {
                 'meta_parent'     => '',
             ]
         );
-//        $temp = date("h:i:sa");
         $user = get_user_by( 'id', get_current_user_id() );
         if ( $user ) {
             $args['user_caps'] = strtolower( key( $user->caps ) );
