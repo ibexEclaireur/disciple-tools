@@ -13,30 +13,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 /**
- *
- * @return mixed
- */
-function dt_get_contact_edit_form () {
-
-    if(class_exists( 'Disciple_Tools' )) {
-
-        // Create the title field
-        $html = '<input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce" value="' . wp_create_nonce( 'update_dt_contacts' ) . '" />';
-        $html .= '<input name="post_title" type="text" id="post_title" class="regular-text" value="'. esc_html( get_the_title() ) .'" />' ;
-        echo $html;
-
-
-        // Call the metadata fields
-        $contact = Disciple_Tools_Contact_Post_Type::instance();
-
-        echo $contact->meta_box_content( 'all' );
-
-
-    } // end if class exists
-
-}
-
-/**
  * Save contact
  */
 function dt_save_contact( $post ) {
