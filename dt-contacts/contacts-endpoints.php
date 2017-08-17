@@ -256,7 +256,7 @@ class Disciple_Tools_Contacts_Endpoints
                 } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
                     $contact_array[$meta_key] = $this->yes_no_to_boolean( $meta_value[0] );
                 } elseif ( $meta_key === "seeker_path" ) {
-                    $contact_array[$meta_key] = $meta_value[0];
+                    $contact_array[$meta_key] = $meta_value[0] ? $meta_value[0] : "none";
                 } elseif ( $meta_key == "assigned_to" ) {
                     $type_and_id = explode( '-', $meta_value[0] );
                     if ( $type_and_id[0] == "dispatch" ){
