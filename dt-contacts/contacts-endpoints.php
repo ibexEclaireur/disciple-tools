@@ -249,11 +249,12 @@ class Disciple_Tools_Contacts_Endpoints
                 $contact_array['groups'][] = $group->post_title;
             }
             $contact_array['phone_numbers'] = array();
+            $contact_array['requires_update'] = false;
             foreach ( $meta_fields as $meta_key => $meta_value ) {
                 if ( strpos( $meta_key, "contact_phone" ) === 0 && strpos( $meta_key, "details" ) === false) {
                     $contact_array['phone_numbers'] = array_merge( $contact_array['phone_numbers'], $meta_value );
                 } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
-                    $contact_array[$meta_key] = $meta_value[0] === "yes";
+                    $contact_array[$meta_key] = $this->yes_no_to_boolean( $meta_value[0] );
                 } elseif ( $meta_key === "seeker_path" ) {
                     $contact_array[$meta_key] = $meta_value[0];
                 } elseif ( $meta_key == "assigned_to" ) {
@@ -267,6 +268,8 @@ class Disciple_Tools_Contacts_Endpoints
                         $assigned = get_term( $type_and_id[1] );
                         $contact_array["assigned_to"] = ["id" => $type_and_id[1], "type" => $type_and_id[0], "name" => $assigned->name];
                     }
+                } elseif ( $meta_key == "requires_update" ) {
+                    $contact_array[$meta_key] = $this->yes_no_to_boolean( $meta_value[0] );
                 }
             }
             $rv[] = $contact_array;
@@ -274,6 +277,15 @@ class Disciple_Tools_Contacts_Endpoints
         return $rv;
     }
 
+    private static function yes_no_to_boolean( string $yes_no ) {
+        if ( $yes_no === 'yes' ) {
+            return true;
+        } else if ( $yes_no === 'no' ) {
+            return false;
+        } else {
+            throw new Error( "Expected yes or no, instead got $yes_no" );
+        }
+    }
 
     public function add_contact_details( WP_REST_Request $request ){
         $params = $request->get_params();
