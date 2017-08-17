@@ -246,7 +246,11 @@ class Disciple_Tools_Contacts_Endpoints
             }
             $contact_array['groups'] = array();
             foreach ( $contact->groups as $group ) {
-                $contact_array['groups'][] = $group->post_title;
+                $contact_array['groups'][] = array(
+                    'id' => $group->ID,
+                    'post_title' => $group->post_title,
+                    'permalink' => get_permalink( $group->ID ),
+                );
             }
             $contact_array['phone_numbers'] = array();
             $contact_array['requires_update'] = false;
@@ -256,7 +260,7 @@ class Disciple_Tools_Contacts_Endpoints
                 } elseif ( strpos( $meta_key, "milestone_" ) === 0 ) {
                     $contact_array[$meta_key] = $this->yes_no_to_boolean( $meta_value[0] );
                 } elseif ( $meta_key === "seeker_path" ) {
-                    $contact_array[$meta_key] = $meta_value[0];
+                    $contact_array[$meta_key] = $meta_value[0] ? $meta_value[0] : "none";
                 } elseif ( $meta_key == "assigned_to" ) {
                     $type_and_id = explode( '-', $meta_value[0] );
                     if ( $type_and_id[0] == "dispatch" ){
