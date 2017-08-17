@@ -768,7 +768,6 @@ class Disciple_Tools_Contacts
     }
 
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){
-//        @todo better permissions?
         if ($check_permissions && ! self::can_update_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
@@ -788,7 +787,6 @@ class Disciple_Tools_Contacts
     }
 
     public static function get_comments ( int $contact_id, bool $check_permissions = true ){
-        //@todo restrict to only get contact's the user has access to
         if ($check_permissions && ! self::can_view_contact( $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), ['status' => 403] );
         }
