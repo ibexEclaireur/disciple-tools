@@ -12,26 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 /** Functions to output data for the theme. @see Buddypress bp-members-template.php or bp-groups-template.php for an example of the role of this page  */
 
 
-/**
- * Save contact
- */
-function dt_save_contact( $post ) {
-    if(class_exists( 'Disciple_Tools' )) {
-
-        if($post['post_title'] != get_the_title()) {
-            $my_post = [
-                'ID'           => get_the_ID(),
-                'post_title'   => $post['post_title'],
-            ];
-            wp_update_post( $my_post );
-        }
-
-        $contact = Disciple_Tools_Contact_Post_Type::instance();
-        $contact->meta_box_save( get_the_ID() );
-
-        wp_redirect( get_permalink() );
-    }
-}
 
 /**
  * Get Number of Contacts for a Location
@@ -41,34 +21,6 @@ function dt_save_contact( $post ) {
 function dt_get_contacts_at_location( $post_id, $user_id ) {
     return 0; //TODO
 }
-
-/**
- * Get an array of records that require an update
- */
-function dt_get_requires_update ( $user_id ) {
-    $assigned_to = 'user-' . $user_id;
-
-    // Search for records assigned to user and have the meta_key requires_update and meta_value Yes
-    // Build arrays for current groups connected to user
-    $meta_query_args = [
-        'relation' => 'AND', // Optional, defaults to "AND"
-        [
-            'key'     => 'assigned_to',
-            'value'   => $assigned_to,
-            'compare' => '='
-        ],
-        [
-            'key'     => 'requires_update',
-            'value'   => 'Yes',
-            'compare' => '='
-        ]
-    ];
-
-    $query = new WP_Query( $meta_query_args );
-
-    return $query;
-}
-
 
 /**
  * Updates meta_data from form response

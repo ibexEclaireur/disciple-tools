@@ -135,6 +135,13 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [$this, 'get_activity']
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/accept', [
+                "methods" => "POST",
+                "callback" => [$this, 'accept_contact']
+            ]
+        );
     }
 
 
@@ -462,4 +469,22 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
     }
+
+
+    public function accept_contact( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::accept_contact( $params['id'], $body["accept"], true );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
+        }
+    }
+
 }

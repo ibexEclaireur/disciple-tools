@@ -175,10 +175,16 @@ class Disciple_Tools_Contacts
             wp_update_post( ['ID'=>$contact_id, 'post_title'=>$fields['title']] );
         }
 
+        if (current_user_can( "assign_any_contact" )){
+            if (isset( $fields["assigned_to"] )){
+                $fields["overall_status"] = 'assigned';
+            }
+        }
+
         foreach($fields as $field_id => $value){
             update_post_meta( $contact_id, $field_id, $value );
         }
-        return $contact_id;
+        return self::get_contact( $contact_id, true );
     }
 
 
@@ -454,15 +460,19 @@ class Disciple_Tools_Contacts
                         } else {
                             $meta_array = explode( '-', $value[0] ); // Separate the type and id
                             $type = $meta_array[0]; // Build variables
-                            $id = $meta_array[1];
 
                             if ( $type == "dispatch" ){
-                            } else if ( $type == 'user') {
-                                $user = get_user_by( 'id', $id );
-                                $fields[$key] = ["id"=>$id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0]];
-                            } else {
-                                $assigned = get_term( $id );
-                                $fields[$key] = ["id" => $id, "type" => $type, "display" => $assigned->name, "assigned-to" => $value[0]];
+
+
+                            } else if (isset( $meta_array[1] )){
+                                $id = $meta_array[1];
+                                if ( $type == 'user' ) {
+                                    $user = get_user_by( 'id', $id );
+                                    $fields[$key] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0] ];
+                                } else {
+                                    $assigned = get_term( $id );
+                                    $fields[$key] = [ "id" => $id, "type" => $type, "display" => $assigned->name, "assigned-to" => $value[0] ];
+                                }
                             }
                         }
                     }
@@ -842,5 +852,23 @@ class Disciple_Tools_Contacts
 
     public static function can_view_all_contacts(){
         return current_user_can( 'view_any_contact' );
+    }
+
+
+    public static function accept_contact( int $contact_id, bool $accepted, bool $check_permissions ){
+        if (!self::can_update_contact( $contact_id )){
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+
+        if ($accepted){
+            update_post_meta( $contact_id, 'overall_status', 'accepted' );
+            return ["overall_status"=> self::$contact_fields["overall_status"]["default"]['accepted']];
+        } else {
+            update_post_meta( $contact_id, 'assigned_to', $meta_value = 'dispatch' );
+            update_post_meta( $contact_id, 'overall_status', $meta_value = 'unassigned' );
+            return [
+                "assigned_to" => 'dispatch'
+            ];
+        }
     }
 }

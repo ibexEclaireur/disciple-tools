@@ -543,6 +543,7 @@ class Disciple_Tools_Contact_Post_Type {
             'type' => 'key_select',
             'default' => [
                 'unassigned' => __( 'Unassigned', 'disciple_tools' ),
+                'assigned' => __( "Assigned", 'disciple_tools' ),
                 'accepted' => __( 'Accepted', 'disciple_tools' ),
                 'paused' => __( 'Paused', 'disciple_tools' ),
                 'closed' => __( 'Closed', 'disciple_tools' ),
