@@ -196,8 +196,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 'object_name'       => $parent_post['post_title'],
                 'meta_id'           => $meta_id,
                 'meta_key'          => $meta_key,
-                'meta_value'        => $meta_value,
-                'meta_parent'        => $parent_post['post_parent'],
+                'meta_value'        => is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value,
+                'meta_parent'       => $parent_post['post_parent'],
                 'object_note'       => $object_note,
             ]
         );
