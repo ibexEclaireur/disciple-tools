@@ -179,6 +179,20 @@ class Disciple_Tools_Activator {
             dbDelta( $sql3 );
             update_option( 'dt_reportmeta_db_version', $version );
         }
+    
+        /* Report Meta Log Table */
+        $table_name = $wpdb->prefix . 'dt_follow';
+        if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+            $sql4 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
+					  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+					  `user_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+					  `contact_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+					  `meta` LONGTEXT,
+					  PRIMARY KEY (`id`)
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+            dbDelta( $sql4 );
+            update_option( 'dt_follow_db_version', $version );
+        }
 
     }
 
