@@ -750,7 +750,7 @@ class Disciple_Tools_Contacts
 
     public static function quick_action_button( int $contact_id, array $field, bool $check_permissions = true ){
         $response = self::update_contact( $contact_id, $field, true );
-        if ($response != $contact_id){
+        if ( !isset( $response->ID ) || $response->ID != $contact_id ){
             return $response;
         } else {
             $update = [];
@@ -769,7 +769,7 @@ class Disciple_Tools_Contacts
             }
 
             if ( isset( $update["seeker_path"] )){
-                return $response = self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
+                return self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
             } else {
                 return $contact_id;
             }

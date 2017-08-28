@@ -436,7 +436,7 @@ class Disciple_Tools_Contacts_Endpoints
                 return new WP_REST_Response( ["comment_id"=>$result, "comment"=>$comment] );
             }
         } else {
-            return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
+            return new WP_Error( "post_comment", "Missing a valid contact id", ['status' => 400] );
         }
 
     }
@@ -483,7 +483,7 @@ class Disciple_Tools_Contacts_Endpoints
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
+            return new WP_Error( "accept_contact", "Missing a valid contact id", ['status' => 400] );
         }
     }
 
