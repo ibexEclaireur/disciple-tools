@@ -106,56 +106,13 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
     public function hooks_added_post_meta ( $mid, $object_id, $meta_key, $meta_value ) {
 
-        $parent_post = get_post( $object_id, ARRAY_A ); // get object info
+        return $this->hooks_updated_post_meta( $mid, $object_id, $meta_key, $meta_value, true );
 
-        if ($meta_key == '_edit_lock' || $meta_key == '_edit_last' || $meta_key == "last_modified") { // ignore edit locks
-            return;
-        }
-
-        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type']  ) { // ignore navigation items & large location imports use post_content_filtered
-            return;
-        }
-
-        switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
-            case 'contacts':
-                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
-                break;
-            case 'groups':
-                $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
-                break;
-            case 'locations':
-                $fields = Disciple_Tools_Location_Post_Type::instance()->get_custom_fields_settings();
-                break;
-            default:
-                $fields = '';
-                break;
-        }
-
-
-        if (!empty( $fields )) { // Build object note if contact, group, location, else ignore object note
-            $object_note = $this->_key_name( $meta_key, $fields ) . ' was changed to ' . $this->_value_name( $meta_key, $meta_value, $fields );
-        } else {
-            $object_note = '';
-        }
-
-        dt_activity_insert( // insert activity record
-            [
-                'action'            => 'field_update',
-                'object_type'       => $parent_post['post_type'],
-                'object_subtype'    => $meta_key,
-                'object_id'         => $object_id,
-                'object_name'       => $parent_post['post_title'],
-                'meta_id'           => $mid,
-                'meta_key'          => $meta_key,
-                'meta_value'        => is_array( $meta_value ) ? serialize( $meta_value ) : $meta_value,
-                'meta_parent'        => $parent_post['post_parent'],
-                'object_note'       => $object_note,
-            ]
-        );
     }
 
-    public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value ) {
 
+    public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value, $new = false ) {
+        global $wpdb;
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
 
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last' || $meta_key == "last_modified") { // ignore edit lock
@@ -166,9 +123,59 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
+
+        // get the previous value
+        $prev = '';
+        $prev_value = '';
+        if (!$new){
+            $q = $wpdb->prepare(
+                'SELECT * from %1$s
+                WHERE `object_type` = "%2$s"
+                AND `object_id` = "%3$s"
+                AND `meta_id` = "%4$s"
+                ORDER BY hist_time DESC
+                LIMIT 0,1;',
+                $wpdb->activity,
+                $parent_post['post_type'],
+                $object_id,
+                $meta_id
+            );
+            $prev = $wpdb->get_results( $q );
+
+        }
+        if (!empty( $prev )){
+            if ( is_array( $meta_value )){
+                $prev_value = unserialize( $prev[0]->meta_value );
+            } else {
+                $prev_value = $prev[0]->meta_value;
+            }
+        }
+
+        $object_note = '';
         switch ($parent_post['post_type']) { // get custom fields for post type. Else, skip object note.
             case 'contacts':
-                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings();
+                $fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( true, $object_id );
+                if (strpos( $meta_key,"quick_button" ) !== false ){
+                    $object_note = $this->_key_name( $meta_key, $fields );
+                }
+                if (strpos( $meta_key, "_details" ) !== false && is_array( $meta_value )) {
+                    $original_key = str_replace( "_details", "", $meta_key );
+                    $original = get_post_meta( $object_id, $original_key, true );
+                    $object_note = $this->_key_name( $original_key, $fields ) . ' "'. $original .'" ';
+                    foreach($meta_value as $k => $v){
+                        if (is_array( $prev_value ) && isset( $prev_value[$k] ) && $prev_value[$k] == $v){
+                            continue;
+                        }
+                        if ($k === "verified") {
+                            $object_note .= $v ? "verified" : "invalidated";
+                        }
+                        if ($k === "invalid") {
+                            $object_note .= $v ? "invalidated" : "verified";
+                        }
+                        $object_note .= ', ';
+                    }
+                    $object_note = chop( $object_note, ', ' );
+                }
                 break;
             case 'groups':
                 $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
@@ -181,10 +188,18 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 break;
         }
 
-        if (!empty( $fields )) { // Build object note if contact, group, location, else ignore object note
-            $object_note = $this->_key_name( $meta_key, $fields ) . ' was changed to ' . $this->_value_name( $meta_key, $meta_value, $fields );
-        } else {
-            $object_note = '';
+
+
+
+        if (!empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
+            if ($new){
+                $object_note = 'Added ' . $this->_key_name( $meta_key, $fields ) . ': ' . $this->_value_name( $meta_key, $meta_value, $fields );
+            } else {
+                $object_note = $this->_key_name( $meta_key, $fields ) . ' changed '  .
+                    (isset( $prev_value ) ? 'from "' . $this->_value_name( $meta_key, $prev_value, $fields ) .'"' : '') .
+                    ' to "' . $this->_value_name( $meta_key, $meta_value, $fields ) . '"';
+
+            }
         }
 
         dt_activity_insert( // insert activity record
@@ -276,6 +291,14 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             } else {
                 $object_note_to = $p2p_to['post_title'] . ' no longer coaching ' . $p2p_from['post_title'];
                 $object_note_from= $p2p_from['post_title'] . ' no longed coached by ' . $p2p_to['post_title'];
+            }
+        } else if( $p2p_type === "contacts_to_locations"){
+            if ($action == "connected to"){
+                $object_note_to = $p2p_from['post_title'] . ' in location ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' in location ' . $p2p_to['post_title'];
+            } else {
+                $object_note_to = $p2p_from['post_title'] . ' no longer in location ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' no longer in location ' . $p2p_to['post_title'];
             }
         }
 
