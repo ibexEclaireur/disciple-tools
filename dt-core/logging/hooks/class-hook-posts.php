@@ -253,9 +253,39 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         // Build variables
         $p2p_type = $p2p_record->p2p_type;
+        if ($p2p_type === "baptizer_to_baptized"){
+            if ($action === "connected to"){
+                $object_note_to = $p2p_to['post_title'] . ' baptized ' . $p2p_from['post_title'];
+                $object_note_from= $p2p_from['post_title'] . ' was baptized by ' . $p2p_to['post_title'];
+            } else {
+                $object_note_to = $p2p_to['post_title'] . ' did not baptize ' . $p2p_from['post_title'];
+                $object_note_from= $p2p_from['post_title'] . ' was not baptized by ' . $p2p_to['post_title'];
+            }
+        } else if ($p2p_type === "contacts_to_groups"){
+            if ($action == "connected to"){
+                $object_note_to = $p2p_from['post_title'] . ' in group ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' in group ' . $p2p_to['post_title'];
+            } else {
+                $object_note_to = $p2p_from['post_title'] . ' no longer in group ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' no longer in group ' . $p2p_to['post_title'];
+            }
+        } else if( $p2p_type === "contacts_to_contacts"){
+            if ($action === "connected to"){
+                $object_note_to = $p2p_to['post_title'] . ' is coaching ' . $p2p_from['post_title'];
+                $object_note_from= $p2p_from['post_title'] . ' is coached by ' . $p2p_to['post_title'];
+            } else {
+                $object_note_to = $p2p_to['post_title'] . ' no longer coaching ' . $p2p_from['post_title'];
+                $object_note_from= $p2p_from['post_title'] . ' no longed coached by ' . $p2p_to['post_title'];
+            }
+        }
 
-        $object_note_from = $p2p_from['post_title'] . ' was ' . $action . ' ' . $p2p_to['post_title'];
-        $object_note_to = $p2p_to['post_title'] . ' was ' . $action . ' ' . $p2p_from['post_title'];
+
+        if (!$object_note_from){
+            $object_note_from = $p2p_from['post_title'] . ' was ' . $action . ' ' . $p2p_to['post_title'];
+        }
+        if (!$object_note_to){
+            $object_note_to = $p2p_to['post_title'] . ' was ' . $action . ' ' . $p2p_from['post_title'];
+        }
 
 
         // Log for both records
