@@ -133,8 +133,8 @@ class Ga_Admin
     {
         if (current_user_can( 'manage_options' )) {
             add_submenu_page(
-                'options-general.php', __( 'Analytics (DT)', 'disciple_tools' ),
-                __( 'Analytics (DT)', 'disciple_tools' ), 'manage_options', 'googleanalytics/settings', 'Ga_Admin::options_page_googleanalytics' 
+                'dt_options', __( 'Analytics (DT)', 'disciple_tools' ),
+                __( 'Analytics (DT)', 'disciple_tools' ), 'manage_options', 'googleanalytics/settings', 'Ga_Admin::options_page_googleanalytics'
             );
         }
     }

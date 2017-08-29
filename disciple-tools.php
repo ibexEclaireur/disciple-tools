@@ -307,6 +307,10 @@ class Disciple_Tools {
             require_once( 'dt-core/logging/class-activity-admin-ui.php' ); // contacts and groups report building
             require_once( 'dt-core/logging/class-activity-list-table.php' ); // contacts and groups report building
             require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
+            
+            // Options Menu
+            require_once( 'dt-core/admin/class-menu.php' );
+            $this->page = Disciple_Tools_Options_Menu::instance();
 
         }
         /* End Admin configuration section */

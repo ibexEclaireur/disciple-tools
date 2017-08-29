@@ -178,6 +178,8 @@ class Disciple_Tools_Roles {
                 'read_private_posts' => true,
                 'upload_files' => true,
                 'level_0' => true,
+                /* Manage DT Options */
+                'manage_dt' => true,
                 /* See all contacts */
                 'manage_contacts' => true,
                 /* Add custom caps for contacts */
@@ -277,6 +279,9 @@ class Disciple_Tools_Roles {
                 'read' => true,
                 'level_0' => true,
 
+                /* Manage DT Options */
+                'manage_dt' => true,
+                
                 /* Add custom caps for contacts */
                 'access_contacts' => true,
                 'create_contacts' => true,  //create a new contact
@@ -539,6 +544,8 @@ class Disciple_Tools_Roles {
         // If the administrator role exists, add required capabilities for the plugin.
         if ( ! empty( $role ) ) {
 
+            /* Manage DT configuration */
+            $role->add_cap( 'manage_dt' );
             /* Add contacts permissions */
             $role->add_cap( 'access_contacts' );
             $role->add_cap( 'create_contacts' );

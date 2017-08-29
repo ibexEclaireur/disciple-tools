@@ -138,7 +138,7 @@ class Disciple_Tools_Facebook_Integration {
      */
     public function add_facebook_settings_menu () {
         add_submenu_page(
-            'options-general.php', __( 'Facebook (DT)', 'disciple_tools' ),
+            'dt_options', __( 'Facebook (DT)', 'disciple_tools' ),
             __( 'Facebook (DT)', 'disciple_tools' ), 'manage_options', $this->context, [ $this, 'facebook_settings_page' ]
         );
     } // End register_settings_screen()

@@ -49,8 +49,8 @@ class Disciple_Tools_Api_Keys {
      */
     public function add_api_keys_menu() {
         add_submenu_page(
-            'tools.php', __( 'API Keys (DT)', 'disciple_tools' ),
-            __( 'API Keys (DT)', 'disciple_tools' ), 'manage_options', 'api-keys', [ $this, 'api_keys_page' ] 
+            'dt_options', __( 'API Keys (DT)', 'disciple_tools' ),
+            __( 'API Keys (DT)', 'disciple_tools' ), 'manage_dt', 'api-keys', [ $this, 'api_keys_page' ]
         );
     }
 
