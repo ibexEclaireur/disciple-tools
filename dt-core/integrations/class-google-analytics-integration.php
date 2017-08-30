@@ -129,15 +129,15 @@ class Ga_Admin
     /**
      * Builds plugin's menu structure.
      */
-    public static function admin_menu_googleanalytics()
-    {
-        if (current_user_can( 'manage_options' )) {
-            add_submenu_page(
-                'dt_options', __( 'Analytics (DT)', 'disciple_tools' ),
-                __( 'Analytics (DT)', 'disciple_tools' ), 'manage_options', 'googleanalytics/settings', 'Ga_Admin::options_page_googleanalytics'
-            );
-        }
-    }
+//    public static function admin_menu_googleanalytics()  // Relocated to the main admin menu TODO Remove
+//    {
+//        if (current_user_can( 'manage_options' )) {
+//            add_submenu_page(
+//                'dt_options', __( 'Analytics (DT)', 'disciple_tools' ),
+//                __( 'Analytics (DT)', 'disciple_tools' ), 'manage_options', 'googleanalytics/settings', 'Ga_Admin::options_page_googleanalytics'
+//            );
+//        }
+//    }
 
 
     /**
@@ -270,7 +270,7 @@ class Ga_Admin
     public static function add_actions()
     {
         add_action( 'admin_init', 'Ga_Admin::admin_init_googleanalytics' );
-        add_action( 'admin_menu', 'Ga_Admin::admin_menu_googleanalytics' );
+//        add_action( 'admin_menu', 'Ga_Admin::admin_menu_googleanalytics' ); // Relocated to the main menu TODO Remove
         add_action( 'admin_enqueue_scripts', 'Ga_Admin::enqueue_scripts' );
         add_action( 'wp_ajax_ga_ajax_data_change', 'Ga_Admin::ga_ajax_data_change' );
         add_action( 'heartbeat_tick', 'Ga_Admin::run_heartbeat_jobs' );

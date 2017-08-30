@@ -248,16 +248,16 @@ class Disciple_Tools {
         if ( is_admin() ) {
 
             // Administration
-            require_once( 'dt-core/admin/config-options-admin.php' ); // General admin settings page
-            $this->admin = Disciple_Tools_Admin::instance();
-            require_once( 'dt-core/admin/config-options-settings.php' ); // General admin settings page
-            $this->settings = Disciple_Tools_Settings::instance();
             require_once( 'dt-core/admin/enqueue-scripts.php' ); // Load admin scripts
             require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
             require_once( 'dt-core/admin/restrict-record-access-in-admin.php' ); //
             require_once( 'dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
             require_once( 'dt-core/admin/class-better-author-metabox.php' ); // Allows multiple authors to be selected as post author
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
+    
+            // Settings Menu
+            require_once( 'dt-core/admin/menu/menu.php' );
+            $this->config_menu = Disciple_Tools_Config_Menu::instance();
 
             // Profile
             require_once( 'dt-core/admin/config-profile.php' );
@@ -304,13 +304,10 @@ class Disciple_Tools {
 
 
             // Logging
-            require_once( 'dt-core/logging/class-activity-admin-ui.php' ); // contacts and groups report building
             require_once( 'dt-core/logging/class-activity-list-table.php' ); // contacts and groups report building
             require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
             
-            // Options Menu
-            require_once( 'dt-core/admin/menu/menu.php' );
-            $this->page = Disciple_Tools_Options_Menu::instance();
+            
 
         }
         /* End Admin configuration section */

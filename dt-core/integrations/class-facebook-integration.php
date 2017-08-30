@@ -43,7 +43,7 @@ class Disciple_Tools_Facebook_Integration {
     public function __construct () {
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [$this,  'add_api_routes'] );
-        add_action( 'admin_menu', [$this, 'add_facebook_settings_menu'] );
+//        add_action( 'admin_menu', [$this, 'add_facebook_settings_menu'] ); // Relocated to the main menu TODO Remove
         add_action( 'dt_contact_meta_boxes_setup', [$this, 'add_contact_meta_box' ] );
         add_action( 'admin_notices', [$this, 'dt_admin_notice'] );
         add_action( 'wp_ajax_dt-facebook-notice-dismiss', [$this, 'dismiss_error'] );
@@ -128,20 +128,14 @@ class Disciple_Tools_Facebook_Integration {
 
 
     /**
-     * Facebook Settings Page Section
-     */
-
-
-
-    /**
      * Add the Facebook settings to the menu
      */
-    public function add_facebook_settings_menu () {
-        add_submenu_page(
-            'dt_options', __( 'Facebook (DT)', 'disciple_tools' ),
-            __( 'Facebook (DT)', 'disciple_tools' ), 'manage_options', $this->context, [ $this, 'facebook_settings_page' ]
-        );
-    } // End register_settings_screen()
+//    public function add_facebook_settings_menu () { // Relocated to the main menu TODO Remove
+//        add_submenu_page(
+//            'dt_options', __( 'Facebook (DT)', 'disciple_tools' ),
+//            __( 'Facebook (DT)', 'disciple_tools' ), 'manage_options', $this->context, [ $this, 'facebook_settings_page' ]
+//        );
+//    } // End register_settings_screen()
 
 
     /**

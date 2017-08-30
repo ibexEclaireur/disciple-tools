@@ -37,23 +37,8 @@ class Disciple_Tools_Api_Keys {
      * @access public
      * @since  0.1
      */
-    public function __construct() {
-        add_action( 'admin_menu', [ $this, 'add_api_keys_menu' ] );
-    }
-
-    /**
-     * Create the menu item in the Tools section
-     *
-     * @access public
-     * @since  0.1
-     */
-    public function add_api_keys_menu() {
-        add_submenu_page(
-            'dt_options', __( 'API Keys (DT)', 'disciple_tools' ),
-            __( 'API Keys (DT)', 'disciple_tools' ), 'manage_dt', 'api-keys', [ $this, 'api_keys_page' ]
-        );
-    }
-
+    public function __construct() { }
+    
     /**
      * Display an admin notice on the page
      *

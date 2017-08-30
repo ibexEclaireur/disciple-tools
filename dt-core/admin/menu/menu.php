@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Disciple_Tools_Options_Menu class for the admin page
+ * Disciple_Tools_Config_Menu class for the admin page
  *
- * @class Disciple_Tools_Options_Menu
+ * @class Disciple_Tools_Config_Menu
  * @version    1.0.0
  * @since 1.0.0
  * @package    DRM_Plugin
@@ -13,10 +13,10 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
 }
 
-final class Disciple_Tools_Options_Menu {
+final class Disciple_Tools_Config_Menu {
 
     /**
-     * Disciple_Tools_Options_Menu The single instance of Disciple_Tools_Options_Menu.
+     * Disciple_Tools_Config_Menu The single instance of Disciple_Tools_Config_Menu.
      * @var     object
      * @access  private
      * @since     1.0.0
@@ -26,11 +26,11 @@ final class Disciple_Tools_Options_Menu {
     /**
      * Disciple_Tools_Options_Menu Instance
      *
-     * Ensures only one instance of Disciple_Tools_Options_Menu is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Config_Menu is loaded or can be loaded.
      *
      * @since 1.0.0
      * @static
-     * @return Disciple_Tools_Options_Menu instance
+     * @return Disciple_Tools_Config_Menu instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) ) {
@@ -45,7 +45,7 @@ final class Disciple_Tools_Options_Menu {
      * @since   1.0.0
      */
     public function __construct () {
-
+        require_once( 'settings.php' );
         add_action( "admin_menu", array($this, "add_dt_options_menu") );
 
     } // End __construct()
@@ -56,8 +56,63 @@ final class Disciple_Tools_Options_Menu {
      */
     public function add_dt_options_menu () {
         add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_menu_page' ], 'dashicons-admin-generic', 75 );
+        add_submenu_page( 'dt_options', 'API Keys', 'API Keys', 'manage_dt', 'dt_api_keys', [ $this, 'build_api_key_page' ] );
+        add_submenu_page( 'dt_options', 'Analytics', 'Analytics', 'manage_dt', 'dt_analytics', [ $this, 'build_analytics_page' ] );
+        add_submenu_page( 'dt_options', 'Facebook', 'Facebook', 'manage_dt', 'dt_facebook', [ $this, 'build_facebook_page' ] );
+        add_submenu_page( 'dt_options', 'Reports Log', 'Reports Log', 'manage_dt', 'dt_reports_log', [ $this, 'build_reports_log_page' ] );
+        add_submenu_page( 'dt_options', 'Activity', 'Activity', 'manage_dt', 'dt_activity', [ $this, 'build_activity_page' ] );
         
     }
+    
+    public function build_api_key_page() {
+        Disciple_Tools_Api_Keys::instance()->api_keys_page();
+    }
+    
+    public function build_analytics_page() {
+        Ga_Admin::options_page_googleanalytics();
+    }
+    
+    public function build_facebook_page() {
+        Disciple_Tools_Facebook_Integration::instance()->facebook_settings_page();
+    }
+    
+    /**
+     * Display the list table page
+     *
+     * @return Void
+     */
+    public function build_reports_log_page()
+    {
+        $ListTable = new Disciple_Tools_Reports_List_Table();
+        $ListTable->prepare_items();
+        ?>
+        <div class="wrap">
+            <div id="icon-users" class="icon32"></div>
+            <h2>Disciple Tools Reports Log</h2>
+            <p>This table displays the ongoing reports being recorded nightly from the different integration sources.</p>
+            <?php $ListTable->display(); ?>
+        </div>
+        <?php
+    }
+    
+    /**
+     * Display the list table page
+     *
+     * @return Void
+     */
+    public function build_activity_page()
+    {
+        $ListTable = new Disciple_Tools_Activity_List_Table();
+        $ListTable->prepare_items();
+        ?>
+        <div class="wrap">
+            <div id="icon-users" class="icon32"></div>
+            <h2>Disciple Tools Activity Report</h2>
+            <?php $ListTable->display(); ?>
+        </div>
+        <?php
+    }
+    
 
     /**
      * Builds the tab bar
@@ -90,6 +145,10 @@ final class Disciple_Tools_Options_Menu {
         $html .= $tab_link_pre . 'extensions' . $tab_link_post;
         if ($tab == 'extensions') {$html .= 'nav-tab-active';}
         $html .= '">Extensions</a>';
+        
+        $html .= $tab_link_pre . 'options' . $tab_link_post;
+        if ($tab == 'options') {$html .= 'nav-tab-active';}
+        $html .= '">Options</a>';
 
         $html .= $tab_link_pre . 'tutorials' . $tab_link_post;
         if ($tab == 'tutorials') {$html .= 'nav-tab-active';}
@@ -113,6 +172,10 @@ final class Disciple_Tools_Options_Menu {
                 break;
             case "extensions":
 //                $html .= dt_demo_plugin()->add_report->add_report_page_form ();
+                break;
+            case "options":
+                $section = Disciple_Tools_Settings::instance();
+                $html = $section->settings_screen( 'daily_reports' ) . '';
                 break;
             default:
 //                $html .= dt_demo_plugin()->add_records->dt_demo_add_records_content() ;

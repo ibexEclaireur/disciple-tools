@@ -72,9 +72,17 @@ class Disciple_Tools_Profile
     {
 
         // Add new fields
-        $profile_fields['twitter'] = 'Twitter Username';
-        $profile_fields['facebook'] = 'Facebook URL';
-        $profile_fields['gplus'] = 'Google+ URL';
+        $profile_fields['personal_phone'] = 'Personal Phone';
+        $profile_fields['personal_email'] = 'Personal Email';
+        $profile_fields['personal_facebook'] = 'Personal Facebook';
+        $profile_fields['work_alias'] = 'Work Alias';
+        $profile_fields['work_phone'] = 'Work Phone';
+        $profile_fields['work_email'] = 'Work Email';
+        $profile_fields['work_facebook'] = 'Work Facebook';
+        $profile_fields['work_twitter'] = 'Twitter Username';
+        $profile_fields['work_whatsapp'] = 'Work WhatsApp';
+        $profile_fields['work_viber'] = 'Work Viber';
+        $profile_fields['work_telegram'] = 'Work Telegram';
         $profile_fields['contact_id'] = 'Contact Id';
 
         return $profile_fields;
