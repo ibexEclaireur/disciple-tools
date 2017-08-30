@@ -234,7 +234,7 @@ class Disciple_Tools_Reports_API {
         // Query results
         $results = $wpdb->get_results( $sql , ARRAY_A );
         
-        if( isset($results[0])) {
+        if( isset( $results[0] )) {
             $results_int = $results[0][$meta_key];
         }
 

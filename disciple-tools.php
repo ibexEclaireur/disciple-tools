@@ -309,7 +309,7 @@ class Disciple_Tools {
             require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
             
             // Options Menu
-            require_once( 'dt-core/admin/class-menu.php' );
+            require_once( 'dt-core/admin/menu/menu.php' );
             $this->page = Disciple_Tools_Options_Menu::instance();
 
         }
