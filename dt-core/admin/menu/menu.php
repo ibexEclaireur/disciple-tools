@@ -168,14 +168,18 @@ final class Disciple_Tools_Config_Menu {
         switch ($tab) {
 
             case "general":
-//                    $html .= dt_demo_plugin()->tutorials->dt_tabs_tutorial_content();
+                require_once ( 'general.php');
+                $content = new Disciple_Tools_General_Tab();
+                $html .= $content->general_options();
                 break;
             case "extensions":
-//                $html .= dt_demo_plugin()->add_report->add_report_page_form ();
+                require_once ( 'general.php');
+                $content = new Disciple_Tools_General_Tab();
+                $html .= $content->general_options();
                 break;
             case "options":
-                $section = Disciple_Tools_Settings::instance();
-                $html = $section->settings_screen( 'daily_reports' ) . '';
+                
+               
                 break;
             default:
 //                $html .= dt_demo_plugin()->add_records->dt_demo_add_records_content() ;

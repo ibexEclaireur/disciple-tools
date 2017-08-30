@@ -294,6 +294,172 @@ final class Disciple_Tools_Settings {
      */
     public function __construct () {
     } // End __construct()
+    
+    /**
+     * Output the markup for the settings screen.
+     *
+     * @access public
+     * @since  0.1
+     * @return void
+     */
+    public function settings_screen () {
+        global $title;
+        $sections = $this->get_settings_sections();
+        $tab = $this->_get_current_tab( $sections );
+        ?>
+        <div class="wrap dt-wrap">
+            <?php
+            echo $this->get_admin_header_html( $sections, $title );
+            ?>
+            <form action="options.php" method="post">
+                <?php
+                settings_fields( 'dt-settings-' . $tab );
+                do_settings_sections( Disciple_Tools()->token . '-' . $tab );
+                submit_button( __( 'Save Changes', 'disciple_tools' ) );
+                ?>
+            </form>
+        </div><!--/.wrap-->
+        <?php
+    } // End settings_screen()
+    
+    /**
+     * Register the settings within the Settings API.
+     *
+     * @access public
+     * @since  0.1
+     * @return void
+     */
+    public function register_settings () {
+        $sections = Disciple_Tools()->settings->get_settings_sections();
+        if ( 0 < count( $sections ) ) {
+            foreach ( $sections as $k => $v ) {
+                register_setting( 'dt-settings-' . sanitize_title_with_dashes( $k ), Disciple_Tools()->token . '-' . $k, [ $this, 'validate_settings' ] );
+                add_settings_section( sanitize_title_with_dashes( $k ), $v, [ $this, 'render_settings' ], Disciple_Tools()->token . '-' . $k );
+            }
+        }
+    } // End register_settings()
+    
+    /**
+     * Render the settings.
+     *
+     * @access public
+     * @param  array $args arguments.
+     * @since  0.1
+     * @return void
+     */
+    public function render_settings ( $args ) {
+        $token = $args['id'];
+        $fields = Disciple_Tools()->settings->get_settings_fields( $token );
+        
+        if ( 0 < count( $fields ) ) {
+            foreach ( $fields as $k => $v ) {
+                $args         = $v;
+                $args['id'] = $k;
+                
+                add_settings_field( $k, $v['name'], [ Disciple_Tools()->settings, 'render_field' ], Disciple_Tools()->token . '-' . $token , $v['section'], $args );
+            }
+        }
+    } // End render_settings()
+    
+    /**
+     * Validate the settings.
+     *
+     * @access public
+     * @since  0.1
+     * @param  array $input Inputted data.
+     * @return array        Validated data.
+     */
+    public function validate_settings ( $input ) {
+        $sections = Disciple_Tools()->settings->get_settings_sections();
+        $tab = $this->_get_current_tab( $sections );
+        return Disciple_Tools()->settings->validate_settings( $input, $tab );
+    } // End validate_settings()
+    
+    /**
+     * Return marked up HTML for the header tag on the settings screen.
+     *
+     * @access public
+     * @since  0.1
+     * @param  array  $sections Sections to scan through.
+     * @param  string $title    Title to use, if only one section is present.
+     * @return string              The current tab key.
+     */
+    public function get_admin_header_html ( $sections, $title ) {
+        $defaults = [
+            'tag' => 'h2',
+            'atts' => [ 'class' => 'dt-wrapper' ],
+            'content' => $title
+        ];
+        
+        $args = $this->_get_admin_header_data( $sections, $title );
+        
+        $args = wp_parse_args( $args, $defaults );
+        
+        $atts = '';
+        if ( 0 < count( $args['atts'] ) ) {
+            foreach ( $args['atts'] as $k => $v ) {
+                $atts .= ' ' . esc_attr( $k ) . '="' . esc_attr( $v ) . '"';
+            }
+        }
+        
+        $response = '<' . esc_attr( $args['tag'] ) . $atts . '>' . $args['content'] . '</' . esc_attr( $args['tag'] ) . '>' . "\n";
+        
+        return $response;
+    } // End get_admin_header_html()
+    
+    /**
+     * Return the current tab key.
+     *
+     * @access private
+     * @since  0.1
+     * @param  array  $sections Sections to scan through for a section key.
+     * @return string              The current tab key.
+     */
+    private function _get_current_tab ( $sections = [] ) {
+        if ( isset( $_GET['tab'] ) ) {
+            $response = sanitize_title_with_dashes( $_GET['tab'] );
+        } else {
+            if ( is_array( $sections ) && ! empty( $sections ) ) {
+                list( $first_section ) = array_keys( $sections );
+                $response = $first_section;
+            } else {
+                $response = '';
+            }
+        }
+        
+        return $response;
+    } // End _get_current_tab()
+    
+    /**
+     * Return an array of data, used to construct the header tag.
+     *
+     * @access private
+     * @since  0.1
+     * @param  array  $sections Sections to scan through.
+     * @param  string $title    Title to use, if only one section is present.
+     * @return array              An array of data with which to mark up the header HTML.
+     */
+    private function _get_admin_header_data ( $sections, $title ) {
+        $response = [ 'tag' => 'h2', 'atts' => [ 'class' => 'dt-wrapper' ], 'content' => $title ];
+        
+        if ( is_array( $sections ) && 1 < count( $sections ) ) {
+            $response['content'] = '';
+            $response['atts']['class'] = 'nav-tab-wrapper';
+            
+            $tab = $this->_get_current_tab( $sections );
+            
+            foreach ( $sections as $key => $value ) {
+                $class = 'nav-tab';
+                if ( $tab == $key ) {
+                    $class .= ' nav-tab-active';
+                }
+                
+                $response['content'] .= '<a href="' . admin_url( 'options-general.php?page=disciple_tools_options&tab=' . sanitize_title_with_dashes( $key ) ) . '" class="' . esc_attr( $class ) . '">' . esc_html( $value ) . '</a>';
+            }
+        }
+        
+        return (array) apply_filters( 'dt-get-admin-header-data', $response );
+    } // End _get_admin_header_data()
 
     /**
      * Validate the settings.
@@ -304,40 +470,40 @@ final class Disciple_Tools_Settings {
      * @param  string $section field section.
      * @return array        Validated data.
      */
-    public function validate_settings ( $input, $section ) {
-        if ( is_array( $input ) && 0 < count( $input ) ) {
-            $fields = $this->get_settings_fields( $section );
-
-            foreach ( $input as $k => $v ) {
-                if ( ! isset( $fields[$k] ) ) {
-                    continue;
-                }
-
-                // Determine if a method is available for validating this field.
-                $method = 'validate_field_' . $fields[$k]['type'];
-
-                if ( ! method_exists( $this, $method ) ) {
-                    if ( true === (bool) apply_filters( 'dt-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
-                        $method = 'validate_field_text';
-                    } else {
-                        $method = '';
-                    }
-                }
-
-                // If we have an internal method for validation, filter and apply it.
-                if ( '' != $method ) {
-                    add_filter( 'dt-validate-field-' . $fields[$k]['type'], [ $this, $method ] );
-                }
-
-                $method_output = apply_filters( 'dt-validate-field-' . $fields[$k]['type'], $v, $fields[$k] );
-
-                if ( ! is_wp_error( $method_output ) ) {
-                    $input[$k] = $method_output;
-                }
-            }
-        }
-        return $input;
-    } // End validate_settings()
+//    public function validate_settings ( $input, $section ) {
+//        if ( is_array( $input ) && 0 < count( $input ) ) {
+//            $fields = $this->get_settings_fields( $section );
+//
+//            foreach ( $input as $k => $v ) {
+//                if ( ! isset( $fields[$k] ) ) {
+//                    continue;
+//                }
+//
+//                // Determine if a method is available for validating this field.
+//                $method = 'validate_field_' . $fields[$k]['type'];
+//
+//                if ( ! method_exists( $this, $method ) ) {
+//                    if ( true === (bool) apply_filters( 'dt-validate-field-' . $fields[$k]['type'] . '_use_default', true ) ) {
+//                        $method = 'validate_field_text';
+//                    } else {
+//                        $method = '';
+//                    }
+//                }
+//
+//                // If we have an internal method for validation, filter and apply it.
+//                if ( '' != $method ) {
+//                    add_filter( 'dt-validate-field-' . $fields[$k]['type'], [ $this, $method ] );
+//                }
+//
+//                $method_output = apply_filters( 'dt-validate-field-' . $fields[$k]['type'], $v, $fields[$k] );
+//
+//                if ( ! is_wp_error( $method_output ) ) {
+//                    $input[$k] = $method_output;
+//                }
+//            }
+//        }
+//        return $input;
+//    } // End validate_settings()
 
     /**
      * Validate the given data, assuming it is from a text input field.
@@ -416,28 +582,6 @@ final class Disciple_Tools_Settings {
         return trim( esc_url( $v ) );
     } // End validate_field_url()
     
-    /**
-     * Output the markup for the settings screen.
-     *
-     * @access public
-     * @since  0.1
-     * @return void
-     */
-    public function settings_screen ( $tab ) {
-        global $title;
-        
-        ?>
-        <div class="wrap dt-wrap">
-            <form action="" method="post">
-                <?php
-                settings_fields( 'dt-settings-' . $tab );
-                do_settings_sections( Disciple_Tools()->token . '-' . $tab );
-                submit_button( __( 'Save Changes', 'disciple_tools' ) );
-                ?>
-            </form>
-        </div><!--/.wrap-->
-        <?php
-    } // End settings_screen()
 
     /**
      * Render a field of a given type.
@@ -892,3 +1036,217 @@ final class Disciple_Tools_Settings {
         return $response;
     } // End get_settings()
 } // End Class
+    
+class Disciple_Tools_Menu_Options
+{
+    /**
+     * The single instance of Disciple_Tools_Menu_Options.
+     *
+     * @var    object
+     * @access private
+     * @since  0.1
+     */
+    private static $_instance = null;
+    
+    /**
+     * Main Disciple_Tools_Menu_Options Instance
+     *
+     * Ensures only one instance of Disciple_Tools_Menu_Options is loaded or can be loaded.
+     *
+     * @since  0.1
+     * @static
+     * @return Disciple_Tools_Menu_Options instance
+     */
+    public static function instance () {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    } // End instance()
+    
+    /**
+     * The contents of our meta box.
+     *
+     * @access public
+     * @since  0.1
+     * @return void
+     */
+    public function meta_box_content ( $section = 'dt_' ) {
+        $fields = get_option( $section );
+        $field_data = $this->get_custom_fields_settings();
+        
+        $html = '';
+        
+        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_location_info' ) . '" />';
+        
+        
+        if ( 0 < count( $field_data ) ) {
+            $html .= '<table class="form-table">' . "\n";
+            $html .= '<tbody>' . "\n";
+            
+            foreach ( $field_data as $k => $v ) {
+                
+                if ($v['section'] == $section || $section == 'all') {
+                    
+                    $data = $v['default'];
+                    if (isset( $fields[$k] ) && isset( $fields[$k][0] )) {
+                        $data = $fields[$k][0];
+                    }
+                    
+                    $type = $v['type'];
+                    
+                    switch ($type) {
+                        
+                        case 'text':
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'select':
+                            $html .= '<tr valign="top"><th scope="row">
+							<label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+							<td><select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+                            // Iterate the options
+                            foreach ($v['default'] as $vv) {
+                                $html .= '<option value="' . $vv . '" ';
+                                if ($vv == $data) {
+                                    $html .= 'selected';
+                                }
+                                $html .= '>' . $vv . '</option>';
+                            }
+                            $html .= '</select>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'key_select':
+                            $html .= '<tr valign="top"><th scope="row">
+                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <td>
+                                <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
+                            // Iterate the options
+                            foreach ($v['default'] as $kk => $vv) {
+                                $html .= '<option value="' . $kk . '" ';
+                                if($kk == $data) { $html .= 'selected';}
+                                $html .= '>' .$vv . '</option>';
+                            }
+                            $html .= '</select>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        case 'radio':
+                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+							<td><fieldset>';
+                            // Iterate the buttons
+                            $increment_the_radio_button = 1;
+                            foreach ($v['default'] as $vv) {
+                                $html .= '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . "\">$vv</label>" .
+                                         '<input class="dt-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . $k . '-' . $increment_the_radio_button . '" value="' . $vv . '" ';
+                                if ($vv == $data) {
+                                    $html .= 'checked';
+                                }
+                                $html .= '>';
+                                $increment_the_radio_button++;
+                            }
+                            $html .= '</fieldset>' . "\n";
+                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '</td><tr/>' . "\n";
+                            break;
+                        
+                        
+                        default:
+                            break;
+                    }
+                    
+                }
+                
+                
+            }
+            
+            $html .= '</tbody>' . "\n";
+            $html .= '</table>' . "\n";
+        }
+        
+        echo $html;
+    } // End meta_box_content()
+    
+    /**
+     * Save meta box fields.
+     *
+     * @access public
+     * @since  0.1
+     * @param  int $post_id
+     * @return int $post_id
+     */
+    public function meta_box_save ( $post_id ) {
+        global $post, $messages;
+        
+        // Verify
+        if ( ( get_post_type() != $this->post_type ) || ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], 'update_location_info' ) ) {
+            return $post_id;
+        }
+        
+        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
+            if ( ! current_user_can( 'edit_page', $post_id ) ) {
+                return $post_id;
+            }
+        } else {
+            if ( ! current_user_can( 'edit_post', $post_id ) ) {
+                return $post_id;
+            }
+        }
+        
+        $field_data = $this->get_custom_fields_settings();
+        $fields = array_keys( $field_data );
+        
+        if ( (isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && (isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
+            $k = explode( "_",  $_POST['new-key-address'] );
+            $type = $k[1];
+            $number_key = dt_address_metabox()->create_channel_metakey( "address" );
+            $details_key = $number_key . "_details";
+            $details = ['type'=>$type, 'verified'=>false];
+            //save the field and the field details
+            add_post_meta( $post_id, strtolower( $number_key ), $_POST['new-value-address'], true );
+            add_post_meta( $post_id, strtolower( $details_key ), $details, true );
+        }
+        
+        foreach ( $fields as $f ) {
+            
+            ${$f} = strip_tags( trim( $_POST[$f] ) );
+            
+            
+            if ( get_post_meta( $post_id, $f ) == '' ) {
+                add_post_meta( $post_id, $f, ${$f}, true );
+            } elseif ( ${$f} == '' ) {
+                delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
+            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+                update_post_meta( $post_id, $f, ${$f} );
+            }
+        }
+    } // End meta_box_save()
+    
+    /**
+     * Get the settings for the custom fields.
+     *
+     * @access public
+     * @since  0.1
+     * @return array
+     */
+    public function get_custom_fields_settings () {
+        global $post;
+        $fields = [];
+    
+        $fields['share'] = [
+            'name' => 'share',
+            'description' => '',
+            'type' => 'text',
+            'default' => '',
+            'section' => 'address'
+        ];
+        
+        
+        return apply_filters( 'dt_custom_fields_settings', $fields );
+    } // End get_custom_fields_settings()
+    
+    
+           
+}
