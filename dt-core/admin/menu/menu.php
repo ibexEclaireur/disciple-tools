@@ -45,7 +45,7 @@ final class Disciple_Tools_Config_Menu {
      * @since   1.0.0
      */
     public function __construct () {
-        require_once( 'settings.php' );
+        require_once( 'options.php' );
         add_action( "admin_menu", array($this, "add_dt_options_menu") );
 
     } // End __construct()
