@@ -265,6 +265,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $p2p_record = p2p_get_connection( $p2p_id ); // returns object
         $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
         $p2p_to = get_post( $p2p_record->p2p_to, ARRAY_A );
+        $object_note_from = '';
+        $object_note_to = '';
 
         // Build variables
         $p2p_type = $p2p_record->p2p_type;
@@ -303,10 +305,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
 
-        if (!$object_note_from){
+        if (empty($object_note_from)){
             $object_note_from = $p2p_from['post_title'] . ' was ' . $action . ' ' . $p2p_to['post_title'];
         }
-        if (!$object_note_to){
+        if (empty($object_note_to)){
             $object_note_to = $p2p_to['post_title'] . ' was ' . $action . ' ' . $p2p_from['post_title'];
         }
 
