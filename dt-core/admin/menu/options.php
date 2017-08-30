@@ -30,8 +30,6 @@ final class Disciple_Tools_Admin {
      */
     private $_hook;
     
-    
-    
     /**
      * Constructor function.
      *

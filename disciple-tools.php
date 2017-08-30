@@ -258,6 +258,7 @@ class Disciple_Tools {
             // Settings Menu
             require_once( 'dt-core/admin/menu/menu.php' );
             $this->config_menu = Disciple_Tools_Config_Menu::instance();
+            require_once( 'dt-core/admin/menu/options.php' );
 
             // Profile
             require_once( 'dt-core/admin/config-profile.php' );
