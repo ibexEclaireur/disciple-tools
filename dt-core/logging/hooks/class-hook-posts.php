@@ -305,10 +305,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
 
-        if (empty($object_note_from)){
+        if (empty( $object_note_from )){
             $object_note_from = $p2p_from['post_title'] . ' was ' . $action . ' ' . $p2p_to['post_title'];
         }
-        if (empty($object_note_to)){
+        if (empty( $object_note_to )){
             $object_note_to = $p2p_to['post_title'] . ' was ' . $action . ' ' . $p2p_from['post_title'];
         }
 
