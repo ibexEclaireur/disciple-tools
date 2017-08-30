@@ -168,12 +168,12 @@ final class Disciple_Tools_Config_Menu {
         switch ($tab) {
 
             case "general":
-                require_once ( 'general.php');
+                require_once( 'general.php' );
                 $content = new Disciple_Tools_General_Tab();
                 $html .= $content->general_options();
                 break;
             case "extensions":
-                require_once ( 'general.php');
+                require_once( 'general.php' );
                 $content = new Disciple_Tools_General_Tab();
                 $html .= $content->general_options();
                 break;
