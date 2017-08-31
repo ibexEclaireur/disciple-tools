@@ -93,11 +93,11 @@ class Disciple_Tools_Location_Post_Type {
         $this->post_type = 'locations';
         $this->singular = __( 'Location', 'disciple_tools' );
         $this->plural = __( 'Locations', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => 'dashicons-admin-site' ];
-        $this->taxonomies = [];
+        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+//        $this->taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        add_action( 'init', [ $this, 'register_taxonomy' ] );
+//        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
         if ( is_admin() ) {
             global $pagenow;

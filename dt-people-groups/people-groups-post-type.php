@@ -93,11 +93,11 @@ class Disciple_Tools_People_Groups_Post_Type {
         $this->post_type = 'peoplegroups';
         $this->singular = __( 'People Group', 'disciple_tools' );
         $this->plural = __( 'People Groups', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => 'dashicons-image-filter' ];
-        $this->taxonomies = [];
+        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+//        $this->taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        add_action( 'init', [ $this, 'register_taxonomy' ] );
+//        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
         if ( is_admin() ) {
             global $pagenow;

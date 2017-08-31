@@ -20,7 +20,7 @@ class Disciple_Tools_Contact_Post_Type {
      * @var    string
      */
     public $post_type;
-
+    
     /**
      * The post type singular label.
      *
@@ -93,7 +93,7 @@ class Disciple_Tools_Contact_Post_Type {
         $this->post_type = 'contacts';
         $this->singular = 'Contact';
         $this->plural = 'Contacts';
-        $this->args = [ 'menu_icon' => plugin_dir_url(__DIR__) . 'dt-core/img/DiscipleTools.svg' ];
+        $this->args = [ 'menu_icon' => dt_svg_icon() ];
         $this->taxonomies = $taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );

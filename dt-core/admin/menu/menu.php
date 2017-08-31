@@ -55,7 +55,7 @@ final class Disciple_Tools_Config_Menu {
      * @since 0.1
      */
     public function add_dt_options_menu () {
-        add_menu_page( __( 'Config (DT)', 'disciple_tools' ), __( 'Config (DT)', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_menu_page' ], 'dashicons-admin-generic', 75 );
+        add_menu_page( __( 'Config (DT)', 'disciple_tools' ), __( 'Config (DT)', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_menu_page' ], dt_svg_icon(), 75 );
         add_submenu_page( 'dt_options', 'API Keys', 'API Keys', 'manage_dt', 'dt_api_keys', [ $this, 'build_api_key_page' ] );
         add_submenu_page( 'dt_options', 'Analytics', 'Analytics', 'manage_dt', 'dt_analytics', [ $this, 'build_analytics_page' ] );
         add_submenu_page( 'dt_options', 'Facebook', 'Facebook', 'manage_dt', 'dt_facebook', [ $this, 'build_facebook_page' ] );

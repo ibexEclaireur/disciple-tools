@@ -156,6 +156,7 @@ class Disciple_Tools {
      */
     private $roles;
     public $report_cron;
+    public $dt_svg;
 
     /**
      * The admin object.
@@ -229,13 +230,12 @@ class Disciple_Tools {
         $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/img/';
         $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/js/';
         $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/css/';
-        $this->includes         = plugin_dir_url( __FILE__ ) . 'dt-core/';
-        $this->includes_path    = plugin_dir_path( __FILE__ ) . 'dt-core/';
-        $this->factories        = plugin_dir_url( __FILE__ ) . 'dt-core/factories/';
+        $this->dt_svg           = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS40IDIwLjMyIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojMmQyZDJkO308L3N0eWxlPjwvZGVmcz48dGl0bGU+ZGlzY2lwbGUtdG9vbHM8L3RpdGxlPjxwb2x5Z29uIGNsYXNzPSJhIiBwb2ludHM9IjIxLjQgMjAuMzIgOS4zIDAgMi44NiAxMC44MSA4LjUyIDIwLjMyIDIxLjQgMjAuMzIiLz48cG9seWdvbiBjbGFzcz0iYSIgcG9pbnRzPSIwLjAyIDE1LjU4IDAgMTUuNjEgMi44MyAyMC4zMiA1LjUxIDE1LjM0IDAuMDIgMTUuNTgiLz48L3N2Zz4=';
 
         $wpdb->activity = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
         $wpdb->reports = $wpdb->prefix . 'dt_reports';
         $wpdb->reportmeta = $wpdb->prefix . 'dt_reportmeta';
+        $wpdb->dt_share = $wpdb->prefix . 'dt_share';
         /* End prep variables */
 
 
@@ -417,7 +417,7 @@ class Disciple_Tools {
          * dt-prayer
          */
         require_once( 'dt-prayer/prayer-post-type.php' );
-        $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-format-status' ] );
+        $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
         require_once( 'dt-prayer/prayer-template.php' );
         require_once( 'dt-prayer/prayer.php' );
         require_once( 'dt-prayer/prayer-endpoints.php' ); // builds rest endpoints
@@ -427,7 +427,7 @@ class Disciple_Tools {
          * dt-progress
          */
         require_once( 'dt-progress/progress-post-type.php' );
-        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-location' ] );
+        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
         require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
 
 

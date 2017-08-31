@@ -93,7 +93,7 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
         $this->post_type = 'assetmapping';
         $this->singular = __( 'Asset Map', 'disciple_tools' );
         $this->plural = __( 'Asset Mapping', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => 'dashicons-archive' ];
+        $this->args = [ 'menu_icon' => dt_svg_icon() ];
 //        $this->taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );

@@ -93,7 +93,7 @@ class Disciple_Tools_Resources_Post_Type {
         $this->post_type = 'resources';
         $this->singular = 'Resource';
         $this->plural = 'Resources';
-        $this->args = [ 'menu_icon' => 'dashicons-book-alt' ];
+        $this->args = [ 'menu_icon' => dt_svg_icon() ];
 //        $this->taxonomies = $taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );

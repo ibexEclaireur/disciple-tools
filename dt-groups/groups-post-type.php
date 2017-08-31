@@ -93,8 +93,8 @@ class Disciple_Tools_Groups_Post_Type {
         $this->post_type = 'groups';
         $this->singular = __( 'Group', 'disciple_tools' );
         $this->plural = __( 'Groups', 'disciple_tools' );
-        $this->args = [ 'menu_icon' => 'dashicons-admin-multisite' ];
-        $this->taxonomies = $taxonomies;
+        $this->args = [ 'menu_icon' => dt_svg_icon() ];
+//        $this->taxonomies = $taxonomies;
 
         add_action( 'init', [ $this, 'register_post_type' ] );
 //        add_action( 'init', [ $this, 'register_taxonomy' ] );

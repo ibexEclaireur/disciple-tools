@@ -181,7 +181,7 @@ class Disciple_Tools_Activator {
         }
     
         /* Report Meta Log Table */
-        $table_name = $wpdb->prefix . 'dt_follow';
+        $table_name = $wpdb->prefix . 'dt_share';
         if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
             $sql4 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 					  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
