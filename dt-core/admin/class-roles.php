@@ -99,6 +99,16 @@ $template = [
     'edit_others_assetmapping' => true,
     'publish_assetmapping' => true,
     'read_private_assetmappings' => true,
+    /* Add custom caps for resources */
+    'read_resource' => true,
+    'edit_resource' => true,
+    'delete_resource' => true,
+    'delete_others_resource' => true,
+    'delete_resources' => true,
+    'edit_resources' => true,
+    'edit_others_resource' => true,
+    'publish_resource' => true,
+    'read_private_resources' => true,
 
 ];
 
@@ -243,6 +253,16 @@ class Disciple_Tools_Roles {
                 'edit_others_assetmapping' => true,
                 'publish_assetmapping' => true,
                 'read_private_assetmappings' => true,
+                /* Add custom caps for resources */
+                'read_resource' => true,
+                'edit_resource' => true,
+                'delete_resource' => true,
+                'delete_others_resource' => true,
+                'delete_resources' => true,
+                'edit_resources' => true,
+                'edit_others_resource' => true,
+                'publish_resource' => true,
+                'read_private_resources' => true,
 
             ]
         );
@@ -291,6 +311,16 @@ class Disciple_Tools_Roles {
                 'assign_any_contact' => true,  //assign contacts to others
                 'update_any_contact' => true,  //update any contacts
                 'delete_any_contact' => true,  //delete any contacts
+                /* Add custom caps for resources */
+                'read_resource' => true,
+                'edit_resource' => true,
+                'delete_resource' => true,
+                'delete_others_resource' => true,
+                'delete_resources' => true,
+                'edit_resources' => true,
+                'edit_others_resource' => true,
+                'publish_resource' => true,
+                'read_private_resources' => true,
 
             ]
         );
@@ -391,6 +421,16 @@ class Disciple_Tools_Roles {
             //                'edit_others_assetmapping' => true,
             //                'publish_assetmapping' => true,
             //                'read_private_assetmappings' => true,
+                /* Add custom caps for resources */
+                'read_resource' => true,
+                'edit_resource' => true,
+                'delete_resource' => true,
+                'delete_others_resource' => true,
+                'delete_resources' => true,
+                'edit_resources' => true,
+                'edit_others_resource' => true,
+                'publish_resource' => true,
+                'read_private_resources' => true,
             ]
         );
 
@@ -488,6 +528,16 @@ class Disciple_Tools_Roles {
                 'edit_others_assetmapping' => true,
                 'publish_assetmapping' => true,
                 'read_private_assetmappings' => true,
+                /* Add custom caps for resources */
+                'read_resource' => true,
+                'edit_resource' => true,
+                'delete_resource' => true,
+                'delete_others_resource' => true,
+                'delete_resources' => true,
+                'edit_resources' => true,
+                'edit_others_resource' => true,
+                'publish_resource' => true,
+                'read_private_resources' => true,
             ]
         );
 
@@ -605,6 +655,16 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_assetmapping' );
             $role->add_cap( 'publish_assetmapping' );
             $role->add_cap( 'read_private_assetmappings' );
+            /* Add Asset permissions */
+            $role->add_cap( 'edit_resource' );
+            $role->add_cap( 'read_resource' );
+            $role->add_cap( 'delete_resource' );
+            $role->add_cap( 'delete_others_resource' );
+            $role->add_cap( 'delete_resources' );
+            $role->add_cap( 'edit_resources' );
+            $role->add_cap( 'edit_others_resource' );
+            $role->add_cap( 'publish_resource' );
+            $role->add_cap( 'read_private_resources' );
 
         }
 

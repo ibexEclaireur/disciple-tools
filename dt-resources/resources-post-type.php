@@ -58,7 +58,7 @@ class Disciple_Tools_Resources_Post_Type {
     public $taxonomies;
 
     /**
-     * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
+     * Disciple_Tools_Resources_Post_Type The single instance of Disciple_Tools_Resources_Post_Type.
      *
      * @var    object
      * @access private
@@ -67,13 +67,13 @@ class Disciple_Tools_Resources_Post_Type {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Resource_Post_Type Instance
+     * Main Disciple_Tools_Resources_Post_Type Instance
      *
      * Ensures only one instance of Disciple_Tools_Resource_Post_Type is loaded or can be loaded.
      *
      * @since  0.1
      * @static
-     * @return Disciple_Tools_Resource_Post_Type
+     * @return Disciple_Tools_Resources_Post_Type
      */
     public static function instance () {
         if ( is_null( self::$_instance ) ) {
@@ -94,7 +94,7 @@ class Disciple_Tools_Resources_Post_Type {
         $this->singular = 'Resource';
         $this->plural = 'Resources';
         $this->args = [ 'menu_icon' => 'dashicons-book-alt' ];
-        $this->taxonomies = $taxonomies = [];
+//        $this->taxonomies = $taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
         //		add_action( 'init', array( $this, 'register_taxonomy' ) );
@@ -201,8 +201,8 @@ class Disciple_Tools_Resources_Post_Type {
      * @return void
      */
     public function register_taxonomy () {
-        $this->taxonomies['resource-type'] = new Disciple_Tools_Taxonomy( $post_type = 'resource', $token = 'resource-type', $singular = 'Type', $plural = 'Types', $args = [] ); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies['resource-type']->register();
+//        $this->taxonomies['resource-type'] = new Disciple_Tools_Taxonomy( $post_type = 'resource', $token = 'resource-type', $singular = 'Type', $plural = 'Types', $args = [] ); // Leave arguments empty, to use the default arguments.
+//        $this->taxonomies['resource-type']->register();
     } // End register_taxonomy()
 
     /**
