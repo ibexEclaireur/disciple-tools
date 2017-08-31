@@ -191,6 +191,31 @@ function my_connection_types() {
         ],
          ]
     );
+    
+    p2p_register_connection_type(
+        [
+            'name' => 'assetmapping_to_locations',
+            'from' => 'assetmapping',
+            'to' => 'locations',
+            'cardinality' => 'many-to-one',
+            'title' => [
+                'from' => __( 'Location', 'disciple_tools' ),
+                'to' => __( 'Assets', 'disciple_tools' ),
+            ],
+            'from_labels' => [
+                'singular_name' => __( 'Assets', 'disciple_tools' ),
+                'search_items' => __( 'Search assets', 'disciple_tools' ),
+                'not_found' => __( 'No assets found.', 'disciple_tools' ),
+                'create' => __( 'Connect Assets', 'disciple_tools' ),
+            ],
+            'to_labels' => [
+                'singular_name' => __( 'Locations', 'disciple_tools' ),
+                'search_items' => __( 'Search locations', 'disciple_tools' ),
+                'not_found' => __( 'No locations found.', 'disciple_tools' ),
+                'create' => __( 'Connect Location', 'disciple_tools' ),
+            ],
+        ]
+    );
 
     /**
      * This creates the link between members and locations for assignment purposes.
@@ -207,30 +232,7 @@ function my_connection_types() {
          ]
     );
 
-    p2p_register_connection_type(
-        [
-        'name' => 'assetmapping_to_locations',
-        'from' => 'assetmapping',
-        'to' => 'locations',
-        'cardinality' => 'many-to-one',
-        'title' => [
-            'from' => __( 'Location', 'disciple_tools' ),
-            'to' => __( 'Assets', 'disciple_tools' ),
-        ],
-        'from_labels' => [
-            'singular_name' => __( 'Assets', 'disciple_tools' ),
-            'search_items' => __( 'Search assets', 'disciple_tools' ),
-            'not_found' => __( 'No assets found.', 'disciple_tools' ),
-            'create' => __( 'Connect Assets', 'disciple_tools' ),
-        ],
-        'to_labels' => [
-            'singular_name' => __( 'Locations', 'disciple_tools' ),
-            'search_items' => __( 'Search locations', 'disciple_tools' ),
-            'not_found' => __( 'No locations found.', 'disciple_tools' ),
-            'create' => __( 'Connect Location', 'disciple_tools' ),
-        ],
-         ]
-    );
+    
 
     /**
      * People Groups addon

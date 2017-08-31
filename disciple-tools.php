@@ -427,9 +427,9 @@ class Disciple_Tools {
          */
         require_once( 'dt-asset-mapping/asset-mapping-post-type.php' );
         $this->post_types['assetmapping'] = Disciple_Tools_Asset_Mapping_Post_Type::instance();
-        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
-        require_once( 'dt-asset-mapping/asset-mapping.php' );
         require_once( 'dt-asset-mapping/asset-mapping-template.php' );
+        require_once( 'dt-asset-mapping/asset-mapping.php' );
+        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
 
         /**
          * dt-statistics
@@ -442,8 +442,8 @@ class Disciple_Tools {
          * dt-users
          */
         require_once( 'dt-users/users.php' );
-        require_once( 'dt-users/users-endpoints.php' );
         require_once( 'dt-users/users-template.php' );
+        require_once( 'dt-users/users-endpoints.php' );
 
 
         /**
