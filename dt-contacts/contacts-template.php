@@ -96,3 +96,5 @@ function dt_update_required_update ( $post_data ) {
     update_post_meta( $post_id = $post_data['post_ID'], $meta_key = 'requires_update', $meta_value = 'No' );
 
 }
+
+

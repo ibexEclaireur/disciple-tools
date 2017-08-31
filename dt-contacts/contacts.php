@@ -873,31 +873,80 @@ class Disciple_Tools_Contacts
     }
     
     /**
+     * Gets an array of users whom the contact is shared with.
      * @param $contact_id
+     * @return array|mixed
      */
     public static function get_shared_with( $contact_id ) {
         global $wpdb;
+        
         if (!self::can_update_contact( $contact_id )){
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
         
-        // query share table for all share records with $contact_id
+        $shared_with_list = [];
+        $shares = $wpdb->get_results( "SELECT * FROM $wpdb->dt_share WHERE contact_id = '$contact_id'", ARRAY_A );
         
-        $shared_with_list = $wpdb->get_results( $wpdb->prepare(
-            "SELECT user_id
-            FROM %s 
-            WHERE contact_id = '%d'
-            ",
-            $wpdb->dt_share,
-            $contact_id
-        ));
-        
+        foreach ($shares as $share ) {
+            $share['display_name'] = dt_get_user_display_name( $share['user_id'] );
+            $shared_with_list[] = $share;
+        }
         
         return $shared_with_list;
-        
     }
     
-    public static function remove_shared() {
+    /**
+     * Removes share record
+     * @param $contact_id
+     * @param $share_id
+     *
+     * @return false|int|WP_Error
+     */
+    public static function remove_shared( int $contact_id, int $share_id ) {
+        global $wpdb;
+    
+        if (!self::can_update_contact( $contact_id )){
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        
+        $table = $wpdb->dt_share;
+        $where = [ 'id' => $share_id];
+        $result = $wpdb->delete( $table, $where );
+    
+        return $result;
+    }
+    
+    /**
+     * Adds a share record
+     *
+     * @param int   $contact_id
+     * @param int   $user_id
+     * @param array $meta
+     *
+     * @return false|int|WP_Error
+     */
+    public static function add_shared( int $contact_id, int $user_id, $meta = [] ) {
+        global $wpdb;
+        
+        if (!self::can_update_contact( $contact_id )){
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+    
+        $table = $wpdb->dt_share;
+        $data = [
+            'user_id' => $user_id,
+            'contact_id' => $contact_id,
+            'meta' => $meta,
+        ];
+        $format = [
+            '%d',
+            '%d',
+            '%s',
+        ];
+        
+        $results = $wpdb->insert( $table, $data, $format );
+        
+        return $results;
         
     }
 }

@@ -142,6 +142,28 @@ class Disciple_Tools_Contacts_Endpoints
                 "callback" => [$this, 'accept_contact']
             ]
         );
+        
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/shared_with', [
+                "methods" => "GET",
+                "callback" => [$this, 'shared_with']
+            ]
+        );
+    
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/remove_shared', [
+                "methods" => "POST",
+                "callback" => [$this, 'shared_with']
+            ]
+        );
+    
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/add_shared', [
+                "methods" => "POST",
+                "callback" => [$this, 'shared_with']
+            ]
+        );
+        
     }
 
 
@@ -477,6 +499,51 @@ class Disciple_Tools_Contacts_Endpoints
         if (isset( $params['id'] )){
             $result = Disciple_Tools_Contacts::accept_contact( $params['id'], $body["accept"], true );
 
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "accept_contact", "Missing a valid contact id", ['status' => 400] );
+        }
+    }
+    
+    public function shared_with( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::get_shared_with( $params['id'] );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "accept_contact", "Missing a valid contact id", ['status' => 400] );
+        }
+    }
+    
+    public function remove_shared( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::remove_shared( $params['id'], $params['user_id'] );
+            
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "accept_contact", "Missing a valid contact id", ['status' => 400] );
+        }
+    }
+    
+    public function add_shared( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Contacts::add_shared( $params['id'] );
+            
             if ( is_wp_error( $result ) ){
                 return $result;
             } else {

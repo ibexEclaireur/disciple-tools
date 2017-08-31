@@ -155,3 +155,22 @@ function dt_get_team_contacts( $user_id ) {
     return $user_connections;
 
 }
+
+/**
+ * Echos user display name
+ * @param $user_id
+ */
+function dt_user_display_name( $user_id ) {
+    echo dt_get_user_display_name( $user_id );
+}
+
+    /**
+     * Returns user display name
+     * @param $user_id
+     *
+     * @return string
+     */
+function dt_get_user_display_name( $user_id ) {
+    $user = get_userdata( $user_id );
+    return $user->display_name;
+}

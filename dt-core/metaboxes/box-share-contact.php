@@ -25,44 +25,35 @@ class Disciple_Tools_Metabox_Share_Contact {
      * @access public
      * @since  0.1
      */
-    public function __construct () { } // End __construct()
+    public function __construct () {
+    } // End __construct()
     
     /**
      *
      */
     public function content_display ( $contact_id ) {
-        global $wpdb;
+        
         $shared_with_list = Disciple_Tools_Contacts::get_shared_with( $contact_id );
-        $list_of_members = [];
-        $shared_with_list = $wpdb->get_results( $wpdb->prepare(
-            "SELECT user_id
-            FROM %s 
-            WHERE contact_id = '%d'
-            ",
-            $wpdb->dt_share,
-            $contact_id
-        ));
-        $shared_with_list = $wpdb->get_results( "SELECT * FROM $wpdb->dt_share WHERE contact_id = '$contact_id'", ARRAY_A );
-        var_dump( $shared_with_list );
+       
+//        print '<pre>'; print_r( $shared_with_list ); print '</pre>';
         
         $html = '<strong>Already sharing with</strong>';
-        $html .= '<ul>';
+        $html .= '<form method="post">';
+        $html .= '<input type="hidden" name="dt_remove_shared_noonce" id="dt_remove_shared_noonce" value="' . wp_create_nonce( 'dt_remove_shared' ) . '" />';
+        
+//        $shared_with_list = json_decode( file_get_contents( rest_url() . 'dt-hooks/v1/contact/'.$contact_id.'/shares') );
+        
         foreach($shared_with_list as $contact) {
-            $html .= '<li>- ' . $contact . ' <a href="">remove</a></li>';
+            $html .= '<li><a href="'.admin_url().'user-edit.php?user_id='.$contact['user_id'].'">' . $contact['display_name'] . '</a>  <button type="button" name="remove" onclick="" value="'.$contact['id'].'">Remove</button> ';
         }
-        $html .= '</ul>';
+        $html .= '</ul></form>';
         
         $html .= '<p><strong>Share this contact with the following members:</strong></p>';
         $html .= '<form method="get"><input type="text" name="share_contact" /><button type="button">Add</button></form>';
         
         
-        
         echo $html;
         
-        
-        
-        
     }
-    
     
 }
