@@ -30,9 +30,9 @@ class Disciple_Tools_Metabox_Share_Contact {
     /**
      *
      */
-    public function content_display ( $contact_id) {
+    public function content_display ( $contact_id ) {
         global $wpdb;
-        $shared_with_list = Disciple_Tools_Contacts::get_shared_with( $contact_id ) ;
+        $shared_with_list = Disciple_Tools_Contacts::get_shared_with( $contact_id );
         $list_of_members = [];
         $shared_with_list = $wpdb->get_results( $wpdb->prepare(
             "SELECT user_id
@@ -42,8 +42,8 @@ class Disciple_Tools_Metabox_Share_Contact {
             $wpdb->dt_share,
             $contact_id
         ));
-        $shared_with_list = $wpdb->get_results("SELECT * FROM $wpdb->dt_share WHERE contact_id = '$contact_id'", ARRAY_A);
-        var_dump($shared_with_list);
+        $shared_with_list = $wpdb->get_results( "SELECT * FROM $wpdb->dt_share WHERE contact_id = '$contact_id'", ARRAY_A );
+        var_dump( $shared_with_list );
         
         $html = '<strong>Already sharing with</strong>';
         $html .= '<ul>';
