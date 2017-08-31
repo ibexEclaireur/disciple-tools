@@ -230,7 +230,6 @@ class Disciple_Tools {
         $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/img/';
         $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/js/';
         $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/css/';
-        $this->dt_svg           = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS40IDIwLjMyIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojMmQyZDJkO308L3N0eWxlPjwvZGVmcz48dGl0bGU+ZGlzY2lwbGUtdG9vbHM8L3RpdGxlPjxwb2x5Z29uIGNsYXNzPSJhIiBwb2ludHM9IjIxLjQgMjAuMzIgOS4zIDAgMi44NiAxMC44MSA4LjUyIDIwLjMyIDIxLjQgMjAuMzIiLz48cG9seWdvbiBjbGFzcz0iYSIgcG9pbnRzPSIwLjAyIDE1LjU4IDAgMTUuNjEgMi44MyAyMC4zMiA1LjUxIDE1LjM0IDAuMDIgMTUuNTgiLz48L3N2Zz4=';
 
         $wpdb->activity = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
         $wpdb->reports = $wpdb->prefix . 'dt_reports';
