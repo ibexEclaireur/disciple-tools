@@ -871,4 +871,33 @@ class Disciple_Tools_Contacts
             ];
         }
     }
+    
+    /**
+     * @param $contact_id
+     */
+    public static function get_shared_with( $contact_id ) {
+        global $wpdb;
+        if (!self::can_update_contact( $contact_id )){
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        
+        // query share table for all share records with $contact_id
+        
+        $shared_with_list = $wpdb->get_results( $wpdb->prepare(
+            "SELECT user_id
+            FROM %s 
+            WHERE contact_id = '%d'
+            ",
+            $wpdb->dt_share,
+            $contact_id
+        ));
+        
+        
+        return $shared_with_list;
+        
+    }
+    
+    public static function remove_shared() {
+        
+    }
 }

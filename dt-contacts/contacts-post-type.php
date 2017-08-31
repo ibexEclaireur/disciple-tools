@@ -252,6 +252,7 @@ class Disciple_Tools_Contact_Post_Type {
         add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), [ $this, 'load_milestone_meta_box' ], $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), [ $this, 'load_misc_meta_box' ], $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), [ $this, 'load_status_info_meta_box' ], $this->post_type, 'side' );
+        add_meta_box( $this->post_type . '_shared', __( 'Shared', 'disciple_tools' ), [ $this, 'load_shared_meta_box' ], $this->post_type, 'normal' );
         do_action( "dt_contact_meta_boxes_setup", $this->post_type );
     } // End meta_box_setup()
 
@@ -461,6 +462,13 @@ class Disciple_Tools_Contact_Post_Type {
      */
     public function load_activity_meta_box () {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
+    }
+    
+    /**
+     * Load activity metabox
+     */
+    public function load_shared_meta_box() {
+        dt_share_contact_metabox()->content_display( get_the_ID() );
     }
 
     /**

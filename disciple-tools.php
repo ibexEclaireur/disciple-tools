@@ -456,6 +456,7 @@ class Disciple_Tools {
         require_once( 'dt-core/metaboxes/box-activity.php' );
         require_once( 'dt-core/metaboxes/box-address.php' );
         require_once( 'dt-core/metaboxes/box-availability.php' );
+        require_once( 'dt-core/metaboxes/box-share-contact.php' );
 
 
         /**
