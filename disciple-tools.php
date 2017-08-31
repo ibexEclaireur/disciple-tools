@@ -394,6 +394,14 @@ class Disciple_Tools {
         require_once( 'dt-people-groups/people-groups.php' );
         require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
 
+        /**
+         * dt-assets
+         */
+        require_once( 'dt-asset-mapping/asset-mapping-post-type.php' );
+        $this->post_types['assetmapping'] = Disciple_Tools_Asset_Mapping_Post_Type::instance();
+        require_once( 'dt-asset-mapping/asset-mapping-template.php' );
+        require_once( 'dt-asset-mapping/asset-mapping.php' );
+        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
 
         /**
          * dt-resources
@@ -422,14 +430,6 @@ class Disciple_Tools {
         $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => 'dashicons-location' ] );
         require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
 
-        /**
-         * dt-assets
-         */
-        require_once( 'dt-asset-mapping/asset-mapping-post-type.php' );
-        $this->post_types['assetmapping'] = Disciple_Tools_Asset_Mapping_Post_Type::instance();
-        require_once( 'dt-asset-mapping/asset-mapping-template.php' );
-        require_once( 'dt-asset-mapping/asset-mapping.php' );
-        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
 
         /**
          * dt-statistics

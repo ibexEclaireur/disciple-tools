@@ -90,15 +90,15 @@ $template = [
     'publish_progresss' => true,
     'read_private_progresss' => true,
     /* Add custom caps for assets */
-    'read_asset' => true,
-    'edit_asset' => true,
-    'delete_asset' => true,
-    'delete_others_assets' => true,
-    'delete_assets' => true,
-    'edit_assets' => true,
-    'edit_others_assets' => true,
-    'publish_assets' => true,
-    'read_private_assets' => true,
+    'read_assetmapping' => true,
+    'edit_assetmapping' => true,
+    'delete_assetmapping' => true,
+    'delete_others_assetmapping' => true,
+    'delete_assetmappings' => true,
+    'edit_assetmappings' => true,
+    'edit_others_assetmapping' => true,
+    'publish_assetmapping' => true,
+    'read_private_assetmappings' => true,
 
 ];
 
@@ -234,15 +234,15 @@ class Disciple_Tools_Roles {
                 'publish_progresss' => true,
                 'read_private_progresss' => true,
                 /* Add custom caps for assets */
-                'read_asset' => true,
-                'edit_asset' => true,
-                'delete_asset' => true,
-                'delete_others_assets' => true,
-                'delete_assets' => true,
-                'edit_assets' => true,
-                'edit_others_assets' => true,
-                'publish_assets' => true,
-                'read_private_assets' => true,
+                'read_assetmapping' => true,
+                'edit_assetmapping' => true,
+                'delete_assetmapping' => true,
+                'delete_others_assetmapping' => true,
+                'delete_assetmappings' => true,
+                'edit_assetmappings' => true,
+                'edit_others_assetmapping' => true,
+                'publish_assetmapping' => true,
+                'read_private_assetmappings' => true,
 
             ]
         );
@@ -382,15 +382,15 @@ class Disciple_Tools_Roles {
                 'publish_progresss' => true,
             //                'read_private_progresss' => true,
                 /* Add custom caps for assets */
-                'read_asset' => true,
-            //                'edit_asset' => true,
-            //                'delete_asset' => true,
-            //                'delete_others_assets' => true,
-            //                'delete_assets' => true,
-            //                'edit_assets' => true,
-            //                'edit_others_assets' => true,
-            //                'publish_assets' => true,
-            //                'read_private_assets' => true,
+                'read_assetmapping' => true,
+            //                'edit_assetmapping' => true,
+            //                'delete_assetmapping' => true,
+            //                'delete_others_assetmapping' => true,
+            //                'delete_assetmappings' => true,
+            //                'edit_assetmappings' => true,
+            //                'edit_others_assetmapping' => true,
+            //                'publish_assetmapping' => true,
+            //                'read_private_assetmappings' => true,
             ]
         );
 
@@ -479,15 +479,15 @@ class Disciple_Tools_Roles {
                 'publish_progresss' => true,
                 'read_private_progresss' => true,
                 /* Add custom caps for assets */
-                'read_asset' => true,
-                'edit_asset' => true,
-                'delete_asset' => true,
-                'delete_others_assets' => true,
-                'delete_assets' => true,
-                'edit_assets' => true,
-                'edit_others_assets' => true,
-                'publish_assets' => true,
-                'read_private_assets' => true,
+                'read_assetmapping' => true,
+                'edit_assetmapping' => true,
+                'delete_assetmapping' => true,
+                'delete_others_assetmapping' => true,
+                'delete_assetmappings' => true,
+                'edit_assetmappings' => true,
+                'edit_others_assetmapping' => true,
+                'publish_assetmapping' => true,
+                'read_private_assetmappings' => true,
             ]
         );
 
@@ -596,15 +596,15 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'publish_locations' );
             $role->add_cap( 'read_private_locations' );
             /* Add Asset permissions */
-            $role->add_cap( 'edit_asset' );
-            $role->add_cap( 'read_asset' );
-            $role->add_cap( 'delete_asset' );
-            $role->add_cap( 'delete_others_assets' );
-            $role->add_cap( 'delete_assets' );
-            $role->add_cap( 'edit_assets' );
-            $role->add_cap( 'edit_others_assets' );
-            $role->add_cap( 'publish_assets' );
-            $role->add_cap( 'read_private_assets' );
+            $role->add_cap( 'edit_assetmapping' );
+            $role->add_cap( 'read_assetmapping' );
+            $role->add_cap( 'delete_assetmapping' );
+            $role->add_cap( 'delete_others_assetmapping' );
+            $role->add_cap( 'delete_assetmappings' );
+            $role->add_cap( 'edit_assetmappings' );
+            $role->add_cap( 'edit_others_assetmapping' );
+            $role->add_cap( 'publish_assetmapping' );
+            $role->add_cap( 'read_private_assetmappings' );
 
         }
 

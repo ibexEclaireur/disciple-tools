@@ -94,10 +94,10 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
         $this->singular = __( 'Asset Map', 'disciple_tools' );
         $this->plural = __( 'Asset Mapping', 'disciple_tools' );
         $this->args = [ 'menu_icon' => 'dashicons-archive' ];
-        $this->taxonomies = [];
+//        $this->taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        add_action( 'init', [ $this, 'register_taxonomy' ] );
+//        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -150,21 +150,21 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
         ];
 
         $rewrite = [
-            'slug'                  => 'assetmap',
+            'slug'                  => 'assetmapping',
             'with_front'            => true,
             'pages'                 => true,
             'feeds'                 => false,
         ];
         $capabilities = [
-            'edit_post'             => 'edit_assetmap',
-            'read_post'             => 'read_assetmap',
-            'delete_post'           => 'delete_assetmap',
-            'delete_others_posts'   => 'delete_others_assetmaps',
-            'delete_posts'          => 'delete_assetmaps',
-            'edit_posts'            => 'edit_assetmaps',
-            'edit_others_posts'     => 'edit_others_assetmaps',
-            'publish_posts'         => 'publish_assetmaps',
-            'read_private_posts'    => 'read_private_assetmaps',
+            'edit_post'             => 'edit_assetmapping',
+            'read_post'             => 'read_assetmapping',
+            'delete_post'           => 'delete_assetmapping',
+            'delete_others_posts'   => 'delete_others_assetmappings',
+            'delete_posts'          => 'delete_assetmappings',
+            'edit_posts'            => 'edit_assetmappings',
+            'edit_others_posts'     => 'edit_others_assetmappings',
+            'publish_posts'         => 'publish_assetmappings',
+            'read_private_posts'    => 'read_private_assetmappings',
         ];
         $defaults = [
             'labels'                => $labels,
@@ -177,11 +177,11 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
             'capabilities'          => $capabilities,
             'has_archive'           => true,
             'hierarchical'          => false,
-            'supports'              => [ 'title', 'excerpt', 'editor', 'comments', 'author', 'thumbnail', 'revisions' ],
+            'supports'              => [ 'title', 'excerpt', 'editor', 'comments', 'thumbnail', 'revisions' ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
-            'rest_base'             => 'assetmap',
+            'rest_base'             => 'assetmapping',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         ];
 
@@ -453,7 +453,7 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      */
     public function enter_title_here ( $title ) {
         if ( get_post_type() == $this->post_type ) {
-            $title = __( 'Enter the assetmapping title here', 'disciple_tools' );
+            $title = __( 'Enter the asset title here', 'disciple_tools' );
         }
         return $title;
     } // End enter_title_here()
