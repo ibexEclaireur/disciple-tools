@@ -97,4 +97,6 @@ function dt_update_required_update ( $post_data ) {
 
 }
 
-
+function dt_get_contacts_shared_with( $contact_id ) {
+    return Disciple_Tools_Contacts::get_shared_with( $contact_id );
+}

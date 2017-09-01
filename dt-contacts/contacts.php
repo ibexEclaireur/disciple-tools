@@ -777,6 +777,7 @@ class Disciple_Tools_Contacts
     }
 
     public static function get_assignable_users( $contact_id ){
+        // TODO Shouldn't this filter out prayer, subscriber, etc. roles. These users are not assignable. Right? -CW
         $users = get_users();
         return $users;
     }

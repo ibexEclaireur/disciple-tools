@@ -54,19 +54,19 @@ class Disciple_Tools_Metabox_Share_Contact {
         echo $html;
     
         
-        $result = Disciple_Tools_Contacts::add_shared( $contact_id, 3 );
-        if ( is_wp_error( $result ) ) {
-            print_r( $result );
-        } else {
-            echo 'Removed ' . $result;
-        }
-    
-        $result = Disciple_Tools_Contacts::remove_shared( $contact_id, 7 );
-        if ( is_wp_error( $result ) ) {
-            print_r( $result );
-        } else {
-            echo 'Removed ' . $result;
-        }
+//        $result = Disciple_Tools_Contacts::add_shared( $contact_id, 3 );
+//        if ( is_wp_error( $result ) ) {
+//            print_r( $result );
+//        } else {
+//            echo 'Removed ' . $result;
+//        }
+//
+//        $result = Disciple_Tools_Contacts::remove_shared( $contact_id, 7 );
+//        if ( is_wp_error( $result ) ) {
+//            print_r( $result );
+//        } else {
+//            echo 'Removed ' . $result;
+//        }
         
     }
     
