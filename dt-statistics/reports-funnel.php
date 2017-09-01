@@ -190,7 +190,7 @@ class Disciple_Tools_Funnel_Reports {
 
         $new_inquirers = Disciple_Tools()->counter->contacts_post_status();
         $assigned_inquirers = Disciple_Tools()->counter->contacts_meta_counter( 'overall_status','assigned' );
-        $accepted_inquirers = Disciple_Tools()->counter->contacts_meta_counter( 'overall_status','accepted' );
+        $active_inquirers = Disciple_Tools()->counter->contacts_meta_counter( 'overall_status','active' );
         $contact_attempted = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path','Contact Attempted' );
         $contact_established = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path','Contact Established' );
         $meeting_scheduled = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path','Meeting Scheduled' );
@@ -236,8 +236,8 @@ class Disciple_Tools_Funnel_Reports {
 								<td>'. $first_meeting_complete .'</td>
 							</tr>
 							<tr>
-							    <td>Accepted</td>
-								<td>'. $accepted_inquirers .'</td>
+							    <td>Active</td>
+								<td>'. $active_inquirers .'</td>
 							    <td>Ongoing Meetings</td>
 								<td>'. $ongoing_meetings .'</td>
 							</tr>

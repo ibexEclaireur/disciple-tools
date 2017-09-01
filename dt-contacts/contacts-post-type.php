@@ -552,7 +552,6 @@ class Disciple_Tools_Contact_Post_Type {
             'default' => [
                 'unassigned' => __( 'Unassigned', 'disciple_tools' ),
                 'assigned' => __( "Assigned", 'disciple_tools' ),
-                'accepted' => __( 'Accepted', 'disciple_tools' ),
                 'active' => __( 'Active', 'disciple_tools' ),
                 'paused' => __( 'Paused', 'disciple_tools' ),
                 'closed' => __( 'Closed', 'disciple_tools' ),
@@ -832,6 +831,15 @@ class Disciple_Tools_Contact_Post_Type {
                 'unknown' => __( 'Unknown', 'disciple_tools' )],
             'section' => 'misc'
         ];
+
+        $fields['accepted'] = [
+            'name' => __( 'Accepted', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => ['no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' )],
+            'section' => 'milestone'
+        ];
+
         $fields['source_details'] = [
             'name' => __( 'Source Details', 'disciple_tools' ),
             'description' => '',
