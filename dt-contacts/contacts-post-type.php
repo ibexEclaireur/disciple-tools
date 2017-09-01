@@ -20,7 +20,7 @@ class Disciple_Tools_Contact_Post_Type {
      * @var    string
      */
     public $post_type;
-    
+
     /**
      * The post type singular label.
      *
@@ -463,7 +463,7 @@ class Disciple_Tools_Contact_Post_Type {
     public function load_activity_meta_box () {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
-    
+
     /**
      * Load activity metabox
      */
@@ -553,6 +553,7 @@ class Disciple_Tools_Contact_Post_Type {
                 'unassigned' => __( 'Unassigned', 'disciple_tools' ),
                 'assigned' => __( "Assigned", 'disciple_tools' ),
                 'accepted' => __( 'Accepted', 'disciple_tools' ),
+                'active' => __( 'Active', 'disciple_tools' ),
                 'paused' => __( 'Paused', 'disciple_tools' ),
                 'closed' => __( 'Closed', 'disciple_tools' ),
                 'unassignable' => __( 'Unassignable', 'disciple_tools' )
