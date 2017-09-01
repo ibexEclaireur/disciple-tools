@@ -925,7 +925,7 @@ class Disciple_Tools_Contacts
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( int $contact_id, int $user_id, $meta = NULL ) {
+    public static function add_shared( int $contact_id, int $user_id, $meta = null ) {
         global $wpdb;
         
         if (!self::can_update_contact( $contact_id )){
@@ -944,9 +944,9 @@ class Disciple_Tools_Contacts
             '%s',
         ];
         
-        $duplicate_check = $wpdb->get_row("SELECT id FROM $wpdb->dt_share WHERE contact_id = '$contact_id' AND user_id = '$user_id'", ARRAY_A);
+        $duplicate_check = $wpdb->get_row( "SELECT id FROM $wpdb->dt_share WHERE contact_id = '$contact_id' AND user_id = '$user_id'", ARRAY_A );
         
-        if (is_null($duplicate_check)) {
+        if (is_null( $duplicate_check )) {
             $results = $wpdb->insert( $table, $data, $format );
             return $results;
         } else {

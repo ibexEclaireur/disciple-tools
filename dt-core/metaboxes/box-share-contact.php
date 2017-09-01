@@ -48,9 +48,9 @@ class Disciple_Tools_Metabox_Share_Contact {
         }
         $html .= '</ul></form>';
         
-        $result = Disciple_Tools_Contacts::add_shared($contact_id, 11);
+        $result = Disciple_Tools_Contacts::add_shared( $contact_id, 11 );
         echo 'Added ' . $result;
-        $result1 = Disciple_Tools_Contacts::remove_shared($contact_id, 6);
+        $result1 = Disciple_Tools_Contacts::remove_shared( $contact_id, 6 );
         echo 'Removed ' . $result1;
         
         $html .= '<p><strong>Share this contact with the following members:</strong></p>';
