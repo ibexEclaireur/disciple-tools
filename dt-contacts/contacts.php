@@ -877,7 +877,7 @@ class Disciple_Tools_Contacts
      * @param $contact_id
      * @return array|mixed
      */
-    public static function get_shared_with( $contact_id ) {
+    public static function get_shared_with( int $contact_id ) {
         global $wpdb;
         
         if (!self::can_update_contact( $contact_id )){
@@ -925,13 +925,13 @@ class Disciple_Tools_Contacts
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( int $contact_id, int $user_id, $meta = [] ) {
+    public static function add_shared( int $contact_id, int $user_id, $meta = null ) {
         global $wpdb;
         
         if (!self::can_update_contact( $contact_id )){
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
-    
+        
         $table = $wpdb->dt_share;
         $data = [
             'user_id' => $user_id,
@@ -944,9 +944,14 @@ class Disciple_Tools_Contacts
             '%s',
         ];
         
-        $results = $wpdb->insert( $table, $data, $format );
+        $duplicate_check = $wpdb->get_row( "SELECT id FROM $wpdb->dt_share WHERE contact_id = '$contact_id' AND user_id = '$user_id'", ARRAY_A );
         
-        return $results;
+        if (is_null( $duplicate_check )) {
+            $results = $wpdb->insert( $table, $data, $format );
+            return $results;
+        } else {
+            return new WP_Error( __FUNCTION__, __( "Contact already shared with user." ), ['status' => 403] );
+        }
         
     }
 }

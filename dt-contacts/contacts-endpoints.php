@@ -526,7 +526,7 @@ class Disciple_Tools_Contacts_Endpoints
     
     public function remove_shared( WP_REST_Request $request ){
         $params = $request->get_params();
-        if (isset( $params['id'] )){
+        if (isset( $params['contact_id'] )){
             $result = Disciple_Tools_Contacts::remove_shared( $params['id'], $params['user_id'] );
             
             if ( is_wp_error( $result ) ){
