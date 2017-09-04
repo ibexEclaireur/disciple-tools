@@ -29,6 +29,7 @@ class Disciple_Tools_Locations_Tab_Import
         $html .= '<div id="post-body-content">';
         $html .= $this->select_oz_data_dropdown() . '<br>';
         $html .= $this->select_us_census_data_dropdown() . '<br>';
+        $html .= $this->us_census_data_dropdown() . '<br>';
         
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         $html .= $this->locations_currently_installed(); /* Add content to column */
@@ -82,6 +83,60 @@ class Disciple_Tools_Locations_Tab_Import
                             </td>
                         </tr>';
                     
+        
+        if ( !empty( $result ) || !empty( $result2 ) ) {
+            $html .= '<tr>
+                            <td>State Counties: ' . $result . '<br>State Tracts: ' . $result2 . '</td>
+                      </tr>';
+        }
+        
+        $html .= '</tbody>
+                </table>';
+        
+        return $html;
+    }
+    
+    
+    /**
+     * Creates drop down for uploading state xml files
+     * @version 2
+     * @return mixed
+     */
+    public function us_census_data_dropdown()
+    {
+        $html = '';
+        $result = '';
+        $result2 = '';
+        
+        // check if $_POST to change option
+        if ( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_nonce' ], 'state_nonce_validate' ) ) {
+            
+            if ( !isset( $_POST[ 'states-dropdown' ] ) ) { // check if file is correctly set
+                return false;
+            }
+            
+            $result = Disciple_Tools_Locations_Import::census_tract_kml_to_post_type( $_POST[ 'states-dropdown' ] ); // run insert process TODO make this a javascript call with a spinner.
+            $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts_coordinates( $_POST[ 'states-dropdown' ] );
+            
+        } /* end if $_POST */
+        
+        $dropdown = dt_get_states_key_dropdown_not_installed();
+        
+        // return form and dropdown
+        
+        $html .= '<table class="widefat ">
+                    <thead><th>Zume Project - USA Census Data </th></thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <form action="" method="POST">
+                                    ' . wp_nonce_field( 'state_nonce_validate', 'state_nonce', true, false ) . $dropdown . '
+                                    
+                                    <button type="submit" class="button" value="submit">Upload State</button>
+                                </form>
+                            </td>
+                        </tr>';
+        
         
         if ( !empty( $result ) || !empty( $result2 ) ) {
             $html .= '<tr>

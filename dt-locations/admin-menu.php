@@ -89,14 +89,20 @@ class Disciple_Tools_Location_Tools_Menu {
         $html .= $tab_link_pre . 'import' . $tab_link_post;
         if ($tab == 'import' || !isset( $tab )) {$html .= 'nav-tab-active';}
         $html .= '">Import</a>';
-
-        $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
-        if ($tab == 'address_tract' ) {$html .= 'nav-tab-active';}
-        $html .= '">USA Tract Search</a>';
     
-        $html .= $tab_link_pre . 'stats' . $tab_link_post;
-        if ($tab == 'stats' ) {$html .= 'nav-tab-active';}
-        $html .= '">Stats</a>';
+        $html .= $tab_link_pre . 'usa' . $tab_link_post;
+        if ($tab == 'usa' ) {$html .= 'nav-tab-active';}
+        $html .= '">USA</a>';
+    
+        $html .= $tab_link_pre . 'global' . $tab_link_post;
+        if ($tab == 'global' ) {$html .= 'nav-tab-active';}
+        $html .= '">Global</a>';
+    
+        $html .= $tab_link_pre . 'local_area' . $tab_link_post;
+        if ($tab == 'local_area' ) {$html .= 'nav-tab-active';}
+        $html .= '">Local Area</a>';
+
+    
 
         $html .= '</h2>';
 
@@ -110,18 +116,18 @@ class Disciple_Tools_Location_Tools_Menu {
          */
         switch ($tab) {
 
-            case "address_tract":
-                $class_object = new Disciple_Tools_Locations_USA_Tract_Lookup();
-                $html .= '' . $class_object->page_contents();
+            case "local_area":
+                
                 break;
-            case "stats":
-                require_once 'admin-tab-stats.php';
-                $class_object = new Disciple_Tools_Locations_Stats();
+            case "global":
+        
+                break;
+            case "import":
+                $class_object = new Disciple_Tools_Locations_Tab_Import();
                 $html .= '' . $class_object->page_contents();
                 break;
             default:
-                $class_object = new Disciple_Tools_Locations_Tab_Import();
-                $html .= '' . $class_object->page_contents();
+                
                 break;
         }
 
