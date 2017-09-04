@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Disciple_Tools_Tabs
+ * Disciple_Tools_Locations_Tab_Global
  *
- * @class   Disciple_Tools_Tabs
+ * @class   Disciple_Tools_Locations_Tab_Global
  * @version 0.1
  * @since   0.1
- * @package Disciple_Tools_Tabs
+ * @package Disciple_Tools_Locations_Tab_Global
  * @author  Chasm.Solutions
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-class Disciple_Tools_Locations_Tab_Import {
+class Disciple_Tools_Locations_Tab_Global {
     
     /**
      * Page content for the tab
