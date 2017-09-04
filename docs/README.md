@@ -1,4 +1,4 @@
-[Home](readme.md) | [FAQs](faq.md) | [Documentation](documentation.md) | [How to Install](how-to-install.md)
+[Home](README.md) | [FAQs](faq.md) | [Documentation](documentation.md) | [How to Install](how-to-install.md)
 # Disciple Tools System
 The documentation folder contains a distributable copy of instructions, examples, and faqs for the disciple tools system.
 
