@@ -286,8 +286,6 @@ class Disciple_Tools {
             require_once( 'dt-locations/admin-menu.php' );
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
             require_once( 'dt-locations/class-import.php' ); // import class
-            require_once( 'dt-locations/admin-tab-import.php' ); // import tab page
-            require_once( 'dt-locations/admin-tab-usa-lookup.php' ); // testing page, not intended for production
 
             // People Groups
             require_once( 'dt-people-groups/admin-menu.php' );
