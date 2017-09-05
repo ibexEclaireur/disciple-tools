@@ -253,7 +253,7 @@ class Disciple_Tools {
             require_once( 'dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
             require_once( 'dt-core/admin/class-better-author-metabox.php' ); // Allows multiple authors to be selected as post author
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
-    
+
             // Settings Menu
             require_once( 'dt-core/admin/menu/menu.php' );
             $this->config_menu = Disciple_Tools_Config_Menu::instance();
@@ -304,8 +304,8 @@ class Disciple_Tools {
             // Logging
             require_once( 'dt-core/logging/class-activity-list-table.php' ); // contacts and groups report building
             require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
-            
-            
+
+
 
         }
         /* End Admin configuration section */
@@ -364,6 +364,7 @@ class Disciple_Tools {
         $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
         require_once( 'dt-groups/groups.php' );
         require_once( 'dt-groups/groups-endpoints.php' ); // builds rest endpoints
+        Disciple_Tools_Groups_Endpoints::instance();
         require_once( 'dt-groups/groups-template.php' ); // Functions to support theme
 
 

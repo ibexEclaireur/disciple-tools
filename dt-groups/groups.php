@@ -11,6 +11,13 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
+/**
+ * Class Disciple_Tools_Contacts
+ *
+ * Functions for creating, finding, updating or deleting contacts
+ */
+
+
 class Disciple_Tools_Groups {
 
     public static function get_groups (){
