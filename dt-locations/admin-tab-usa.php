@@ -18,7 +18,15 @@ class Disciple_Tools_Locations_Tab_USA {
         return '<form method="post"> <input type="text" name="county" class="text-small" /> <button type="submit" class="button">Install US County</button></form>'; // auto search field
     }
     
-    public function process_install_us_county( $county_id ) {
-        return $county_id;
+    public function process_install_us_county( $post ) {
+        return $post;
+    }
+    
+    public function install_us_state() {
+        return dt_get_states_key_dropdown_not_installed();
+    }
+    
+    public function process_install_us_state( $post ) {
+        return $post;
     }
 }
