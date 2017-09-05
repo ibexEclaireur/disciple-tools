@@ -28,9 +28,9 @@ class Disciple_Tools_Locations_Tab_USA {
         // Step 2
         $html .= '<form method="post" name="state_step2" id="state_step2">';
         $html .= wp_nonce_field( 'state_levels_nonce_validate', 'state_levels_nonce', true, false );
-        $option = get_option('_dt_usa_installed_state');
+        $option = get_option( '_dt_usa_installed_state' );
         if($option) {
-        $html .= '<h1>(Step 2) Add Levels to Installed States:</h1><br>';
+            $html .= '<h1>(Step 2) Add Levels to Installed States:</h1><br>';
             foreach ( $option as $state ) {
                 $html .= '<hr><h2>' . $state['Zone_Name'] . '</h2>';
                 $html .= '<p>Add levels: ';
@@ -49,7 +49,7 @@ class Disciple_Tools_Locations_Tab_USA {
     
     /**
      */
-    public function process_install_us_state( ) {
+    public function process_install_us_state() {
         // if state install
         if ( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_nonce' ], 'state_nonce_validate' ) ) {
     
@@ -84,14 +84,14 @@ class Disciple_Tools_Locations_Tab_USA {
                 $installed_states = get_option( '_dt_usa_installed_state' );
             }
 
-            array_push($installed_states, $state);
-            asort($installed_states);
+            array_push( $installed_states, $state );
+            asort( $installed_states );
 
             update_option( '_dt_usa_installed_state', $installed_states, false );
         }
         elseif ( !empty( $_POST[ 'state_levels_nonce' ] ) && isset( $_POST[ 'state_levels_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_levels_nonce' ], 'state_levels_nonce_validate' )  ) {
             
-            $keys = array_keys($_POST);
+            $keys = array_keys( $_POST );
             
             switch($keys[2]) {
                 
@@ -152,7 +152,7 @@ class Disciple_Tools_Locations_Tab_USA {
                     foreach($options as $key => $value) {
         
                         if($value['WorldID'] == $state_worldid) {
-                            unset($options[$key]);
+                            unset( $options[$key] );
                             break;
                         }
                     }
