@@ -145,6 +145,7 @@ class Disciple_Tools_Location_Tools_Menu {
                 $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
                 $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
                 break;
+             
                 
             case "usa":
                 $object = new Disciple_Tools_Locations_Tab_USA(); // create object
@@ -152,26 +153,19 @@ class Disciple_Tools_Location_Tools_Menu {
                 $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
                 $html .= '<div id="post-body-content">';
                 
-                /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Your US County</th></thead><tbody><tr><td>';
-    
-                if(isset( $_POST['process_install_us_county'] )) {
-                    $html .= $object->process_install_us_county( $_POST );
-                }
                 
-                $html .= $object->install_us_county();
+    
+                /* BOX */
+                $html .= '<table class="widefat striped"><thead><th>Install by State</th></thead><tbody><tr><td>';
+    
+                $object->process_install_us_state();
+                $html .= $object->install_us_state();
+                
+//                print_r($_POST);
+//                print '<br>'; print_r(get_option( '_dt_usa_installed_state' ));
+                
                 
                 $html .= '</td></tr></tbody></table><br>';
-    
-                /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Your State</th></thead><tbody><tr><td>';
-                
-                if(isset( $_POST['process_install_us_state'] )) {
-                    $html .= $object->process_install_us_state( $_POST );
-                }
-                
-                $html .= $object->install_us_state();
-                $html .= '</td></tr></tbody></table>';
     
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
@@ -185,6 +179,8 @@ class Disciple_Tools_Location_Tools_Menu {
                 $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
                 $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
                 break;
+            
+                
             case 'import':
                 require_once( 'admin-tab-import.php' );
                 $content = new Disciple_Tools_Locations_Tab_Import();
@@ -229,6 +225,8 @@ function dt_get_states_key_dropdown_not_installed () {
     return $dropdown;
 }
 
+
+
 /**
  * Creates a dropdown of the states with the state key as the value.
  * @usage USA locations
@@ -266,6 +264,8 @@ function dt_get_states_key_dropdown_installed () {
 function dt_get_usa_meta() {
     return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-meta.json' ) );
 }
+
+
 
 /**
  * Get the master list of countries for omega zones including country abbreviation, country name, and zone.
