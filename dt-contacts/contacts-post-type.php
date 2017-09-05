@@ -292,27 +292,27 @@ class Disciple_Tools_Contact_Post_Type {
                     switch ( $type ) {
 
                         case 'text':
-                            $html .= '<tr valign="top" id="'. esc_attr( $k )  .'"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                            $html .= '<tr valign="top" id="'. esc_attr( $k )  .'"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr($v['name']) . '</label></th>
                                 <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '<p class="description">' . esc_attr($v['description']) . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
                         case 'textarea':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr($v['name']) . '</label></th>
                                 <td><textarea name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text"  >' . esc_attr( $data ) . '</textarea>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '<p class="description">' . esc_attr($v['description']) . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
                         case 'select':
                             $html .= '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                                <label for="' . esc_attr( $k ) . '">' . esc_attr($v['name']) . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
                             foreach ($v['default'] as $vv) {
                                 $html .= '<option value="' . $vv . '" ';
                                 if($vv == $data) { $html .= 'selected';}
-                                $html .= '>' .$vv . '</option>';
+                                $html .= '>' . esc_attr($vv) . '</option>';
                             }
                             $html .= '</select>' . "\n";
                             $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
@@ -320,21 +320,21 @@ class Disciple_Tools_Contact_Post_Type {
                             break;
                         case 'key_select':
                             $html .= '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . $v['name']  . '</label></th>
+                                <label for="' . esc_attr( $k ) . '">' . esc_attr($v['name'])  . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
                             foreach ($v['default'] as $kk => $vv) {
                                 $html .= '<option value="' . $kk . '" ';
                                 if($kk == $data) { $html .= 'selected';}
-                                $html .= '>' .$vv . '</option>';
+                                $html .= '>' . esc_attr($vv) . '</option>';
                             }
                             $html .= '</select>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '<p class="description">' . esc_attr($v['description']) . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
                         case 'radio':
-                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+                            $html .= '<tr valign="top"><th scope="row">' . esc_attr($v['name']) . '</th>
                                 <td><fieldset>';
                             // Iterate the buttons
                             $increment_the_radio_button = 1;
@@ -350,7 +350,7 @@ class Disciple_Tools_Contact_Post_Type {
                             $html .= '</td><tr/>' . "\n";
                             break;
                         case 'checkbox':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . $v['name'] . '</label></th><td>
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr($v['name']) . '</label></th><td>
 
                                 <input name="' . esc_attr( $k ) . '" type="checkbox" id="' . esc_attr( $k ) . '" value="' ;
 
@@ -361,7 +361,7 @@ class Disciple_Tools_Contact_Post_Type {
                             $html .= '</td><tr/>' . "\n";
                             break;
                         case 'custom':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . $v['name'] . '</label></th><td>';
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr($v['name']) . '</label></th><td>';
                             $html .= $v['default'];
                             $html .= '</td><tr/>' . "\n";
                             break;
@@ -916,10 +916,10 @@ class Disciple_Tools_Contact_Post_Type {
         $id = $post->ID ?? $post_id;
         if (isset( $post->ID ) || isset( $post_id )){
             $current_fields = $wpdb->get_results(
-                "SELECT meta_key 
-                FROM $wpdb->postmeta 
-                WHERE post_id = $id 
-                AND meta_key LIKE 'contact_%' 
+                "SELECT meta_key
+                FROM $wpdb->postmeta
+                WHERE post_id = $id
+                AND meta_key LIKE 'contact_%'
                 ORDER BY meta_key DESC", ARRAY_A
             );
         }
