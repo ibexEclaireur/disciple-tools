@@ -134,7 +134,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
-     * @usage  Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
+     * @usage  Disciple_Tools()->counter->contacts_counter('overall_status','active');
      * @return int
      */
     public function contacts_meta_counter ( $meta_key, $meta_value ) {
@@ -148,7 +148,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
-     * @usage  Disciple_Tools()->counter->contacts_counter('overall_status','accepted');
+     * @usage  Disciple_Tools()->counter->contacts_counter('overall_status','active');
      * @return int
      */
     public function groups_meta_counter ( $meta_key, $meta_value ) {
