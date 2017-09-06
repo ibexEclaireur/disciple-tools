@@ -62,6 +62,7 @@ class Disciple_Tools_Groups_Endpoints {
         foreach ($groups->posts as $group) {
             $meta_fields = get_post_custom( $group->ID );
             $group_array = $group->to_array();
+            unset( $group_array['contacts'] );
             $group_array['permalink'] = get_post_permalink( $group->ID );
             $group_array['locations'] = array();
             foreach ( $group->locations as $location ) {
