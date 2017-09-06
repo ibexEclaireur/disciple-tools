@@ -117,23 +117,30 @@ class Disciple_Tools_Location_Tools_Menu {
                 $html .= '<div id="post-body-content">';
     
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Global</th></thead><tbody><tr><td>';
+                $html .= '<table class="widefat striped"><thead><th>Install</th></thead><tbody><tr><td>';
                 $object->process_install_country();
                 $html .= $object->install_country();
                 
                 $html .= '</td></tr></tbody></table>';
-                print_r( $_POST );
-                print '<br>';
-                print_r( get_option( '_dt_installed_country' ) );
+    
+                print '<pre>';
+//                print_r( $_POST );
+//                print '<br>';
+//                print_r( get_option( '_dt_installed_country' ) );
+
+//                print_r(get_option('_dt_locations_import_config'));
+//                $config = get_option('_dt_locations_import_config');
+//                print $config['mm_hosts'][$config['selected_mm_hosts']] ;
+                
+                print '</pre>';
                 
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Instructions</th></thead><tbody><tr><td>';
-                /*first column*/
-                $html .= '</td></tr><tr><td>';
-                /*second column*/
-                $html .= '</td></tr></tbody></table>';
+                $html .= '<table class="widefat striped"><thead><th>Source</th></thead><tbody><tr><td>';
+                $html .= $this->get_import_config_dropdown( 'mm_hosts' );
+                $html .= '</td></tr></tbody></table><br>';
+                $html .= $this->locations_currently_installed();
                 
                 $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
                 $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
@@ -159,16 +166,19 @@ class Disciple_Tools_Location_Tools_Menu {
 //                print '<br>'; print_r(get_option( '_dt_usa_installed_state' ));
                 
                 
+                
+                
                 $html .= '</td></tr></tbody></table><br>';
     
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
                 /* BOX */
                 $html .= '<table class="widefat striped"><thead><th>Instructions</th></thead><tbody><tr><td>';
-                /*first column*/
-                $html .= '</td></tr><tr><td>';
-                /*second column*/
-                $html .= '</td></tr></tbody></table>';
+                
+                
+                $html .= '</td></tr></tbody></table><br>';
+    
+                $html .= $this->locations_currently_installed();
                 
                 $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
                 $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
@@ -187,6 +197,95 @@ class Disciple_Tools_Location_Tools_Menu {
         $html .= '</div>'; // end div class wrap
 
         echo $html; // Echo contents
+    }
+    
+    /**
+     *
+     * @param $host string  Can be either 'kml_hosts' or 'mm_hosts'
+     */
+    public function get_import_config_dropdown( $host ) {
+        // get vars
+        $option = get_option( '_dt_locations_import_config' );
+        $config = json_decode( file_get_contents( plugin_dir_path( __FILE__ ). 'config.json' ), true );
+        
+        // check on option status
+        if (empty( $option )) { // check if option exists
+            update_option( '_dt_locations_import_config', $config, false );
+            $option = get_option( '_dt_locations_import_config' );
+        }
+        elseif ( $option['version'] < $config['version'] ) { // check if current version
+            
+            $config['selected_mm_host'] = $option['selected_mm_host'];
+            $config['selected_kml_host'] = $option['selected_kml_host'];
+            
+            update_option( '_dt_locations_import_config', $config, false );
+            $option = get_option( '_dt_locations_import_config' );
+        }
+        
+        // update from post
+        if(isset( $_POST['change_host_source'] )) {
+            if (isset( $_POST[$host] )) {
+                $option['selected_'.$host] = $_POST[$host];
+                update_option( '_dt_locations_import_config', $option, false );
+            }
+        }
+        
+        // create dropdown
+        $html = '';
+        $html .= '<form method="post"><select name="'.$host.'" >';
+        foreach ($option[$host] as $key => $value) {
+            $html .= '<option value="'.$key.'" ';
+            if( $option['selected_'.$host] == $key ) { $html .= ' selected'; }
+            $html .= '>' . $key . '</option>';
+        }
+        $html .= '</select> <button type="submit" name="change_host_source" value="true">Save</button></form>';
+
+        return $html;
+    }
+    
+    public function locations_currently_installed () {
+        global $wpdb;
+        $count = [];
+        $html = '';
+        
+        // Search for currently installed locations
+        
+        $html .= '<table class="widefat ">
+                    <thead><th>Currently Installed</th></thead>
+                    <tbody>
+                        <tr>
+                            <td>';
+        // Total number of locations in database
+        $html .= 'Total number of location posts: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
+        
+        // Total number of countries
+        $count['countries'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
+        $html .= 'Total number of countries (admin0): <br>' . $count['countries'] . '<br>';
+        
+        // Total number of admin1
+        $count['admin1'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
+        $html .= 'Total number of Admin1: <br>' . $count['admin1'] . '<br>';
+        
+        // Total number of admin2
+        $count['admin2'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
+        $html .= 'Total number of Admin2: <br>' . $count['admin2'] . '<br>';
+        
+        // Total number of admin3
+        $count['admin3'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
+        $html .= 'Total number of Admin3: <br>' . $count['admin3'] . '<br>';
+        
+        // Total number of admin4
+        $count['admin4'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
+        $html .= 'Total number of Admin4: <br>' . $count['admin4'] . '<br>';
+        
+        
+        $html .= '      </td>
+                        </tr>';
+        
+        $html .= '</tbody>
+                </table>';
+        
+        return $html;
     }
 }
 
@@ -258,7 +357,6 @@ function dt_get_states_key_dropdown_installed () {
 function dt_get_usa_meta() {
     return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-meta.json' ) );
 }
-
 
 
 /**

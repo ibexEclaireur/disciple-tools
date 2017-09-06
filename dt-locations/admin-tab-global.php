@@ -16,6 +16,7 @@ class Disciple_Tools_Locations_Tab_Global {
     
     
     public function install_country() {
+        
         // Step 1
         $html = '<form method="post" name="country_step1" id="country_step1">';
         $html .= wp_nonce_field( 'country_nonce_validate', 'country_nonce', true, false );
@@ -30,16 +31,29 @@ class Disciple_Tools_Locations_Tab_Global {
         $html .= wp_nonce_field( 'country_levels_nonce_validate', 'country_levels_nonce', true, false );
         $option = get_option( '_dt_installed_country' );
         if($option) {
-            $html .= '<h1>(Step 2) Add Levels to Installed Countries:</h1><br>';
+            $html .= '<h1>(Step 2) Add Admin Levels to Installed Countries:</h1><br>';
             foreach ( $option as $country ) {
                 $html .= '<hr><h2>' . $country['Zone_Name'] . '</h2>';
                 $html .= '<p>Add levels: ';
                 foreach( $country['levels'] as $key => $value ) {
-                    $html .= '<button type="submit" name="' . $key . '" value="'.$country['WorldID'].'" ';
-                    ($value == 1) ? $html .= 'disabled' : null; //check if already installed
-                    $html .= '>' . $key . '</button> ';
+                    if($value > 0) {
+                        $label = '';
+                        switch($key) {
+                            case 'adm1_count': $label = 'Admin1';
+break;
+                            case 'adm2_count': $label = 'Admin2';
+break;
+                            case 'adm3_count': $label = 'Admin3';
+break;
+                            case 'adm4_count': $label = 'Admin4';
+break;
+                        }
+                        $html .= '<button type="submit" name="' . $key . '" value="'.$country['WorldID'].'" ';
+                        ($value < 1) ? $html .= 'disabled' : null; //check if already installed
+                        $html .= '>'. $label . ' (' .$value. ')</button> ';
+                    }
                 }
-                $html .= '<span style="float:right"><button type="submit" name="delete" value="'.$country['WorldID'].'">delete all of '.$country['Zone_Name'].'</button></span></p>';
+                $html .= '<span style="float:right"><button type="submit" name="delete" value="'.$country['WorldID'].'">delete all</button></span></p>';
             }
         }
         $html .= '</form>';
@@ -48,6 +62,7 @@ class Disciple_Tools_Locations_Tab_Global {
     }
     
     /**
+     * Process the posts
      */
     public function process_install_country() {
         // if country install
@@ -65,17 +80,14 @@ class Disciple_Tools_Locations_Tab_Global {
             $country[ 'WorldID' ] = $selected_country;
             
             $dir_contents = $this->get_countries_json();
-            foreach( $dir_contents->RECORDS as $value ) {
-                if($value->WorldID == $country[ 'WorldID' ]) {
-                    $country[ 'Zone_Name' ] = $value->Zone_Name;
+            foreach( $dir_contents['RECORDS'] as $value ) {
+                if($value['WorldID'] == $country[ 'WorldID' ]) {
+                    $country[ 'Zone_Name' ] = $value['Zone_Name'];
                     break;
                 }
             }
-            
-            $country[ 'levels' ]  = [
-                "county" => false,
-                "tract"  => true,
-            ];
+    
+            $country[ 'levels' ] = $this->get_country_summary( $selected_country );
             
             $installed_countries = [];
             
@@ -178,18 +190,18 @@ class Disciple_Tools_Locations_Tab_Global {
         
         $dropdown = '<select name="countries-dropdown">';
         $option = get_option( '_dt_installed_country' );
-        foreach ($dir_contents->RECORDS as $value) {
+        foreach ($dir_contents['RECORDS'] as $value) {
             $disabled = '';
-            $dropdown .= '<option value="' . $value->WorldID . '" ';
+            $dropdown .= '<option value="' . $value['WorldID'] . '" ';
             if($option != false) {
                 foreach($option as $installed) {
-                    if( $installed['WorldID'] == $value->WorldID) {
+                    if( $installed['WorldID'] == $value['WorldID']) {
                         $dropdown .= ' disabled';
                         $disabled = ' (Installed)';
                     }
                 }
             }
-            $dropdown .= '>' . $value->Zone_Name . $disabled;
+            $dropdown .= '>' . $value['Zone_Name'] . $disabled;
             $dropdown .= '</option>';
         }
         $dropdown .= '</select>';
@@ -206,6 +218,11 @@ class Disciple_Tools_Locations_Tab_Global {
      * @return array|mixed|object
      */
     public function get_countries_json() {
-        return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/countries.json' ) );
+        return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/countries.json' ), true );
+    }
+    
+    public function get_country_summary( $cnty_id ) {
+        $config = get_option( '_dt_locations_import_config' );
+        return json_decode( file_get_contents( $config['mm_hosts'][$config['selected_mm_hosts']] . 'get_summary?cnty_id=' . $cnty_id ), true );
     }
 }

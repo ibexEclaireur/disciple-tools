@@ -399,11 +399,9 @@ class Disciple_Tools_Locations_Tab_Import
         $count['countries'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
         $html .= 'Total number of countries (admin0): <br>' . $count['countries'] . '<br>';
         
-        
         // Total number of admin1
         $count['admin1'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
         $html .= 'Total number of Admin1: <br>' . $count['admin1'] . '<br>';
-        
         
         // Total number of admin2
         $count['admin2'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
