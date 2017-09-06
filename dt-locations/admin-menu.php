@@ -50,9 +50,6 @@ class Disciple_Tools_Location_Tools_Menu {
      */
     public function __construct () {
         $this->path  = plugin_dir_path( __DIR__ );
-        require_once( 'admin-tab-global.php' );
-        require_once( 'admin-tab-usa.php' );
-
         add_action( 'admin_menu', [ $this, 'load_admin_menu_item' ] );
     } // End __construct()
 
@@ -113,30 +110,25 @@ class Disciple_Tools_Location_Tools_Menu {
         switch ($tab) {
 
             case "global":
+                require_once( 'admin-tab-global.php' );
+                $object = new Disciple_Tools_Locations_Tab_Global();
+                
                 $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
                 $html .= '<div id="post-body-content">';
     
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Title</th></thead><tbody><tr><td>';
+                $html .= '<table class="widefat striped"><thead><th>Global</th></thead><tbody><tr><td>';
+                $object->process_install_country();
+                $html .= $object->install_country();
                 
-                /*first column*/
-                $html .= '</td></tr><tr><td>';
-                /*second column*/
                 $html .= '</td></tr></tbody></table>';
-                
-                $html .= '<br>'; // separate boxes
-    
-                /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Title</th></thead><tbody><tr><td>';
-                /*first column*/
-                $html .= '</td></tr><tr><td>';
-                /*second column*/
-                $html .= '</td></tr></tbody></table>';
+                print_r($_POST);
+                print '<br>'; print_r(get_option( '_dt_installed_country' ));
                 
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Title</th></thead><tbody><tr><td>';
+                $html .= '<table class="widefat striped"><thead><th>Instructions</th></thead><tbody><tr><td>';
                 /*first column*/
                 $html .= '</td></tr><tr><td>';
                 /*second column*/
@@ -148,6 +140,7 @@ class Disciple_Tools_Location_Tools_Menu {
              
                 
             case "usa":
+                require_once( 'admin-tab-usa.php' );
                 $object = new Disciple_Tools_Locations_Tab_USA(); // create object
                 
                 $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
