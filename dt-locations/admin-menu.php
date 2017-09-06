@@ -122,8 +122,9 @@ class Disciple_Tools_Location_Tools_Menu {
                 $html .= $object->install_country();
                 
                 $html .= '</td></tr></tbody></table>';
-                print_r($_POST);
-                print '<br>'; print_r(get_option( '_dt_installed_country' ));
+                print_r( $_POST );
+                print '<br>';
+                print_r( get_option( '_dt_installed_country' ) );
                 
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
