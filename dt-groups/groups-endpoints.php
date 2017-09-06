@@ -59,14 +59,10 @@ class Disciple_Tools_Groups_Endpoints {
         p2p_type( 'groups_to_locations' )->each_connected( $groups, array(), 'locations' );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, array(), 'contacts' );
         $rv = array();
-        $group_booleans = array(
-            'church_baptism', 'church_bible', 'church_communion', 'church_fellowship',
-            'church_tithe', 'church_prayer', 'church_praise', 'church_sharing', 'church_leaders',
-            'is_church',
-        );
         foreach ($groups->posts as $group) {
             $meta_fields = get_post_custom( $group->ID );
             $group_array = $group->to_array();
+            unset( $group_array['contacts'] );
             $group_array['permalink'] = get_post_permalink( $group->ID );
             $group_array['locations'] = array();
             foreach ( $group->locations as $location ) {
@@ -84,8 +80,8 @@ class Disciple_Tools_Groups_Endpoints {
                 $group_array['member_count']++;
             }
             foreach ( $meta_fields as $meta_key => $meta_value ) {
-                if ( in_array( $meta_key, $group_booleans, true ) ) {
-                    $group_array[$meta_key] = (bool) ((int) $meta_value[0]);
+                if ( $meta_key == 'group_status' ) {
+                    $group_array[$meta_key] = $meta_value[0];
                 } else if ( $meta_key == 'last_modified' ) {
                     $group_array[$meta_key] = (int) $meta_value[0];
                 }
