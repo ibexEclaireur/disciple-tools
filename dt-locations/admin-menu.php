@@ -124,9 +124,9 @@ class Disciple_Tools_Location_Tools_Menu {
                 $html .= '</td></tr></tbody></table>';
     
                 print '<pre>';
-//                print_r( $_POST );
-//                print '<br>';
-//                print_r( get_option( '_dt_installed_country' ) );
+                print_r( $_POST );
+                print '<br>';
+                print_r( get_option( '_dt_installed_country' ) );
 
 //                print_r(get_option('_dt_locations_import_config'));
 //                $config = get_option('_dt_locations_import_config');
