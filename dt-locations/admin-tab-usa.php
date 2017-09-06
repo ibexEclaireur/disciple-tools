@@ -39,7 +39,7 @@ class Disciple_Tools_Locations_Tab_USA {
                     ($value == 1) ? $html .= 'disabled' : null; //check if already installed
                     $html .= '>' . $key . '</button> ';
                 }
-                $html .= '<span style="float:right"><button type="submit" name="delete" value="'.$state['WorldID'].'">delete all of '.$state['Zone_Name'].'</button></span></p>';
+                $html .= '<span style="float:right"><button type="submit" name="delete" value="'.$state['WorldID'].'">delete all</button></span></p>';
             }
         }
         $html .= '</form>';
