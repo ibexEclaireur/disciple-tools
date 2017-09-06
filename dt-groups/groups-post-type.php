@@ -365,40 +365,40 @@ class Disciple_Tools_Groups_Post_Type {
                     switch ($type) {
 
                         case 'text':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
                             $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
                         case 'date':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
                             $html .= '<p class="description">' . $v['description']  .'</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
 
                             break;
                         case 'key_select':
-                            $html .= '<tr class="'. $v['section'] .'" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                            $html .= '<tr class="'. esc_attr( $v['section'] ) .'" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
+                                <label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
                             foreach ($v['default'] as $kk => $vv) {
                                 $html .= '<option value="' . $kk . '" ';
                                 if($kk == $data) { $html .= 'selected';}
-                                $html .= '>' .$vv . '</option>';
+                                $html .= '>' .esc_attr( $vv ) . '</option>';
                             }
                             $html .= '</select>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
 
                         case 'radio':
-                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+                            $html .= '<tr valign="top"><th scope="row">' . esc_attr( $v['name'] ) . '</th>
                                 <td><fieldset>';
                             // Iterate the buttons
                             $increment_the_radio_button = 1;
                             foreach ($v['default'] as $vv) {
-                                $html .= '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . "\">$vv</label>" .
-                                    '<input class="drm-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . $k . '-' . $increment_the_radio_button . '" value="' . $vv . '" ';
+                                $html .= '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . '">' . esc_attr( $vv ) . '</label>
+                                    <input class="drm-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . $k . '-' . $increment_the_radio_button . '" value="' . $vv . '" ';
                                 if ($vv == $data) {
                                     $html .= 'checked';
                                 }
@@ -406,7 +406,7 @@ class Disciple_Tools_Groups_Post_Type {
                                 $increment_the_radio_button++;
                             }
                             $html .= '</fieldset>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                            $html .= '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
 
@@ -500,6 +500,22 @@ class Disciple_Tools_Groups_Post_Type {
         global $post;
 
         $fields = [];
+
+        $fields['group_status'] = [
+            'name' => __( 'Group Status', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => [
+                'no_value' => __( 'No value', 'disciple_tools' ),
+                'active_pre_group' => __( 'Active Pre-Group (Faithfully Sharing)', 'disciple_tools' ),
+                'active_group' => __( 'Active Group (Consistently Meeting)', 'disciple_tools' ),
+                'active_church' => __( 'Active Church (3+ Baptized)', 'disciple_tools' ),
+                'inactive_church' => __( 'Inactive Church', 'disciple_tools' ),
+                'inactive_group' => __( 'Inactive Group', 'disciple_tools' ),
+                'inactive_pre_group' => __( 'Inactive Pre-Group', 'disciple_tools' ),
+            ],
+            'section' => 'info',
+        ];
 
         // Church
         $fields['is_church'] = [
