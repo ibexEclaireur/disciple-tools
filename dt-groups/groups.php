@@ -20,13 +20,17 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 class Disciple_Tools_Groups {
 
-    public static function get_groups (){
+    public static function get_groups_compact ( $search ){
         $query_args = array(
             'post_type' => 'groups',
             'orderby' => 'ID',
-            'nopaging' => true,
+            's' => $search
         );
         $query = new WP_Query( $query_args );
-        return $query->posts;
+        $list = [];
+        foreach ($query->posts as $post){
+            $list[] = ["ID" => $post->ID, "name" => $post->post_title];
+        }
+        return $list;
     }
 }

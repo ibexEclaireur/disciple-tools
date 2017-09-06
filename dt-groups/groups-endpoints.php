@@ -46,17 +46,21 @@ class Disciple_Tools_Groups_Endpoints {
 
     public function add_api_routes(){
         register_rest_route(
-            $this->namespace, '/groups', [
+            $this->namespace, '/groups-compact', [
             'methods' => 'GET',
-            'callback' => [$this, 'get_groups']
+            'callback' => [$this, 'get_groups_compact']
             ]
         );
     }
 
-    public function get_groups( WP_REST_Request $request ){
+    public function get_groups_compact( WP_REST_Request $request ){
         $params = $request->get_params();
 //        @todo check permissions
-        $groups = Disciple_Tools_Groups::get_groups();
+        $search = "";
+        if (isset( $params['s'] )){
+            $search = $params['s'];
+        }
+        $groups = Disciple_Tools_Groups::get_groups_compact( $search );
         return $groups;
     }
 }
