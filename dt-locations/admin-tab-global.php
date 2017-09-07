@@ -17,7 +17,8 @@ class Disciple_Tools_Locations_Tab_Global {
     
     public function install_country() {
         
-        // Step 1
+        /*  Step 1
+         *  This section controls the dropdown selection of the countries */
         $html = '<form method="post" name="country_step1" id="country_step1">';
         $html .= wp_nonce_field( 'country_nonce_validate', 'country_nonce', true, false );
         $html .= '<h1>(Step 1) Select a Country to Install:</h1><br>';
@@ -26,31 +27,36 @@ class Disciple_Tools_Locations_Tab_Global {
         $html .= '<br><br>';
         $html .= '</form>'; // end form
         
-        // Step 2
+        /*  Step 2
+         *  This section lists the available administrative units for each of the installed countries */
         $html .= '<form method="post" name="country_step2" id="country_step2">';
         $html .= wp_nonce_field( 'country_levels_nonce_validate', 'country_levels_nonce', true, false );
-        $option = get_option( '_dt_installed_country' );
-        if($option) {
+        $option = get_option( '_dt_installed_country' ); // this installer relies heavily on this options table row to store status
+        if(!empty( $option )) { // if options are empty hide section
             $html .= '<h1>(Step 2) Add Admin Levels to Installed Countries:</h1><br>';
             foreach ( $option as $country ) {
                 $html .= '<hr><h2>' . $country['Zone_Name'] . '</h2>';
-                $html .= '<p>Add levels: ';
-                foreach( $country['levels'] as $key => $value ) {
-                    if($value > 0) {
-                        $label = '';
+                $html .= '<p>Add Levels: ';
+                $i = 0; // increment makes sure that only the highest level of install is available at a time. This controls the order of install.
+                if(!empty( $country['levels'] )) { // if level is empty array, hide section
+                    foreach( $country['levels'] as $key => $value ) {
+                            $label = '';
                         switch($key) {
                             case 'adm1_count': $label = 'Admin1';
-break;
+                                break;
                             case 'adm2_count': $label = 'Admin2';
-break;
+                                break;
                             case 'adm3_count': $label = 'Admin3';
-break;
+                                break;
                             case 'adm4_count': $label = 'Admin4';
-break;
+                                break;
                         }
-                        $html .= '<button type="submit" name="' . $key . '" value="'.$country['WorldID'].'" ';
-                        ($value < 1) ? $html .= 'disabled' : null; //check if already installed
-                        $html .= '>'. $label . ' (' .$value. ')</button> ';
+                        
+                        if($value > 0 || $value == 'installed') { // hide admin areas with zero value, but still show admin areas that have been installed
+                            $html .= '<button type="submit" name="' . $key . '" value="'.$country['WorldID'].'" ';
+                            ($i > 0 || $value == 'installed') ? $html .= 'disabled' : $i++; //check if already installed or needs to be installed first
+                            $html .= '>'. $label . ' (' .$value. ')</button> ';
+                        }
                     }
                 }
                 $html .= '<span style="float:right"><button type="submit" name="delete" value="'.$country['WorldID'].'">delete all</button></span></p>';
@@ -71,6 +77,7 @@ break;
             $selected_country = $_POST[ 'countries-dropdown' ];
             
             // TODO download country info
+            
             
             
             // TODO install country info
@@ -107,9 +114,9 @@ break;
             
             switch($keys[2]) {
                 
-                case 'county':
+                case 'adm1_count':
                     
-                    $country_worldid = $_POST['county'];
+                    $country_worldid = $_POST['adm1_count'];
                     
                     // TODO download county info
                     
@@ -119,20 +126,18 @@ break;
                     $options = get_option( '_dt_installed_country' );
                     
                     foreach($options as $key => $value) {
-                        
-                        if($value['WorldID'] == $country_worldid) {
-                            $options[$key]['levels']['county'] = true;
-                            $options[$key]['levels']['tract'] = false;
-                            break;
+                        if($value['WorldID'] === $country_worldid) {
+                            $options[$key]['levels']['adm1_count'] = (string) 'installed';
+                            update_option( '_dt_installed_country', $options, false );
                         }
                     }
-                    update_option( '_dt_installed_country', $options, false );
+                    
                     
                     break;
                 
-                case 'tract':
+                case 'adm2_count':
                     
-                    $country_worldid = $_POST['tract'];
+                    $country_worldid = $_POST['adm2_count'];
                     
                     // TODO download tract info
                     
@@ -140,18 +145,56 @@ break;
                     
                     // update option record for county
                     $options = get_option( '_dt_installed_country' );
-                    
+    
                     foreach($options as $key => $value) {
-                        
-                        if($value['WorldID'] == $country_worldid) {
-                            $options[$key]['levels']['tract'] = true;
-                            break;
+                        if($value['WorldID'] === $country_worldid) {
+                            $options[$key]['levels']['adm2_count'] = (string) 'installed';
+                            update_option( '_dt_installed_country', $options, false );
                         }
                     }
-                    update_option( '_dt_installed_country', $options, false );
                     
                     break;
-                
+    
+                case 'adm3_count':
+        
+                    $country_worldid = $_POST['adm3_count'];
+        
+                    // TODO download tract info
+        
+                    // TODO install tract info
+        
+                    // update option record for county
+                    $options = get_option( '_dt_installed_country' );
+    
+                    foreach($options as $key => $value) {
+                        if($value['WorldID'] === $country_worldid) {
+                            $options[$key]['levels']['adm3_count'] = (string) 'installed';
+                            update_option( '_dt_installed_country', $options, false );
+                        }
+                    }
+        
+                    break;
+    
+                case 'adm4_count':
+        
+                    $country_worldid = $_POST['adm4_count'];
+        
+                    // TODO download tract info
+        
+                    // TODO install tract info
+        
+                    // update option record for county
+                    $options = get_option( '_dt_installed_country' );
+    
+                    foreach($options as $key => $value) {
+                        if($value['WorldID'] === $country_worldid) {
+                            $options[$key]['levels']['adm4_count'] = (string) 'installed';
+                            update_option( '_dt_installed_country', $options, false );
+                        }
+                    }
+        
+                    break;
+                    
                 case 'delete':
                     
                     $country_worldid = $_POST['delete'];
@@ -222,7 +265,22 @@ break;
     }
     
     public function get_country_summary( $cnty_id ) {
-        $config = get_option( '_dt_locations_import_config' );
-        return json_decode( file_get_contents( $config['mm_hosts'][$config['selected_mm_hosts']] . 'get_summary?cnty_id=' . $cnty_id ), true );
+        $option = get_option( '_dt_locations_import_config' );
+        
+        if(empty( $option['mm_hosts'][$option['selected_mm_hosts']] )) {
+            $option = Disciple_Tools_Location_Tools_Menu::get_config_option();
+        }
+        
+        return json_decode( file_get_contents( $option['mm_hosts'][$option['selected_mm_hosts']] . 'get_summary?cnty_id=' . $cnty_id ), true );
+    }
+    
+    public function  find_key_index( $arrays, $field, $value ) {
+        foreach ( $arrays as $key => $array ) {
+            if ( $array[ $field ] === $value ) {
+                return $key;
+            }
+        }
+    
+        return false;
     }
 }
