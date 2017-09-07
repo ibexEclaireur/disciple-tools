@@ -44,6 +44,12 @@ class Disciple_Tools_Groups_Endpoints {
                 "callback" => [$this, 'get_viewable_groups'],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/groups-compact', [
+                'methods' => 'GET',
+                'callback' => [$this, 'get_groups_compact']
+            ]
+        );
     }
 
     public function get_viewable_groups( WP_REST_Request $request ) {
@@ -91,4 +97,15 @@ class Disciple_Tools_Groups_Endpoints {
         return $rv;
     }
 
+
+    public function get_groups_compact( WP_REST_Request $request ){
+        $params = $request->get_params();
+//        @todo check permissions
+        $search = "";
+        if (isset( $params['s'] )){
+            $search = $params['s'];
+        }
+        $groups = Disciple_Tools_Groups::get_groups_compact( $search );
+        return $groups;
+    }
 }

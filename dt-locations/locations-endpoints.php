@@ -85,6 +85,12 @@ class Disciple_Tools_Locations_Endpoints {
             ],
              ]
         );
+        register_rest_route(
+            $this->namespace, '/locations', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_locations']
+            ]
+        );
     }
 
     /**
@@ -153,4 +159,11 @@ class Disciple_Tools_Locations_Endpoints {
         }
     }
 
+
+    public function get_locations ( WP_REST_Request $request ){
+        $params = $request->get_params();
+//        @todo check permissions
+        $locations = Disciple_Tools_Locations::get_locations();
+        return $locations;
+    }
 }

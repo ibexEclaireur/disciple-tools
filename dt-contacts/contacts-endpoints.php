@@ -164,6 +164,13 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
 
+        register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/add_shared', [
+                "methods" => "GETS",
+                "callback" => [$this, 'add_shared']
+            ]
+        );
+
     }
 
 
