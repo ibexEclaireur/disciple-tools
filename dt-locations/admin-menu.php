@@ -124,10 +124,10 @@ class Disciple_Tools_Location_Tools_Menu {
                 $html .= '</td></tr></tbody></table>';
     
                 print '<pre>';
-                print_r( $_POST );
-                print '<br>';
-                print_r( get_option( '_dt_locations_import_config' ) );
-
+//                print_r( $_POST );
+//                print '<br>';
+//                print_r( get_option( '_dt_installed_country' ) );
+//
                 print '</pre>';
                 
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
@@ -201,22 +201,7 @@ class Disciple_Tools_Location_Tools_Menu {
      */
     public function get_import_config_dropdown( $host ) {
         // get vars
-        $option = get_option( '_dt_locations_import_config' );
-        $config = json_decode( file_get_contents( plugin_dir_path( __FILE__ ). 'config.json' ), true );
-        
-        // check on option status
-        if (empty( $option )) { // check if option exists
-            update_option( '_dt_locations_import_config', $config, false );
-            $option = get_option( '_dt_locations_import_config' );
-        }
-        elseif ( $option['version'] < $config['version'] ) { // check if current version
-            
-            $config['selected_mm_hosts'] = $option['selected_mm_hosts'];
-            $config['selected_kml_hosts'] = $option['selected_kml_hosts'];
-            
-            update_option( '_dt_locations_import_config', $config, false );
-            $option = get_option( '_dt_locations_import_config' );
-        }
+        $option = $this->get_config_option();
         
         // update from post
         if(isset( $_POST['change_host_source'] )) {
@@ -237,6 +222,18 @@ class Disciple_Tools_Location_Tools_Menu {
         $html .= '</select> <button type="submit" name="change_host_source" value="true">Save</button></form>';
 
         return $html;
+    }
+    
+    public static function get_config_option() {
+        $option = get_option( '_dt_locations_import_config' );
+        $config = json_decode( file_get_contents( plugin_dir_path( __FILE__ ). 'config.json' ), true );
+        // check on option status
+        if ( empty( $option ) || $option['version'] < $config['version'] ) { // check if option exists
+            update_option( '_dt_locations_import_config', $config, false );
+            $option = get_option( '_dt_locations_import_config' );
+        }
+        
+        return $option;
     }
     
     public function locations_currently_installed () {
