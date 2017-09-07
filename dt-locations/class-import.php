@@ -437,4 +437,94 @@ class Disciple_Tools_Locations_Import {
         }
     }
     
+    public static function insert_geojson ( $geojson ) {
+        global $wpdb;
+        
+//        $geojson = json_decode( file_get_contents( 'https://en.zumeproject.com/mapping/wp-json/mm/v1/install/getcountrybylevel?cnty_id=ABW&level=0' ), true );
+        if(empty( $geojson )) {
+            return false;
+        }
+        
+        $record_count = count( $geojson['features'] );
+        $i = 0;
+        
+        foreach($geojson['features'] as $place) {
+            $properties = $place['properties'];
+            $properties['coordinates'] = json_encode( $place['geometry']['coordinates'] ); // combine coordinates into a the single properties array
+            $properties['coordinates_type'] = $place['geometry']['type'];
+            
+            $WorldID = $properties['WorldID'];
+            
+            // duplicate check
+            $duplicate_post_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '$WorldID'" );
+            
+            // insert post record
+            $wpdb->replace(
+                $wpdb->posts,
+                array(
+                    'ID' => $duplicate_post_id,
+                    'post_name' => strtolower( $properties['WorldID'] ),
+                    'post_author' => get_current_user_id(),
+                    'post_date' => current_time( 'mysql' ),
+                    'post_date_gmt' => current_time( 'mysql' ),
+                    'post_content' => $properties['Zone_Name'] . ' (' . $properties['WorldID'] . ')',
+                    'post_title' => $properties['Zone_Name'] . ' (' . $properties['WorldID'] . ')',
+                    'post_status' => 'publish',
+                    'ping_status' => 'closed',
+                    'post_modified' => current_time( 'mysql' ),
+                    'post_modified_gmt' => current_time( 'mysql' ),
+                    'post_parent' => 0,
+                    'guid' => home_url().'/locations/'.strtolower( $properties['WorldID'] ),
+                    'post_type' => 'locations',
+                ),
+                array(
+                    '%d',
+                    '%s',
+                    '%d',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%d',
+                    '%s',
+                    '%s',
+                )
+            );
+            $new_post_id = $wpdb->insert_id;
+            
+            // insert metadata
+            if(!empty( $new_post_id )) {
+                
+                // delete previous meta records
+                if(!empty( $duplicate_post_id )) {
+                    $wpdb->delete( $wpdb->postmeta, [ 'post_id' => $duplicate_post_id ], $where_format = null );
+                }
+                
+                foreach($properties as $key => $value) {
+                    $wpdb->insert(
+                        $wpdb->postmeta,
+                        array(
+                            'post_id' => $new_post_id,
+                            'meta_key' => $key,
+                            'meta_value' => $value,
+                        ),
+                        array(
+                            '%d',
+                            '%s',
+                            '%s',
+                        )
+                    );
+                }
+            }
+            $i++;
+        }
+        
+        
+        return ($record_count == $i) ? true : false;
+    }
+    
 }

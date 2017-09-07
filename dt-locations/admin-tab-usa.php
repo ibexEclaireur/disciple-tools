@@ -16,7 +16,9 @@ class Disciple_Tools_Locations_Tab_USA {
     
     
     public function install_us_state() {
-        // Step 1
+        
+        /*  Step 1
+         *  This section controls the dropdown selection of the states */
         $html = '<form method="post" name="state_step1" id="state_step1">';
         $html .= wp_nonce_field( 'state_nonce_validate', 'state_nonce', true, false );
         $html .= '<h1>(Step 1) Select a State to Install:</h1><br>';
@@ -25,10 +27,11 @@ class Disciple_Tools_Locations_Tab_USA {
         $html .= '<br><br>';
         $html .= '</form>'; // end form
     
-        // Step 2
+        /*  Step 2
+         *  This section lists the available administrative units for each of the installed states */
         $html .= '<form method="post" name="state_step2" id="state_step2">';
         $html .= wp_nonce_field( 'state_levels_nonce_validate', 'state_levels_nonce', true, false );
-        $option = get_option( '_dt_usa_installed_state' );
+        $option = get_option( '_dt_usa_installed_state' ); // this installer relies heavily on this options table row to store status
         if($option) {
             $html .= '<h1>(Step 2) Add Levels to Installed States:</h1><br>';
             foreach ( $option as $state ) {
@@ -56,7 +59,7 @@ class Disciple_Tools_Locations_Tab_USA {
             $selected_state = $_POST[ 'states-dropdown' ];
             
             // TODO download state info
-    
+            
             
             // TODO install state info
             

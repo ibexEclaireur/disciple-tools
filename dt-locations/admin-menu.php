@@ -126,6 +126,7 @@ class Disciple_Tools_Location_Tools_Menu {
                 print '<pre>';
 //                print_r( $_POST );
 //                print '<br>';
+//                print Disciple_Tools_Locations_Import::insert_geojson( 'test');
 //                print_r( get_option( '_dt_installed_country' ) );
 //
                 print '</pre>';
