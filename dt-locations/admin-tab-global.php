@@ -262,7 +262,7 @@ class Disciple_Tools_Locations_Tab_Global {
         return json_decode( file_get_contents( $config['mm_hosts'][$config['selected_mm_hosts']] . 'get_summary?cnty_id=' . $cnty_id ), true );
     }
     
-    public function  find_key_index($arrays, $field, $value) {
+    public function  find_key_index( $arrays, $field, $value ) {
         foreach ( $arrays as $key => $array ) {
             if ( $array[ $field ] === $value ) {
                 return $key;

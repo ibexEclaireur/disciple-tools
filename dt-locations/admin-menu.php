@@ -126,12 +126,8 @@ class Disciple_Tools_Location_Tools_Menu {
                 print '<pre>';
                 print_r( $_POST );
                 print '<br>';
-                print_r( get_option( '_dt_installed_country' ) );
+                print_r( get_option( '_dt_locations_import_config' ) );
 
-//                print_r(get_option('_dt_locations_import_config'));
-//                $config = get_option('_dt_locations_import_config');
-//                print $config['mm_hosts'][$config['selected_mm_hosts']] ;
-                
                 print '</pre>';
                 
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
@@ -215,8 +211,8 @@ class Disciple_Tools_Location_Tools_Menu {
         }
         elseif ( $option['version'] < $config['version'] ) { // check if current version
             
-            $config['selected_mm_host'] = $option['selected_mm_host'];
-            $config['selected_kml_host'] = $option['selected_kml_host'];
+            $config['selected_mm_hosts'] = $option['selected_mm_hosts'];
+            $config['selected_kml_hosts'] = $option['selected_kml_hosts'];
             
             update_option( '_dt_locations_import_config', $config, false );
             $option = get_option( '_dt_locations_import_config' );
