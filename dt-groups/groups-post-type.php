@@ -409,6 +409,11 @@ class Disciple_Tools_Groups_Post_Type {
                             $html .= '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
+                        case 'custom':
+                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v['name'] ) . '</label></th><td>';
+                            $html .= $v['default'];
+                            $html .= '</td><tr/>' . "\n";
+                            break;
 
                         default:
                             break;
@@ -490,6 +495,62 @@ class Disciple_Tools_Groups_Post_Type {
 
 
     /**
+    * Field: The 'Assigned To' dropdown controller
+    *
+    * @return string
+    */
+    public function assigned_to_field () {
+        global $post;
+
+        $exclude_group = '';
+        $exclude_user = '';
+        $html = '';
+
+
+        // Start drop down
+        $html .= '<select name="assigned_to" id="assigned_to" class="edit-input">';
+
+        // Set selected state
+        if (isset( $post->ID )){
+            $assigned_to = get_post_meta( $post->ID, 'assigned_to', true );
+        }
+
+        if(empty( $assigned_to ) ) {
+            // set default to dispatch
+            $html .= '<option value="" selected></option>';
+        }
+        elseif ( !empty( $assigned_to ) ) { // If there is already a record
+            $metadata = get_post_meta( $post->ID, 'assigned_to', true );
+            $meta_array = explode( '-', $metadata ); // Separate the type and id
+            $type = $meta_array[0]; // Build variables
+            $id = $meta_array[1];
+
+            // Build option for current value
+            if ( $type == 'user') {
+                $value = get_user_by( 'id', $id );
+                $html .= '<option value="user-'.$id.'" selected>'.$value->display_name.'</option>';
+
+                // exclude the current id from the $results list
+                $exclude_user = "'exclude' => $id";
+            }
+        }
+
+        // Collect user list
+        $args = ['role__not_in' => ['registered', 'prayer_supporter', 'project_supporter'], 'fields' => ['ID', 'display_name'], 'exclude' => $exclude_user ];
+        $results = get_users( $args );
+
+        // Loop user list
+        foreach ($results as $value) {
+            $html .= '<option value="user-'.$value->ID.'">'.$value->display_name.'</option>';
+        }
+
+        // End drop down
+        $html .= '</select>  ';
+
+        return $html;
+    }
+
+    /**
      * Get the settings for the custom fields.
      *
      * @access public
@@ -515,6 +576,14 @@ class Disciple_Tools_Groups_Post_Type {
                 'inactive_pre_group' => __( 'Inactive Pre-Group', 'disciple_tools' ),
             ],
             'section' => 'info',
+        ];
+
+        $fields['assigned_to'] = [
+            'name' => __( 'Assigned To', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'custom',
+            'default' => $this->assigned_to_field(),
+            'section' => 'info'
         ];
 
         // Church
@@ -589,14 +658,14 @@ class Disciple_Tools_Groups_Post_Type {
             'default' => ['0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' )],
             'section' => 'church_hidden'
         ];
-        $fields['group_start_date'] = [
+        $fields['start_date'] = [
             'name' => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
             'type' => 'date',
             'default' => date( 'Y-m-d' ),
             'section' => 'info'
         ];
-        $fields['group_end_date'] = [
+        $fields['end_date'] = [
             'name' => __( 'End Date', 'disciple_tools' ),
             'description' => '',
             'type' => 'date',

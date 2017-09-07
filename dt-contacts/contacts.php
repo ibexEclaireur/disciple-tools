@@ -455,24 +455,13 @@ class Disciple_Tools_Contacts
                     $fields[$key] = [ "key"=>$value[0], "label"=>$label ];
                 } else if ($key === "assigned_to") {
                     if ($value){
-                        if ($value[0] == "dispatch"){
-                            $fields[$key] = ["display" => "Dispatch"];
-                        } else {
-                            $meta_array = explode( '-', $value[0] ); // Separate the type and id
-                            $type = $meta_array[0]; // Build variables
-
-                            if ( $type == "dispatch" ){
-
-
-                            } else if (isset( $meta_array[1] )){
-                                $id = $meta_array[1];
-                                if ( $type == 'user' ) {
-                                    $user = get_user_by( 'id', $id );
-                                    $fields[$key] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0] ];
-                                } else {
-                                    $assigned = get_term( $id );
-                                    $fields[$key] = [ "id" => $id, "type" => $type, "display" => $assigned->name, "assigned-to" => $value[0] ];
-                                }
+                        $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                        $type = $meta_array[0]; // Build variables
+                        if (isset( $meta_array[1] )){
+                            $id = $meta_array[1];
+                            if ( $type == 'user' ) {
+                                $user = get_user_by( 'id', $id );
+                                $fields[$key] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0] ];
                             }
                         }
                     }
