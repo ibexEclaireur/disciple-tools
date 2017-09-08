@@ -6,21 +6,22 @@
  * This contains all the send logic for email notifications
  *
  * @class Disciple_Tools_Notifications_Email_API
- * @version	0.1
+ * @version    0.1
  * @since 0.1
- * @package	Disciple_Tools
+ * @package    Disciple_Tools
  * @author Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
+}
 
 class Disciple_Tools_Notifications_Email_API {
     
     /**
      * Disciple_Tools_Notifications_Email_API The single instance of Disciple_Tools_Notifications_Email_API.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
     
@@ -34,8 +35,9 @@ class Disciple_Tools_Notifications_Email_API {
      * @return Disciple_Tools_Notifications_Email_API instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
     
