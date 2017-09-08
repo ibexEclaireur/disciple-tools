@@ -141,7 +141,7 @@ class Disciple_Tools_Notifications {
     public static function get_field_update_message( $activity_id ) {
         global $wpdb;
         
-        $result = $wpdb->get_var("SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '$activity_id'");
+        $result = $wpdb->get_var( "SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '$activity_id'" );
         if(!$result) {
             return 'no activity record';
         }

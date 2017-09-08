@@ -34,7 +34,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
             case 'notification_note':
                 return $item[$column_name];
             case 'user_id':
-                return dt_get_user_display_name($item[$column_name]);
+                return dt_get_user_display_name( $item[$column_name] );
                 break;
             case 'is_new':
                 return $item[$column_name] ? 'Yes' : 'No';
@@ -42,7 +42,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
             case 'item_id':
                 if($item['component_name'] == 'comment') {
                     $comment = get_comment( $item[$column_name] );
-                    return '<a href="'. home_url('/contacts/') .$comment->comment_post_ID.'">' . $comment->comment_content . '</a>';
+                    return '<a href="'. home_url( '/contacts/' ) .$comment->comment_post_ID.'">' . $comment->comment_content . '</a>';
                 }
                 elseif ($item['component_name'] == 'field_update') {
                     return Disciple_Tools_Notifications::get_field_update_message( $item[$column_name] );
@@ -235,7 +235,7 @@ function dt_notifications_table (){
     ?>
     <div class="wrap">
         <?php global $wpdb;
-        print_r($wpdb->get_var("SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '54'"), ARRAY_A); ?>
+        print_r( $wpdb->get_var( "SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '54'" ), ARRAY_A ); ?>
         
         <div id="icon-users" class="icon32"><br/></div>
         <h2>Notifications System</h2>
