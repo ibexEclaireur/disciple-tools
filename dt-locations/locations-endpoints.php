@@ -162,7 +162,7 @@ class Disciple_Tools_Locations_Endpoints {
 
     public function get_locations ( WP_REST_Request $request ){
         $params = $request->get_params();
-//        @todo check permissions
+//        @TODO check permissions
         $locations = Disciple_Tools_Locations::get_locations();
         return $locations;
     }

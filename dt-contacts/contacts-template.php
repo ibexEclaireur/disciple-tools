@@ -25,7 +25,7 @@ function dt_get_contacts_at_location( $post_id, $user_id ) {
 /**
  * Updates meta_data from form response
  */
-//@todo move to contacts class
+//@TODO move to contacts class
 function dt_update_overall_status ( $post ) {
 
     if ($post['response'] == '1') {

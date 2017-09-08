@@ -100,7 +100,7 @@ class Disciple_Tools_Groups_Endpoints {
 
     public function get_groups_compact( WP_REST_Request $request ){
         $params = $request->get_params();
-//        @todo check permissions
+//        @TODO check permissions
         $search = "";
         if (isset( $params['s'] )){
             $search = $params['s'];

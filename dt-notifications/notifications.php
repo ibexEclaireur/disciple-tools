@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
  * @return void
  */
 function dt_notification_insert( $args = [] ) {
-    Disciple_Tools()->notifications->insert( $args );
+    Disciple_Tools()->notifications->insert( $args ); // TODO need to require this file from root .php file and create this variable
 }
 
 class Disciple_Tools_Notifications {
@@ -62,35 +62,7 @@ class Disciple_Tools_Notifications {
     } // End __construct()
     
     /**
-     * Get real address
-     *
-     * @since 2.1.4
-     *
-     * @return string real address IP
-     */
-    protected function _get_ip_address() {
-        $server_ip_keys = [
-            'HTTP_CLIENT_IP',
-            'HTTP_X_FORWARDED_FOR',
-            'HTTP_X_FORWARDED',
-            'HTTP_X_CLUSTER_CLIENT_IP',
-            'HTTP_FORWARDED_FOR',
-            'HTTP_FORWARDED',
-            'REMOTE_ADDR',
-        ];
-        
-        foreach ( $server_ip_keys as $key ) {
-            if ( isset( $_SERVER[ $key ] ) && filter_var( $_SERVER[ $key ], FILTER_VALIDATE_IP ) ) {
-                return $_SERVER[ $key ];
-            }
-        }
-        
-        // Fallback local ip.
-        return '127.0.0.1';
-    }
-    
-    
-    /**
+     * Insert statement
      * @since 1.0.0
      *
      * @param array $args
@@ -102,65 +74,37 @@ class Disciple_Tools_Notifications {
         $args = wp_parse_args(
             $args,
             [
-                'action'         => '',
-                'object_type'    => '',
-                'object_subtype' => '',
-                'object_name'    => '',
-                'object_id'      => '',
-                'hist_ip'        => $this->_get_ip_address(),
-                'hist_time'      => time(),
-                'object_note'    => '',
-                'meta_id'        => '',
-                'meta_key'       => '',
-                'meta_value'     => '',
-                'meta_parent'     => '',
+                'user_id'               => '',
+                'item_id'               => '',
+                'secondary_item_id'     => '',
+                'component_name'        => '',
+                'component_action'      => '',
+                'date_notified'         => '',
+                'is_new'                => 1,
             ]
         );
-        $user = get_user_by( 'id', get_current_user_id() );
-        if ( $user ) {
-            $args['user_caps'] = strtolower( key( $user->caps ) );
-            if ( empty( $args['user_id'] ) ) {
-                $args['user_id'] = $user->ID;
-            }
-        } else {
-            $args['user_caps'] = 'guest';
-            if ( empty( $args['user_id'] ) ) {
-                $args['user_id'] = 0;
-            }
-        }
         
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
             $wpdb->prepare(
-                'SELECT `histid` FROM %1$s
-					WHERE `user_caps` = \'%2$s\'
-						AND `action` = \'%3$s\'
-						AND `object_type` = \'%4$s\'
-						AND `object_subtype` = \'%5$s\'
-						AND `object_name` = \'%6$s\'
-						AND `user_id` = \'%7$s\'
-						AND `hist_ip` = \'%8$s\'
-						AND `hist_time` = \'%9$s\'
-						AND `object_note` = \'%10$s\'
-						AND `meta_id` = \'%11$s\'
-						AND `meta_key` = \'%12$s\'
-						AND `meta_value` = \'%13$s\'
-						AND `meta_parent` = \'%13$s\'
+                'SELECT `id`
+                    FROM %1$s
+					WHERE `user_id` = \'%2$s\'
+						AND `item_id` = \'%3$s\'
+						AND `secondary_item_id` = \'%4$s\'
+						AND `component_name` = \'%5$s\'
+						AND `component_action` = \'%6$s\'
+						AND `date_notified` = \'%7$s\'
+						AND `is_new` = \'%8$s\'
 				;',
-                $wpdb->activity,
-                $args['user_caps'],
-                $args['action'],
-                $args['object_type'],
-                $args['object_subtype'],
-                $args['object_name'],
+                $wpdb->dt_notifications,
                 $args['user_id'],
-                $args['hist_ip'],
-                $args['hist_time'],
-                $args['object_note'],
-                $args['meta_id'],
-                $args['meta_key'],
-                $args['meta_value'],
-                $args['meta_parent']
+                $args['item_id'],
+                $args['secondary_item_id'],
+                $args['component_name'],
+                $args['component_action'],
+                $args['date_notified'],
+                $args['is_new']
             )
         );
         
@@ -169,32 +113,31 @@ class Disciple_Tools_Notifications {
         }
         
         $wpdb->insert(
-            $wpdb->activity,
+            $wpdb->dt_notifications,
             [
-                'action'         => $args['action'],
-                'object_type'    => $args['object_type'],
-                'object_subtype' => $args['object_subtype'],
-                'object_name'    => $args['object_name'],
-                'object_id'      => $args['object_id'],
-                'user_id'        => $args['user_id'],
-                'user_caps'      => $args['user_caps'],
-                'hist_ip'        => $args['hist_ip'],
-                'hist_time'      => $args['hist_time'],
-                'object_note'    => $args['object_note'],
-                'meta_id'        => $args['meta_id'],
-                'meta_key'       => $args['meta_key'],
-                'meta_value'       => $args['meta_value'],
-                'meta_parent'       => $args['meta_parent'],
+                'user_id'         => $args['user_id'],
+                'item_id'    => $args['item_id'],
+                'secondary_item_id' => $args['secondary_item_id'],
+                'component_name'    => $args['component_name'],
+                'component_action'      => $args['component_action'],
+                'date_notified'        => $args['date_notified'],
+                'is_new'      => $args['is_new'],
             ],
-            [ '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%d', '%s', '%d', '%s', '%s', '%d' ]
+            [ '%d', '%d', '%d', '%s', '%s', '%s', '%d' ]
         );
         
-        if ( isset( $args["object_id"] ) && isset( $args["object_subtype"] ) && $args["object_subtype"] !== "last_modified" ){
-            update_post_meta( $args["object_id"], "last_modified", time() );
-        }
+        // TODO consider adding a meta data process here
         
         // Final action on insert.
-        do_action( 'dt_insert_activity', $args );
+        do_action( 'dt_insert_notification', $args );
     }
+    
+    // TODO add the function to change a notification from new to viewed. 1 to 0 in the is_new table column
+    
+    // TODO get_new_notifications for a user_id. Filter by notification preferences.
+    
+    // TODO modify_notifications for a user. Store preferences in the usermeta data.
+    
+    
     
 }

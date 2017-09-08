@@ -3,31 +3,38 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifications_Hook_Base {
     
-    protected function _add_comment_log( $id, $action, $comment = null ) {
-        if ( is_null( $comment ) ) {
-            $comment = get_comment( $id );
-        }
+    /**
+     * Disciple_Tools_Notifications_Hook_Comments constructor.
+     */
+    public function __construct() {
+        add_action( 'wp_insert_comment', [ &$this, 'filter_comment_log' ], 10, 2 );
+        add_action( 'edit_comment', [ &$this, 'filter_comment_log' ] );
+        add_action( 'trash_comment', [ &$this, 'filter_comment_log' ] );
+        add_action( 'untrash_comment', [ &$this, 'filter_comment_log' ] );
+        add_action( 'spam_comment', [ &$this, 'filter_comment_log' ] );
+        add_action( 'unspam_comment', [ &$this, 'filter_comment_log' ] );
+        add_action( 'delete_comment', [ &$this, 'filter_comment_log' ] );
+        add_action( 'transition_comment_status', [ &$this, 'hooks_transition_comment_status' ], 10, 3 ); // TODO decide if this is necissary for notifications
         
-        dt_activity_insert(
-            [
-                'action'         => 'comment',
-                'object_type'    => 'Comments',
-                'object_subtype' => get_post_type( $comment->comment_post_ID ),
-                'object_name'    => get_the_title( $comment->comment_post_ID ),
-                'object_id'      => $comment->comment_post_ID,
-                'meta_id'           => $id, // id of the comment
-                'meta_key'          => get_post_type( $comment->comment_post_ID ),
-                'meta_value'        => $action,
-                'meta_parent'        => $comment->comment_parent,
-                'object_note'       => $comment->comment_content,
-            ]
-        );
+        parent::__construct();
     }
     
-    public function handle_comment_log( $comment_ID, $comment = null ) {
+    public function hooks_transition_comment_status( $new_status, $old_status, $comment ) {
+        $this->_add_comment_log( $comment->comment_ID, $new_status, $comment );
+    }
+    
+    /**
+     * Filter for the @mention comment
+     * @param      $comment_ID
+     * @param null $comment
+     */
+    public function filter_comment_log( $comment_ID, $comment = null ) {
         if ( is_null( $comment ) ) {
             $comment = get_comment( $comment_ID );
         }
+        
+        // TODO search for @sign
+        
         
         $action = 'created';
         switch ( current_filter() ) {
@@ -63,21 +70,28 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         $this->_add_comment_log( $comment_ID, $action, $comment );
     }
     
-    public function hooks_transition_comment_status( $new_status, $old_status, $comment ) {
-        $this->_add_comment_log( $comment->comment_ID, $new_status, $comment );
-    }
-    
-    public function __construct() {
-        add_action( 'wp_insert_comment', [ &$this, 'handle_comment_log' ], 10, 2 );
-        add_action( 'edit_comment', [ &$this, 'handle_comment_log' ] );
-        add_action( 'trash_comment', [ &$this, 'handle_comment_log' ] );
-        add_action( 'untrash_comment', [ &$this, 'handle_comment_log' ] );
-        add_action( 'spam_comment', [ &$this, 'handle_comment_log' ] );
-        add_action( 'unspam_comment', [ &$this, 'handle_comment_log' ] );
-        add_action( 'delete_comment', [ &$this, 'handle_comment_log' ] );
-        add_action( 'transition_comment_status', [ &$this, 'hooks_transition_comment_status' ], 10, 3 );
+    /**
+     * Logs the @mention comment activity
+     * @param      $id
+     * @param      $action
+     * @param null $comment
+     */
+    protected function _add_comment_log( $id, $action, $comment = null ) {
+        if ( is_null( $comment ) ) {
+            $comment = get_comment( $id );
+        }
         
-        parent::__construct();
+        dt_notification_insert(
+            [
+                'user_id'               => '', // TODO prepare this array with real data.
+                'item_id'               => '',
+                'secondary_item_id'     => '',
+                'component_name'        => '',
+                'component_action'      => '',
+                'date_notified'         => '',
+                'is_new'                => 1,
+            ]
+        );
+        
     }
-    
 }

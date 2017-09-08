@@ -28,7 +28,7 @@ class Disciple_Tools_Users_Endpoints
 
     public function get_users( WP_REST_Request $request ){
         $params = $request->get_params();
-    //        @todo check permissions
+    //        @TODO check permissions
         $users = Disciple_Tools_Users::get_assignable_users();
         return $users;
     }

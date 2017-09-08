@@ -53,13 +53,16 @@ class Disciple_Tools_Notifications_Endpoints {
         $base = 'locations';
         
         register_rest_route(
-            $namespace, '/' . $base . '/sample', [
+            $namespace, '/' . $base . '/sample', [ // TODO replace sample with real endpoint
                 [
                     'methods'         => WP_REST_Server::CREATABLE,
                     'callback'        => [ $this, 'sample' ],
                 ],
             ]
         );
+        
+        // TODO update_notification_to_not_new()
+        // TODO get_notifications_for_user()
     }
     
     /**
@@ -73,7 +76,7 @@ class Disciple_Tools_Notifications_Endpoints {
     public function sample( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['address'] )){
-            $result = Disciple_Tools_Locations::get_tract_map( $params['address'] ); // todo replace with correct connection
+            $result = Disciple_Tools_Locations::get_tract_map( $params['address'] ); // TODO replace with correct connection
             if ($result["status"] == 'OK'){
                 return $result;
             } else {

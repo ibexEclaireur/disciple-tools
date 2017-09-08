@@ -50,13 +50,13 @@ class Disciple_Tools_Groups {
             return true;
         } else {
             return true;
-//            @todo check is the user can see this group
+//            @TODO check is the user can see this group
 //            $user = wp_get_current_user();
 //            $assigned_to = get_post_meta( $group_id, "assigned_to", true );
 //            if ( $assigned_to === "user-".$user->ID ){
 //                return true;
 //            }
-//          @todo check if the user is following this group
+//          @TODO check if the user is following this group
         }
         return false;
     }

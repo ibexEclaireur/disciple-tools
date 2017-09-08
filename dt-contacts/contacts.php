@@ -93,8 +93,8 @@ class Disciple_Tools_Contacts
      * @return int | WP_Error
      */
     public static function create_contact( array $fields = [], bool $check_permissions = true ) {
-        //@todo search for duplicates
-        //@todo set defaults
+        //@TODO search for duplicates
+        //@TODO set defaults
 
         if ($check_permissions && ! current_user_can( 'publish_contacts' )) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), ['status' => 403] );
@@ -812,7 +812,7 @@ class Disciple_Tools_Contacts
             if ( $assigned_to === "user-".$user->ID ){
                 return true;
             }
-//          @todo check if the user is following this contact
+//          @TODO check if the user is following this contact
         }
         return false;
     }
@@ -826,7 +826,7 @@ class Disciple_Tools_Contacts
             if ( $assigned_to === "user-".$user->ID ){
                 return true;
             }
-//          @todo check if the user is following this contact and can update
+//          @TODO check if the user is following this contact and can update
 
         }
         return false;
