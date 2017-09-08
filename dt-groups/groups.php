@@ -61,6 +61,11 @@ class Disciple_Tools_Groups {
         return false;
     }
 
+    public static function can_update_group( $group_id ){
+//        @todo check if the user can update the group
+        return true;
+    }
+
     public static function can_access_groups() {
         return current_user_can( "edit_group" ) && current_user_can( "read_group" ) && current_user_can( "edit_groups" );
     }
@@ -161,4 +166,68 @@ class Disciple_Tools_Groups {
              return new WP_Error( __FUNCTION__, __( "No group found with ID" ), [ 'contact_id' => $group_id ] );
         }
     }
+
+
+    /**
+     * Make sure there are no extra or misspelled fields
+     * Make sure the field values are the correct format
+     *
+     * @param  $fields, the group meta fields
+     * @param  $post_id, the id of the group
+     * @access private
+     * @since  0.1
+     * @return array
+     */
+    private static function check_for_invalid_fields( $fields, int $post_id = null ){
+        $bad_fields = [];
+        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
+        $group_model_fields['title'] = "";
+        foreach($fields as $field => $value){
+            if (!isset( $group_fields[$field] )){
+                $bad_fields[] = $field;
+            }
+        }
+        return $bad_fields;
+    }
+
+    /**
+     * Update an existing Group
+     *
+     * @param  int $group_id, the post id for the group
+     * @param  array $fields, the meta fields
+     * @param  bool $check_permissions
+     * @access public
+     * @since  0.1
+     * @return int | WP_Error of group ID
+     */
+    public static function update_group( int $group_id, array $fields, bool $check_permissions = true ){
+
+        if ($check_permissions && ! self::can_update_group( $group_id )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+
+        $post = get_post( $group_id );
+        if (isset( $fields['id'] )){
+            unset( $fields['id'] );
+        }
+
+        if (!$post){
+            return new WP_Error( __FUNCTION__, __( "Group does not exist" ) );
+        }
+        $bad_fields = self::check_for_invalid_fields( $fields, $group_id );
+        if (!empty( $bad_fields )){
+            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
+        }
+
+        if ( isset( $fields['title'] ) ){
+            wp_update_post( ['ID'=>$group_id, 'post_title'=>$fields['title']] );
+        }
+
+        foreach($fields as $field_id => $value){
+            update_post_meta( $group_id, $field_id, $value );
+        }
+        return self::get_group( $group_id, true );
+    }
+
+
 }
