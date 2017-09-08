@@ -267,7 +267,7 @@ class Disciple_Tools_Locations_Tab_USA {
      * @return array|mixed|object
      */
     public function get_state_level( $state_id, $level_number ) {
-        if(empty($state_id)) {
+        if(empty( $state_id )) {
             return false;
         }
         
