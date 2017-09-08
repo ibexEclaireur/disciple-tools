@@ -298,7 +298,8 @@ class Disciple_Tools {
             // Progress
 
 
-            // Messaging
+            // Notifications
+            require_once( 'dt-core/admin/tables/notifications-table.php' );
 
 
             // Logging
