@@ -93,9 +93,9 @@ class Disciple_Tools_Location_Tools_Menu {
         if ($tab == 'usa' ) {$html .= 'nav-tab-active';}
         $html .= '">USA</a>';
     
-        $html .= $tab_link_pre . 'import' . $tab_link_post;
-        if ($tab == 'import' ) {$html .= 'nav-tab-active';}
-        $html .= '">Temp Import</a>';
+//        $html .= $tab_link_pre . 'import' . $tab_link_post;
+//        if ($tab == 'import' ) {$html .= 'nav-tab-active';}
+//        $html .= '">Temp Import</a>';
 
         $html .= '</h2>';
 
