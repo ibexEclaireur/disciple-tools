@@ -78,7 +78,7 @@ final class Disciple_Tools_Config_Menu {
     }
     
     public function build_notifications_page() {
-        dt_notifications_table ();
+        dt_notifications_table();
     }
     
     /**
