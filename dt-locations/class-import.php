@@ -440,7 +440,6 @@ class Disciple_Tools_Locations_Import {
     public static function insert_geojson ( $geojson ) {
         global $wpdb;
         
-//        $geojson = json_decode( file_get_contents( 'https://en.zumeproject.com/mapping/wp-json/mm/v1/install/getcountrybylevel?cnty_id=ABW&level=0' ), true );
         if(empty( $geojson )) {
             return false;
         }
@@ -468,7 +467,7 @@ class Disciple_Tools_Locations_Import {
                     'post_date' => current_time( 'mysql' ),
                     'post_date_gmt' => current_time( 'mysql' ),
                     'post_content' => $properties['Zone_Name'] . ' (' . $properties['WorldID'] . ')',
-                    'post_title' => $properties['Zone_Name'] . ' (' . $properties['WorldID'] . ')',
+                    'post_title' => $properties['Zone_Name'],
                     'post_status' => 'publish',
                     'ping_status' => 'closed',
                     'post_modified' => current_time( 'mysql' ),
@@ -525,6 +524,15 @@ class Disciple_Tools_Locations_Import {
         
         
         return ($record_count == $i) ? true : false;
+    }
+    
+    public static function delete_location_data ( $cnty_id ) {
+        global $wpdb;
+        
+        $results1 = $wpdb->query( "DELETE from $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '$cnty_id%';" );
+        $results2 = $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE NOT EXISTS (SELECT NULL FROM $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id);" );
+        
+        return ($results1 || $results2) ? true : false;
     }
     
 }

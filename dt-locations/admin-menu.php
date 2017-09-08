@@ -123,14 +123,6 @@ class Disciple_Tools_Location_Tools_Menu {
                 
                 $html .= '</td></tr></tbody></table>';
     
-                print '<pre>';
-//                print_r( $_POST );
-//                print '<br>';
-//                print Disciple_Tools_Locations_Import::insert_geojson( 'test');
-//                print_r( get_option( '_dt_installed_country' ) );
-//
-                print '</pre>';
-                
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
                 /* BOX */
@@ -159,9 +151,13 @@ class Disciple_Tools_Location_Tools_Menu {
                 $object->process_install_us_state();
                 $html .= $object->install_us_state();
                 
-//                print_r($_POST);
-//                print '<br>'; print_r(get_option( '_dt_usa_installed_state' ));
-                
+//                print '<pre>';
+//
+//                print_r( $_POST );
+//                print '<br>';
+//                print_r( get_option( '_dt_usa_installed_state' ) );
+//
+//                print '</pre>';
                 
                 
                 
@@ -175,7 +171,7 @@ class Disciple_Tools_Location_Tools_Menu {
                 
                 $html .= '</td></tr></tbody></table><br>';
     
-                $html .= $this->locations_currently_installed();
+                $html .= $this->usa_states_currently_installed();
                 
                 $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
                 $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
@@ -250,7 +246,7 @@ class Disciple_Tools_Location_Tools_Menu {
                         <tr>
                             <td>';
         // Total number of locations in database
-        $html .= 'Total number of location posts: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
+        $html .= 'Total number of locations: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
         
         // Total number of countries
         $count['countries'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
@@ -272,6 +268,42 @@ class Disciple_Tools_Location_Tools_Menu {
         $count['admin4'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
         $html .= 'Total number of Admin4: <br>' . $count['admin4'] . '<br>';
         
+        
+        $html .= '      </td>
+                        </tr>';
+        
+        $html .= '</tbody>
+                </table>';
+        
+        return $html;
+    }
+    
+    public function usa_states_currently_installed () {
+        global $wpdb;
+        $count = [];
+        $html = '';
+        
+        // Search for currently installed locations
+        
+        $html .= '<table class="widefat ">
+                    <thead><th>Currently Installed</th></thead>
+                    <tbody>
+                        <tr>
+                            <td>';
+        // Total number of locations in database
+        $html .= 'Total number of locations: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
+        
+        // Total number of admin1
+        $count['admin1'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___'" );
+        $html .= 'Total number of States: <br>' . $count['admin1'] . '<br>';
+        
+        // Total number of admin2
+        $count['admin2'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___'" );
+        $html .= 'Total number of Counties: <br>' . $count['admin2'] . '<br>';
+        
+        // Total number of admin3
+        $count['admin3'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___-%'" );
+        $html .= 'Total number of Tracts: <br>' . $count['admin3'] . '<br>';
         
         $html .= '      </td>
                         </tr>';

@@ -58,11 +58,17 @@ class Disciple_Tools_Locations_Tab_USA {
     
             $selected_state = $_POST[ 'states-dropdown' ];
             
-            // TODO download state info
-            
-            
-            // TODO install state info
-            
+            // download country info
+            $geojson = $this->get_state_level( $selected_state, 'state' );
+            if(empty( $geojson )) {
+                return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', ['status' => 400] );
+            }
+
+            // install country info
+            $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
+            if (!$result){
+                return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', ['status' => 400] );
+            }
             
             // update option record for state
             $state[ 'WorldID' ] = $selected_state;
@@ -91,6 +97,8 @@ class Disciple_Tools_Locations_Tab_USA {
             asort( $installed_states );
 
             update_option( '_dt_usa_installed_state', $installed_states, false );
+    
+            return true;
         }
         elseif ( !empty( $_POST[ 'state_levels_nonce' ] ) && isset( $_POST[ 'state_levels_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_levels_nonce' ], 'state_levels_nonce_validate' )  ) {
             
@@ -101,10 +109,18 @@ class Disciple_Tools_Locations_Tab_USA {
                 case 'county':
                     
                     $state_worldid = $_POST['county'];
-                    
-                    // TODO download county info
-                    
-                    // TODO install county info
+    
+                    // download country info
+                    $geojson = $this->get_state_level( $state_worldid, 'county' );
+                    if(!$geojson) {
+                        return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', ['status' => 400] );
+                    }
+    
+                    // install country info
+                    $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
+                    if (!$result){
+                        return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', ['status' => 400] );
+                    }
                     
                     // update option record for county
                     $options = get_option( '_dt_usa_installed_state' );
@@ -119,15 +135,24 @@ class Disciple_Tools_Locations_Tab_USA {
                     }
                     update_option( '_dt_usa_installed_state', $options, false );
                     
+                    return true;
                     break;
                     
                 case 'tract':
     
                     $state_worldid = $_POST['tract'];
     
-                    // TODO download tract info
+                    // download country info
+                    $geojson = $this->get_state_level( $state_worldid, 'tract' );
+                    if(!$geojson) {
+                        return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', ['status' => 400] );
+                    }
     
-                    // TODO install tract info
+                    // install country info
+                    $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
+                    if (!$result){
+                        return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', ['status' => 400] );
+                    }
     
                     // update option record for county
                     $options = get_option( '_dt_usa_installed_state' );
@@ -140,14 +165,18 @@ class Disciple_Tools_Locations_Tab_USA {
                         }
                     }
                     update_option( '_dt_usa_installed_state', $options, false );
-                    
+    
+                    return true;
                     break;
                     
                 case 'delete':
     
                     $state_worldid = $_POST['delete'];
-                    
-                    // TODO sql delete
+    
+                    $result = Disciple_Tools_Locations_Import::delete_location_data( $state_worldid );
+                    if (!$result){
+                        return new WP_Error( "delete_error", 'delete queries failed', ['status' => 400] );
+                    }
                     
                     // update option record
                     $options = get_option( '_dt_usa_installed_state' );
@@ -160,13 +189,15 @@ class Disciple_Tools_Locations_Tab_USA {
                         }
                     }
                     update_option( '_dt_usa_installed_state', $options, false );
-                    
+    
+                    return true;
                     break;
                     
                 default:
                     break;
             }
         }
+        return false;
     }
     
     /**
@@ -211,5 +242,41 @@ class Disciple_Tools_Locations_Tab_USA {
      */
     public function get_usa_states() {
         return json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/usa-states.json' ) );
+    }
+    
+    /**
+     * API query for getting country summary info
+     * @param $cnty_id
+     *
+     * @return array|mixed|object
+     */
+    public function get_state_summary( $cnty_id ) {
+        $option = get_option( '_dt_locations_import_config' );
+        
+        if(empty( $option['mm_hosts'][$option['selected_mm_hosts']] )) {
+            $option = Disciple_Tools_Location_Tools_Menu::get_config_option();
+        }
+        
+        return json_decode( file_get_contents( $option['mm_hosts'][$option['selected_mm_hosts']] . 'get_summary?cnty_id=' . $cnty_id ), true );
+    }
+    
+    /**
+     * API query for country by admin level
+     * @param $cnty_id
+     *
+     * @return array|mixed|object
+     */
+    public function get_state_level( $state_id, $level_number ) {
+        if(empty($state_id)) {
+            return false;
+        }
+        
+        $option = get_option( '_dt_locations_import_config' );
+        
+        if(empty( $option['mm_hosts'][$option['selected_mm_hosts']] )) {
+            $option = Disciple_Tools_Location_Tools_Menu::get_config_option();
+        }
+        
+        return json_decode( file_get_contents( $option['mm_hosts'][$option['selected_mm_hosts']] . 'getstate?state_id='.$state_id.'&level=' . $level_number ), true );
     }
 }
