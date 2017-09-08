@@ -175,7 +175,26 @@ class Disciple_Tools_Activator {
 					  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
             dbDelta( $sql4 );
-            update_option( 'dt_follow_db_version', $version );
+            update_option( 'dt_share_db_version', $version );
+        }
+    
+        /* Notifications Table */
+        $table_name = $wpdb->prefix . 'dt_notifications';
+        if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+            $sql5 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
+                      `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+                      `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+                      `item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+                      `secondary_item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+                      `component_name` varchar(75) DEFAULT NULL,
+                      `component_action` varchar(75) DEFAULT NULL,
+                      `date_notified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                      `notification_note` varchar(255) DEFAULT NULL,
+                      `is_new` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
+                      PRIMARY KEY (`id`)
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+            dbDelta( $sql5 );
+            update_option( 'dt_notifications_version', $version );
         }
 
     }

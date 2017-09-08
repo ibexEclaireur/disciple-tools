@@ -33,7 +33,6 @@ class Disciple_Tools_Deactivator {
         if (get_option( 'delete_activity_db' )) {
             self::_remove_tables();
         }
-        self::_remove_tables();
 
     }
 
@@ -48,10 +47,14 @@ class Disciple_Tools_Deactivator {
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_activity_log`;" );
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reports`;" );
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reportmeta`;" );
+        $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_share`;" );
+        $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_notifications`;" );
 
         delete_option( 'dt_activity_log_db_version' );
         delete_option( 'dt_reports_db_version' );
         delete_option( 'dt_reportmeta_db_version' );
+        delete_option( 'dt_share_db_version' );
+        delete_option( 'dt_notifications_db_version' );
     }
 
 
