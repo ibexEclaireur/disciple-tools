@@ -132,6 +132,33 @@ class Disciple_Tools_Notifications {
         do_action( 'dt_insert_notification', $args );
     }
     
+    /**
+     * Get field update message
+     * @param $activity_id
+     *
+     * @return null|string
+     */
+    public static function get_field_update_message( $activity_id ) {
+        global $wpdb;
+        
+        $result = $wpdb->get_var("SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '$activity_id'");
+        if(!$result) {
+            return 'no activity record';
+        }
+        
+        return $result;
+    }
+    
+    /**
+     * Get the @mention message content
+     * @param $comment_id
+     *
+     * @return array|null|WP_Post
+     */
+    public static function get_at_mention_message( $comment_id ) {
+        return get_post( $comment_id );
+    }
+    
     // TODO add the function to change a notification from new to viewed. 1 to 0 in the is_new table column
     
     // TODO get_new_notifications for a user_id. Filter by notification preferences.

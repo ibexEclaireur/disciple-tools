@@ -2,39 +2,6 @@
 /**
  * Admin table for showing notification
  */
-    // TODO install the admin menu item to display this table
-/**
- * Display table function
- */
-function dt_notifications_table (){
-    
-    $ListTable = new Disciple_Tools_Notifications_Table();
-    //Fetch, prepare, sort, and filter our data...
-    if( isset( $_GET['s'] ) ){
-        trim( $_GET['s'] );
-        $ListTable->prepare_items( $_GET['s'] );
-    } else {
-        $ListTable->prepare_items();
-    }
-    
-    
-    ?>
-    <div class="wrap">
-        
-        <div id="icon-users" class="icon32"><br/></div>
-        <h2>Notifications System</h2>
-        
-        <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
-        <form id="movement-mapping" method="get">
-            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-            <?php $ListTable->search_box( 'Search Table', 'movement-mapping' ); ?>
-            <?php $ListTable->display() ?>
-        
-        </form>
-    
-    </div>
-    <?php
-}
 
 /**
  * Make sure wp-list-table is loaded
@@ -61,14 +28,43 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
     
     function column_default( $item, $column_name ){
         switch($column_name){
-            case 'user_id':
-            case 'item_id':
-            case 'secondary_item_id':
             case 'component_name':
             case 'component_action':
             case 'date_notified':
-            case 'is_new':
+            case 'notification_note':
                 return $item[$column_name];
+            case 'user_id':
+                return dt_get_user_display_name($item[$column_name]);
+                break;
+            case 'is_new':
+                return $item[$column_name] ? 'Yes' : 'No';
+                break;
+            case 'item_id':
+                if($item['component_name'] == 'comment') {
+                    $comment = get_comment( $item[$column_name] );
+                    return '<a href="'. home_url('/contacts/') .$comment->comment_post_ID.'">' . $comment->comment_content . '</a>';
+                }
+                elseif ($item['component_name'] == 'field_update') {
+                    return Disciple_Tools_Notifications::get_field_update_message( $item[$column_name] );
+                }
+                elseif ($item['component_name'] == 'follow_activity') {
+                    return Disciple_Tools_Notifications::get_field_update_message( $item[$column_name] );
+                }
+                break;
+            case 'secondary_item_id':
+                if($item['component_name'] == 'comment') {
+                    $post_object = get_post( $item[$column_name] );
+                    return '<a href="'.$post_object->guid.'">' . $post_object->post_title . '</a>';
+                }
+                elseif ($item['component_name'] == 'field_update') {
+                    $post_object = get_post( $item[$column_name] );
+                    return '<a href="'.$post_object->guid.'">' . $post_object->post_title . '</a>';
+                }
+                elseif ($item['component_name'] == 'follow_activity') {
+                    $post_object = get_post( $item[$column_name] );
+                    return '<a href="'.$post_object->guid.'">' . $post_object->post_title . '</a>';
+                }
+                break;
             default:
                 return print_r( $item,true ); //Show the whole array for troubleshooting purposes
         }
@@ -84,36 +80,34 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
         
         //Return the title contents
         return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
-            /*$1%s*/ $item['Zone_name'],
-            /*$2%s*/ $item['WorldID'],
+            /*$1%s*/ $item['component_name'],
+            /*$2%s*/ $item['component_action'],
             /*$3%s*/ $this->row_actions( $actions )
         );
     }
-    
     
     function column_cb( $item ){
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("notifications")
-            /*$2%s*/ $item['WorldID']                //The value of the checkbox should be the record's id
+            /*$2%s*/ $item['id']                //The value of the checkbox should be the record's id
         );
     }
-    
     
     function get_columns(){
         $columns = array(
-            'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
-            'user_id'       => 'User',
-            'item_id'     => 'Item',
-            'secondary_item_id'        => 'Second Item',
-            'component_name'     => 'Component',
-            'component_action'    => 'Action',
-            'date_notified'         => 'Date',
-            'is_new'        => 'New?',
+            'cb'                        => '<input type="checkbox" />', //Render a checkbox instead of text
+            'user_id'                   => 'User',
+            'item_id'                   => 'Message',
+            'secondary_item_id'         => 'Object',
+            'component_name'            => 'Component',
+            'component_action'          => 'Action',
+            'date_notified'             => 'Date',
+            'notification_note'         => 'Note',
+            'is_new'                    => 'New',
         );
         return $columns;
     }
-    
     
     function get_sortable_columns() {
         $sortable_columns = array(
@@ -123,6 +117,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
             'component_name'  => array('component_name',false),
             'component_action'  => array('component_action',false),
             'date_notified'  => array('date_notified',false),
+            'notification_note'  => array('notification_note',false),
             'is_new'  => array('is_new',false),
         );
         return $sortable_columns;
@@ -141,7 +136,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
         //Detect when a bulk action is being triggered...
         if( 'sync'===$this->current_action() ) {
             foreach ( $_GET['notification'] as $notification ) {
-                mm_sync_by_oz_objectid( $notification );
+                $notification = ''; // TODO replace with real processing logic
             }
         }
         
@@ -221,4 +216,38 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
         ) );
     }
     
+}
+
+/**
+ * Display table function
+ */
+function dt_notifications_table (){
+    
+    $ListTable = new Disciple_Tools_Notifications_Table();
+    //Fetch, prepare, sort, and filter our data...
+    if( isset( $_GET['s'] ) ){
+        trim( $_GET['s'] );
+        $ListTable->prepare_items( $_GET['s'] );
+    } else {
+        $ListTable->prepare_items();
+    }
+    
+    ?>
+    <div class="wrap">
+        <?php global $wpdb;
+        print_r($wpdb->get_var("SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '54'"), ARRAY_A); ?>
+        
+        <div id="icon-users" class="icon32"><br/></div>
+        <h2>Notifications System</h2>
+        
+        <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
+        <form id="notifications" method="get">
+            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+            <?php $ListTable->search_box( 'Search Table', 'notifications' ); ?>
+            <?php $ListTable->display() ?>
+        
+        </form>
+    
+    </div>
+    <?php
 }
