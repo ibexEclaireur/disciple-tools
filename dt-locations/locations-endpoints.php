@@ -91,6 +91,12 @@ class Disciple_Tools_Locations_Endpoints {
             'callback' => [$this, 'get_locations']
             ]
         );
+        register_rest_route(
+            $this->namespace, '/locations-compact', [
+            'methods' => 'GET',
+            'callback' => [$this, 'get_locations_compact']
+            ]
+        );
     }
 
     /**
@@ -164,6 +170,16 @@ class Disciple_Tools_Locations_Endpoints {
         $params = $request->get_params();
 //        @todo check permissions
         $locations = Disciple_Tools_Locations::get_locations();
+        return $locations;
+    }
+
+    public function get_locations_compact ( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $search = "";
+        if (isset( $params['s'] )){
+            $search = $params['s'];
+        }
+        $locations = Disciple_Tools_Locations::get_locations_compact( $search );
         return $locations;
     }
 }
