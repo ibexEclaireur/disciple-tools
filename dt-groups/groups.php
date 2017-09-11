@@ -237,8 +237,17 @@ class Disciple_Tools_Groups {
             array('date' => current_time( 'mysql' ) )
         );
     }
+    public static function add_member_to_group( $group_id, $member_id ){
+        return p2p_type( 'contacts_to_groups' )->connect(
+            $member_id, $group_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
     public static function remove_location_from_group( $group_id, $location_id ){
         return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
+    }
+    public static function remove_member_from_group( $group_id, $member_id ){
+        return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
     }
 
     public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions ){
@@ -262,6 +271,8 @@ class Disciple_Tools_Groups {
         $connect = null;
         if ($key === "locations"){
             $connect = self::add_location_to_group( $group_id, $value );
+        } else if ($key === "members"){
+            $connect = self::add_member_to_group( $group_id, $value );
         }
         if (is_wp_error( $connect )){
             return $connect;
@@ -282,6 +293,8 @@ class Disciple_Tools_Groups {
         }
         if ( $key === "locations" ){
             return self::remove_location_from_group( $group_id, $value );
+        } else if ($key === "members"){
+            return self::remove_member_from_group( $group_id, $value );
         }
         return false;
     }
