@@ -6,7 +6,7 @@ to a global level.
 ## Core Files
 
 1. `/json/`  
-   The .json files serve basic list information like names of countries and their WorldID.  
+   _The json folder contains .json files with basic list information, like names of countries and their WorldID._  
    * `/oz/` 
    * `countries.json`
    * `usa-counties.json`
