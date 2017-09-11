@@ -84,8 +84,12 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * @return bool
      */
     public function check_for_mention( $comment_content ) {
-        // TODO parse for @mention pattern
-        return true; // temp value
+        
+        // TODO create a working string search for @mention
+        if (strlen( strstr( $comment_content,'@' ) )>0) {
+            return true;
+        }
+        return false;
     }
     
     /**
@@ -101,7 +105,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     }
     
     /**
-     * Logs the @mention comment activity
+     * Create notification activity
      *
      * @param $mentioned_user_id
      * @param $comment_id
@@ -127,6 +131,13 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         
     }
     
+    /**
+     * Delete notification
+     * @param $mentioned_user_id
+     * @param $comment_id
+     * @param $post_id
+     * @param $date_notified
+     */
     protected function delete_mention_notification( $mentioned_user_id, $comment_id, $post_id, $date_notified ) {
     
         dt_notification_delete(
