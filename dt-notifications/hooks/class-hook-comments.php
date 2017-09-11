@@ -7,91 +7,146 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * Disciple_Tools_Notifications_Hook_Comments constructor.
      */
     public function __construct() {
-        add_action( 'wp_insert_comment', [ &$this, 'filter_comment_log' ], 10, 2 );
-        add_action( 'edit_comment', [ &$this, 'filter_comment_log' ] );
-        add_action( 'trash_comment', [ &$this, 'filter_comment_log' ] );
-        add_action( 'untrash_comment', [ &$this, 'filter_comment_log' ] );
-        add_action( 'spam_comment', [ &$this, 'filter_comment_log' ] );
-        add_action( 'unspam_comment', [ &$this, 'filter_comment_log' ] );
-        add_action( 'delete_comment', [ &$this, 'filter_comment_log' ] );
-        add_action( 'transition_comment_status', [ &$this, 'hooks_transition_comment_status' ], 10, 3 ); // TODO decide if this is necissary for notifications
+        add_action( 'wp_insert_comment', [ &$this, 'filter_comment_for_notification' ], 10, 2 );
+        add_action( 'edit_comment', [ &$this, 'filter_comment_for_notification' ] );
+        add_action( 'trash_comment', [ &$this, 'filter_comment_for_notification' ] );
+        add_action( 'untrash_comment', [ &$this, 'filter_comment_for_notification' ] );
+        add_action( 'delete_comment', [ &$this, 'filter_comment_for_notification' ] );
+//        add_action( 'transition_comment_status', [ &$this, 'hooks_transition_comment_status' ], 10, 3 ); // TODO decide if this is necessary for notifications
         
         parent::__construct();
     }
     
-    public function hooks_transition_comment_status( $new_status, $old_status, $comment ) {
-        $this->_add_comment_log( $comment->comment_ID, $new_status, $comment );
-    }
+//    public function hooks_transition_comment_status( $new_status, $old_status, $comment ) {
+//        $this->_add_comment_log( $comment->comment_ID, $new_status, $comment );
+//    }
     
     /**
      * Filter for the @mention comment
      * @param      $comment_ID
      * @param null $comment
      */
-    public function filter_comment_log( $comment_ID, $comment = null ) {
+    public function filter_comment_for_notification( $comment_id, $comment = null ) {
+    
         if ( is_null( $comment ) ) {
-            $comment = get_comment( $comment_ID );
+            $comment = get_comment( $comment_id );
         }
         
-        // TODO search for @sign
+        if(!$this->check_for_mention( $comment->content )) { // fail if no mention found
+            return;
+        }
         
+        $mentioned_user_id = $this->match_mention( $comment->content ); // fail if no match for mention found
+        if(!$mentioned_user_id){
+            return;
+        }
+    
+        // build variables
+        $post_id = $comment->comment_post_ID;
+        $date_notified = $comment->comment_date;
+        $author_name = $comment->comment_author;
+        $author_url = $comment->comment_author_url;
         
-        $action = 'created';
+        // call appropriate action
         switch ( current_filter() ) {
             case 'wp_insert_comment' :
-                $action = 1 === (int) $comment->comment_approved ? 'approved' : 'pending';
+                $notification_action = 'created';
+                
+                $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+                
+                $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
                 break;
             
             case 'edit_comment' :
-                $action = 'updated';
-                break;
-            
-            case 'delete_comment' :
-                $action = 'deleted';
-                break;
-            
-            case 'trash_comment' :
-                $action = 'trashed';
+                $notification_action = 'updated';
+    
+                $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+    
+                $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
                 break;
             
             case 'untrash_comment' :
-                $action = 'untrashed';
+                $notification_action = 'untrashed';
+    
+                $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+    
+                $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
                 break;
             
-            case 'spam_comment' :
-                $action = 'spammed';
+            case 'delete_comment' :
+            case 'trash_comment' :
+                $this->delete_mention_notification( $mentioned_user_id, $comment_id, $post_id, $date_notified );
                 break;
             
-            case 'unspam_comment' :
-                $action = 'unspammed';
+            default:
                 break;
         }
-        
-        $this->_add_comment_log( $comment_ID, $action, $comment );
+    
+    }
+    
+    /**
+     * Checks for mention in text of comment.
+     * If no mention is found, returns true. If mention is found, returns false.
+     *
+     * @param $comment_content
+     *
+     * @return bool
+     */
+    public function check_for_mention( $comment_content ) {
+        // TODO parse for @mention pattern
+        return true; // temp value
+    }
+    
+    /**
+     * Parse @mention to find user match
+     * @param $comment_content
+     *
+     * @return int|bool
+     */
+    public function match_mention( $comment_content ) {
+        // TODO parse at mention, search for username match, and then return user id or false
+        return 5; // temp value
+        //return false;
     }
     
     /**
      * Logs the @mention comment activity
-     * @param      $id
-     * @param      $action
-     * @param null $comment
+     *
+     * @param $mentioned_user_id
+     * @param $comment_id
+     * @param $post_id
+     * @param $notification_action
+     * @param $notification_note
+     * @param $date_notified
      */
-    protected function _add_comment_log( $id, $action, $comment = null ) {
-        if ( is_null( $comment ) ) {
-            $comment = get_comment( $id );
-        }
+    protected function add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified ) {
         
         dt_notification_insert(
             [
-                'user_id'               => '', // TODO prepare this array with real data.
-                'item_id'               => '',
-                'secondary_item_id'     => '',
-                'component_name'        => '',
-                'component_action'      => '',
-                'date_notified'         => '',
+                'user_id'               => $mentioned_user_id,
+                'item_id'               => $comment_id,
+                'secondary_item_id'     => $post_id,
+                'notification_name'     => 'mention',
+                'notification_action'   => $notification_action,
+                'notification_note'     => $notification_note,
+                'date_notified'         => $date_notified,
                 'is_new'                => 1,
             ]
         );
         
+    }
+    
+    protected function delete_mention_notification( $mentioned_user_id, $comment_id, $post_id, $date_notified ) {
+    
+        dt_notification_delete(
+            [
+                'user_id'               => $mentioned_user_id,
+                'item_id'               => $comment_id,
+                'secondary_item_id'     => $post_id,
+                'notification_name'     => 'mention',
+                'date_notified'         => $date_notified,
+            ]
+        );
+    
     }
 }

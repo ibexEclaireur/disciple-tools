@@ -10,17 +10,17 @@ class Disciple_Tools_Hook_Comments extends Disciple_Tools_Hook_Base {
 
         dt_activity_insert(
             [
-            'action'         => 'comment',
-            'object_type'    => 'Comments',
-            'object_subtype' => get_post_type( $comment->comment_post_ID ),
-            'object_name'    => get_the_title( $comment->comment_post_ID ),
-            'object_id'      => $comment->comment_post_ID,
+            'action'            => 'comment',
+            'object_type'       => 'Comments',
+            'object_subtype'    => get_post_type( $comment->comment_post_ID ),
+            'object_name'       => get_the_title( $comment->comment_post_ID ),
+            'object_id'         => $comment->comment_post_ID,
             'meta_id'           => $id, // id of the comment
             'meta_key'          => get_post_type( $comment->comment_post_ID ),
             'meta_value'        => $action,
             'meta_parent'        => $comment->comment_parent,
             'object_note'       => $comment->comment_content,
-             ] 
+             ]
         );
     }
 

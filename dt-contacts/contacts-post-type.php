@@ -468,6 +468,18 @@ class Disciple_Tools_Contact_Post_Type {
      * Load activity metabox
      */
     public function load_shared_meta_box() {
+//        dt_notification_insert(
+//            [
+//                'user_id'               => '2',
+//                'item_id'               => '57',
+//                'secondary_item_id'     => '56',
+//                'notification_name'     => 'mention',
+//                'notification_action'   => 'created',
+//                'notification_note'     => 'Sample of a created note.',
+//                'date_notified'         => current_time('mysql'),
+//                'is_new'                => 1,
+//            ]
+//        );
         dt_share_contact_metabox()->content_display( get_the_ID() );
     }
 

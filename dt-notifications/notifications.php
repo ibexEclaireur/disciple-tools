@@ -23,7 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
  * @return void
  */
 function dt_notification_insert( $args = [] ) {
-    Disciple_Tools()->notifications->insert( $args ); // TODO need to require this file from root .php file and create this variable
+    Disciple_Tools()->notifications->insert_notification( $args );
+}
+
+function dt_notification_delete( $args = [] ) {
+    Disciple_Tools()->notifications->delete_notification( $args );
 }
 
 class Disciple_Tools_Notifications {
@@ -68,7 +72,7 @@ class Disciple_Tools_Notifications {
      * @param array $args
      * @return void
      */
-    public function insert( $args ) {
+    public function insert_notification( $args ) {
         global $wpdb;
         
         $args = wp_parse_args(
@@ -77,8 +81,9 @@ class Disciple_Tools_Notifications {
                 'user_id'               => '',
                 'item_id'               => '',
                 'secondary_item_id'     => '',
-                'component_name'        => '',
-                'component_action'      => '',
+                'notification_name'     => '',
+                'notification_action'   => '',
+                'notification_note'     => '',
                 'date_notified'         => '',
                 'is_new'                => 1,
             ]
@@ -92,17 +97,19 @@ class Disciple_Tools_Notifications {
 					WHERE `user_id` = \'%2$s\'
 						AND `item_id` = \'%3$s\'
 						AND `secondary_item_id` = \'%4$s\'
-						AND `component_name` = \'%5$s\'
-						AND `component_action` = \'%6$s\'
-						AND `date_notified` = \'%7$s\'
-						AND `is_new` = \'%8$s\'
+						AND `notification_name` = \'%5$s\'
+						AND `notification_action` = \'%6$s\'
+						AND `notification_note` = \'%7$s\'
+						AND `date_notified` = \'%8$s\'
+						AND `is_new` = \'%9$s\'
 				;',
                 $wpdb->dt_notifications,
                 $args['user_id'],
                 $args['item_id'],
                 $args['secondary_item_id'],
-                $args['component_name'],
-                $args['component_action'],
+                $args['notification_name'],
+                $args['notification_action'],
+                $args['notification_note'],
                 $args['date_notified'],
                 $args['is_new']
             )
@@ -115,21 +122,59 @@ class Disciple_Tools_Notifications {
         $wpdb->insert(
             $wpdb->dt_notifications,
             [
-                'user_id'         => $args['user_id'],
-                'item_id'    => $args['item_id'],
-                'secondary_item_id' => $args['secondary_item_id'],
-                'component_name'    => $args['component_name'],
-                'component_action'      => $args['component_action'],
-                'date_notified'        => $args['date_notified'],
-                'is_new'      => $args['is_new'],
+                'user_id'                   => $args['user_id'],
+                'item_id'                   => $args['item_id'],
+                'secondary_item_id'         => $args['secondary_item_id'],
+                'notification_name'         => $args['notification_name'],
+                'notification_action'       => $args['notification_action'],
+                'notification_note'         => $args['notification_note'],
+                'date_notified'             => $args['date_notified'],
+                'is_new'                    => $args['is_new'],
             ],
-            [ '%d', '%d', '%d', '%s', '%s', '%s', '%d' ]
+            [ '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d' ]
         );
         
         // TODO consider adding a meta data process here
         
         // Final action on insert.
         do_action( 'dt_insert_notification', $args );
+    }
+    
+    /**
+     * Insert statement
+     * @since 1.0.0
+     *
+     * @param array $args
+     * @return void
+     */
+    public function delete_notification( $args ) {
+        global $wpdb;
+        
+        $args = wp_parse_args(
+            $args,
+            [
+                'user_id'               => '',
+                'item_id'               => '',
+                'secondary_item_id'     => '',
+                'notification_name'     => 'mention',
+                'date_notified'         => '',
+            ]
+        );
+        
+        $wpdb->delete(
+            $wpdb->dt_notifications,
+            [
+                'user_id'               => $args['user_id'],
+                'item_id'               => $args['item_id'],
+                'secondary_item_id'     => $args['secondary_item_id'],
+                'notification_name'     => $args['notification_name'],
+                'date_notified'         => $args['date_notified'],
+            ]
+        );
+        
+        
+        // Final action on insert.
+        do_action( 'dt_delete_notification', $args );
     }
     
     /**

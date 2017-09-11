@@ -401,13 +401,13 @@ class Disciple_Tools {
         require_once( 'dt-locations/locations-post-type.php' );
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
         require_once( 'dt-locations/class-map.php' ); // Helper
-        require_once( 'dt-locations/locations-template.php' );
         require_once( 'dt-locations/class-census-geolocation-api.php' );// APIs
         require_once( 'dt-locations/class-google-geolocation-api.php' );
         require_once( 'dt-locations/class-coordinates-db.php' );
-        require_once( 'dt-locations/locations-endpoints.php' ); // builds rest endpoints
         require_once( 'dt-locations/locations.php' ); // serves the locations rest endpoints
+        require_once( 'dt-locations/locations-endpoints.php' ); // builds rest endpoints
         $this->location_api = Disciple_Tools_Locations_Endpoints::instance();
+        require_once( 'dt-locations/locations-template.php' );
 
 
         /**
@@ -475,6 +475,7 @@ class Disciple_Tools {
          * dt-notifications
          */
         require_once( 'dt-notifications/notifications-hooks.php' );
+        $this->notification_hooks = Disciple_Tools_Notification_Hooks::instance();
         require_once( 'dt-notifications/notifications-email-api.php' );
         require_once( 'dt-notifications/notifications-template.php' );
         require_once( 'dt-notifications/notifications.php' );

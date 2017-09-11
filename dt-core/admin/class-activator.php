@@ -186,10 +186,10 @@ class Disciple_Tools_Activator {
                       `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
                       `item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
                       `secondary_item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
-                      `component_name` varchar(75) DEFAULT NULL,
-                      `component_action` varchar(75) DEFAULT NULL,
-                      `date_notified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                      `notification_name` varchar(75) UNSIGNED NOT NULL DEFAULT '0',
+                      `notification_action` varchar(75) UNSIGNED NOT NULL DEFAULT '0',
                       `notification_note` varchar(255) DEFAULT NULL,
+                      `date_notified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                       `is_new` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
                       PRIMARY KEY (`id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
