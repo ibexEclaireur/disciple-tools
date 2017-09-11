@@ -3,12 +3,18 @@ The Notifications module contains the utilities necessary for web notifications,
 
 ## Core Files
 
-1. `/hooks/` _(Hooks folder contains the hook factory files that catch the appropriate activities and logs them to the notifications table.)_
-1. `notifications.php` _(description)_
-1. `notifications-email-api.php` _(description)_
-1. `notifications-endpoints.php` _(description)_
-1. `notifications-hooks.php` _(description)_
-1. `notifications-template.php` _(description)_
+1. `/hooks/`   
+   _The Hooks folder contains the hook factory files that catch the appropriate activities and logs them to the notifications table._
+1. `notifications.php`  
+   _description_
+1. `notifications-email-api.php`  
+   _description_
+1. `notifications-endpoints.php`   
+   _description_
+1. `notifications-hooks.php`  
+   _description_
+1. `notifications-template.php`  
+   _description_
 
 ## DB Table Configuration
 
@@ -36,7 +42,7 @@ columns and their purposes are listed below.
 | ------------          |------------                                                               |
 | `id`                  | Auto increment id field                                                   |
 | `user_id`             | User id to be notified                                                    |
-| `item_id`             | The Activity Log key id of the event (`$wpdb->dt_activity_log`)(`histid`) |
+| `item_id`             | The Activity Log key id of the event (`$wpdb->dt_activity_log`(`histid`) |
 | `secondary_item_id`   | Contact, Group, Location, etc that the comment was logged against         |
 | `component_name`      | `field_update`, `follow_activity`                                         |
 | `component_action`    | `assigned_to`, `update_needed`, `baptism`                                 |
