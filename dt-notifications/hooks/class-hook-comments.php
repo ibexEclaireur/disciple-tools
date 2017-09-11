@@ -12,20 +12,11 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         add_action( 'trash_comment', [ &$this, 'filter_comment_for_notification' ] );
         add_action( 'untrash_comment', [ &$this, 'filter_comment_for_notification' ] );
         add_action( 'delete_comment', [ &$this, 'filter_comment_for_notification' ] );
-//        add_action( 'transition_comment_status', [ &$this, 'hooks_transition_comment_status' ], 10, 3 ); // TODO decide if this is necessary for notifications
         
         parent::__construct();
     }
     
-//    public function hooks_transition_comment_status( $new_status, $old_status, $comment ) {
-//        $this->_add_comment_log( $comment->comment_ID, $new_status, $comment );
-//    }
     
-    /**
-     * Filter for the @mention comment
-     * @param      $comment_ID
-     * @param null $comment
-     */
     public function filter_comment_for_notification( $comment_id, $comment = null ) {
     
         if ( is_null( $comment ) ) {

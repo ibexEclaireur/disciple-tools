@@ -23,11 +23,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
  * @return void
  */
 function dt_notification_insert( $args = [] ) {
-    Disciple_Tools()->notifications->insert_notification( $args );
+    Disciple_Tools_Notifications::insert_notification( $args );
 }
 
 function dt_notification_delete( $args = [] ) {
-    Disciple_Tools()->notifications->delete_notification( $args );
+    Disciple_Tools_Notifications::delete_notification( $args );
 }
 
 class Disciple_Tools_Notifications {
@@ -72,22 +72,8 @@ class Disciple_Tools_Notifications {
      * @param array $args
      * @return void
      */
-    public function insert_notification( $args ) {
+    public static function insert_notification( $args ) {
         global $wpdb;
-        
-        $args = wp_parse_args(
-            $args,
-            [
-                'user_id'               => '',
-                'item_id'               => '',
-                'secondary_item_id'     => '',
-                'notification_name'     => '',
-                'notification_action'   => '',
-                'notification_note'     => '',
-                'date_notified'         => '',
-                'is_new'                => 1,
-            ]
-        );
         
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
@@ -147,7 +133,7 @@ class Disciple_Tools_Notifications {
      * @param array $args
      * @return void
      */
-    public function delete_notification( $args ) {
+    public static function delete_notification( $args ) {
         global $wpdb;
         
         $args = wp_parse_args(
