@@ -249,9 +249,9 @@ class Disciple_Tools {
         $this->version          = '0.1';
         $this->plugin_url       = plugin_dir_url( __FILE__ );
         $this->plugin_path      = plugin_dir_path( __FILE__ );
-        $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/img/';
-        $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/js/';
-        $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/css/';
+        $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/admin/img/';
+        $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/admin/js/';
+        $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/admin/css/';
 
         $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
         $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
@@ -487,13 +487,13 @@ class Disciple_Tools {
          */
         require_once( 'dt-core/config-p2p.php' );// Creates the post to post relationship between the post type tables.
         require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin
-        require_once( 'dt-core/metaboxes/box-four-fields.php' );
-        require_once( 'dt-core/metaboxes/box-church-fields.php' );
-        require_once( 'dt-core/metaboxes/box-map.php' );
-        require_once( 'dt-core/metaboxes/box-activity.php' );
-        require_once( 'dt-core/metaboxes/box-address.php' );
-        require_once( 'dt-core/metaboxes/box-availability.php' );
-        require_once( 'dt-core/metaboxes/box-share-contact.php' );
+        require_once( 'dt-core/admin/metaboxes/box-four-fields.php' );
+        require_once( 'dt-core/admin/metaboxes/box-church-fields.php' );
+        require_once( 'dt-core/admin/metaboxes/box-map.php' );
+        require_once( 'dt-core/admin/metaboxes/box-activity.php' );
+        require_once( 'dt-core/admin/metaboxes/box-address.php' );
+        require_once( 'dt-core/admin/metaboxes/box-availability.php' );
+        require_once( 'dt-core/admin/metaboxes/box-share-contact.php' );
 
 
         /**
@@ -528,8 +528,11 @@ class Disciple_Tools {
          */
         if(is_multisite()) {
             /**
- * Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite
-*/
+             * Disciple Tools is intended to be multisite compatible. Use the section below for if needed for compatibility files.
+             * Disciple Tools Multisite plugin is intended to expand features for multisite installations.
+             *
+             * @see https://github.com/ChasmSolutions/disciple-tools-multisite
+            */
         }
 
         // Language
