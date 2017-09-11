@@ -1,7 +1,14 @@
-# DT-Messaging
-The Messaging module contains the utilities nessisary for notifications, emailing, and interactions between workers.
+# DT-Notifications
+The Notifications module contains the utilities necessary for web notifications, email notifications, and alerts between workers.
 
 ## Core Files
+
+1. `/hooks/` _(Hooks folder contains the hook factory files that catch the appropriate activities and logs them to the notifications table.)_
+1. `notifications.php` _(description)_
+1. `notifications-email-api.php` _(description)_
+1. `notifications-endpoints.php` _(description)_
+1. `notifications-hooks.php` _(description)_
+1. `notifications-template.php` _(description)_
 
 ## DB Table Configuration
 
