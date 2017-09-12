@@ -205,7 +205,7 @@ class Disciple_Tools_Groups {
     public static function update_group( int $group_id, array $fields, bool $check_permissions = true ){
 
         if ($check_permissions && ! self::can_update_group( $group_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
 
         $post = get_post( $group_id );
@@ -252,7 +252,7 @@ class Disciple_Tools_Groups {
 
     public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions ){
         if ($check_permissions && ! self::can_update_group( $group_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
         if (strpos( $key, "new-" ) === 0 ){
             $type = explode( '-', $key )[1];
@@ -289,7 +289,7 @@ class Disciple_Tools_Groups {
 
     public static function remove_item_from_field( int $group_id, string $key, string $value, bool $check_permissions ){
         if ($check_permissions && ! self::can_update_group( $group_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
         if ( $key === "locations" ){
             return self::remove_location_from_group( $group_id, $value );

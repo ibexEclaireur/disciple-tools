@@ -155,7 +155,7 @@ class Disciple_Tools_Contacts
     public static function update_contact( int $contact_id, array $fields, bool $check_permissions = true ){
 
         if ($check_permissions && ! self::can_update_contact( $contact_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
 
         $post = get_post( $contact_id );
@@ -248,7 +248,7 @@ class Disciple_Tools_Contacts
 
     public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions ){
         if ($check_permissions && ! self::can_update_contact( $contact_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
         if (strpos( $key, "new-" ) === 0 ){
             $type = explode( '-', $key )[1];
@@ -294,7 +294,7 @@ class Disciple_Tools_Contacts
 
     public static function update_contact_details( int $contact_id, string $key, array $values, bool $check_permissions ){
         if ($check_permissions && ! self::can_update_contact( $contact_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
         if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
             strpos( $key, "_details" ) === false
@@ -312,7 +312,7 @@ class Disciple_Tools_Contacts
     }
     public static function delete_contact_details( int $contact_id, string $key, string $value, bool $check_permissions ){
         if ($check_permissions && ! self::can_update_contact( $contact_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
         if ( $key === "locations" ){
             return self::remove_location_from_contact( $contact_id, $value );
@@ -794,7 +794,7 @@ class Disciple_Tools_Contacts
 
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){
         if ($check_permissions && ! self::can_update_contact( $contact_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
         $user = wp_get_current_user();
         $user_id = get_current_user_id();
@@ -868,7 +868,7 @@ class Disciple_Tools_Contacts
 
     public static function accept_contact( int $contact_id, bool $accepted, bool $check_permissions ){
         if (!self::can_update_contact( $contact_id )){
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
 
         if ($accepted){
@@ -893,7 +893,7 @@ class Disciple_Tools_Contacts
         global $wpdb;
 
         if (!self::can_update_contact( $post_id )){
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
 
         $shared_with_list = [];
@@ -919,7 +919,7 @@ class Disciple_Tools_Contacts
         global $wpdb;
 
         if (!self::can_update_contact( $post_id )){
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
 
         $table = $wpdb->dt_share;
@@ -946,7 +946,7 @@ class Disciple_Tools_Contacts
         global $wpdb;
 
         if (!self::can_update_contact( $post_id )){
-            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
 
         $table = $wpdb->dt_share;
