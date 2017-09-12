@@ -700,9 +700,9 @@ class Disciple_Tools_Contacts
             // query a member list for this group
             $sql = $wpdb->prepare(
                 'SELECT %1$s.object_id
-          FROM %1$s
-            WHERE term_taxonomy_id  = \'%2$d\'
-            ',
+                        FROM %1$s
+                        WHERE term_taxonomy_id  = \'%2$d\'
+                        ',
                 $wpdb->term_relationships,
                 $result['term_taxonomy_id']
             );
@@ -886,18 +886,18 @@ class Disciple_Tools_Contacts
 
     /**
      * Gets an array of users whom the contact is shared with.
-     * @param $contact_id
+     * @param $post_id
      * @return array|mixed
      */
-    public static function get_shared_with( int $contact_id ) {
+    public static function get_shared_with( int $post_id ) {
         global $wpdb;
 
-        if (!self::can_update_contact( $contact_id )){
+        if (!self::can_update_contact( $post_id )){
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
 
         $shared_with_list = [];
-        $shares = $wpdb->get_results( "SELECT * FROM $wpdb->dt_share WHERE contact_id = '$contact_id'", ARRAY_A );
+        $shares = $wpdb->get_results( "SELECT * FROM $wpdb->dt_share WHERE post_id = '$post_id'", ARRAY_A );
 
         // adds display name to the array
         foreach ($shares as $share ) {
@@ -910,20 +910,20 @@ class Disciple_Tools_Contacts
 
     /**
      * Removes share record
-     * @param $contact_id
+     * @param $post_id
      * @param $share_id
      *
      * @return false|int|WP_Error
      */
-    public static function remove_shared( int $contact_id, int $user_id ) {
+    public static function remove_shared( int $post_id, int $user_id ) {
         global $wpdb;
 
-        if (!self::can_update_contact( $contact_id )){
+        if (!self::can_update_contact( $post_id )){
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
 
         $table = $wpdb->dt_share;
-        $where = [ 'user_id' => $user_id, 'contact_id' => $contact_id] ;
+        $where = [ 'user_id' => $user_id, 'post_id' => $post_id] ;
         $result = $wpdb->delete( $table, $where );
 
         if($result == false) {
@@ -936,23 +936,23 @@ class Disciple_Tools_Contacts
     /**
      * Adds a share record
      *
-     * @param int   $contact_id
+     * @param int   $post_id
      * @param int   $user_id
      * @param array $meta
      *
      * @return false|int|WP_Error
      */
-    public static function add_shared( int $contact_id, int $user_id, $meta = null ) {
+    public static function add_shared( int $post_id, int $user_id, $meta = null ) {
         global $wpdb;
 
-        if (!self::can_update_contact( $contact_id )){
+        if (!self::can_update_contact( $post_id )){
             return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
         }
 
         $table = $wpdb->dt_share;
         $data = [
             'user_id' => $user_id,
-            'contact_id' => $contact_id,
+            'post_id' => $post_id,
             'meta' => $meta,
         ];
         $format = [
@@ -961,7 +961,7 @@ class Disciple_Tools_Contacts
             '%s',
         ];
 
-        $duplicate_check = $wpdb->get_row( "SELECT id FROM $wpdb->dt_share WHERE contact_id = '$contact_id' AND user_id = '$user_id'", ARRAY_A );
+        $duplicate_check = $wpdb->get_row( "SELECT id FROM $wpdb->dt_share WHERE post_id = '$post_id' AND user_id = '$user_id'", ARRAY_A );
 
         if (is_null( $duplicate_check )) {
             $results = $wpdb->insert( $table, $data, $format );

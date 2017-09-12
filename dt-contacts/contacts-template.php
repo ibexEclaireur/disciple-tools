@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  * @return int
  */
 function dt_get_contacts_at_location( $post_id, $user_id ) {
-    return 0; //TODO
+    return 0; //TODO (I might have some work on this in the reports section.)
 }
 
 /**

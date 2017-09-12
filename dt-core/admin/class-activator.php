@@ -58,10 +58,10 @@ class Disciple_Tools_Activator {
                         'build_report_for_youtube'    => 1,
                     ]
             ];
-        if(!get_option('dt_site_options')) {
-            add_option('dt_site_options', $options, '', true);
+        if(!get_option( 'dt_site_options' )) {
+            add_option( 'dt_site_options', $options, '', true );
         } else {
-            update_option('dt_site_options', $options, true);
+            update_option( 'dt_site_options', $options, true );
         }
 
 
@@ -179,7 +179,7 @@ class Disciple_Tools_Activator {
             $sql4 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 					  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					  `user_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
-					  `contact_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
+					  `post_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
 					  `meta` LONGTEXT,
 					  PRIMARY KEY (`id`)
 				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
