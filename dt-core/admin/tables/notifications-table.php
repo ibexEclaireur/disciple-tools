@@ -28,8 +28,8 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
     
     function column_default( $item, $column_name ){
         switch($column_name){
-            case 'component_name':
-            case 'component_action':
+            case 'notification_name':
+            case 'notification_action':
             case 'date_notified':
             case 'notification_note':
                 return $item[$column_name];
@@ -40,27 +40,27 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
                 return $item[$column_name] ? 'Yes' : 'No';
                 break;
             case 'item_id':
-                if($item['component_name'] == 'comment') {
+                if($item['notification_name'] == 'mention') {
                     $comment = get_comment( $item[$column_name] );
                     return '<a href="'. home_url( '/contacts/' ) .$comment->comment_post_ID.'">' . $comment->comment_content . '</a>';
                 }
-                elseif ($item['component_name'] == 'field_update') {
+                elseif ($item['notification_name'] == 'field_update') {
                     return Disciple_Tools_Notifications::get_field_update_message( $item[$column_name] );
                 }
-                elseif ($item['component_name'] == 'follow_activity') {
+                elseif ($item['notification_name'] == 'follow_activity') {
                     return Disciple_Tools_Notifications::get_field_update_message( $item[$column_name] );
                 }
                 break;
             case 'secondary_item_id':
-                if($item['component_name'] == 'comment') {
+                if($item['notification_name'] == 'mention') {
                     $post_object = get_post( $item[$column_name] );
                     return '<a href="'.$post_object->guid.'">' . $post_object->post_title . '</a>';
                 }
-                elseif ($item['component_name'] == 'field_update') {
+                elseif ($item['notification_name'] == 'field_update') {
                     $post_object = get_post( $item[$column_name] );
                     return '<a href="'.$post_object->guid.'">' . $post_object->post_title . '</a>';
                 }
-                elseif ($item['component_name'] == 'follow_activity') {
+                elseif ($item['notification_name'] == 'follow_activity') {
                     $post_object = get_post( $item[$column_name] );
                     return '<a href="'.$post_object->guid.'">' . $post_object->post_title . '</a>';
                 }
@@ -80,8 +80,8 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
         
         //Return the title contents
         return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
-            /*$1%s*/ $item['component_name'],
-            /*$2%s*/ $item['component_action'],
+            /*$1%s*/ $item['notification_name'],
+            /*$2%s*/ $item['notification_action'],
             /*$3%s*/ $this->row_actions( $actions )
         );
     }
@@ -98,12 +98,12 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
         $columns = array(
             'cb'                        => '<input type="checkbox" />', //Render a checkbox instead of text
             'user_id'                   => 'User',
-            'item_id'                   => 'Message',
-            'secondary_item_id'         => 'Object',
-            'component_name'            => 'Component',
-            'component_action'          => 'Action',
-            'date_notified'             => 'Date',
+            'item_id'                   => 'Item_ID',
+            'secondary_item_id'         => 'Secondary',
+            'notification_name'         => 'Name',
+            'notification_action'       => 'Action',
             'notification_note'         => 'Note',
+            'date_notified'             => 'Date',
             'is_new'                    => 'New',
         );
         return $columns;
@@ -114,8 +114,8 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
             'user_id'     => array('user_id',false),     //true means it's already sorted
             'item_id'    => array('item_id',false),
             'secondary_item_id'  => array('secondary_item_id',false),
-            'component_name'  => array('component_name',false),
-            'component_action'  => array('component_action',false),
+            'notification_name'  => array('notification_name',false),
+            'notification_action'  => array('notification_action',false),
             'date_notified'  => array('date_notified',false),
             'notification_note'  => array('notification_note',false),
             'is_new'  => array('is_new',false),
@@ -191,8 +191,8 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
                 $wpdb->prepare( "
                     SELECT *
                     FROM  $wpdb->dt_notifications
-                    WHERE `component_name` LIKE '%%%s%%'
-                      OR `component_action` LIKE '%%%s%%'
+                    WHERE `notification_name` LIKE '%%%s%%'
+                      OR `notification_action` LIKE '%%%s%%'
                       $where
                       ORDER BY $orderby $order
                     ",

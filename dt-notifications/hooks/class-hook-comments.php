@@ -77,19 +77,14 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     
     /**
      * Checks for mention in text of comment.
-     * If no mention is found, returns true. If mention is found, returns false.
+     * If mention is found, returns true. If mention is not found, returns false.
      *
      * @param $comment_content
      *
      * @return bool
      */
     public function check_for_mention( $comment_content ) {
-        
-        // TODO create a working string search for @mention
-        if (strlen( strstr( $comment_content,'@' ) )>0) {
-            return true;
-        }
-        return false;
+        return preg_match('(?<= |^)@([^@ ]+)', $comment_content);
     }
     
     /**
