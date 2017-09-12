@@ -102,13 +102,13 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         $user_ids = [];
         foreach($matches[1] as $match) {
             // get user_id by name match
-            $user = get_user_by('login', $match);
+            $user = get_user_by( 'login', $match );
             if($user) {
                 $user_ids[] = $user->ID;
             }
         }
         
-        return empty($user_ids) ? false : $user_ids;
+        return empty( $user_ids ) ? false : $user_ids;
     }
     
     /**
