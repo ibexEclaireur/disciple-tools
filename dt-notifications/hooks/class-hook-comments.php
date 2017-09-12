@@ -27,52 +27,55 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             return;
         }
         
-        $mentioned_user_id = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
-        if(!$mentioned_user_id){
+        $mentioned_user_ids = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
+        if(!$mentioned_user_ids){
             return;
         }
-    
-        // build variables
-        $post_id = $comment->comment_post_ID;
-        $date_notified = $comment->comment_date;
-        $author_name = $comment->comment_author;
-        $author_url = $comment->comment_author_url;
         
-        // call appropriate action
-        switch ( current_filter() ) {
-            case 'wp_insert_comment' :
-                $notification_action = 'created';
+        foreach($mentioned_user_ids as $mentioned_user_id) {
+            
+            // build variables
+            $post_id = $comment->comment_post_ID;
+            $date_notified = $comment->comment_date;
+            $author_name = $comment->comment_author;
+            $author_url = $comment->comment_author_url;
+            
+            // call appropriate action
+            switch ( current_filter() ) {
+                case 'wp_insert_comment' :
+                    $notification_action = 'created';
+                    
+                    $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+                    
+                    $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
+                    break;
                 
-                $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+                case 'edit_comment' :
+                    $notification_action = 'updated';
+        
+                    $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+        
+                    $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
+                    break;
                 
-                $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
-                break;
+                case 'untrash_comment' :
+                    $notification_action = 'untrashed';
+        
+                    $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+        
+                    $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
+                    break;
+                
+                case 'delete_comment' :
+                case 'trash_comment' :
+                    $this->delete_mention_notification( $mentioned_user_id, $comment_id, $post_id, $date_notified );
+                    break;
+                
+                default:
+                    break;
+            }
             
-            case 'edit_comment' :
-                $notification_action = 'updated';
-    
-                $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
-    
-                $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
-                break;
-            
-            case 'untrash_comment' :
-                $notification_action = 'untrashed';
-    
-                $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
-    
-                $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
-                break;
-            
-            case 'delete_comment' :
-            case 'trash_comment' :
-                $this->delete_mention_notification( $mentioned_user_id, $comment_id, $post_id, $date_notified );
-                break;
-            
-            default:
-                break;
         }
-    
     }
     
     /**
@@ -91,12 +94,21 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * Parse @mention to find user match
      * @param $comment_content
      *
-     * @return int|bool
+     * @return bool|array
      */
     public function match_mention( $comment_content ) {
-        // TODO parse at mention, search for username match, and then return user id or false
-        return 5; // temp value
-        //return false;
+        preg_match_all( '/(?<= |^)@([^@ ]+)/', $comment_content, $matches );
+        
+        $user_ids = [];
+        foreach($matches[1] as $match) {
+            // get user_id by name match
+            $user = get_user_by('login', $match);
+            if($user) {
+                $user_ids[] = $user->ID;
+            }
+        }
+        
+        return empty($user_ids) ? false : $user_ids;
     }
     
     /**

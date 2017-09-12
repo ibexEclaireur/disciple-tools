@@ -234,11 +234,12 @@ function dt_notifications_table (){
     
     ?>
     <div class="wrap">
-        <?php global $wpdb;
-        print_r( $wpdb->get_var( "SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '54'" ), ARRAY_A ); ?>
+        
         
         <div id="icon-users" class="icon32"><br/></div>
         <h2>Notifications System</h2>
+        
+       
         
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="notifications" method="get">
