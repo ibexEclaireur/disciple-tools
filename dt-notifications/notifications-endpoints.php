@@ -50,18 +50,26 @@ class Disciple_Tools_Notifications_Endpoints {
     public function add_api_routes () {
         $version = '1';
         $namespace = 'dt/v' . $version;
-        $base = 'locations';
+        $base = 'notifications';
         
         register_rest_route(
-            $namespace, '/' . $base . '/sample', [ // TODO replace sample with real endpoint
+            $namespace, '/' . $base . '/mark_notification_viewed', [
                 [
                     'methods'         => WP_REST_Server::CREATABLE,
-                    'callback'        => [ $this, 'sample' ],
+                    'callback'        => [ $this, 'mark_notification_viewed' ],
+                ],
+            ]
+        );
+    
+        register_rest_route(
+            $namespace, '/' . $base . '/get_notifications_for_user', [
+                [
+                    'methods'         => WP_REST_Server::CREATABLE,
+                    'callback'        => [ $this, 'get_notifications_for_user' ],
                 ],
             ]
         );
         
-        // TODO update_notification_to_not_new()
         // TODO get_notifications_for_user()
     }
     
@@ -73,17 +81,39 @@ class Disciple_Tools_Notifications_Endpoints {
      * @since  0.1
      * @return string|WP_Error|array The contact on success
      */
-    public function sample( WP_REST_Request $request ){
+    public function mark_notification_viewed( WP_REST_Request $request ){
         $params = $request->get_params();
-        if (isset( $params['address'] )){
-            $result = Disciple_Tools_Locations::get_tract_map( $params['address'] ); // TODO replace with correct connection
+        if (isset( $params['notification_ids'] )){
+            $result = Disciple_Tools_Notifications::mark_notification_viewed( $params['notification_ids'] );
             if ($result["status"] == 'OK'){
-                return $result;
+                return $result['rows_affected'];
             } else {
-                return new WP_Error( "map_status_error", $result["message"], ['status' => 400] );
+                return new WP_Error( "notification_processing_error", $result["message"], ['status' => 400] );
             }
         } else {
-            return new WP_Error( "map_param_error", "Please provide a valid address", ['status' => 400] );
+            return new WP_Error( "notification_param_error", "Please provide a valid array", ['status' => 400] );
+        }
+    }
+    
+    /**
+     * Get tract from submitted address
+     *
+     * @param  WP_REST_Request $request
+     * @access public
+     * @since  0.1
+     * @return string|WP_Error|array The contact on success
+     */
+    public function get_notifications_for_user( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['user_id'] )){
+            $result = Disciple_Tools_Notifications::get_notifications_for_user( $params );
+            if ($result["status"] == 'OK'){
+                return $result['notifications'];
+            } else {
+                return new WP_Error( "get_user_notification_processing_error", $result["message"], ['status' => 400] );
+            }
+        } else {
+            return new WP_Error( "get_user_notification_param_error", "Please provide a valid array", ['status' => 400] );
         }
     }
     

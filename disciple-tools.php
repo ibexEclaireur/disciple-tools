@@ -481,6 +481,7 @@ class Disciple_Tools {
         require_once( 'dt-notifications/notifications.php' );
         $this->notifications = Disciple_Tools_Notifications::instance();
         require_once( 'dt-notifications/notifications-endpoints.php' );
+        $this->notification_endpoints = Disciple_Tools_Notifications_Endpoints::instance();
 
 
         /**

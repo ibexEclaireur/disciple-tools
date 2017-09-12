@@ -239,7 +239,7 @@ function dt_notifications_table (){
         <div id="icon-users" class="icon32"><br/></div>
         <h2>Notifications System</h2>
         
-       
+        <?php echo Disciple_Tools_Notifications::mark_notification_viewed( [21] ); ?>
         
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="notifications" method="get">

@@ -164,6 +164,69 @@ class Disciple_Tools_Notifications {
     }
     
     /**
+     * Mark the is_new field to 0 after user has viewed notification
+     * {"notification_ids": [1,2,3 4]} requires valid json array
+     *
+     * @param $notification_ids array
+     *
+     * @return array
+     */
+    public static function mark_notification_viewed( $notification_ids ) {
+        global $wpdb;
+    
+        if ( ! is_array( $notification_ids ) ) {
+            return ['status' => 'Error', 'message' => 'Not an array' ];
+        }
+        
+        $i = 0;
+        foreach($notification_ids as $notification_id) {
+            $wpdb->update(
+                $wpdb->dt_notifications,
+                [
+                    'is_new' => 0,
+                ],
+                [
+                    'id' => $notification_id
+                ]
+            );
+            $i = $i + $wpdb->rows_affected;
+        }
+        
+        return $wpdb->last_error ? ['status' => 'Error', 'message' => $wpdb->last_error] : ['status' => 'OK', 'rows_affected' => $i];
+    }
+    
+    /**
+     * Get user notifications
+     *
+     * @param     $params array     user_id (required)
+     *                              limit (optional) default 25.
+     *                              offset (optional) default 0.
+     *
+     * @return array
+     */
+    public static function get_notifications_for_user( $params ) {
+        global $wpdb;
+        $user_id = $params['user_id'];
+        isset( $params['limit'] ) ? $limit = $params['limit'] : $limit = 25;
+        isset( $params['offset'] ) ? $offset = $params['offset'] : $offset = 0;
+        
+        
+        $result = $wpdb->get_results( "SELECT * FROM $wpdb->dt_notifications WHERE user_id = '$user_id' ORDER BY date_notified DESC LIMIT $limit OFFSET $offset", ARRAY_A );
+        
+        if($result) {
+            return [
+                'status' => 'OK',
+                'notifications' => $result,
+            ];
+        } else {
+            return [
+              'status' => 'Fail',
+              'message' => 'Fails to query user notifications. Query returned false.'
+            ];
+        }
+    }
+    
+    /**
      * Get field update message
      * @param $activity_id
      *
