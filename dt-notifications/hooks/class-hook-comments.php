@@ -23,11 +23,11 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             $comment = get_comment( $comment_id );
         }
         
-        if(!$this->check_for_mention( $comment->content )) { // fail if no mention found
+        if($this->check_for_mention( $comment->comment_content ) == '0') { // fail if no mention found
             return;
         }
         
-        $mentioned_user_id = $this->match_mention( $comment->content ); // fail if no match for mention found
+        $mentioned_user_id = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
         if(!$mentioned_user_id){
             return;
         }
@@ -84,7 +84,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * @return bool
      */
     public function check_for_mention( $comment_content ) {
-        return preg_match( '(?<= |^)@([^@ ]+)', $comment_content );
+        return preg_match( '/(?<= |^)@([^@ ]+)/', $comment_content );
     }
     
     /**
