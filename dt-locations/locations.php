@@ -118,6 +118,7 @@ class Disciple_Tools_Locations {
     }
 
     public static function get_locations (){
+//        @todo check permisions
         $query_args = array(
             'post_type' => 'locations',
             'orderby' => 'ID',
@@ -125,5 +126,21 @@ class Disciple_Tools_Locations {
         );
         $query = new WP_Query( $query_args );
         return $query->posts;
+    }
+
+
+    public static function get_locations_compact ( $search ){
+//        @todo check permisions
+        $query_args = array(
+            'post_type' => 'locations',
+            'orderby' => 'ID',
+            's' => $search
+        );
+        $query = new WP_Query( $query_args );
+        $list = [];
+        foreach ($query->posts as $post){
+            $list[] = ["ID" => $post->ID, "name" => $post->post_title];
+        }
+        return $list;
     }
 }

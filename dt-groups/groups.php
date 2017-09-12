@@ -32,6 +32,8 @@ class Disciple_Tools_Groups {
     }
 
     public static function get_groups_compact ( $search ){
+
+//        @todo check permissions
         $query_args = array(
             'post_type' => 'groups',
             'orderby' => 'ID',
@@ -59,6 +61,11 @@ class Disciple_Tools_Groups {
 //          @TODO check if the user is following this group
         }
         return false;
+    }
+
+    public static function can_update_group( $group_id ){
+//        @todo check if the user can update the group
+        return true;
     }
 
     public static function can_access_groups() {
@@ -160,5 +167,135 @@ class Disciple_Tools_Groups {
         } else {
              return new WP_Error( __FUNCTION__, __( "No group found with ID" ), [ 'contact_id' => $group_id ] );
         }
+    }
+
+
+    /**
+     * Make sure there are no extra or misspelled fields
+     * Make sure the field values are the correct format
+     *
+     * @param  $fields, the group meta fields
+     * @param  $post_id, the id of the group
+     * @access private
+     * @since  0.1
+     * @return array
+     */
+    private static function check_for_invalid_fields( $fields, int $post_id = null ){
+        $bad_fields = [];
+        $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
+        $group_model_fields['title'] = "";
+        foreach($fields as $field => $value){
+            if (!isset( $group_fields[$field] )){
+                $bad_fields[] = $field;
+            }
+        }
+        return $bad_fields;
+    }
+
+    /**
+     * Update an existing Group
+     *
+     * @param  int $group_id, the post id for the group
+     * @param  array $fields, the meta fields
+     * @param  bool $check_permissions
+     * @access public
+     * @since  0.1
+     * @return int | WP_Error of group ID
+     */
+    public static function update_group( int $group_id, array $fields, bool $check_permissions = true ){
+
+        if ($check_permissions && ! self::can_update_group( $group_id )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+
+        $post = get_post( $group_id );
+        if (isset( $fields['id'] )){
+            unset( $fields['id'] );
+        }
+
+        if (!$post){
+            return new WP_Error( __FUNCTION__, __( "Group does not exist" ) );
+        }
+        $bad_fields = self::check_for_invalid_fields( $fields, $group_id );
+        if (!empty( $bad_fields )){
+            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
+        }
+
+        if ( isset( $fields['title'] ) ){
+            wp_update_post( ['ID'=>$group_id, 'post_title'=>$fields['title']] );
+        }
+
+        foreach($fields as $field_id => $value){
+            update_post_meta( $group_id, $field_id, $value );
+        }
+        return self::get_group( $group_id, true );
+    }
+
+    public static function add_location_to_group( $group_id, $location_id ){
+        return p2p_type( 'groups_to_locations' )->connect(
+            $location_id, $group_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
+    public static function add_member_to_group( $group_id, $member_id ){
+        return p2p_type( 'contacts_to_groups' )->connect(
+            $member_id, $group_id,
+            array('date' => current_time( 'mysql' ) )
+        );
+    }
+    public static function remove_location_from_group( $group_id, $location_id ){
+        return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
+    }
+    public static function remove_member_from_group( $group_id, $member_id ){
+        return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
+    }
+
+    public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions ){
+        if ($check_permissions && ! self::can_update_group( $group_id )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if (strpos( $key, "new-" ) === 0 ){
+            $type = explode( '-', $key )[1];
+
+            if ($key === "new-address") {
+                $new_meta_key = dt_address_metabox()->create_channel_metakey( "address" );
+            } else if (isset( self::$channel_list[$type] )){
+                //check if this is a new field and is in the channel list
+                $new_meta_key = Disciple_Tools_group_Post_Type::instance()->create_channel_metakey( $type, "group" );
+            }
+            update_post_meta( $group_id, $new_meta_key, $value );
+            $details = ["verified"=>false];
+            update_post_meta( $group_id, $new_meta_key . "_details", $details );
+            return $new_meta_key;
+        }
+        $connect = null;
+        if ($key === "locations"){
+            $connect = self::add_location_to_group( $group_id, $value );
+        } else if ($key === "members"){
+            $connect = self::add_member_to_group( $group_id, $value );
+        }
+        if (is_wp_error( $connect )){
+            return $connect;
+        }
+        if ($connect){
+            $connection = get_post( $value );
+            $connection->permalink = get_permalink( $value );
+            return $connection;
+        }
+
+        return new WP_Error( "add_group_detail", "Field not recognized", ["status"=>400] );
+    }
+
+
+    public static function remove_item_from_field( int $group_id, string $key, string $value, bool $check_permissions ){
+        if ($check_permissions && ! self::can_update_group( $group_id )) {
+            return new WP_Error( __FUNCTION__, __( "You do have permission for this" ), ['status' => 403] );
+        }
+        if ( $key === "locations" ){
+            return self::remove_location_from_group( $group_id, $value );
+        } else if ($key === "members"){
+            return self::remove_member_from_group( $group_id, $value );
+        }
+        return false;
     }
 }

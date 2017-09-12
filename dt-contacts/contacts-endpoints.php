@@ -106,6 +106,12 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/contacts/compact', [
+                "methods" => "GET",
+                "callback" => [$this, 'get_contacts_compact']
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/user/(?P<user_id>\d+)/team/contacts', [
             "methods" => "GET",
             "callback" => [$this, 'get_team_contacts'],
@@ -563,4 +569,14 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
+
+    public function get_contacts_compact( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $search = "";
+        if (isset( $params['s'] )){
+            $search = $params['s'];
+        }
+        $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( true, $search );
+        return $contacts;
+    }
 }

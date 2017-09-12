@@ -557,7 +557,7 @@ class Disciple_Tools_Groups_Post_Type {
      * @since  0.1
      * @return array
      */
-    public function get_custom_fields_settings () {
+    public function get_custom_fields_settings ( bool $include_current_post = true, int $post_id = null ) {
         global $post;
 
         $fields = [];
@@ -674,9 +674,12 @@ class Disciple_Tools_Groups_Post_Type {
         ];
 
 
-        if(isset( $post->ID ) && $post->post_status != 'auto-draft') { // if being called for a specific record or new record.
+        $id = $post->ID ?? $post_id;
+        if ( $include_current_post &&
+            ( $id ||
+            ( isset( $post->ID ) && $post->post_status != 'auto-draft' ))) { // if being called for a specific record or new record.
             // Address
-            $addresses = dt_address_metabox()->address_fields( $post->ID );
+            $addresses = dt_address_metabox()->address_fields( $id );
             foreach ($addresses as $k => $v) { // sets all others third
                 $fields[$k] = [
                     'name' => ucwords( $v['name'] ),
@@ -686,23 +689,6 @@ class Disciple_Tools_Groups_Post_Type {
                     'section' => 'address'
                 ];
             }
-        } else {
-
-            //TODO Determine use of this section
-//            $channels = dt_address_metabox()->get_address_list( $this->post_type );
-//
-//            foreach ($channels as $channel) {
-//
-//                $key =  strtolower( 'address_' . $channel . '_111' );
-//
-//                $fields[$key] = [
-//                    'name' => ucwords( $channel ) ,
-//                    'description' => '',
-//                    'type' => 'text',
-//                    'default' => '',
-//                    'section' => 'address'
-//                ];
-//            }
         }
 
 

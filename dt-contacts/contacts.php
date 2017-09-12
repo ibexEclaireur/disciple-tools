@@ -621,11 +621,32 @@ class Disciple_Tools_Contacts
         if (!self::can_view_all_contacts()){
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-". $current_user->ID;
-
         }
         return self::query_with_pagination( $query_args, $query_pagination_args );
     }
 
+
+    public static function get_viewable_contacts_compact( bool $check_permissions, string $searchString ){
+        if ($check_permissions && !self::can_access_contacts()) {
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
+        }
+        $current_user = wp_get_current_user();
+
+        $query_args = array(
+            'post_type' => 'contacts',
+            's' => $searchString
+        );
+        if (!self::can_view_all_contacts()){
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-". $current_user->ID;
+        }
+        $contacts = new WP_Query( $query_args );
+        $compact = [];
+        foreach( $contacts->posts as $contact ){
+            $compact[] = ["ID" => $contact->ID, "name" => $contact->post_title];
+        }
+        return $compact;
+    }
 
 
     /**
