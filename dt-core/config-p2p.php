@@ -147,7 +147,6 @@ function my_connection_types() {
             'name' => 'groups_to_locations',
             'from' => 'groups',
             'to' => 'locations',
-//            'cardinality' => 'many-to-one',
             'title' => [
                 'from' => __( 'Location', 'disciple_tools' ),
                 'to' => __( 'Groups', 'disciple_tools' )
