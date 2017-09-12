@@ -109,6 +109,16 @@ $template = [
     'edit_others_resource' => true,
     'publish_resource' => true,
     'read_private_resources' => true,
+    /* Add custom caps for people groups */
+    'read_peoplegroup' => true,
+    'edit_peoplegroup' => true,
+    'delete_peoplegroup' => true,
+    'delete_others_peoplegroup' => true,
+    'delete_peoplegroups' => true,
+    'edit_peoplegroups' => true,
+    'edit_others_peoplegroup' => true,
+    'publish_peoplegroup' => true,
+    'read_private_peoplegroups' => true,
 
 ];
 
@@ -263,6 +273,16 @@ class Disciple_Tools_Roles {
                 'edit_others_resource' => true,
                 'publish_resource' => true,
                 'read_private_resources' => true,
+                /* Add custom caps for people groups */
+                'read_peoplegroup' => true,
+                'edit_peoplegroup' => true,
+                'delete_peoplegroup' => true,
+                'delete_others_peoplegroup' => true,
+                'delete_peoplegroups' => true,
+                'edit_peoplegroups' => true,
+                'edit_others_peoplegroup' => true,
+                'publish_peoplegroup' => true,
+                'read_private_peoplegroups' => true,
 
             ]
         );
@@ -321,6 +341,16 @@ class Disciple_Tools_Roles {
                 'edit_others_resource' => true,
                 'publish_resource' => true,
                 'read_private_resources' => true,
+                /* Add custom caps for people groups */
+                'read_peoplegroup' => true,
+                'edit_peoplegroup' => true,
+                'delete_peoplegroup' => true,
+                'delete_others_peoplegroup' => true,
+                'delete_peoplegroups' => true,
+                'edit_peoplegroups' => true,
+                'edit_others_peoplegroup' => true,
+                'publish_peoplegroup' => true,
+                'read_private_peoplegroups' => true,
 
             ]
         );
@@ -431,6 +461,16 @@ class Disciple_Tools_Roles {
                 'edit_others_resource' => true,
                 'publish_resource' => true,
                 'read_private_resources' => true,
+                /* Add custom caps for people groups */
+                'read_peoplegroup' => true,
+                'edit_peoplegroup' => true,
+//                'delete_peoplegroup' => true,
+//                'delete_others_peoplegroup' => true,
+//                'delete_peoplegroups' => true,
+                'edit_peoplegroups' => true,
+                'edit_others_peoplegroup' => true,
+                'publish_peoplegroup' => true,
+                'read_private_peoplegroups' => true,
             ]
         );
 
@@ -538,6 +578,16 @@ class Disciple_Tools_Roles {
                 'edit_others_resource' => true,
                 'publish_resource' => true,
                 'read_private_resources' => true,
+                /* Add custom caps for people groups */
+                'read_peoplegroup' => true,
+                'edit_peoplegroup' => true,
+                'delete_peoplegroup' => true,
+                'delete_others_peoplegroup' => true,
+                'delete_peoplegroups' => true,
+                'edit_peoplegroups' => true,
+                'edit_others_peoplegroup' => true,
+                'publish_peoplegroup' => true,
+                'read_private_peoplegroups' => true,
             ]
         );
 
@@ -655,7 +705,7 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_assetmapping' );
             $role->add_cap( 'publish_assetmapping' );
             $role->add_cap( 'read_private_assetmappings' );
-            /* Add Asset permissions */
+            /* Add Resource permissions */
             $role->add_cap( 'edit_resource' );
             $role->add_cap( 'read_resource' );
             $role->add_cap( 'delete_resource' );
@@ -665,6 +715,16 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'edit_others_resource' );
             $role->add_cap( 'publish_resource' );
             $role->add_cap( 'read_private_resources' );
+            /* Add People Group permissions */
+            $role->add_cap( 'edit_peoplegroup' );
+            $role->add_cap( 'read_peoplegroup' );
+            $role->add_cap( 'delete_peoplegroup' );
+            $role->add_cap( 'delete_others_peoplegroup' );
+            $role->add_cap( 'delete_peoplegroups' );
+            $role->add_cap( 'edit_peoplegroups' );
+            $role->add_cap( 'edit_others_peoplegroup' );
+            $role->add_cap( 'publish_peoplegroup' );
+            $role->add_cap( 'read_private_peoplegroups' );
 
         }
 

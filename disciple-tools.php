@@ -377,8 +377,6 @@ class Disciple_Tools {
          */
         require_once( 'dt-contacts/contacts-post-type.php' );
         $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
-
-
         require_once( 'dt-contacts/contacts-endpoints.php' );
         Disciple_Tools_Contacts_Endpoints::instance();
         require_once( 'dt-contacts/contacts-template.php' ); // Functions to support theme
@@ -418,6 +416,8 @@ class Disciple_Tools {
         require_once( 'dt-people-groups/people-groups-template.php' );
         require_once( 'dt-people-groups/people-groups.php' );
         require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
+        $this->peoplegroups_api = Disciple_Tools_People_Groups_Endpoints::instance();
+        
 
         /**
          * dt-assets

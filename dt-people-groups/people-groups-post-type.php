@@ -305,8 +305,6 @@ class Disciple_Tools_People_Groups_Post_Type {
         add_meta_box( $this->post_type . '_jp', __( 'Joshua Project Info', 'disciple_tools' ), [ $this, 'load_jp_meta_box' ], $this->post_type, 'normal', 'high' );
     } // End meta_box_setup()
 
-
-
     /**
      * Load activity metabox
      */
@@ -328,8 +326,6 @@ class Disciple_Tools_People_Groups_Post_Type {
         echo '</tbody></table>';
 
     }
-
-
 
     /**
      * The contents of our meta box.
