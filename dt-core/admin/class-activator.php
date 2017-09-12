@@ -17,30 +17,20 @@ class Disciple_Tools_Activator {
     /**
      * Activities to run during installation.
      *
-     * Long Description.
-     *
      * @since 0.1
      */
     public static function activate( $network_wide ) {
         global $wpdb;
         $Disciple_Tools = Disciple_Tools();
-
-        /**
-         * Log version number of Disciple_Tools
-         */
         $Disciple_Tools->_log_version_number();
 
-        /**
-         * Create roles and capabilities
-         */
+        /** Create roles and capabilities */
         require_once( 'class-roles.php' );
         $roles = Disciple_Tools_Roles::instance();
         $roles->set_roles();
 
 
-        /**
-         * Setup key for JWT authentication
-         */
+        /** Setup key for JWT authentication */
         if (!defined( 'JWT_AUTH_SECRET_KEY' ) ) {
             if (get_option( "my_jwt_key" )){
                 define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
@@ -50,13 +40,32 @@ class Disciple_Tools_Activator {
                 define( 'JWT_AUTH_SECRET_KEY', $iv );
             }
         }
+        
+        /** Add default dt site options for ini*/
+        $options =
+            [
+                'add_people_groups'           => 1,
+                'clear_data_on_deactivate'    => 1,
+                'daily_reports' =>
+                    [
+                        'build_report_for_contacts'   => 1,
+                        'build_report_for_groups'     => 1,
+                        'build_report_for_facebook'   => 1,
+                        'build_report_for_twitter'    => 1,
+                        'build_report_for_analytics'  => 1,
+                        'build_report_for_adwords'    => 1,
+                        'build_report_for_mailchimp'  => 1,
+                        'build_report_for_youtube'    => 1,
+                    ]
+            ];
+        if(!get_option('dt_site_options')) {
+            add_option('dt_site_options', $options, '', true);
+        } else {
+            update_option('dt_site_options', $options, true);
+        }
 
 
-        /**
-         * Activate database creation for Disciple Tools Activity logs
-         *
-         * @since 0.1
-         */
+        /** Activate database creation for Disciple Tools Activity logs */
         if ( is_multisite() && $network_wide ) {
             // Get all blogs in the network and activate plugin on each one
             $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
