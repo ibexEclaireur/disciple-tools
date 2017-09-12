@@ -179,7 +179,7 @@ class Disciple_Tools_Location_Post_Type {
             'capabilities'           => $capabilities,
             'has_archive'            => true,
             'hierarchical'           => false,
-            'supports'               => [ 'title', 'comments', 'editor' ],
+            'supports'               => [ 'title', 'comments' ],
             'menu_position'          => 6,
             'menu_icon'              => 'dashicons-smiley',
             'show_in_rest'           => true,
@@ -219,11 +219,17 @@ class Disciple_Tools_Location_Post_Type {
         global $post;
 
         switch ( $column_name ) {
-            case 'image':
-            break;
+            case 'WorldId':
+                break;
+            case 'Adm1_Name':
+                break;
+            case 'Adm2_Name':
+                break;
+            case 'Map':
+                break;
 
             default:
-            break;
+                break;
         }
     } // End register_custom_columns()
 
@@ -236,8 +242,20 @@ class Disciple_Tools_Location_Post_Type {
      * @return void
      */
     public function register_custom_column_headings ( $defaults ) {
-        //		$new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
-        $new_columns = []; // TODO: restore above column once we know what columns we need to show.
+        
+        /* Determine if Zume/24:14/4K Geographic zones are installed.
+         * If so, then render columns for those grid systems. */
+        if(get_option( '_dt_usa_installed_state' ) || get_option( '_dt_installed_country' )) {
+            $new_columns =
+                [
+                    'WorldID' => __( 'WorldID', 'disciple_tools' ),
+                    'Adm1_Name' => __( 'A1 Name', 'disciple_tools' ),
+                    'Adm2_Name' => __( 'A2 Name', 'disciple_tools' ),
+                    'Map' => __( 'Map', 'disciple_tools' ),
+                ];
+        } else {
+            $new_columns = [];
+        }
 
         $last_item = [];
 

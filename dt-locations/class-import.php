@@ -437,4 +437,102 @@ class Disciple_Tools_Locations_Import {
         }
     }
     
+    public static function insert_geojson ( $geojson ) {
+        global $wpdb;
+        
+        if(empty( $geojson )) {
+            return false;
+        }
+        
+        $record_count = count( $geojson['features'] );
+        $i = 0;
+        
+        foreach($geojson['features'] as $place) {
+            $properties = $place['properties'];
+            $properties['coordinates'] = json_encode( $place['geometry']['coordinates'] ); // combine coordinates into a the single properties array
+            $properties['coordinates_type'] = $place['geometry']['type'];
+            
+            $WorldID = $properties['WorldID'];
+            
+            // duplicate check
+            $duplicate_post_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '$WorldID'" );
+            
+            // insert post record
+            $wpdb->replace(
+                $wpdb->posts,
+                array(
+                    'ID' => $duplicate_post_id,
+                    'post_name' => strtolower( $properties['WorldID'] ),
+                    'post_author' => get_current_user_id(),
+                    'post_date' => current_time( 'mysql' ),
+                    'post_date_gmt' => current_time( 'mysql' ),
+                    'post_content' => $properties['Zone_Name'] . ' (' . $properties['WorldID'] . ')',
+                    'post_title' => $properties['Zone_Name'],
+                    'post_status' => 'publish',
+                    'ping_status' => 'closed',
+                    'post_modified' => current_time( 'mysql' ),
+                    'post_modified_gmt' => current_time( 'mysql' ),
+                    'post_parent' => 0,
+                    'guid' => home_url().'/locations/'.strtolower( $properties['WorldID'] ),
+                    'post_type' => 'locations',
+                ),
+                array(
+                    '%d',
+                    '%s',
+                    '%d',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%d',
+                    '%s',
+                    '%s',
+                )
+            );
+            $new_post_id = $wpdb->insert_id;
+            
+            // insert metadata
+            if(!empty( $new_post_id )) {
+                
+                // delete previous meta records
+                if(!empty( $duplicate_post_id )) {
+                    $wpdb->delete( $wpdb->postmeta, [ 'post_id' => $duplicate_post_id ], $where_format = null );
+                }
+                
+                foreach($properties as $key => $value) {
+                    $wpdb->insert(
+                        $wpdb->postmeta,
+                        array(
+                            'post_id' => $new_post_id,
+                            'meta_key' => $key,
+                            'meta_value' => $value,
+                        ),
+                        array(
+                            '%d',
+                            '%s',
+                            '%s',
+                        )
+                    );
+                }
+            }
+            $i++;
+        }
+        
+        
+        return ($record_count == $i) ? true : false;
+    }
+    
+    public static function delete_location_data ( $cnty_id ) {
+        global $wpdb;
+        
+        $results1 = $wpdb->query( "DELETE from $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '$cnty_id%';" );
+        $results2 = $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE NOT EXISTS (SELECT NULL FROM $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id);" );
+        
+        return ($results1 || $results2) ? true : false;
+    }
+    
 }

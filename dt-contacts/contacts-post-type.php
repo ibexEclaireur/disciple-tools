@@ -251,8 +251,8 @@ class Disciple_Tools_Contact_Post_Type {
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_path', __( 'Milestones', 'disciple_tools' ), [ $this, 'load_milestone_meta_box' ], $this->post_type, 'side', 'low' );
         add_meta_box( $this->post_type . '_misc', __( 'Misc', 'disciple_tools' ), [ $this, 'load_misc_meta_box' ], $this->post_type, 'side', 'low' );
+        add_meta_box( $this->post_type . '_sharing', __( 'Sharing', 'disciple_tools' ), [ $this, 'load_shared_meta_box' ], $this->post_type, 'normal' );
         add_meta_box( $this->post_type . '_status', __( 'Status', 'disciple_tools' ), [ $this, 'load_status_info_meta_box' ], $this->post_type, 'side' );
-        add_meta_box( $this->post_type . '_shared', __( 'Shared', 'disciple_tools' ), [ $this, 'load_shared_meta_box' ], $this->post_type, 'normal' );
         do_action( "dt_contact_meta_boxes_setup", $this->post_type );
     } // End meta_box_setup()
 
@@ -468,6 +468,18 @@ class Disciple_Tools_Contact_Post_Type {
      * Load activity metabox
      */
     public function load_shared_meta_box() {
+//        dt_notification_insert(
+//            [
+//                'user_id'               => '2',
+//                'item_id'               => '57',
+//                'secondary_item_id'     => '56',
+//                'notification_name'     => 'mention',
+//                'notification_action'   => 'created',
+//                'notification_note'     => 'Sample of a created note.',
+//                'date_notified'         => current_time('mysql'),
+//                'is_new'                => 1,
+//            ]
+//        );
         dt_share_contact_metabox()->content_display( get_the_ID() );
     }
 

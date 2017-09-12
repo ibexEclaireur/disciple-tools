@@ -127,7 +127,7 @@ class Disciple_Tools_Locations_Endpoints {
      * @param  WP_REST_Request $request
      * @access public
      * @since  0.1
-     * @return string|WP_Error The contact on success
+     * @return string|WP_Error|array The contact on success
      */
     public function get_tract_map ( WP_REST_Request $request ){
         $params = $request->get_params();
@@ -149,7 +149,7 @@ class Disciple_Tools_Locations_Endpoints {
      * @param  WP_REST_Request $request
      * @access public
      * @since  0.1
-     * @return string|WP_Error The contact on success
+     * @return string|WP_Error|array The contact on success
      */
     public function get_map_by_geoid ( WP_REST_Request $request ){
         $params = $request->get_params();
@@ -168,7 +168,7 @@ class Disciple_Tools_Locations_Endpoints {
 
     public function get_locations ( WP_REST_Request $request ){
         $params = $request->get_params();
-//        @todo check permissions
+//        @TODO check permissions
         $locations = Disciple_Tools_Locations::get_locations();
         return $locations;
     }

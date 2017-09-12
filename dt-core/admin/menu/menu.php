@@ -61,6 +61,7 @@ final class Disciple_Tools_Config_Menu {
         add_submenu_page( 'dt_options', 'Facebook', 'Facebook', 'manage_dt', 'dt_facebook', [ $this, 'build_facebook_page' ] );
         add_submenu_page( 'dt_options', 'Reports Log', 'Reports Log', 'manage_dt', 'dt_reports_log', [ $this, 'build_reports_log_page' ] );
         add_submenu_page( 'dt_options', 'Activity', 'Activity', 'manage_dt', 'dt_activity', [ $this, 'build_activity_page' ] );
+        add_submenu_page( 'dt_options', 'Notifications', 'Notifications', 'manage_dt', 'dt_notifications', [ $this, 'build_notifications_page' ] );
         
     }
     
@@ -74,6 +75,10 @@ final class Disciple_Tools_Config_Menu {
     
     public function build_facebook_page() {
         Disciple_Tools_Facebook_Integration::instance()->facebook_settings_page();
+    }
+    
+    public function build_notifications_page() {
+        dt_notifications_table();
     }
     
     /**

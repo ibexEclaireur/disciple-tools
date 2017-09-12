@@ -155,8 +155,30 @@ class Disciple_Tools {
      * @since  0.1
      */
     private $roles;
+    /**
+     * Reports cron job process.
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
+     */
     public $report_cron;
+    /**
+     * SVG code for DT logo.
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
+     */
     public $dt_svg;
+    /**
+     * Notification object
+     *
+     * @var    string
+     * @access public
+     * @since  0.1
+     */
+    public $notifications;
 
     /**
      * The admin object.
@@ -227,16 +249,20 @@ class Disciple_Tools {
         $this->version          = '0.1';
         $this->plugin_url       = plugin_dir_url( __FILE__ );
         $this->plugin_path      = plugin_dir_path( __FILE__ );
-        $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/img/';
-        $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/js/';
-        $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/css/';
+        $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/admin/img/';
+        $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/admin/js/';
+        $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/admin/css/';
 
-        $wpdb->activity = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
-        $wpdb->reports = $wpdb->prefix . 'dt_reports';
-        $wpdb->reportmeta = $wpdb->prefix . 'dt_reportmeta';
+        $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
+        $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';
+        $wpdb->dt_reportmeta = $wpdb->prefix . 'dt_reportmeta';
         $wpdb->dt_share = $wpdb->prefix . 'dt_share';
+        $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
         /* End prep variables */
 
+        $wpdb->activity = $wpdb->prefix . 'dt_activity_log'; // TODO refactor everything using this variable over to $wpdb->dt_activity_log. Deprecated
+        $wpdb->reports = $wpdb->prefix . 'dt_reports'; // TODO refactor everything using this variable over to $wpdb->dt_reports. Deprecated
+        $wpdb->reportmeta = $wpdb->prefix . 'dt_reportmeta';// TODO refactor everything using this variable over to $wpdb->dt_reportmeta. Deprecated
 
         /**
          * Admin panel
@@ -298,7 +324,8 @@ class Disciple_Tools {
             // Progress
 
 
-            // Messaging
+            // Notifications
+            require_once( 'dt-core/admin/tables/notifications-table.php' );
 
 
             // Logging
@@ -374,13 +401,13 @@ class Disciple_Tools {
         require_once( 'dt-locations/locations-post-type.php' );
         $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
         require_once( 'dt-locations/class-map.php' ); // Helper
-        require_once( 'dt-locations/locations-template.php' );
         require_once( 'dt-locations/class-census-geolocation-api.php' );// APIs
         require_once( 'dt-locations/class-google-geolocation-api.php' );
         require_once( 'dt-locations/class-coordinates-db.php' );
-        require_once( 'dt-locations/locations-endpoints.php' ); // builds rest endpoints
         require_once( 'dt-locations/locations.php' ); // serves the locations rest endpoints
+        require_once( 'dt-locations/locations-endpoints.php' ); // builds rest endpoints
         $this->location_api = Disciple_Tools_Locations_Endpoints::instance();
+        require_once( 'dt-locations/locations-template.php' );
 
 
         /**
@@ -443,6 +470,17 @@ class Disciple_Tools {
         require_once( 'dt-users/users-template.php' );
         require_once( 'dt-users/users-endpoints.php' );
         new Disciple_Tools_Users_Endpoints();
+    
+        /**
+         * dt-notifications
+         */
+        require_once( 'dt-notifications/notifications-hooks.php' );
+        $this->notification_hooks = Disciple_Tools_Notification_Hooks::instance();
+        require_once( 'dt-notifications/notifications-email-api.php' );
+        require_once( 'dt-notifications/notifications-template.php' );
+        require_once( 'dt-notifications/notifications.php' );
+        $this->notifications = Disciple_Tools_Notifications::instance();
+        require_once( 'dt-notifications/notifications-endpoints.php' );
 
 
         /**
@@ -450,13 +488,13 @@ class Disciple_Tools {
          */
         require_once( 'dt-core/config-p2p.php' );// Creates the post to post relationship between the post type tables.
         require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin
-        require_once( 'dt-core/metaboxes/box-four-fields.php' );
-        require_once( 'dt-core/metaboxes/box-church-fields.php' );
-        require_once( 'dt-core/metaboxes/box-map.php' );
-        require_once( 'dt-core/metaboxes/box-activity.php' );
-        require_once( 'dt-core/metaboxes/box-address.php' );
-        require_once( 'dt-core/metaboxes/box-availability.php' );
-        require_once( 'dt-core/metaboxes/box-share-contact.php' );
+        require_once( 'dt-core/admin/metaboxes/box-four-fields.php' );
+        require_once( 'dt-core/admin/metaboxes/box-church-fields.php' );
+        require_once( 'dt-core/admin/metaboxes/box-map.php' );
+        require_once( 'dt-core/admin/metaboxes/box-activity.php' );
+        require_once( 'dt-core/admin/metaboxes/box-address.php' );
+        require_once( 'dt-core/admin/metaboxes/box-availability.php' );
+        require_once( 'dt-core/admin/metaboxes/box-share-contact.php' );
 
 
         /**
@@ -491,8 +529,11 @@ class Disciple_Tools {
          */
         if(is_multisite()) {
             /**
- * Disciple Tools is intended to be multisite comapatible. Use the section below for if needed for compatibility files. Disciple Tools Multisite plugin is intended to expand features for multisite installations.  @see https://github.com/ChasmSolutions/disciple-tools-multisite
-*/
+             * Disciple Tools is intended to be multisite compatible. Use the section below for if needed for compatibility files.
+             * Disciple Tools Multisite plugin is intended to expand features for multisite installations.
+             *
+             * @see https://github.com/ChasmSolutions/disciple-tools-multisite
+            */
         }
 
         // Language

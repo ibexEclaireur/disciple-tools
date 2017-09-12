@@ -203,7 +203,7 @@ class Disciple_Tools_Reports_Cron {
 
     public function build_all_analytics_reports () {
         // Calculate last day reported
-        //@todo split by subsource in case one does not update
+        //@TODO split by subsource in case one does not update
         $last_report = Disciple_Tools_Reports_API::get_last_record_of_source( 'Analytics' );
 
         if ($last_report && isset( $last_report->report_date )){
