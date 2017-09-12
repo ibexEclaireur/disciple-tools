@@ -464,9 +464,9 @@ class Disciple_Tools_Roles {
                 /* Add custom caps for people groups */
                 'read_peoplegroup' => true,
                 'edit_peoplegroup' => true,
-//                'delete_peoplegroup' => true,
-//                'delete_others_peoplegroup' => true,
-//                'delete_peoplegroups' => true,
+            //                'delete_peoplegroup' => true,
+            //                'delete_others_peoplegroup' => true,
+            //                'delete_peoplegroups' => true,
                 'edit_peoplegroups' => true,
                 'edit_others_peoplegroup' => true,
                 'publish_peoplegroup' => true,

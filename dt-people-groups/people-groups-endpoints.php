@@ -13,9 +13,9 @@ class Disciple_Tools_People_Groups_Endpoints {
     
     /**
      * Disciple_Tools_People_Groups_Endpoints The single instance of Disciple_Tools_People_Groups_Endpoints.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since     0.1
      */
     private static $_instance = null;
     
@@ -29,8 +29,9 @@ class Disciple_Tools_People_Groups_Endpoints {
      * @return Disciple_Tools_People_Groups_Endpoints instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
     
