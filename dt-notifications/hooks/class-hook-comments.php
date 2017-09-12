@@ -84,7 +84,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * @return bool
      */
     public function check_for_mention( $comment_content ) {
-        return preg_match('(?<= |^)@([^@ ]+)', $comment_content);
+        return preg_match( '(?<= |^)@([^@ ]+)', $comment_content );
     }
     
     /**
