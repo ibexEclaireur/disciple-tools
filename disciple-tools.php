@@ -375,7 +375,7 @@ class Disciple_Tools {
         /**
          * dt-posts
          */
-        require_once( 'dt-posts/posts.php' );
+        require_once( 'dt-core/posts.php' );
 
         /**
          * dt-contacts

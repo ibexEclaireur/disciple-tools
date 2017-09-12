@@ -75,7 +75,7 @@ class Disciple_Tools_Posts {
                     ARRAY_A
                 );
                 foreach ($shares as $share) {
-                    if ( $share->ID === $post_id ) {
+                    if ( $share->ID === $user->ID ) {
                         return true;
                     }
                 }
@@ -105,7 +105,7 @@ class Disciple_Tools_Posts {
                     ARRAY_A
                 );
                 foreach ($shares as $share) {
-                    if ( $share->ID === $post_id ) {
+                    if ( $share->ID === $user->ID ) {
                         return true;
                     }
                 }
