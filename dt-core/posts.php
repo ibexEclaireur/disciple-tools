@@ -113,6 +113,24 @@ class Disciple_Tools_Posts {
         }
         return false;
     }
+
+
+    public static function get_posts_shared_with_user( string $post_type, int $user_id ){
+        global $wpdb;
+        $shares = $wpdb->get_results(
+            "SELECT * FROM $wpdb->dt_share WHERE user_id = '$user_id'",
+            ARRAY_A
+        );
+        $list = [];
+        foreach($shares as $share){
+//          get the shares with a specific post_typo @todo add to shares table
+            $post = get_post( $share[ "user_id" ] );
+            if (isset( $post->post_type ) && $post->post_type === $post_type){
+                $list[] = $post;
+            }
+        }
+        return $list;
+    }
 }
 
 

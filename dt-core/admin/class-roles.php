@@ -50,15 +50,11 @@ $template = [
     'delete_any_contact' => true,  //delete any contacts
 
     /* Add custom caps for groups */
-    'edit_group' => true,
-    'read_group' => true,
-    'delete_group' => true,
-    'delete_others_groups' => true,
-    'delete_groups' => true,
-    'edit_groups' => true,
-    'edit_others_groups' => true,
-    'publish_groups' => true,
-    'read_private_groups' => true,
+    'create_groups' => true,
+    'view_any_groups' => true,    //view any groups
+    'assign_any_groups' => true,  //assign groups to others
+    'update_any_groups' => true,  //update any groups
+    'delete_any_groups' => true,  //delete any groups
     /* Add custom caps for prayer updates */
     'read_prayer' => true,
     'edit_prayer' => true,
@@ -321,7 +317,7 @@ class Disciple_Tools_Roles {
 
                 /* Manage DT Options */
                 'manage_dt' => true,
-                
+
                 /* Add custom caps for contacts */
                 'access_contacts' => true,
                 'create_contacts' => true,  //create a new contact
