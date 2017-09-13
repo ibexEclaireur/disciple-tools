@@ -43,13 +43,13 @@ $template = [
     /* Add custom caps for contacts */
     'create_contacts' => true,  //create a new contact
     'update_shared_contacts' => true,
-
     'view_any_contact' => true,    //view any contacts
     'assign_any_contact' => true,  //assign contacts to others
     'update_any_contact' => true,  //update any contacts
     'delete_any_contact' => true,  //delete any contacts
 
     /* Add custom caps for groups */
+    'access_groups' => true,
     'create_groups' => true,
     'view_any_groups' => true,    //view any groups
     'assign_any_groups' => true,  //assign groups to others
@@ -322,11 +322,18 @@ class Disciple_Tools_Roles {
                 'access_contacts' => true,
                 'create_contacts' => true,  //create a new contact
                 'update_shared_contacts' => true,
-
                 'view_any_contact' => true,    //view any contacts
                 'assign_any_contact' => true,  //assign contacts to others
                 'update_any_contact' => true,  //update any contacts
                 'delete_any_contact' => true,  //delete any contacts
+
+                /* Add custom caps for groups */
+                'access_groups' => true,
+                'create_groups' => true,
+                'view_any_groups' => true,    //view any groups
+                'assign_any_groups' => true,  //assign groups to others
+                'update_any_groups' => true,  //update any groups
+                'delete_any_groups' => true,  //delete any groups
                 /* Add custom caps for resources */
                 'read_resource' => true,
                 'edit_resource' => true,
@@ -593,6 +600,8 @@ class Disciple_Tools_Roles {
             [
                 'access_contacts' => true,
                 'update_shared_contacts' => true,
+
+                'access_groups' => true,
             ]
         );
 
@@ -652,15 +661,14 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'update_any_contact' );
             $role->add_cap( 'delete_any_contact' );
             /* Add Groups permissions */
-            $role->add_cap( 'edit_group' );
-            $role->add_cap( 'read_group' );
-            $role->add_cap( 'delete_group' );
-            $role->add_cap( 'delete_others_groups' );
-            $role->add_cap( 'delete_groups' );
-            $role->add_cap( 'edit_groups' );
-            $role->add_cap( 'edit_others_groups' );
-            $role->add_cap( 'publish_groups' );
-            $role->add_cap( 'read_private_groups' );
+            $role->add_cap( 'access_groups' );
+            $role->add_cap( 'create_groups' );
+            $role->add_cap( 'update_groups' );
+            $role->add_cap( 'update_shared_groups' );
+            $role->add_cap( 'view_any_groups' );
+            $role->add_cap( 'assign_any_groups' );
+            $role->add_cap( 'update_any_groups' );
+            $role->add_cap( 'delete_any_groups' );
             /* Add Prayer permissions*/
             $role->add_cap( 'edit_prayer' );
             $role->add_cap( 'read_prayer' );
