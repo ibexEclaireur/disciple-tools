@@ -373,6 +373,11 @@ class Disciple_Tools {
         require_once( 'dt-core/class-taxonomy.php' );
 
         /**
+         * dt-posts
+         */
+        require_once( 'dt-core/posts.php' );
+
+        /**
          * dt-contacts
          */
         require_once( 'dt-contacts/contacts-post-type.php' );
@@ -417,7 +422,7 @@ class Disciple_Tools {
         require_once( 'dt-people-groups/people-groups.php' );
         require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
         $this->peoplegroups_api = Disciple_Tools_People_Groups_Endpoints::instance();
-        
+
 
         /**
          * dt-assets
@@ -470,7 +475,7 @@ class Disciple_Tools {
         require_once( 'dt-users/users-template.php' );
         require_once( 'dt-users/users-endpoints.php' );
         new Disciple_Tools_Users_Endpoints();
-    
+
         /**
          * dt-notifications
          */
