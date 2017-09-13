@@ -215,12 +215,12 @@ class Disciple_Tools_Notifications {
         
         if($result) {
             return [
-                'status' => 'OK',
-                'notifications' => $result,
+                'status' => true,
+                'result' => $result,
             ];
         } else {
             return [
-              'status' => 'Fail',
+              'status' => false,
               'message' => 'Fails to query user notifications. Query returned false.'
             ];
         }

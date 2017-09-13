@@ -74,8 +74,8 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
         
         //Build row actions
         $actions = array(
-            //            'edit'      => sprintf('<a href="?page=%s&action=%s&notification=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
-            //            'delete'    => sprintf('<a href="?page=%s&action=%s&notification=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
+                        'edit'      => sprintf( '<a href="?page=%s&action=%s&notification=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID'] ),
+                        'delete'    => sprintf( '<a href="?page=%s&action=%s&notification=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID'] ),
         );
         
         //Return the title contents
@@ -125,7 +125,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
     
     function get_bulk_actions() {
         $actions = array(
-            'sync'    => 'Sync'
+            'viewed'    => 'Viewed'
         );
         return $actions;
     }
@@ -134,12 +134,9 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
     function process_bulk_action() {
         
         //Detect when a bulk action is being triggered...
-        if( 'sync'===$this->current_action() ) {
-            foreach ( $_GET['notification'] as $notification ) {
-                $notification = ''; // TODO replace with real processing logic
-            }
+        if( 'viewed'===$this->current_action() ) {
+            Disciple_Tools_Notifications::mark_notification_viewed( $_GET['notification'] );
         }
-        
     }
     
     
@@ -165,9 +162,6 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
         if( empty( $search ) ) {
             
             $where = '';
-//            if( !empty( $_GET['cnty-filter'] ) ) {
-//                $where = " WHERE CntyID='" . $_GET['cnty-filter'] . "'";
-//            }
             
             $query = "SELECT *
                     FROM $wpdb->dt_notifications
@@ -182,9 +176,6 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
             $search = trim( $search );
             
             $where = '';
-//            if( !empty( $_GET['cnty-filter'] ) ) {
-//                $where = ' AND CntyID=' . $_GET['cnty-filter'];
-//            }
             
             /* Notice how you can search multiple columns for your search term easily, and return one data set */
             $data = $wpdb->get_results(
