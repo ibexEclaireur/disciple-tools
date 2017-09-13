@@ -499,6 +499,8 @@ class Disciple_Tools_Contacts
     }
 
     public static function get_activity( $contact_id ){
+//        @todo permissions
+
         global $wpdb;
 
         $q = $wpdb->prepare(

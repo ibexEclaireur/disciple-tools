@@ -282,4 +282,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
         }
         return false;
     }
+
+    public static function add_comment( int $group_id, string $comment ){
+        return self::add_post_comment( 'groups', $group_id, $comment );
+    }
+
+    public static function get_comments ( int $group_id ){
+        return self::get_post_comments( 'groups', $group_id );
+    }
+
+    public static function get_activity( int $contact_id ){
+        return self::get_post_activity( 'groups', $contact_id );
+    }
 }

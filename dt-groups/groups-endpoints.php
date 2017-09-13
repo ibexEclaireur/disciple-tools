@@ -74,6 +74,24 @@ class Disciple_Tools_Groups_Endpoints {
                 "callback" => [$this, 'remove_item_from_field'],
             ]
         );
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/comment', [
+                "methods" => "POST",
+                "callback" => [$this, 'post_comment']
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/comments', [
+                "methods" => "GET",
+                "callback" => [$this, 'get_comments']
+            ]
+        );
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/activity', [
+                "methods" => "GET",
+                "callback" => [$this, 'get_activity']
+            ]
+        );
     }
 
     public function get_viewable_groups( WP_REST_Request $request ) {
@@ -192,6 +210,40 @@ class Disciple_Tools_Groups_Endpoints {
             }
         } else {
             return new WP_Error( "add_group_details", "Missing a valid group id", [ 'status' => 400 ] );
+        }
+    }
+
+    public function post_comment( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Groups::add_comment( $params['id'], $body["comment"] );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                $comment = get_comment( $result );
+                return new WP_REST_Response( ["comment_id"=>$result, "comment"=>$comment] );
+            }
+        } else {
+            return new WP_Error( "post_comment", "Missing a valid group id", ['status' => 400] );
+        }
+    }
+
+    public function get_comments( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            return Disciple_Tools_Groups::get_comments( $params['id'] );
+        } else {
+            return new WP_Error( "get_comments", "Missing a valid group id", ['status' => 400] );
+        }
+    }
+    public function get_activity( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            return Disciple_Tools_Groups::get_activity( $params['id'] );
+        } else {
+            return new WP_Error( "get_activity", "Missing a valid group id", ['status' => 400] );
         }
     }
 
