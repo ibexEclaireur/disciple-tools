@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  */
 
 
-class Disciple_Tools_Groups {
+class Disciple_Tools_Groups extends Disciple_Tools_Posts {
 
     public static $address_types;
 
@@ -28,65 +28,48 @@ class Disciple_Tools_Groups {
                 self::$address_types = dt_address_metabox()->get_address_type_list( "groups" );
             }
         );
-
+        parent::__construct();
     }
 
-    public static function get_groups_compact ( $search ){
 
-//        @todo check permissions
+
+    public static function get_groups_compact ( string $search ){
+        if (!self::can_access( 'groups' )){
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
+        }
+        $current_user = wp_get_current_user();
+        $list = [];
         $query_args = array(
             'post_type' => 'groups',
             'orderby' => 'ID',
             's' => $search
         );
+        if (! self::can_view_all( 'groups' )) {
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-" . $current_user->ID;
+            $shared_groups = self::get_posts_shared_with_user( 'groups', $current_user->ID );
+            foreach( $shared_groups as $post ){
+                $list[] = ["ID" => $post->ID, "name" => $post->post_title];
+            }
+        }
         $query = new WP_Query( $query_args );
-        $list = [];
         foreach ($query->posts as $post){
             $list[] = ["ID" => $post->ID, "name" => $post->post_title];
         }
         return $list;
     }
 
-    public static function can_view_group( $group_id ){
-        if ( current_user_can( 'view_any_group' )){
-            return true;
-        } else {
-            return true;
-//            @TODO check is the user can see this group
-//            $user = wp_get_current_user();
-//            $assigned_to = get_post_meta( $group_id, "assigned_to", true );
-//            if ( $assigned_to === "user-".$user->ID ){
-//                return true;
-//            }
-//          @TODO check if the user is following this group
-        }
-        return false;
-    }
-
-    public static function can_update_group( $group_id ){
-//        @todo check if the user can update the group
-        return true;
-    }
-
-    public static function can_access_groups() {
-        return current_user_can( "edit_group" ) && current_user_can( "read_group" ) && current_user_can( "edit_groups" );
-    }
-
-    public static function can_view_all_groups() {
-        return current_user_can( "read_private_groups" );
-    }
 
     public static function get_viewable_groups( bool $check_permissions = true ) {
-        if ($check_permissions && ! self::can_access_groups()) {
+        if ($check_permissions && ! self::can_access( 'groups' )) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
         }
         $current_user = wp_get_current_user();
 
         $query_args = array(
             'post_type' => 'groups',
-            'nopaging' => true,
         );
-        if (! self::can_view_all_groups()) {
+        if (! self::can_view_all( 'groups' )) {
             // TODO filter just by own groups
             return new WP_Error( __FUNCTION__, __( "Unimplemented" ) );
         }
@@ -94,7 +77,7 @@ class Disciple_Tools_Groups {
     }
 
     public static function get_group( int $group_id, bool $check_permissions = true ){
-        if ($check_permissions && ! self::can_view_group( $group_id )) {
+        if ($check_permissions && ! self::can_view( 'groups', $group_id )) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), ['status' => 403] );
         }
 
@@ -153,7 +136,14 @@ class Disciple_Tools_Groups {
                             $id = $meta_array[1];
                             if ( $type == 'user' ) {
                                 $user = get_user_by( 'id', $id );
-                                $fields[$key] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0] ];
+                                if ($user){
+                                    $fields[$key] = [
+                                        "id" => $id,
+                                        "type" => $type,
+                                        "display" => $user->display_name,
+                                        "assigned-to" => $value[0]
+                                    ];
+                                }
                             }
                         }
                     }
@@ -180,7 +170,7 @@ class Disciple_Tools_Groups {
      * @since  0.1
      * @return array
      */
-    private static function check_for_invalid_fields( $fields, int $post_id = null ){
+    private static function check_for_invalid_fields( array $fields, int $post_id = null ){
         $bad_fields = [];
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
         $group_model_fields['title'] = "";
@@ -204,7 +194,7 @@ class Disciple_Tools_Groups {
      */
     public static function update_group( int $group_id, array $fields, bool $check_permissions = true ){
 
-        if ($check_permissions && ! self::can_update_group( $group_id )) {
+        if ($check_permissions && ! self::can_update( 'groups', $group_id )) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
 
@@ -231,42 +221,36 @@ class Disciple_Tools_Groups {
         return self::get_group( $group_id, true );
     }
 
-    public static function add_location_to_group( $group_id, $location_id ){
+    public static function add_location_to_group( int $group_id, int $location_id ){
         return p2p_type( 'groups_to_locations' )->connect(
             $location_id, $group_id,
             array('date' => current_time( 'mysql' ) )
         );
     }
-    public static function add_member_to_group( $group_id, $member_id ){
+    public static function add_member_to_group( int $group_id, int $member_id ){
         return p2p_type( 'contacts_to_groups' )->connect(
             $member_id, $group_id,
             array('date' => current_time( 'mysql' ) )
         );
     }
-    public static function remove_location_from_group( $group_id, $location_id ){
+    public static function remove_location_from_group( int $group_id, int $location_id ){
         return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
     }
-    public static function remove_member_from_group( $group_id, $member_id ){
+    public static function remove_member_from_group( int $group_id, int $member_id ){
         return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
     }
 
     public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions ){
-        if ($check_permissions && ! self::can_update_group( $group_id )) {
+        if ($check_permissions && ! self::can_update( 'groups', $group_id )) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
         }
-        if (strpos( $key, "new-" ) === 0 ){
-            $type = explode( '-', $key )[1];
-
-            if ($key === "new-address") {
+        if ($key === "new-address") {
                 $new_meta_key = dt_address_metabox()->create_channel_metakey( "address" );
-            } else if (isset( self::$channel_list[$type] )){
-                //check if this is a new field and is in the channel list
-                $new_meta_key = Disciple_Tools_group_Post_Type::instance()->create_channel_metakey( $type, "group" );
-            }
             update_post_meta( $group_id, $new_meta_key, $value );
             $details = ["verified"=>false];
             update_post_meta( $group_id, $new_meta_key . "_details", $details );
             return $new_meta_key;
+
         }
         $connect = null;
         if ($key === "locations"){
@@ -288,8 +272,8 @@ class Disciple_Tools_Groups {
 
 
     public static function remove_item_from_field( int $group_id, string $key, string $value, bool $check_permissions ){
-        if ($check_permissions && ! self::can_update_group( $group_id )) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
+        if ($check_permissions && ! self::can_update( 'groups', $group_id )) {
+            return new WP_Error( __FUNCTION__, __( "You do not have have permission for this" ), ['status' => 403] );
         }
         if ( $key === "locations" ){
             return self::remove_location_from_group( $group_id, $value );

@@ -124,7 +124,6 @@ class Disciple_Tools_Groups_Endpoints {
 
     public function get_groups_compact( WP_REST_Request $request ){
         $params = $request->get_params();
-//        @TODO check permissions
         $search = "";
         if (isset( $params['s'] )){
             $search = $params['s'];
@@ -138,11 +137,7 @@ class Disciple_Tools_Groups_Endpoints {
         $body = $request->get_json_params();
         if (isset( $params['id'] )){
             $result = Disciple_Tools_Groups::update_group( $params['id'], $body, true );
-            if ( is_wp_error( $result ) ){
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
+            return $result;
         } else {
             return new WP_Error( "update_contact", "Missing a valid contact id", ['status' => 400] );
         }
@@ -173,11 +168,7 @@ class Disciple_Tools_Groups_Endpoints {
             reset( $body );
             $field = key( $body );
             $result = Disciple_Tools_groups::add_item_to_field( $params['id'], $field, $body[$field], true );
-            if ( is_wp_error( $result ) ){
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
+            return $result;
         } else {
             return new WP_Error( "add_group_details", "Missing a valid group id", ['status' => 400] );
         }
