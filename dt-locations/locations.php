@@ -143,4 +143,6 @@ class Disciple_Tools_Locations {
         }
         return $list;
     }
+    
+    
 }
