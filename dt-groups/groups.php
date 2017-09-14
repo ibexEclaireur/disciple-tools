@@ -65,15 +65,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
         }
         $current_user = wp_get_current_user();
-
+        $groups = [];
         $query_args = array(
             'post_type' => 'groups',
         );
         if (! self::can_view_all( 'groups' )) {
-            // TODO filter just by own groups
-            return new WP_Error( __FUNCTION__, __( "Unimplemented" ) );
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-". $current_user->ID;
+            $groups = self::get_posts_shared_with_user( 'groups', $current_user->ID );
         }
-        return new WP_Query( $query_args );
+        $queried_groups = new WP_Query( $query_args );
+        if ( is_wp_error( $queried_groups )){
+            return $queried_groups;
+        }
+        return array_merge( $groups, $queried_groups->posts );
     }
 
     public static function get_group( int $group_id, bool $check_permissions = true ){

@@ -103,11 +103,11 @@ class Disciple_Tools_Groups_Endpoints {
     }
 
 
-    private function add_related_info_to_groups( WP_Query $groups ): array {
+    private function add_related_info_to_groups( array $groups ): array {
         p2p_type( 'groups_to_locations' )->each_connected( $groups, array(), 'locations' );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, array(), 'contacts' );
         $rv = array();
-        foreach ($groups->posts as $group) {
+        foreach ($groups as $group) {
             $meta_fields = get_post_custom( $group->ID );
             $group_array = $group->to_array();
             unset( $group_array['contacts'] );
