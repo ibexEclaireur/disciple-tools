@@ -70,7 +70,6 @@ class Disciple_Tools_Notifications_Endpoints {
             ]
         );
         
-        // TODO get_notifications_for_user()
     }
     
     /**
@@ -107,8 +106,8 @@ class Disciple_Tools_Notifications_Endpoints {
         $params = $request->get_params();
         if (isset( $params['user_id'] )){
             $result = Disciple_Tools_Notifications::get_notifications_for_user( $params );
-            if ($result["status"] == 'OK'){
-                return $result['notifications'];
+            if ($result["status"]){
+                return $result['result'];
             } else {
                 return new WP_Error( "get_user_notification_processing_error", $result["message"], ['status' => 400] );
             }
