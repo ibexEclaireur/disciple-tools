@@ -6,6 +6,7 @@
  * Version: 0.1
  * Author: Chasm.Solutions
  * Author URI: https://github.com/ChasmSolutions
+ * GitHub Plugin URI: https://github.com/ChasmSolutions/disciple-tools
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 4.7.2
