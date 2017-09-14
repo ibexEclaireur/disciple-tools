@@ -624,7 +624,7 @@ class Disciple_Tools_Groups_Post_Type {
             'section' => 'church_hidden'
         ];
         $fields['church_giving'] = [
-            'name' => __( 'Tithe (Sacrificial Ministry)', 'disciple_tools' ),
+            'name' => __( 'Giving', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => ['0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' )],
