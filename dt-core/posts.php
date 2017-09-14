@@ -131,6 +131,58 @@ class Disciple_Tools_Posts {
         }
         return $list;
     }
+
+
+    public static function add_post_comment( string $post_type, int $group_id, string $comment ){
+        if (! self::can_update( $post_type,  $group_id )) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
+        }
+        $user = wp_get_current_user();
+        $user_id = get_current_user_id();
+        $comment_data = [
+            'comment_post_ID' => $group_id,
+            'comment_content' => $comment,
+            'user_id' => $user_id,
+            'comment_author' => $user->display_name,
+            'comment_author_url' => $user->user_url,
+            'comment_author_email' => $user->user_email,
+            'comment_type' => 'comment'
+        ];
+
+        return wp_new_comment( $comment_data );
+    }
+
+    public static function get_post_activity( string $post_type, int $post_id ){
+        global $wpdb;
+        if (! self::can_view( $post_type, $post_id )){
+            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), ['status' => 403] );
+        }
+        $q = $wpdb->prepare(
+            'SELECT * from %1$s
+            WHERE `object_type` = "%3$s"
+            AND `object_id` = "%2$s"
+            ;',
+            $wpdb->activity,
+            $post_id,
+            $post_type
+        );
+        $activity = $wpdb->get_results( $q );
+        foreach($activity as $a){
+            if (isset( $a->user_id ) && $a->user_id > 0 ){
+                $a->name = get_user_by( "id", $a->user_id )->display_name;
+            }
+        }
+        return $activity;
+    }
+
+
+    public static function get_post_comments ( string $post_type, int $post_id ){
+        if (! self::can_view( $post_type, $post_id )) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), ['status' => 403] );
+        }
+        $comments = get_comments( ['post_id'=>$post_id] );
+        return $comments;
+    }
 }
 
 
