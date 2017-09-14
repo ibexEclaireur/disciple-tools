@@ -208,7 +208,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
         }
         $bad_fields = self::check_for_invalid_fields( $fields, $group_id );
         if (!empty( $bad_fields )){
-            return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
+            return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), ['bad_fields' => $bad_fields, 'status' => 400] );
         }
 
         if ( isset( $fields['title'] ) ){

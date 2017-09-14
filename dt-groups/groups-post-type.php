@@ -623,8 +623,8 @@ class Disciple_Tools_Groups_Post_Type {
             'default' => ['0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' )],
             'section' => 'church_hidden'
         ];
-        $fields['church_tithe'] = [
-            'name' => __( 'Tithe (Sacrificial Ministry)', 'disciple_tools' ),
+        $fields['church_giving'] = [
+            'name' => __( 'Giving', 'disciple_tools' ),
             'description' => '',
             'type' => 'key_select',
             'default' => ['0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' )],
@@ -658,6 +658,16 @@ class Disciple_Tools_Groups_Post_Type {
             'default' => ['0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' )],
             'section' => 'church_hidden'
         ];
+        $fields['church_commitment'] = [
+            'name' => __( 'Leaders', 'disciple_tools' ),
+            'description' => '',
+            'type' => 'key_select',
+            'default' => ['0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' )],
+            'section' => 'church_hidden'
+        ];
+
+
+
         $fields['start_date'] = [
             'name' => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
