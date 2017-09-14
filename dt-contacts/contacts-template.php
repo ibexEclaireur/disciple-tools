@@ -14,34 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 /**
- * Get Number of Contacts for a Location
- *
- * @return int
- */
-function dt_get_contacts_at_location( $post_id, $user_id ) {
-    return 0; //TODO (I might have some work on this in the reports section.)
-}
-
-/**
- * Updates meta_data from form response
- */
-//@TODO move to contacts class
-function dt_update_overall_status ( $post ) {
-
-    if ($post['response'] == '1') {
-
-        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = '1' );
-
-    } elseif ($post['response'] == 'decline') {
-
-        update_post_meta( $post_id = $post['post_id'], $meta_key = 'assigned_to', $meta_value = 'Dispatch' );
-        update_post_meta( $post_id = $post['post_id'], $meta_key = 'overall_status', $meta_value = '0' );
-
-    }
-
-}
-
-/**
  * Prints the name of the Group or User
  * Used in the loop to get a friendly name of the 'assigned_to' field of the contact
  *

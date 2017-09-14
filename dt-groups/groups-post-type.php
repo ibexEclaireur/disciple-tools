@@ -523,13 +523,14 @@ class Disciple_Tools_Groups_Post_Type {
             $metadata = get_post_meta( $post->ID, 'assigned_to', true );
             $meta_array = explode( '-', $metadata ); // Separate the type and id
             $type = $meta_array[0]; // Build variables
-            $id = $meta_array[1];
 
             // Build option for current value
-            if ( $type == 'user') {
+            if ( $type == 'user' && isset( $meta_array[1] )) {
+                $id = $meta_array[1];
                 $value = get_user_by( 'id', $id );
-                $html .= '<option value="user-'.$id.'" selected>'.$value->display_name.'</option>';
-
+                if ($value){
+                    $html .= '<option value="user-'.$id.'" selected>'.$value->display_name.'</option>';
+                }
                 // exclude the current id from the $results list
                 $exclude_user = "'exclude' => $id";
             }
