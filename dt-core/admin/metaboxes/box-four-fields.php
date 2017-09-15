@@ -91,7 +91,7 @@ class Disciple_Tools_Metabox_Four_Fields {
 
 
         $html .= '</td><td>';
-//        $html .=  '<img src="'. Disciple_Tools()->plugin_img . '4fields.png" >';
+//        $html .=  '<img src="'. Disciple_Tools()->plugin_img_url . '4fields.png" >';
         $html .= '</td></tr></table>';
 
         echo $html;

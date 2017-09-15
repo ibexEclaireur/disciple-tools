@@ -122,7 +122,7 @@ class Disciple_Tools_Metabox_Map {
                     }
 
                     jQuery('#select_tract').change(function () {
-                        jQuery('#spinner').prepend('<img src="<?php echo Disciple_Tools()->plugin_img; ?>spinner.svg" style="height:30px;" />');
+                        jQuery('#spinner').prepend('<img src="<?php echo Disciple_Tools()->plugin_img_url; ?>spinner.svg" style="height:30px;" />');
 
                         var tract = jQuery('#select_tract').val();
                         var restURL = '<?php echo get_rest_url( null, '/dt/v1/locations/getmapbygeoid' ); ?>';
