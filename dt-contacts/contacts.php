@@ -546,62 +546,6 @@ class Disciple_Tools_Contacts
     }
 
     /**
-     * Get Contacts assigned to a user that match a certain priority
-     *
-     * @param  int    $user_id
-     * @param  string $priority One of "update_needed", "meeting_scheduled" and "contact_unattempted"
-     * @param  bool   $check_permissions
-     * @param  array  $query_pagination_args Pass in pagination and ordering parameters if wanted.
-     * @access public
-     * @since  0.1
-     * @return WP_Query | WP_Error
-     */
-    public static function get_user_prioritized_contacts( int $user_id, string $priority, bool $check_permissions = true, array $query_pagination_args = [] ) {
-        if ($check_permissions) {
-            if (! self::can_access_contacts() ) {
-                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
-            }
-        }
-
-        $query_args = array(
-            'post_type' => 'contacts',
-            'meta_query' => array(
-                'relation' => 'AND',
-                'assigned_clause' => array(
-                    'key' => 'assigned_to',
-                    'value' => "user-$user_id",
-                ),
-                'status_clause' => array(
-                    'key' => 'overall_status',
-                    'value' => 'active',
-                ),
-            ),
-        );
-
-        if ( $priority === 'update_needed' ) {
-            $query_args['meta_query']['requires_update_clause'] = array(
-                'key' => 'requires_update',
-                'value' => 'yes',
-            );
-        } elseif ( $priority === 'meeting_scheduled' ) {
-            $query_args['meta_query']['meeting_scheduled_clause'] = array(
-                'key' => 'seeker_path',
-                'value' => 'scheduled',
-            );
-        } elseif ( $priority === 'contact_unattempted' ) {
-            $query_args['meta_query']['contact_unattempted_clause'] = array(
-                'key' => 'seeker_path',
-                'value' => ['none', null],
-                'compare' => 'IN',
-            );
-        } else {
-            return new WP_Error( "Unrecognised priority argument" );
-        }
-
-        return self::query_with_pagination( $query_args, $query_pagination_args );
-    }
-
-    /**
      * Get Contacts viewable by a user
      *
      * @param  $check_permissions
