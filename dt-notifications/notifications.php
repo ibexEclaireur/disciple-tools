@@ -231,7 +231,7 @@ class Disciple_Tools_Notifications {
             
             // user friendly timestamp
             foreach ($result as $key => $value) {
-                $result[$key]['pretty_time'] = self::pretty_timestamp($value['date_notified']);
+                $result[$key]['pretty_time'] = self::pretty_timestamp( $value['date_notified'] );
         
             }
             
@@ -251,21 +251,21 @@ class Disciple_Tools_Notifications {
     public static function pretty_timestamp( $timestamp ) {
         // 2017-09-15 13:55:00
         $current_time = current_time( 'mysql' );
-        $one_hour_ago = date('Y-m-d H:i:s',strtotime('-1 hour',strtotime($current_time)));
-        $yesterday = date('Y-m-d',strtotime('-1 day',strtotime($current_time)));
-        $seven_days_ago = date('Y-m-d',strtotime('-7 days',strtotime($current_time)));
+        $one_hour_ago = date( 'Y-m-d H:i:s',strtotime( '-1 hour',strtotime( $current_time ) ) );
+        $yesterday = date( 'Y-m-d',strtotime( '-1 day',strtotime( $current_time ) ) );
+        $seven_days_ago = date( 'Y-m-d',strtotime( '-7 days',strtotime( $current_time ) ) );
         
         if( $timestamp > $one_hour_ago ) {
-            $current = new DateTime($current_time);
-            $stamp = new DateTime($timestamp);
-            $diff = date_diff($current, $stamp);
-            $friendly_time = date("i", mktime($diff->h, $diff->i, $diff->s)) . ' minutes ago';
+            $current = new DateTime( $current_time );
+            $stamp = new DateTime( $timestamp );
+            $diff = date_diff( $current, $stamp );
+            $friendly_time = date( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
         } elseif ( $timestamp > $yesterday ) {
-            $friendly_time = date("g:i a", strtotime($timestamp));
+            $friendly_time = date( "g:i a", strtotime( $timestamp ) );
         } elseif ( $timestamp > $seven_days_ago ) {
-            $friendly_time = date("l g:i a", strtotime($timestamp));
+            $friendly_time = date( "l g:i a", strtotime( $timestamp ) );
         } else {
-            $friendly_time = date('F j, Y, g:i a', strtotime($timestamp));
+            $friendly_time = date( 'F j, Y, g:i a', strtotime( $timestamp ) );
         }
         
         return $friendly_time;
