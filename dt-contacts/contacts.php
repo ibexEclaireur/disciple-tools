@@ -936,15 +936,15 @@ class Disciple_Tools_Contacts
             dt_activity_insert(
                 [
                     'action'            => 'remove',
-                    'object_type'       => get_post_type($post_id),
+                    'object_type'       => get_post_type( $post_id ),
                     'object_subtype'    => 'share',
-                    'object_name'       => get_the_title($post_id),
+                    'object_name'       => get_the_title( $post_id ),
                     'object_id'         => $wpdb->insert_id,
                     'meta_id'           => '', // id of the comment
                     'meta_key'          => '',
                     'meta_value'        => '',
                     'meta_parent'       => '',
-                    'object_note'       => 'Sharing of ' . get_the_title($post_id). ' was removed for ' . dt_get_user_display_name($user_id),
+                    'object_note'       => 'Sharing of ' . get_the_title( $post_id ). ' was removed for ' . dt_get_user_display_name( $user_id ),
                 ]
             );
             
@@ -991,15 +991,15 @@ class Disciple_Tools_Contacts
             dt_activity_insert(
                 [
                     'action'            => 'share',
-                    'object_type'       => get_post_type($post_id),
+                    'object_type'       => get_post_type( $post_id ),
                     'object_subtype'    => 'share',
-                    'object_name'       => get_the_title($post_id),
+                    'object_name'       => get_the_title( $post_id ),
                     'object_id'         => $wpdb->insert_id,
                     'meta_id'           => '', // id of the comment
                     'meta_key'          => '',
                     'meta_value'        => '',
                     'meta_parent'       => '',
-                    'object_note'       => get_the_title($post_id). ' was shared with ' . dt_get_user_display_name($user_id),
+                    'object_note'       => get_the_title( $post_id ). ' was shared with ' . dt_get_user_display_name( $user_id ),
                 ]
             );
             
