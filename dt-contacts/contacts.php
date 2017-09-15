@@ -875,6 +875,23 @@ class Disciple_Tools_Contacts
         if($result == false) {
             return new WP_Error( 'remove_shared', __( "Record not deleted." ), ['status' => 418] );
         } else {
+    
+            // log share activity
+            dt_activity_insert(
+                [
+                    'action'            => 'remove',
+                    'object_type'       => get_post_type( $post_id ),
+                    'object_subtype'    => 'share',
+                    'object_name'       => get_the_title( $post_id ),
+                    'object_id'         => $wpdb->insert_id,
+                    'meta_id'           => '', // id of the comment
+                    'meta_key'          => '',
+                    'meta_value'        => '',
+                    'meta_parent'       => '',
+                    'object_note'       => 'Sharing of ' . get_the_title( $post_id ). ' was removed for ' . dt_get_user_display_name( $user_id ),
+                ]
+            );
+            
             return $result;
         }
     }
@@ -910,7 +927,26 @@ class Disciple_Tools_Contacts
         $duplicate_check = $wpdb->get_row( "SELECT id FROM $wpdb->dt_share WHERE post_id = '$post_id' AND user_id = '$user_id'", ARRAY_A );
 
         if (is_null( $duplicate_check )) {
+            
+            // insert share record
             $results = $wpdb->insert( $table, $data, $format );
+            
+            // log share activity
+            dt_activity_insert(
+                [
+                    'action'            => 'share',
+                    'object_type'       => get_post_type( $post_id ),
+                    'object_subtype'    => 'share',
+                    'object_name'       => get_the_title( $post_id ),
+                    'object_id'         => $wpdb->insert_id,
+                    'meta_id'           => '', // id of the comment
+                    'meta_key'          => '',
+                    'meta_value'        => '',
+                    'meta_parent'       => '',
+                    'object_note'       => get_the_title( $post_id ). ' was shared with ' . dt_get_user_display_name( $user_id ),
+                ]
+            );
+            
             return $results;
         } else {
             return new WP_Error( 'add_shared', __( "Contact already shared with user." ), ['status' => 418] );

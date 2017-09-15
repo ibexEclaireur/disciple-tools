@@ -45,7 +45,8 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 case 'wp_insert_comment' :
                     $notification_action = 'created';
                     
-                    $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
+                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/contacts/' ).$post_id.'">'
+                    .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
                     
                     $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
                     break;
