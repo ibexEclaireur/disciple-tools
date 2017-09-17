@@ -81,7 +81,7 @@ class Disciple_Tools_Notifications {
                 'SELECT `id`
                     FROM %1$s
 					WHERE `user_id` = \'%2$s\'
-						AND `item_id` = \'%3$s\'
+						AND `post_id` = \'%3$s\'
 						AND `secondary_item_id` = \'%4$s\'
 						AND `notification_name` = \'%5$s\'
 						AND `notification_action` = \'%6$s\'
@@ -91,7 +91,7 @@ class Disciple_Tools_Notifications {
 				;',
                 $wpdb->dt_notifications,
                 $args['user_id'],
-                $args['item_id'],
+                $args['post_id'],
                 $args['secondary_item_id'],
                 $args['notification_name'],
                 $args['notification_action'],
@@ -109,7 +109,7 @@ class Disciple_Tools_Notifications {
             $wpdb->dt_notifications,
             [
                 'user_id'                   => $args['user_id'],
-                'item_id'                   => $args['item_id'],
+                'post_id'                   => $args['post_id'],
                 'secondary_item_id'         => $args['secondary_item_id'],
                 'notification_name'         => $args['notification_name'],
                 'notification_action'       => $args['notification_action'],
@@ -140,7 +140,7 @@ class Disciple_Tools_Notifications {
             $args,
             [
                 'user_id'               => '',
-                'item_id'               => '',
+                'post_id'               => '',
                 'secondary_item_id'     => '',
                 'notification_name'     => 'mention',
                 'date_notified'         => '',
@@ -151,7 +151,7 @@ class Disciple_Tools_Notifications {
             $wpdb->dt_notifications,
             [
                 'user_id'               => $args['user_id'],
-                'item_id'               => $args['item_id'],
+                'post_id'               => $args['post_id'],
                 'secondary_item_id'     => $args['secondary_item_id'],
                 'notification_name'     => $args['notification_name'],
                 'date_notified'         => $args['date_notified'],

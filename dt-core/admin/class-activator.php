@@ -193,7 +193,7 @@ class Disciple_Tools_Activator {
             $sql5 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                       `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                       `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
-                      `item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+                      `post_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
                       `secondary_item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
                       `notification_name` varchar(75) NOT NULL DEFAULT '0',
                       `notification_action` varchar(75) NOT NULL DEFAULT '0',

@@ -27,13 +27,13 @@ columns and their purposes are listed below.
 | ------------          |------------                                                               |
 | `id`                  | Auto increment id field                                                   |
 | `user_id`             | User id to be notified                                                    |
-| `item_id`             | Comment id where the @mention was discovered                              |
-| `secondary_item_id`   | Contact, Group, Location, etc that the comment was logged against         |
+| `post_id`             | Contact, Group, Location, etc that the comment was logged against         |
+| `secondary_item_id`   | Comment id where the @mention was discovered                              |
 | `notification_name`   | "comment"                                                                 |
 | `notification_action` | "mention"                                                                 |
-| `notification_note`   | optional notes field                                                      |
-| `date_notified`       | date and time that this event occurred                                    |
-| `is_new`              | boolean status of whether the user has viewed the notfication or not      |
+| `notification_note`   | Description for the displayed notification                                |
+| `date_notified`       | Date and time that this event occurred                                    |
+| `is_new`              | Boolean status of whether the user has viewed the notfication or not      |
 
 
 ### Assigned To, Update Needed, Baptism Added
@@ -42,12 +42,12 @@ columns and their purposes are listed below.
 | ------------          |------------                                                               |
 | `id`                  | Auto increment id field                                                   |
 | `user_id`             | User id to be notified                                                    |
-| `item_id`             | The Activity Log key id of the event (`$wpdb->dt_activity_log`(`histid`) |
-| `secondary_item_id`   | Contact, Group, Location, etc that the comment was logged against         |
+| `post_id`             | Contact, Group, Location, etc that the comment was logged against         |
+| `secondary_item_id`   | The `meta_id` of the record                                               |
 | `notification_name`   | `field_update`, `follow_activity`                                         |
 | `notification_action` | `assigned_to`, `update_needed`, `baptism`                                 |
-| `notification_note`   | optional notes field                                                      |
-| `date_notified`       | date and time that this event occurred                                    |
-| `is_new`              | boolean status of whether the user has viewed the notfication or not      |
+| `notification_note`   | Description for the displayed notification                                |
+| `date_notified`       | Date and time that this event occurred                                    |
+| `is_new`              | Boolean status of whether the user has viewed the notfication or not      |
 
 
