@@ -34,7 +34,7 @@ function contact_page_scripts() {
         wp_enqueue_style( 'dt_admin_css' );
 
         wp_enqueue_script( 'dt_contact_scripts', Disciple_Tools()->plugin_js_url .'dt-contacts.js', ['jquery', 'jquery-ui-core'], filemtime( Disciple_Tools()->plugin_js_path . 'dt-contacts.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_url . 'dt-shared.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_path . 'dt-shared.js' ), true );
     }
 }
 
@@ -50,7 +50,7 @@ function group_page_scripts() {
         wp_enqueue_style( 'dt_admin_css' );
 
         wp_enqueue_script( 'dt_group_scripts', Disciple_Tools()->plugin_js_url .'dt-groups.js', [ 'jquery', 'jquery-ui-core' ], filemtime( Disciple_Tools()->plugin_js_path . 'dt-groups.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_url . 'dt-shared.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_path . 'dt-shared.js' ), true );
 
 
         wp_enqueue_script( 'jquery' );
@@ -73,7 +73,7 @@ function location_page_scripts() {
         wp_enqueue_style( 'dt_admin_css' );
 
         wp_enqueue_script( 'dt_locations_scripts', Disciple_Tools()->plugin_js_url .'dt-locations.js', ['jquery', 'jquery-ui-core'], filemtime( Disciple_Tools()->plugin_js_path . 'dt-locations.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_url . 'dt-shared.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_path . 'dt-shared.js' ), true );
     }
 }
 
@@ -89,7 +89,7 @@ function asset_page_scripts() {
         wp_enqueue_style( 'dt_admin_css' );
 
         wp_enqueue_script( 'dt_assets_scripts', Disciple_Tools()->plugin_js_url .'dt-assets.js', ['jquery', 'jquery-ui-core'], filemtime( Disciple_Tools()->plugin_js_path . 'dt-assets.js' ), true );
-        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_url . 'dt-shared.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_path . 'dt-shared.js' ), true );
     }
 }
 
