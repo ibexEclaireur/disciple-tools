@@ -58,7 +58,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                         $notification_name
                     );
                     
-                    $notification_note = 'You have been assigned <a href="'.home_url('/') . get_post_type($object_id) .'/' .$object_id. '">' . get_the_title($object_id) . '</a>';
+                    $notification_note = 'You have been assigned <a href="'.home_url( '/' ) . get_post_type( $object_id ) .'/' .$object_id. '">' . get_the_title( $object_id ) . '</a>';
                     
                     // build elements and submit notification
                     $this->add_notification(
@@ -68,7 +68,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                         $notification_name,
                         $notification_action = 'alert',
                         $notification_note,
-                        $date_notified = current_time('mysql')
+                        $date_notified = current_time( 'mysql' )
                     );
                     
                 } else { // if team
