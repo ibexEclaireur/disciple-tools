@@ -42,9 +42,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             // call appropriate action
             switch ( current_filter() ) {
                 case 'wp_insert_comment' :
-                    $notification_action = 'created';
+                    $notification_action = 'mentioned';
                     
-                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/contacts/' ).$post_id.'">'
+                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type($post_id) . '/' .$post_id.'">'
                     .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
     
                     $this->add_mention_notification(
@@ -60,7 +60,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 case 'edit_comment' :
                     $notification_action = 'updated';
     
-                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/contacts/' ).$post_id.'">'
+                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type($post_id) . '/' .$post_id.'">'
                                          .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
     
                     $this->add_mention_notification(
@@ -76,7 +76,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 case 'untrash_comment' :
                     $notification_action = 'untrashed';
     
-                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/contacts/' ).$post_id.'">'
+                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type($post_id) . '/' .$post_id.'">'
                                          .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
         
                     $this->add_mention_notification(

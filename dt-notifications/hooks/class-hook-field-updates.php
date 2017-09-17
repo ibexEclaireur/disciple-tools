@@ -3,8 +3,6 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Notifications_Hook_Base {
     
-    // TODO configure this for field updates not comments
-    
     public function __construct() {
         add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta'], 10, 4 );
         add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta'], 10, 4 );
@@ -20,6 +18,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     
     /**
      * Process specific meta changes and creates notifications for them
+     *
      * @param      $meta_id
      * @param      $object_id
      * @param      $meta_key
@@ -27,66 +26,59 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
      * @param bool $new
      */
     public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value, $new = false ) {
-        global $wpdb;
-        
-        if ($meta_key != 'assigned_to' || $meta_key != 'requires_update') { // ignore all but assigned to
+    
+//        if ($meta_key != 'assigned_to' || $meta_key != 'requires_update') { // ignore all but assigned to
+        if ($meta_key != 'assigned_to' ) { // ignore all but assigned to
             return;
         }
         
-        if (empty( $meta_value )) {
-            return;
-        }
-        
-        $parent_post = get_post( $object_id, ARRAY_A ); // get object info
+//        if (empty( $meta_value )) {
+//            return;
+//        }
         
         switch($meta_key) {
             case 'assigned_to':
                 $notification_name = 'assigned_to';
                 
-                // get user or team assigned to
+                // get user or team assigned_to
                 $meta_array = explode( '-', $meta_value ); // Separate the type and id
-                $type = $meta_array[0]; // Build variables
-                $id = $meta_array[1];
+                $type = $meta_array[0]; // parse type
                 
-                
-                // check if accepted, return // TODO Are we creating an accepted step to the assignment?
-                
-                // search and delete all other new notifications for this post_id. This should clean other evidence of multiple assignment decisions.
-                // Activity log will track long term the activity. But notification should just represent reality.
-                
+                if($type == 'user') {
+                    // check if accepted, return // TODO Are we creating an 'accepted' step to the assignment?
     
-                // create notification for assignment
+                    /**
+                     * Delete all notifications with matching post_id and notification_name
+                     * This prevents an assigned_to notification remaining in another persons inbox, that has since been
+                     * assigned to someone else. The Activity log keeps the historical data, but this notifications table
+                     * only should keep real status data.
+                     */
+                    $this->delete_by_post(
+                        $object_id,
+                        $notification_name
+                    );
+                    
+                    $notification_note = 'You have been assigned <a href="'.home_url('/') . get_post_type($object_id) .'/' .$object_id. '">' . get_the_title($object_id) . '</a>';
+                    
+                    // build elements and submit notification
+                    $this->add_notification(
+                        $user_id = (int) $meta_array[1],
+                        $post_id = (int) $object_id,
+                        $secondary_item_id = (int) $meta_id,
+                        $notification_name,
+                        $notification_action = 'alert',
+                        $notification_note,
+                        $date_notified = current_time('mysql')
+                    );
+                    
+                } else { // if team
+                    return; // TODO Find out if we are supporting team assignments. C
+                }
                 
-                
-                // check if team assignment, then loop notifications for each person on the team
-    
-                // add notification
-                $this->add_notification(
-                    $user_id,
-                    $item_id,
-                    $secondary_item_id,
-                    $notification_name,
-                    $notification_action,
-                    $notification_note,
-                    $date_notified
-                );
                 
                 break;
             case 'requires_update':
-                $notification_name = 'requires_update';
-    
-                
-                // add notification
-                $this->add_notification(
-                    $user_id,
-                    $item_id,
-                    $secondary_item_id,
-                    $notification_name,
-                    $notification_action,
-                    $notification_note,
-                    $date_notified
-                );
-                
+                // TODO
                 break;
         }
         
@@ -109,7 +101,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
         dt_notification_insert(
             [
                 'user_id'               => $user_id,
-                'item_id'               => $post_id,
+                'post_id'               => $post_id,
                 'secondary_item_id'     => $secondary_item_id,
                 'notification_name'     => $notification_name,
                 'notification_action'   => $notification_action,
@@ -122,23 +114,40 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     }
     
     /**
-     * Delete notification
+     * Delete single notification
      *
-     * @param $user_id
-     * @param $item_id
-     * @param $secondary_item_id
-     * @param $notification_name
-     * @param $date_notified
+     * @param int    $user_id
+     * @param int    $post_id
+     * @param int    $secondary_item_id
+     * @param string $notification_name
+     * @param        $date_notified
      */
-    protected function delete_notification( $user_id, $item_id, $secondary_item_id, $notification_name, $date_notified ) {
+    protected function delete_single_notification( int $user_id, int $post_id, int $secondary_item_id, string $notification_name, $date_notified ) {
         
         dt_notification_delete(
             [
                 'user_id'               => $user_id,
-                'item_id'               => $item_id,
+                'post_id'               => $post_id,
                 'secondary_item_id'     => $secondary_item_id,
                 'notification_name'     => $notification_name,
                 'date_notified'         => $date_notified,
+            ]
+        );
+        
+    }
+    
+    /**
+     * Delete all notifications by post and notification name (i.e. type)
+     *
+     * @param int $post_id
+     * @param int $notification_name
+     */
+    protected function delete_by_post( int $post_id, string $notification_name ) {
+    
+        dt_notification_delete_by_post(
+            [
+                'post_id'               => $post_id,
+                'notification_name'     => $notification_name,
             ]
         );
         

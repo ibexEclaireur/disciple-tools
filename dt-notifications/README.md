@@ -30,7 +30,7 @@ columns and their purposes are listed below.
 | `post_id`             | Contact, Group, Location, etc that the comment was logged against         |
 | `secondary_item_id`   | Comment id where the @mention was discovered                              |
 | `notification_name`   | `mention`                                                                 |
-| `notification_action` | `mentioned`                                                               |
+| `notification_action` | `mentioned`, `updated`, `untrashed`                                       |
 | `notification_note`   | Description for the displayed notification                                |
 | `date_notified`       | Date and time that this event occurred                                    |
 | `is_new`              | Boolean status of whether the user has viewed the notfication or not      |
@@ -45,7 +45,7 @@ columns and their purposes are listed below.
 | `post_id`             | Contact, Group, Location, etc that the comment was logged against         |
 | `secondary_item_id`   | The `meta_id` of the record                                               |
 | `notification_name`   | `assigned_to`, `update_needed`, `baptism`                                 |
-| `notification_action` | `alert`, `new_event`,                                                     |
+| `notification_action` | `alert`, `new_event`                                                     |
 | `notification_note`   | Description for the displayed notification                                |
 | `date_notified`       | Date and time that this event occurred                                    |
 | `is_new`              | Boolean status of whether the user has viewed the notfication or not      |

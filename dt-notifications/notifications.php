@@ -30,6 +30,10 @@ function dt_notification_delete( $args = [] ) {
     Disciple_Tools_Notifications::delete_notification( $args );
 }
 
+function dt_notification_delete_by_post( $args = [] ) {
+    Disciple_Tools_Notifications::delete_by_post( $args );
+}
+
 class Disciple_Tools_Notifications {
     
     /**
@@ -127,7 +131,7 @@ class Disciple_Tools_Notifications {
     }
     
     /**
-     * Insert statement
+     * Delete single notification
      * @since 1.0.0
      *
      * @param array $args
@@ -142,7 +146,7 @@ class Disciple_Tools_Notifications {
                 'user_id'               => '',
                 'post_id'               => '',
                 'secondary_item_id'     => '',
-                'notification_name'     => 'mention',
+                'notification_name'     => '',
                 'date_notified'         => '',
             ]
         );
@@ -161,6 +165,37 @@ class Disciple_Tools_Notifications {
         
         // Final action on insert.
         do_action( 'dt_delete_notification', $args );
+    }
+    
+    /**
+     * Delete all notifications for a post with a certain notification name
+     * @since 1.0.0
+     *
+     * @param array $args
+     * @return void
+     */
+    public static function delete_by_post( $args ) {
+        global $wpdb;
+        
+        $args = wp_parse_args(
+            $args,
+            [
+                'post_id'               => '',
+                'notification_name'     => '',
+            ]
+        );
+        
+        $wpdb->delete(
+            $wpdb->dt_notifications,
+            [
+                'post_id'               => $args['post_id'],
+                'notification_name'     => $args['notification_name'],
+            ]
+        );
+        
+        
+        // Final action on insert.
+        do_action( 'dt_delete_post_notifications', $args );
     }
     
     /**
