@@ -49,7 +49,7 @@ class Disciple_Tools_Metabox_Map {
         }
         
         
-        if(!empty($meta)) {
+        if(!empty( $meta )) {
             ?>
             
             <style>
