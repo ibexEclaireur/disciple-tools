@@ -75,8 +75,8 @@ class Disciple_Tools_Metabox_Activity {
             $html .= '</tr>';
 
             $html .= '<td>' . $user->display_name . '</td>';
-            $html .= '<td>' . esc_attr( $item['action'] ) . '</td>';
-            $html .= '<td>' . esc_attr( $item['object_note'] ) . '</td>';
+            $html .= '<td>' . strip_tags( $item['action'] ) . '</td>';
+            $html .= '<td>' . strip_tags( $item['object_note'] ) . '</td>';
             $html .= '<td>' . date( 'm/d/Y h:i:s', $item['hist_time'] ) . '</td>';
 
             $html .= '</tr>';
