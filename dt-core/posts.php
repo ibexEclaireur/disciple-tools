@@ -12,9 +12,9 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /**
- * Class Disciple_Tools_Contacts
+ * Class Disciple_Tools_Posts
  *
- * Functions for creating, finding, updating or deleting contacts
+ * Functions for creating, finding, updating or deleting posts
  */
 
 
@@ -118,11 +118,15 @@ class Disciple_Tools_Posts {
     public static function get_posts_shared_with_user( string $post_type, int $user_id ){
         global $wpdb;
         $shares = $wpdb->get_results(
-            "SELECT * FROM $wpdb->dt_share as shares 
-            INNER JOIN $wpdb->posts as posts 
-            WHERE user_id = '$user_id' 
-            AND shares.post_id = posts.ID 
-            AND posts.post_type = '" . $post_type . "'",
+            $wpdb->prepare(
+                "SELECT * FROM $wpdb->dt_share as shares 
+                INNER JOIN $wpdb->posts as posts 
+                WHERE user_id = %d 
+                AND shares.post_id = posts.ID 
+                AND posts.post_type = %s",
+                $user_id,
+                $post_type
+            ),
             ARRAY_A
         );
         $list = [];
@@ -186,6 +190,41 @@ class Disciple_Tools_Posts {
         $comments = get_comments( ['post_id'=>$post_id] );
         return $comments;
     }
+
+    public static function get_viewable_compact( string $post_type, string $searchString ){
+        if (!self::can_access( $post_type )) {
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these" . $post_type ), ['status' => 403] );
+        }
+        $current_user = wp_get_current_user();
+        $compact = [];
+
+        $query_args = array(
+            'post_type' => $post_type,
+            's' => $searchString
+        );
+        $shared_with_user = [];
+        if (!self::can_view_all( $post_type )){
+            $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
+
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-". $current_user->ID;
+        }
+        $posts = new WP_Query( $query_args );
+        if (is_wp_error( $posts )){
+            return $posts;
+        }
+        foreach( $posts->posts as $post ){
+            $compact[] = ["ID" => $post->ID, "name" => $post->post_title];
+        }
+        foreach($shared_with_user as $shared){
+            $compact_shared = ["ID" => $shared->ID, "name" => $shared->post_title];
+            if (!in_array( $compact_shared, $compact )){
+                $compact[] = $compact_shared;
+            }
+        }
+        return $compact;
+    }
+
 }
 
 

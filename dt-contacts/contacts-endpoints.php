@@ -576,7 +576,7 @@ class Disciple_Tools_Contacts_Endpoints
         if (isset( $params['s'] )){
             $search = $params['s'];
         }
-        $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( true, $search );
+        $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( $search );
         return $contacts;
     }
 }

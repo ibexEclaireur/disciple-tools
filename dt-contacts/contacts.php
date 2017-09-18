@@ -620,44 +620,30 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'post_type' => 'contacts',
             'nopaging' => true,
         );
-        $contacts = [];
+        $contacts_shared_with_user = [];
         if (!self::can_view_all( 'contacts' )){
+            $contacts_shared_with_user = self::get_posts_shared_with_user( 'contacts', $current_user->ID );
+
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-". $current_user->ID;
-            $contacts = self::get_posts_shared_with_user( 'contacts', $current_user->ID );
         }
         $queried_contacts = self::query_with_pagination( $query_args, $query_pagination_args );
         if ( is_wp_error( $queried_contacts )){
             return $queried_contacts;
         }
-        return array_merge( $contacts, $queried_contacts->posts );
+        $contacts = $queried_contacts->posts;
+        //add shared contacts to the list avoiding duplicates
+        foreach ( $contacts_shared_with_user as $shared ){
+            if(!in_array( $shared, $contacts )){
+                $contacts[] = $shared;
+            }
+        }
+        return $contacts;
     }
 
 
-    public static function get_viewable_contacts_compact( bool $check_permissions, string $searchString ){
-        if ($check_permissions && !self::can_access( 'contacts' )) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
-        }
-        $current_user = wp_get_current_user();
-        $compact = [];
-
-        $query_args = array(
-            'post_type' => 'contacts',
-            's' => $searchString
-        );
-        if (!self::can_view_all( 'contacts' )){
-            $query_args['meta_key'] = 'assigned_to';
-            $query_args['meta_value'] = "user-". $current_user->ID;
-            $shared_contacts = self::get_posts_shared_with_user( 'contacts', $current_user->ID );
-            foreach( $shared_contacts as $post ){
-                $list[] = ["ID" => $post->ID, "name" => $post->post_title];
-            }
-        }
-        $contacts = new WP_Query( $query_args );
-        foreach( $contacts->posts as $contact ){
-            $compact[] = ["ID" => $contact->ID, "name" => $contact->post_title];
-        }
-        return $compact;
+    public static function get_viewable_contacts_compact( string $searchString ){
+        return self::get_viewable_compact( 'contacts', $searchString );
     }
 
 

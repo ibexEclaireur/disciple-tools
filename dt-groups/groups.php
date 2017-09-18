@@ -33,52 +33,40 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
 
 
 
-    public static function get_groups_compact ( string $search ){
-        if (!self::can_access( 'groups' )){
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
-        }
-        $current_user = wp_get_current_user();
-        $list = [];
-        $query_args = array(
-            'post_type' => 'groups',
-            'orderby' => 'ID',
-            's' => $search
-        );
-        if (! self::can_view_all( 'groups' )) {
-            $query_args['meta_key'] = 'assigned_to';
-            $query_args['meta_value'] = "user-" . $current_user->ID;
-            $shared_groups = self::get_posts_shared_with_user( 'groups', $current_user->ID );
-            foreach( $shared_groups as $post ){
-                $list[] = ["ID" => $post->ID, "name" => $post->post_title];
-            }
-        }
-        $query = new WP_Query( $query_args );
-        foreach ($query->posts as $post){
-            $list[] = ["ID" => $post->ID, "name" => $post->post_title];
-        }
-        return $list;
+    public static function get_groups_compact ( string $searchString ){
+        return self::get_viewable_compact( 'groups', $searchString );
     }
 
 
     public static function get_viewable_groups( bool $check_permissions = true ) {
-        if ($check_permissions && ! self::can_access( 'groups' )) {
+        if ($check_permissions && !self::can_access( 'groups' )) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
         }
         $current_user = wp_get_current_user();
-        $groups = [];
+
         $query_args = array(
             'post_type' => 'groups',
+            'nopaging' => true,
         );
-        if (! self::can_view_all( 'groups' )) {
+        $groups_shared_with_user = [];
+        if (!self::can_view_all( 'groups' )){
+            $groups_shared_with_user = self::get_posts_shared_with_user( 'groups', $current_user->ID );
+
             $query_args['meta_key'] = 'assigned_to';
             $query_args['meta_value'] = "user-". $current_user->ID;
-            $groups = self::get_posts_shared_with_user( 'groups', $current_user->ID );
         }
         $queried_groups = new WP_Query( $query_args );
         if ( is_wp_error( $queried_groups )){
             return $queried_groups;
         }
-        return array_merge( $groups, $queried_groups->posts );
+        $groups = $queried_groups->posts;
+        //add shared groups to the list avoiding duplicates
+        foreach ( $groups_shared_with_user as $shared ){
+            if(!in_array( $shared, $groups )){
+                $groups[] = $shared;
+            }
+        }
+        return $groups;
     }
 
     public static function get_group( int $group_id, bool $check_permissions = true ){
