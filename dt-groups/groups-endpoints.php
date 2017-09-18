@@ -95,7 +95,7 @@ class Disciple_Tools_Groups_Endpoints {
     }
 
     public function get_viewable_groups( WP_REST_Request $request ) {
-        $groups = Disciple_Tools_Groups::get_viewable_groups( true );
+        $groups = Disciple_Tools_Groups::get_viewable_groups();
         if (is_wp_error( $groups )) {
             return $groups;
         }
@@ -103,11 +103,11 @@ class Disciple_Tools_Groups_Endpoints {
     }
 
 
-    private function add_related_info_to_groups( WP_Query $groups ): array {
+    private function add_related_info_to_groups( array $groups ): array {
         p2p_type( 'groups_to_locations' )->each_connected( $groups, array(), 'locations' );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, array(), 'contacts' );
         $rv = array();
-        foreach ($groups->posts as $group) {
+        foreach ($groups as $group) {
             $meta_fields = get_post_custom( $group->ID );
             $group_array = $group->to_array();
             unset( $group_array['contacts'] );

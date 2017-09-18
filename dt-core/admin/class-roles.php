@@ -43,10 +43,10 @@ $template = [
     /* Add custom caps for contacts */
     'create_contacts' => true,  //create a new contact
     'update_shared_contacts' => true,
-    'view_any_contact' => true,    //view any contacts
-    'assign_any_contact' => true,  //assign contacts to others
-    'update_any_contact' => true,  //update any contacts
-    'delete_any_contact' => true,  //delete any contacts
+    'view_any_contacts' => true,    //view any contacts
+    'assign_any_contacts' => true,  //assign contacts to others
+    'update_any_contacts' => true,  //update any contacts
+    'delete_any_contacts' => true,  //delete any contacts
 
     /* Add custom caps for groups */
     'access_groups' => true,
@@ -322,10 +322,10 @@ class Disciple_Tools_Roles {
                 'access_contacts' => true,
                 'create_contacts' => true,  //create a new contact
                 'update_shared_contacts' => true,
-                'view_any_contact' => true,    //view any contacts
-                'assign_any_contact' => true,  //assign contacts to others
-                'update_any_contact' => true,  //update any contacts
-                'delete_any_contact' => true,  //delete any contacts
+                'view_any_contacts' => true,    //view any contacts
+                'assign_any_contacts' => true,  //assign contacts to others
+                'update_any_contacts' => true,  //update any contacts
+                'delete_any_contacts' => true,  //delete any contacts
 
                 /* Add custom caps for groups */
                 'access_groups' => true,
@@ -656,10 +656,10 @@ class Disciple_Tools_Roles {
             $role->add_cap( 'create_contacts' );
             $role->add_cap( 'update_contacts' );
             $role->add_cap( 'update_shared_contacts' );
-            $role->add_cap( 'view_any_contact' );
-            $role->add_cap( 'assign_any_contact' );
-            $role->add_cap( 'update_any_contact' );
-            $role->add_cap( 'delete_any_contact' );
+            $role->add_cap( 'view_any_contacts' );
+            $role->add_cap( 'assign_any_contacts' );
+            $role->add_cap( 'update_any_contacts' );
+            $role->add_cap( 'delete_any_contacts' );
             /* Add Groups permissions */
             $role->add_cap( 'access_groups' );
             $role->add_cap( 'create_groups' );
