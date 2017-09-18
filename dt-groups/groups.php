@@ -33,47 +33,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
 
 
 
-    public static function get_groups_compact ( string $search ){
-        if (!self::can_access( 'groups' )){
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
-        }
-        $current_user = wp_get_current_user();
-        $list = [];
-        $query_args = array(
-            'post_type' => 'groups',
-            'orderby' => 'ID',
-            's' => $search
-        );
-        if (! self::can_view_all( 'groups' )) {
-            $query_args['meta_key'] = 'assigned_to';
-            $query_args['meta_value'] = "user-" . $current_user->ID;
-            $shared_groups = self::get_posts_shared_with_user( 'groups', $current_user->ID );
-            foreach( $shared_groups as $post ){
-                $list[] = ["ID" => $post->ID, "name" => $post->post_title];
-            }
-        }
-        $query = new WP_Query( $query_args );
-        foreach ($query->posts as $post){
-            $list[] = ["ID" => $post->ID, "name" => $post->post_title];
-        }
-        return $list;
+    public static function get_groups_compact ( string $searchString ){
+        return self::get_viewable_compact( 'groups', $searchString );
     }
 
 
-    public static function get_viewable_groups( bool $check_permissions = true ) {
-        if ($check_permissions && ! self::can_access( 'groups' )) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
-        }
-        $current_user = wp_get_current_user();
-
-        $query_args = array(
-            'post_type' => 'groups',
-        );
-        if (! self::can_view_all( 'groups' )) {
-            // TODO filter just by own groups
-            return new WP_Error( __FUNCTION__, __( "Unimplemented" ) );
-        }
-        return new WP_Query( $query_args );
+    public static function get_viewable_groups() {
+        return self::get_viewable( 'groups' );
     }
 
     public static function get_group( int $group_id, bool $check_permissions = true ){

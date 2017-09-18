@@ -273,11 +273,11 @@ class Disciple_Tools_Contacts_Endpoints
         }
     }
 
-    private function add_related_info_to_contacts( WP_Query $contacts ): array {
+    private function add_related_info_to_contacts( array $contacts ): array {
         p2p_type( 'contacts_to_locations' )->each_connected( $contacts, array(), 'locations' );
         p2p_type( 'contacts_to_groups' )->each_connected( $contacts, array(), 'groups' );
         $rv = array();
-        foreach ($contacts->posts as $contact) {
+        foreach ($contacts as $contact) {
             $meta_fields = get_post_custom( $contact->ID );
             $contact_array = $contact->to_array();
             $contact_array['permalink'] = get_post_permalink( $contact->ID );
@@ -398,7 +398,7 @@ class Disciple_Tools_Contacts_Endpoints
             if (is_wp_error( $contacts )) {
                 return $contacts;
             }
-            return $this->add_related_info_to_contacts( $contacts );
+            return $this->add_related_info_to_contacts( $contacts->posts );
         } else {
             return new WP_Error( "get_user_contacts", "Missing a valid user id", ['status' => 400] );
         }
@@ -571,7 +571,7 @@ class Disciple_Tools_Contacts_Endpoints
         if (isset( $params['s'] )){
             $search = $params['s'];
         }
-        $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( true, $search );
+        $contacts = Disciple_Tools_Contacts::get_viewable_contacts_compact( $search );
         return $contacts;
     }
 }
