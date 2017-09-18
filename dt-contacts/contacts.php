@@ -576,9 +576,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return $queried_contacts;
         }
         $contacts = $queried_contacts->posts;
+        $contact_ids = array_map(
+            function( $contact ){
+                return $contact->ID;
+            },
+            $contacts
+        );
         //add shared contacts to the list avoiding duplicates
         foreach ( $contacts_shared_with_user as $shared ){
-            if(!in_array( $shared, $contacts )){
+            if(!in_array( $shared->ID, $contact_ids )){
                 $contacts[] = $shared;
             }
         }

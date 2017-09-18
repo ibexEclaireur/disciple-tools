@@ -95,7 +95,7 @@ class Disciple_Tools_Groups_Endpoints {
     }
 
     public function get_viewable_groups( WP_REST_Request $request ) {
-        $groups = Disciple_Tools_Groups::get_viewable_groups( true );
+        $groups = Disciple_Tools_Groups::get_viewable_groups();
         if (is_wp_error( $groups )) {
             return $groups;
         }

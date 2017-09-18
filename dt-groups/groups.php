@@ -38,35 +38,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
     }
 
 
-    public static function get_viewable_groups( bool $check_permissions = true ) {
-        if ($check_permissions && !self::can_access( 'groups' )) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these groups" ), ['status' => 403] );
-        }
-        $current_user = wp_get_current_user();
-
-        $query_args = array(
-            'post_type' => 'groups',
-            'nopaging' => true,
-        );
-        $groups_shared_with_user = [];
-        if (!self::can_view_all( 'groups' )){
-            $groups_shared_with_user = self::get_posts_shared_with_user( 'groups', $current_user->ID );
-
-            $query_args['meta_key'] = 'assigned_to';
-            $query_args['meta_value'] = "user-". $current_user->ID;
-        }
-        $queried_groups = new WP_Query( $query_args );
-        if ( is_wp_error( $queried_groups )){
-            return $queried_groups;
-        }
-        $groups = $queried_groups->posts;
-        //add shared groups to the list avoiding duplicates
-        foreach ( $groups_shared_with_user as $shared ){
-            if(!in_array( $shared, $groups )){
-                $groups[] = $shared;
-            }
-        }
-        return $groups;
+    public static function get_viewable_groups() {
+        return self::get_viewable( 'groups' );
     }
 
     public static function get_group( int $group_id, bool $check_permissions = true ){

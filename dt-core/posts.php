@@ -216,15 +216,57 @@ class Disciple_Tools_Posts {
         foreach( $posts->posts as $post ){
             $compact[] = ["ID" => $post->ID, "name" => $post->post_title];
         }
+        $post_ids = array_map(
+            function( $post ){
+                return $post->ID;
+            },
+            $posts->posts
+        );
         foreach($shared_with_user as $shared){
-            $compact_shared = ["ID" => $shared->ID, "name" => $shared->post_title];
-            if (!in_array( $compact_shared, $compact )){
-                $compact[] = $compact_shared;
+            if (!in_array( $shared->ID, $post_ids )){
+                $compact[] = ["ID" => $shared->ID, "name" => $shared->post_title];
             }
         }
         return $compact;
     }
 
+
+    public static function get_viewable( string $post_type ) {
+        if ( !self::can_access( $post_type )) {
+            return new WP_Error( __FUNCTION__, __( "You do not have access to these" . $post_type ), ['status' => 403] );
+        }
+        $current_user = wp_get_current_user();
+
+        $query_args = array(
+            'post_type' => $post_type,
+            'nopaging' => true,
+        );
+        $posts_shared_with_user = [];
+        if (!self::can_view_all( $post_type )){
+            $posts_shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
+
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-". $current_user->ID;
+        }
+        $queried_posts =  new WP_Query( $query_args );
+        if ( is_wp_error( $queried_posts )){
+            return $queried_posts;
+        }
+        $posts = $queried_posts->posts;
+        $post_ids = array_map(
+            function( $post ){
+                return $post->ID;
+            },
+            $posts
+        );
+        //add shared posts to the list avoiding duplicates
+        foreach ( $posts_shared_with_user as $shared ){
+            if(!in_array( $shared->ID, $post_ids )){
+                $posts[] = $shared;
+            }
+        }
+        return $posts;
+    }
 }
 
 
