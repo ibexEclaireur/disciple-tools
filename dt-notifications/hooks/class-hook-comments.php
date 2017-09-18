@@ -33,74 +33,81 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         }
         
         foreach($mentioned_user_ids as $mentioned_user_id) {
+            $source_user_id = $comment->user_id;
             
-            // build variables
-            $post_id = $comment->comment_post_ID;
-            $date_notified = $comment->comment_date;
-            $author_name = $comment->comment_author;
+            if( $mentioned_user_id != $source_user_id ) { // checks that the user who created the event and the user receiving the notification are not the same.
             
-            // call appropriate action
-            switch ( current_filter() ) {
-                case 'wp_insert_comment' :
-                    $notification_action = 'mentioned';
-                    
-                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
-                    .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
-    
-                    $this->add_mention_notification(
-                        $mentioned_user_id,
-                        $post_id,
-                        $comment_id,
-                        $notification_action,
-                        $notification_note,
-                        $date_notified
-                    );
-                    break;
+                // build variables
+                $post_id = $comment->comment_post_ID;
+                $date_notified = $comment->comment_date;
+                $author_name = $comment->comment_author;
                 
-                case 'edit_comment' :
-                    $notification_action = 'updated';
-    
-                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
-                                         .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
-    
-                    $this->add_mention_notification(
-                        $mentioned_user_id,
-                        $post_id,
-                        $comment_id,
-                        $notification_action,
-                        $notification_note,
-                        $date_notified
-                    );
-                    break;
-                
-                case 'untrash_comment' :
-                    $notification_action = 'untrashed';
-    
-                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
-                                         .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
+                // call appropriate action
+                switch ( current_filter() ) {
+                    case 'wp_insert_comment' :
+                        $notification_action = 'mentioned';
+                        
+                        $notification_note = '<strong>' . esc_attr( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                        .get_the_title( $post_id ).'</a> saying, "'. esc_attr( $comment->comment_content ) . '" ' ;
         
-                    $this->add_mention_notification(
-                        $mentioned_user_id,
-                        $post_id,
-                        $comment_id,
-                        $notification_action,
-                        $notification_note,
-                        $date_notified
-                    );
-                    break;
-                
-                case 'delete_comment' :
-                case 'trash_comment' :
-                    $this->delete_mention_notification(
-                        $mentioned_user_id,
-                        $post_id,
-                        $comment_id,
-                        $date_notified
-                    );
-                    break;
-                
-                default:
-                    break;
+                        $this->add_mention_notification(
+                            $mentioned_user_id,
+                            $source_user_id,
+                            $post_id,
+                            $comment_id,
+                            $notification_action,
+                            $notification_note,
+                            $date_notified
+                        );
+                        break;
+                    
+                    case 'edit_comment' :
+                        $notification_action = 'updated';
+        
+                        $notification_note = '<strong>' . esc_attr( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                                             .get_the_title( $post_id ).'</a> saying, "'. esc_attr( $comment->comment_content ) . '" ' ;
+        
+                        $this->add_mention_notification(
+                            $mentioned_user_id,
+                            $source_user_id,
+                            $post_id,
+                            $comment_id,
+                            $notification_action,
+                            $notification_note,
+                            $date_notified
+                        );
+                        break;
+                    
+                    case 'untrash_comment' :
+                        $notification_action = 'untrashed';
+        
+                        $notification_note = '<strong>' . esc_attr( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                                             .get_the_title( $post_id ).'</a> saying, "'. esc_attr( $comment->comment_content ) . '" ' ;
+            
+                        $this->add_mention_notification(
+                            $mentioned_user_id,
+                            $source_user_id,
+                            $post_id,
+                            $comment_id,
+                            $notification_action,
+                            $notification_note,
+                            $date_notified
+                        );
+                        break;
+                    
+                    case 'delete_comment' :
+                    case 'trash_comment' :
+                        $this->delete_mention_notification(
+                            $mentioned_user_id,
+                            $post_id,
+                            $comment_id,
+                            $date_notified
+                        );
+                        break;
+                    
+                    default:
+                        break;
+                }
             }
             
         }
@@ -149,11 +156,12 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      * @param string $notification_note
      * @param        $date_notified
      */
-    protected function add_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, string $notification_action, string $notification_note, $date_notified ) {
+    protected function add_mention_notification( int $mentioned_user_id, int $source_user_id, int $post_id, int $comment_id, string $notification_action, string $notification_note, $date_notified ) {
         
         dt_notification_insert(
             [
                 'user_id'               => $mentioned_user_id,
+                'source_user_id'        => $source_user_id,
                 'post_id'               => $post_id,
                 'secondary_item_id'     => $comment_id,
                 'notification_name'     => 'mention',

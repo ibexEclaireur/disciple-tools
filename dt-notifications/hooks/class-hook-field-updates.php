@@ -32,9 +32,9 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
             return;
         }
         
-//        if (empty( $meta_value )) {
-//            return;
-//        }
+        if (empty( $meta_value )) {
+            return;
+        }
         
         switch($meta_key) {
             case 'assigned_to':
@@ -45,7 +45,8 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                 $type = $meta_array[0]; // parse type
                 
                 if($type == 'user') {
-                    // check if accepted, return // TODO Are we creating an 'accepted' step to the assignment?
+                    
+                    // TODO Are we creating an 'accepted' step to the assignment? If so, check here for 'accepted' status.
     
                     /**
                      * Delete all notifications with matching post_id and notification_name
@@ -58,11 +59,12 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                         $notification_name
                     );
                     
-                    $notification_note = 'You have been assigned <a href="'.home_url( '/' ) . get_post_type( $object_id ) .'/' .$object_id. '">' . get_the_title( $object_id ) . '</a>';
+                    $notification_note = 'You have been assigned <a href="'.home_url( '/' ) . get_post_type( $object_id ) .'/' .$object_id. '">' . wp_strip_all_tags( get_the_title( $object_id ) ) . '</a>';
                     
                     // build elements and submit notification
                     $this->add_notification(
                         $user_id = (int) $meta_array[1],
+                        $source_user_id = 0,
                         $post_id = (int) $object_id,
                         $secondary_item_id = (int) $meta_id,
                         $notification_name,
@@ -72,7 +74,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                     );
                     
                 } else { // if team
-                    return; // TODO Find out if we are supporting team assignments. C
+                    return;
                 }
                 
                 
@@ -96,11 +98,12 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
      * @param string $notification_note
      * @param        $date_notified
      */
-    protected function add_notification( int $user_id, int $post_id, int $secondary_item_id, string $notification_name, string $notification_action, string $notification_note, $date_notified ) {
+    protected function add_notification( int $user_id, int $source_user_id, int $post_id, int $secondary_item_id, string $notification_name, string $notification_action, string $notification_note, $date_notified ) {
         
         dt_notification_insert(
             [
                 'user_id'               => $user_id,
+                'source_user_id'        => $source_user_id,
                 'post_id'               => $post_id,
                 'secondary_item_id'     => $secondary_item_id,
                 'notification_name'     => $notification_name,
