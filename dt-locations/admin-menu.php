@@ -126,13 +126,13 @@ class Disciple_Tools_Location_Tools_Menu {
                 
                 $html .= '</td></tr></tbody></table>';
     
-                print '<pre>';
-                
-                print_r( $_POST );
-                print '<br>';
-                print_r( get_option( '_dt_installed_country' ) );
-
-                print '</pre>';
+//                print '<pre>';
+//
+//                print_r( $_POST );
+//                print '<br>';
+//                print_r( get_option( '_dt_installed_country' ) );
+//
+//                print '</pre>';
     
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
@@ -148,17 +148,14 @@ class Disciple_Tools_Location_Tools_Menu {
              
                 
             case "usa":
-                require_once( 'admin-tab-usa.php' );
-                $object = new Disciple_Tools_Locations_Tab_USA(); // create object
-                
                 $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
                 $html .= '<div id="post-body-content">';
                 
-                
-    
                 /* BOX */
                 $html .= '<table class="widefat striped"><thead><th>Install by State</th></thead><tbody><tr><td>';
     
+                require_once( 'admin-tab-usa.php' );
+                $object = new Disciple_Tools_Locations_Tab_USA(); // create object
                 $object->process_install_us_state();
                 $html .= $object->install_us_state();
                 
@@ -170,10 +167,7 @@ class Disciple_Tools_Location_Tools_Menu {
 //
 //                print '</pre>';
                 
-                
-                
                 $html .= '</td></tr></tbody></table><br>';
-    
                 $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
     
                 /* BOX */
