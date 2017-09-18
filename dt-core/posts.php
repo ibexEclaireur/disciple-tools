@@ -131,7 +131,7 @@ class Disciple_Tools_Posts {
         );
         $list = [];
         foreach($shares as $share){
-            $post = get_post( $share[ "user_id" ] );
+            $post = get_post( $share[ "post_id" ] );
             if (isset( $post->post_type ) && $post->post_type === $post_type){
                 $list[] = $post;
             }
