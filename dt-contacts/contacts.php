@@ -901,9 +901,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'meta_key'          => '',
                     'meta_value'        => '',
                     'meta_parent'       => '',
-                    'object_note'       => get_the_title( $post_id ). ' was shared with ' . dt_get_user_display_name( $user_id ),
+                    'object_note'       => strip_tags( get_the_title( $post_id ) ). ' was shared with ' . dt_get_user_display_name( $user_id ),
                 ]
             );
+    
+            // Add share notification
+            Disciple_Tools_Notifications::insert_notification_for_share( $user_id, $post_id );
+            
 
             return $results;
         } else {
