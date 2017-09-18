@@ -4,7 +4,7 @@
  @since 0.1
  */
 
-
+"use strict";
 jQuery(document).ready(function () {
   jQuery('.datepicker').datepicker({
     dateFormat: 'yy-mm-dd'

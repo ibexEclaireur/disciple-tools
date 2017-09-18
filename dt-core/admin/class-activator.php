@@ -41,7 +41,7 @@ class Disciple_Tools_Activator {
             }
         }
         
-        /** Add default dt site options for ini*/
+        /** Add default dt site options for ini*/ // TODO unfinished site options
         $options =
             [
                 'add_people_groups'           => 1,
@@ -193,10 +193,10 @@ class Disciple_Tools_Activator {
             $sql5 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                       `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                       `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
-                      `item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+                      `post_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
                       `secondary_item_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
-                      `notification_name` varchar(75) UNSIGNED NOT NULL DEFAULT '0',
-                      `notification_action` varchar(75) UNSIGNED NOT NULL DEFAULT '0',
+                      `notification_name` varchar(75) NOT NULL DEFAULT '0',
+                      `notification_action` varchar(75) NOT NULL DEFAULT '0',
                       `notification_note` varchar(255) DEFAULT NULL,
                       `date_notified` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
                       `is_new` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',

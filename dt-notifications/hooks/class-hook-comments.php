@@ -38,37 +38,65 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
             $post_id = $comment->comment_post_ID;
             $date_notified = $comment->comment_date;
             $author_name = $comment->comment_author;
-            $author_url = $comment->comment_author_url;
             
             // call appropriate action
             switch ( current_filter() ) {
                 case 'wp_insert_comment' :
-                    $notification_action = 'created';
+                    $notification_action = 'mentioned';
                     
-                    $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
-                    
-                    $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
+                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                    .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
+    
+                    $this->add_mention_notification(
+                        $mentioned_user_id,
+                        $post_id,
+                        $comment_id,
+                        $notification_action,
+                        $notification_note,
+                        $date_notified
+                    );
                     break;
                 
                 case 'edit_comment' :
                     $notification_action = 'updated';
-        
-                    $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
-        
-                    $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
+    
+                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                                         .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
+    
+                    $this->add_mention_notification(
+                        $mentioned_user_id,
+                        $post_id,
+                        $comment_id,
+                        $notification_action,
+                        $notification_note,
+                        $date_notified
+                    );
                     break;
                 
                 case 'untrash_comment' :
                     $notification_action = 'untrashed';
+    
+                    $notification_note = '<strong>' . $author_name . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                                         .get_the_title( $post_id ).'</a> saying, "'. $comment->comment_content . '" ' ;
         
-                    $notification_note = $author_name . ' ' . $notification_action . ' ' . $comment->comment_content; // TODO improve note grammar
-        
-                    $this->add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified );
+                    $this->add_mention_notification(
+                        $mentioned_user_id,
+                        $post_id,
+                        $comment_id,
+                        $notification_action,
+                        $notification_note,
+                        $date_notified
+                    );
                     break;
                 
                 case 'delete_comment' :
                 case 'trash_comment' :
-                    $this->delete_mention_notification( $mentioned_user_id, $comment_id, $post_id, $date_notified );
+                    $this->delete_mention_notification(
+                        $mentioned_user_id,
+                        $post_id,
+                        $comment_id,
+                        $date_notified
+                    );
                     break;
                 
                 default:
@@ -114,20 +142,20 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     /**
      * Create notification activity
      *
-     * @param $mentioned_user_id
-     * @param $comment_id
-     * @param $post_id
-     * @param $notification_action
-     * @param $notification_note
-     * @param $date_notified
+     * @param int    $mentioned_user_id
+     * @param int    $post_id
+     * @param int    $comment_id
+     * @param string $notification_action
+     * @param string $notification_note
+     * @param        $date_notified
      */
-    protected function add_mention_notification( $mentioned_user_id, $comment_id, $post_id, $notification_action, $notification_note, $date_notified ) {
+    protected function add_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, string $notification_action, string $notification_note, $date_notified ) {
         
         dt_notification_insert(
             [
                 'user_id'               => $mentioned_user_id,
-                'item_id'               => $comment_id,
-                'secondary_item_id'     => $post_id,
+                'post_id'               => $post_id,
+                'secondary_item_id'     => $comment_id,
                 'notification_name'     => 'mention',
                 'notification_action'   => $notification_action,
                 'notification_note'     => $notification_note,
@@ -140,18 +168,19 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     
     /**
      * Delete notification
-     * @param $mentioned_user_id
-     * @param $comment_id
-     * @param $post_id
-     * @param $date_notified
+     *
+     * @param int $mentioned_user_id
+     * @param int $post_id
+     * @param int $comment_id
+     * @param     $date_notified
      */
-    protected function delete_mention_notification( $mentioned_user_id, $comment_id, $post_id, $date_notified ) {
+    protected function delete_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, $date_notified ) {
     
         dt_notification_delete(
             [
                 'user_id'               => $mentioned_user_id,
-                'item_id'               => $comment_id,
-                'secondary_item_id'     => $post_id,
+                'post_id'               => $post_id,
+                'secondary_item_id'     => $comment_id,
                 'notification_name'     => 'mention',
                 'date_notified'         => $date_notified,
             ]

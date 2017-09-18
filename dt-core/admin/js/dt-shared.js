@@ -4,7 +4,7 @@ shared scripts applicable to all these sections.
 @see /includes/functions/enqueue-scripts.php
 @since 0.1
  */
-
+"use strict";
 // user interface utilities
 jQuery(document).ready(function($) {
 
