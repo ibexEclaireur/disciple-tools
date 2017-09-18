@@ -250,9 +250,12 @@ class Disciple_Tools {
         $this->version          = '0.1';
         $this->plugin_url       = plugin_dir_url( __FILE__ );
         $this->plugin_path      = plugin_dir_path( __FILE__ );
-        $this->plugin_img       = plugin_dir_url( __FILE__ ) . 'dt-core/admin/img/';
-        $this->plugin_js        = plugin_dir_url( __FILE__ ) . 'dt-core/admin/js/';
-        $this->plugin_css       = plugin_dir_url( __FILE__ ) . 'dt-core/admin/css/';
+        $this->plugin_img_url   = plugin_dir_url( __FILE__ ) . 'dt-core/admin/img/';
+        $this->plugin_img_path  = plugin_dir_path( __FILE__ ) . 'dt-core/admin/img/';
+        $this->plugin_js_url    = plugin_dir_url( __FILE__ ) . 'dt-core/admin/js/';
+        $this->plugin_js_path   = plugin_dir_path( __FILE__ ) . 'dt-core/admin/js/';
+        $this->plugin_css_url   = plugin_dir_url( __FILE__ ) . 'dt-core/admin/css/';
+        $this->plugin_css_path  = plugin_dir_path( __FILE__ ) . 'dt-core/admin/css/';
 
         $wpdb->dt_activity_log = $wpdb->prefix . 'dt_activity_log'; // Prepare database table names
         $wpdb->dt_reports = $wpdb->prefix . 'dt_reports';

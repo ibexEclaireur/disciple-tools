@@ -30,6 +30,10 @@ function dt_notification_delete( $args = [] ) {
     Disciple_Tools_Notifications::delete_notification( $args );
 }
 
+function dt_notification_delete_by_post( $args = [] ) {
+    Disciple_Tools_Notifications::delete_by_post( $args );
+}
+
 class Disciple_Tools_Notifications {
     
     /**
@@ -81,7 +85,7 @@ class Disciple_Tools_Notifications {
                 'SELECT `id`
                     FROM %1$s
 					WHERE `user_id` = \'%2$s\'
-						AND `item_id` = \'%3$s\'
+						AND `post_id` = \'%3$s\'
 						AND `secondary_item_id` = \'%4$s\'
 						AND `notification_name` = \'%5$s\'
 						AND `notification_action` = \'%6$s\'
@@ -91,7 +95,7 @@ class Disciple_Tools_Notifications {
 				;',
                 $wpdb->dt_notifications,
                 $args['user_id'],
-                $args['item_id'],
+                $args['post_id'],
                 $args['secondary_item_id'],
                 $args['notification_name'],
                 $args['notification_action'],
@@ -109,7 +113,7 @@ class Disciple_Tools_Notifications {
             $wpdb->dt_notifications,
             [
                 'user_id'                   => $args['user_id'],
-                'item_id'                   => $args['item_id'],
+                'post_id'                   => $args['post_id'],
                 'secondary_item_id'         => $args['secondary_item_id'],
                 'notification_name'         => $args['notification_name'],
                 'notification_action'       => $args['notification_action'],
@@ -127,7 +131,7 @@ class Disciple_Tools_Notifications {
     }
     
     /**
-     * Insert statement
+     * Delete single notification
      * @since 1.0.0
      *
      * @param array $args
@@ -140,9 +144,9 @@ class Disciple_Tools_Notifications {
             $args,
             [
                 'user_id'               => '',
-                'item_id'               => '',
+                'post_id'               => '',
                 'secondary_item_id'     => '',
-                'notification_name'     => 'mention',
+                'notification_name'     => '',
                 'date_notified'         => '',
             ]
         );
@@ -151,7 +155,7 @@ class Disciple_Tools_Notifications {
             $wpdb->dt_notifications,
             [
                 'user_id'               => $args['user_id'],
-                'item_id'               => $args['item_id'],
+                'post_id'               => $args['post_id'],
                 'secondary_item_id'     => $args['secondary_item_id'],
                 'notification_name'     => $args['notification_name'],
                 'date_notified'         => $args['date_notified'],
@@ -164,56 +168,109 @@ class Disciple_Tools_Notifications {
     }
     
     /**
+     * Delete all notifications for a post with a certain notification name
+     * @since 1.0.0
+     *
+     * @param array $args
+     * @return void
+     */
+    public static function delete_by_post( $args ) {
+        global $wpdb;
+        
+        $args = wp_parse_args(
+            $args,
+            [
+                'post_id'               => '',
+                'notification_name'     => '',
+            ]
+        );
+        
+        $wpdb->delete(
+            $wpdb->dt_notifications,
+            [
+                'post_id'               => $args['post_id'],
+                'notification_name'     => $args['notification_name'],
+            ]
+        );
+        
+        
+        // Final action on insert.
+        do_action( 'dt_delete_post_notifications', $args );
+    }
+    
+    /**
      * Mark the is_new field to 0 after user has viewed notification
-     * {"notification_ids": [1,2,3 4]} requires valid json array
      *
      * @param $notification_ids array
      *
      * @return array
      */
-    public static function mark_notification_viewed( $notification_ids ) {
+    public static function mark_viewed( $notification_id ) {
         global $wpdb;
     
-        if ( ! is_array( $notification_ids ) ) {
-            return ['status' => 'Error', 'message' => 'Not an array' ];
-        }
+        $wpdb->update(
+            $wpdb->dt_notifications,
+            [
+                'is_new' => 0,
+            ],
+            [
+                'id' => $notification_id
+            ]
+        );
         
-        $i = 0;
-        foreach($notification_ids as $notification_id) {
-            $wpdb->update(
-                $wpdb->dt_notifications,
-                [
-                    'is_new' => 0,
-                ],
-                [
-                    'id' => $notification_id
-                ]
-            );
-            $i = $i + $wpdb->rows_affected;
-        }
+        return $wpdb->last_error ? ['status' => false, 'message' => $wpdb->last_error] : ['status' => true, 'rows_affected' => $wpdb->rows_affected];
+    }
+    
+    /**
+     * Mark all as viewed by user_id
+     *
+     * @param $user_id int
+     *
+     * @return array
+     */
+    public static function mark_all_viewed( int $user_id ) {
+        global $wpdb;
+    
+        $wpdb->update(
+            $wpdb->dt_notifications,
+            [
+                'is_new' => 0,
+            ],
+            [
+                'user_id' => $user_id
+            ]
+        );
         
-        return $wpdb->last_error ? ['status' => 'Error', 'message' => $wpdb->last_error] : ['status' => 'OK', 'rows_affected' => $i];
+        return $wpdb->last_error ? ['status' => false, 'message' => $wpdb->last_error] : ['status' => true, 'rows_affected' => $wpdb->rows_affected];
     }
     
     /**
      * Get user notifications
      *
      * @param     $params array     user_id (required)
-     *                              limit (optional) default 25.
+     *                              limit (optional) default 50.
      *                              offset (optional) default 0.
      *
      * @return array
      */
-    public static function get_notifications_for_user( $params ) {
+    public static function get_notifications( $params ) {
         global $wpdb;
         $user_id = $params['user_id'];
-        isset( $params['limit'] ) ? $limit = $params['limit'] : $limit = 25;
+        isset( $params['limit'] ) ? $limit = $params['limit'] : $limit = 50;
         isset( $params['offset'] ) ? $offset = $params['offset'] : $offset = 0;
         
         
         $result = $wpdb->get_results( "SELECT * FROM $wpdb->dt_notifications WHERE user_id = '$user_id' ORDER BY date_notified DESC LIMIT $limit OFFSET $offset", ARRAY_A );
         
         if($result) {
+            
+            // user friendly timestamp
+            foreach ($result as $key => $value) {
+                $result[$key]['pretty_time'] = self::pretty_timestamp( $value['date_notified'] );
+        
+            }
+            
+            
             return [
                 'status' => true,
                 'result' => $result,
@@ -221,7 +278,56 @@ class Disciple_Tools_Notifications {
         } else {
             return [
               'status' => false,
-              'message' => 'Fails to query user notifications. Query returned false.'
+              'message' => 'No notifications'
+            ];
+        }
+    }
+    
+    public static function pretty_timestamp( $timestamp ) {
+        // 2017-09-15 13:55:00
+        $current_time = current_time( 'mysql' );
+        $one_hour_ago = date( 'Y-m-d H:i:s',strtotime( '-1 hour',strtotime( $current_time ) ) );
+        $yesterday = date( 'Y-m-d',strtotime( '-1 day',strtotime( $current_time ) ) );
+        $seven_days_ago = date( 'Y-m-d',strtotime( '-7 days',strtotime( $current_time ) ) );
+        
+        if( $timestamp > $one_hour_ago ) {
+            $current = new DateTime( $current_time );
+            $stamp = new DateTime( $timestamp );
+            $diff = date_diff( $current, $stamp );
+            $friendly_time = date( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
+        } elseif ( $timestamp > $yesterday ) {
+            $friendly_time = date( "g:i a", strtotime( $timestamp ) );
+        } elseif ( $timestamp > $seven_days_ago ) {
+            $friendly_time = date( "l g:i a", strtotime( $timestamp ) );
+        } else {
+            $friendly_time = date( 'F j, Y, g:i a', strtotime( $timestamp ) );
+        }
+        
+        return $friendly_time;
+    }
+    
+    /**
+     * Get user notifications
+     *
+     * @param     $params array     user_id (required)
+     *
+     * @return array
+     */
+    public static function get_new_notifications_count( $params ) {
+        global $wpdb;
+        $user_id = $params['user_id'];
+        
+        $result = $wpdb->get_var( "SELECT count(id) FROM $wpdb->dt_notifications WHERE user_id = '$user_id' AND is_new = '1'" );
+        
+        if($result) {
+            return [
+                'status' => true,
+                'result' => (int) $result,
+            ];
+        } else {
+            return [
+                'status' => false,
+                'message' => 'No notifications'
             ];
         }
     }

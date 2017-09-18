@@ -240,7 +240,7 @@ function disciple_tools_groups_admin_assets() {
     $url = Disciple_Tools()->plugin_url;
     $ver = Disciple_Tools()->version;
 
-    wp_enqueue_style( 'disciple_tools_groups', $url. 'dt-core/css/user-groups.css', false, $ver, false );
+    wp_enqueue_style( 'disciple_tools_groups', $url. 'dt-core/admin/css/user-groups.css', false, $ver, false );
 }
 
 

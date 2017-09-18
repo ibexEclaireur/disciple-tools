@@ -546,62 +546,6 @@ class Disciple_Tools_Contacts
     }
 
     /**
-     * Get Contacts assigned to a user that match a certain priority
-     *
-     * @param  int    $user_id
-     * @param  string $priority One of "update_needed", "meeting_scheduled" and "contact_unattempted"
-     * @param  bool   $check_permissions
-     * @param  array  $query_pagination_args Pass in pagination and ordering parameters if wanted.
-     * @access public
-     * @since  0.1
-     * @return WP_Query | WP_Error
-     */
-    public static function get_user_prioritized_contacts( int $user_id, string $priority, bool $check_permissions = true, array $query_pagination_args = [] ) {
-        if ($check_permissions) {
-            if (! self::can_access_contacts() ) {
-                return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), ['status' => 403] );
-            }
-        }
-
-        $query_args = array(
-            'post_type' => 'contacts',
-            'meta_query' => array(
-                'relation' => 'AND',
-                'assigned_clause' => array(
-                    'key' => 'assigned_to',
-                    'value' => "user-$user_id",
-                ),
-                'status_clause' => array(
-                    'key' => 'overall_status',
-                    'value' => 'active',
-                ),
-            ),
-        );
-
-        if ( $priority === 'update_needed' ) {
-            $query_args['meta_query']['requires_update_clause'] = array(
-                'key' => 'requires_update',
-                'value' => 'yes',
-            );
-        } elseif ( $priority === 'meeting_scheduled' ) {
-            $query_args['meta_query']['meeting_scheduled_clause'] = array(
-                'key' => 'seeker_path',
-                'value' => 'scheduled',
-            );
-        } elseif ( $priority === 'contact_unattempted' ) {
-            $query_args['meta_query']['contact_unattempted_clause'] = array(
-                'key' => 'seeker_path',
-                'value' => ['none', null],
-                'compare' => 'IN',
-            );
-        } else {
-            return new WP_Error( "Unrecognised priority argument" );
-        }
-
-        return self::query_with_pagination( $query_args, $query_pagination_args );
-    }
-
-    /**
      * Get Contacts viewable by a user
      *
      * @param  $check_permissions
@@ -931,6 +875,23 @@ class Disciple_Tools_Contacts
         if($result == false) {
             return new WP_Error( 'remove_shared', __( "Record not deleted." ), ['status' => 418] );
         } else {
+    
+            // log share activity
+            dt_activity_insert(
+                [
+                    'action'            => 'remove',
+                    'object_type'       => get_post_type( $post_id ),
+                    'object_subtype'    => 'share',
+                    'object_name'       => get_the_title( $post_id ),
+                    'object_id'         => $wpdb->insert_id,
+                    'meta_id'           => '', // id of the comment
+                    'meta_key'          => '',
+                    'meta_value'        => '',
+                    'meta_parent'       => '',
+                    'object_note'       => 'Sharing of ' . get_the_title( $post_id ). ' was removed for ' . dt_get_user_display_name( $user_id ),
+                ]
+            );
+            
             return $result;
         }
     }
@@ -966,7 +927,26 @@ class Disciple_Tools_Contacts
         $duplicate_check = $wpdb->get_row( "SELECT id FROM $wpdb->dt_share WHERE post_id = '$post_id' AND user_id = '$user_id'", ARRAY_A );
 
         if (is_null( $duplicate_check )) {
+            
+            // insert share record
             $results = $wpdb->insert( $table, $data, $format );
+            
+            // log share activity
+            dt_activity_insert(
+                [
+                    'action'            => 'share',
+                    'object_type'       => get_post_type( $post_id ),
+                    'object_subtype'    => 'share',
+                    'object_name'       => get_the_title( $post_id ),
+                    'object_id'         => $wpdb->insert_id,
+                    'meta_id'           => '', // id of the comment
+                    'meta_key'          => '',
+                    'meta_value'        => '',
+                    'meta_parent'       => '',
+                    'object_note'       => get_the_title( $post_id ). ' was shared with ' . dt_get_user_display_name( $user_id ),
+                ]
+            );
+            
             return $results;
         } else {
             return new WP_Error( 'add_shared', __( "Contact already shared with user." ), ['status' => 418] );
