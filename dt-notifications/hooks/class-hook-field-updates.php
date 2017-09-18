@@ -28,7 +28,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value, $new = false ) {
     
 //        if ($meta_key != 'assigned_to' || $meta_key != 'requires_update') { // ignore all but assigned to
-        if ($meta_key != 'assigned_to' ) { // ignore all but assigned to
+        if ( !($meta_key == 'assigned_to' || $meta_key == 'requires_update' ) ) { // ignore all but assigned to
             return;
         }
         
@@ -39,14 +39,58 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
         switch($meta_key) {
             case 'assigned_to':
                 $notification_name = 'assigned_to';
+    
+                /**
+                 * Delete all notifications with matching post_id and notification_name
+                 * This prevents an assigned_to notification remaining in another persons inbox, that has since been
+                 * assigned to someone else. The Activity log keeps the historical data, but this notifications table
+                 * only should keep real status data.
+                 */
+                $this->delete_by_post(
+                    $object_id,
+                    $notification_name
+                );
                 
                 // get user or team assigned_to
                 $meta_array = explode( '-', $meta_value ); // Separate the type and id
                 $type = $meta_array[0]; // parse type
+                $user_id = (int) $meta_array[1];
+                
+                // get source user id and check if same as notification target
+                $source_user_id = get_current_user_id();
+                if( $source_user_id == $user_id) {
+                    return;
+                }
                 
                 if($type == 'user') {
                     
                     // TODO Are we creating an 'accepted' step to the assignment? If so, check here for 'accepted' status.
+                    
+                    $notification_note = 'You have been assigned <a href="'.home_url( '/' ) . get_post_type( $object_id ) .'/' .$object_id. '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+                    
+                    // build elements and submit notification
+                    $this->add_notification(
+                        $user_id,
+                        $source_user_id,
+                        $post_id = (int) $object_id,
+                        $secondary_item_id = (int) $meta_id,
+                        $notification_name,
+                        $notification_action = 'alert',
+                        $notification_note,
+                        $date_notified = current_time( 'mysql' )
+                    );
+                    
+                } else { // if group, do nothing. Option for future development.
+                    return;
+                }
+                
+                break;
+                
+            case 'requires_update':
+                
+                if( $meta_value == 'yes' ) {
+                    
+                    $notification_name = 'requires_update';
     
                     /**
                      * Delete all notifications with matching post_id and notification_name
@@ -58,29 +102,46 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                         $object_id,
                         $notification_name
                     );
+    
+                    // get post meta assigned_to
+                    $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
+                    if( empty( $assigned_to ) ) { // if assigned_to is empty, there is no one to notify.
+                        return;
+                    }
+    
+                    // parse assigned to
+                    $meta_array = explode( '-', $assigned_to ); // Separate the type and id
+                    $type = $meta_array[0]; // parse type
+                    $user_id = (int) $meta_array[1];
+    
+                    // get source user id and check if same as notification target
+                    $source_user_id = get_current_user_id();
+                    if( $source_user_id == $user_id) {
+                        return;
+                    }
+    
+                    if($type == 'user') {
+        
+                        $notification_note = 'An update on <a href="'.home_url( '/' ) . get_post_type( $object_id ) .'/' .$object_id. '">' . strip_tags( get_the_title( $object_id ) ) . '</a> is requested.';
+        
+                        // build elements and submit notification
+                        $this->add_notification(
+                            $user_id,
+                            $source_user_id,
+                            $post_id = (int) $object_id,
+                            $secondary_item_id = (int) $meta_id,
+                            $notification_name,
+                            $notification_action = 'alert',
+                            $notification_note,
+                            $date_notified = current_time( 'mysql' )
+                        );
+        
+                    } else { // if group, do nothing. Option for future development.
+                        return;
+                    }
                     
-                    $notification_note = 'You have been assigned <a href="'.home_url( '/' ) . get_post_type( $object_id ) .'/' .$object_id. '">' . wp_strip_all_tags( get_the_title( $object_id ) ) . '</a>';
-                    
-                    // build elements and submit notification
-                    $this->add_notification(
-                        $user_id = (int) $meta_array[1],
-                        $source_user_id = 0,
-                        $post_id = (int) $object_id,
-                        $secondary_item_id = (int) $meta_id,
-                        $notification_name,
-                        $notification_action = 'alert',
-                        $notification_note,
-                        $date_notified = current_time( 'mysql' )
-                    );
-                    
-                } else { // if team
-                    return;
-                }
+                } // end if requires update = yes
                 
-                
-                break;
-            case 'requires_update':
-                // TODO
                 break;
         }
         

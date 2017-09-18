@@ -47,8 +47,8 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                     case 'wp_insert_comment' :
                         $notification_action = 'mentioned';
                         
-                        $notification_note = '<strong>' . esc_attr( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
-                        .get_the_title( $post_id ).'</a> saying, "'. esc_attr( $comment->comment_content ) . '" ' ;
+                        $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                        . strip_tags( get_the_title( $post_id ) ) .'</a> saying, "'. strip_tags( $comment->comment_content ) . '" ' ;
         
                         $this->add_mention_notification(
                             $mentioned_user_id,
@@ -59,13 +59,16 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification_note,
                             $date_notified
                         );
+                        
+                        Disciple_Tools_Contacts::add_shared( $post_id, $mentioned_user_id );
+                        
                         break;
                     
                     case 'edit_comment' :
                         $notification_action = 'updated';
         
-                        $notification_note = '<strong>' . esc_attr( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
-                                             .get_the_title( $post_id ).'</a> saying, "'. esc_attr( $comment->comment_content ) . '" ' ;
+                        $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                                             . strip_tags( get_the_title( $post_id ) ) .'</a> saying, "'. strip_tags( $comment->comment_content ) . '" ' ;
         
                         $this->add_mention_notification(
                             $mentioned_user_id,
@@ -76,13 +79,16 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification_note,
                             $date_notified
                         );
+    
+                        Disciple_Tools_Contacts::add_shared( $post_id, $mentioned_user_id );
+                        
                         break;
                     
                     case 'untrash_comment' :
                         $notification_action = 'untrashed';
         
-                        $notification_note = '<strong>' . esc_attr( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
-                                             .get_the_title( $post_id ).'</a> saying, "'. esc_attr( $comment->comment_content ) . '" ' ;
+                        $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="'.home_url( '/' ) . get_post_type( $post_id ) . '/' .$post_id.'">'
+                                             . strip_tags( get_the_title( $post_id ) ) .'</a> saying, "'. strip_tags( $comment->comment_content ) . '" ' ;
             
                         $this->add_mention_notification(
                             $mentioned_user_id,
@@ -93,6 +99,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification_note,
                             $date_notified
                         );
+    
+                        Disciple_Tools_Contacts::add_shared( $post_id, $mentioned_user_id );
+                        
                         break;
                     
                     case 'delete_comment' :
