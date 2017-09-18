@@ -349,7 +349,7 @@ class Disciple_Tools_Notifications {
     
     /**
      * Insert notification for share
-     * 
+     *
      * @param int $user_id
      * @param int $post_id
      */
@@ -366,7 +366,7 @@ class Disciple_Tools_Notifications {
                     'notification_name'     => 'share',
                     'notification_action'   => 'alert',
                     'notification_note'     => '<a href="'.home_url( '/' ) . get_post_type( $post_id ) .'/' .$post_id. '">' . strip_tags( get_the_title( $post_id ) ). ' was shared with you.',
-                    'date_notified'         => current_time('mysql'),
+                    'date_notified'         => current_time( 'mysql' ),
                     'is_new'                => 1,
                 ]
             );
