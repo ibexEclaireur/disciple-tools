@@ -150,33 +150,25 @@ class Disciple_Tools_Contacts_Endpoints
         );
 
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/shared_with', [
+            $this->namespace, '/contact/(?P<id>\d+)/shared-with', [
                 "methods" => "GET",
                 "callback" => [$this, 'shared_with']
             ]
         );
 
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/remove_shared', [
+            $this->namespace, '/contact/(?P<id>\d+)/remove-shared', [
                 "methods" => "POST",
                 "callback" => [$this, 'remove_shared']
             ]
         );
 
         register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/add_shared', [
+            $this->namespace, '/contact/(?P<id>\d+)/add-shared', [
                 "methods" => "POST",
                 "callback" => [$this, 'add_shared']
             ]
         );
-
-        register_rest_route(
-            $this->namespace, '/contact/(?P<id>\d+)/add_shared', [
-                "methods" => "GETS",
-                "callback" => [$this, 'add_shared']
-            ]
-        );
-
     }
 
 
@@ -522,7 +514,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function shared_with( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['id'] )){
-            $result = Disciple_Tools_Contacts::get_shared_with( $params['id'] );
+            $result = Disciple_Tools_Contacts::get_shared_with_on_contact( $params['id'] );
 
             if ( is_wp_error( $result ) ){
                 return $result;
@@ -537,7 +529,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function remove_shared( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['id'] )){
-            $result = Disciple_Tools_Contacts::remove_shared( $params['id'], $params['user_id'] );
+            $result = Disciple_Tools_Contacts::remove_shared_on_contact( $params['id'], $params['user_id'] );
 
             if ( is_wp_error( $result ) ){
                 return $result;
@@ -552,7 +544,7 @@ class Disciple_Tools_Contacts_Endpoints
     public function add_shared( WP_REST_Request $request ){
         $params = $request->get_params();
         if ( isset( $params['id'] )){
-            $result = Disciple_Tools_Contacts::add_shared( $params['id'], $params['user_id'] );
+            $result = Disciple_Tools_Contacts::add_shared_on_contact( $params['id'], $params['user_id'] );
 
             if ( is_wp_error( $result ) ){
                 return $result;

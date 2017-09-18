@@ -260,4 +260,39 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
     public static function get_activity( int $contact_id ){
         return self::get_post_activity( 'groups', $contact_id );
     }
+
+
+    /**
+     * Gets an array of users whom the group is shared with.
+     * @param $post_id
+     * @return array|mixed
+     */
+    public static function get_shared_with_on_group( int $post_id ) {
+        return self::get_shared_with( 'groups', $post_id );
+    }
+
+    /**
+     * Removes share record
+     * @param $post_id
+     * @param $user_id
+     *
+     * @return false|int|WP_Error
+     */
+    public static function remove_shared_on_group( int $post_id, int $user_id ) {
+        return self::remove_shared( 'groups', $post_id, $user_id );
+    }
+
+    /**
+     * Adds a share record
+     *
+     * @param int   $post_id
+     * @param int   $user_id
+     * @param array $meta
+     *
+     * @return false|int|WP_Error
+     */
+    public static function add_shared_on_group( int $post_id, int $user_id, $meta = null ) {
+        return self::add_shared( 'groups', $post_id, $user_id, $meta );
+    }
+
 }
