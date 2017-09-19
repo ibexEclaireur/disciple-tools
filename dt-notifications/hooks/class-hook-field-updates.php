@@ -27,22 +27,37 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
      */
     public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value, $new = false ) {
     
-//        if ($meta_key != 'assigned_to' || $meta_key != 'requires_update') { // ignore all but assigned to
-        if ( !($meta_key == 'assigned_to' || $meta_key == 'requires_update' || strpos( $meta_key, "address" ) === 0 || strpos( $meta_key, "contact" ) === 0 ) ) {
-            return;
-        }
-        
+        // check if $meta_value is empty
         if (empty( $meta_value )) {
             return;
         }
         
+        // Check for specific key or trigger
+        if ( !($meta_key == 'assigned_to'
+               || $meta_key == 'requires_update'
+               || strpos( $meta_key, "address" ) === 0
+               || strpos( $meta_key, "contact" ) === 0
+               || strpos( $meta_key, "milestone" ) === 0
+        ) ) {
+            return;
+        }
+        
+        // Configure switch statement
+        $original_meta_key = '';
         if ( strpos( $meta_key, "address" ) === 0 || strpos( $meta_key, "contact" ) === 0 ) {
             $original_meta_key = $meta_key;
             $meta_key = 'contact_info_update';
         }
+        elseif ( strpos( $meta_key, "milestone" ) === 0 ) {
+            $original_meta_key = $meta_key;
+            $meta_key = 'milestone';
+        }
         
+        // Switch between types of notifications
         switch($meta_key) {
+            
             case 'assigned_to':
+                
                 $notification_name = 'assigned_to';
     
                 /**
@@ -68,8 +83,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                 }
                 
                 if($type == 'user') {
-                    
-                    // TODO Are we creating an 'accepted' step to the assignment? If so, check here for 'accepted' status.
                     
                     $notification_note = 'You have been assigned <a href="'.home_url( '/' ) . get_post_type( $object_id ) .'/' .$object_id. '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
                     
@@ -150,12 +163,8 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                 break;
                 
             case 'contact_info_update':
+                
                 $notification_name = 'contact_info_update';
-    
-                $this->delete_by_post(
-                    $object_id,
-                    $notification_name
-                );
     
                 // get post meta assigned_to
                 $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
@@ -206,6 +215,83 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                         $date_notified = current_time( 'mysql' )
                     );
                     
+                } else { // if group, do nothing. Option for future development.
+                    return;
+                }
+                
+                break;
+                
+            case 'milestone':
+    
+                $notification_name = 'milestone';
+    
+                // get post meta assigned_to
+                $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
+                if( empty( $assigned_to ) ) { // if assigned_to is empty, there is contact owner to notify.
+                    return;
+                }
+    
+                // parse assigned to
+                $meta_array = explode( '-', $assigned_to ); // Separate the type and id
+                $type = $meta_array[0]; // parse type
+                $user_id = (int) $meta_array[1];
+    
+                // get source user id and check if same as notification target
+                $source_user_id = get_current_user_id();
+                if( $source_user_id == $user_id) {
+                    return;
+                }
+    
+                switch($original_meta_key) {
+                    case 'milestone_belief':
+                        $element = '"Belief" Milestone';
+                        break;
+                    case 'milestone_can_share':
+                        $element = '"Can Share" Milestone';
+                        break;
+                    case 'milestone_sharing':
+                        $element = '"Actively Sharing" Milestone';
+                        break;
+                    case 'milestone_baptized':
+                        $element = '"Baptized" Milestone';
+                        break;
+                    case 'milestone_baptizing':
+                        $element = '"Baptizing" Milestone';
+                        break;
+                    case 'milestone_in_group':
+                        $element = '"Is in a group" Milestone';
+                        break;
+                    case 'milestone_planting':
+                        $element = '"Planting a group" Milestone';
+                        break;
+                    default:
+                        $element = 'A Milestone';
+                        break;
+                }
+                
+                $meta_value == 'yes' ? $value = 'added' : $value = 'removed';
+    
+                if($type == 'user') {
+        
+                    $user_object = get_userdata( $user_id );
+        
+                    $notification_note = $element . ' has been '.$value.' for <a href="'.home_url( '/' ) .
+                                         get_post_type( $object_id ) .'/' .$object_id. '">' .
+                                         strip_tags( get_the_title( $object_id ) ) . '</a> by <strong>' .
+                                         $user_object->display_name . '</strong>';
+        
+                    // build elements and submit notification
+                    $this->add_notification(
+                        $user_id,
+                        $source_user_id,
+                        $post_id = (int) $object_id,
+                        $secondary_item_id = (int) $meta_id,
+                        $notification_name,
+                        $notification_action = 'alert',
+                        $notification_note,
+                        $date_notified = current_time( 'mysql' )
+                    );
+        
                 } else { // if group, do nothing. Option for future development.
                     return;
                 }

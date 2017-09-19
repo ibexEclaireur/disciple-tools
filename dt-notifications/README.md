@@ -44,10 +44,8 @@ columns and their purposes are listed below.
 | `user_id`             | User id to be notified                                                    |
 | `post_id`             | Contact, Group, Location, etc that the comment was logged against         |
 | `secondary_item_id`   | The `meta_id` of the record                                               |
-| `notification_name`   | `assigned_to`, `requires_update`, `share`, `contact_info_update`                                 |
-| `notification_action` | `alert`, `new_event`                                                     |
+| `notification_name`   | `assigned_to`, `requires_update`, `share`, `contact_info_update`          |
+| `notification_action` | `alert`, `new_event`                                                      |
 | `notification_note`   | Description for the displayed notification                                |
 | `date_notified`       | Date and time that this event occurred                                    |
 | `is_new`              | Boolean status of whether the user has viewed the notfication or not      |
-
-

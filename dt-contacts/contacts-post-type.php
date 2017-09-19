@@ -439,7 +439,7 @@ class Disciple_Tools_Contact_Post_Type {
             add_post_meta( $post_id, strtolower( $number_key ), $_POST['new-value-contact'], true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
-
+        
         foreach ( $fields as $f ) {
 
             if ( isset( $_POST[$f] )){
@@ -834,7 +834,7 @@ class Disciple_Tools_Contact_Post_Type {
             'description' => '',
             'type' => 'key_select',
             'default' => ['no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' )],
-            'section' => 'milestone'
+            'section' => 'status'
         ];
 
         $fields['source_details'] = [
