@@ -31,9 +31,9 @@ class Disciple_Tools_Metabox_Share_Contact {
     /**
      * Contents for the Sharing Metabox
      */
-    public function content_display ( $contact_id ) {
+    public function content_display ( $post_id ) {
         
-        $shared_with_list = Disciple_Tools_Contacts::get_shared_with( $contact_id );
+        $shared_with_list = Disciple_Tools_Contacts::get_shared_with( 'contacts', $post_id  );
         if (!empty( $shared_with_list )) {
             
             $html = '<strong>Sharing with:</strong>';
