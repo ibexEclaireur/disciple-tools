@@ -734,12 +734,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
     }
 
-    public static function get_assignable_users( $contact_id ){
-        // TODO Shouldn't this filter out prayer, subscriber, etc. roles. These users are not assignable. Right? -CW
-        $users = get_users();
-        return $users;
-    }
-
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true ){
         if ($check_permissions && ! self::can_update( 'contacts', $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
