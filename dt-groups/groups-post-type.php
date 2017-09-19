@@ -149,15 +149,15 @@ class Disciple_Tools_Groups_Post_Type {
             'filter_items_list'     => sprintf( __( 'Filter %s list', 'disciple_tools' ), $this->plural ),
         ];
         $capabilities = [
-            'edit_post'             => 'edit_group',
-            'read_post'             => 'read_group',
-            'delete_post'           => 'delete_group',
-            'delete_others_posts'   => 'delete_others_groups',
-            'delete_posts'          => 'delete_groups',
-            'edit_posts'            => 'edit_groups',
-            'edit_others_posts'     => 'edit_others_groups',
-            'publish_posts'         => 'publish_groups',
-            'read_private_posts'    => 'read_private_groups',
+            'edit_post'             => 'access_groups',
+            'read_post'             => 'access_groups',
+            'delete_post'           => 'delete_any_group',
+            'delete_others_posts'   => 'delete_any_group',
+            'delete_posts'          => 'delete_any_group',
+            'edit_posts'            => 'access_groups',
+            'edit_others_posts'     => 'update_any_group',
+            'publish_posts'         => 'create_groups',
+            'read_private_posts'    => 'view_any_group',
         ];
 
         $single_slug = apply_filters( 'dt_single_slug', _x( sanitize_title_with_dashes( $this->singular ), 'single post url slug', 'disciple_tools' ) );
