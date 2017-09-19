@@ -92,6 +92,26 @@ class Disciple_Tools_Groups_Endpoints {
                 "callback" => [$this, 'get_activity']
             ]
         );
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/shared-with', [
+                "methods" => "GET",
+                "callback" => [$this, 'shared_with']
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/remove-shared', [
+                "methods" => "POST",
+                "callback" => [$this, 'remove_shared']
+            ]
+        );
+
+        register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/add-shared', [
+                "methods" => "POST",
+                "callback" => [$this, 'add_shared']
+            ]
+        );
     }
 
     public function get_viewable_groups( WP_REST_Request $request ) {
@@ -244,6 +264,51 @@ class Disciple_Tools_Groups_Endpoints {
             return Disciple_Tools_Groups::get_activity( $params['id'] );
         } else {
             return new WP_Error( "get_activity", "Missing a valid group id", ['status' => 400] );
+        }
+    }
+
+    public function shared_with( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Groups::get_shared_with_on_group( $params['id'] );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( 'shared_with', "Missing a valid group id", ['status' => 400] );
+        }
+    }
+
+    public function remove_shared( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if (isset( $params['id'] )){
+            $result = Disciple_Tools_Groups::remove_shared_on_group( $params['id'], $params['user_id'] );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( 'remove_shared', "Missing a valid group id", ['status' => 400] );
+        }
+    }
+
+    public function add_shared( WP_REST_Request $request ){
+        $params = $request->get_params();
+        if ( isset( $params['id'] )){
+            $result = Disciple_Tools_Groups::add_shared_on_group( $params['id'], $params['user_id'] );
+
+            if ( is_wp_error( $result ) ){
+                return $result;
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( 'add_shared', "Missing a valid group id", ['status' => 400] );
         }
     }
 

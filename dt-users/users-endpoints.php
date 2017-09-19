@@ -28,8 +28,11 @@ class Disciple_Tools_Users_Endpoints
 
     public function get_users( WP_REST_Request $request ){
         $params = $request->get_params();
-    //        @TODO check permissions
-        $users = Disciple_Tools_Users::get_assignable_users();
+        $search = "";
+        if (isset( $params['s'] )){
+            $search = $params['s'];
+        }
+        $users = Disciple_Tools_Users::get_assignable_users_compact( $search );
         return $users;
     }
 
