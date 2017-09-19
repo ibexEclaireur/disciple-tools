@@ -82,9 +82,9 @@ class Disciple_Tools_Metabox_Map {
                         mapTypeId: 'terrain'
                     });
     
-                    // TODO getting invalid geojson result from movement_mapping
-                    map.data.loadGeoJson(
-                        'http://en/wp-json/mm/v1/install/getcountrybylevel?cnty_id=ABW&level=0');
+//                    // TODO getting invalid geojson result from movement_mapping
+//                    map.data.loadGeoJson(
+//                        'http://en/wp-json/mm/v1/install/getcountrybylevel?cnty_id=ABW&level=0');
                     
                     // Define the LatLng coordinates for the polygon's path.
 //                    var coords = <?php //echo $meta['coordinates'] ?>//;
