@@ -144,7 +144,6 @@ class Disciple_Tools_Activator {
             update_option( 'dt_activity_log_db_version', $version );
         }
 
-
         /* Report Log Table */
         $table_name = $wpdb->prefix . 'dt_reports';
         if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
@@ -158,7 +157,6 @@ class Disciple_Tools_Activator {
             dbDelta( $sql2 );
             update_option( 'dt_reports_db_version', $version );
         }
-
 
         /* Report Meta Log Table */
         $table_name = $wpdb->prefix . 'dt_reportmeta';
