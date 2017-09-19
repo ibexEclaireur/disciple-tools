@@ -347,5 +347,30 @@ class Disciple_Tools_Notifications {
         return get_post( $comment_id );
     }
     
-    
+    /**
+     * Insert notification for share
+     *
+     * @param int $user_id
+     * @param int $post_id
+     */
+    public static function insert_notification_for_share( int $user_id, int $post_id ) {
+        
+        if( $user_id != get_current_user_id() ) { // check if share is not to self, else don't notify
+        
+            dt_notification_insert(
+                [
+                    'user_id'               => $user_id,
+                    'source_user_id'        => get_current_user_id(),
+                    'post_id'               => $post_id,
+                    'secondary_item_id'     => 0,
+                    'notification_name'     => 'share',
+                    'notification_action'   => 'alert',
+                    'notification_note'     => '<a href="'.home_url( '/' ) . get_post_type( $post_id ) .'/' .$post_id. '">' . strip_tags( get_the_title( $post_id ) ). ' was shared with you.',
+                    'date_notified'         => current_time( 'mysql' ),
+                    'is_new'                => 1,
+                ]
+            );
+            
+        }
+    }
 }
