@@ -245,6 +245,7 @@ class Disciple_Tools_Location_Post_Type {
         
         /* Determine if Zume/24:14/4K Geographic zones are installed.
          * If so, then render columns for those grid systems. */
+        // TODO finish the if/then logic of having admin areas. The if/then controls if Zume/24:14/4K units are used, then show these columns, if not show other defaults.
         if(get_option( '_dt_usa_installed_state' ) || get_option( '_dt_installed_country' )) {
             $new_columns =
                 [
@@ -318,9 +319,9 @@ class Disciple_Tools_Location_Post_Type {
      * @return void
      */
     public function meta_box_setup () {
-        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'low' );
+        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
         //		add_meta_box( $this->post_type . '_data', __( 'Location Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_meta_box' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_meta_box' ], $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
 
@@ -335,7 +336,7 @@ class Disciple_Tools_Location_Post_Type {
      * Load activity metabox
      */
     public function load_map_meta_box () {
-        dt_map_metabox()->display_map();
+        dt_map_metabox()->display_single_map();
     }
 
     /**

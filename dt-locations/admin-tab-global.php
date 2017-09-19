@@ -241,10 +241,7 @@ class Disciple_Tools_Locations_Tab_Global {
                     
                     $cnty_id = $_POST['delete'];
     
-                    $result = Disciple_Tools_Locations_Import::delete_location_data( $cnty_id );
-                    if (!$result){
-                        return new WP_Error( "delete_error", 'delete queries failed', ['status' => 400] );
-                    }
+                    Disciple_Tools_Locations_Tab_Global::delete_location_data( $cnty_id );
                     
                     // update option record
                     $options = get_option( '_dt_installed_country' );
@@ -265,6 +262,15 @@ class Disciple_Tools_Locations_Tab_Global {
                     break;
             }
         }
+    }
+    
+    public static function delete_location_data ( $cnty_id ) {
+        global $wpdb;
+        
+        $results1 = $wpdb->query( "DELETE from $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '$cnty_id%';" );
+        $results2 = $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE NOT EXISTS (SELECT NULL FROM $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id);" );
+        
+        return ($results1 || $results2) ? true : false;
     }
     
     /**

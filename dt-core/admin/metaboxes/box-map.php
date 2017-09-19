@@ -32,8 +32,92 @@ class Disciple_Tools_Metabox_Map {
     public function __construct () {
 
     } // End __construct()
-
-
+    
+    
+    /**
+     * Load map metabox
+     */
+    public function display_single_map () {
+        global $wpdb, $post;
+        
+        // get coordinates for county
+        $results = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND (meta_key = 'coordinates' OR meta_key = 'Cen_x' OR meta_key = 'Cen_y')" );
+        
+        $meta = [];
+        foreach($results as $result) {
+            $meta[$result->meta_key] = $result->meta_value;
+        }
+        
+        
+        if(!empty( $meta )) {
+            ?>
+            
+            <style>
+                /* Always set the map height explicitly to define the size of the div
+            * element that contains the map. */
+                #map {
+                    height: 450px;;
+                    width: 100%;
+                    /*max-width:1000px;*/
+                }
+                
+                /* Optional: Makes the sample page fill the window. */
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+            
+            </style>
+            <div id="map"></div>
+            <script type="text/javascript">
+                
+                jQuery(document).ready(function () {
+                    
+                    var zoom = 7;
+                    
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: zoom,
+                        center: {lat: <?php echo $meta['Cen_y']; ?>, lng: <?php echo $meta['Cen_x']; ?>},
+                        mapTypeId: 'terrain'
+                    });
+    
+                    // TODO getting invalid geojson result from movement_mapping
+                    map.data.loadGeoJson(
+                        'http://en/wp-json/mm/v1/install/getcountrybylevel?cnty_id=ABW&level=0');
+                    
+                    // Define the LatLng coordinates for the polygon's path.
+//                    var coords = <?php //echo $meta['coordinates'] ?>//;
+//
+//                    var tracts = [];
+//
+//                    for (i = 0; i < coords.length; i++) {
+//                        tracts.push(new google.maps.Polygon({
+//                            paths: coords[i],
+//                            strokeColor: '#FF0000',
+//                            strokeOpacity: 0.5,
+//                            strokeWeight: 2,
+//                            fillColor: '',
+//                            fillOpacity: 0.2
+//                        }));
+//
+//                        tracts[i].setMap(map);
+//                    }
+                
+                });
+            </script>
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcddCscCo-Uyfa3HJQVe0JdBaMCORA9eY">
+            </script>
+            
+            <?php
+        } else {
+            echo '<p>No map info available</p>';
+        } // end if no results
+        
+        
+    }
+    
     /**
      * Load map metabox
      */

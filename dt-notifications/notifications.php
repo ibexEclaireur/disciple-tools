@@ -85,16 +85,18 @@ class Disciple_Tools_Notifications {
                 'SELECT `id`
                     FROM %1$s
 					WHERE `user_id` = \'%2$s\'
-						AND `post_id` = \'%3$s\'
-						AND `secondary_item_id` = \'%4$s\'
-						AND `notification_name` = \'%5$s\'
-						AND `notification_action` = \'%6$s\'
-						AND `notification_note` = \'%7$s\'
-						AND `date_notified` = \'%8$s\'
-						AND `is_new` = \'%9$s\'
+						AND `source_user_id` = \'%3$s\'
+						AND `post_id` = \'%4$s\'
+						AND `secondary_item_id` = \'%5$s\'
+						AND `notification_name` = \'%6$s\'
+						AND `notification_action` = \'%7$s\'
+						AND `notification_note` = \'%8$s\'
+						AND `date_notified` = \'%9$s\'
+						AND `is_new` = \'%10$s\'
 				;',
                 $wpdb->dt_notifications,
                 $args['user_id'],
+                $args['source_user_id'],
                 $args['post_id'],
                 $args['secondary_item_id'],
                 $args['notification_name'],
@@ -105,7 +107,11 @@ class Disciple_Tools_Notifications {
             )
         );
         
-        if ( $check_duplicate ) {
+        if ( $check_duplicate ) { // don't create a duplicate record
+            return;
+        }
+        
+        if ( $args['user_id'] == $args['source_user_id'] ) { // check if source of the event and notification target are the same, if so, don't create notification. i.e. I don't want notifications of my own actions.
             return;
         }
         
@@ -113,6 +119,7 @@ class Disciple_Tools_Notifications {
             $wpdb->dt_notifications,
             [
                 'user_id'                   => $args['user_id'],
+                'source_user_id'            => $args['source_user_id'],
                 'post_id'                   => $args['post_id'],
                 'secondary_item_id'         => $args['secondary_item_id'],
                 'notification_name'         => $args['notification_name'],
@@ -121,12 +128,10 @@ class Disciple_Tools_Notifications {
                 'date_notified'             => $args['date_notified'],
                 'is_new'                    => $args['is_new'],
             ],
-            [ '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d' ]
+            [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d' ]
         );
         
-        // TODO consider adding a meta data process here
-        
-        // Final action on insert.
+        // Fire action after insert.
         do_action( 'dt_insert_notification', $args );
     }
     
@@ -333,23 +338,6 @@ class Disciple_Tools_Notifications {
     }
     
     /**
-     * Get field update message
-     * @param $activity_id
-     *
-     * @return null|string
-     */
-    public static function get_field_update_message( $activity_id ) {
-        global $wpdb;
-        
-        $result = $wpdb->get_var( "SELECT object_note FROM $wpdb->dt_activity_log WHERE histid = '$activity_id'" );
-        if(!$result) {
-            return 'no activity record';
-        }
-        
-        return $result;
-    }
-    
-    /**
      * Get the @mention message content
      * @param $comment_id
      *
@@ -359,12 +347,30 @@ class Disciple_Tools_Notifications {
         return get_post( $comment_id );
     }
     
-    // TODO add the function to change a notification from new to viewed. 1 to 0 in the is_new table column
-    
-    // TODO get_new_notifications for a user_id. Filter by notification preferences.
-    
-    // TODO modify_notifications for a user. Store preferences in the usermeta data.
-    
-    
-    
+    /**
+     * Insert notification for share
+     *
+     * @param int $user_id
+     * @param int $post_id
+     */
+    public static function insert_notification_for_share( int $user_id, int $post_id ) {
+        
+        if( $user_id != get_current_user_id() ) { // check if share is not to self, else don't notify
+        
+            dt_notification_insert(
+                [
+                    'user_id'               => $user_id,
+                    'source_user_id'        => get_current_user_id(),
+                    'post_id'               => $post_id,
+                    'secondary_item_id'     => 0,
+                    'notification_name'     => 'share',
+                    'notification_action'   => 'alert',
+                    'notification_note'     => '<a href="'.home_url( '/' ) . get_post_type( $post_id ) .'/' .$post_id. '">' . strip_tags( get_the_title( $post_id ) ). ' was shared with you.',
+                    'date_notified'         => current_time( 'mysql' ),
+                    'is_new'                => 1,
+                ]
+            );
+            
+        }
+    }
 }

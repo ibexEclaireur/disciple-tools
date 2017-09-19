@@ -45,10 +45,10 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table {
                     return '<a href="'. home_url( '/contacts/' ) .$comment->comment_post_ID.'">' . $comment->comment_content . '</a>';
                 }
                 elseif ($item['notification_name'] == 'field_update') {
-                    return Disciple_Tools_Notifications::get_field_update_message( $item[$column_name] );
+                    return $item[$column_name] ;
                 }
                 elseif ($item['notification_name'] == 'follow_activity') {
-                    return Disciple_Tools_Notifications::get_field_update_message( $item[$column_name] );
+                    return $item[$column_name] ;
                 }
                 break;
             case 'secondary_item_id':
