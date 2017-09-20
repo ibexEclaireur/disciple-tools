@@ -41,6 +41,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 $post_id = $comment->comment_post_ID;
                 $date_notified = $comment->comment_date;
                 $author_name = $comment->comment_author;
+                $post_type = get_post_type( $post_id );
                 
                 // call appropriate action
                 switch ( current_filter() ) {
@@ -60,7 +61,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $date_notified
                         );
                         
-                        Disciple_Tools_Contacts::add_shared( $post_id, $mentioned_user_id );
+                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
                         
                         break;
                     
@@ -80,7 +81,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $date_notified
                         );
     
-                        Disciple_Tools_Contacts::add_shared( $post_id, $mentioned_user_id );
+                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
                         
                         break;
                     
@@ -100,7 +101,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $date_notified
                         );
     
-                        Disciple_Tools_Contacts::add_shared( $post_id, $mentioned_user_id );
+                        Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
                         
                         break;
                     
