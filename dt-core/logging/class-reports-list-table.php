@@ -90,14 +90,14 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
 
         // Get all report detals
         $results = $wpdb->get_results(
-            $wpdb->prepare(
-                'SELECT * FROM %1$s
-					ORDER BY %2$s
-					LIMIT 300
-				;',
-                $wpdb->reports,
-                'report_date desc'
-            ),
+            "SELECT
+                *
+            FROM
+                `$wpdb->reports`
+            ORDER BY
+                `report_date` desc
+            LIMIT
+                300",
             ARRAY_A
         );
 
@@ -111,12 +111,12 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
             // Get all report detals
             $meta_input_raw = $wpdb->get_results(
                 $wpdb->prepare(
-                    'SELECT %1$s, %2$s FROM %3$s
-                      WHERE report_id = %4$s
-				;',
-                    'meta_key',
-                    'meta_value',
-                    $wpdb->reportmeta,
+                    "SELECT
+                        meta_key, meta_value
+                    FROM
+                        `$wpdb->reportmeta`
+                    WHERE
+                        `report_id` = %s",
                     $result['id']
                 ),
                 ARRAY_A

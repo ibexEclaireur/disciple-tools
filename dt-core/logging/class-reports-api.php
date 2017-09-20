@@ -53,12 +53,14 @@ class Disciple_Tools_Reports_API {
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
             $wpdb->prepare(
-                'SELECT `id` FROM %1$s
-					WHERE `report_date` = \'%2$s\'
-						AND `report_source` = \'%3$s\'
-						AND `report_subsource` = \'%4$s\'
-				;',
-                $wpdb->reports,
+                "SELECT
+                    `id`
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_date` = %s
+                    AND `report_source` = %s
+                    AND `report_subsource` = %s",
                 $args['report_date'],
                 $args['report_source'],
                 $args['report_subsource']
@@ -123,10 +125,12 @@ class Disciple_Tools_Reports_API {
 
         $results = $wpdb->get_results(
             $wpdb->prepare(
-                'SELECT * FROM %1$s
-					WHERE `report_source` = \'%2$s\'
-				;',
-                $wpdb->reports,
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_source` = %s",
                 $report_source
             )
         );
@@ -151,10 +155,12 @@ class Disciple_Tools_Reports_API {
         // Get all report detals
         $results = $wpdb->get_row(
             $wpdb->prepare(
-                'SELECT * FROM %1$s
-					WHERE `id` = \'%2$s\'
-				;',
-                $wpdb->reports,
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `id` = %s",
                 $id
             ),
             ARRAY_A
@@ -163,10 +169,12 @@ class Disciple_Tools_Reports_API {
         // Get all metadata values for the report
         $meta_input = $wpdb->get_results(
             $wpdb->prepare(
-                'SELECT * FROM %1$s
-					WHERE `report_id` = \'%2$s\'
-				;',
-                $wpdb->reportmeta,
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->reportmeta`
+                WHERE
+                    `report_id` = %s",
                 $id
             ),
             ARRAY_A
@@ -188,11 +196,13 @@ class Disciple_Tools_Reports_API {
         // Get all metadata values for the report
         $meta_value = $wpdb->get_row(
             $wpdb->prepare(
-                'SELECT meta_value FROM %1$s
-					WHERE `report_id` = \'%2$s\'
-					AND `meta_key` = \'%3$s\'
-				;',
-                $wpdb->reportmeta,
+                "SELECT
+                    meta_value
+                FROM
+                    `$wpdb->reportmeta`
+                WHERE
+                    `report_id` = %s
+                    AND `meta_key` = %s",
                 $id,
                 $key
             ),
@@ -214,26 +224,36 @@ class Disciple_Tools_Reports_API {
         global $wpdb;
         $results_int = 0;
 
+        if ( ! in_array( strtolower( $type ), [ 'sum', 'max', 'min', 'average' ], true ) ) {
+            throw new Error( "type should be one of sum max min and average" );
+        }
+
+        if ( ! preg_match( '/^[a-zA-Z_]+$/', $meta_key ) ) {
+            throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ meta_key arguments are accepted, not $meta_key" );
+        }
+
         // Build full query
         $sql = $wpdb->prepare(
-            'SELECT %1$s(meta_value) as %2$s
-                FROM %3$s
-                    RIGHT JOIN %4$s ON %3$s.id = %4$s.report_id
-                WHERE %3$s.report_date LIKE \'%5$s\'
-                    AND %3$s.report_source = \'%6$s\'
-                    AND %4$s.meta_key = \'%2$s\'
-                    ;',
-            $type,
-            $meta_key,
-            $wpdb->reports,
-            $wpdb->reportmeta,
+            "SELECT
+                $type(`meta_value`) AS `$meta_key`
+                FROM
+                    `$wpdb->reports`
+                RIGHT JOIN
+                    `$wpdb->reportmeta`
+                ON
+                    `$wpdb->reports`.id = `$wpdb->reportmeta`.report_id
+                WHERE
+                    `$wpdb->reports`.report_date LIKE %s
+                    AND `$wpdb->reports`.report_source = %s
+                    AND `$wpdb->reportmeta`.meta_key = %s",
             $wpdb->esc_like( $date ) . '%',
-            $source
+            $source,
+            $meta_key
         );
 
         // Query results
         $results = $wpdb->get_results( $sql , ARRAY_A );
-        
+
         if( isset( $results[0] )) {
             $results_int = $results[0][$meta_key];
         }
@@ -256,12 +276,14 @@ class Disciple_Tools_Reports_API {
         if(!empty( $subsource ) && !empty( $source )) {
             // Build full query
             $sql = $wpdb->prepare(
-                'SELECT id FROM %1$s
-					WHERE `report_date` LIKE \'%2$s\'
-						AND `report_source` = \'%3$s\'
-						AND `report_subsource` = \'%4$s\'
-				;',
-                $wpdb->reports,
+                "SELECT
+                    id
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_date` LIKE %s,
+                    AND `report_source` = %s,
+                    AND `report_subsource` = %s",
                 $wpdb->esc_like( $date ) . '%',
                 $source,
                 $subsource
@@ -269,21 +291,25 @@ class Disciple_Tools_Reports_API {
         } elseif (!empty( $source )) {
             // Build limited query
             $sql = $wpdb->prepare(
-                'SELECT id FROM %1$s
-					WHERE `report_date` LIKE \'%2$s\'
-						AND `report_source` = \'%3$s\'
-				;',
-                $wpdb->reports,
+                "SELECT
+                    id
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_date` LIKE %s
+                    AND `report_source` = %s",
                 $wpdb->esc_like( $date ) . '%',
                 $source
             );
         } else {
             // Build date query
             $sql = $wpdb->prepare(
-                'SELECT id FROM %1$s
-					WHERE `report_date` LIKE \'%2$s\'
-				;',
-                $wpdb->reports,
+                "SELECT
+                    id
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_date` LIKE %s",
                 $wpdb->esc_like( $date ) . '%'
             );
         }
@@ -349,13 +375,14 @@ class Disciple_Tools_Reports_API {
         if(!empty( $subsource )) {
             // Build full query
             $sql = $wpdb->prepare(
-                'SELECT %1$s FROM %2$s
-					WHERE `report_date` LIKE \'%3$s\'
-						AND `report_source` = \'%4$s\'
-						AND `report_subsource` = \'%5$s\'
-				;',
-                $columns,
-                $wpdb->reports,
+                "SELECT
+                    $columns
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_date` LIKE %s
+                    AND `report_source` = %s
+                    AND `report_subsource` = %s",
                 $wpdb->esc_like( $date ) . '%',
                 $source,
                 $subsource
@@ -363,12 +390,13 @@ class Disciple_Tools_Reports_API {
         } else {
             // Build full query
             $sql = $wpdb->prepare(
-                'SELECT %1$s FROM %2$s
-					WHERE `report_date` LIKE \'%3$s\'
-						AND `report_source` = \'%4$s\'
-				;',
-                $columns,
-                $wpdb->reports,
+                "SELECT
+                    $columns
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_date` LIKE %s
+                    AND `report_source` = %s",
                 $wpdb->esc_like( $date ) . '%',
                 $source
             );
@@ -436,12 +464,14 @@ class Disciple_Tools_Reports_API {
 
         $results = $wpdb->get_results(
             $wpdb->prepare(
-                'SELECT * FROM %1$s
-					WHERE `report_source` = \'%2$s\'
-					AND
-					report_date = (select max(report_date) from %1$s where `report_source` = \'%2$s\')
-				;',
-                $wpdb->reports,
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_source` = %s
+                    AND report_date = (select max(report_date) from `$wpdb->reports` where `report_source` = %s)",
+                $source,
                 $source
             )
         );
@@ -461,16 +491,17 @@ class Disciple_Tools_Reports_API {
 
         $results = $wpdb->get_results(
             $wpdb->prepare(
-                'SELECT * FROM %1$s
-					WHERE `report_source` = \'%2$s\'
-					AND
-					`report_subsource` = \'%3$s\'
-					AND
-					report_date = (select max(report_date) from %1$s where `report_source` = \'%2$s\')
-				;',
-                $wpdb->reports,
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->reports`
+                WHERE
+                    `report_source` = %s
+                    AND `report_subsource` = %s
+                    AND report_date = (select max(report_date) from `$wpdb->reports` where `report_source` = %s)",
                 $source,
-                $subsource
+                $subsource,
+                $source
             )
         );
 

@@ -39,17 +39,23 @@ class Disciple_Tools_Metabox_Activity {
     public function activity_list_for_id ( $id, $order = 'DESC' ) {
         global $wpdb;
 
+        if ( strtolower( $order ) != "desc" && strtolower( $order ) != "asc" ) {
+            throw new Error( "order argument expected to be ASC or DESC" );
+        }
+
         // Query activity with the contact id
         $list = $wpdb->get_results(
             $wpdb->prepare(
-                'SELECT %1$s FROM %2$s
-					WHERE `object_id` = \'%3$s\'
-					ORDER BY hist_time %4$s
-				;',
-                '*',
-                $wpdb->activity,
-                $id,
-                $order
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->activity`
+                WHERE
+                    `object_id` = %s
+                ORDER BY
+                    `hist_time` $order
+                ;",
+                $id
             ), ARRAY_A
         );
 

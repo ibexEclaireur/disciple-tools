@@ -7,7 +7,7 @@
  * Display table function
  */
 function dt_contact_share_table (){
-    
+
     $ListTable = new MM_Table();
     //Fetch, prepare, sort, and filter our data...
     if( isset( $_GET['s'] ) ){
@@ -16,22 +16,22 @@ function dt_contact_share_table (){
     } else {
         $ListTable->prepare_items();
     }
-    
-    
+
+
     ?>
     <div class="wrap">
-        
+
         <div id="icon-users" class="icon32"><br/></div>
         <h2>Movement Mapping Table</h2>
-        
+
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="movement-mapping" method="get">
             <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
             <?php $ListTable->search_box( 'Search Table', 'movement-mapping' ); ?>
             <?php $ListTable->display() ?>
-        
+
         </form>
-    
+
     </div>
     <?php
 }
@@ -47,21 +47,21 @@ if(!class_exists( 'WP_List_Table' )){
  * Class Disciple_Tools_Contact_Share_Table
  */
 class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
-    
+
     function __construct(){
         global $status, $page;
-        
+
         //Set parent defaults
         parent::__construct( array(
             'singular'  => 'location',     //singular name of the listed records
             'plural'    => 'locations',    //plural name of the listed records
             'ajax'      => false        //does this table support ajax?
         ) );
-        
+
     }
-    
-    
-    
+
+
+
     function column_default( $item, $column_name ){
         switch($column_name){
             case 'WorldID':
@@ -95,16 +95,16 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
                 return print_r( $item,true ); //Show the whole array for troubleshooting purposes
         }
     }
-    
-    
+
+
     function column_title( $item ){
-        
+
         //Build row actions
         $actions = array(
             //            'edit'      => sprintf('<a href="?page=%s&action=%s&location=%s">Edit</a>',$_REQUEST['page'],'edit',$item['ID']),
             //            'delete'    => sprintf('<a href="?page=%s&action=%s&location=%s">Delete</a>',$_REQUEST['page'],'delete',$item['ID']),
         );
-        
+
         //Return the title contents
         return sprintf('%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
             /*$1%s*/ $item['Zone_name'],
@@ -112,8 +112,8 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
             /*$3%s*/ $this->row_actions( $actions )
         );
     }
-    
-    
+
+
     function column_cb( $item ){
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
@@ -121,8 +121,8 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
             /*$2%s*/ $item['WorldID']                //The value of the checkbox should be the record's id
         );
     }
-    
-    
+
+
     function get_columns(){
         $columns = array(
             'cb'            => '<input type="checkbox" />', //Render a checkbox instead of text
@@ -151,8 +151,8 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
         );
         return $columns;
     }
-    
-    
+
+
     function get_sortable_columns() {
         $sortable_columns = array(
             'WorldID'     => array('WorldID',false),     //true means it's already sorted
@@ -168,115 +168,132 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
         );
         return $sortable_columns;
     }
-    
-    
+
+
     function get_bulk_actions() {
         $actions = array(
             'sync'    => 'Sync'
         );
         return $actions;
     }
-    
-    
+
+
     function process_bulk_action() {
-        
+
         //Detect when a bulk action is being triggered...
         if( 'sync'===$this->current_action() ) {
             foreach ( $_GET['location'] as $location ) {
                 mm_sync_by_oz_objectid( $location );
             }
         }
-        
+
     }
-    
-    
+
+
     function prepare_items( $search = null ) {
         global $wpdb; //This is used only if making any database queries
-        
+
         $columns = $this->get_columns(); // prepare columns
         $hidden = array();
         $sortable = $this->get_sortable_columns();
-        
+
         $this->_column_headers = array($columns, $hidden, $sortable); // construct column headers to wp_table
-        
+
         $this->process_bulk_action(); // construct bulk actions
-        
+
         $total_items = $wpdb->get_var( "SELECT count(*) FROM $wpdb->mm" ); // get total items
         $current_page = $this->get_pagenum();// get current page
         $per_page = 20; // get items per page
-        $page_start = ($current_page-1)*$per_page; // calculate starting item id
-        
+        $page_start = (int) (($current_page - 1) * $per_page); // calculate starting item id
+
         $orderby = (!empty( $_REQUEST['orderby'] )) ? $_REQUEST['orderby'] : 'WorldID'; //If no sort, default to title
         $order = (!empty( $_REQUEST['order'] )) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-        
+
+        if ( ! preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
+            throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ order arguments are accepted" );
+        }
+
+        if ( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
+            throw new Error( "order argument must be ASC or DESC" );
+        }
+
         if( empty( $search ) ) {
-            
-            $where = '';
-            if( !empty( $_GET['cnty-filter'] ) ) {
-                $where = " WHERE CntyID='" . $_GET['cnty-filter'] . "'";
-            }
-            
-            $query = "SELECT * 
-                    FROM $wpdb->mm
-                    $where
-                    ORDER BY $orderby $order
-                    LIMIT $page_start, $per_page";
-            
-            $data = $wpdb->get_results( $query, ARRAY_A );
-            
+
+            $data = $wpdb->get_results(
+                $wpdb->prepare(
+                    "SELECT
+                        *
+                    FROM
+                        `$wpdb->mm`
+                    WHERE
+                        1=1 "
+                    . ( ! empty( $_GET['cnty-filter'] ) ? 'AND CntyID = %1$s ' : '' )
+                    . "ORDER BY
+                        `$orderby` $order
+                    LIMIT
+                        $page_start, $per_page",
+                    $_GET['cnty-filter']
+                ),
+                ARRAY_A
+            );
+
         } else {
             // Trim Search Term
             $search = trim( $search );
-            
+
             $where = '';
             if( !empty( $_GET['cnty-filter'] ) ) {
                 $where = ' AND CntyID=' . $_GET['cnty-filter'];
             }
-            
+
             /* Notice how you can search multiple columns for your search term easily, and return one data set */
             $data = $wpdb->get_results(
-                $wpdb->prepare( "
-                    SELECT * 
-                    FROM  $wpdb->mm 
-                    WHERE `WorldID` LIKE '%%%s%%' 
-                      OR `Zone_Name` LIKE '%%%s%%'
-                      $where
-                      ORDER BY $orderby $order
+                $wpdb->prepare(
+                    "SELECT
+                         *
+                    FROM
+                        `$wpdb->mm`
+                    WHERE
+                        `WorldID` LIKE %1\$s
+                        OR `Zone_Name` LIKE %1\$s "
+                    . (! empty( $_GET['cnty-filter'] ) ? ' AND CntyID = %2$s ' : '' )
+                    . "ORDER BY
+                        $orderby $order
                     ",
-                    $search,
-                    $search
+                    '%' . $wpdb->esc_like( $search ) . '%',
+                    $_GET['cnty-filter']
                 ),
                 ARRAY_A
             );
-            
-            
+
+
             $total_items = count( $data );
             $per_page = $total_items;
         }
-        
+
         $this->items = $data;
-        
+
         $this->set_pagination_args( array(
             'total_items' => $total_items,                  //WE have to calculate the total number of items
             'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
             'total_pages' => $total_items > 0 ? $total_items/$per_page : '1', //WE have to calculate the total number of pages
         ) );
     }
-    
+
     function extra_tablenav( $which ) {
         global $wpdb;
-        
+
         if ( $which == "top" ){
             ?>
             <div class="alignleft actions bulkactions">
                 <?php
                 $cnty = $wpdb->get_results( 'SELECT CntyID, Cnty_Name FROM '.$wpdb->mm.' GROUP BY CntyID, Cnty_Name ORDER BY Cnty_Name ASC', ARRAY_A );
-                
+
                 if( $cnty ){
                     ?>
-                    
+
                     <select name="cnty-filter" id="cnty-filter">
-                        
+
                         <option value="">Filter by Country</option>
                         <?php
                         foreach( $cnty as $cat ){
@@ -291,7 +308,7 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
                         ?>
                     </select>
                     <button class="button" type="submit">Filter</button>
-                    
+
                     <?php
                 }
                 ?>
@@ -300,9 +317,9 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table {
         }
         if ( $which == "bottom" ){
             //The code that goes after the table is there
-            
+
         }
     }
-    
-    
+
+
 }

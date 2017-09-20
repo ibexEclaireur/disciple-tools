@@ -52,11 +52,12 @@ function dt_get_user_associations () {
 
     // Build arrays for current groups connected to user
     $sql = $wpdb->prepare(
-        'SELECT %1$s.term_taxonomy_id 
-          FROM %1$s
-            WHERE object_id  = \'%2$d\'
-            ',
-        $wpdb->term_relationships,
+        "SELECT
+            `$wpdb->term_relationships`.`term_taxonomy_id`
+        FROM
+            `$wpdb->term_relationships`
+        WHERE
+            object_id = %d",
         $user_id
     );
     $results = $wpdb->get_results( $sql, ARRAY_A );
@@ -102,17 +103,18 @@ function dt_get_team_contacts( $user_id ) {
     // First Query
     // Build arrays for current groups connected to user
     $sql = $wpdb->prepare(
-        'SELECT DISTINCT %1$s.%3$s
-          FROM %1$s
-          INNER JOIN %2$s ON %1$s.%3$s=%2$s.%3$s
-            WHERE object_id  = \'%4$d\'
-            AND taxonomy = \'%5$s\'
-            ',
-        $wpdb->term_relationships,
-        $wpdb->term_taxonomy,
-        'term_taxonomy_id',
-        $user_id,
-        'user-group'
+        "SELECT
+            DISTINCT `$wpdb->term_relationships`.`term_taxonomy_id`
+        FROM
+            `$wpdb->term_relationships`
+        INNER JOIN
+            `$wpdb->term_taxonomy`
+        ON
+            `$wpdb->term_relationships`.`term_taxonomy_id` = `$wpdb->term_taxonomy`.`term_taxonomy_id`
+        WHERE
+            object_id  = %d
+            AND taxonomy = 'user-group'",
+        $user_id
     );
     $results = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -125,11 +127,12 @@ function dt_get_team_contacts( $user_id ) {
         // Second Query
         // query a member list for this group
         $sql = $wpdb->prepare(
-            'SELECT %1$s.object_id 
-          FROM %1$s
-            WHERE term_taxonomy_id  = \'%2$d\'
-            ',
-            $wpdb->term_relationships,
+            "SELECT
+                `$wpdb->term_relationships`.object_id
+            FROM
+                `$wpdb->term_relationships`
+            WHERE
+                term_taxonomy_id = %d",
             $result['term_taxonomy_id']
         );
 

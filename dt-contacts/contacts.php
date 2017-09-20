@@ -504,11 +504,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         global $wpdb;
 
         $q = $wpdb->prepare(
-            'SELECT * from %1$s
-            WHERE `object_type` = "contacts"
-            AND `object_id` = "%2$s"
-            ;',
-            $wpdb->activity,
+            "SELECT
+                 *
+            FROM
+                `$wpdb->activity`
+            WHERE
+                `object_type` = 'contacts'
+                AND `object_id` = %s",
             $contact_id
         );
         $activity = $wpdb->get_results( $q );
@@ -624,15 +626,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         // First Query
         // Build arrays for current groups connected to user
         $sql = $wpdb->prepare(
-            'SELECT DISTINCT %1$s.%3$s
-          FROM %1$s
-          INNER JOIN %2$s ON %1$s.%3$s=%2$s.%3$s
-            WHERE object_id  = \'%4$d\'
-            AND taxonomy = \'%5$s\'
-            ',
-            $wpdb->term_relationships,
-            $wpdb->term_taxonomy,
-            'term_taxonomy_id',
+            "SELECT DISTINCT
+                `$wpdb->term_relationships`.`term_taxonomy_id`
+            FROM
+                `$wpdb->term_relationships`
+            INNER JOIN
+                `$wpdb->term_taxonomy`
+            ON
+                `$wpdb->term_relationships`.`term_taxonomy_id` = `$wpdb->term_taxonomy`.`term_taxonomy_id`
+            WHERE
+                object_id  = %d
+                AND taxonomy = %s
+            ",
             $user_id,
             'user-group'
         );
@@ -647,11 +652,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             // Second Query
             // query a member list for this group
             $sql = $wpdb->prepare(
-                'SELECT %1$s.object_id
-                        FROM %1$s
-                        WHERE term_taxonomy_id  = \'%2$d\'
-                        ',
-                $wpdb->term_relationships,
+                "SELECT
+                    `$wpdb->term_relationships`.`object_id`
+                FROM
+                    `$wpdb->term_relationships`
+                WHERE
+                    `term_taxonomy_id` = %d
+                ",
                 $result['term_taxonomy_id']
             );
 

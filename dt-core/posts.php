@@ -119,10 +119,10 @@ class Disciple_Tools_Posts {
         global $wpdb;
         $shares = $wpdb->get_results(
             $wpdb->prepare(
-                "SELECT * FROM $wpdb->dt_share as shares 
-                INNER JOIN $wpdb->posts as posts 
-                WHERE user_id = %d 
-                AND shares.post_id = posts.ID 
+                "SELECT * FROM $wpdb->dt_share as shares
+                INNER JOIN $wpdb->posts as posts
+                WHERE user_id = %d
+                AND shares.post_id = posts.ID
                 AND posts.post_type = %s",
                 $user_id,
                 $post_type
@@ -165,13 +165,15 @@ class Disciple_Tools_Posts {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), ['status' => 403] );
         }
         $q = $wpdb->prepare(
-            'SELECT * from %1$s
-            WHERE `object_type` = "%3$s"
-            AND `object_id` = "%2$s"
-            ;',
-            $wpdb->activity,
-            $post_id,
-            $post_type
+            "SELECT
+                *
+            FROM
+                `$wpdb->activity`
+            WHERE
+                `object_type` = %s
+                AND `object_id` = %s",
+            $post_type,
+            $post_id
         );
         $activity = $wpdb->get_results( $q );
         foreach($activity as $a){

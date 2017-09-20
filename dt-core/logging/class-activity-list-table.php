@@ -99,13 +99,13 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
 
         // Get all report detals
         $results = $wpdb->get_results(
-            $wpdb->prepare(
-                'SELECT * FROM %1$s
-					ORDER BY %2$s
-				;',
-                $wpdb->activity,
-                'hist_time desc'
-            ),
+            "SELECT
+                *
+            FROM
+                `$wpdb->activity`
+            ORDER BY
+                `hist_time` desc
+            ;",
             ARRAY_A
         );
 

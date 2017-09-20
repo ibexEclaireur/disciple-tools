@@ -129,13 +129,18 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $prev_value = '';
         if (!$new){
             $q = $wpdb->prepare(
-                'SELECT * from %1$s
-                WHERE `object_type` = "%2$s"
-                AND `object_id` = "%3$s"
-                AND `meta_id` = "%4$s"
-                ORDER BY hist_time DESC
-                LIMIT 0,1;',
-                $wpdb->activity,
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->activity`
+                WHERE
+                    `object_type` = %s
+                    AND `object_id` = %s
+                    AND `meta_id` = %s
+                ORDER BY
+                    `hist_time` DESC
+                LIMIT
+                    0,1;",
                 $parent_post['post_type'],
                 $object_id,
                 $meta_id

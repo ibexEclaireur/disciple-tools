@@ -21,10 +21,12 @@ class Disciple_Tools_Coordinates_DB {
 
         $result = $wpdb->get_var(
             $wpdb->prepare(
-                'SELECT meta_value 
-              FROM %1$s 
-              WHERE meta_key = \'%2$s\'',
-                $wpdb->postmeta,
+                "SELECT
+                    meta_value
+                FROM
+                    `$wpdb->postmeta`
+                WHERE
+                    meta_key = %s",
                 'polygon_'.$geoid
             )
         );

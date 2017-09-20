@@ -56,10 +56,7 @@ class Disciple_Tools_Activity_Log_API {
         global $wpdb;
 
         $wpdb->query(
-            $wpdb->prepare(
-                'TRUNCATE %1$s',
-                $wpdb->activity
-            )
+            "TRUNCATE `$wpdb->activity`"
         );
     }
 
@@ -105,22 +102,25 @@ class Disciple_Tools_Activity_Log_API {
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
             $wpdb->prepare(
-                'SELECT `histid` FROM %1$s
-					WHERE `user_caps` = \'%2$s\'
-						AND `action` = \'%3$s\'
-						AND `object_type` = \'%4$s\'
-						AND `object_subtype` = \'%5$s\'
-						AND `object_name` = \'%6$s\'
-						AND `user_id` = \'%7$s\'
-						AND `hist_ip` = \'%8$s\'
-						AND `hist_time` = \'%9$s\'
-						AND `object_note` = \'%10$s\'
-						AND `meta_id` = \'%11$s\'
-						AND `meta_key` = \'%12$s\'
-						AND `meta_value` = \'%13$s\'
-						AND `meta_parent` = \'%13$s\'
-				;',
-                $wpdb->activity,
+                "SELECT
+                     `histid`
+                FROM
+                    `$wpdb->activity`
+                WHERE
+                    `user_caps` = %s
+                    AND `action` = %s
+                    AND `object_type` = %s
+                    AND `object_subtype` = %s
+                    AND `object_name` = %s
+                    AND `user_id` = %s
+                    AND `hist_ip` = %s
+                    AND `hist_time` = %s
+                    AND `object_note` = %s
+                    AND `meta_id` = %s
+                    AND `meta_key` = %s
+                    AND `meta_value` = %s
+                    AND `meta_parent` = %s
+				;",
                 $args['user_caps'],
                 $args['action'],
                 $args['object_type'],

@@ -31,14 +31,14 @@ class Disciple_Tools_Counter_Baptism  {
         global $wpdb;
 
         // Build full query
-        $sql = $wpdb->prepare(
-            'SELECT count(%1$s) FROM %2$s
-					WHERE `p2p_type` LIKE \'%3$s\'
-				;',
-            'p2p_id',
-            $wpdb->p2p,
-            'baptizer_to_baptized'
-        );
+        $sql =
+            "SELECT
+                count(`p2p_id`)
+            FROM
+                `$wpdb->p2p`
+            WHERE
+                `p2p_type` = 'baptizer_to_baptized'
+            ";
 
         // query results
         $results = $wpdb->get_var( $sql );
@@ -56,14 +56,13 @@ class Disciple_Tools_Counter_Baptism  {
         global $wpdb;
 
         // Build full query
-        $sql = $wpdb->prepare(
-            'SELECT COUNT(DISTINCT %1$s) FROM %2$s
-					WHERE `p2p_type` LIKE \'%3$s\'
-				;',
-            'p2p_to',
-            $wpdb->p2p,
-            'baptizer_to_baptized'
-        );
+        $sql =
+            "SELECT
+                COUNT(DISTINCT `p2p_to`)
+            FROM
+                `$wpdb->p2p`
+            WHERE
+                `p2p_type` = 'baptizer_to_baptized'";
 
         // query results
         $results = $wpdb->get_var( $sql );
