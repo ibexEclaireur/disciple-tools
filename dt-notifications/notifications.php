@@ -85,7 +85,7 @@ class Disciple_Tools_Notifications {
                 "SELECT
                     `id`
                 FROM
-                    `$wpdb->dt_notification`
+                    `$wpdb->dt_notifications`
                 WHERE
                     `user_id` = %s
                     AND `source_user_id` = %s
