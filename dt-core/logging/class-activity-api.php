@@ -56,7 +56,7 @@ class Disciple_Tools_Activity_Log_API {
         global $wpdb;
 
         $wpdb->query(
-            "TRUNCATE `$wpdb->activity`"
+            "TRUNCATE `$wpdb->dt_activity_log`"
         );
     }
 
@@ -105,7 +105,7 @@ class Disciple_Tools_Activity_Log_API {
                 "SELECT
                      `histid`
                 FROM
-                    `$wpdb->activity`
+                    `$wpdb->dt_activity_log`
                 WHERE
                     `user_caps` = %s
                     AND `action` = %s
@@ -142,7 +142,7 @@ class Disciple_Tools_Activity_Log_API {
         }
 
         $wpdb->insert(
-            $wpdb->activity,
+            $wpdb->dt_activity_log,
             [
                 'action'         => $args['action'],
                 'object_type'    => $args['object_type'],

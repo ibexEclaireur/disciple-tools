@@ -49,7 +49,7 @@ class Disciple_Tools_Metabox_Activity {
                 "SELECT
                     *
                 FROM
-                    `$wpdb->activity`
+                    `$wpdb->dt_activity_log`
                 WHERE
                     `object_id` = %s
                 ORDER BY

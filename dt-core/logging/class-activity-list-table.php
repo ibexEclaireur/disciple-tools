@@ -102,7 +102,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
             "SELECT
                 *
             FROM
-                `$wpdb->activity`
+                `$wpdb->dt_activity_log`
             ORDER BY
                 `hist_time` desc
             ;",

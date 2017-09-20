@@ -507,7 +507,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "SELECT
                  *
             FROM
-                `$wpdb->activity`
+                `$wpdb->dt_activity_log`
             WHERE
                 `object_type` = 'contacts'
                 AND `object_id` = %s",

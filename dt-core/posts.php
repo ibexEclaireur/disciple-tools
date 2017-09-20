@@ -168,7 +168,7 @@ class Disciple_Tools_Posts {
             "SELECT
                 *
             FROM
-                `$wpdb->activity`
+                `$wpdb->dt_activity_log`
             WHERE
                 `object_type` = %s
                 AND `object_id` = %s",
