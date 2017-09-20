@@ -113,7 +113,6 @@ class Disciple_Tools_Activator {
      */
     protected static function create_tables( $version ) {
         global $wpdb;
-        $charset_collate = $wpdb->get_charset_collate();
         
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -137,7 +136,7 @@ class Disciple_Tools_Activator {
 					  `meta_value` VARCHAR(255) NOT NULL DEFAULT '0',
 					  `meta_parent` BIGINT(20) NOT NULL DEFAULT '0',
 					  PRIMARY KEY (`histid`)
-				) $charset_collate;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
 
             dbDelta( $sql1 );
 
@@ -153,7 +152,7 @@ class Disciple_Tools_Activator {
 					  `report_source` VARCHAR(55) NOT NULL,
 					  `report_subsource` VARCHAR(100) NOT NULL,
 					  PRIMARY KEY (`id`)
-				) $charset_collate;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
             dbDelta( $sql2 );
             update_option( 'dt_reports_db_version', $version );
         }
@@ -167,7 +166,7 @@ class Disciple_Tools_Activator {
 					  `meta_key` VARCHAR(255) NOT NULL,
 					  `meta_value` LONGTEXT,
 					  PRIMARY KEY (`meta_id`)
-				) $charset_collate;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
             dbDelta( $sql3 );
             update_option( 'dt_reportmeta_db_version', $version );
         }
@@ -181,7 +180,7 @@ class Disciple_Tools_Activator {
 					  `post_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
 					  `meta` LONGTEXT,
 					  PRIMARY KEY (`id`)
-				) $charset_collate;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
             dbDelta( $sql4 );
             update_option( 'dt_share_db_version', $version );
         }
@@ -194,14 +193,14 @@ class Disciple_Tools_Activator {
                       `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
                       `source_user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
                       `post_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
-                      `secondary_item_id` bigint(20) DEFAULT NULL,
+                      `secondary_item_id` bigint(20) DEFAULT '0',
                       `notification_name` varchar(75) NOT NULL DEFAULT '0',
                       `notification_action` varchar(75) NOT NULL DEFAULT '0',
                       `notification_note` varchar(255) DEFAULT NULL,
                       `date_notified` DATETIME NOT NULL,
                       `is_new` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
                       PRIMARY KEY (`id`)
-				) $charset_collate;";
+				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
             dbDelta( $sql5 );
             update_option( 'dt_notifications_db_version', $version );
         }
