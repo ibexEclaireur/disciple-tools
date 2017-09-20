@@ -21,11 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 class Disciple_Tools_Groups extends Disciple_Tools_Posts {
 
     public static $address_types;
+    public static $group_fields;
 
     public function __construct(){
         add_action(
             'init', function(){
                 self::$address_types = dt_address_metabox()->get_address_type_list( "groups" );
+                self::$group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
             }
         );
         parent::__construct();
@@ -94,6 +96,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
                         }
                         $fields[ "address" ][] = $details;
                     }
+                } else if ( isset( self::$group_fields[$key] ) && self::$group_fields[$key]["type"] == "key_select" ) {
+                    $label = self::$group_fields[$key]["default"][$value[0]] ?? current( self::$group_fields[$key]["default"] );
+                    $fields[$key] = [ "key"=>$value[0], "label"=>$label ];
                 } else if ($key === "assigned_to") {
                     if ($value){
                         $meta_array = explode( '-', $value[0] ); // Separate the type and id
