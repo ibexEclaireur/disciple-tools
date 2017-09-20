@@ -1,19 +1,19 @@
 <?php
 /**
  * Plugin Name: Disciple Tools
- * Plugin URI: https://github.com/ChasmSolutions/Disciple-Tools
+ * Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Description: Disciple Tools is a disciple relationship management system for disciple making movements. The plugin is the core of the system. It is intended to work with the Disciple Tools Theme, and Disciple Tools extension plugins.
  * Version: 0.1
  * Author: Chasm.Solutions
- * Author URI: https://github.com/ChasmSolutions
- * GitHub Plugin URI: https://github.com/ChasmSolutions/disciple-tools
+ * Author URI: https://github.com/DiscipleTools
+ * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
  * Tested up to: 4.7.2
  *
  * @package Disciple_Tools
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
- * @link    https://github.com/ChasmSolutions
+ * @link    https://github.com/DiscipleTools
  * @license GPL-3.0
  * @version 0.1
  */
@@ -542,7 +542,7 @@ class Disciple_Tools {
              * Disciple Tools is intended to be multisite compatible. Use the section below for if needed for compatibility files.
              * Disciple Tools Multisite plugin is intended to expand features for multisite installations.
              *
-             * @see https://github.com/ChasmSolutions/disciple-tools-multisite
+             * @see https://github.com/DiscipleTools/disciple-tools-multisite
             */
         }
 

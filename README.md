@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ChasmSolutions/disciple-tools.svg?branch=master)](https://travis-ci.org/ChasmSolutions/disciple-tools)
+[![Build Status](https://travis-ci.org/DiscipleTools/disciple-tools.svg?branch=master)](https://travis-ci.org/DiscipleTools/disciple-tools)
 
 # Disciple Tools
 A disciple relationship management system for discipleship making movements. Wordpress plugin.
@@ -14,7 +14,7 @@ We are building on the Wordpress platform because of its open-source availabilit
 
 ## Wiki
 
-Don't forget, we have a [wiki for Disciple Tools](https://github.com/ChasmSolutions/disciple-tools/wiki).
+Don't forget, we have a [wiki for Disciple Tools](https://github.com/DiscipleTools/disciple-tools/wiki).
 
 ---
 
@@ -22,7 +22,7 @@ Don't forget, we have a [wiki for Disciple Tools](https://github.com/ChasmSoluti
 The goal of the project is to create a disciple-making DRM that is incredibly simple, cheap, and fast to launch. Below are the simple steps to do that.
 
 ### Step 1
-- Download the plugin .zip file from the Disciple-Tools GitHub home page (https://github.com/ChasmSolutions/disciple-tools). Save it to your desktop of anywhere so that you can easily find it in a minute.
+- Download the plugin .zip file from the Disciple-Tools GitHub home page (https://github.com/DiscipleTools/disciple-tools). Save it to your desktop of anywhere so that you can easily find it in a minute.
 
 ### Step 2
 - Open up your Wordpress site, login to your Admin Dashboard.
