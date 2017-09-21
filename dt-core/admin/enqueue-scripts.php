@@ -16,6 +16,7 @@ add_action( 'admin_enqueue_scripts', 'group_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'location_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'asset_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dismiss_notice_callback_script' );
+add_action( 'admin_enqueue_scripts', 'people_groups_post_type_scripts' );
 
 /*
  * Functions
@@ -94,6 +95,19 @@ function asset_page_scripts() {
 }
 
 /**
+ * Loads scripts and styles for the assets page.
+ */
+function people_groups_post_type_scripts() {
+    global $pagenow, $post;
+    
+    if ( ('post.php' === $pagenow || 'post-new.php' === $pagenow) && 'peoplegroups' === get_post_type( $post ) ) {
+        
+        wp_enqueue_script( 'dt_peoplegroups_scripts', Disciple_Tools()->plugin_js_url .'dt-peoplegroups.js', ['jquery', 'jquery-ui-core'], filemtime( Disciple_Tools()->plugin_js_path . 'dt-peoplegroups.js' ), true );
+        wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_path . 'dt-shared.js' ), true );
+    }
+}
+
+/**
  *
  */
 function dismiss_notice_callback_script(){
@@ -102,7 +116,3 @@ function dismiss_notice_callback_script(){
         wp_enqueue_script( 'disciple-tools-admin_script', Disciple_Tools()->plugin_js_url .'disciple-tools-admin.js',  ['jquery'], filemtime( Disciple_Tools()->plugin_js_path . 'disciple-tools-admin.js' ), true );
     }
 }
-
-
-
-

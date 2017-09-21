@@ -60,7 +60,7 @@ add_action( 'init', 'disciple_tools_register_default_user_group_taxonomy' );
 //add_action( 'init', 'disciple_tools_register_default_user_type_taxonomy'  ); // TODO: Enabling this will give user groups a types category. Remove if not neccissary for MVP
 
 // Enqueue assets
-add_action( 'admin_head', 'disciple_tools_groups_admin_assets' );
+add_action( 'admin_head', 'dt_groups_admin_assets' );
 
 // WP User Profiles
 add_filter( 'disciple_tools_profiles_sections', 'disciple_tools_groups_add_profile_section' );
@@ -236,11 +236,16 @@ function disciple_tools_get_users_of_group( $args = [] ) {
  *
  * @since 0.1.4
  */
-function disciple_tools_groups_admin_assets() {
-    $url = Disciple_Tools()->plugin_url;
-    $ver = Disciple_Tools()->version;
-
-    wp_enqueue_style( 'disciple_tools_groups', $url. 'dt-core/admin/css/user-groups.css', false, $ver, false );
+function dt_groups_admin_assets() {
+    global $pagenow;
+    
+    if ( 'users.php' === $pagenow || 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow || 'edit-tags.php' === $pagenow || 'profile.php' === $pagenow ) {
+    
+        $url = Disciple_Tools()->plugin_url;
+        $ver = Disciple_Tools()->version;
+    
+        wp_enqueue_style( 'disciple_tools_groups', $url. 'dt-core/admin/css/user-groups.css', false, $ver, false );
+    }
 }
 
 
