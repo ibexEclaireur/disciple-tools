@@ -100,7 +100,7 @@ function asset_page_scripts() {
 function people_groups_post_type_scripts() {
     global $pagenow, $post;
     
-    if ( ('post.php' === $pagenow || 'post-new.php' === $pagenow) && 'peoplegroups' === get_post_type( $post ) ) {
+    if ( ('post.php' === $pagenow || 'post-new.php' === $pagenow || 'edit.php' === $pagenow) && 'peoplegroups' === get_post_type( $post ) ) {
         
         wp_enqueue_script( 'dt_peoplegroups_scripts', Disciple_Tools()->plugin_js_url .'dt-peoplegroups.js', ['jquery', 'jquery-ui-core'], filemtime( Disciple_Tools()->plugin_js_path . 'dt-peoplegroups.js' ), true );
         wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url .'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_path . 'dt-shared.js' ), true );

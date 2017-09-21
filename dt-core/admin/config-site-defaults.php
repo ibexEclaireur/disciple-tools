@@ -33,6 +33,7 @@ add_filter( 'comment_flood_filter', '__return_false' );
 function set_permalink_structure(){
     global $wp_rewrite;
     $wp_rewrite->set_permalink_structure( '/%postname%/' );
+    flush_rewrite_rules();
 }
 
 function warn_user_about_permalink_settings() {
