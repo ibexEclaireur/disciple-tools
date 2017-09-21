@@ -42,6 +42,8 @@ class Disciple_Tools_Activity_Log_DB {
 
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
+        $charset_collate = $wpdb->get_charset_collate();
+
         /* Activity Log */
         $sql1 = "CREATE TABLE IF NOT EXISTS `{$wpdb->prefix}dt_activity_log` (
 					  `histid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -60,7 +62,7 @@ class Disciple_Tools_Activity_Log_DB {
 					  `meta_value` VARCHAR(255) NOT NULL DEFAULT '0',
 					  `meta_parent` BIGINT(20) NOT NULL DEFAULT '0',
 					  PRIMARY KEY (`histid`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+				) $charset_collate;";
 
 
         /* Report Log Table */
@@ -70,7 +72,7 @@ class Disciple_Tools_Activity_Log_DB {
 					  `report_source` VARCHAR(55) NOT NULL,
 					  `report_subsource` VARCHAR(100) NOT NULL,
 					  PRIMARY KEY (`id`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+				) $charset_collate;";
 
 
         /* Report Meta Log Table */
@@ -80,7 +82,7 @@ class Disciple_Tools_Activity_Log_DB {
 					  `meta_key` VARCHAR(255) NOT NULL,
 					  `meta_value` LONGTEXT,
 					  PRIMARY KEY (`meta_id`)
-				) ENGINE=InnoDB  DEFAULT CHARSET=utf8;";
+				) $charset_collate;";
 
         dbDelta( $sql1 );
         dbDelta( $sql2 );
