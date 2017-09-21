@@ -160,6 +160,44 @@ function dt_get_team_contacts( $user_id ) {
 }
 
 /**
+ * Get current user notification options
+ *
+ * @return mixed
+ */
+function dt_get_notification_options( ) {
+    $user_id = get_current_user_id();
+    
+    // check for default options
+    if(!get_user_meta(get_current_user_id(), 'dt_notification_options')) {
+        $notifications_default = [
+            'new' => [
+                'web' => true,
+                'email' => true,
+            ],
+            'mentions' => [
+                'web' => true,
+                'email' => true,
+            ],
+            'updates' => [
+                'web' => true,
+                'email' => true,
+            ],
+            'changes' => [
+                'web' => true,
+                'email' => true,
+            ],
+            'milestones' => [
+                'web' => true,
+                'email' => true,
+            ]
+        ];
+        add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
+    }
+    
+    return get_user_meta(get_current_user_id(), 'dt_notification_options', true);
+}
+
+/**
  * Echos user display name
  * @param $user_id
  */
@@ -176,4 +214,29 @@ function dt_user_display_name( $user_id ) {
 function dt_get_user_display_name( $user_id ) {
     $user = get_userdata( $user_id );
     return $user->display_name;
+}
+
+function dt_modify_profile_fields( $profile_fields )
+{
+    
+    // Add new fields
+    $profile_fields['personal_phone'] = 'Personal Phone';
+    $profile_fields['personal_email'] = 'Personal Email';
+    $profile_fields['personal_facebook'] = 'Personal Facebook';
+    $profile_fields['work_alias'] = 'Work Alias';
+    $profile_fields['work_phone'] = 'Work Phone';
+    $profile_fields['work_email'] = 'Work Email';
+    $profile_fields['work_facebook'] = 'Work Facebook';
+    $profile_fields['work_twitter'] = 'Twitter Username';
+    $profile_fields['work_whatsapp'] = 'Work WhatsApp';
+    $profile_fields['work_viber'] = 'Work Viber';
+    $profile_fields['work_telegram'] = 'Work Telegram';
+    $profile_fields['contact_id'] = 'Contact Id';
+    
+    return $profile_fields;
+    
+}
+if (is_admin()) {
+    // Add elements to the contact section of the profile.
+    add_filter( 'user_contactmethods', [$this, 'modify_profile_fields'] );
 }

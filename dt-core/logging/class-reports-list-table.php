@@ -93,7 +93,7 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
             "SELECT
                 *
             FROM
-                `$wpdb->reports`
+                `$wpdb->dt_reports`
             ORDER BY
                 `report_date` desc
             LIMIT
@@ -114,7 +114,7 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
                     "SELECT
                         meta_key, meta_value
                     FROM
-                        `$wpdb->reportmeta`
+                        `$wpdb->dt_reportmeta`
                     WHERE
                         `report_id` = %s",
                     $result['id']

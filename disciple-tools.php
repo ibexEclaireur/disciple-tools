@@ -263,11 +263,7 @@ class Disciple_Tools {
         $wpdb->dt_share = $wpdb->prefix . 'dt_share';
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
         /* End prep variables */
-
-        $wpdb->activity = $wpdb->prefix . 'dt_activity_log'; // TODO refactor everything using this variable over to $wpdb->dt_activity_log. Deprecated
-        $wpdb->reports = $wpdb->prefix . 'dt_reports'; // TODO refactor everything using this variable over to $wpdb->dt_reports. Deprecated
-        $wpdb->reportmeta = $wpdb->prefix . 'dt_reportmeta';// TODO refactor everything using this variable over to $wpdb->dt_reportmeta. Deprecated
-
+        
         /**
          * Admin panel
          *
@@ -288,10 +284,6 @@ class Disciple_Tools {
             require_once( 'dt-core/admin/menu/menu.php' );
             $this->config_menu = Disciple_Tools_Config_Menu::instance();
             require_once( 'dt-core/admin/menu/options.php' );
-
-            // Profile
-            require_once( 'dt-core/admin/config-profile.php' );
-            $this->profile = Disciple_Tools_Profile::instance();
 
             // Dashboard
             require_once( 'dt-core/admin/config-dashboard.php' );

@@ -56,7 +56,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     `id`
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_date` = %s
                     AND `report_source` = %s
@@ -72,7 +72,7 @@ class Disciple_Tools_Reports_API {
         }
 
         $wpdb->insert(
-            $wpdb->reports,
+            $wpdb->dt_reports,
             [
                 'report_date'       => $args['report_date'],
                 'report_source'     => $args['report_source'],
@@ -110,7 +110,7 @@ class Disciple_Tools_Reports_API {
         global $wpdb;
 
         $wpdb->insert(
-            $wpdb->reportmeta,
+            $wpdb->dt_reportmeta,
             [
                 'report_id'    => $report_id,
                 'meta_key'     => $field,
@@ -128,7 +128,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     *
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_source` = %s",
                 $report_source
@@ -158,7 +158,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     *
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `id` = %s",
                 $id
@@ -172,7 +172,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     *
                 FROM
-                    `$wpdb->reportmeta`
+                    `$wpdb->dt_reportmeta`
                 WHERE
                     `report_id` = %s",
                 $id
@@ -199,7 +199,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     meta_value
                 FROM
-                    `$wpdb->reportmeta`
+                    `$wpdb->dt_reportmeta`
                 WHERE
                     `report_id` = %s
                     AND `meta_key` = %s",
@@ -237,15 +237,15 @@ class Disciple_Tools_Reports_API {
             "SELECT
                 $type(`meta_value`) AS `$meta_key`
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 RIGHT JOIN
-                    `$wpdb->reportmeta`
+                    `$wpdb->dt_reportmeta`
                 ON
-                    `$wpdb->reports`.id = `$wpdb->reportmeta`.report_id
+                    `$wpdb->dt_reports`.id = `$wpdb->dt_reportmeta`.report_id
                 WHERE
-                    `$wpdb->reports`.report_date LIKE %s
-                    AND `$wpdb->reports`.report_source = %s
-                    AND `$wpdb->reportmeta`.meta_key = %s",
+                    `$wpdb->dt_reports`.report_date LIKE %s
+                    AND `$wpdb->dt_reports`.report_source = %s
+                    AND `$wpdb->dt_reportmeta`.meta_key = %s",
             $wpdb->esc_like( $date ) . '%',
             $source,
             $meta_key
@@ -279,7 +279,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     id
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s,
                     AND `report_source` = %s,
@@ -294,7 +294,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     id
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s",
@@ -307,7 +307,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     id
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s",
                 $wpdb->esc_like( $date ) . '%'
@@ -378,7 +378,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     $columns
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s
@@ -393,7 +393,7 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     $columns
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s",
@@ -467,10 +467,10 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     *
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_source` = %s
-                    AND report_date = (select max(report_date) from `$wpdb->reports` where `report_source` = %s)",
+                    AND report_date = (select max(report_date) from `$wpdb->dt_reports` where `report_source` = %s)",
                 $source,
                 $source
             )
@@ -494,11 +494,11 @@ class Disciple_Tools_Reports_API {
                 "SELECT
                     *
                 FROM
-                    `$wpdb->reports`
+                    `$wpdb->dt_reports`
                 WHERE
                     `report_source` = %s
                     AND `report_subsource` = %s
-                    AND report_date = (select max(report_date) from `$wpdb->reports` where `report_source` = %s)",
+                    AND report_date = (select max(report_date) from `$wpdb->dt_reports` where `report_source` = %s)",
                 $source,
                 $subsource,
                 $source

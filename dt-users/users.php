@@ -19,7 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 class Disciple_Tools_Users {
-
+    
+  
+    
 
     public static function get_assignable_users_compact( string $search_string = '' ){
 //        @todo better permissions?
@@ -64,4 +66,8 @@ class Disciple_Tools_Users {
         }
         return $list;
     }
+    
+    
+    
+    
 }
