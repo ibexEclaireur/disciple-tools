@@ -98,6 +98,8 @@ class Disciple_Tools_Groups_Post_Type {
 
         add_action( 'init', [ $this, 'register_post_type' ] );
 //        add_action( 'init', [ $this, 'register_taxonomy' ] );
+        add_action( 'init', [$this, 'groups_rewrites_init'] );
+        add_filter( 'post_type_link', [$this,'groups_permalink'], 1, 3 );
 
         if ( is_admin() ) {
             global $pagenow;
@@ -741,5 +743,17 @@ class Disciple_Tools_Groups_Post_Type {
         $this->register_post_type();
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
+
+
+    public function groups_permalink( $post_link, $post ) {
+        if ($post->post_type === "groups"){
+            return home_url( "groups/" . $post->ID .'/' );
+        } else {
+            return $post_link;
+        }
+    }
+    function groups_rewrites_init(){
+        add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
+    }
 
 } // End Class
