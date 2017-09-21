@@ -320,7 +320,7 @@ class Disciple_Tools_Notifications {
      *
      * @return array
      */
-    public static function get_new_notifications_count( ) {
+    public static function get_new_notifications_count() {
         global $wpdb;
         
         $user_id = get_current_user_id();
