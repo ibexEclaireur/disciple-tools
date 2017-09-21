@@ -29,7 +29,7 @@ class Disciple_Tools_General_Tab {
         $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         $html .= '<div id="post-body-content">';
         /* Main Column */
-        print_r($_POST);
+        print_r( $_POST );
         /* Box */
         $html .= '<table class="widefat striped">
                     <thead><th>Required Notifications</th></thead>
@@ -102,7 +102,7 @@ class Disciple_Tools_General_Tab {
                     'email' => true,
                 ]
             ];
-            add_option('dt_site_notification_options', $notifications_default, '', true );
+            add_option( 'dt_site_notification_options', $notifications_default, '', true );
         }
     
         $site_options = get_option( 'dt_site_notification_options' );

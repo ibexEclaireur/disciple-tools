@@ -164,11 +164,11 @@ function dt_get_team_contacts( $user_id ) {
  *
  * @return mixed
  */
-function dt_get_notification_options( ) {
+function dt_get_notification_options() {
     $user_id = get_current_user_id();
     
     // check for default options
-    if(!get_user_meta(get_current_user_id(), 'dt_notification_options')) {
+    if(!get_user_meta( get_current_user_id(), 'dt_notification_options' )) {
         $notifications_default = [
             'new' => [
                 'web' => true,
@@ -194,7 +194,7 @@ function dt_get_notification_options( ) {
         add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
     }
     
-    return get_user_meta(get_current_user_id(), 'dt_notification_options', true);
+    return get_user_meta( get_current_user_id(), 'dt_notification_options', true );
 }
 
 /**
