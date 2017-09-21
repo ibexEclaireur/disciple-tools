@@ -1,7 +1,7 @@
 # DT-Notifications
 The Notifications module contains the utilities necessary for web notifications, email notifications, and alerts between workers.
 
-## Core Files
+## Files
 
 1. `/hooks/`   
    _The Hooks folder contains the hook factory files that catch the appropriate activities and logs them to the notifications table._

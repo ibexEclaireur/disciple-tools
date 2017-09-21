@@ -79,7 +79,7 @@ class Disciple_Tools_Notifications_Endpoints {
         );
     
         register_rest_route(
-            $namespace, '/notifications/(?P<user_id>\d+)/get_new_notifications_count', [
+            $namespace, '/notifications/get_new_notifications_count', [
                 [
                     'methods'         => WP_REST_Server::CREATABLE,
                     'callback'        => [ $this, 'get_new_notifications_count' ],
@@ -163,17 +163,12 @@ class Disciple_Tools_Notifications_Endpoints {
      * @since  0.1
      * @return string|WP_Error|array The contact on success
      */
-    public function get_new_notifications_count( WP_REST_Request $request ){
-        $params = $request->get_params();
-        if (isset( $params['user_id'] )){
-            $result = Disciple_Tools_Notifications::get_new_notifications_count( $params );
-            if ($result["status"]){
-                return $result['result'];
-            } else {
-                return new WP_Error( "get_user_notification_results", $result["message"], ['status' => 204] );
-            }
+    public function get_new_notifications_count( ){
+        $result = Disciple_Tools_Notifications::get_new_notifications_count(  );
+        if ($result["status"]){
+            return $result['result'];
         } else {
-            return new WP_Error( "get_user_notification_param_error", "Please provide a valid array", ['status' => 400] );
+            return new WP_Error( "get_user_notification_results", $result["message"], ['status' => 204] );
         }
     }
 

@@ -320,9 +320,10 @@ class Disciple_Tools_Notifications {
      *
      * @return array
      */
-    public static function get_new_notifications_count( $params ) {
+    public static function get_new_notifications_count( ) {
         global $wpdb;
-        $user_id = $params['user_id'];
+        
+        $user_id = get_current_user_id();
 
         $result = $wpdb->get_var( "SELECT count(id) FROM $wpdb->dt_notifications WHERE user_id = '$user_id' AND is_new = '1'" );
 
