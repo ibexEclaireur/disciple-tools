@@ -266,8 +266,25 @@ class Disciple_Tools_Notifications {
         isset( $params['limit'] ) ? $limit = $params['limit'] : $limit = 50;
         isset( $params['offset'] ) ? $offset = $params['offset'] : $offset = 0;
 
+        $limit = (int) $limit;
+        $offset = (int) $offset;
 
-        $result = $wpdb->get_results( "SELECT * FROM $wpdb->dt_notifications WHERE user_id = '$user_id' ORDER BY date_notified DESC LIMIT $limit OFFSET $offset", ARRAY_A );
+        $result = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT
+                    *
+                FROM
+                    `$wpdb->dt_notifications`
+                WHERE
+                    user_id = %d
+                ORDER BY
+                    date_notified DESC
+                LIMIT
+                    $limit OFFSET $offset", // @codingStandardsIgnoreLine
+                $user_id
+            ),
+            ARRAY_A
+        );
 
         if($result) {
 
@@ -322,10 +339,20 @@ class Disciple_Tools_Notifications {
      */
     public static function get_new_notifications_count() {
         global $wpdb;
-        
+
         $user_id = get_current_user_id();
 
-        $result = $wpdb->get_var( "SELECT count(id) FROM $wpdb->dt_notifications WHERE user_id = '$user_id' AND is_new = '1'" );
+        $result = $wpdb->get_var( $wpdb->prepare(
+            "SELECT
+                count(id)
+            FROM
+                `$wpdb->dt_notifications`
+            WHERE
+                user_id = %d
+                AND is_new = '1'",
+            $user_id
+        ) );
+
 
         if($result) {
             return [

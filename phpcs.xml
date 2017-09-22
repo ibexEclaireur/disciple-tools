@@ -23,6 +23,7 @@
 
   <exclude-pattern>*/vendor/*</exclude-pattern>
   <exclude-pattern>dt-core/libraries/*</exclude-pattern>
+  <exclude-pattern>dt-notifications/wp_mail_smtp.php</exclude-pattern>
 
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
@@ -31,7 +32,6 @@
   <exclude-pattern>dt-core/*</exclude-pattern>
   <exclude-pattern>dt-groups/*</exclude-pattern>
   <exclude-pattern>dt-locations/*</exclude-pattern>
-  <exclude-pattern>dt-notifications/*</exclude-pattern>
   <exclude-pattern>dt-people-groups/*</exclude-pattern>
   <exclude-pattern>dt-prayer/*</exclude-pattern>
   <exclude-pattern>dt-progress/*</exclude-pattern>
