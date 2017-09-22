@@ -136,7 +136,7 @@ class Disciple_Tools_Metabox_Address {
                     "SELECT
                         meta_key
                     FROM
-                        `$wpdb->postmeta
+                        `$wpdb->postmeta`
                     WHERE
                         post_id = %d
                         AND meta_key LIKE 'address_%'
