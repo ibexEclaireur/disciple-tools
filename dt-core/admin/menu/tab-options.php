@@ -88,7 +88,7 @@ final class Disciple_Tools_Admin {
             <?php
             echo $this->get_admin_header_html( $sections, $title );
             ?>
-            <form action="options.php" method="post">
+            <form action="tab-options.php" method="post">
                 <?php
                 settings_fields( 'dt-settings-' . $tab );
                 do_settings_sections( Disciple_Tools()->token . '-' . $tab );
@@ -311,7 +311,7 @@ final class Disciple_Tools_Settings {
             <?php
             echo $this->get_admin_header_html( $sections, $title );
             ?>
-            <form action="options.php" method="post">
+            <form action="tab-options.php" method="post">
                 <?php
                 settings_fields( 'dt-settings-' . $tab );
                 do_settings_sections( Disciple_Tools()->token . '-' . $tab );
@@ -1036,7 +1036,7 @@ final class Disciple_Tools_Settings {
         return $response;
     } // End get_settings()
 } // End Class
-    
+
 class Disciple_Tools_Menu_Options
 {
     /**
@@ -1248,5 +1248,5 @@ class Disciple_Tools_Menu_Options
     } // End get_custom_fields_settings()
     
     
-           
+    
 }

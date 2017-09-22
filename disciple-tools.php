@@ -281,9 +281,9 @@ class Disciple_Tools {
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
 
             // Settings Menu
-            require_once( 'dt-core/admin/menu/menu.php' );
-            $this->config_menu = Disciple_Tools_Config_Menu::instance();
-            require_once( 'dt-core/admin/menu/options.php' );
+            require_once( 'dt-core/admin/menu/main.php' );
+            $this->config_menu = Disciple_Tools_Config::instance();
+            require_once( 'dt-core/admin/menu/tab-options.php' );
 
             // Dashboard
             require_once( 'dt-core/admin/config-dashboard.php' );

@@ -14,27 +14,25 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
 }
 
 class Disciple_Tools_General_Tab {
-    
     /**
-     * Constructor function.
-     * @access  public
-     * @since   0.1
+     * Packages and returns tab page
+     * @return string
      */
-    public function __construct () {
-    
-    } // End __construct()
-    
-    public function general_options() {
+    public function content() {
         $html = '';
         $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         $html .= '<div id="post-body-content">';
         /* Main Column */
         print_r( $_POST );
+        print '<pre>';
+        print_r( get_option( 'dt_site_options' ) );
+        print '</pre>';
+        
         /* Box */
         $html .= '<table class="widefat striped">
-                    <thead><th>Required Notifications</th></thead>
+                    <thead><th>Site Notifications</th></thead>
                     <tbody><tr><td>';
-        $this->process_user_notifications();
+        $html .= $this->process_user_notifications().'';
         $html .= $this->user_notifications(); // content for the notifications box
         $html .= '</td></tr></tbody></table>';
         /* End Box */
@@ -77,35 +75,14 @@ class Disciple_Tools_General_Tab {
         return $html;
     }
     
+    /**
+     * Builds the user notifications box
+     * @return string
+     */
     public function user_notifications() {
-        // check for default options
-        if( !get_option( 'dt_site_notification_options' ) ) {
-            $notifications_default = [
-                'new' => [
-                    'web' => true,
-                    'email' => true,
-                ],
-                'mentions' => [
-                    'web' => true,
-                    'email' => true,
-                ],
-                'updates' => [
-                    'web' => true,
-                    'email' => true,
-                ],
-                'changes' => [
-                    'web' => true,
-                    'email' => true,
-                ],
-                'milestones' => [
-                    'web' => true,
-                    'email' => true,
-                ]
-            ];
-            add_option( 'dt_site_notification_options', $notifications_default, '', true );
-        }
     
-        $site_options = get_option( 'dt_site_notification_options' );
+        $site_options = get_option( 'dt_site_options' );
+        $notifications = $site_options['notifications'];
         
         $html = '<p>These are site overrides for individual preferences for notifications. Uncheck if you want, users to make their own decision on which notifications to recieve.</p>';
         $html .= '<form method="post" name="notifications-form">';
@@ -113,27 +90,36 @@ class Disciple_Tools_General_Tab {
         
         $html .= '<table class="widefat">';
         
-        $html .= '<tr><td>New Contacts</td><td>Web <input name="new-web" type="checkbox" '.$this->is_checked( $site_options['new']['web'] ).' /></td><td>Email <input name="new-email" type="checkbox" '.$this->is_checked( $site_options['new']['email'] ).' /></td></tr>';
-        $html .= '<tr><td>@Mentions</td><td>Web <input name="mentions-web" type="checkbox" '.$this->is_checked( $site_options['mentions']['web'] ).' /></td><td>Email <input name="mentions-email" type="checkbox" '.$this->is_checked( $site_options['mentions']['email'] ).' /></td></tr>';
-        $html .= '<tr><td>Updates Required</td><td>Web <input name="updates-web" type="checkbox" '.$this->is_checked( $site_options['updates']['web'] ).' /></td><td>Email <input name="updates-email" type="checkbox" '.$this->is_checked( $site_options['updates']['email'] ).' /></td></tr>';
-        $html .= '<tr><td>Contact Info Changes</td><td>Web <input name="changes-web" type="checkbox" '.$this->is_checked( $site_options['changes']['web'] ).' /></td><td>Email <input name="changes-email" type="checkbox" '.$this->is_checked( $site_options['changes']['email'] ).' /></td></tr>';
-        $html .= '<tr><td>Contact Milestones</td><td>Web <input name="milestones-web" type="checkbox" '.$this->is_checked( $site_options['milestones']['web'] ).' /></td><td>Email <input name="milestones-email" type="checkbox" '.$this->is_checked( $site_options['milestones']['email'] ).' /></td></tr>';
+        $html .= '<tr><td>New Contacts</td><td>Web <input name="new_web" type="checkbox" '.$this->is_checked( $notifications['new_web'] ).' /></td><td>Email <input name="new_email" type="checkbox" '.$this->is_checked( $notifications['new_email'] ).' /></td></tr>';
+        $html .= '<tr><td>@Mentions</td><td>Web <input name="mentions_web" type="checkbox" '.$this->is_checked( $notifications['mentions_web'] ).' /></td><td>Email <input name="mentions_email" type="checkbox" '.$this->is_checked( $notifications['mentions_email'] ).' /></td></tr>';
+        $html .= '<tr><td>Updates Required</td><td>Web <input name="updates_web" type="checkbox" '.$this->is_checked( $notifications['updates_web'] ).' /></td><td>Email <input name="updates_email" type="checkbox" '.$this->is_checked( $notifications['updates_email'] ).' /></td></tr>';
+        $html .= '<tr><td>Contact Info Changes</td><td>Web <input name="changes_web" type="checkbox" '.$this->is_checked( $notifications['changes_web'] ).' /></td><td>Email <input name="changes_email" type="checkbox" '.$this->is_checked( $notifications['changes_email'] ).' /></td></tr>';
+        $html .= '<tr><td>Contact Milestones</td><td>Web <input name="milestones_web" type="checkbox" '.$this->is_checked( $notifications['milestones_web'] ).' /></td><td>Email <input name="milestones_email" type="checkbox" '.$this->is_checked( $notifications['milestones_email'] ).' /></td></tr>';
     
         $html .= '</table><br><button type="submit" class="button float-right">Save</button> </form>';
         return $html;
     }
     
     /**
-     * Process
+     * Process user notifications box
      */
     public function process_user_notifications() {
         
-        if ( isset( $_POST['notifications_nonce'] ) && ! wp_verify_nonce( $_POST['notifications_nonce'], 'notifications' ) ) {
-            $site_options = get_option( 'dt_site_notification_options' );
-            //TODO check new post info and update site option
+        if ( isset( $_POST['notifications_nonce'] ) && wp_verify_nonce( $_POST['notifications_nonce'], 'notifications' ) ) {
+            
+            $site_options = get_option( 'dt_site_options' );
+    
+            foreach ( $site_options[ 'notifications' ] as $key => $value ) {
+                if ( isset( $_POST[ $key ] ) ) {
+                    $site_options[ 'notifications' ][ $key ] = true;
+                } else {
+                    $site_options[ 'notifications' ][ $key ] = false;
+                }
+            }
+            
+            update_option( 'dt_site_options', $site_options, true );
             
         }
-        
     }
     
     /**
@@ -145,8 +131,6 @@ class Disciple_Tools_General_Tab {
     public function is_checked( $value ) {
         return $value ? 'checked' : '';
     }
-    
-    
     
     
 }

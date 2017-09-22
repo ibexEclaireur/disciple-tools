@@ -58,3 +58,50 @@ function permalink_structure_changed_callback( $permalink_structure ) {
 function dt_svg_icon() {
     return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS40IDIwLjMyIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojMmQyZDJkO308L3N0eWxlPjwvZGVmcz48dGl0bGU+ZGlzY2lwbGUtdG9vbHM8L3RpdGxlPjxwb2x5Z29uIGNsYXNzPSJhIiBwb2ludHM9IjIxLjQgMjAuMzIgOS4zIDAgMi44NiAxMC44MSA4LjUyIDIwLjMyIDIxLjQgMjAuMzIiLz48cG9seWdvbiBjbGFzcz0iYSIgcG9pbnRzPSIwLjAyIDE1LjU4IDAgMTUuNjEgMi44MyAyMC4zMiA1LjUxIDE1LjM0IDAuMDIgMTUuNTgiLz48L3N2Zz4=';
 }
+
+/**
+ * Returns the default master array of site options
+ *
+ * @return array
+ */
+function dt_get_site_options_defaults () {
+    $fields = [];
+    
+    $fields[ 'version' ] = '1.0';
+    
+    $fields[ 'notifications' ] = [
+        'new_web'          => true,
+        'new_email'        => true,
+        'mentions_web'     => true,
+        'mentions_email'   => true,
+        'updates_web'      => true,
+        'updates_email'    => true,
+        'changes_web'      => true,
+        'changes_email'    => true,
+        'milestones_web'   => true,
+        'milestones_email' => true,
+    ];
+    
+    $fields[ 'add_people_groups' ]        = true;
+    $fields[ 'clear_data_on_deactivate' ] = true;
+    $fields[ 'daily_reports' ]            = [
+        'build_report_for_contacts'  => true,
+        'build_report_for_groups'    => true,
+        'build_report_for_facebook'  => true,
+        'build_report_for_twitter'   => true,
+        'build_report_for_analytics' => true,
+        'build_report_for_adwords'   => true,
+        'build_report_for_mailchimp' => true,
+        'build_report_for_youtube'   => true,
+    ];
+    
+    return $fields;
+}
+
+function dt_update_site_options_to_current_version() {
+    return true;
+    // TODO save current settings
+    // TODO check and update keys
+    // TODO set new keys to default
+    // TODO update site options meta and return true.
+}

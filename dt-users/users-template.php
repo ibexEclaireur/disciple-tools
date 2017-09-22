@@ -164,37 +164,27 @@ function dt_get_team_contacts( $user_id ) {
  *
  * @return mixed
  */
-function dt_get_notification_options() {
+function dt_get_user_notification_options() {
     $user_id = get_current_user_id();
     
     // check for default options
-    if(!get_user_meta( get_current_user_id(), 'dt_notification_options' )) {
-        $notifications_default = [
-            'new' => [
-                'web' => true,
-                'email' => true,
-            ],
-            'mentions' => [
-                'web' => true,
-                'email' => true,
-            ],
-            'updates' => [
-                'web' => true,
-                'email' => true,
-            ],
-            'changes' => [
-                'web' => true,
-                'email' => true,
-            ],
-            'milestones' => [
-                'web' => true,
-                'email' => true,
-            ]
-        ];
+    if ( ! get_user_meta( get_current_user_id(), 'dt_notification_options' ) ) {
+        $site_options          = dt_get_site_options_defaults();
+        $notifications_default = $site_options[ 'notifications' ];
         add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
     }
     
     return get_user_meta( get_current_user_id(), 'dt_notification_options', true );
+}
+
+/**
+ * Gets the current site defaults defined in the notifications config section in wp-admin
+ *
+ * @return array
+ */
+function dt_get_site_notification_defaults() {
+    $site_options = get_option( 'dt_site_options' );
+    return $site_options['notifications'];
 }
 
 /**
