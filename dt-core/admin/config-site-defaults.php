@@ -75,24 +75,30 @@ function dt_get_site_options_defaults () {
         'mentions_web'     => true,
         'mentions_email'   => true,
         'updates_web'      => true,
-        'updates_email'    => true,
-        'changes_web'      => true,
-        'changes_email'    => true,
-        'milestones_web'   => true,
-        'milestones_email' => true,
+        'updates_email'    => false,
+        'changes_web'      => false,
+        'changes_email'    => false,
+        'milestones_web'   => false,
+        'milestones_email' => false,
     ];
     
-    $fields[ 'add_people_groups' ]        = true;
+    $fields[ 'extension_modules' ] = [
+        'add_people_groups' => true,
+        'add_assetmapping'  => true,
+        'add_prayer'        => true,
+    ];
+    
     $fields[ 'clear_data_on_deactivate' ] = true;
+    
     $fields[ 'daily_reports' ]            = [
         'build_report_for_contacts'  => true,
         'build_report_for_groups'    => true,
-        'build_report_for_facebook'  => true,
-        'build_report_for_twitter'   => true,
-        'build_report_for_analytics' => true,
-        'build_report_for_adwords'   => true,
-        'build_report_for_mailchimp' => true,
-        'build_report_for_youtube'   => true,
+        'build_report_for_facebook'  => false,
+        'build_report_for_twitter'   => false,
+        'build_report_for_analytics' => false,
+        'build_report_for_adwords'   => false,
+        'build_report_for_mailchimp' => false,
+        'build_report_for_youtube'   => false,
     ];
     
     return $fields;

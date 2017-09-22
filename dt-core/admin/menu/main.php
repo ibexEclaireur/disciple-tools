@@ -102,14 +102,14 @@ final class Disciple_Tools_Config {
         if ($tab == 'general' || !isset( $tab ) ) {$html .= 'nav-tab-active';}
         $html .= '">General</a>';
 
-        $html .= $tab_link_pre . 'extensions' . $tab_link_post;
-        if ($tab == 'extensions') {$html .= 'nav-tab-active';}
-        $html .= '">Extensions</a>';
+        $html .= $tab_link_pre . 'custom-lists' . $tab_link_post;
+        if ($tab == 'custom-lists') {$html .= 'nav-tab-active';}
+        $html .= '">Custom Lists</a>';
+    
+        $html .= $tab_link_pre . 'import-export' . $tab_link_post;
+        if ($tab == 'import-export') {$html .= 'nav-tab-active';}
+        $html .= '">Import/Export</a>';
         
-        $html .= $tab_link_pre . 'options' . $tab_link_post;
-        if ($tab == 'options') {$html .= 'nav-tab-active';}
-        $html .= '">Options</a>';
-
         $html .= $tab_link_pre . 'tutorials' . $tab_link_post;
         if ($tab == 'tutorials') {$html .= 'nav-tab-active';}
         $html .= '">Tutorials</a>';
@@ -132,10 +132,17 @@ final class Disciple_Tools_Config {
                 $object = new Disciple_Tools_General_Tab();
                 $html .= $object->content();
                 break;
-            case 'extensions':
+            case 'import-export':
+                require_once( 'tab-import-export.php' );
+                $object = new Disciple_Tools_Import_Export_Tab();
+                $html .= $object->content();
                 break;
-            case 'options':
+            case 'custom-lists':
+                require_once( 'tabs-custom-lists.php' );
+                $object = new Disciple_Tools_Custom_Lists_Tab();
+                $html .= $object->content();
                 break;
+            
             case 'tutorials':
                 break;
             default:

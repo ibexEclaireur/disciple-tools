@@ -84,7 +84,8 @@ class Disciple_Tools_Reports_Cron {
          * build_report_for_mailchimp => true/false
          * build_report_for_youtube => true/false
          */
-        $options_settings = get_option( 'disciple_tools-daily_reports' );
+        $site_options = get_option( 'dt_site_options' );
+        $options_settings = $site_options['daily_reports'];
 
         /**
          * Schedule different sources if there is not a previous report scheduled or the option has been turned off.

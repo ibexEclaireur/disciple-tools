@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 
 /**
- * Disciple_Tools_Admin Class
+ * Disciple_Tools_Options_Tab Class
  *
  * @class   Disciple_Tools_Admin
  * @version 1.0.0
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */
-final class Disciple_Tools_Admin {
+final class Disciple_Tools_Options_Tab {
     /**
      * The single instance of Disciple_Tools_Admin.
      *
@@ -52,7 +52,7 @@ final class Disciple_Tools_Admin {
      *
      * @since  0.1
      * @static
-     * @return Disciple_Tools_Admin instance
+     * @return Disciple_Tools_Options_Tab instance
      */
     public static function instance () {
         if ( is_null( self::$_instance ) ) {
