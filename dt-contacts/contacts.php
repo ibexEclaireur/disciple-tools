@@ -133,7 +133,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     private static function check_for_invalid_fields( $fields, int $post_id = null ){
         $bad_fields = [];
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
-        $contact_model_fields['title'] = "";
+        $contact_fields['title'] = "";
         foreach($fields as $field => $value){
             if (!isset( $contact_fields[$field] )){
                 $bad_fields[] = $field;
