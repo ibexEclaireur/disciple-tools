@@ -104,19 +104,56 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         if (!isset( $fields["title"] )){
             return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), ['fields' => $fields] );
         }
+
+        $phone = null;
+        if (isset( $fields["phone"] )) {
+            $phone = $fields["phone"];
+            unset( $fields["phone" ] );
+        }
+        $initial_comment = null;
+        if (isset( $fields["initial_comment"] )) {
+            $initial_comment = $fields["initial_comment"];
+            unset( $fields["initial_comment"] );
+        }
+
         $bad_fields = self::check_for_invalid_fields( $fields );
         if (!empty( $bad_fields )){
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), ['bad_fields' => $bad_fields] );
         }
 
+        $defaults = array(
+            "overall_status" => "unassigned",
+            "seeker_path" => "none",
+        );
+        $fields = array_merge( $defaults, $fields );
+
+        $title = $fields["title"];
+        unset( $fields["title"] );
+
+
         $post = [
-            "post_title" => $fields['title'],
+            "post_title" => $title,
             'post_type' => "contacts",
             "post_status" => 'publish',
             "meta_input" => $fields
         ];
 
         $post_id = wp_insert_post( $post );
+
+        if ($phone) {
+            $potential_error = self::add_contact_detail( $post_id, "new-phone", $phone, false );
+            if ( is_wp_error( $potential_error ) ) {
+                return $potential_error;
+            }
+        }
+
+        if ($initial_comment) {
+            $potential_error = self::add_comment( $post_id, $initial_comment, false );
+            if ( is_wp_error( $potential_error ) ) {
+                return $potential_error;
+            }
+        }
+
         return $post_id;
     }
 

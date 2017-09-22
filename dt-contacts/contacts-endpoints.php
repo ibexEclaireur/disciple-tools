@@ -221,7 +221,13 @@ class Disciple_Tools_Contacts_Endpoints
     public function create_contact( WP_REST_Request $request ){
         $fields = $request->get_json_params();
         $result = Disciple_Tools_Contacts::create_contact( $fields, true );
-        return $result; // Could be permission WP_Error
+        if ( is_wp_error( $result ) ) {
+            return $result;
+        }
+        return array(
+            "post_id" => (int) $result,
+            "permalink" => get_post_permalink( $result ),
+        );
     }
 
     /**
