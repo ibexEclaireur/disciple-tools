@@ -33,7 +33,7 @@ class Disciple_Tools_Import_Export_Tab {
         
         /* Box */
         $html .= '<table class="widefat striped">
-                    <thead><th>Site Notifications</th></thead>
+                    <thead><th>Import Disciple Tools Data</th></thead>
                     <tbody><tr><td>';
         
         
@@ -43,7 +43,7 @@ class Disciple_Tools_Import_Export_Tab {
         
         /* Box */
         $html .= '<table class="widefat striped">
-                    <thead><th>Reports Settings</th></thead>
+                    <thead><th>Export Disciple Tools Data</th></thead>
                     <tbody><tr><td>';
         
         
@@ -52,11 +52,11 @@ class Disciple_Tools_Import_Export_Tab {
         
         /* Box */
         $html .= '<table class="widefat striped">
-                    <thead><th>Extended Modules</th></thead>
+                    <thead><th>Delete Disciple Tools Data</th></thead>
                     <tbody><tr><td>';
         
         
-        $html .= '</td></tr></tbody></table>';
+        $html .= '</td></tr></tbody></table><br>';
         /* End Box */
         
         /* End Main Column */
@@ -65,12 +65,12 @@ class Disciple_Tools_Import_Export_Tab {
         
         /* Box */
         $html .= '<table class="widefat striped">
-                    <thead><th>General Settings</th></thead>
+                    <thead><th>Instructions</th></thead>
                     <tbody><tr><td>';
         
         
         
-        $html .= '</td></tr></tbody></table>';
+        $html .= '</td></tr></tbody></table><br>';
         /* End Box */
         
         /* End Right Column*/

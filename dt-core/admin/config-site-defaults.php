@@ -104,6 +104,10 @@ function dt_get_site_options_defaults () {
     return $fields;
 }
 
+/**
+ * Processes the current configurations and upgrades the site options to the new version with persistent configuration settings.
+ * @return bool
+ */
 function dt_update_site_options_to_current_version() {
     return true;
     // TODO save current settings
@@ -111,3 +115,30 @@ function dt_update_site_options_to_current_version() {
     // TODO set new keys to default
     // TODO update site options meta and return true.
 }
+
+
+/**
+ * Gets site configured custom lists
+ *
+ * @param null $list_title
+ *
+ * @return array|mixed
+ */
+function dt_get_site_custom_lists( $list_title = NULL ) {
+    $fields = [];
+    
+    $fields[ 'version' ] = '1.0';
+    
+    $fields['contact_types'] = [
+        'Twitter' => true,
+    ];
+    
+//    $fields = apply_filters( 'dt_site_custom_lists', $fields );
+    
+    if(is_null($list_title)) {
+        return $fields;
+    } else {
+        return $fields[$list_title];
+    }
+}
+

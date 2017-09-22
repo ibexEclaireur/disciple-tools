@@ -71,7 +71,7 @@ class Disciple_Tools_General_Tab {
         
         /* Box */
         $html .= '<table class="widefat striped">
-                    <thead><th>General Settings</th></thead>
+                    <thead><th>Instructions</th></thead>
                     <tbody><tr><td>';
         
         $html .= '</td></tr></tbody></table>';
