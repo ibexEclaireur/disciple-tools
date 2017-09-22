@@ -5,6 +5,9 @@ php:
     - '7.1'
 dist: trusty
 sudo: required # this seems to be required for some reason to get MySQL to work
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 services:
   - mysql
 before_install:
