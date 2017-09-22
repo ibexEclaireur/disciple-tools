@@ -17,7 +17,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Custom_Lists_Tab {
     
     
-    
     /**
      * Packages and returns tab page
      *
@@ -30,10 +29,10 @@ class Disciple_Tools_Custom_Lists_Tab {
         /* Main Column */
         
         print '<pre>';
-                print_r( $_POST );
-                print_r( dt_get_site_custom_lists( $list_title = NULL ) );
+        print_r( $_POST );
+        //                print_r( get_option( 'dt_site_custom_lists' ) );
         print '</pre>';
-    
+        
         /* Box */
         $html .= '<table class="widefat striped">
                     <thead><th>User Profile</th></thead>
@@ -41,7 +40,7 @@ class Disciple_Tools_Custom_Lists_Tab {
         
         $this->process_user_profile_box();
         $html .= $this->user_profile_box();
-    
+        
         $html .= '</td></tr></tbody></table><br>';
         /* End Box */
         
@@ -86,34 +85,49 @@ class Disciple_Tools_Custom_Lists_Tab {
     
     public function user_profile_box() {
         
-        $site_options  = get_option( 'dt_site_options' );
-        $notifications = $site_options[ 'notifications' ];
-    
+        $site_custom_lists = get_option( 'dt_site_custom_lists' );
+        if ( $site_custom_lists ) {
+            dt_add_site_custom_lists();
+        }
+        $user_fields = $site_custom_lists[ 'user_fields' ];
+        
         $html = '<p>You can extend and configure lists in the contacts module.</p>';
-        $html .= '<form method="post" name="notifications-form">';
-        $html .= '<input type="hidden" name="notifications_nonce" id="notifications_nonce" value="' . wp_create_nonce( 'notifications' ) . '" />';
-    
+        $html .= '<form method="post" name="user_fields-form">';
+        $html .= '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . wp_create_nonce( 'user_fields' ) . '" />';
+        
         $html .= '<table class="widefat">';
-    
-        $html .= '<tr><td>New Contacts</td><td>Web <input name="new_web" type="checkbox" ' . $this->is_checked( $notifications[ 'new_web' ] ) . ' /></td><td>Email <input name="new_email" type="checkbox" ' . $this->is_checked( $notifications[ 'new_email' ] ) . ' /></td></tr>';
-        $html .= '<tr><td>@Mentions</td><td>Web <input name="mentions_web" type="checkbox" ' . $this->is_checked( $notifications[ 'mentions_web' ] ) . ' /></td><td>Email <input name="mentions_email" type="checkbox" ' . $this->is_checked( $notifications[ 'mentions_email' ] ) . ' /></td></tr>';
-        $html .= '<tr><td>Updates Required</td><td>Web <input name="updates_web" type="checkbox" ' . $this->is_checked( $notifications[ 'updates_web' ] ) . ' /></td><td>Email <input name="updates_email" type="checkbox" ' . $this->is_checked( $notifications[ 'updates_email' ] ) . ' /></td></tr>';
-        $html .= '<tr><td>Contact Info Changes</td><td>Web <input name="changes_web" type="checkbox" ' . $this->is_checked( $notifications[ 'changes_web' ] ) . ' /></td><td>Email <input name="changes_email" type="checkbox" ' . $this->is_checked( $notifications[ 'changes_email' ] ) . ' /></td></tr>';
-        $html .= '<tr><td>Contact Milestones</td><td>Web <input name="milestones_web" type="checkbox" ' . $this->is_checked( $notifications[ 'milestones_web' ] ) . ' /></td><td>Email <input name="milestones_email" type="checkbox" ' . $this->is_checked( $notifications[ 'milestones_email' ] ) . ' /></td></tr>';
-    
-        $html .= '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
-    
+        
+        foreach ( $user_fields as $field ) {
+            $html .= '<tr><td>' . $field[ 'label' ] . '</td><td>Enabled <input name="' . $field[ 'key' ] . '" type="checkbox" ' . $this->is_checked( $field[ 'enabled' ] ) . ' /></td><td>' . $field[ 'description' ] . ' </td></tr>';
+        }
+        
+        $html .= '</table><br>';
+        
+        $html .= 'New: <input type="text" placeholder="label" name="label" /><input type="text" name="key" placeholder="key" /><input type="text" name="description" placeholder="description" /> ';
+        
+        $html .= '<br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
+        
         return $html;
         
     }
     
     public function process_user_profile_box() {
         
-        $list = [
-            'sample' => 'sample value'
-        ];
-        
-        return ;
+        if ( isset( $_POST[ 'user_fields_nonce' ] ) && wp_verify_nonce( $_POST[ 'user_fields_nonce' ], 'user_fields' ) ) {
+            
+            $site_options = get_option( 'dt_site_custom_lists' );
+            
+            foreach ( $site_options[ 'user_fields' ] as $key => $value ) {
+                if ( isset( $_POST[ $key ] ) ) {
+                    $site_options[ 'user_fields' ][ $key ][ 'enabled' ] = true;
+                } else {
+                    $site_options[ 'user_fields' ][ $key ][ 'enabled' ] = false;
+                }
+            }
+            
+            update_option( 'dt_site_custom_lists', $site_options, true );
+            
+        }
     }
     
     /**
@@ -126,8 +140,6 @@ class Disciple_Tools_Custom_Lists_Tab {
     public function is_checked( $value ) {
         return $value ? 'checked' : '';
     }
-    
-    
     
     
 }

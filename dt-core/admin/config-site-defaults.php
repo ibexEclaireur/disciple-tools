@@ -124,21 +124,72 @@ function dt_update_site_options_to_current_version() {
  *
  * @return array|mixed
  */
-function dt_get_site_custom_lists( $list_title = NULL ) {
+function dt_get_site_custom_lists( string $list_title = NULL ) {
     $fields = [];
     
     $fields[ 'version' ] = '1.0';
     
-    $fields['contact_types'] = [
-        'Twitter' => true,
+    $fields[ 'user_fields' ] = [
+        'personal_phone'    => [
+            'label'       => 'Personal Phone',
+            'key'         => 'personal_phone',
+            'description' => 'Personal phone is the private phone number not for distribution.',
+            'enabled'     => true,
+        ],
+        'personal_email'    => [
+            'label'       => 'Personal Email',
+            'key'         => 'personal_email',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'personal_facebook' => [
+            'label'       => 'Personal Facebook',
+            'key'         => 'personal_facebook',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_phone'        => [
+            'label'       => 'Work Phone',
+            'key'         => 'work_phone',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_email'        => [
+            'label'       => 'Work Email',
+            'key'         => 'work_email',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_facebook'     => [
+            'label'       => 'Work Facebook',
+            'key'         => 'work_facebook',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_twitter'      => [
+            'label'       => 'Work Twitter',
+            'key'         => 'work_twitter',
+            'description' => '',
+            'enabled'     => true,
+        ],
+    
     ];
     
-//    $fields = apply_filters( 'dt_site_custom_lists', $fields );
+    //    $fields = apply_filters( 'dt_site_custom_lists', $fields );
     
-    if(is_null($list_title)) {
+    if ( is_null( $list_title ) ) {
         return $fields;
     } else {
-        return $fields[$list_title];
+        return $fields[ $list_title ];
     }
+}
+
+function dt_add_site_custom_lists () {
+    if(!get_option( 'dt_site_custom_lists' )) {
+        $custom_lists = dt_get_site_custom_lists();
+        add_option( 'dt_site_custom_lists', $custom_lists, '', true );
+        return true;
+    }
+    return false;
 }
 

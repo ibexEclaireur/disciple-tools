@@ -48,6 +48,7 @@ class Disciple_Tools_Activator {
         } elseif ( get_option( 'dt_site_options' )[ 'version' ] == $site_options[ 'version' ] ) {
             dt_update_site_options_to_current_version();
         }
+        dt_add_site_custom_lists(); // setup options for site_custom_lists
         
         
         /** Activate database creation for Disciple Tools Activity logs */
