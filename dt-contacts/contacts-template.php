@@ -43,7 +43,7 @@ function dt_get_assigned_name ( int $contact_id, bool $return = false ) {
         if ($return) {
             return $rv;
         } else {
-            echo $rv;
+            echo esc_html( $rv );
         }
     }
 

@@ -77,15 +77,15 @@ class Disciple_Tools_Config_Contacts {
      */
     public function contacts_table_content( $column_name, $post_id ) {
         if ($column_name == 'assigned_to') {
-            echo get_post_meta( $post_id, 'assigned_to', true );
+            echo esc_html( get_post_meta( $post_id, 'assigned_to', true ) );
         }
         if ($column_name == 'seeker_path') {
             $status = get_post_meta( $post_id, 'seeker_path', true );
-            echo $status;
+            echo esc_html( $status );
         }
 
         if ($column_name == 'seeker_milestones') {
-            echo get_post_meta( $post_id, 'seeker_milestones', true );
+            echo esc_html( get_post_meta( $post_id, 'seeker_milestones', true ) );
         }
 
     }

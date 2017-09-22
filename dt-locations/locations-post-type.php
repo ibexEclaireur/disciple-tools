@@ -242,7 +242,7 @@ class Disciple_Tools_Location_Post_Type {
      * @return void
      */
     public function register_custom_column_headings ( $defaults ) {
-        
+
         /* Determine if Zume/24:14/4K Geographic zones are installed.
          * If so, then render columns for those grid systems. */
         // TODO finish the if/then logic of having admin areas. The if/then controls if Zume/24:14/4K units are used, then show these columns, if not show other defaults.
@@ -351,7 +351,7 @@ class Disciple_Tools_Location_Post_Type {
      */
     public function load_address_meta_box () {
         echo ''. $this->meta_box_content( 'address' );
-        echo ''. dt_address_metabox()->add_new_address_field();
+        dt_address_metabox()->add_new_address_field(); // prints
     }
 
     /**

@@ -58,7 +58,10 @@ class Disciple_Tools_Metabox_Address {
             </tr>';
 
         $html .= '</tbody></table>';
-        return $html;
+        // @codingStandardsIgnoreLine
+        echo $html;
+        // TODO: instead of building an $html variable and then echoing it, we
+        // should be using <? php and ? > as usual
     }
 
     /**
@@ -129,12 +132,19 @@ class Disciple_Tools_Metabox_Address {
         $id = $post->ID ?? $post_id;
         if (isset( $id )){
             $current_fields = $wpdb->get_results(
-                "
-                              SELECT meta_key 
-                              FROM $wpdb->postmeta 
-                              WHERE post_id = $id 
-                                AND meta_key LIKE 'address_%' 
-                              ORDER BY meta_key DESC", ARRAY_A
+                $wpdb->prepare(
+                    "SELECT
+                        meta_key
+                    FROM
+                        `$wpdb->postmeta
+                    WHERE
+                        post_id = %d
+                        AND meta_key LIKE 'address_%'
+                    ORDER BY
+                        meta_key DESC",
+                    $id
+                ),
+                ARRAY_A
             );
         }
 

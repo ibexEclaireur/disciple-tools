@@ -61,7 +61,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $error = new WP_Error();
         foreach ($query_pagination_args as $key => $value) {
             if (! in_array( $key, $allowed_keys ) ) {
-                $error->add( __FUNCTION__, __( "Key $key was an unexpected pagination key" ) );
+                $error->add( __FUNCTION__, sprintf( __( "Key %s was an unexpected pagination key" ), $key ) );
             }
         }
         if ( count( $error->errors ) ) {
@@ -540,7 +540,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         global $wpdb;
 
-        $q = $wpdb->prepare(
+        $activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
                  *
             FROM
@@ -549,8 +549,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 `object_type` = 'contacts'
                 AND `object_id` = %s",
             $contact_id
-        );
-        $activity = $wpdb->get_results( $q );
+        ) );
         foreach($activity as $a){
             if (isset( $a->user_id ) && $a->user_id > 0 ){
                 $a->name = get_user_by( "id", $a->user_id )->display_name;
@@ -631,8 +630,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
 
-    public static function get_viewable_contacts_compact( string $searchString ){
-        return self::get_viewable_compact( 'contacts', $searchString );
+    public static function get_viewable_contacts_compact( string $search_string ){
+        return self::get_viewable_compact( 'contacts', $search_string );
     }
 
 
@@ -662,7 +661,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         // First Query
         // Build arrays for current groups connected to user
-        $sql = $wpdb->prepare(
+        $results = $wpdb->get_results( $wpdb->prepare(
             "SELECT DISTINCT
                 `$wpdb->term_relationships`.`term_taxonomy_id`
             FROM
@@ -677,8 +676,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             ",
             $user_id,
             'user-group'
-        );
-        $results = $wpdb->get_results( $sql, ARRAY_A );
+        ), ARRAY_A );
 
 
         // Loop
@@ -688,7 +686,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
             // Second Query
             // query a member list for this group
-            $sql = $wpdb->prepare(
+            // build list of member ids who are part of the team
+            $results2 = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     `$wpdb->term_relationships`.`object_id`
                 FROM
@@ -697,10 +696,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     `term_taxonomy_id` = %d
                 ",
                 $result['term_taxonomy_id']
-            );
-
-            // build list of member ids who are part of the team
-            $results2 = $wpdb->get_results( $sql, ARRAY_A );
+            ), ARRAY_A );
 
             // Inner Loop
             foreach ($results2 as $result2) {

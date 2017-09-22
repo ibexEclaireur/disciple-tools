@@ -21,10 +21,10 @@
 // If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
-function admin_notice_required_php_version_dt() {
+function dt_admin_notice_required_php_version() {
     ?>
     <div class="notice notice-error">
-        <p><?php _e( "The Disciple Tools plug-in requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this plugin." ); ?></p>
+        <p><?php esc_html_e( "The Disciple Tools plug-in requires PHP 7.0 or greater before it will have any effect. Please upgrade your PHP version or uninstall this plugin." ); ?></p>
     </div>
     <?php
 }
@@ -39,7 +39,7 @@ if (version_compare( phpversion(), '7.0', '<' )) {
      * Feel free to use PHP 7 features in other files, but not in this one.
      */
 
-    add_action( 'admin_notices', 'admin_notice_required_php_version_dt' );
+    add_action( 'admin_notices', 'dt_admin_notice_required_php_version' );
     error_log( 'Disciple Tools plugin requires PHP version 7.0 or greater, please upgrade PHP or uninstall this plugin' );
     return;
 }
@@ -47,34 +47,34 @@ if (version_compare( phpversion(), '7.0', '<' )) {
 /**
  * Activation Hook
  */
-function activate_disciple_tools( $network_wide ) {
+function disciple_tools_activate( $network_wide ) {
     require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
     Disciple_Tools_Activator::activate( $network_wide );
 }
-register_activation_hook( __FILE__, 'activate_disciple_tools' );
+register_activation_hook( __FILE__, 'disciple_tools_activate' );
 
 /**
  * Deactivation Hook
  */
-function deactivate_disciple_tools( $network_wide ) {
+function disciple_tools_deactivate( $network_wide ) {
     require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-deactivator.php';
     Disciple_Tools_Deactivator::deactivate( $network_wide );
 }
-register_deactivation_hook( __FILE__, 'deactivate_disciple_tools' );
+register_deactivation_hook( __FILE__, 'disciple_tools_deactivate' );
 
 /**
  * Multisite datatable maintenance
  */
-function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+function dt_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
     require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
     Disciple_Tools_Activator::on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta );
 }
-add_action( 'wpmu_new_blog', 'on_create_blog', 10, 6 );
-function on_delete_blog( $tables ) {
+add_action( 'wpmu_new_blog', 'dt_on_create_blog', 10, 6 );
+function dt_on_delete_blog( $tables ) {
     require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
     return Disciple_Tools_Activator::on_delete_blog( $tables );
 }
-add_filter( 'wpmu_drop_tables', 'on_delete_blog' );
+add_filter( 'wpmu_drop_tables', 'dt_on_delete_blog' );
 /* End Multisite datatable maintenance */
 
 
@@ -263,7 +263,7 @@ class Disciple_Tools {
         $wpdb->dt_share = $wpdb->prefix . 'dt_share';
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
         /* End prep variables */
-        
+
         /**
          * Admin panel
          *
@@ -573,7 +573,7 @@ class Disciple_Tools {
      * @since  0.1
      */
     public function __clone () {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
+        wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
     } // End __clone()
 
     /**
@@ -583,7 +583,7 @@ class Disciple_Tools {
      * @since  0.1
      */
     public function __wakeup () {
-        _doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?' ), '1.0.0' );
+        wp_die( esc_html__( "Cheatin' huh?" ), __FUNCTION__ );
     } // End __wakeup()
 
 } // End Class

@@ -329,7 +329,7 @@ class Disciple_Tools_Groups_Post_Type {
      */
     public function load_address_meta_box () {
         echo ''. $this->meta_box_content( 'address' );
-        echo ''. dt_address_metabox()->add_new_address_field();
+        dt_address_metabox()->add_new_address_field(); // prints
     }
 
     /**
