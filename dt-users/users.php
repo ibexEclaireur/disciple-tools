@@ -19,9 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 
 class Disciple_Tools_Users {
-    
-  
-    
+
+
+
 
     public static function get_assignable_users_compact( string $search_string = '' ){
 //        @todo better permissions?
@@ -30,7 +30,7 @@ class Disciple_Tools_Users {
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), ['status' => 403] );
         }
 
-        $userQuery = new WP_User_Query( array(
+        $user_query = new WP_User_Query( array(
             'search'         => '*'.esc_attr( $search_string ).'*',
             'search_columns' => array(
                 'user_login',
@@ -52,7 +52,7 @@ class Disciple_Tools_Users {
                 )
             )
         ) );
-        $users = $userQuery->get_results();
+        $users = $user_query->get_results();
         $list = [];
 
 
@@ -66,8 +66,8 @@ class Disciple_Tools_Users {
         }
         return $list;
     }
-    
-    
-    
-    
+
+
+
+
 }

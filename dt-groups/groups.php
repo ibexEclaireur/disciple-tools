@@ -35,8 +35,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
 
 
 
-    public static function get_groups_compact ( string $searchString ){
-        return self::get_viewable_compact( 'groups', $searchString );
+    public static function get_groups_compact ( string $search_string ){
+        return self::get_viewable_compact( 'groups', $search_string );
     }
 
 

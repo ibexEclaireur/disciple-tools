@@ -32,7 +32,7 @@ class Disciple_Tools_Groups_Endpoints {
         add_action( 'rest_api_init', [$this,  'add_api_routes'] );
 
         require_once( 'groups.php' );
-        $this->groups_instance = new Disciple_Tools_Groups;
+        $this->groups_instance = new Disciple_Tools_Groups();
 
         $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }

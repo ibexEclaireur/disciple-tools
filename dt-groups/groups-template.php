@@ -20,19 +20,19 @@ function dt_get_group_edit_form () {
     if(class_exists( 'Disciple_Tools' )) {
 
         // Create the title field
-        $html = '<table class="form-table">' . "\n";
-        $html .= '<tbody>' . "\n";
-        $html .= '<input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce" value="' . wp_create_nonce( 'update_dt_groups' ) . '" />';
-        $html .= '<tr valign="top"><th scope="row"><label for="post_title">Title</label></th>
-                                <td><input name="post_title" type="text" id="post_title" class="regular-text" value="'. get_the_title() .'" />' ;
-        $html .= '</td><tr/></tbody></table>';
-        echo $html;
-
+        ?>
+        <table class="form-table">
+        <tbody>
+        <input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce" value="<?php echo esc_attr( wp_create_nonce( 'update_dt_groups' ) ) ?>" />
+        <tr valign="top"><th scope="row"><label for="post_title">Title</label></th>
+                                <td><input name="post_title" type="text" id="post_title" class="regular-text" value="<?php echo esc_html( get_the_title() ); ?>" />
+        </td><tr/></tbody></table>
+        <?php
 
         // Call the metadata fields
         $group = Disciple_Tools_Groups_Post_Type::instance();
 
-        echo ''.$group->load_type_meta_box();
+        $group->load_type_meta_box(); // prints
 
 
     } // end if class exists

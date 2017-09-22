@@ -30,14 +30,12 @@
   <exclude-pattern>dt-asset-mapping/*</exclude-pattern>
   <exclude-pattern>dt-assets/*</exclude-pattern>
   <exclude-pattern>dt-core/*</exclude-pattern>
-  <exclude-pattern>dt-groups/*</exclude-pattern>
   <exclude-pattern>dt-locations/*</exclude-pattern>
   <exclude-pattern>dt-people-groups/*</exclude-pattern>
   <exclude-pattern>dt-prayer/*</exclude-pattern>
   <exclude-pattern>dt-progress/*</exclude-pattern>
   <exclude-pattern>dt-resources/*</exclude-pattern>
   <exclude-pattern>dt-statistics/*</exclude-pattern>
-  <exclude-pattern>dt-users/*</exclude-pattern>
   <exclude-pattern>disciple-tools.php</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
@@ -59,6 +57,8 @@
     <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_nopaging" />
     <exclude name="WordPress.VIP.PostsPerPage.posts_per_page_numberposts" />
     <exclude name="WordPress.WP.I18n.MissingTranslatorsComment" />
+    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_get_user_meta" />
+    <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_add_user_meta" />
 
     <!-- We currently don't want these rules that WordPress imports: -->
 

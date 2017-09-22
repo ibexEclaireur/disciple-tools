@@ -51,7 +51,7 @@ function dt_get_user_associations () {
     $user_connections[] = ['key' => 'assigned_to', 'value' => $user_key_value ] ;
 
     // Build arrays for current groups connected to user
-    $sql = $wpdb->prepare(
+    $results = $wpdb->get_results( $wpdb->prepare(
         "SELECT
             `$wpdb->term_relationships`.`term_taxonomy_id`
         FROM
@@ -59,8 +59,7 @@ function dt_get_user_associations () {
         WHERE
             object_id = %d",
         $user_id
-    );
-    $results = $wpdb->get_results( $sql, ARRAY_A );
+    ), ARRAY_A );
 
     foreach ($results as $result) {
         $user_connections[] = ['key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id']  ];
@@ -102,7 +101,7 @@ function dt_get_team_contacts( $user_id ) {
 
     // First Query
     // Build arrays for current groups connected to user
-    $sql = $wpdb->prepare(
+    $results= $wpdb->get_results( $wpdb->prepare(
         "SELECT
             DISTINCT `$wpdb->term_relationships`.`term_taxonomy_id`
         FROM
@@ -115,8 +114,7 @@ function dt_get_team_contacts( $user_id ) {
             object_id  = %d
             AND taxonomy = 'user-group'",
         $user_id
-    );
-    $results = $wpdb->get_results( $sql, ARRAY_A );
+    ), ARRAY_A );
 
 
     // Loop
@@ -126,7 +124,8 @@ function dt_get_team_contacts( $user_id ) {
 
         // Second Query
         // query a member list for this group
-        $sql = $wpdb->prepare(
+        // build list of member ids who are part of the team
+        $results2 = $wpdb->get_results( $wpdb->prepare(
             "SELECT
                 `$wpdb->term_relationships`.object_id
             FROM
@@ -134,10 +133,7 @@ function dt_get_team_contacts( $user_id ) {
             WHERE
                 term_taxonomy_id = %d",
             $result['term_taxonomy_id']
-        );
-
-        // build list of member ids who are part of the team
-        $results2 = $wpdb->get_results( $sql, ARRAY_A );
+        ), ARRAY_A );
 
         // Inner Loop
         foreach ($results2 as $result2) {
@@ -166,14 +162,14 @@ function dt_get_team_contacts( $user_id ) {
  */
 function dt_get_user_notification_options() {
     $user_id = get_current_user_id();
-    
+
     // check for default options
     if ( ! get_user_meta( get_current_user_id(), 'dt_notification_options' ) ) {
         $site_options          = dt_get_site_options_defaults();
         $notifications_default = $site_options[ 'notifications' ];
         add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
     }
-    
+
     return get_user_meta( get_current_user_id(), 'dt_notification_options', true );
 }
 
@@ -192,7 +188,7 @@ function dt_get_site_notification_defaults() {
  * @param $user_id
  */
 function dt_user_display_name( $user_id ) {
-    echo dt_get_user_display_name( $user_id );
+    echo esc_html( dt_get_user_display_name( $user_id ) );
 }
 
     /**
@@ -208,7 +204,7 @@ function dt_get_user_display_name( $user_id ) {
 
 function dt_modify_profile_fields( $profile_fields )
 {
-    
+
     // Add new fields
     $profile_fields['personal_phone'] = 'Personal Phone';
     $profile_fields['personal_email'] = 'Personal Email';
@@ -222,9 +218,9 @@ function dt_modify_profile_fields( $profile_fields )
     $profile_fields['work_viber'] = 'Work Viber';
     $profile_fields['work_telegram'] = 'Work Telegram';
     $profile_fields['contact_id'] = 'Contact Id';
-    
+
     return $profile_fields;
-    
+
 }
 if (is_admin()) {
     // Add elements to the contact section of the profile.
