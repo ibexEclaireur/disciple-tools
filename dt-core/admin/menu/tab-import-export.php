@@ -69,7 +69,6 @@ class Disciple_Tools_Import_Export_Tab {
                     <tbody><tr><td>';
         
         
-        
         $html .= '</td></tr></tbody></table><br>';
         /* End Box */
         
@@ -79,10 +78,6 @@ class Disciple_Tools_Import_Export_Tab {
         
         return $html;
     }
-    
-    
-    
-    
     
     
 }

@@ -27,8 +27,8 @@ class Disciple_Tools_General_Tab {
         /* Main Column */
         
         print '<pre>';
-//        print_r( $_POST );
-//        print_r( get_option( 'dt_site_options' ) );
+        //        print_r( $_POST );
+        //        print_r( get_option( 'dt_site_options' ) );
         print '</pre>';
         
         /* Box */
@@ -53,15 +53,15 @@ class Disciple_Tools_General_Tab {
         
         $html .= '</td></tr></tbody></table><br>';
         /* End Box */
-    
+        
         /* Box */
         $html .= '<table class="widefat striped">
                     <thead><th>Extended Modules</th></thead>
                     <tbody><tr><td>';
-    
+        
         $this->process_extension_modules();
         $html .= $this->extension_modules();
-    
+        
         $html .= '</td></tr></tbody></table>';
         /* End Box */
         
@@ -186,9 +186,9 @@ class Disciple_Tools_General_Tab {
     public function process_reports() {
         
         if ( isset( $_POST[ 'daily_reports_nonce' ] ) && wp_verify_nonce( $_POST[ 'daily_reports_nonce' ], 'daily_reports' ) ) {
-        
+            
             $site_options = get_option( 'dt_site_options' );
-        
+            
             foreach ( $site_options[ 'daily_reports' ] as $key => $value ) {
                 if ( isset( $_POST[ $key ] ) ) {
                     $site_options[ 'daily_reports' ][ $key ] = true;
@@ -196,39 +196,39 @@ class Disciple_Tools_General_Tab {
                     $site_options[ 'daily_reports' ][ $key ] = false;
                 }
             }
-        
+            
             update_option( 'dt_site_options', $site_options, true );
-        
+            
         }
         
     }
     
     public function extension_modules() {
-    
-        $site_options  = get_option( 'dt_site_options' );
+        
+        $site_options      = get_option( 'dt_site_options' );
         $extension_modules = $site_options[ 'extension_modules' ];
-    
+        
         $html = '<form method="post" name="extension_modules_form">';
         $html .= '<input type="hidden" name="extension_modules_nonce" id="extension_modules_nonce" value="' . wp_create_nonce( 'extension_modules' ) . '" />';
-    
+        
         $html .= '<table class="widefat">';
-    
+        
         $html .= '<tr><td>Add People Groups Module</td><td><input name="add_people_groups" type="checkbox" ' . $this->is_checked( $extension_modules[ 'add_people_groups' ] ) . ' /></td></tr>';
         $html .= '<tr><td>Add Asset Mapping</td><td><input name="add_assetmapping" type="checkbox" ' . $this->is_checked( $extension_modules[ 'add_assetmapping' ] ) . ' /></td></tr>';
         $html .= '<tr><td>Add Prayer </td><td><input name="add_prayer" type="checkbox" ' . $this->is_checked( $extension_modules[ 'add_prayer' ] ) . ' /></td></tr>';
-    
+        
         $html .= '</table><br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
-    
+        
         return $html;
         
     }
     
     public function process_extension_modules() {
-    
+        
         if ( isset( $_POST[ 'extension_modules_nonce' ] ) && wp_verify_nonce( $_POST[ 'extension_modules_nonce' ], 'extension_modules' ) ) {
-        
+            
             $site_options = get_option( 'dt_site_options' );
-        
+            
             foreach ( $site_options[ 'extension_modules' ] as $key => $value ) {
                 if ( isset( $_POST[ $key ] ) ) {
                     $site_options[ 'extension_modules' ][ $key ] = true;
@@ -236,9 +236,9 @@ class Disciple_Tools_General_Tab {
                     $site_options[ 'extension_modules' ][ $key ] = false;
                 }
             }
-        
+            
             update_option( 'dt_site_options', $site_options, true );
-        
+            
         }
         
     }
