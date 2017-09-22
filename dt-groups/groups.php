@@ -109,7 +109,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts {
                                 $user = get_user_by( 'id', $id );
                                 if ($user){
                                     $fields[$key] = [
-                                        "id" => $id,
+                                        "ID" => (int) $id,
                                         "type" => $type,
                                         "display" => $user->display_name,
                                         "assigned-to" => $value[0]
