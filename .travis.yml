@@ -10,6 +10,8 @@ services:
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
+before_script:
+  - composer install --no-interaction
 script:
   - ./dt-core/test/test_for_syntax_errors.sh
   - ./dt-core/test/test_installation.sh
