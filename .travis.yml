@@ -18,4 +18,4 @@ before_script:
 script:
   - ./dt-core/test/test_for_syntax_errors.sh
   - ./dt-core/test/test_installation.sh
-  - vendor/bin/phpcs
+  - ./dt-core/test/test_phpcs.sh
