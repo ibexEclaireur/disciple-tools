@@ -352,11 +352,7 @@ class Disciple_Tools_Contacts_Endpoints
             $values = $body["values"];
 
             $result = Disciple_Tools_Contacts::update_contact_details( $params['id'], $field_key, $values, true );
-            if ( is_wp_error( $result ) ){
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
+            return $result;
         } else {
             return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
         }

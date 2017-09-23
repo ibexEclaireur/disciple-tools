@@ -172,10 +172,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                             continue;
                         }
                         if ($k === "verified") {
-                            $object_note .= $v ? "verified" : "invalidated";
+                            $object_note .= $v ? "verified" : "not verified";
                         }
                         if ($k === "invalid") {
-                            $object_note .= $v ? "invalidated" : "verified";
+                            $object_note .= $v ? "invalidated" : "not invalidated";
                         }
                         $object_note .= ', ';
                     }
