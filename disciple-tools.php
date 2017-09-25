@@ -70,6 +70,11 @@ function dt_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta 
     Disciple_Tools_Activator::on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta );
 }
 add_action( 'wpmu_new_blog', 'dt_on_create_blog', 10, 6 );
+/**
+ * @param $tables
+ *
+ * @return array
+ */
 function dt_on_delete_blog( $tables ) {
     require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
     return Disciple_Tools_Activator::on_delete_blog( $tables );
