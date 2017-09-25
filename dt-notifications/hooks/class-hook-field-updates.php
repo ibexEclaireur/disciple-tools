@@ -41,7 +41,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
      * @param      $object_id
      * @param      $meta_key
      * @param      $meta_value
-     * @param bool $new
      */
     public function hooks_updated_post_meta( $meta_id, $object_id, $meta_key, $meta_value )
     {
@@ -323,13 +322,13 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     /**
      * Create notification activity
      *
-     * @param int    $user_id This is the user that the notification is being assigned to
-     * @param int    $source_user_id This is the user that the notification is coming from
-     * @param int    $post_id This is contacts, groups, locations post type id.
-     * @param int    $secondary_item_id
-     * @param string $notification_name
-     * @param string $notification_action
-     * @param string $notification_note
+     * @param        $user_id        (This is the user that the notification is being assigned to)
+     * @param        $source_user_id (This is the user that the notification is coming from)
+     * @param        $post_id        (This is contacts, groups, locations post type id.)
+     * @param        $secondary_item_id
+     * @param        $notification_name
+     * @param        $notification_action
+     * @param        $notification_note
      * @param        $date_notified
      */
     protected function add_notification( int $user_id, int $source_user_id, int $post_id, int $secondary_item_id, string $notification_name, string $notification_action, string $notification_note, $date_notified )
@@ -354,10 +353,10 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     /**
      * Delete single notification
      *
-     * @param int    $user_id
-     * @param int    $post_id
-     * @param int    $secondary_item_id
-     * @param string $notification_name
+     * @param        $user_id
+     * @param        $post_id
+     * @param        $secondary_item_id
+     * @param        $notification_name
      * @param        $date_notified
      */
     protected function delete_single_notification( int $user_id, int $post_id, int $secondary_item_id, string $notification_name, $date_notified )
@@ -378,8 +377,8 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     /**
      * Delete all notifications by post and notification name (i.e. type)
      *
-     * @param int $post_id
-     * @param int $notification_name
+     * @param  $post_id
+     * @param  $notification_name
      */
     protected function delete_by_post( int $post_id, string $notification_name )
     {
