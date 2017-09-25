@@ -78,15 +78,19 @@ add_filter( 'wpmu_drop_tables', 'dt_on_delete_blog' );
 /* End Multisite datatable maintenance */
 
 
+// Adds the Disciple_Tools Plugin after plugins load
+add_action( 'plugins_loaded', 'dt_plugins_loaded' );
+
+function dt_plugins_loaded() {
+    Disciple_Tools::instance();
+}
+
 /**
  * Returns the main instance of Disciple_Tools to prevent the need to use globals.
  *
  * @since  0.1
  * @return object Disciple_Tools
  */
-
-// Adds the Disciple_Tools Plugin after plugins load
-add_action( 'plugins_loaded', 'Disciple_Tools' );
 
 // Creates the instance
 function Disciple_Tools() {
@@ -421,10 +425,10 @@ class Disciple_Tools {
          */
         require_once( 'dt-core/config-p2p.php' );// Creates the post to post relationship between the post type tables.
         require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin
-    
+
         // Custom Metaboxes
         require_once( 'dt-core/admin/metaboxes/box-address.php' ); // used by both theme and wp-admin
-        
+
 
         /**
          * Logging
@@ -451,14 +455,14 @@ class Disciple_Tools {
         }
         require_once( 'dt-core/integrations/class-facebook-integration.php' ); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();
-    
-    
+
+
         /**
          * Language
          */
         add_action( 'init', [ $this, 'load_plugin_textdomain' ] );
-    
-        
+
+
         /**
          * Admin panel
          *
@@ -466,7 +470,7 @@ class Disciple_Tools {
          * or those things directly supporting Admin panel features.
          */
         if ( is_admin() ) {
-        
+
             // Administration
             require_once( 'dt-core/admin/enqueue-scripts.php' ); // Load admin scripts
             require_once( 'dt-core/admin/admin-theme-design.php' ); // Configures elements of the admin enviornment
@@ -474,11 +478,11 @@ class Disciple_Tools {
             require_once( 'dt-core/admin/three-column-screen-layout.php' ); // Adds multicolumn configuration to screen options
             require_once( 'dt-core/admin/class-better-author-metabox.php' ); // Allows multiple authors to be selected as post author
             $this->better_metabox = Disciple_Tools_BetterAuthorMetabox::instance();
-        
+
             // Settings Menu
             require_once( 'dt-core/admin/menu/main.php' );
             $this->config_menu = Disciple_Tools_Config::instance();
-        
+
             // Dashboard
             require_once( 'dt-core/admin/config-dashboard.php' );
             $this->config_dashboard = Disciple_Tools_Dashboard::instance();
@@ -489,39 +493,39 @@ class Disciple_Tools {
             $this->reports_media = Disciple_Tools_Media_Reports::instance();
             require_once( 'dt-statistics/reports-project.php' );
             $this->reports_project = Disciple_Tools_Project_Reports::instance();
-        
+
             // Contacts
             require_once( 'dt-contacts/contacts-config.php' );
             $this->config_contacts = Disciple_Tools_Config_Contacts::instance();
-        
+
             // Groups
             require_once( 'dt-groups/groups-config.php' );
             $this->config_groups = Disciple_Tools_Groups_Config::instance();
-        
+
             // Locations
             require_once( 'dt-locations/admin-menu.php' );
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
             require_once( 'dt-locations/class-import.php' ); // import class
-        
+
             // People Groups
             require_once( 'dt-people-groups/admin-menu.php' );
             $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
-        
-        
+
+
             // Assets
-        
-        
+
+
             // Progress
-        
-        
+
+
             // Notifications
             require_once( 'dt-core/admin/tables/notifications-table.php' );
-        
-        
+
+
             // Logging
             require_once( 'dt-core/logging/class-activity-list-table.php' ); // contacts and groups report building
             require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
-        
+
             // Metaboxes
             require_once( 'dt-core/admin/metaboxes/box-four-fields.php' );
             require_once( 'dt-core/admin/metaboxes/box-church-fields.php' );
@@ -529,7 +533,7 @@ class Disciple_Tools {
             require_once( 'dt-core/admin/metaboxes/box-activity.php' );
             require_once( 'dt-core/admin/metaboxes/box-availability.php' );
             require_once( 'dt-core/admin/metaboxes/box-share-contact.php' );
-        
+
         }
         /* End Admin configuration section */
 
