@@ -107,7 +107,7 @@ class Disciple_Tools_Groups_Post_Type {
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
-            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
+//            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
             if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) == $this->post_type ) {
                 add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
@@ -229,7 +229,7 @@ class Disciple_Tools_Groups_Post_Type {
      * @access public
      * @param  array $defaults
      * @since  0.1
-     * @return void
+     * @return mixed
      */
     public function register_custom_column_headings ( $defaults ) {
         $new_columns = [ 'location' => __( 'Location', 'disciple_tools' ) ];
@@ -264,19 +264,18 @@ class Disciple_Tools_Groups_Post_Type {
      */
     public function updated_messages ( $messages ) {
         global $post;
-
-        $messages[$this->post_type] = [
-            0 => '', // Unused. Messages start at index 1.
-            1 => sprintf( __( '%3$s updated. %1$sView %4$s%$2s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
-            2 => __( 'Custom field updated.', 'disciple_tools' ),
-            3 => __( 'Custom field deleted.', 'disciple_tools' ),
-            4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
-            /* translators: %s: date and time of the revision */
-            5 => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-            6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
-            7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-            8 => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
-            9 => sprintf(
+    
+        $messages[ $this->post_type ] = [
+            0  => '', // Unused. Messages start at index 1.
+            1  => sprintf( __( '%3$s updated. %1$sView %4$s%$2s', 'disciple_tools' ), [ '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ] ),
+            2  => __( 'Custom field updated.', 'disciple_tools' ),
+            3  => __( 'Custom field deleted.', 'disciple_tools' ),
+            4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
+            5  => isset( $_GET[ 'revision' ] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET[ 'revision' ], false ) ) : false,
+            6  => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
+            7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
+            8  => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
+            9  => sprintf(
                 __( '%1$s scheduled for: %3$s. %4$sPreview %$2s%5$s', 'disciple_tools' ),
                 $this->singular,
                 strtolower( $this->singular ),
