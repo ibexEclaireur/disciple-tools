@@ -10,19 +10,20 @@
  * @author     Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
-class Disciple_Tools_Custom_Lists_Tab {
-    
+class Disciple_Tools_Custom_Lists_Tab
+{
     
     /**
      * Packages and returns tab page
      *
      * @return string
      */
-    public function content() {
+    public function content()
+    {
         $html = '';
         $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         $html .= '<div id="post-body-content">';
@@ -49,20 +50,16 @@ class Disciple_Tools_Custom_Lists_Tab {
                     <thead><th>Contacts</th></thead>
                     <tbody><tr><td>';
         
-        
         $html .= '</td></tr></tbody></table><br>';
         /* End Box */
-        
         
         /* Box */
         $html .= '<table class="widefat striped">
                     <thead><th>Groups</th></thead>
                     <tbody><tr><td>';
         
-        
         $html .= '</td></tr></tbody></table><br>';
         /* End Box */
-        
         
         /* End Main Column */
         $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
@@ -83,10 +80,16 @@ class Disciple_Tools_Custom_Lists_Tab {
         return $html;
     }
     
-    public function user_profile_box() {
+    /**
+     * Contructor for the contact settings box.
+     *
+     * @return string
+     */
+    public function user_profile_box()
+    {
         
         $site_custom_lists = get_option( 'dt_site_custom_lists' );
-        if ( $site_custom_lists ) {
+        if( $site_custom_lists ) {
             dt_add_site_custom_lists();
         }
         $user_fields = $site_custom_lists[ 'user_fields' ];
@@ -97,7 +100,7 @@ class Disciple_Tools_Custom_Lists_Tab {
         
         $html .= '<table class="widefat">';
         
-        foreach ( $user_fields as $field ) {
+        foreach( $user_fields as $field ) {
             $html .= '<tr><td>' . $field[ 'label' ] . '</td><td>Enabled <input name="' . $field[ 'key' ] . '" type="checkbox" ' . $this->is_checked( $field[ 'enabled' ] ) . ' /></td><td>' . $field[ 'description' ] . ' </td></tr>';
         }
         
@@ -114,14 +117,18 @@ class Disciple_Tools_Custom_Lists_Tab {
         
     }
     
-    public function process_user_profile_box() {
+    public function process_user_profile_box()
+    {
         
-        if ( isset( $_POST[ 'user_fields_nonce' ] ) && wp_verify_nonce( $_POST[ 'user_fields_nonce' ], 'user_fields' ) ) {
+        if( isset( $_POST[ 'user_fields_nonce' ] ) ) {
+            if( wp_verify_nonce( sanitize_key( $_POST[ 'user_fields_nonce' ] ), 'user_fields' ) ) {
+                return;
+            }
             
             $site_options = get_option( 'dt_site_custom_lists' );
             
-            foreach ( $site_options[ 'user_fields' ] as $key => $value ) {
-                if ( isset( $_POST[ $key ] ) ) {
+            foreach( $site_options[ 'user_fields' ] as $key => $value ) {
+                if( isset( $_POST[ $key ] ) ) {
                     $site_options[ 'user_fields' ][ $key ][ 'enabled' ] = true;
                 } else {
                     $site_options[ 'user_fields' ][ $key ][ 'enabled' ] = false;
@@ -130,16 +137,19 @@ class Disciple_Tools_Custom_Lists_Tab {
             
             update_option( 'dt_site_custom_lists', $site_options, true );
             
-        } elseif ( isset( $_POST[ 'add_input_fields' ] ) ) {
+        } elseif( isset( $_POST[ 'add_input_fields' ] ) ) {
             
             // build record
-            $label       = trim( strip_tags( $_POST[ 'label' ] ) );
-            $description = trim( strip_tags( $_POST[ 'description' ] ) );
-            $key         = strtolower( str_replace( ' ', '_', $label ) );
-            $enabled     = true;
+            if( !isset( $_POST[ 'label' ] ) || !isset( $_POST[ 'description' ] ) ) {
+                return;
+            }
+            $label = sanitize_title( wp_unslash( $_POST[ 'label' ] ) );
+            $description = sanitize_text_field( wp_unslash( $_POST[ 'description' ] ) );
+            $key = sanitize_key( strtolower( str_replace( ' ', '_', $label ) ) );
+            $enabled = true;
             
             // strip and make lowercase process
-            $site_options                          = get_option( 'dt_site_custom_lists' );
+            $site_options = get_option( 'dt_site_custom_lists' );
             $site_options[ 'user_fields' ][ $key ] = [
                 'label'       => $label,
                 'key'         => $key,
@@ -159,9 +169,9 @@ class Disciple_Tools_Custom_Lists_Tab {
      *
      * @return string
      */
-    public function is_checked( $value ) {
+    public function is_checked( $value )
+    {
         return $value ? 'checked' : '';
     }
-    
     
 }
