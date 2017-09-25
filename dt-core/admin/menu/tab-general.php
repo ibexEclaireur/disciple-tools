@@ -29,6 +29,10 @@ class Disciple_Tools_General_Tab {
         print '<pre>';
         //        print_r( $_POST );
         //        print_r( get_option( 'dt_site_options' ) );
+        $screen_object = get_current_screen();
+        if ( $screen_object->parent_base === 'dt_options' ) {
+            echo $screen_object->parent_base;
+        }
         print '</pre>';
         
         /* Box */

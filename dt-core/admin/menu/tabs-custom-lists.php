@@ -30,7 +30,7 @@ class Disciple_Tools_Custom_Lists_Tab {
         
         print '<pre>';
         print_r( $_POST );
-        //                print_r( get_option( 'dt_site_custom_lists' ) );
+        print_r( get_option( 'dt_site_custom_lists' ) );
         print '</pre>';
         
         /* Box */
@@ -101,11 +101,14 @@ class Disciple_Tools_Custom_Lists_Tab {
             $html .= '<tr><td>' . $field[ 'label' ] . '</td><td>Enabled <input name="' . $field[ 'key' ] . '" type="checkbox" ' . $this->is_checked( $field[ 'enabled' ] ) . ' /></td><td>' . $field[ 'description' ] . ' </td></tr>';
         }
         
-        $html .= '</table><br>';
+        $html .= '</table>';
+        $html .= '<br><button type="button" onclick="add_input_fields();" class="button">Add</button> <button type="submit" style="float:right;" class="button">Save</button></form>';
         
-        $html .= 'New: <input type="text" placeholder="label" name="label" /><input type="text" name="key" placeholder="key" /><input type="text" name="description" placeholder="description" /> ';
-        
-        $html .= '<br><span style="float:right;"><button type="submit" class="button float-right">Save</button> </span></form>';
+        $html .= '<div id="add_input"></div>';
+        $html .= '<script>function add_input_fields() {
+                      "use strict";
+                      jQuery(\'#add_input\').html(\'<form method="post"><input type="hidden" name="add_input_fields" /><table width="100%"><tr><td><hr><br><input type="text" name="label" placeholder="label" /><input type="text" name="description" placeholder="description" /><button type="submit">Add</button></td></tr></table></form>\');
+                    }</script>';
         
         return $html;
         
@@ -124,6 +127,25 @@ class Disciple_Tools_Custom_Lists_Tab {
                     $site_options[ 'user_fields' ][ $key ][ 'enabled' ] = false;
                 }
             }
+            
+            update_option( 'dt_site_custom_lists', $site_options, true );
+            
+        } elseif ( isset( $_POST[ 'add_input_fields' ] ) ) {
+            
+            // build record
+            $label       = trim( strip_tags( $_POST[ 'label' ] ) );
+            $description = trim( strip_tags( $_POST[ 'description' ] ) );
+            $key         = strtolower( str_replace( ' ', '_', $label ) );
+            $enabled     = true;
+            
+            // strip and make lowercase process
+            $site_options                          = get_option( 'dt_site_custom_lists' );
+            $site_options[ 'user_fields' ][ $key ] = [
+                'label'       => $label,
+                'key'         => $key,
+                'description' => $description,
+                'enabled'     => $enabled,
+            ];
             
             update_option( 'dt_site_custom_lists', $site_options, true );
             
