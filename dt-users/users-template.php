@@ -198,6 +198,11 @@ function dt_get_user_display_name( $user_id )
     return $user->display_name;
 }
 
+/**
+ * @param $profile_fields
+ *
+ * @return mixed
+ */
 function dt_modify_profile_fields( $profile_fields )
 {
     
@@ -220,4 +225,73 @@ function dt_modify_profile_fields( $profile_fields )
 if( is_admin() ) {
     // Add elements to the contact section of the profile.
     add_filter( 'user_contactmethods', 'dt_modify_profile_fields' );
+}
+
+/**
+ * Compares the user_metadata array with the site user fields and returns a combined array limited to site_user_fields.
+ * This is used in the theme template to display the user profile.
+ *
+ * @param array $usermeta
+ *
+ * @return array
+ */
+function dt_build_user_fields_display( array $usermeta ): array
+{
+    $fields = [];
+    
+    $site_custom_lists = get_option( 'dt_site_custom_lists' );
+    $site_user_fields = $site_custom_lists[ 'user_fields' ];
+    
+    foreach( $site_user_fields as $key => $value ) {
+        foreach( $usermeta as $k => $v ) {
+            if( $key == $k ) {
+                $fields[] = array_merge( $value, [ 'value' => $v[ 0 ] ] );
+            }
+        }
+    }
+    
+    return $fields;
+}
+
+/**
+ * @param string     $type
+ * @param array|null $dt_user_fields
+ */
+function dt_list_contact_type( string $type, array $dt_user_fields = null )
+{
+    
+    if( is_null( $dt_user_fields ) ) {
+        $dt_usermeta = get_user_meta( get_current_user_id() );
+        $dt_user_fields = dt_build_user_fields_display( $dt_usermeta );
+    }
+    
+    $list = '';
+    
+    foreach( $dt_user_fields as $field ) {
+        
+        if( $field[ 'type' ] == $type && !empty( $field[ 'value' ] ) ) {
+            
+            switch( $type ) {
+                case 'email':
+                    $list .= '<p><a href="mailto:' . esc_attr( $field[ 'value' ] ) . '">' . esc_attr( $field[ 'value' ] ) . '</a> (' . esc_attr( $field[ 'label' ] ) . ')</p>';
+                    break;
+                case 'phone':
+                    $list .= '<p>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</p>';
+                    break;
+                case 'address':
+                    $list .= '<p><a href="https://www.google.com/maps/place/' . $field[ 'value' ] . '" target="_blank">' . esc_attr( $field[ 'value' ] ) . '</a> (' . esc_attr( $field[ 'label' ] ) . ')</p>';
+                    break;
+                case 'social':
+                    $list .= '<p>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</p>';
+                    break;
+                case 'other':
+                    $list .= '<p>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</p>';
+                    break;
+            }
+            
+        }
+        
+    }
+    
+    echo $list;
 }
