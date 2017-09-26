@@ -97,6 +97,12 @@ class Disciple_Tools_Contacts_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/contact/(?P<id>\d+)/field', [
+                "methods" => "DELETE",
+                "callback" => [$this, 'delete_contact_field'],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/user/(?P<user_id>\d+)/contacts', [
             "methods" => "GET",
             "callback" => [$this, 'get_user_contacts'],
@@ -372,11 +378,7 @@ class Disciple_Tools_Contacts_Endpoints
             $values = $body["values"];
 
             $result = Disciple_Tools_Contacts::update_contact_details( $params['id'], $field_key, $values, true );
-            if ( is_wp_error( $result ) ){
-                return $result;
-            } else {
-                return new WP_REST_Response( $result );
-            }
+            return $result;
         } else {
             return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
         }
@@ -404,6 +406,22 @@ class Disciple_Tools_Contacts_Endpoints
             }
         } else {
             return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
+        }
+    }
+    public function delete_contact_field( WP_REST_Request $request ){
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if (isset( $params['id'] )){
+            $field_key = $body["key"];
+
+            $result = Disciple_Tools_Contacts::delete_contact_field( $params['id'], $field_key );
+            if ($result == 0){
+                return new WP_Error( "delete_contact_details", "Could not update contact", ['status' => 400] );
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 403] );
         }
     }
 
