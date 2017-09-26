@@ -137,41 +137,123 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     
     $fields[ 'version' ] = '1.0';
     
+    // the prefix dt_user_ assists db meta queries on the user
     $fields[ 'user_fields' ] = [
         'dt_user_personal_phone' => [
             'label'       => 'Personal Phone',
             'key'         => 'dt_user_personal_phone',
-            'description' => 'Personal phone is private to the team not for distribution.',
+            'type'        => 'phone',
+            'description' => 'Personal phone is private to the team, not for distribution.',
             'enabled'     => true,
         ],
         'dt_user_personal_email' => [
             'label'       => 'Personal Email',
             'key'         => 'dt_user_personal_email',
-            'description' => 'Personal email is private to the team not for distribution.',
+            'type'        => 'email',
+            'description' => 'Personal email is private to the team, not for distribution.',
+            'enabled'     => true,
+        ],
+        'dt_user_personal_address' => [
+            'label'       => 'Personal Address',
+            'key'         => 'dt_user_personal_address',
+            'type'        => 'address',
+            'description' => 'Personal address is private to the team, not for distribution.',
             'enabled'     => true,
         ],
         'dt_user_work_phone'     => [
             'label'       => 'Work Phone',
             'key'         => 'dt_user_work_phone',
+            'type'        => 'phone',
             'description' => 'Work phone is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
         'dt_user_work_email'     => [
             'label'       => 'Work Email',
             'key'         => 'dt_user_work_email',
+            'type'        => 'email',
             'description' => 'Work email is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
         'dt_user_work_facebook'  => [
             'label'       => 'Work Facebook',
             'key'         => 'dt_user_work_facebook',
+            'type'        => 'social',
             'description' => 'Work Facebook is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
         'dt_user_work_whatsapp'  => [
             'label'       => 'Work WhatsApp',
             'key'         => 'dt_user_work_whatsapp',
+            'type'        => 'other',
             'description' => 'Work Facebook is for distribution to contacts and seekers.',
+            'enabled'     => true,
+        ],
+    ];
+    
+    $fields[ 'user_fields_types' ] = [
+        'phone' => [
+            'label'       => 'Phone',
+            'key'         => 'phone',
+        ],
+        'email' => [
+            'label'       => 'Email',
+            'key'         => 'email',
+        ],
+        'social' => [
+            'label'       => 'Social Media',
+            'key'         => 'social',
+        ],
+        'address' => [
+            'label'       => 'Address',
+            'key'         => 'address',
+        ],
+        'other' => [
+            'label'       => 'Other',
+            'key'         => 'other',
+        ],
+    ];
+    
+    $fields[ 'sources' ] = [
+        'web' => [
+            'label'       => 'Web',
+            'key'         => 'web',
+            'description' => 'Contacts coming from the website.',
+            'enabled'     => true,
+        ],
+        'phone' => [
+            'label'       => 'Phone',
+            'key'         => 'phone',
+            'description' => 'Contacts coming from phone.',
+            'enabled'     => true,
+        ],
+        'facebook' => [
+            'label'       => 'Facebook',
+            'key'         => 'facebook',
+            'description' => 'Contacts coming from Facebook.',
+            'enabled'     => true,
+        ],
+        'twitter' => [
+            'label'       => 'Twitter',
+            'key'         => 'twitter',
+            'description' => 'Contacts coming from Twitter.',
+            'enabled'     => true,
+        ],
+        'linkedin' => [
+            'label'       => 'LinkedIn',
+            'key'         => 'linkedin',
+            'description' => 'Contacts coming from the LinkedIn.',
+            'enabled'     => true,
+        ],
+        'referral' => [
+            'label'       => 'Referral',
+            'key'         => 'referral',
+            'description' => 'Contacts coming from relational network.',
+            'enabled'     => true,
+        ],
+        'advertisement' => [
+            'label'       => 'Advertisement',
+            'key'         => 'advertisement',
+            'description' => 'Contacts coming an advertisement campaign.',
             'enabled'     => true,
         ],
     ];
