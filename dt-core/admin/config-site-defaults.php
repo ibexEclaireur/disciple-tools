@@ -1,8 +1,9 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 /**
  * Default Structure
- *
  * This is for default structure settings.
  *
  * @author  Chasm Solutions
@@ -20,17 +21,16 @@ add_filter( 'duplicate_comment_id', '__return_false' );
 //allow multiple comments in quick succession
 add_filter( 'comment_flood_filter', '__return_false' );
 
-
-
 /*********************************************************************************************
-* Functions
-*/
+ * Functions
+ */
 
 /**
  * Set default premalink structure
  * Needed for the rest api url structure (for wp-json to work)
  */
-function set_permalink_structure(){
+function set_permalink_structure()
+{
     global $wp_rewrite;
     $wp_rewrite->set_permalink_structure( '/%postname%/' );
     flush_rewrite_rules();
@@ -39,7 +39,8 @@ function set_permalink_structure(){
 /**
  *
  */
-function warn_user_about_permalink_settings() {
+function warn_user_about_permalink_settings()
+{
     ?>
     <div class="error notices">
         <p><?php _e( 'You may only set your permalink settings to "Post name"' ); ?></p>
@@ -52,18 +53,21 @@ function warn_user_about_permalink_settings() {
  *
  * @param $permalink_structure
  */
-function permalink_structure_changed_callback( $permalink_structure ) {
+function permalink_structure_changed_callback( $permalink_structure )
+{
     global $wp_rewrite;
-    if ($permalink_structure !== '/%postname%/') {
+    if( $permalink_structure !== '/%postname%/' ) {
         add_action( 'admin_notices', 'warn_user_about_permalink_settings' );
     }
 }
 
 /**
  * Admin panel svg icon for disciple tools.
+ *
  * @return string
  */
-function dt_svg_icon() {
+function dt_svg_icon()
+{
     return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS40IDIwLjMyIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojMmQyZDJkO308L3N0eWxlPjwvZGVmcz48dGl0bGU+ZGlzY2lwbGUtdG9vbHM8L3RpdGxlPjxwb2x5Z29uIGNsYXNzPSJhIiBwb2ludHM9IjIxLjQgMjAuMzIgOS4zIDAgMi44NiAxMC44MSA4LjUyIDIwLjMyIDIxLjQgMjAuMzIiLz48cG9seWdvbiBjbGFzcz0iYSIgcG9pbnRzPSIwLjAyIDE1LjU4IDAgMTUuNjEgMi44MyAyMC4zMiA1LjUxIDE1LjM0IDAuMDIgMTUuNTgiLz48L3N2Zz4=';
 }
 
@@ -72,7 +76,8 @@ function dt_svg_icon() {
  *
  * @return array
  */
-function dt_get_site_options_defaults () {
+function dt_get_site_options_defaults()
+{
     $fields = [];
     
     $fields[ 'version' ] = '1.0';
@@ -98,7 +103,7 @@ function dt_get_site_options_defaults () {
     
     $fields[ 'clear_data_on_deactivate' ] = true;
     
-    $fields[ 'daily_reports' ]            = [
+    $fields[ 'daily_reports' ] = [
         'build_report_for_contacts'  => true,
         'build_report_for_groups'    => true,
         'build_report_for_facebook'  => false,
@@ -113,17 +118,19 @@ function dt_get_site_options_defaults () {
 }
 
 /**
- * Processes the current configurations and upgrades the site options to the new version with persistent configuration settings.
+ * Processes the current configurations and upgrades the site options to the new version with persistent configuration
+ * settings.
+ *
  * @return bool
  */
-function dt_update_site_options_to_current_version() {
+function dt_update_site_options_to_current_version()
+{
     return true;
     // TODO save current settings
     // TODO check and update keys
     // TODO set new keys to default
     // TODO update site options meta and return true.
 }
-
 
 /**
  * Gets site configured custom lists
@@ -132,21 +139,22 @@ function dt_update_site_options_to_current_version() {
  *
  * @return array|mixed
  */
-function dt_get_site_custom_lists( string $list_title = null ) {
+function dt_get_site_custom_lists( string $list_title = null )
+{
     $fields = [];
     
     $fields[ 'version' ] = '1.0';
     
     // the prefix dt_user_ assists db meta queries on the user
     $fields[ 'user_fields' ] = [
-        'dt_user_personal_phone' => [
+        'dt_user_personal_phone'   => [
             'label'       => 'Personal Phone',
             'key'         => 'dt_user_personal_phone',
             'type'        => 'phone',
             'description' => 'Personal phone is private to the team, not for distribution.',
             'enabled'     => true,
         ],
-        'dt_user_personal_email' => [
+        'dt_user_personal_email'   => [
             'label'       => 'Personal Email',
             'key'         => 'dt_user_personal_email',
             'type'        => 'email',
@@ -160,28 +168,28 @@ function dt_get_site_custom_lists( string $list_title = null ) {
             'description' => 'Personal address is private to the team, not for distribution.',
             'enabled'     => true,
         ],
-        'dt_user_work_phone'     => [
+        'dt_user_work_phone'       => [
             'label'       => 'Work Phone',
             'key'         => 'dt_user_work_phone',
             'type'        => 'phone',
             'description' => 'Work phone is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
-        'dt_user_work_email'     => [
+        'dt_user_work_email'       => [
             'label'       => 'Work Email',
             'key'         => 'dt_user_work_email',
             'type'        => 'email',
             'description' => 'Work email is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
-        'dt_user_work_facebook'  => [
+        'dt_user_work_facebook'    => [
             'label'       => 'Work Facebook',
             'key'         => 'dt_user_work_facebook',
             'type'        => 'social',
             'description' => 'Work Facebook is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
-        'dt_user_work_whatsapp'  => [
+        'dt_user_work_whatsapp'    => [
             'label'       => 'Work WhatsApp',
             'key'         => 'dt_user_work_whatsapp',
             'type'        => 'other',
@@ -191,60 +199,60 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     ];
     
     $fields[ 'user_fields_types' ] = [
-        'phone' => [
-            'label'       => 'Phone',
-            'key'         => 'phone',
+        'phone'   => [
+            'label' => 'Phone',
+            'key'   => 'phone',
         ],
-        'email' => [
-            'label'       => 'Email',
-            'key'         => 'email',
+        'email'   => [
+            'label' => 'Email',
+            'key'   => 'email',
         ],
-        'social' => [
-            'label'       => 'Social Media',
-            'key'         => 'social',
+        'social'  => [
+            'label' => 'Social Media',
+            'key'   => 'social',
         ],
         'address' => [
-            'label'       => 'Address',
-            'key'         => 'address',
+            'label' => 'Address',
+            'key'   => 'address',
         ],
-        'other' => [
-            'label'       => 'Other',
-            'key'         => 'other',
+        'other'   => [
+            'label' => 'Other',
+            'key'   => 'other',
         ],
     ];
     
     $fields[ 'sources' ] = [
-        'web' => [
+        'web'           => [
             'label'       => 'Web',
             'key'         => 'web',
             'description' => 'Contacts coming from the website.',
             'enabled'     => true,
         ],
-        'phone' => [
+        'phone'         => [
             'label'       => 'Phone',
             'key'         => 'phone',
             'description' => 'Contacts coming from phone.',
             'enabled'     => true,
         ],
-        'facebook' => [
+        'facebook'      => [
             'label'       => 'Facebook',
             'key'         => 'facebook',
             'description' => 'Contacts coming from Facebook.',
             'enabled'     => true,
         ],
-        'twitter' => [
+        'twitter'       => [
             'label'       => 'Twitter',
             'key'         => 'twitter',
             'description' => 'Contacts coming from Twitter.',
             'enabled'     => true,
         ],
-        'linkedin' => [
+        'linkedin'      => [
             'label'       => 'LinkedIn',
             'key'         => 'linkedin',
             'description' => 'Contacts coming from the LinkedIn.',
             'enabled'     => true,
         ],
-        'referral' => [
+        'referral'      => [
             'label'       => 'Referral',
             'key'         => 'referral',
             'description' => 'Contacts coming from relational network.',
@@ -260,7 +268,7 @@ function dt_get_site_custom_lists( string $list_title = null ) {
     
     //    $fields = apply_filters( 'dt_site_custom_lists', $fields );
     
-    if ( is_null( $list_title ) ) {
+    if( is_null( $list_title ) ) {
         return $fields;
     } else {
         return $fields[ $list_title ];
@@ -272,12 +280,15 @@ function dt_get_site_custom_lists( string $list_title = null ) {
  *
  * @return bool|array
  */
-function dt_add_site_custom_lists() {
-    if(!get_option( 'dt_site_custom_lists' )) {
+function dt_add_site_custom_lists()
+{
+    if( !get_option( 'dt_site_custom_lists' ) ) {
         $custom_lists = dt_get_site_custom_lists();
         add_option( 'dt_site_custom_lists', $custom_lists, '', true );
+        
         return $custom_lists;
     }
+    
     return false;
 }
 

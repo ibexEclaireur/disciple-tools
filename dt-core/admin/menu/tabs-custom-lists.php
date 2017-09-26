@@ -27,7 +27,7 @@ class Disciple_Tools_Custom_Lists_Tab
      */
     public function content()
     {
-        if(!get_option( 'dt_site_custom_lists' )) { // test for presence of custom lists
+        if( !get_option( 'dt_site_custom_lists' ) ) { // test for presence of custom lists
             dt_add_site_custom_lists();
         }
         
