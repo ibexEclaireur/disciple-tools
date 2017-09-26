@@ -347,6 +347,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         return $contact_id;
     }
+
+//    @todo rename this to delete connection or lump with delete field
     public static function delete_contact_details( int $contact_id, string $key, string $value, bool $check_permissions ){
         if ($check_permissions && ! self::can_update( 'contacts', $contact_id )) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 403] );
@@ -366,6 +368,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         return false;
+    }
+
+
+    public static function delete_contact_field( int $contact_id, string $key ){
+        if (!self::can_update( 'contacts', $contact_id )){
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 401] );
+        }
+        delete_post_meta( $contact_id, $key .'_details' );
+        return delete_post_meta( $contact_id, $key );
     }
 
     /**

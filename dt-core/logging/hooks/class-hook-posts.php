@@ -8,6 +8,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
         add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta'], 10, 4 );
         add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta'], 10, 4 );
+        add_action( "delete_post_meta", [ &$this, 'post_meta_deleted'], 10, 4 );
         add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created'], 10, 1 );
         add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted'], 10, 1 );
 
@@ -111,7 +112,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     }
 
 
-    public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value, $new = false ) {
+    public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value, $new = false, $deleted = false ) {
         global $wpdb;
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
 
@@ -199,6 +200,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         if (!empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
             if ($new){
                 $object_note = 'Added ' . $this->_key_name( $meta_key, $fields ) . ': ' . $this->_value_name( $meta_key, $meta_value, $fields );
+            } else if ($deleted){
+                $object_note = $this->_key_name( $meta_key, $fields ) . ' "' . $this->_value_name( $meta_key, $prev_value, $fields ) . '" deleted ';
             } else {
                 $object_note = $this->_key_name( $meta_key, $fields ) . ' changed '  .
                     (isset( $prev_value ) ? 'from "' . $this->_value_name( $meta_key, $prev_value, $fields ) .'"' : '') .
@@ -356,5 +359,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $this->hooks_p2p_created( $p2p_ids[0], $action = 'disconnected from' );
     }
 
+    public function post_meta_deleted ( $meta_id, $object_id, $meta_key, $meta_value, $new = false ){
+        if ( strpos( $meta_key, "_details" ) === false ){
+            $this->hooks_updated_post_meta( $meta_id[0], $object_id, $meta_key, $meta_value, $new, true );
+        }
+    }
 
 }
