@@ -36,6 +36,9 @@ function set_permalink_structure(){
     flush_rewrite_rules();
 }
 
+/**
+ *
+ */
 function warn_user_about_permalink_settings() {
     ?>
     <div class="error notices">
@@ -44,6 +47,11 @@ function warn_user_about_permalink_settings() {
     <?php
 }
 
+/**
+ * Notification that 'posttype' is the only permalink structure available.
+ *
+ * @param $permalink_structure
+ */
 function permalink_structure_changed_callback( $permalink_structure ) {
     global $wp_rewrite;
     if ($permalink_structure !== '/%postname%/') {
@@ -124,55 +132,48 @@ function dt_update_site_options_to_current_version() {
  *
  * @return array|mixed
  */
-function dt_get_site_custom_lists( string $list_title = NULL ) {
+function dt_get_site_custom_lists( string $list_title = null ) {
     $fields = [];
     
     $fields[ 'version' ] = '1.0';
     
     $fields[ 'user_fields' ] = [
-        'personal_phone'    => [
+        'dt_user_personal_phone' => [
             'label'       => 'Personal Phone',
-            'key'         => 'personal_phone',
-            'description' => 'Personal phone is the private phone number not for distribution.',
+            'key'         => 'dt_user_personal_phone',
+            'description' => 'Personal phone is private to the team not for distribution.',
             'enabled'     => true,
         ],
-        'personal_email'    => [
+        'dt_user_personal_email' => [
             'label'       => 'Personal Email',
-            'key'         => 'personal_email',
-            'description' => '',
+            'key'         => 'dt_user_personal_email',
+            'description' => 'Personal email is private to the team not for distribution.',
             'enabled'     => true,
         ],
-        'personal_facebook' => [
-            'label'       => 'Personal Facebook',
-            'key'         => 'personal_facebook',
-            'description' => '',
-            'enabled'     => true,
-        ],
-        'work_phone'        => [
+        'dt_user_work_phone'     => [
             'label'       => 'Work Phone',
-            'key'         => 'work_phone',
-            'description' => '',
+            'key'         => 'dt_user_work_phone',
+            'description' => 'Work phone is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
-        'work_email'        => [
+        'dt_user_work_email'     => [
             'label'       => 'Work Email',
-            'key'         => 'work_email',
-            'description' => '',
+            'key'         => 'dt_user_work_email',
+            'description' => 'Work email is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
-        'work_facebook'     => [
+        'dt_user_work_facebook'  => [
             'label'       => 'Work Facebook',
-            'key'         => 'work_facebook',
-            'description' => '',
+            'key'         => 'dt_user_work_facebook',
+            'description' => 'Work Facebook is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
-        'work_twitter'      => [
-            'label'       => 'Work Twitter',
-            'key'         => 'work_twitter',
-            'description' => '',
+        'dt_user_work_whatsapp'  => [
+            'label'       => 'Work WhatsApp',
+            'key'         => 'dt_user_work_whatsapp',
+            'description' => 'Work Facebook is for distribution to contacts and seekers.',
             'enabled'     => true,
         ],
-    
     ];
     
     //    $fields = apply_filters( 'dt_site_custom_lists', $fields );
@@ -184,11 +185,16 @@ function dt_get_site_custom_lists( string $list_title = NULL ) {
     }
 }
 
-function dt_add_site_custom_lists () {
+/**
+ * Checks for the site custom lists and creates it if it is missing.
+ *
+ * @return bool|array
+ */
+function dt_add_site_custom_lists() {
     if(!get_option( 'dt_site_custom_lists' )) {
         $custom_lists = dt_get_site_custom_lists();
         add_option( 'dt_site_custom_lists', $custom_lists, '', true );
-        return true;
+        return $custom_lists;
     }
     return false;
 }
