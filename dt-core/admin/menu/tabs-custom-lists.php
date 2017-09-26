@@ -27,6 +27,10 @@ class Disciple_Tools_Custom_Lists_Tab
      */
     public function content()
     {
+        if(!get_option( 'dt_site_custom_lists' )) { // test for presence of custom lists
+            dt_add_site_custom_lists();
+        }
+        
         print '<pre>';
         //  print_r( $_POST );
         //  print_r( get_option( 'dt_site_custom_lists' ) );
@@ -48,14 +52,6 @@ class Disciple_Tools_Custom_Lists_Tab
         $html .= '<table class="widefat striped"><thead><th>Sources</th></thead><tbody><tr><td>';
         $this->process_sources_box();
         $html .= $this->sources_box();
-        $html .= '</td></tr></tbody></table><br>';
-        /* End Box */
-        
-        /* Box */
-        $html .= '<table class="widefat striped">
-                    <thead><th>Groups</th></thead>
-                    <tbody><tr><td>';
-        
         $html .= '</td></tr></tbody></table><br>';
         /* End Box */
         
