@@ -293,5 +293,5 @@ function dt_list_contact_type( string $type, array $dt_user_fields = null )
         
     }
     
-    echo $list;
+    return $list ;
 }
