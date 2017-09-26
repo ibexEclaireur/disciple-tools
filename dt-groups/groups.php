@@ -114,7 +114,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                         $fields[ "address" ][] = $details;
                     }
                 } elseif( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ][ "type" ] == "key_select" ) {
-                    $label = isset( self::$group_fields[ $key ][ "default" ][ $value[ 0 ] ] ) ? self::$group_fields[ $key ][ "default" ][ $value[ 0 ] ] : current( self::$group_fields[ $key ][ "default" ] );
+                    $label = self::$group_fields[ $key ][ "default" ][ $value[ 0 ] ] ?? current( self::$group_fields[ $key ][ "default" ] );
                     $fields[ $key ] = [ "key" => $value[ 0 ], "label" => $label ];
                 } elseif( $key === "assigned_to" ) {
                     if( $value ) {
