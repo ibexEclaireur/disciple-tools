@@ -133,15 +133,15 @@ function dt_people_groups_post_type_scripts()
  */
 function dt_options_scripts()
 {
-    $screen_object = get_current_screen();
-    if( $screen_object->parent_base === 'dt_options' ) {
-        
+    if( isset( $_GET[ "page" ] ) && $_GET[ "page" ] === 'dt_options' ) {
         wp_enqueue_script( 'dt_options_script', Disciple_Tools()->plugin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
         ], filemtime( Disciple_Tools()->plugin_js_path . 'dt-options.js' ), true );
         wp_enqueue_script( 'dt_shared_scripts', Disciple_Tools()->plugin_js_url . 'dt-shared.js', [], filemtime( Disciple_Tools()->plugin_js_path . 'dt-shared.js' ), true );
-        
+    
+        wp_register_style( 'dt_admin_css', Disciple_Tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( Disciple_Tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
+        wp_enqueue_style( 'dt_admin_css' );
     }
 }
 

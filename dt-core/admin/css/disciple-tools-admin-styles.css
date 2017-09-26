@@ -36,6 +36,17 @@ div.edit-row {
     display: table;
 }
 
+button.button-like-link {
+    float:right;
+    background:none!important;
+    color:inherit;
+    border:none;
+    padding:0!important;
+    font: inherit;
+    /*border is optional*/
+    cursor: pointer;
+}
+
 @media screen and (max-width: 600px) {
         div.edit-title-left {
             max-width: 100%;
