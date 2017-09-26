@@ -58,3 +58,138 @@ function permalink_structure_changed_callback( $permalink_structure ) {
 function dt_svg_icon() {
     return 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS40IDIwLjMyIj48ZGVmcz48c3R5bGU+LmF7ZmlsbDojMmQyZDJkO308L3N0eWxlPjwvZGVmcz48dGl0bGU+ZGlzY2lwbGUtdG9vbHM8L3RpdGxlPjxwb2x5Z29uIGNsYXNzPSJhIiBwb2ludHM9IjIxLjQgMjAuMzIgOS4zIDAgMi44NiAxMC44MSA4LjUyIDIwLjMyIDIxLjQgMjAuMzIiLz48cG9seWdvbiBjbGFzcz0iYSIgcG9pbnRzPSIwLjAyIDE1LjU4IDAgMTUuNjEgMi44MyAyMC4zMiA1LjUxIDE1LjM0IDAuMDIgMTUuNTgiLz48L3N2Zz4=';
 }
+
+/**
+ * Returns the default master array of site options
+ *
+ * @return array
+ */
+function dt_get_site_options_defaults () {
+    $fields = [];
+    
+    $fields[ 'version' ] = '1.0';
+    
+    $fields[ 'notifications' ] = [
+        'new_web'          => true,
+        'new_email'        => true,
+        'mentions_web'     => true,
+        'mentions_email'   => true,
+        'updates_web'      => true,
+        'updates_email'    => false,
+        'changes_web'      => false,
+        'changes_email'    => false,
+        'milestones_web'   => false,
+        'milestones_email' => false,
+    ];
+    
+    $fields[ 'extension_modules' ] = [
+        'add_people_groups' => true,
+        'add_assetmapping'  => true,
+        'add_prayer'        => true,
+    ];
+    
+    $fields[ 'clear_data_on_deactivate' ] = true;
+    
+    $fields[ 'daily_reports' ]            = [
+        'build_report_for_contacts'  => true,
+        'build_report_for_groups'    => true,
+        'build_report_for_facebook'  => false,
+        'build_report_for_twitter'   => false,
+        'build_report_for_analytics' => false,
+        'build_report_for_adwords'   => false,
+        'build_report_for_mailchimp' => false,
+        'build_report_for_youtube'   => false,
+    ];
+    
+    return $fields;
+}
+
+/**
+ * Processes the current configurations and upgrades the site options to the new version with persistent configuration settings.
+ * @return bool
+ */
+function dt_update_site_options_to_current_version() {
+    return true;
+    // TODO save current settings
+    // TODO check and update keys
+    // TODO set new keys to default
+    // TODO update site options meta and return true.
+}
+
+
+/**
+ * Gets site configured custom lists
+ *
+ * @param null $list_title
+ *
+ * @return array|mixed
+ */
+function dt_get_site_custom_lists( string $list_title = NULL ) {
+    $fields = [];
+    
+    $fields[ 'version' ] = '1.0';
+    
+    $fields[ 'user_fields' ] = [
+        'personal_phone'    => [
+            'label'       => 'Personal Phone',
+            'key'         => 'personal_phone',
+            'description' => 'Personal phone is the private phone number not for distribution.',
+            'enabled'     => true,
+        ],
+        'personal_email'    => [
+            'label'       => 'Personal Email',
+            'key'         => 'personal_email',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'personal_facebook' => [
+            'label'       => 'Personal Facebook',
+            'key'         => 'personal_facebook',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_phone'        => [
+            'label'       => 'Work Phone',
+            'key'         => 'work_phone',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_email'        => [
+            'label'       => 'Work Email',
+            'key'         => 'work_email',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_facebook'     => [
+            'label'       => 'Work Facebook',
+            'key'         => 'work_facebook',
+            'description' => '',
+            'enabled'     => true,
+        ],
+        'work_twitter'      => [
+            'label'       => 'Work Twitter',
+            'key'         => 'work_twitter',
+            'description' => '',
+            'enabled'     => true,
+        ],
+    
+    ];
+    
+    //    $fields = apply_filters( 'dt_site_custom_lists', $fields );
+    
+    if ( is_null( $list_title ) ) {
+        return $fields;
+    } else {
+        return $fields[ $list_title ];
+    }
+}
+
+function dt_add_site_custom_lists () {
+    if(!get_option( 'dt_site_custom_lists' )) {
+        $custom_lists = dt_get_site_custom_lists();
+        add_option( 'dt_site_custom_lists', $custom_lists, '', true );
+        return true;
+    }
+    return false;
+}
+

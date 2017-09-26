@@ -2,3 +2,4 @@
 .idea
 /dt-people-groups/json/jp_pg_*.json
 /dt-locations/deprecated/
+/vendor/

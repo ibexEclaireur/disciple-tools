@@ -35,14 +35,17 @@ class Disciple_Tools_Contacts_Endpoints
     private $namespace;
     private $contacts_instance;
     private $api_keys_controller;
-
+    
+    /**
+     * Disciple_Tools_Contacts_Endpoints constructor.
+     */
     public function __construct()
     {
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [$this,  'add_api_routes'] );
 
         require_once( 'contacts.php' );
-        $this->contacts_instance = new Disciple_Tools_Contacts;
+        $this->contacts_instance = new Disciple_Tools_Contacts();
 
         $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }
@@ -222,7 +225,7 @@ class Disciple_Tools_Contacts_Endpoints
      * @param  WP_REST_Request $request
       * @access public
      * @since  0.1
-     * @return string|WP_Error The contact on success
+     * @return string|array The contact on success
      */
     public function create_contact( WP_REST_Request $request ){
         $fields = $request->get_json_params();
@@ -323,7 +326,13 @@ class Disciple_Tools_Contacts_Endpoints
         }
         return $rv;
     }
-
+    
+    /**
+     * @param string $yes_no
+     *
+     * @return bool
+     * @throws \Error|bool 'Expected yes or no'.
+     */
     private static function yes_no_to_boolean( string $yes_no ) {
         if ( $yes_no === 'yes' ) {
             return true;
@@ -333,7 +342,12 @@ class Disciple_Tools_Contacts_Endpoints
             throw new Error( "Expected yes or no, instead got $yes_no" );
         }
     }
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|mixed|null|string|\WP_Error|\WP_Post|\WP_REST_Response
+     */
     public function add_contact_details( WP_REST_Request $request ){
         $params = $request->get_params();
         $body = $request->get_json_params();
@@ -350,6 +364,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
         }
     }
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return int|\WP_Error|\WP_REST_Response
+     */
     public function update_contact_details( WP_REST_Request $request ){
         $params = $request->get_params();
         $body = $request->get_json_params();
@@ -363,6 +383,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
         }
     }
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return bool|mixed|\WP_Error|\WP_REST_Response
+     */
     public function delete_contact_details( WP_REST_Request $request ){
         $params = $request->get_params();
         $body = $request->get_json_params();
@@ -454,8 +480,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "get_team_contacts", "Missing a valid user id", ['status' => 400] );
         }
     }
-
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|int|\WP_Error|\WP_REST_Response
+     */
     public function quick_action_button( WP_REST_Request $request ){
         $params = $request->get_params();
         $body = $request->get_json_params();
@@ -470,7 +500,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
         }
     }
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return false|int|\WP_Error|\WP_REST_Response
+     */
     public function post_comment( WP_REST_Request $request ){
         $params = $request->get_params();
         $body = $request->get_json_params();
@@ -488,6 +523,12 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
     }
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|int|\WP_Error|\WP_REST_Response
+     */
     public function get_comments( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['id'] )){
@@ -503,6 +544,12 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
     }
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|null|object|\WP_Error|\WP_REST_Response
+     */
     public function get_activity( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['id'] )){
@@ -517,8 +564,12 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
     }
-
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|\WP_Error|\WP_REST_Response
+     */
     public function accept_contact( WP_REST_Request $request ){
         $params = $request->get_params();
         $body = $request->get_json_params();
@@ -534,7 +585,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "accept_contact", "Missing a valid contact id", ['status' => 400] );
         }
     }
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|mixed|\WP_Error|\WP_REST_Response
+     */
     public function shared_with( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['id'] )){
@@ -549,7 +605,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( 'shared_with', "Missing a valid contact id", ['status' => 400] );
         }
     }
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return false|int|\WP_Error|\WP_REST_Response
+     */
     public function remove_shared( WP_REST_Request $request ){
         $params = $request->get_params();
         if (isset( $params['id'] )){
@@ -564,7 +625,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( 'remove_shared', "Missing a valid contact id", ['status' => 400] );
         }
     }
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return false|int|\WP_Error|\WP_REST_Response
+     */
     public function add_shared( WP_REST_Request $request ){
         $params = $request->get_params();
         if ( isset( $params['id'] )){
@@ -579,8 +645,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( 'add_shared', "Missing a valid contact id", ['status' => 400] );
         }
     }
-
-
+    
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return array|\WP_Query
+     */
     public function get_contacts_compact( WP_REST_Request $request ){
         $params = $request->get_params();
         $search = "";

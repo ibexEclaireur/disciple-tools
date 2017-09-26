@@ -5,12 +5,17 @@ php:
     - '7.1'
 dist: trusty
 sudo: required # this seems to be required for some reason to get MySQL to work
+cache:
+  directories:
+    - $HOME/.composer/cache/files
 services:
   - mysql
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS testdb'
   - mysql -e "GRANT ALL ON testdb.* TO 'travis'@'localhost'"
+before_script:
+  - composer install --no-interaction
 script:
   - ./dt-core/test/test_for_syntax_errors.sh
   - ./dt-core/test/test_installation.sh
-  - curl -sOL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && php phpcs.phar && rm phpcs.phar
+  - ./dt-core/test/test_phpcs.sh

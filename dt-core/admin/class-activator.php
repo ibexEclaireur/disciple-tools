@@ -12,8 +12,8 @@
 
 
 class Disciple_Tools_Activator {
-
-
+    
+    
     /**
      * Activities to run during installation.
      *
@@ -23,16 +23,16 @@ class Disciple_Tools_Activator {
         global $wpdb;
         $Disciple_Tools = Disciple_Tools();
         $Disciple_Tools->_log_version_number();
-
+        
         /** Create roles and capabilities */
         require_once( 'class-roles.php' );
         $roles = Disciple_Tools_Roles::instance();
         $roles->set_roles();
-
-
+        
+        
         /** Setup key for JWT authentication */
-        if (!defined( 'JWT_AUTH_SECRET_KEY' ) ) {
-            if (get_option( "my_jwt_key" )){
+        if ( ! defined( 'JWT_AUTH_SECRET_KEY' ) ) {
+            if ( get_option( "my_jwt_key" ) ) {
                 define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
             } else {
                 $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
@@ -41,30 +41,16 @@ class Disciple_Tools_Activator {
             }
         }
         
-        /** Add default dt site options for ini*/ // TODO unfinished site options
-        $options =
-            [
-                'add_people_groups'           => 1,
-                'clear_data_on_deactivate'    => 1,
-                'daily_reports' =>
-                    [
-                        'build_report_for_contacts'   => 1,
-                        'build_report_for_groups'     => 1,
-                        'build_report_for_facebook'   => 1,
-                        'build_report_for_twitter'    => 1,
-                        'build_report_for_analytics'  => 1,
-                        'build_report_for_adwords'    => 1,
-                        'build_report_for_mailchimp'  => 1,
-                        'build_report_for_youtube'    => 1,
-                    ]
-            ];
-        if(!get_option( 'dt_site_options' )) {
-            add_option( 'dt_site_options', $options, '', true );
-        } else {
-            update_option( 'dt_site_options', $options, true );
+        /** Add default dt site options for ini*/
+        $site_options = dt_get_site_options_defaults();
+        if ( ! get_option( 'dt_site_options' ) ) { // create new if it doesn't exist
+            add_option( 'dt_site_options', $site_options, '', true );
+        } elseif ( get_option( 'dt_site_options' )[ 'version' ] == $site_options[ 'version' ] ) {
+            dt_update_site_options_to_current_version();
         }
-
-
+        dt_add_site_custom_lists(); // setup options for site_custom_lists
+        
+        
         /** Activate database creation for Disciple Tools Activity logs */
         if ( is_multisite() && $network_wide ) {
             // Get all blogs in the network and activate plugin on each one
@@ -78,7 +64,7 @@ class Disciple_Tools_Activator {
             self::create_tables( $Disciple_Tools->version );
         }
     }
-
+    
     /**
      * Creating tables whenever a new blog is created
      *
@@ -90,22 +76,24 @@ class Disciple_Tools_Activator {
      * @param $meta
      */
     public static function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-
+        
         if ( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
             switch_to_blog( $blog_id );
             self::create_tables( Disciple_Tools()->version );
             restore_current_blog();
         }
+        
     }
-
+    
     public static function on_delete_blog( $tables ) {
         global $wpdb;
         $tables[] = $wpdb->prefix . 'dt_activity_log';
         $tables[] = $wpdb->prefix . 'dt_reports';
         $tables[] = $wpdb->prefix . 'dt_reportmeta';
+        
         return $tables;
     }
-
+    
     /**
      * Creates the tables for the activity and report logs.
      *
@@ -116,10 +104,10 @@ class Disciple_Tools_Activator {
         $charset_collate = $wpdb->get_charset_collate();
         
         require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
+        
         /* Activity Log */
         $table_name = $wpdb->prefix . 'dt_activity_log';
-        if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+        if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
             $sql1 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 					  `histid` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					  `user_caps` varchar(70) NOT NULL DEFAULT 'guest',
@@ -138,15 +126,15 @@ class Disciple_Tools_Activator {
 					  `meta_parent` BIGINT(20) NOT NULL DEFAULT '0',
 					  PRIMARY KEY (`histid`)
 				) $charset_collate;";
-
+            
             dbDelta( $sql1 );
-
+            
             update_option( 'dt_activity_log_db_version', $version );
         }
-
+        
         /* Report Log Table */
         $table_name = $wpdb->prefix . 'dt_reports';
-        if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+        if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
             $sql2 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 					  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
 					  `report_date` DATE NOT NULL,
@@ -157,10 +145,10 @@ class Disciple_Tools_Activator {
             dbDelta( $sql2 );
             update_option( 'dt_reports_db_version', $version );
         }
-
+        
         /* Report Meta Log Table */
         $table_name = $wpdb->prefix . 'dt_reportmeta';
-        if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+        if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
             $sql3 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 					  `meta_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					  `report_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -171,10 +159,10 @@ class Disciple_Tools_Activator {
             dbDelta( $sql3 );
             update_option( 'dt_reportmeta_db_version', $version );
         }
-    
+        
         /* Report Meta Log Table */
         $table_name = $wpdb->prefix . 'dt_share';
-        if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+        if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
             $sql4 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
 					  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 					  `user_id` BIGINT(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -185,10 +173,10 @@ class Disciple_Tools_Activator {
             dbDelta( $sql4 );
             update_option( 'dt_share_db_version', $version );
         }
-    
+        
         /* Notifications Table */
         $table_name = $wpdb->prefix . 'dt_notifications';
-        if( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
+        if ( $wpdb->get_var( "show tables like '{$table_name}'" ) != $table_name ) {
             $sql5 = "CREATE TABLE IF NOT EXISTS `{$table_name}` (
                       `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                       `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
@@ -205,7 +193,7 @@ class Disciple_Tools_Activator {
             dbDelta( $sql5 );
             update_option( 'dt_notifications_db_version', $version );
         }
-
+        
     }
-
+    
 }

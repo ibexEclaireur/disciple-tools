@@ -164,7 +164,7 @@ class Disciple_Tools_Notifications_Endpoints {
      * @return string|WP_Error|array The contact on success
      */
     public function get_new_notifications_count(){
-        $result = Disciple_Tools_Notifications::get_new_notifications_count( );
+        $result = Disciple_Tools_Notifications::get_new_notifications_count();
         if ($result["status"]){
             return $result['result'];
         } else {
