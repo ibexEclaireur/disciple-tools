@@ -44,17 +44,16 @@ class Disciple_Tools_Deactivator {
     protected static function _remove_tables() {
         global $wpdb;
 
+        // TODO: replace this code, with running migrations backwards
+
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_activity_log`;" );
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reports`;" );
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reportmeta`;" );
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_share`;" );
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_notifications`;" );
 
-        delete_option( 'dt_activity_log_db_version' );
-        delete_option( 'dt_reports_db_version' );
-        delete_option( 'dt_reportmeta_db_version' );
-        delete_option( 'dt_share_db_version' );
-        delete_option( 'dt_notifications_db_version' );
+        delete_option( 'dt_migration_number' );
+
     }
 
 
