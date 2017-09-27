@@ -207,8 +207,8 @@ function dt_modify_profile_fields( $profile_fields )
 {
     
     $site_custom_lists = get_option( 'dt_site_custom_lists' );
-    if( $site_custom_lists ) {
-        dt_add_site_custom_lists();
+    if( !$site_custom_lists ) {
+        $site_custom_lists = dt_add_site_custom_lists();
     }
     $user_fields = $site_custom_lists[ 'user_fields' ];
     
@@ -240,6 +240,9 @@ function dt_build_user_fields_display( array $usermeta ): array
     $fields = [];
     
     $site_custom_lists = get_option( 'dt_site_custom_lists' );
+    if( !$site_custom_lists ) {
+        $site_custom_lists = dt_add_site_custom_lists();
+    }
     $site_user_fields = $site_custom_lists[ 'user_fields' ];
     
     foreach( $site_user_fields as $key => $value ) {
@@ -254,44 +257,68 @@ function dt_build_user_fields_display( array $usermeta ): array
 }
 
 /**
- * @param string     $type
- * @param array|null $dt_user_fields
+ * @param $user_id
  */
-function dt_list_contact_type( string $type, array $dt_user_fields = null )
-{
+function dt_get_user_locations_list( $user_id ) {
+    // search p2p for user + connection type
     
-    if( is_null( $dt_user_fields ) ) {
-        $dt_usermeta = get_user_meta( get_current_user_id() );
-        $dt_user_fields = dt_build_user_fields_display( $dt_usermeta );
-    }
+    // get list of locations by ids
     
-    $list = '';
+    // return array of location objects
     
-    foreach( $dt_user_fields as $field ) {
+}
+
+/**
+ * @param $user_id
+ *
+ * @return array
+ */
+function dt_get_user_team_members_list( $user_id ) {
+    // search p2p for user + connection type
+    
+    // get list of members by ids
+    
+    // return array of  objects
+    return [
+        [
+            'team_id'      => '',
+            'team_name'    => '',
+            'team_members' => [
+                [
+                    'ID'           => '',
+                    'display_name' => '',
+                    'user_email'   => '',
+                    'user_url'     => '',
+                ],
+                [
+                    'ID'           => '',
+                    'display_name' => '',
+                    'user_email'   => '',
+                    'user_url'     => '',
+                ],
         
-        if( $field[ 'type' ] == $type && !empty( $field[ 'value' ] ) ) {
-            
-            switch( $type ) {
-                case 'email':
-                    $list .= '<p><a href="mailto:' . esc_attr( $field[ 'value' ] ) . '">' . esc_attr( $field[ 'value' ] ) . '</a> (' . esc_attr( $field[ 'label' ] ) . ')</p>';
-                    break;
-                case 'phone':
-                    $list .= '<p>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</p>';
-                    break;
-                case 'address':
-                    $list .= '<p><a href="https://www.google.com/maps/place/' . $field[ 'value' ] . '" target="_blank">' . esc_attr( $field[ 'value' ] ) . '</a> (' . esc_attr( $field[ 'label' ] ) . ')</p>';
-                    break;
-                case 'social':
-                    $list .= '<p>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</p>';
-                    break;
-                case 'other':
-                    $list .= '<p>' . esc_attr( $field[ 'value' ] ) . ' (' . esc_attr( $field[ 'label' ] ) . ')</p>';
-                    break;
-            }
-            
-        }
-        
-    }
+            ],
     
-    return $list ;
+        ],
+        [
+            'team_id'      => '',
+            'team_name'    => '',
+            'team_members' => [
+                [
+                    'ID'           => '',
+                    'display_name' => '',
+                    'user_email'   => '',
+                    'user_url'     => '',
+                ],
+                [
+                    'ID'           => '',
+                    'display_name' => '',
+                    'user_email'   => '',
+                    'user_url'     => '',
+                ],
+        
+            ],
+    
+        ],
+    ];
 }
