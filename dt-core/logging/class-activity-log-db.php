@@ -88,9 +88,6 @@ class Disciple_Tools_Activity_Log_DB {
         dbDelta( $sql2 );
         dbDelta( $sql3 );
 
-        update_option( 'dt_activity_log_db_version', '1.0' );
-        update_option( 'dt_reports_db_version', '1.0' );
-        update_option( 'dt_reportmeta_db_version', '1.0' );
 
     }
 
@@ -106,8 +103,5 @@ class Disciple_Tools_Activity_Log_DB {
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reports`;" );
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_reportmeta`;" );
 
-        delete_option( 'dt_activity_log_db_version' );
-        delete_option( 'dt_reports_db_version' );
-        delete_option( 'dt_reportmeta_db_version' );
     }
 }

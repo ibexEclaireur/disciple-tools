@@ -257,6 +257,7 @@ class Disciple_Tools {
          */
         $this->token            = 'disciple_tools';
         $this->version          = '0.1';
+        $this->migration_number = 0;
         $this->plugin_url       = plugin_dir_url( __FILE__ );
         $this->plugin_path      = plugin_dir_path( __FILE__ );
         $this->plugin_img_url   = plugin_dir_url( __FILE__ ) . 'dt-core/admin/img/';
