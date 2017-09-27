@@ -257,68 +257,88 @@ function dt_build_user_fields_display( array $usermeta ): array
 }
 
 /**
- * @param $user_id
+ * @param int $user_id
+ *
+ * @return array|bool
  */
-function dt_get_user_locations_list( $user_id ) {
-    // search p2p for user + connection type
+function dt_get_user_locations_list( int $user_id ) {
+    global $wpdb;
     
-    // get list of locations by ids
+    // get connected location ids to user
+    $location_ids = $wpdb->get_col(
+        $wpdb->prepare(
+        "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
+    );
     
-    // return array of location objects
+    // check if null return
+    if( empty( $location_ids ) ) {
+        return false;
+    }
+    
+    // get location posts from connected array
+    $location_posts = new WP_Query( [ 'post__in' => $location_ids, 'post_type' => 'locations'] );
+    
+    return $location_posts->posts;
     
 }
 
 /**
- * @param $user_id
+ * Gets an array of teams populated with an array of members for each team
+ * array(
+ *      team_id
+ *      team_name
+ *      team_members array(
+ *              ID
+ *              display_name
+ *              user_email
+ *              user_url
  *
- * @return array
+ * @param int $user_id
+ *
+ * @return array|bool
  */
-function dt_get_user_team_members_list( $user_id ) {
-    // search p2p for user + connection type
+function dt_get_user_team_members_list( int $user_id ): array {
     
-    // get list of members by ids
+    $team_members_list = [];
     
-    // return array of  objects
-    return [
-        [
-            'team_id'      => '',
-            'team_name'    => '',
-            'team_members' => [
-                [
-                    'ID'           => '',
-                    'display_name' => '',
-                    'user_email'   => '',
-                    'user_url'     => '',
-                ],
-                [
-                    'ID'           => '',
-                    'display_name' => '',
-                    'user_email'   => '',
-                    'user_url'     => '',
-                ],
+    $teams = wp_get_object_terms( $user_id, 'user-group' );
+    if( empty( $teams ) ) {
+        return false;
+    }
+    
+    foreach( $teams as $team ) {
+    
+        $team_id = $team->term_id;
+        $team_name = $team->name;
+    
+        $members_list = [];
+        $args = [
+            'taxonomy' => 'user-group',
+            'term'     => $team_id,
+            'term_by'  => 'id',
+        ];
+        $results = disciple_tools_get_users_of_group( $args );
+        if( !empty( $results ) ) {
+            foreach( $results as $result ) {
+                if( !( $user_id == $result->data->ID ) ) {
+                    $members_list[] = [
+                        'ID'           => $result->data->ID,
+                        'display_name' => $result->data->display_name,
+                        'user_email'   => $result->data->user_email,
+                        'user_url'     => $result->data->user_url,
+                    ];
+                }
+            }
+        }
         
-            ],
-    
-        ],
-        [
-            'team_id'      => '',
-            'team_name'    => '',
-            'team_members' => [
-                [
-                    'ID'           => '',
-                    'display_name' => '',
-                    'user_email'   => '',
-                    'user_url'     => '',
-                ],
-                [
-                    'ID'           => '',
-                    'display_name' => '',
-                    'user_email'   => '',
-                    'user_url'     => '',
-                ],
+        $team_members_list[] = [
+            'team_id'      => $team_id,
+            'team_name'    => $team_name,
+            'team_members' => $members_list,
+        ];
         
-            ],
+    }
     
-        ],
-    ];
+    return $team_members_list;
 }
+
