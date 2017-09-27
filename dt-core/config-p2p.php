@@ -456,7 +456,7 @@ function dt_user_peoplegroup_connections( $user ) {
 
 // Find connected posts
     $args = [
-        'connected_type' => 'team_member_locations',
+        'connected_type' => 'team_member_peoplegroups',
         'connected_items' => $user,
         'suppress_filters' => false,
         'nopaging' => true,
