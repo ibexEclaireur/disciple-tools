@@ -14,6 +14,9 @@ if( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
+/**
+ * Class Disciple_Tools_General_Tab
+ */
 class Disciple_Tools_General_Tab
 {
     /**
@@ -28,10 +31,7 @@ class Disciple_Tools_General_Tab
         $html .= '<div id="post-body-content">';
         /* Main Column */
         
-        print '<pre>';
-        //        print_r( $_POST );
-        //        print_r( get_option( 'dt_site_options' ) );
-        print '</pre>';
+//        print '<pre>'; print_r(dt_get_option('dt_site_options')); print '</pre>';
         
         /* Box */
         $html .= '<table class="widefat striped">
@@ -85,12 +85,6 @@ class Disciple_Tools_General_Tab
         return $html;
     }
     
-    public function options_box()
-    {
-        $html = 'field';
-        
-        return $html;
-    }
     
     /**
      * Builds the user notifications box
@@ -100,8 +94,8 @@ class Disciple_Tools_General_Tab
     public function user_notifications()
     {
         
-        $site_options = get_option( 'dt_site_options' );
-        $notifications = $site_options[ 'notifications' ];
+        $site_options = dt_get_option( 'dt_site_options' );
+        $notifications = $site_options[ 'user_notifications' ];
         
         $html = '<p>These are site overrides for individual preferences for notifications. Uncheck if you want, users to make their own decision on which notifications to recieve.</p>';
         $html .= '<form method="post" name="notifications-form">';
@@ -128,13 +122,13 @@ class Disciple_Tools_General_Tab
         
         if( isset( $_POST[ 'notifications_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ 'notifications_nonce' ] ) ), 'notifications' ) ) {
             
-            $site_options = get_option( 'dt_site_options' );
+            $site_options = dt_get_option( 'dt_site_options' );
             
-            foreach( $site_options[ 'notifications' ] as $key => $value ) {
+            foreach( $site_options[ 'user_notifications' ] as $key => $value ) {
                 if( isset( $_POST[ $key ] ) ) {
-                    $site_options[ 'notifications' ][ $key ] = true;
+                    $site_options[ 'user_notifications' ][ $key ] = true;
                 } else {
-                    $site_options[ 'notifications' ][ $key ] = false;
+                    $site_options[ 'user_notifications' ][ $key ] = false;
                 }
             }
             
@@ -163,7 +157,7 @@ class Disciple_Tools_General_Tab
     public function reports()
     {
         
-        $site_options = get_option( 'dt_site_options' );
+        $site_options = dt_get_option( 'dt_site_options' );
         $daily_reports = $site_options[ 'daily_reports' ];
         
         $html = '<p>These are regular services that run to check and build reports on integrations and system status.</p>';
@@ -195,7 +189,7 @@ class Disciple_Tools_General_Tab
         
         if( isset( $_POST[ 'daily_reports_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ 'daily_reports_nonce' ] ) ), 'daily_reports' ) ) {
             
-            $site_options = get_option( 'dt_site_options' );
+            $site_options = dt_get_option( 'dt_site_options' );
             
             foreach( $site_options[ 'daily_reports' ] as $key => $value ) {
                 if( isset( $_POST[ $key ] ) ) {
@@ -219,7 +213,7 @@ class Disciple_Tools_General_Tab
     public function extension_modules()
     {
         
-        $site_options = get_option( 'dt_site_options' );
+        $site_options = dt_get_option( 'dt_site_options' );
         $extension_modules = $site_options[ 'extension_modules' ];
         
         $html = '<form method="post" name="extension_modules_form">';
@@ -245,7 +239,7 @@ class Disciple_Tools_General_Tab
         
         if( isset( $_POST[ 'extension_modules_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ 'extension_modules_nonce' ] ) ), 'extension_modules' ) ) {
             
-            $site_options = get_option( 'dt_site_options' );
+            $site_options = dt_get_option( 'dt_site_options' );
             
             foreach( $site_options[ 'extension_modules' ] as $key => $value ) {
                 if( isset( $_POST[ $key ] ) ) {

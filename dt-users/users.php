@@ -68,4 +68,33 @@ class Disciple_Tools_Users
         return $list;
     }
     
+    /**
+     * @param int    $user_id
+     * @param string $preference_key
+     * @param int    $preference_state
+     *
+     * @return array
+     */
+    public static function change_notification_preference( int $user_id, string $preference_key, int $preference_state ) {
+    
+        $user_notifications = dt_get_user_notification_options( $user_id );
+        if( is_wp_error( $user_notifications ) ) {
+            return [
+                'status' => false,
+                'message' => $user_notifications->get_error_message(),
+            ];
+        }
+        
+        foreach( $user_notifications as $notification ) {
+            if( $notification[$preference_key] == $preference_key ) {
+            
+            }
+        }
+        
+        return [
+            'status' => true,
+            'response' => 'success',
+        ];
+    }
+    
 }

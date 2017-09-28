@@ -12,7 +12,9 @@
 
 require_once( dirname( __FILE__ ) . '/class-migration-engine.php' );
 
-
+/**
+ * Class Disciple_Tools_Activator
+ */
 class Disciple_Tools_Activator {
 
 
@@ -43,15 +45,9 @@ class Disciple_Tools_Activator {
             }
         }
 
-        /** Add default dt site options for ini*/
-        $site_options = dt_get_site_options_defaults();
-        if ( ! get_option( 'dt_site_options' ) ) { // create new if it doesn't exist
-            add_option( 'dt_site_options', $site_options, '', true );
-        } elseif ( get_option( 'dt_site_options' )[ 'version' ] == $site_options[ 'version' ] ) {
-            dt_update_site_options_to_current_version();
-        }
-        dt_add_site_custom_lists(); // setup options for site_custom_lists
-
+        /** Add default dt site options for ini */
+        dt_get_option( 'dt_site_options' );
+        dt_get_option( 'dt_site_custom_lists' );
 
         /** Activate database creation for Disciple Tools Activity logs */
         if ( is_multisite() && $network_wide ) {
@@ -66,8 +62,7 @@ class Disciple_Tools_Activator {
             Disciple_Tools_Migration_Engine::migrate( Disciple_Tools()->migration_number );
         }
 
-        // TODO: we need to run the migrations on updates as well, not just on
-        // activations
+        // TODO: we need to run the migrations on updates as well, not just on activations
     }
 
     /**
@@ -81,15 +76,18 @@ class Disciple_Tools_Activator {
      * @param $meta
      */
     public static function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
-
         if ( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
             switch_to_blog( $blog_id );
             Disciple_Tools_Migration_Engine::migrate( Disciple_Tools()->migration_number );
             restore_current_blog();
         }
-
     }
-
+    
+    /**
+     * @param $tables
+     *
+     * @return array
+     */
     public static function on_delete_blog( $tables ) {
         global $wpdb;
         $tables[] = $wpdb->prefix . 'dt_activity_log';

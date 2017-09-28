@@ -255,6 +255,7 @@ function dt_groups_admin_assets() {
  * @since 0.1.9
  *
  * @param array $sections
+ * @return array
  */
 function disciple_tools_groups_add_profile_section( $sections = [] ) {
 
