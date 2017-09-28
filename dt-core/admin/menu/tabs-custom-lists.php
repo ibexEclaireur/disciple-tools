@@ -27,15 +27,6 @@ class Disciple_Tools_Custom_Lists_Tab
      */
     public function content()
     {
-        if( !get_option( 'dt_site_custom_lists' ) ) { // test for presence of custom lists
-            dt_add_site_custom_lists();
-        }
-        
-        print '<pre>';
-        //  print_r( $_POST );
-        //  print_r( get_option( 'dt_site_custom_lists' ) );
-        print '</pre>';
-        
         $html = '';
         $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         $html .= '<div id="post-body-content">';
@@ -90,9 +81,9 @@ class Disciple_Tools_Custom_Lists_Tab
         $html .= '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
         
         // custom list block
-        $site_custom_lists = get_option( 'dt_site_custom_lists' );
-        if( !$site_custom_lists ) {
-            dt_add_site_custom_lists();
+        $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        if( is_wp_error($site_custom_lists ) ) {
+            print $site_custom_lists->get_error_message();
         }
         $user_fields = $site_custom_lists[ 'user_fields' ];
         foreach( $user_fields as $field ) {
@@ -143,9 +134,9 @@ class Disciple_Tools_Custom_Lists_Tab
             }
             
             // Process current fields submitted
-            $site_custom_lists = get_option( 'dt_site_custom_lists' );
-            if( !$site_custom_lists ) {
-                $site_custom_lists = dt_add_site_custom_lists();
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            if( is_wp_error($site_custom_lists ) ) {
+                print $site_custom_lists->get_error_message();
             }
             
             foreach( $site_custom_lists[ 'user_fields' ] as $key => $value ) {
@@ -243,9 +234,9 @@ class Disciple_Tools_Custom_Lists_Tab
         $html .= '<thead><tr><td>Label</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
         
         // custom list block
-        $site_custom_lists = get_option( 'dt_site_custom_lists' );
-        if( !$site_custom_lists ) {
-            dt_add_site_custom_lists();
+        $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+        if( is_wp_error($site_custom_lists ) ) {
+            print $site_custom_lists->get_error_message();
         }
         $sources = $site_custom_lists[ 'sources' ];
         foreach( $sources as $source ) {
@@ -285,9 +276,9 @@ class Disciple_Tools_Custom_Lists_Tab
             }
             
             // Process current fields submitted
-            $site_custom_lists = get_option( 'dt_site_custom_lists' );
-            if( !$site_custom_lists ) {
-                $site_custom_lists = dt_add_site_custom_lists();
+            $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+            if( is_wp_error($site_custom_lists ) ) {
+                print $site_custom_lists->get_error_message();
             }
             
             foreach( $site_custom_lists[ 'sources' ] as $key => $value ) {

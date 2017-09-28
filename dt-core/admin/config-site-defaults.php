@@ -72,7 +72,69 @@ function dt_svg_icon()
 }
 
 /**
+ * Using the dt_get_option guarantees the existence of the option and upgrades to the current plugin version defaults, while returning the options array.
+ *
+ * @param string $name
+ *
+ * @return array|WP_Error
+ */
+function dt_get_option( string $name )
+{
+    
+    switch( $name ) {
+        case 'dt_site_options':
+            $site_options = dt_get_site_options_defaults();
+            
+            if( !get_option( 'dt_site_options' ) ) { // options doen't exist, create new.
+                $add = add_option( 'dt_site_options', $site_options, '', true );
+                if( !$add ) {
+                    return new WP_Error( 'failed_add_site_option', 'Site option dt_site_options was not able to be created' );
+                }
+                
+                return get_option( 'dt_site_options' );
+            } elseif( get_option( 'dt_site_options' )[ 'version' ] < $site_options[ 'version' ] ) { // option exists but version is behind
+                $upgrade = dt_site_options_upgrade_version( 'dt_site_options' );
+                if( !$upgrade ) {
+                    return new WP_Error( 'failed_site_option_upgrade', 'Versions of site options requires upgrade, but upgrade attempt failed.' );
+                }
+                
+                return get_option( 'dt_site_options' );
+            } else {
+                return get_option( 'dt_site_options' );
+            }
+            
+            break;
+        
+        case 'dt_site_custom_lists':
+            $custom_lists = dt_get_site_custom_lists();
+            
+            if( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
+                add_option( 'dt_site_custom_lists', $custom_lists, '', true );
+                
+                return get_option( 'dt_site_custom_lists' );
+            } elseif( get_option( 'dt_site_custom_lists' )[ 'version' ] < $custom_lists[ 'version' ] ) { // option exists but version is behind
+                $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
+                if( !$upgrade ) {
+                    return new WP_Error( 'failed_site_option_custom_list_upgrade', 'Versions of site options custom lists requires upgrade, but upgrade attempt failed.' );
+                }
+                
+                return get_option( 'dt_site_custom_lists' );
+            } else {
+                return get_option( 'dt_site_custom_lists' );
+            }
+            
+            break;
+        
+        default:
+            return new WP_Error( 'option_does_not_exist', 'You have requested a non-supported site option.' );
+            break;
+    }
+    
+}
+
+/**
  * Returns the default master array of site options
+ * Versioning allows for additive changes. Removal of fields here in defaults will not delete the value in current installations.
  *
  * @return array
  */
@@ -82,7 +144,7 @@ function dt_get_site_options_defaults()
     
     $fields[ 'version' ] = '1.0';
     
-    $fields[ 'notifications' ] = [
+    $fields[ 'user_notifications' ] = [
         'new_web'          => true,
         'new_email'        => true,
         'mentions_web'     => true,
@@ -118,24 +180,10 @@ function dt_get_site_options_defaults()
 }
 
 /**
- * Processes the current configurations and upgrades the site options to the new version with persistent configuration
- * settings.
- *
- * @return bool
- */
-function dt_update_site_options_to_current_version()
-{
-    return true;
-    // TODO save current settings
-    // TODO check and update keys
-    // TODO set new keys to default
-    // TODO update site options meta and return true.
-}
-
-/**
  * Gets site configured custom lists
+ * Versioning allows for additive changes. Removal of fields here in defaults will not delete the value in current installations.
  *
- * @param null $list_title
+ * @param string|null $list_title
  *
  * @return array|mixed
  */
@@ -276,19 +324,25 @@ function dt_get_site_custom_lists( string $list_title = null )
 }
 
 /**
- * Checks for the site custom lists and creates it if it is missing.
+ * Processes the current configurations and upgrades the site options to the new version with persistent configuration
+ * settings.
  *
- * @return bool|array
+ * @return bool
  */
-function dt_add_site_custom_lists()
+function dt_site_options_upgrade_version( string $name )
 {
-    if( !get_option( 'dt_site_custom_lists' ) ) {
-        $custom_lists = dt_get_site_custom_lists();
-        add_option( 'dt_site_custom_lists', $custom_lists, '', true );
-        
-        return $custom_lists;
+    $site_options_current = get_option( $name );
+    $site_options_defaults = dt_get_site_options_defaults();
+    
+    $new_version_number = $site_options_defaults[ 'version' ];
+    
+    if( !is_array( $site_options_current ) ) {
+        return false;
     }
     
-    return false;
+    $new_options = array_replace_recursive( $site_options_defaults, $site_options_current );
+    $new_options[ 'version' ] = $new_version_number;
+    
+    return update_option( $name, $new_options, true );
+    
 }
-

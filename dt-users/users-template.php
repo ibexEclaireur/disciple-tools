@@ -144,22 +144,50 @@ function dt_get_team_contacts( $user_id )
 }
 
 /**
- * Get current user notification options
+ * Get user notification options
  *
- * @return mixed
+ * @param int|null $user_id
+ *
+ * @return array|WP_Error
  */
-function dt_get_user_notification_options()
+function dt_get_user_notification_options( int $user_id = null )
 {
-    $user_id = get_current_user_id();
-    
-    // check for default options
-    if( !get_user_meta( get_current_user_id(), 'dt_notification_options' ) ) {
-        $site_options = dt_get_site_options_defaults();
-        $notifications_default = $site_options[ 'notifications' ];
-        add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
+    if( is_null( $user_id ) ) {
+        $user_id = get_current_user_id();
     }
     
-    return get_user_meta( get_current_user_id(), 'dt_notification_options', true );
+    $check = dt_user_notification_options_check( $user_id );
+    if( is_wp_error( $check ) ) {
+        return $check;
+    }
+    
+    return get_user_meta( $user_id, 'dt_notification_options', true );
+}
+
+/**
+ * Check for existence of user notification options
+ *
+ * @param int $user_id
+ *
+ * @return bool|WP_Error
+ */
+function dt_user_notification_options_check( int $user_id ): bool {
+    
+    // check existence of options for user
+    if( !get_user_meta( $user_id, 'dt_notification_options' ) ) {
+        
+        // if they don't exist create them
+        $site_options = dt_get_option( 'dt_site_options' );
+        $notifications_default = $site_options[ 'user_notifications' ];
+        $result = add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
+        if( !$result ) {
+            return new WP_Error('user_option_check_fail', 'Failed to create options for user_id. Check id.' ); // return false if fail to create options for user
+        }
+        
+        return true; // return true, options now exist
+    }
+    
+    return true; // return true, options exist
 }
 
 /**
@@ -169,9 +197,9 @@ function dt_get_user_notification_options()
  */
 function dt_get_site_notification_defaults()
 {
-    $site_options = get_option( 'dt_site_options' );
+    $site_options = dt_get_option( 'dt_site_options' );
     
-    return $site_options[ 'notifications' ];
+    return $site_options[ 'user_notifications' ];
 }
 
 /**
@@ -206,9 +234,9 @@ function dt_get_user_display_name( $user_id )
 function dt_modify_profile_fields( $profile_fields )
 {
     
-    $site_custom_lists = get_option( 'dt_site_custom_lists' );
-    if( !$site_custom_lists ) {
-        $site_custom_lists = dt_add_site_custom_lists();
+    $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+    if( is_wp_error($site_custom_lists ) ) {
+        return $profile_fields;
     }
     $user_fields = $site_custom_lists[ 'user_fields' ];
     
@@ -239,9 +267,9 @@ function dt_build_user_fields_display( array $usermeta ): array
 {
     $fields = [];
     
-    $site_custom_lists = get_option( 'dt_site_custom_lists' );
-    if( !$site_custom_lists ) {
-        $site_custom_lists = dt_add_site_custom_lists();
+    $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+    if( is_wp_error($site_custom_lists ) ) {
+        print $site_custom_lists->get_error_message();
     }
     $site_user_fields = $site_custom_lists[ 'user_fields' ];
     
