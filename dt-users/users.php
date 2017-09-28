@@ -74,38 +74,71 @@ class Disciple_Tools_Users
      *
      * @return array
      */
-    public static function change_notification_preference( int $user_id, string $preference_key ) {
-    
+    public static function change_notification_preference( int $user_id, string $preference_key )
+    {
+        
         $user_notifications = dt_get_user_notification_options( $user_id );
         if( is_wp_error( $user_notifications ) ) {
             return [
-                'status' => false,
+                'status'  => false,
                 'message' => $user_notifications->get_error_message(),
             ];
         }
         
         foreach( $user_notifications as $key => $value ) {
             if( $key == $preference_key ) {
-                $value === true ? $user_notifications[$key] = false : $user_notifications[$key] = true;
+                $value === true ? $user_notifications[ $key ] = false : $user_notifications[ $key ] = true;
             }
         }
-    
+        
         // @codingStandardsIgnoreLine  Note: VIP coding standards errors on the use of update_user_meta
         $update = update_user_meta( $user_id, 'dt_notification_options', $user_notifications );
         
-        if($update) {
+        if( $update ) {
             return [
-                'status' => true,
+                'status'   => true,
                 'response' => 'success',
             ];
         } else {
             return [
-                'status' => false,
+                'status'  => false,
                 'message' => 'Unable to update_user_option while updating user notification preferences.',
             ];
         }
+    }
+    
+    /**
+     * @param int $user_id
+     *
+     * @return array
+     */
+    public static function change_availability( int $user_id )
+    {
         
+        $user_availability = dt_get_user_option_availability( $user_id );
+        if( is_wp_error( $user_availability ) ) {
+            return [
+                'status'  => false,
+                'message' => 'Failed to get user availability option from db.',
+            ];
+        };
+    
+        $user_availability == true ? $user_availability = false : $user_availability = true;
         
+        // @codingStandardsIgnoreLine  Note: VIP coding standards errors on the use of update_user_meta
+        $update = update_user_meta( $user_id, 'dt_availability', $user_availability );
+        
+        if( $update ) {
+            return [
+                'status'   => true,
+                'response' => 'success',
+            ];
+        } else {
+            return [
+                'status'  => false,
+                'message' => 'Unable to update user dt_availability option.',
+            ];
+        }
     }
     
 }
