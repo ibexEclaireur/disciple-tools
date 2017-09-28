@@ -49,26 +49,6 @@ function dt_get_assigned_name ( int $contact_id, bool $return = false ) {
 
 }
 
-/**
- * Updates meta_data from form response
- */
-function dt_update_required_update ( $post_data ) {
-
-    global  $current_user; //for this example only :)
-
-    $commentdata = [
-        'comment_post_ID' => $post_data['post_ID'], // to which post the comment will show up
-        'comment_content' => $post_data['comment_content'], //fixed value - can be dynamic
-        'user_id' => $current_user->ID, //passing current user ID or any predefined as per the demand
-    ];
-
-    //Insert new comment and get the comment ID
-    $comment_id = wp_new_comment( $commentdata );
-
-    update_post_meta( $post_id = $post_data['post_ID'], $meta_key = 'requires_update', $meta_value = 'No' );
-
-}
-
 function dt_get_users_shared_with( $contact_id ) {
     return Disciple_Tools_Contacts::get_shared_with_on_contact( $contact_id );
 }
