@@ -116,7 +116,7 @@ class Disciple_Tools_Contact_Post_Type
             
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
-//            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
+            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
         }
         
     } // End __construct()

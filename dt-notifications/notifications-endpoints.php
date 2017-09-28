@@ -13,6 +13,9 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
 }
 
+/**
+ * Class Disciple_Tools_Notifications_Endpoints
+ */
 class Disciple_Tools_Notifications_Endpoints {
     /**
      * Disciple_Tools_Notifications_Endpoints The single instance of Disciple_Tools_Notifications_Endpoints.

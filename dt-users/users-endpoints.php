@@ -8,7 +8,7 @@
  */
 class Disciple_Tools_Users_Endpoints
 {
-
+    
     private $version = 1;
     private $context = "dt";
     private $namespace;
@@ -25,17 +25,19 @@ class Disciple_Tools_Users_Endpoints
     /**
      * Setup for API routes
      */
-    public function add_api_routes(){
+    public function add_api_routes()
+    {
         register_rest_route(
-            $this->namespace, '/users', [
-                'methods' => WP_REST_Server::READABLE,
-                'callback' => [$this, 'get_users']
+            $this->namespace, '/users/get_users', [
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_users' ],
             ]
         );
+        
         register_rest_route(
-            $this->namespace, 'users/change_notification_preference/(?P<preference_key>\d+)/(?P<preference_state>\d+)', [
-            'methods' => WP_REST_Server::CREATABLE,
-            'callback' => [$this, 'change_notification_preference']
+            $this->namespace, '/users/change_notification_preference', [
+                'methods'  => WP_REST_Server::CREATABLE,
+                'callback' => [ $this, 'change_notification_preference' ],
             ]
         );
     }
@@ -45,13 +47,15 @@ class Disciple_Tools_Users_Endpoints
      *
      * @return array|\WP_Error
      */
-    public function get_users( WP_REST_Request $request ){
+    public function get_users( WP_REST_Request $request )
+    {
         $params = $request->get_params();
         $search = "";
-        if (isset( $params['s'] )){
-            $search = $params['s'];
+        if( isset( $params[ 's' ] ) ) {
+            $search = $params[ 's' ];
         }
         $users = Disciple_Tools_Users::get_assignable_users_compact( $search );
+        
         return $users;
     }
     
@@ -60,11 +64,12 @@ class Disciple_Tools_Users_Endpoints
      *
      * @return array|\WP_Error
      */
-    public function change_notification_preference( WP_REST_Request $request ){
+    public function change_notification_preference( WP_REST_Request $request )
+    {
         $params = $request->get_params();
         $user_id = get_current_user_id();
         if( isset( $params[ 'preference_key' ] ) ) {
-            $result = Disciple_Tools_Users::change_notification_preference( $user_id, $params[ 'preference_key' ], $params[ 'preference_state' ] );
+            $result = Disciple_Tools_Users::change_notification_preference( $user_id, $params[ 'preference_key' ] );
             if( $result[ "status" ] ) {
                 return $result[ "response" ];
             } else {
