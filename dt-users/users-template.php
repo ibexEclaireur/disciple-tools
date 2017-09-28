@@ -191,6 +191,51 @@ function dt_user_notification_options_check( int $user_id ): bool {
 }
 
 /**
+ * Get user availability options
+ *
+ * @param int|null $user_id
+ *
+ * @return array|WP_Error
+ */
+function dt_get_user_option_availability( int $user_id = null )
+{
+    if( is_null( $user_id ) ) {
+        $user_id = get_current_user_id();
+    }
+    
+    $check = dt_user_availability_option_check( $user_id );
+    if( is_wp_error( $check ) ) {
+        return $check;
+    }
+    
+    return get_user_meta( $user_id, 'dt_availability', true );
+}
+
+/**
+ * Check for existence of user availability option
+ *
+ * @param int $user_id
+ *
+ * @return bool|WP_Error
+ */
+function dt_user_availability_option_check( int $user_id ) {
+    
+    // check existence of options for user
+    if( !get_user_meta( $user_id, 'dt_availability' ) ) {
+        
+        // if they don't exist create them
+        $result = add_user_meta( $user_id, 'dt_availability', true, true );
+        if( !$result ) {
+            return new WP_Error( 'add_user_availability_fail', 'Failed to create meta record dt_availability.' ); // return false if fail to create options for user
+        }
+        
+        return true; // return true, options now exist
+    }
+    
+    return true; // return true, options exist
+}
+
+/**
  * Gets the current site defaults defined in the notifications config section in wp-admin
  *
  * @return array

@@ -124,6 +124,7 @@ function dt_get_option( string $name )
             }
             
             break;
+            
         
         default:
             return new WP_Error( 'option_does_not_exist', 'You have requested a non-supported site option.' );
