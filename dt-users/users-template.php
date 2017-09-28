@@ -181,7 +181,7 @@ function dt_user_notification_options_check( int $user_id ): bool {
         $notifications_default = $site_options[ 'user_notifications' ];
         $result = add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
         if( !$result ) {
-            return new WP_Error('user_option_check_fail', 'Failed to create options for user_id. Check id.' ); // return false if fail to create options for user
+            return new WP_Error( 'user_option_check_fail', 'Failed to create options for user_id. Check id.' ); // return false if fail to create options for user
         }
         
         return true; // return true, options now exist
@@ -235,7 +235,7 @@ function dt_modify_profile_fields( $profile_fields )
 {
     
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if( is_wp_error($site_custom_lists ) ) {
+    if( is_wp_error( $site_custom_lists ) ) {
         return $profile_fields;
     }
     $user_fields = $site_custom_lists[ 'user_fields' ];
@@ -268,8 +268,8 @@ function dt_build_user_fields_display( array $usermeta ): array
     $fields = [];
     
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if( is_wp_error($site_custom_lists ) ) {
-        print $site_custom_lists->get_error_message();
+    if( is_wp_error( $site_custom_lists ) ) {
+        return [];
     }
     $site_user_fields = $site_custom_lists[ 'user_fields' ];
     

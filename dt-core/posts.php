@@ -16,10 +16,11 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  *
  * Functions for creating, finding, updating or deleting posts
  */
-
-
 class Disciple_Tools_Posts {
-
+    
+    /**
+     * Disciple_Tools_Posts constructor.
+     */
     public function __construct(){}
 
 

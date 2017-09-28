@@ -86,8 +86,9 @@ class Disciple_Tools_Users
         }
         
         foreach( $user_notifications as $notification ) {
-            // todo update notification
-            $notification;
+            if( $notification[$preference_key] == $preference_key ) {
+            
+            }
         }
         
         return [

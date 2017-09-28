@@ -163,7 +163,7 @@ function dt_get_site_options_defaults()
         'add_prayer'        => true,
     ];
     
-    $fields[ 'clear_data_on_deactivate' ] = true;
+    $fields[ 'clear_data_on_deactivate' ] = false; // todo need to add this option wrapper to the deactivate.php file for table deletes
     
     $fields[ 'daily_reports' ] = [
         'build_report_for_contacts'  => true,
