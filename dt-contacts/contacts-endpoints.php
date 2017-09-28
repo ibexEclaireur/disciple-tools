@@ -279,7 +279,12 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "update_contact", "Missing a valid contact id", ['status' => 400] );
         }
     }
-
+    
+    /**
+     * @param array $contacts
+     *
+     * @return array
+     */
     private function add_related_info_to_contacts( array $contacts ): array {
         p2p_type( 'contacts_to_locations' )->each_connected( $contacts, array(), 'locations' );
         p2p_type( 'contacts_to_groups' )->each_connected( $contacts, array(), 'groups' );

@@ -71,11 +71,10 @@ class Disciple_Tools_Users
     /**
      * @param int    $user_id
      * @param string $preference_key
-     * @param int    $preference_state
      *
      * @return array
      */
-    public static function change_notification_preference( int $user_id, string $preference_key, int $preference_state ) {
+    public static function change_notification_preference( int $user_id, string $preference_key ) {
     
         $user_notifications = dt_get_user_notification_options( $user_id );
         if( is_wp_error( $user_notifications ) ) {
@@ -85,16 +84,28 @@ class Disciple_Tools_Users
             ];
         }
         
-        foreach( $user_notifications as $notification ) {
-            if( $notification[$preference_key] == $preference_key ) {
-            
+        foreach( $user_notifications as $key => $value ) {
+            if( $key == $preference_key ) {
+                $value === true ? $user_notifications[$key] = false : $user_notifications[$key] = true;
             }
         }
+    
+        // @codingStandardsIgnoreLine  Note: VIP coding standards errors on the use of update_user_meta
+        $update = update_user_meta( $user_id, 'dt_notification_options', $user_notifications );
         
-        return [
-            'status' => true,
-            'response' => 'success',
-        ];
+        if($update) {
+            return [
+                'status' => true,
+                'response' => 'success',
+            ];
+        } else {
+            return [
+                'status' => false,
+                'message' => 'Unable to update_user_option while updating user notification preferences.',
+            ];
+        }
+        
+        
     }
     
 }

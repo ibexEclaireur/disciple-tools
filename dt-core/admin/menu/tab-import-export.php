@@ -28,7 +28,7 @@ class Disciple_Tools_Import_Export_Tab {
         
         print '<pre>';
         //        print_r( $_POST );
-        //        print_r( get_option( 'dt_site_options' ) );
+        //        print_r( dt_get_option( 'dt_site_options' ) );
         print '</pre>';
         
         /* Box */

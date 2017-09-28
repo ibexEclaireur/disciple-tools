@@ -31,7 +31,6 @@ class Disciple_Tools_General_Tab
         $html .= '<div id="post-body-content">';
         /* Main Column */
         
-//        print '<pre>'; print_r(dt_get_option('dt_site_options')); print '</pre>';
         
         /* Box */
         $html .= '<table class="widefat striped">
