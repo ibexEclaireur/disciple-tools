@@ -140,7 +140,6 @@ function dt_get_team_contacts( $user_id )
     
     // return
     return $user_connections;
-    
 }
 
 /**
@@ -171,7 +170,8 @@ function dt_get_user_notification_options( int $user_id = null )
  *
  * @return bool|WP_Error
  */
-function dt_user_notification_options_check( int $user_id ): bool {
+function dt_user_notification_options_check( int $user_id ): bool
+{
     
     // check existence of options for user
     if( !get_user_meta( $user_id, 'dt_notification_options' ) ) {
@@ -218,13 +218,14 @@ function dt_get_user_option_availability( int $user_id = null )
  *
  * @return bool|WP_Error
  */
-function dt_user_availability_option_check( int $user_id ) {
+function dt_user_availability_option_check( int $user_id )
+{
     
     // check existence of options for user
     if( !get_user_meta( $user_id, 'dt_availability' ) ) {
         
         // if they don't exist create them
-        $result = add_user_meta( $user_id, 'dt_availability', true, true );
+        $result = add_user_meta( $user_id, 'dt_availability', false, true );
         if( !$result ) {
             return new WP_Error( 'add_user_availability_fail', 'Failed to create meta record dt_availability.' ); // return false if fail to create options for user
         }
@@ -292,7 +293,6 @@ function dt_modify_profile_fields( $profile_fields )
     }
     
     return $profile_fields;
-    
 }
 
 if( is_admin() ) {
@@ -334,13 +334,14 @@ function dt_build_user_fields_display( array $usermeta ): array
  *
  * @return array|bool
  */
-function dt_get_user_locations_list( int $user_id ) {
+function dt_get_user_locations_list( int $user_id )
+{
     global $wpdb;
     
     // get connected location ids to user
     $location_ids = $wpdb->get_col(
         $wpdb->prepare(
-        "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
+            "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
     );
     
     // check if null return
@@ -349,10 +350,9 @@ function dt_get_user_locations_list( int $user_id ) {
     }
     
     // get location posts from connected array
-    $location_posts = new WP_Query( [ 'post__in' => $location_ids, 'post_type' => 'locations'] );
+    $location_posts = new WP_Query( [ 'post__in' => $location_ids, 'post_type' => 'locations' ] );
     
     return $location_posts->posts;
-    
 }
 
 /**
@@ -370,20 +370,21 @@ function dt_get_user_locations_list( int $user_id ) {
  *
  * @return array|bool
  */
-function dt_get_user_team_members_list( int $user_id ): array {
+function dt_get_user_team_members_list( int $user_id )
+{
     
     $team_members_list = [];
     
     $teams = wp_get_object_terms( $user_id, 'user-group' );
-    if( empty( $teams ) ) {
+    if( empty( $teams ) || is_wp_error( $teams ) ) {
         return false;
     }
     
     foreach( $teams as $team ) {
-    
+        
         $team_id = $team->term_id;
         $team_name = $team->name;
-    
+        
         $members_list = [];
         $args = [
             'taxonomy' => 'user-group',
@@ -409,7 +410,6 @@ function dt_get_user_team_members_list( int $user_id ): array {
             'team_name'    => $team_name,
             'team_members' => $members_list,
         ];
-        
     }
     
     return $team_members_list;
