@@ -248,7 +248,7 @@ function dt_get_user_locations_list( int $user_id )
     // get connected location ids to user
     $location_ids = $wpdb->get_col(
         $wpdb->prepare(
-            "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
+        "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
     );
     
     // check if null return

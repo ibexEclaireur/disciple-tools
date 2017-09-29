@@ -81,8 +81,8 @@ class Disciple_Tools_Users
 
         $value = get_user_meta( $user_id, $preference_key, true );
     
-        if( empty($value) ) {
-            $status = update_metadata( 'user', $user_id, $preference_key, true);
+        if( empty( $value ) ) {
+            $status = update_metadata( 'user', $user_id, $preference_key, true );
             if( $status ) {
                 return [
                     'status'   => true,
