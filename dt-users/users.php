@@ -30,7 +30,7 @@ class Disciple_Tools_Users
         if( !current_user_can( "access_contacts" ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
         }
-        
+
         $user_query = new WP_User_Query( [
             'search'         => '*' . esc_attr( $search_string ) . '*',
             'search_columns' => [
@@ -55,7 +55,7 @@ class Disciple_Tools_Users
         ] );
         $users = $user_query->get_results();
         $list = [];
-        
+
         foreach( $users as $user ) {
             if( user_can( $user, "access_contacts" ) ) {
                 $list[] = [
@@ -64,10 +64,10 @@ class Disciple_Tools_Users
                 ];
             }
         }
-        
+
         return $list;
     }
-    
+
     /**
      * @param int    $user_id
      * @param string $preference_key
@@ -76,7 +76,7 @@ class Disciple_Tools_Users
      */
     public static function change_notification_preference( int $user_id, string $preference_key )
     {
-        
+
         $user_notifications = dt_get_user_notification_options( $user_id );
         if( is_wp_error( $user_notifications ) ) {
             return [
@@ -84,16 +84,15 @@ class Disciple_Tools_Users
                 'message' => $user_notifications->get_error_message(),
             ];
         }
-        
+
         foreach( $user_notifications as $key => $value ) {
             if( $key == $preference_key ) {
                 $value === true ? $user_notifications[ $key ] = false : $user_notifications[ $key ] = true;
             }
         }
-        
-        // @codingStandardsIgnoreLine  Note: VIP coding standards errors on the use of update_user_meta
+
         $update = update_user_meta( $user_id, 'dt_notification_options', $user_notifications );
-        
+
         if( $update ) {
             return [
                 'status'   => true,
@@ -106,7 +105,7 @@ class Disciple_Tools_Users
             ];
         }
     }
-    
+
     /**
      * @param int $user_id
      *
@@ -114,7 +113,7 @@ class Disciple_Tools_Users
      */
     public static function change_availability( int $user_id )
     {
-        
+
         $user_availability = dt_get_user_option_availability( $user_id );
         if( is_wp_error( $user_availability ) ) {
             return [
@@ -122,12 +121,12 @@ class Disciple_Tools_Users
                 'message' => 'Failed to get user availability option from db.',
             ];
         };
-    
+
         $user_availability == true ? $user_availability = false : $user_availability = true;
-        
+
         // @codingStandardsIgnoreLine  Note: VIP coding standards errors on the use of update_user_meta
         $update = update_user_meta( $user_id, 'dt_availability', $user_availability );
-        
+
         if( $update ) {
             return [
                 'status'   => true,
@@ -140,5 +139,5 @@ class Disciple_Tools_Users
             ];
         }
     }
-    
+
 }
