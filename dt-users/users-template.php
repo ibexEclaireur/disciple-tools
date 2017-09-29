@@ -142,99 +142,6 @@ function dt_get_team_contacts( $user_id )
     return $user_connections;
 }
 
-/**
- * Get user notification options
- *
- * @param int|null $user_id
- *
- * @return array|WP_Error
- */
-function dt_get_user_notification_options( int $user_id = null )
-{
-    if( is_null( $user_id ) ) {
-        $user_id = get_current_user_id();
-    }
-    
-    $check = dt_user_notification_options_check( $user_id );
-    if( is_wp_error( $check ) ) {
-        return $check;
-    }
-    
-    return get_user_meta( $user_id, 'dt_notification_options', true );
-}
-
-/**
- * Check for existence of user notification options
- *
- * @param int $user_id
- *
- * @return bool|WP_Error
- */
-function dt_user_notification_options_check( int $user_id ): bool
-{
-    
-    // check existence of options for user
-    if( !get_user_meta( $user_id, 'dt_notification_options' ) ) {
-        
-        // if they don't exist create them
-        $site_options = dt_get_option( 'dt_site_options' );
-        $notifications_default = $site_options[ 'user_notifications' ];
-        $result = add_user_meta( $user_id, 'dt_notification_options', $notifications_default, true );
-        if( !$result ) {
-            return new WP_Error( 'user_option_check_fail', 'Failed to create options for user_id. Check id.' ); // return false if fail to create options for user
-        }
-        
-        return true; // return true, options now exist
-    }
-    
-    return true; // return true, options exist
-}
-
-/**
- * Get user availability options
- *
- * @param int|null $user_id
- *
- * @return array|WP_Error
- */
-function dt_get_user_option_availability( int $user_id = null )
-{
-    if( is_null( $user_id ) ) {
-        $user_id = get_current_user_id();
-    }
-    
-    $check = dt_user_availability_option_check( $user_id );
-    if( is_wp_error( $check ) ) {
-        return $check;
-    }
-    
-    return get_user_meta( $user_id, 'dt_availability', true );
-}
-
-/**
- * Check for existence of user availability option
- *
- * @param int $user_id
- *
- * @return bool|WP_Error
- */
-function dt_user_availability_option_check( int $user_id )
-{
-    
-    // check existence of options for user
-    if( !get_user_meta( $user_id, 'dt_availability' ) ) {
-        
-        // if they don't exist create them
-        $result = add_user_meta( $user_id, 'dt_availability', false, true );
-        if( !$result ) {
-            return new WP_Error( 'add_user_availability_fail', 'Failed to create meta record dt_availability.' ); // return false if fail to create options for user
-        }
-        
-        return true; // return true, options now exist
-    }
-    
-    return true; // return true, options exist
-}
 
 /**
  * Gets the current site defaults defined in the notifications config section in wp-admin
@@ -341,7 +248,7 @@ function dt_get_user_locations_list( int $user_id )
     // get connected location ids to user
     $location_ids = $wpdb->get_col(
         $wpdb->prepare(
-        "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
+            "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
     );
     
     // check if null return
