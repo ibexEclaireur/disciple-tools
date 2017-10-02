@@ -21,7 +21,7 @@ add_action( 'template_redirect', 'disciple_tools_please_log_in', 0 );
 
 # Disable content in feeds if the feed should be private.
 add_filter( 'the_content_feed', 'disciple_tools_private_feed', 95 );
-add_filter( 'the_excerpt_rss',  'disciple_tools_private_feed', 95 );
+add_filter( 'the_excerpt_rss', 'disciple_tools_private_feed', 95 );
 add_filter( 'comment_text_rss', 'disciple_tools_private_feed', 95 );
 
 /**
@@ -31,7 +31,8 @@ add_filter( 'comment_text_rss', 'disciple_tools_private_feed', 95 );
  * @access public
  * @return bool
  */
-function disciple_tools_is_private_blog() {
+function disciple_tools_is_private_blog()
+{
     return true;
 }
 
@@ -42,7 +43,8 @@ function disciple_tools_is_private_blog() {
  * @access public
  * @return bool
  */
-function disciple_tools_is_private_feed() {
+function disciple_tools_is_private_feed()
+{
     return true;
 }
 
@@ -53,13 +55,14 @@ function disciple_tools_is_private_feed() {
  * @access public
  * @return void
  */
-function disciple_tools_please_log_in() {
+function disciple_tools_please_log_in()
+{
 
     // Check if the private blog feature is active and if the user is not logged in.
-    if ( disciple_tools_is_private_blog() && ! is_user_logged_in() ) {
+    if( disciple_tools_is_private_blog() && !is_user_logged_in() ) {
 
         // If using BuddyPress and on the register/activate page, don't do anything.
-        if ( function_exists( 'bp_is_current_component' ) && ( bp_is_current_component( 'register' ) || bp_is_current_component( 'activate' ) ) ) {
+        if( function_exists( 'bp_is_current_component' ) && ( bp_is_current_component( 'register' ) || bp_is_current_component( 'activate' ) ) ) {
             return;
         }
 
@@ -74,10 +77,13 @@ function disciple_tools_please_log_in() {
  *
  * @since  0.2.0
  * @access public
- * @param  string  $content
+ *
+ * @param  string $content
+ *
  * @return string
  */
-function disciple_tools_private_feed( $content ) {
+function disciple_tools_private_feed( $content )
+{
 
     return disciple_tools_is_private_feed() ? disciple_tools_get_private_feed_message() : $content;
 }
@@ -89,7 +95,8 @@ function disciple_tools_private_feed( $content ) {
  * @access public
  * @return string
  */
-function disciple_tools_get_private_feed_message() {
+function disciple_tools_get_private_feed_message()
+{
 
     return apply_filters( 'disciple_tools_feed_error_message', 'Restricted Feed' );
 }

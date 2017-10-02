@@ -7,8 +7,10 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    0.1
  */
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly.
 
-/** Functions to output data for the theme. @see Buddypress bp-members-template.php or bp-groups-template.php for an example of the role of this page  */
-    
+/** Functions to output data for the theme. @see Buddypress bp-members-template.php or bp-groups-template.php for an example of the role of this page */
+
 

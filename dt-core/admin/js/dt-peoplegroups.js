@@ -1,5 +1,5 @@
 /* Scripts loaded specifically for peoplegroups post type pages in the admin */
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
   "use strict";
 
   //changes the 'add new' link to the custom page.

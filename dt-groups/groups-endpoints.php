@@ -16,9 +16,9 @@ if( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Groups_Endpoints
 {
-    
+
     private static $_instance = null;
-    
+
     /**
      * @return \Disciple_Tools_Groups_Endpoints|null
      */
@@ -27,16 +27,16 @@ class Disciple_Tools_Groups_Endpoints
         if( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
-        
+
         return self::$_instance;
     }
-    
+
     private $version = 1;
     private $context = "dt-hooks";
     private $namespace;
     private $groups_instance;
     private $api_keys_controller;
-    
+
     /**
      * Disciple_Tools_Groups_Endpoints constructor.
      */
@@ -44,13 +44,13 @@ class Disciple_Tools_Groups_Endpoints
     {
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-        
+
         require_once( 'groups.php' );
         $this->groups_instance = new Disciple_Tools_Groups();
-        
+
         $this->api_keys_controller = Disciple_Tools_Api_Keys::instance();
     }
-    
+
     public function add_api_routes()
     {
         register_rest_route(
@@ -113,14 +113,14 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'shared_with' ],
             ]
         );
-        
+
         register_rest_route(
             $this->namespace, '/group/(?P<id>\d+)/remove-shared', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'remove_shared' ],
             ]
         );
-        
+
         register_rest_route(
             $this->namespace, '/group/(?P<id>\d+)/add-shared', [
                 "methods"  => "POST",
@@ -128,7 +128,7 @@ class Disciple_Tools_Groups_Endpoints
             ]
         );
     }
-    
+
     /**
      * @return array|\WP_Query
      */
@@ -138,10 +138,10 @@ class Disciple_Tools_Groups_Endpoints
         if( is_wp_error( $groups ) ) {
             return $groups;
         }
-        
+
         return $this->add_related_info_to_groups( $groups );
     }
-    
+
     /**
      * @param array $groups
      *
@@ -181,10 +181,10 @@ class Disciple_Tools_Groups_Endpoints
             }
             $rv[] = $group_array;
         }
-        
+
         return $rv;
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -198,10 +198,10 @@ class Disciple_Tools_Groups_Endpoints
             $search = $params[ 's' ];
         }
         $groups = Disciple_Tools_Groups::get_groups_compact( $search );
-        
+
         return $groups;
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -213,13 +213,13 @@ class Disciple_Tools_Groups_Endpoints
         $body = $request->get_json_params();
         if( isset( $params[ 'id' ] ) ) {
             $result = Disciple_Tools_Groups::update_group( $params[ 'id' ], $body, true );
-            
+
             return $result;
         } else {
             return new WP_Error( "update_contact", "Missing a valid contact id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * Get a single group by ID
      *
@@ -234,13 +234,13 @@ class Disciple_Tools_Groups_Endpoints
         $params = $request->get_params();
         if( isset( $params[ 'id' ] ) ) {
             $result = Disciple_Tools_groups::get_group( $params[ 'id' ], true );
-            
+
             return $result; // Could be permission WP_Error
         } else {
             return new WP_Error( "get_group_error", "Please provide a valid id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -254,13 +254,13 @@ class Disciple_Tools_Groups_Endpoints
             reset( $body );
             $field = key( $body );
             $result = Disciple_Tools_groups::add_item_to_field( $params[ 'id' ], $field, $body[ $field ], true );
-            
+
             return $result;
         } else {
             return new WP_Error( "add_group_details", "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -273,7 +273,7 @@ class Disciple_Tools_Groups_Endpoints
         if( isset( $params[ 'id' ] ) ) {
             $field_key = $body[ "key" ];
             $value = $body[ "value" ];
-            
+
             $result = Disciple_Tools_groups::remove_item_from_field( $params[ 'id' ], $field_key, $value, true );
             if( is_wp_error( $result ) ) {
                 return $result;
@@ -286,7 +286,7 @@ class Disciple_Tools_Groups_Endpoints
             return new WP_Error( "add_group_details", "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -298,19 +298,19 @@ class Disciple_Tools_Groups_Endpoints
         $body = $request->get_json_params();
         if( isset( $params[ 'id' ] ) ) {
             $result = Disciple_Tools_Groups::add_comment( $params[ 'id' ], $body[ "comment" ] );
-            
+
             if( is_wp_error( $result ) ) {
                 return $result;
             } else {
                 $comment = get_comment( $result );
-                
+
                 return new WP_REST_Response( [ "comment_id" => $result, "comment" => $comment ] );
             }
         } else {
             return new WP_Error( "post_comment", "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -325,7 +325,7 @@ class Disciple_Tools_Groups_Endpoints
             return new WP_Error( "get_comments", "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -340,7 +340,7 @@ class Disciple_Tools_Groups_Endpoints
             return new WP_Error( "get_activity", "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -351,7 +351,7 @@ class Disciple_Tools_Groups_Endpoints
         $params = $request->get_params();
         if( isset( $params[ 'id' ] ) ) {
             $result = Disciple_Tools_Groups::get_shared_with_on_group( $params[ 'id' ] );
-            
+
             if( is_wp_error( $result ) ) {
                 return $result;
             } else {
@@ -361,7 +361,7 @@ class Disciple_Tools_Groups_Endpoints
             return new WP_Error( 'shared_with', "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -372,7 +372,7 @@ class Disciple_Tools_Groups_Endpoints
         $params = $request->get_params();
         if( isset( $params[ 'id' ] ) ) {
             $result = Disciple_Tools_Groups::remove_shared_on_group( $params[ 'id' ], $params[ 'user_id' ] );
-            
+
             if( is_wp_error( $result ) ) {
                 return $result;
             } else {
@@ -382,7 +382,7 @@ class Disciple_Tools_Groups_Endpoints
             return new WP_Error( 'remove_shared', "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -393,7 +393,7 @@ class Disciple_Tools_Groups_Endpoints
         $params = $request->get_params();
         if( isset( $params[ 'id' ] ) ) {
             $result = Disciple_Tools_Groups::add_shared_on_group( $params[ 'id' ], $params[ 'user_id' ] );
-            
+
             if( is_wp_error( $result ) ) {
                 return $result;
             } else {
@@ -403,5 +403,5 @@ class Disciple_Tools_Groups_Endpoints
             return new WP_Error( 'add_shared', "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
-    
+
 }

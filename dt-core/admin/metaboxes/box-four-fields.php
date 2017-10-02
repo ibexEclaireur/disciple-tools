@@ -10,14 +10,24 @@
  * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
-
-function dt_four_fields_metabox () {
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
+/**
+ * @return \Disciple_Tools_Metabox_Four_Fields
+ */
+function dt_four_fields_metabox()
+{
     $object = new Disciple_Tools_Metabox_Four_Fields();
+
     return $object;
 }
 
-class Disciple_Tools_Metabox_Four_Fields {
+/**
+ * Class Disciple_Tools_Metabox_Four_Fields
+ */
+class Disciple_Tools_Metabox_Four_Fields
+{
 
     /**
      * Constructor function.
@@ -25,7 +35,8 @@ class Disciple_Tools_Metabox_Four_Fields {
      * @access public
      * @since  0.1
      */
-    public function __construct () {
+    public function __construct()
+    {
 
     } // End __construct()
 
@@ -33,51 +44,51 @@ class Disciple_Tools_Metabox_Four_Fields {
      * @see https://github.com/scribu/wp-posts-to-posts/wiki/Connection-metadata#querying-connections-by-their-fields
      * @return void
      */
-    public function content_display () {
+    public function content_display()
+    {
         global $post;
         $html = '';
 
         $unknown = new WP_Query(
             [
-            'connected_type' => 'contacts_to_groups',
-            'connected_items' => $post,
-            'nopaging' => true,
-            'connected_meta' => [ 'stage' => 'Unknown' ]
-             ]
+                'connected_type'  => 'contacts_to_groups',
+                'connected_items' => $post,
+                'nopaging'        => true,
+                'connected_meta'  => [ 'stage' => 'Unknown' ],
+            ]
         );
         $unbelieving = new WP_Query(
             [
-            'connected_type' => 'contacts_to_groups',
-            'connected_items' => $post,
-            'nopaging' => true,
-            'connected_meta' => [ 'stage' => 'Unbelieving' ]
-             ]
+                'connected_type'  => 'contacts_to_groups',
+                'connected_items' => $post,
+                'nopaging'        => true,
+                'connected_meta'  => [ 'stage' => 'Unbelieving' ],
+            ]
         );
         $believing = new WP_Query(
             [
-            'connected_type' => 'contacts_to_groups',
-            'connected_items' => $post,
-            'nopaging' => true,
-            'connected_meta' => [ 'stage' => 'Believing' ]
-             ]
+                'connected_type'  => 'contacts_to_groups',
+                'connected_items' => $post,
+                'nopaging'        => true,
+                'connected_meta'  => [ 'stage' => 'Believing' ],
+            ]
         );
         $accountable = new WP_Query(
             [
-            'connected_type' => 'contacts_to_groups',
-            'connected_items' => $post,
-            'nopaging' => true,
-            'connected_meta' => [ 'stage' => 'Accountable' ]
-             ]
+                'connected_type'  => 'contacts_to_groups',
+                'connected_items' => $post,
+                'nopaging'        => true,
+                'connected_meta'  => [ 'stage' => 'Accountable' ],
+            ]
         );
         $multiplying = new WP_Query(
             [
-            'connected_type' => 'contacts_to_groups',
-            'connected_items' => $post,
-            'nopaging' => true,
-            'connected_meta' => [ 'stage' => 'Multiplying' ]
-             ]
+                'connected_type'  => 'contacts_to_groups',
+                'connected_items' => $post,
+                'nopaging'        => true,
+                'connected_meta'  => [ 'stage' => 'Multiplying' ],
+            ]
         );
-
 
         $html .= '<table class="form-table"><tr><td>';
 
@@ -88,15 +99,12 @@ class Disciple_Tools_Metabox_Four_Fields {
         $html .= 'Multiplying  : ' . $multiplying->found_posts . '<br>';
         $html .= 'Is Church  : ' . get_post_meta( $post->ID, 'is_church', true ) . '<br></h1>';
 
-
-
         $html .= '</td><td>';
-//        $html .=  '<img src="'. Disciple_Tools()->plugin_img_url . '4fields.png" >';
+        //        $html .=  '<img src="'. Disciple_Tools()->plugin_img_url . '4fields.png" >';
         $html .= '</td></tr></table>';
 
         echo $html;
-//        print'<pre>'; print_r($multiplying); print '</pre>';
+        //        print'<pre>'; print_r($multiplying); print '</pre>';
     }
-
 
 }

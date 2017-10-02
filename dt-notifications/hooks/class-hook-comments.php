@@ -8,7 +8,7 @@ if( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifications_Hook_Base
 {
-    
+
     /**
      * Disciple_Tools_Notifications_Hook_Comments constructor.
      */
@@ -19,10 +19,10 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         add_action( 'trash_comment', [ &$this, 'filter_comment_for_notification' ] );
         add_action( 'untrash_comment', [ &$this, 'filter_comment_for_notification' ] );
         add_action( 'delete_comment', [ &$this, 'filter_comment_for_notification' ] );
-        
+
         parent::__construct();
     }
-    
+
     /**
      * Filter comment for notification
      *
@@ -31,39 +31,39 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      */
     public function filter_comment_for_notification( $comment_id, $comment = null )
     {
-        
+
         if( is_null( $comment ) ) {
             $comment = get_comment( $comment_id );
         }
-        
+
         if( $this->check_for_mention( $comment->comment_content ) == '0' ) { // fail if no mention found
             return;
         }
-        
+
         $mentioned_user_ids = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
         if( !$mentioned_user_ids ) {
             return;
         }
-        
+
         foreach( $mentioned_user_ids as $mentioned_user_id ) {
             $source_user_id = $comment->user_id;
-            
+
             if( $mentioned_user_id != $source_user_id ) { // checks that the user who created the event and the user receiving the notification are not the same.
-                
+
                 // build variables
                 $post_id = $comment->comment_post_ID;
                 $date_notified = $comment->comment_date;
                 $author_name = $comment->comment_author;
                 $post_type = get_post_type( $post_id );
-                
+
                 // call appropriate action
                 switch( current_filter() ) {
                     case 'wp_insert_comment' :
                         $notification_action = 'mentioned';
-                        
+
                         $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
                             . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
-                        
+
                         $this->add_mention_notification(
                             $mentioned_user_id,
                             $source_user_id,
@@ -73,17 +73,17 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification_note,
                             $date_notified
                         );
-                        
+
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
-                        
+
                         break;
-                    
+
                     case 'edit_comment' :
                         $notification_action = 'updated';
-                        
+
                         $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
                             . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
-                        
+
                         $this->add_mention_notification(
                             $mentioned_user_id,
                             $source_user_id,
@@ -93,17 +93,17 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification_note,
                             $date_notified
                         );
-                        
+
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
-                        
+
                         break;
-                    
+
                     case 'untrash_comment' :
                         $notification_action = 'untrashed';
-                        
+
                         $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
                             . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
-                        
+
                         $this->add_mention_notification(
                             $mentioned_user_id,
                             $source_user_id,
@@ -113,11 +113,11 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $notification_note,
                             $date_notified
                         );
-                        
+
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
-                        
+
                         break;
-                    
+
                     case 'delete_comment' :
                     case 'trash_comment' :
                         $this->delete_mention_notification(
@@ -127,15 +127,14 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $date_notified
                         );
                         break;
-                    
+
                     default:
                         break;
                 }
             }
-            
         }
     }
-    
+
     /**
      * Checks for mention in text of comment.
      * If mention is found, returns true. If mention is not found, returns false.
@@ -148,7 +147,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     {
         return preg_match( '/(?<= |^)@([^@ ]+)/', $comment_content );
     }
-    
+
     /**
      * Parse @mention to find user match
      *
@@ -159,7 +158,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     public function match_mention( $comment_content )
     {
         preg_match_all( '/(?<= |^)@([^@ ]+)/', $comment_content, $matches );
-        
+
         $user_ids = [];
         foreach( $matches[ 1 ] as $match ) {
             // get user_id by name match
@@ -168,10 +167,10 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 $user_ids[] = $user->ID;
             }
         }
-        
+
         return empty( $user_ids ) ? false : $user_ids;
     }
-    
+
     /**
      * Create notification activity
      *
@@ -185,7 +184,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      */
     protected function add_mention_notification( int $mentioned_user_id, int $source_user_id, int $post_id, int $comment_id, string $notification_action, string $notification_note, $date_notified )
     {
-        
+
         dt_notification_insert(
             [
                 'user_id'             => $mentioned_user_id,
@@ -199,9 +198,8 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 'is_new'              => 1,
             ]
         );
-        
     }
-    
+
     /**
      * Delete notification
      *
@@ -212,7 +210,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
      */
     protected function delete_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, $date_notified )
     {
-        
+
         dt_notification_delete(
             [
                 'user_id'           => $mentioned_user_id,
@@ -222,6 +220,5 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 'date_notified'     => $date_notified,
             ]
         );
-        
     }
 }

@@ -18,10 +18,10 @@ if( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Groups extends Disciple_Tools_Posts
 {
-    
+
     public static $address_types;
     public static $group_fields;
-    
+
     /**
      * Disciple_Tools_Groups constructor.
      */
@@ -36,7 +36,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         );
         parent::__construct();
     }
-    
+
     /**
      * @param  $search_string
      *
@@ -46,7 +46,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::get_viewable_compact( 'groups', $search_string );
     }
-    
+
     /**
      * @return array|\WP_Query
      */
@@ -54,7 +54,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::get_viewable( 'groups' );
     }
-    
+
     /**
      * @param       $group_id
      * @param  bool $check_permissions
@@ -66,11 +66,11 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
         }
-        
+
         $group = get_post( $group_id );
         if( $group ) {
             $fields = [];
-            
+
             $locations = get_posts(
                 [
                     'connected_type'   => 'groups_to_locations',
@@ -83,7 +83,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $l->permalink = get_permalink( $l->ID );
             }
             $fields[ "locations" ] = $locations;
-            
+
             $members = get_posts(
                 [
                     'connected_type'   => 'contacts_to_groups',
@@ -96,12 +96,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $l->permalink = get_permalink( $l->ID );
             }
             $fields[ "members" ] = $members;
-            
+
             $meta_fields = get_post_custom( $group_id );
             foreach( $meta_fields as $key => $value ) {
                 if( strpos( $key, "address" ) === 0 ) {
                     if( strpos( $key, "_details" ) === false ) {
-                        
+
                         $details = [];
                         if( isset( $meta_fields[ $key . '_details' ][ 0 ] ) ) {
                             $details = unserialize( $meta_fields[ $key . '_details' ][ 0 ] );
@@ -141,13 +141,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             }
             $fields[ "ID" ] = $group->ID;
             $fields[ "name" ] = $group->post_title;
-            
+
             return $fields;
         } else {
             return new WP_Error( __FUNCTION__, __( "No group found with ID" ), [ 'contact_id' => $group_id ] );
         }
     }
-    
+
     /**
      * Make sure there are no extra or misspelled fields
      * Make sure the field values are the correct format
@@ -169,10 +169,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                 $bad_fields[] = $field;
             }
         }
-        
+
         return $bad_fields;
     }
-    
+
     /**
      * Update an existing Group
      *
@@ -186,16 +186,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function update_group( int $group_id, array $fields, $check_permissions = true )
     {
-        
+
         if( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        
+
         $post = get_post( $group_id );
         if( isset( $fields[ 'id' ] ) ) {
             unset( $fields[ 'id' ] );
         }
-        
+
         if( !$post ) {
             return new WP_Error( __FUNCTION__, __( "Group does not exist" ) );
         }
@@ -203,18 +203,18 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if( !empty( $bad_fields ) ) {
             return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [ 'bad_fields' => $bad_fields, 'status' => 400 ] );
         }
-        
+
         if( isset( $fields[ 'title' ] ) ) {
             wp_update_post( [ 'ID' => $group_id, 'post_title' => $fields[ 'title' ] ] );
         }
-        
+
         foreach( $fields as $field_id => $value ) {
             update_post_meta( $group_id, $field_id, $value );
         }
-        
+
         return self::get_group( $group_id, true );
     }
-    
+
     /**
      * @param  $group_id
      * @param  $location_id
@@ -228,7 +228,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             [ 'date' => current_time( 'mysql' ) ]
         );
     }
-    
+
     /**
      * @param  $group_id
      * @param  $member_id
@@ -242,7 +242,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             [ 'date' => current_time( 'mysql' ) ]
         );
     }
-    
+
     /**
      * @param  $group_id
      * @param  $location_id
@@ -253,7 +253,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
     }
-    
+
     /**
      * @param  $group_id
      * @param  $member_id
@@ -264,7 +264,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return p2p_type( 'contacts_to_groups' )->disconnect( $member_id, $group_id );
     }
-    
+
     /**
      * @param     $group_id
      * @param     $key
@@ -283,9 +283,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             update_post_meta( $group_id, $new_meta_key, $value );
             $details = [ "verified" => false ];
             update_post_meta( $group_id, $new_meta_key . "_details", $details );
-            
+
             return $new_meta_key;
-            
         }
         $connect = null;
         if( $key === "locations" ) {
@@ -299,13 +298,13 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         if( $connect ) {
             $connection = get_post( $value );
             $connection->guid = get_permalink( $value );
-            
+
             return $connection;
         }
-        
+
         return new WP_Error( "add_group_detail", "Field not recognized", [ "status" => 400 ] );
     }
-    
+
     /**
      * @param     $group_id
      * @param     $key
@@ -324,10 +323,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         } elseif( $key === "members" ) {
             return self::remove_member_from_group( $group_id, $value );
         }
-        
+
         return false;
     }
-    
+
     /**
      * @param     $group_id
      * @param     $comment
@@ -338,7 +337,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::add_post_comment( 'groups', $group_id, $comment );
     }
-    
+
     /**
      * @param  $group_id
      *
@@ -348,7 +347,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::get_post_comments( 'groups', $group_id );
     }
-    
+
     /**
      * @param  $contact_id
      *
@@ -358,7 +357,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::get_post_activity( 'groups', $contact_id );
     }
-    
+
     /**
      * Gets an array of users whom the group is shared with.
      *
@@ -370,7 +369,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::get_shared_with( 'groups', $post_id );
     }
-    
+
     /**
      * Removes share record
      *
@@ -383,7 +382,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::remove_shared( 'groups', $post_id, $user_id );
     }
-    
+
     /**
      * Adds a share record
      *
@@ -397,5 +396,5 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return self::add_shared( 'groups', $post_id, $user_id, $meta );
     }
-    
+
 }

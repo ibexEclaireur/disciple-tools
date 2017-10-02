@@ -2,7 +2,6 @@
 
 /**
  * Fired during plugin deactivation.
- *
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      0.1
@@ -11,18 +10,24 @@
  * @author
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
-class Disciple_Tools_Deactivator {
+/**
+ * Class Disciple_Tools_Deactivator
+ */
+class Disciple_Tools_Deactivator
+{
 
     /**
      * Short Description. (use period)
-     *
      * Long Description.
      *
      * @since 0.1
      */
-    public static function deactivate( $network_wide ) {
+    public static function deactivate( $network_wide )
+    {
 
         // Reset roles and capabilities
         require_once( 'class-roles.php' );
@@ -30,10 +35,9 @@ class Disciple_Tools_Deactivator {
         $roles->reset_roles();
 
         /* Determines if on deactivate you have checked to remove database content */
-        if (get_option( 'delete_activity_db' )) {
+        if( get_option( 'delete_activity_db' ) ) {
             self::_remove_tables();
         }
-
     }
 
     /**
@@ -41,7 +45,8 @@ class Disciple_Tools_Deactivator {
      *
      * @access protected
      */
-    protected static function _remove_tables() {
+    protected static function _remove_tables()
+    {
         global $wpdb;
 
         // TODO: replace this code, with running migrations backwards
@@ -53,9 +58,6 @@ class Disciple_Tools_Deactivator {
         $wpdb->query( "DROP TABLE IF EXISTS `{$wpdb->prefix}dt_notifications`;" );
 
         delete_option( 'dt_migration_number' );
-
     }
-
-
 
 }

@@ -72,7 +72,8 @@ function dt_svg_icon()
 }
 
 /**
- * Using the dt_get_option guarantees the existence of the option and upgrades to the current plugin version defaults, while returning the options array.
+ * Using the dt_get_option guarantees the existence of the option and upgrades to the current plugin version defaults,
+ * while returning the options array.
  *
  * @param string $name
  *
@@ -80,57 +81,55 @@ function dt_svg_icon()
  */
 function dt_get_option( string $name )
 {
-    
+
     switch( $name ) {
         case 'dt_site_options':
             $site_options = dt_get_site_options_defaults();
-            
+
             if( !get_option( 'dt_site_options' ) ) { // options doesn't exist, create new.
                 $add = add_option( 'dt_site_options', $site_options, '', true );
                 if( !$add ) {
                     return new WP_Error( 'failed_add_site_option', 'Site option dt_site_options was not able to be created' );
                 }
-                
+
                 return get_option( 'dt_site_options' );
             } elseif( get_option( 'dt_site_options' )[ 'version' ] < $site_options[ 'version' ] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_options' );
                 if( !$upgrade ) {
                     return new WP_Error( 'failed_site_option_upgrade', 'Versions of site options requires upgrade, but upgrade attempt failed.' );
                 }
-                
+
                 return get_option( 'dt_site_options' );
             } else {
                 return get_option( 'dt_site_options' );
             }
-            
+
             break;
-        
+
         case 'dt_site_custom_lists':
             $custom_lists = dt_get_site_custom_lists();
-            
+
             if( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
                 add_option( 'dt_site_custom_lists', $custom_lists, '', true );
-                
+
                 return get_option( 'dt_site_custom_lists' );
             } elseif( get_option( 'dt_site_custom_lists' )[ 'version' ] < $custom_lists[ 'version' ] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
                 if( !$upgrade ) {
                     return new WP_Error( 'failed_site_option_custom_list_upgrade', 'Versions of site options custom lists requires upgrade, but upgrade attempt failed.' );
                 }
-                
+
                 return get_option( 'dt_site_custom_lists' );
             } else {
                 return get_option( 'dt_site_custom_lists' );
             }
-            
+
             break;
-            
-        
+
         default:
             return new WP_Error( 'option_does_not_exist', 'You have requested a non-supported site option.' );
             break;
     }
-    
 }
 
 /**
@@ -142,9 +141,9 @@ function dt_get_option( string $name )
 function dt_get_site_options_defaults()
 {
     $fields = [];
-    
+
     $fields[ 'version' ] = '1.0';
-    
+
     $fields[ 'user_notifications' ] = [
         'new_web'          => true,
         'new_email'        => true,
@@ -157,15 +156,15 @@ function dt_get_site_options_defaults()
         'milestones_web'   => false,
         'milestones_email' => false,
     ];
-    
+
     $fields[ 'extension_modules' ] = [
         'add_people_groups' => true,
         'add_assetmapping'  => true,
         'add_prayer'        => true,
     ];
-    
+
     $fields[ 'clear_data_on_deactivate' ] = false; // todo need to add this option wrapper to the deactivate.php file for table deletes
-    
+
     $fields[ 'daily_reports' ] = [
         'build_report_for_contacts'  => true,
         'build_report_for_groups'    => true,
@@ -176,7 +175,7 @@ function dt_get_site_options_defaults()
         'build_report_for_mailchimp' => false,
         'build_report_for_youtube'   => false,
     ];
-    
+
     return $fields;
 }
 
@@ -191,9 +190,9 @@ function dt_get_site_options_defaults()
 function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
-    
+
     $fields[ 'version' ] = '1.0';
-    
+
     // the prefix dt_user_ assists db meta queries on the user
     $fields[ 'user_fields' ] = [
         'dt_user_personal_phone'   => [
@@ -246,7 +245,7 @@ function dt_get_site_custom_lists( string $list_title = null )
             'enabled'     => true,
         ],
     ];
-    
+
     $fields[ 'user_fields_types' ] = [
         'phone'   => [
             'label' => 'Phone',
@@ -269,7 +268,7 @@ function dt_get_site_custom_lists( string $list_title = null )
             'key'   => 'other',
         ],
     ];
-    
+
     $fields[ 'sources' ] = [
         'web'           => [
             'label'       => 'Web',
@@ -314,9 +313,9 @@ function dt_get_site_custom_lists( string $list_title = null )
             'enabled'     => true,
         ],
     ];
-    
-    //    $fields = apply_filters( 'dt_site_custom_lists', $fields );
-    
+
+    // $fields = apply_filters( 'dt_site_custom_lists', $fields );
+
     if( is_null( $list_title ) ) {
         return $fields;
     } else {
@@ -325,8 +324,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 }
 
 /**
- * Processes the current configurations and upgrades the site options to the new version with persistent configuration
- * settings.
+ * Processes the current configurations and upgrades the site options to the new version with persistent configuration settings.
  *
  * @return bool
  */
@@ -334,16 +332,15 @@ function dt_site_options_upgrade_version( string $name )
 {
     $site_options_current = get_option( $name );
     $site_options_defaults = dt_get_site_options_defaults();
-    
+
     $new_version_number = $site_options_defaults[ 'version' ];
-    
+
     if( !is_array( $site_options_current ) ) {
         return false;
     }
-    
+
     $new_options = array_replace_recursive( $site_options_defaults, $site_options_current );
     $new_options[ 'version' ] = $new_version_number;
-    
+
     return update_option( $name, $new_options, true );
-    
 }

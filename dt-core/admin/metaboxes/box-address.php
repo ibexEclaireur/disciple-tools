@@ -10,14 +10,24 @@
  * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
-
-function dt_address_metabox () {
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
+/**
+ * @return \Disciple_Tools_Metabox_Address
+ */
+function dt_address_metabox()
+{
     $object = new Disciple_Tools_Metabox_Address();
+
     return $object;
 }
 
-class Disciple_Tools_Metabox_Address {
+/**
+ * Class Disciple_Tools_Metabox_Address
+ */
+class Disciple_Tools_Metabox_Address
+{
 
     /**
      * Constructor function.
@@ -25,14 +35,17 @@ class Disciple_Tools_Metabox_Address {
      * @access public
      * @since  0.1
      */
-    public function __construct () { } // End __construct()
+    public function __construct()
+    {
+    } // End __construct()
 
     /**
      * Add Address fields html for adding a new contact channel
      *
      * @usage Added to the bottom of the Contact Details Metabox.
      */
-    public function add_new_address_field () {
+    public function add_new_address_field()
+    {
         global $post;
 
         $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
@@ -42,11 +55,11 @@ class Disciple_Tools_Metabox_Address {
 
         $html .= '<tr><th>
                 <select name="new-key-address" class="edit-input"><option value=""></option> ';
-        foreach ($address_types as $type => $value) {
+        foreach( $address_types as $type => $value ) {
 
-            $key =  "address_" . $type;
+            $key = "address_" . $type;
 
-            $html .= '<option value="'.$key.'">'. $value["label"] . '</option>';
+            $html .= '<option value="' . $key . '">' . $value[ "label" ] . '</option>';
         }
         $html .= '</select></th>';
         $html .= '<td>
@@ -68,9 +81,11 @@ class Disciple_Tools_Metabox_Address {
      * Helper function to create the unique metakey for contacts channels.
      *
      * @param  $channel
+     *
      * @return string
      */
-    public function create_channel_metakey ( $channel ) {
+    public function create_channel_metakey( $channel )
+    {
         return $channel . '_' . $this->unique_hash(); // build key
     }
 
@@ -79,7 +94,8 @@ class Disciple_Tools_Metabox_Address {
      *
      * @return string
      */
-    public function unique_hash() {
+    public function unique_hash()
+    {
         return substr( md5( rand( 10000, 100000 ) ), 0, 3 ); // create a unique 3 digit key
     }
 
@@ -88,34 +104,37 @@ class Disciple_Tools_Metabox_Address {
      *
      * @return array
      */
-    public function get_address_type_list ( $post_type ) {
+    public function get_address_type_list( $post_type )
+    {
 
-        switch ($post_type) {
+        switch( $post_type ) {
             case 'contacts':
                 $addresses = [
-                    "home" => ["label" => __( 'Home', 'disciple_tools' )],
-                    "work" => ["label" => __( 'Work', 'disciple_tools' )],
-                    "other"=> ["label" => __( 'Other', 'disciple_tools' )],
+                    "home"  => [ "label" => __( 'Home', 'disciple_tools' ) ],
+                    "work"  => [ "label" => __( 'Work', 'disciple_tools' ) ],
+                    "other" => [ "label" => __( 'Other', 'disciple_tools' ) ],
                 ];
+
                 return $addresses;
                 break;
             case 'groups':
                 $addresses = [
-                    "main" => ["label" => __( 'Main', 'disciple_tools' )],
-                    "alternate" => ["label" => __( 'Alternate', 'disciple_tools' )],
+                    "main"      => [ "label" => __( 'Main', 'disciple_tools' ) ],
+                    "alternate" => [ "label" => __( 'Alternate', 'disciple_tools' ) ],
                 ];
+
                 return $addresses;
                 break;
             case 'locations':
                 $addresses = [
-                    "main" => ["label" => __( 'Main', 'disciple_tools' )],
+                    "main" => [ "label" => __( 'Main', 'disciple_tools' ) ],
                 ];
+
                 return $addresses;
                 break;
             default:
                 break;
         }
-
     }
 
     /**
@@ -123,14 +142,15 @@ class Disciple_Tools_Metabox_Address {
      *
      * @return array
      */
-    public function address_fields ( $post_id ) {
+    public function address_fields( $post_id )
+    {
         global $wpdb, $post;
 
         $fields = [];
         $current_fields = [];
 
         $id = $post->ID ?? $post_id;
-        if (isset( $id )){
+        if( isset( $id ) ) {
             $current_fields = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT
@@ -148,21 +168,20 @@ class Disciple_Tools_Metabox_Address {
             );
         }
 
-        foreach ($current_fields as $value) {
-            if ( strpos( $value["meta_key"], "_details" ) == false ){
-                $details = get_post_meta( $id, $value['meta_key'] . "_details", true );
+        foreach( $current_fields as $value ) {
+            if( strpos( $value[ "meta_key" ], "_details" ) == false ) {
+                $details = get_post_meta( $id, $value[ 'meta_key' ] . "_details", true );
                 $name = "";
-                if ($details && isset( $details["type"] )){
-                    $name = $details["type"];
+                if( $details && isset( $details[ "type" ] ) ) {
+                    $name = $details[ "type" ];
                 }
-                $fields[$value['meta_key']] = [
-                    'name' => $name ,
+                $fields[ $value[ 'meta_key' ] ] = [
+                    'name' => $name,
                 ];
             }
         }
+
         return $fields;
     }
-
-
 
 }

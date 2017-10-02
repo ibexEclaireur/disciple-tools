@@ -67,7 +67,7 @@ class Disciple_Tools_Users
 
         return $list;
     }
-    
+
     /**
      * Switch user preference for notifications and availability meta fields.
      *
@@ -80,7 +80,7 @@ class Disciple_Tools_Users
     {
 
         $value = get_user_meta( $user_id, $preference_key, true );
-    
+
         if( empty( $value ) ) {
             $status = update_metadata( 'user', $user_id, $preference_key, true );
             if( $status ) {
@@ -91,7 +91,7 @@ class Disciple_Tools_Users
             } else {
                 return [
                     'status'  => false,
-                    'message' => 'Unable to update_user_option '.$preference_key.' to true.',
+                    'message' => 'Unable to update_user_option ' . $preference_key . ' to true.',
                 ];
             }
         } else {
@@ -104,7 +104,7 @@ class Disciple_Tools_Users
             } else {
                 return [
                     'status'  => false,
-                    'message' => 'Unable to update_user_option '.$preference_key.' to false.',
+                    'message' => 'Unable to update_user_option ' . $preference_key . ' to false.',
                 ];
             }
         }
