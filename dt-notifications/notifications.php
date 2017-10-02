@@ -279,45 +279,38 @@ class Disciple_Tools_Notifications
     }
 
     /**
-     * Get user notifications
-     *
-     * @param     $params           array     user_id (required)
-     *                              limit (optional) default 50.
-     *                              offset (optional) default 0.
+     * @param int $limit
+     * @param int $offset
      *
      * @return array
      */
-    public static function get_notifications( $params )
+    public static function get_notifications( int $limit = 50, int $offset = 0 )
     {
         global $wpdb;
-        $user_id = $params[ 'user_id' ];
-        isset( $params[ 'limit' ] ) ? $limit = $params[ 'limit' ] : $limit = 50;
-        isset( $params[ 'offset' ] ) ? $offset = $params[ 'offset' ] : $offset = 0;
 
-        $limit = (int) $limit;
-        $offset = (int) $offset;
+        if( empty( $limit ) ) {
+            $limit = 50;
+        }
 
-        $result = $wpdb->get_results(
-            $wpdb->prepare(
-                "SELECT
-                    *
-                FROM
-                    `$wpdb->dt_notifications`
-                WHERE
-                    user_id = %d
-                ORDER BY
-                    date_notified DESC
-                LIMIT
-                    $limit OFFSET $offset", // @codingStandardsIgnoreLine
-                $user_id
-            ),
-            ARRAY_A
-        );
+        if( empty( $offset ) ) {
+            $offset = 0;
+        }
+
+        $user_id = get_current_user_id();
+
+        $result = $wpdb->get_results( $wpdb->prepare(
+            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d ORDER BY date_notified DESC LIMIT %d OFFSET %d", // @codingStandardsIgnoreLine
+            $user_id,
+            $limit,
+            $offset
+        ),ARRAY_A );
+
 
         if( $result ) {
 
             // user friendly timestamp
             foreach( $result as $key => $value ) {
+
                 $result[ $key ][ 'pretty_time' ] = self::pretty_timestamp( $value[ 'date_notified' ] );
             }
 
