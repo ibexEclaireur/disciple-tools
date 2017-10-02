@@ -78,14 +78,14 @@ class Disciple_Tools_People_Groups_Admin_Menu
     {
 
         if( !current_user_can( 'manage_options' ) ) {
-            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
 
         /**
          * Begin Header & Tab Bar
          */
         if( isset( $_GET[ "tab" ] ) ) {
-            $tab = $_GET[ "tab" ];
+            $tab = sanitize_text_field( wp_unslash( $_GET[ "tab" ] ) );
         } else {
             $tab = 'import';
         }
@@ -110,7 +110,9 @@ class Disciple_Tools_People_Groups_Admin_Menu
         //        $html .= '">Address to Tract</a>';
 
         $html .= '</h2>';
+        // @codingStandardsIgnoreLine
         echo $html; // Echo tabs
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
         $html = '';
 
         // End Tab Bar
@@ -127,6 +129,8 @@ class Disciple_Tools_People_Groups_Admin_Menu
                 break;
         }
         $html .= '</div>'; // end div class wrap
+        // @codingStandardsIgnoreLine
         echo $html; // Echo contents
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     }
 }

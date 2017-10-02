@@ -111,9 +111,12 @@ class Disciple_Tools_People_Groups_Post_Type
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
-            if( $pagenow == 'edit.php' && isset( $_GET[ 'post_type' ] ) && esc_attr( $_GET[ 'post_type' ] ) == $this->post_type ) {
-                add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
-                add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
+            if( $pagenow == 'edit.php' && isset( $_GET[ 'post_type' ] ) ) {
+                $pt = sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] ) );
+                if ( $pt == $this->post_type ) {
+                    add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
+                    add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
+                }
             }
 
             add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
@@ -129,9 +132,9 @@ class Disciple_Tools_People_Groups_Post_Type
     public function register_post_type()
     {
         $labels = [
-            'name'                  => sprintf( _x( '%s', 'People Groups', 'disciple_tools' ), $this->plural ),
-            'singular_name'         => sprintf( _x( '%s', 'People Group', 'disciple_tools' ), $this->singular ),
-            'add_new'               => _x( 'Add New', $this->post_type, 'disciple_tools' ),
+            'name'                  => _x( 'People Groups', 'People Groups', 'disciple_tools' ),
+            'singular_name'         => _x( 'People Group', 'People Group', 'disciple_tools' ),
+            'add_new'               => _x( 'Add New', 'People Groups', 'disciple_tools' ),
             'add_new_item'          => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
             'edit_item'             => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
             'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
@@ -284,25 +287,36 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function updated_messages( $messages )
     {
-        global $post, $post_ID;
+        global $post;
 
         $messages[ $this->post_type ] = [
             0  => '', // Unused. Messages start at index 1.
-            1  => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
+            1  => sprintf(
+                __( '%3$s updated. %1$sView %4$s%$2s', 'disciple_tools' ),
+                '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">',
+                '</a>',
+                $this->singular,
+                strtolower( $this->singular )
+            ),
             2  => __( 'Custom field updated.', 'disciple_tools' ),
             3  => __( 'Custom field deleted.', 'disciple_tools' ),
             4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
-            5  => isset( $_GET[ 'revision' ] ) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET[ 'revision' ], false ) ) : false,
-            6  => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
+            5  => isset( $_GET[ 'revision' ] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET[ 'revision' ], false ) ) : false,
+            6  => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
             7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-            8  => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+            8  => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
             9  => sprintf(
-                __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
+                __( '%1$s scheduled for: %3$s. %5$sPreview %2$s%3$6$s', 'disciple_tools' ),
+                $this->singular,
+                strtolower( $this->singular ),
                 // translators: Publish box date format, see http://php.net/date
-                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>'
+                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ),
+                strtotime( $post->post_date ) ) . '</strong>',
+                '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) . '">',
+                '</a>'
             ),
-            10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+            10 => sprintf( __( '%1$s draft updated. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
         ];
 
         return $messages;
@@ -337,9 +351,18 @@ class Disciple_Tools_People_Groups_Post_Type
         global $wpdb, $post;
 
         echo '<table class="widefat striped"><tbody>';
-        $jp_results = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'jp_%'" );
+        $jp_results = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                meta_key, meta_value
+            FROM
+                `$wpdb->postmeta`
+             WHERE
+                post_id = %s
+                AND meta_key LIKE 'jp_%'",
+            $post->ID
+        ) );
         foreach( $jp_results as $value ) {
-            echo '<tr><td style="max-width: 150px">' . substr( $value->meta_key, 3 ) . '</td><td style="max-width: 150px">' . $value->meta_value . '</td></tr>';
+            echo '<tr><td style="max-width: 150px">' . esc_html( substr( $value->meta_key, 3 ) ) . '</td><td style="max-width: 150px">' . esc_html( $value->meta_value ) . '</td></tr>';
         }
         echo '</tbody></table>';
     }
@@ -445,7 +468,9 @@ class Disciple_Tools_People_Groups_Post_Type
             $html .= '</table>' . "\n";
         }
 
+        // @codingStandardsIgnoreLine
         echo $html;
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     } // End meta_box_content()
 
     /**
@@ -463,11 +488,12 @@ class Disciple_Tools_People_Groups_Post_Type
         global $post, $messages;
 
         // Verify
-        if( ( get_post_type() != $this->post_type ) || !wp_verify_nonce( $_POST[ 'dt_' . $this->post_type . '_noonce' ], 'update_peoplegroup_info' ) ) {
+        $key = 'dt_' . $this->post_type . '_noonce';
+        if( ( get_post_type() != $this->post_type ) || ! isset( $_POST[$key] ) || !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[$key] ) ), 'update_peoplegroup_info' ) ) {
             return $post_id;
         }
 
-        if( isset( $_POST[ 'post_type' ] ) && 'page' == esc_attr( $_POST[ 'post_type' ] ) ) {
+        if( isset( $_POST[ 'post_type' ] ) && 'page' == sanitize_text_field( wp_unslash( $_POST[ 'post_type' ] ) ) ) {
             if( !current_user_can( 'edit_page', $post_id ) ) {
                 return $post_id;
             }
@@ -481,19 +507,22 @@ class Disciple_Tools_People_Groups_Post_Type
         $fields = array_keys( $field_data );
 
         if( ( isset( $_POST[ 'new-key-address' ] ) && !empty( $_POST[ 'new-key-address' ] ) ) && ( isset( $_POST[ 'new-value-address' ] ) && !empty( $_POST[ 'new-value-address' ] ) ) ) { // catch and prepare new contact fields
-            $k = explode( "_", $_POST[ 'new-key-address' ] );
+            $k = explode( "_", sanitize_text_field( wp_unslash( $_POST[ 'new-key-address' ] ) ) );
             $type = $k[ 1 ];
             $number_key = dt_address_metabox()->create_channel_metakey( "address" );
             $details_key = $number_key . "_details";
             $details = [ 'type' => $type, 'verified' => false ];
             //save the field and the field details
-            add_post_meta( $post_id, strtolower( $number_key ), $_POST[ 'new-value-address' ], true );
+            add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST[ 'new-value-address' ] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
 
         foreach( $fields as $f ) {
+            if (! isset( $_POST[$f] ) ) {
+                continue;
+            }
 
-            ${$f} = strip_tags( trim( $_POST[ $f ] ) );
+            ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) ) );
 
             if( get_post_meta( $post_id, $f ) == '' ) {
                 add_post_meta( $post_id, $f, ${$f}, true );
@@ -558,7 +587,18 @@ class Disciple_Tools_People_Groups_Post_Type
         $fields = [];
         $current_fields = [];
         if( isset( $post->ID ) ) {
-            $current_fields = $wpdb->get_results( "SELECT meta_key FROM $wpdb->postmeta WHERE post_id = $post->ID AND meta_key LIKE 'contact_%' ORDER BY meta_key DESC", ARRAY_A );
+            $current_fields = $wpdb->get_results( $wpdb->prepare(
+                "SELECT
+                    meta_key
+                FROM
+                    `$wpdb->postmeta`
+                WHERE
+                    post_id = %s
+                    AND meta_key LIKE 'contact_%'
+                ORDER BY
+                    meta_key DESC",
+                $post->ID
+            ), ARRAY_A );
         }
         foreach( $current_fields as $value ) {
             $names = explode( '_', $value[ 'meta_key' ] );

@@ -78,14 +78,14 @@ class Disciple_Tools_Location_Tools_Menu
     {
 
         if( !current_user_can( 'manage_options' ) ) {
-            wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
 
         /**
          * Begin Header & Tab Bar
          */
         if( isset( $_GET[ "tab" ] ) ) {
-            $tab = $_GET[ "tab" ];
+            $tab = sanitize_text_field( wp_unslash( $_GET[ "tab" ] ) );
         } else {
             $tab = 'global';
         }
@@ -115,7 +115,9 @@ class Disciple_Tools_Location_Tools_Menu
 
         $html .= '</h2>';
 
+        // @codingStandardsIgnoreLine
         echo $html; // Echo tabs
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
 
         $html = '';
         // End Tab Bar
@@ -207,7 +209,9 @@ class Disciple_Tools_Location_Tools_Menu
 
         $html .= '</div>'; // end div class wrap
 
+        // @codingStandardsIgnoreLine
         echo $html; // Echo contents
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     }
 
     /**
@@ -219,10 +223,16 @@ class Disciple_Tools_Location_Tools_Menu
         $option = $this->get_config_option();
 
         // update from post
-        if( isset( $_POST[ 'change_host_source' ] ) ) {
-            if( isset( $_POST[ $host ] ) ) {
-                $option[ 'selected_' . $host ] = $_POST[ $host ];
-                update_option( '_dt_locations_import_config', $option, false );
+        if ( isset( $_POST['_wpnonce'] ) ) {
+            if (wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), "get_import_config_dropdown_locations" )) {
+                if( isset( $_POST[ 'change_host_source' ] ) ) {
+                    if( isset( $_POST[ $host ] ) ) {
+                        $option[ 'selected_' . $host ] = sanitize_text_field( wp_unslash( $_POST[ $host ] ) );
+                        update_option( '_dt_locations_import_config', $option, false );
+                    }
+                }
+            } else {
+                wp_die( esc_html__( "Nonce could not be verified" ) );
             }
         }
 
@@ -235,6 +245,7 @@ class Disciple_Tools_Location_Tools_Menu
                 $html .= ' selected';
             }
             $html .= '>' . $key . '</option>';
+            $html .= wp_nonce_field( "get_import_config_dropdown_locations", "_wpnonce", true, false );
         }
         $html .= '</select> <button type="submit" name="change_host_source" value="true">Save</button></form>';
 
@@ -359,6 +370,7 @@ function dt_get_states_key_dropdown_not_installed()
 
     $dropdown = '<select name="states-dropdown">';
 
+    // @codingStandardsIgnoreLine
     foreach( $dir_contents->USA_states as $value ) {
         $disabled = '';
 
@@ -366,8 +378,14 @@ function dt_get_states_key_dropdown_not_installed()
         if( get_option( '_installed_us_county_' . $value->key ) ) {
             $dropdown .= ' disabled';
             $disabled = ' (Installed)';
-        } elseif( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
-            $dropdown .= ' selected';
+        } elseif( isset( $_POST['state_nonce'] ) ) {
+            if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['state_nonce'] ) ), 'state_nonce_validate' ) ) {
+                if ( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
+                    $dropdown .= ' selected';
+                }
+            } else {
+                wp_die( esc_html__( "Nonce could not be validated" ) );
+            }
         }
         $dropdown .= '>' . $value->name . $disabled;
         $dropdown .= '</option>';
@@ -390,6 +408,7 @@ function dt_get_states_key_dropdown_installed()
 
     $dropdown = '<select name="states-dropdown">';
 
+    // @codingStandardsIgnoreLine
     foreach( $dir_contents->USA_states as $value ) {
         $disabled = '';
 
@@ -397,8 +416,14 @@ function dt_get_states_key_dropdown_installed()
         if( !get_option( '_installed_us_county_' . $value->key ) ) {
             $dropdown .= ' disabled';
             $disabled = ' (Not Installed)';
-        } elseif( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
-            $dropdown .= ' selected';
+        } elseif( isset( $_POST['state_nonce'] ) ) {
+            if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['state_nonce'] ) ), 'state_nonce_validate' ) ) {
+                if ( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
+                    $dropdown .= ' selected';
+                }
+            } else {
+                wp_die( esc_html__( "Nonce could not be validated" ) );
+            }
         }
         $dropdown .= '>' . $value->name . $disabled;
         $dropdown .= '</option>';
@@ -431,27 +456,27 @@ function dt_get_oz_country_list( $admin = 'cnty' )
         case 'cnty':
             $result = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_cnty.json' ) );
 
-            return $result->RECORDS;
+            return $result->RECORDS; // @codingStandardsIgnoreLine
             break;
         case 'admin1':
             $result = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin1.json' ) );
 
-            return $result->RECORDS;
+            return $result->RECORDS; // @codingStandardsIgnoreLine
             break;
         case 'admin2':
             $result = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin2.json' ) );
 
-            return $result->RECORDS;
+            return $result->RECORDS; // @codingStandardsIgnoreLine
             break;
         case 'admin3':
             $result = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin3.json' ) );
 
-            return $result->RECORDS;
+            return $result->RECORDS; // @codingStandardsIgnoreLine
             break;
         case 'admin4':
             $result = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_admin4.json' ) );
 
-            return $result->RECORDS;
+            return $result->RECORDS; // @codingStandardsIgnoreLine
             break;
         default:
             break;
@@ -474,7 +499,15 @@ function dt_get_coordinates_meta( $geoid )
     global $wpdb;
 
     //* query */
-    $county_coords = $wpdb->get_results( "SELECT meta_value FROM $wpdb->postmeta WHERE meta_key LIKE 'polygon_$geoid%'", ARRAY_A );
+    $county_coords = $wpdb->get_results( $wpdb->prepare(
+        "SELECT
+            meta_value
+        FROM
+            `$wpdb->postmeta`
+        WHERE
+            meta_key LIKE %s",
+        esc_like( "polygon_$geoid" ) . "%"
+    ), ARRAY_A );
 
     /* build full json of coodinates*/
     $rows = count( $county_coords );
@@ -571,7 +604,7 @@ function dt_locations_match_country_to_key( $key )
     $countries = dt_get_oz_country_list();
 
     foreach( $countries as $country ) {
-        if( $country->CntyID == $key ) {
+        if( $country->CntyID == $key ) { // @codingStandardsIgnoreLine
             return $country->Cnty_Name;
         }
     }

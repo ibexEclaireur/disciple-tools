@@ -56,7 +56,15 @@ class Disciple_Tools_Coordinates_DB
         global $wpdb;
         $coordinates_array = [];
 
-        $results = $wpdb->get_results( "SELECT meta_value, meta_key FROM $wpdb->postmeta WHERE meta_key LIKE 'polygon_$state%'", ARRAY_A );
+        $results = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                meta_value, meta_key
+            FROM
+                `$wpdb->postmeta`
+            WHERE
+                meta_key LIKE %s",
+            esc_like( "polygon_$state" ) . "%"
+        ), ARRAY_A );
 
         foreach( $results as $value ) {
             $coordinates_array[ $value[ 'meta_key' ] ] = json_decode( $value[ 'meta_value' ] );

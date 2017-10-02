@@ -148,7 +148,16 @@ class Disciple_Tools_Locations_Import
                 // Find County Post ID
                 $geoid = $place->ExtendedData->SchemaData->SimpleData[ 4 ];
                 $state_county_key = substr( $geoid, 0, 5 );
-                $post_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_type = 'locations' AND post_name = '$state_county_key'" );
+                $post_id = $wpdb->get_var( $wpdb->prepare(
+                    "SELECT
+                        ID
+                    FROM
+                        `$wpdb->posts`
+                    WHERE
+                        post_type = 'locations'
+                        AND post_name = %s",
+                    $state_county_key
+                ) );
 
                 $wpdb->insert(
                     $wpdb->postmeta,
@@ -307,7 +316,16 @@ class Disciple_Tools_Locations_Import
                 // Find County Post ID
                 $geoid = $place->ExtendedData->SchemaData->SimpleData[ 4 ];
                 $state_county_key = substr( $geoid, 0, 5 );
-                $post_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_type = 'locations' AND post_name = '$state_county_key'" );
+                $post_id = $wpdb->get_var( $wpdb->prepare(
+                    "SELECT
+                        ID
+                    FROM
+                        `$wpdb->posts`
+                    WHERE
+                        post_type = 'locations'
+                        AND post_name = %s",
+                    $state_county_key
+                ) );
 
                 $wpdb->insert(
                     $wpdb->postmeta,
@@ -339,7 +357,7 @@ class Disciple_Tools_Locations_Import
         // check if $_POST to change option
         $status = '';
 
-        if( !empty( $_POST[ 'delete_location' ] ) && isset( $_POST[ 'delete_location' ] ) && wp_verify_nonce( $_POST[ 'delete_location' ], 'delete_location_validate' ) ) {
+        if( !empty( $_POST[ 'delete_location' ] ) && isset( $_POST[ 'delete_location' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'delete_location' ] ) ), 'delete_location_validate' ) ) {
             $status = $this->delete_locations();
         }
 
@@ -388,11 +406,11 @@ class Disciple_Tools_Locations_Import
      *
      * @param $admin
      */
-    public function insert_location_oz( $cntyID, $admin )
+    public function insert_location_oz( $cnty_id, $admin )
     {
 
         $list = dt_get_oz_country_list( $admin );
-        $parent_postID = '';
+        $parent_post_id = '';
 
         // Install single top level country record for Admin1 only
         if( $admin == 'admin1' ) {
@@ -402,7 +420,7 @@ class Disciple_Tools_Locations_Import
             $country_id = '';
 
             foreach( $country_list as $value ) {
-                if( $value->CntyID == $cntyID ) {
+                if( $value->CntyID == $cnty_id ) {
                     $country_name = $value->Zone_Name;
                     $country_id = $value->WorldID;
                     break;
@@ -420,14 +438,14 @@ class Disciple_Tools_Locations_Import
                     "post_author"  => get_current_user_id(),
                 ];
 
-                $parent_postID = wp_insert_post( $post );
+                $parent_post_id = wp_insert_post( $post );
             }
         }
 
         // Loop the admin level list
         foreach( $list as $item ) {
 
-            if( $item->CntyID == $cntyID ) {
+            if( $item->CntyID == $cnty_id ) {
 
                 $content = '';
 
@@ -440,7 +458,7 @@ class Disciple_Tools_Locations_Import
                     'post_type'    => 'locations',
                     "post_content" => $content,
                     "post_excerpt" => '',
-                    "post_parent"  => $parent_postID,
+                    "post_parent"  => $parent_post_id,
                     "post_name"    => $item->WorldID,
                     "post_status"  => "publish",
                     "post_author"  => get_current_user_id(),
@@ -472,10 +490,18 @@ class Disciple_Tools_Locations_Import
             $properties[ 'coordinates' ] = json_encode( $place[ 'geometry' ][ 'coordinates' ] ); // combine coordinates into a the single properties array
             $properties[ 'coordinates_type' ] = $place[ 'geometry' ][ 'type' ];
 
-            $WorldID = $properties[ 'WorldID' ];
+            $world_id = $properties[ 'WorldID' ];
 
             // duplicate check
-            $duplicate_post_id = $wpdb->get_var( "SELECT ID FROM $wpdb->posts WHERE post_name = '$WorldID'" );
+            $duplicate_post_id = $wpdb->get_var( $wpdb->prepare(
+                "SELECT
+                    ID
+                FROM
+                    `$wpdb->posts`
+                WHERE
+                    post_name = %s",
+                $world_id
+            ) );
 
             // insert post record
             $wpdb->replace(
@@ -554,7 +580,14 @@ class Disciple_Tools_Locations_Import
     {
         global $wpdb;
 
-        $results1 = $wpdb->query( "DELETE from $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '$cnty_id%';" );
+        $results1 = $wpdb->query( $wpdb->prepare(
+            "DELETE from
+                `$wpdb->posts`
+            WHERE
+                post_type = 'locations'
+                AND post_name LIKE %s",
+            esc_like( $cnty_id ) . "%"
+        ) );
         $results2 = $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE NOT EXISTS (SELECT NULL FROM $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id);" );
 
         return ( $results1 || $results2 ) ? true : false;

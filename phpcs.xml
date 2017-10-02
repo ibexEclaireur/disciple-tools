@@ -27,12 +27,7 @@
 
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
-  <exclude-pattern>dt-asset-mapping/*</exclude-pattern>
-  <exclude-pattern>dt-assets/*</exclude-pattern>
   <exclude-pattern>dt-core/*</exclude-pattern>
-  <exclude-pattern>dt-locations/*</exclude-pattern>
-  <exclude-pattern>dt-people-groups/*</exclude-pattern>
-  <exclude-pattern>dt-prayer/*</exclude-pattern>
   <exclude-pattern>dt-progress/*</exclude-pattern>
   <exclude-pattern>dt-resources/*</exclude-pattern>
   <exclude-pattern>dt-statistics/*</exclude-pattern>
@@ -60,7 +55,12 @@
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_get_user_meta" />
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_add_user_meta" />
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_update_user_meta" />
+<<<<<<< HEAD
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_delete_user_meta" />
+=======
+    <exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
+    <exclude name="WordPress.VIP.FileSystemWritesDisallow" />
+>>>>>>> master
 
     <!-- We currently don't want these rules that WordPress imports: -->
 
