@@ -28,7 +28,6 @@
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
   <exclude-pattern>dt-core/*</exclude-pattern>
-  <exclude-pattern>dt-prayer/*</exclude-pattern>
   <exclude-pattern>dt-progress/*</exclude-pattern>
   <exclude-pattern>dt-resources/*</exclude-pattern>
   <exclude-pattern>dt-statistics/*</exclude-pattern>
