@@ -155,11 +155,26 @@ function dt_get_site_notification_defaults()
 }
 
 /**
+ * Returns the site default user fields
+ *
+ * @return array
+ */
+function dt_get_site_default_user_fields(): array {
+    $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
+    if( is_wp_error( $site_custom_lists ) ) {
+        return [];
+    }
+    return $site_custom_lists[ 'user_fields' ];
+}
+
+
+
+/**
  * Echos user display name
  *
  * @param $user_id
  */
-function dt_user_display_name( $user_id )
+function dt_user_display_name( int $user_id )
 {
     echo esc_html( dt_get_user_display_name( $user_id ) );
 }
@@ -225,9 +240,18 @@ function dt_build_user_fields_display( array $usermeta ): array
     $site_user_fields = $site_custom_lists[ 'user_fields' ];
 
     foreach( $site_user_fields as $key => $value ) {
-        foreach( $usermeta as $k => $v ) {
-            if( $key == $k ) {
-                $fields[] = array_merge( $value, [ 'value' => $v[ 0 ] ] );
+        if($value['enabled']) { // if the site field is enabled
+            $i = 0;
+
+            foreach( $usermeta as $k => $v ) {
+                if( $key == $k ) {
+                    $fields[] = array_merge( $value, [ 'value' => $v[ 0 ] ] );
+                    $i++;
+                }
+            }
+
+            if($i === 0) { // if usermeta has no matching field to the standard site fields, then set value to empty string.
+                $fields[] = array_merge( $value, [ 'value' => '' ] );
             }
         }
     }

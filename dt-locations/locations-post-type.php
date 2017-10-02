@@ -317,9 +317,13 @@ class Disciple_Tools_Location_Post_Type
             7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
             8  => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
             9  => sprintf(
-                __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
+                __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ),
+                $this->singular,
+                strtolower( $this->singular ),
                 // translators: Publish box date format, see http://php.net/date
-                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>'
+                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>',
+                '<a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">',
+                '</a>'
             ),
             10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
         ];
