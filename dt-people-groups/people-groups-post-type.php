@@ -292,11 +292,11 @@ class Disciple_Tools_People_Groups_Post_Type
         $messages[ $this->post_type ] = [
             0  => '', // Unused. Messages start at index 1.
             1  => sprintf(
-                __( '%3$s updated. %1$sView %4$s%$2s', 'disciple_tools' ),
-                '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">',
-                '</a>',
+                __( '%s updated. %sView %s %s', 'disciple_tools' ),
                 $this->singular,
-                strtolower( $this->singular )
+                '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">',
+                strtolower( $this->singular ),
+                '</a>'
             ),
             2  => __( 'Custom field updated.', 'disciple_tools' ),
             3  => __( 'Custom field deleted.', 'disciple_tools' ),
