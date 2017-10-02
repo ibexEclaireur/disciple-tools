@@ -27,8 +27,6 @@
 
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
-  <exclude-pattern>dt-asset-mapping/*</exclude-pattern>
-  <exclude-pattern>dt-assets/*</exclude-pattern>
   <exclude-pattern>dt-core/*</exclude-pattern>
   <exclude-pattern>dt-locations/*</exclude-pattern>
   <exclude-pattern>dt-people-groups/*</exclude-pattern>
