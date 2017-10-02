@@ -8,11 +8,11 @@
  */
 class Disciple_Tools_Users_Endpoints
 {
-    
+
     private $version = 1;
     private $context = "dt";
     private $namespace;
-    
+
     /**
      * Disciple_Tools_Users_Endpoints constructor.
      */
@@ -21,7 +21,7 @@ class Disciple_Tools_Users_Endpoints
         $this->namespace = $this->context . "/v" . intval( $this->version );
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     }
-    
+
     /**
      * Setup for API routes
      */
@@ -33,16 +33,15 @@ class Disciple_Tools_Users_Endpoints
                 'callback' => [ $this, 'get_users' ],
             ]
         );
-        
+
         register_rest_route(
             $this->namespace, '/users/switch_preference', [
                 'methods'  => WP_REST_Server::CREATABLE,
                 'callback' => [ $this, 'switch_preference' ],
             ]
         );
-    
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -56,10 +55,10 @@ class Disciple_Tools_Users_Endpoints
             $search = $params[ 's' ];
         }
         $users = Disciple_Tools_Users::get_assignable_users_compact( $search );
-        
+
         return $users;
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -80,5 +79,5 @@ class Disciple_Tools_Users_Endpoints
             return new WP_Error( "preference_error", "Please provide a valid preference to change for user", [ 'status', 400 ] );
         }
     }
-    
+
 }

@@ -6,12 +6,12 @@ shared scripts applicable to all these sections.
  */
 "use strict";
 // user interface utilities
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 
-    // removes elements of the public metabox from visible.
-    $('#minor-publishing-actions').hide();
-    $('.misc-pub-visibility').hide();
-    $('.misc-pub-post-status').hide();
-    $('.misc-pub-revisions').hide();
+  // removes elements of the public metabox from visible.
+  $('#minor-publishing-actions').hide();
+  $('.misc-pub-visibility').hide();
+  $('.misc-pub-post-status').hide();
+  $('.misc-pub-revisions').hide();
 });
 

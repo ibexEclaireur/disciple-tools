@@ -10,14 +10,24 @@
  * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
-
-function dt_availability_metabox () {
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
+/**
+ * @return \Disciple_Tools_Metabox_Availability
+ */
+function dt_availability_metabox()
+{
     $object = new Disciple_Tools_Metabox_Availability();
+
     return $object;
 }
 
-class Disciple_Tools_Metabox_Availability {
+/**
+ * Class Disciple_Tools_Metabox_Availability
+ */
+class Disciple_Tools_Metabox_Availability
+{
 
     /**
      * Constructor function.
@@ -25,40 +35,91 @@ class Disciple_Tools_Metabox_Availability {
      * @access public
      * @since  0.1
      */
-    public function __construct () {
+    public function __construct()
+    {
 
     } // End __construct()
 
     /**
      * @return mixed
      */
-    public function display_availability_box() {
-        echo ''.$this->availability_style();
-        echo ''.$this->availability_grid();
+    public function display_availability_box()
+    {
+        echo '' . $this->availability_style();
+        echo '' . $this->availability_grid();
     }
-
 
     /**
      * @return void
      */
-    public function availability_style () {
+    public function availability_style()
+    {
         ?>
         <style>
-            #feedback { font-size: 1.2em; }
-            .selectable .ui-selecting { background: #FECA40; }
-            .selectable_header .ui-selecting { background: #FECA40; }
-            .selectable .ui-selected { background: #F39814; color: white; }
-            .selectable_header .ui-selected { background: #F39814; color: white; }
-            .selectable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-            .selectable_header { list-style-type: none; margin: 0; padding: 0; width: 100%; }
-            .selectable li { margin: 3px; padding: 1px; float: left; width: 13%; height: 100px; font-size: 4em; text-align: center; }
-            .selectable_header li { margin: 3px; padding: 1px; float: left; width: 13%; height: 100px; font-size: 4em; text-align: center; }
+            #feedback {
+                font-size: 1.2em;
+            }
+
+            .selectable .ui-selecting {
+                background: #FECA40;
+            }
+
+            .selectable_header .ui-selecting {
+                background: #FECA40;
+            }
+
+            .selectable .ui-selected {
+                background: #F39814;
+                color: white;
+            }
+
+            .selectable_header .ui-selected {
+                background: #F39814;
+                color: white;
+            }
+
+            .selectable {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            .selectable_header {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            .selectable li {
+                margin: 3px;
+                padding: 1px;
+                float: left;
+                width: 13%;
+                height: 100px;
+                font-size: 4em;
+                text-align: center;
+            }
+
+            .selectable_header li {
+                margin: 3px;
+                padding: 1px;
+                float: left;
+                width: 13%;
+                height: 100px;
+                font-size: 4em;
+                text-align: center;
+            }
         </style>
         <?php
     }
 
-
-    public function availability_grid () {
+    /**
+     * @return string
+     */
+    public function availability_grid()
+    {
         $html = '';
 
         $html .= '
@@ -131,6 +192,7 @@ class Disciple_Tools_Metabox_Availability {
               
             </script>
         ';
+
         return $html;
     }
 

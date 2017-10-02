@@ -11,9 +11,15 @@
  * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
-class Disciple_Tools_Groups_Config {
+/**
+ * Class Disciple_Tools_Groups_Config
+ */
+class Disciple_Tools_Groups_Config
+{
 
     /**
      * Disciple_Tools_Groups_Config The single instance of Disciple_Tools_Groups_Config.
@@ -26,17 +32,18 @@ class Disciple_Tools_Groups_Config {
 
     /**
      * Main Disciple_Tools_Groups_Config Instance
-     *
      * Ensures only one instance of Disciple_Tools_Groups_Config is loaded or can be loaded.
      *
      * @since  0.1
      * @static
      * @return Disciple_Tools_Groups_Config instance
      */
-    public static function instance () {
-        if ( is_null( self::$_instance ) ) {
+    public static function instance()
+    {
+        if( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     } // End instance()
 
@@ -46,8 +53,9 @@ class Disciple_Tools_Groups_Config {
      * @access public
      * @since  0.1
      */
-    public function __construct () {
-        add_action( 'admin_menu', [$this, 'remove_default_meta_boxes' ] );
+    public function __construct()
+    {
+        add_action( 'admin_menu', [ $this, 'remove_default_meta_boxes' ] );
     } // End __construct()
 
     /**
@@ -55,7 +63,8 @@ class Disciple_Tools_Groups_Config {
      *
      * @see https://codex.wordpress.org/Function_Reference/remove_meta_box
      */
-    public function remove_default_meta_boxes() {
+    public function remove_default_meta_boxes()
+    {
 
         remove_meta_box( 'linktargetdiv', 'link', 'normal' );
         remove_meta_box( 'linkxfndiv', 'link', 'normal' );

@@ -37,19 +37,19 @@ if( !defined( 'ABSPATH' ) ) {
  */
 function dt_get_user_associations()
 {
-    
+
     // Set variables
     global $wpdb;
     $user_connections = [];
-    
+
     // Set constructor
     $user_connections[ 'relation' ] = 'OR';
-    
+
     // Get current user ID and build meta_key for current user
     $user_id = get_current_user_id();
     $user_key_value = 'user-' . $user_id;
     $user_connections[] = [ 'key' => 'assigned_to', 'value' => $user_key_value ];
-    
+
     // Build arrays for current groups connected to user
     $results = $wpdb->get_results( $wpdb->prepare( "SELECT
             `$wpdb->term_relationships`.`term_taxonomy_id`
@@ -57,11 +57,11 @@ function dt_get_user_associations()
             `$wpdb->term_relationships`
         WHERE
             object_id = %d", $user_id ), ARRAY_A );
-    
+
     foreach( $results as $result ) {
         $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result[ 'term_taxonomy_id' ] ];
     }
-    
+
     // Return array to the meta_query
     return $user_connections;
 }
@@ -93,7 +93,7 @@ function dt_get_team_contacts( $user_id )
     $user_connections = [];
     $user_connections[ 'relation' ] = 'OR';
     $members = [];
-    
+
     // First Query
     // Build arrays for current groups connected to user
     $results = $wpdb->get_results( $wpdb->prepare( "SELECT
@@ -107,12 +107,12 @@ function dt_get_team_contacts( $user_id )
         WHERE
             object_id  = %d
             AND taxonomy = 'user-group'", $user_id ), ARRAY_A );
-    
+
     // Loop
     foreach( $results as $result ) {
         // create the meta query for the group
         $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result[ 'term_taxonomy_id' ] ];
-        
+
         // Second Query
         // query a member list for this group
         // build list of member ids who are part of the team
@@ -122,26 +122,25 @@ function dt_get_team_contacts( $user_id )
                 `$wpdb->term_relationships`
             WHERE
                 term_taxonomy_id = %d", $result[ 'term_taxonomy_id' ] ), ARRAY_A );
-        
+
         // Inner Loop
         foreach( $results2 as $result2 ) {
-            
+
             if( $result2[ 'object_id' ] != $user_id ) {
                 $members[] = $result2[ 'object_id' ];
             }
         }
     }
-    
+
     $members = array_unique( $members );
-    
+
     foreach( $members as $member ) {
         $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'user-' . $member ];
     }
-    
+
     // return
     return $user_connections;
 }
-
 
 /**
  * Gets the current site defaults defined in the notifications config section in wp-admin
@@ -151,7 +150,7 @@ function dt_get_team_contacts( $user_id )
 function dt_get_site_notification_defaults()
 {
     $site_options = dt_get_option( 'dt_site_options' );
-    
+
     return $site_options[ 'user_notifications' ];
 }
 
@@ -175,7 +174,7 @@ function dt_user_display_name( $user_id )
 function dt_get_user_display_name( $user_id )
 {
     $user = get_userdata( $user_id );
-    
+
     return $user->display_name;
 }
 
@@ -186,19 +185,19 @@ function dt_get_user_display_name( $user_id )
  */
 function dt_modify_profile_fields( $profile_fields )
 {
-    
+
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
     if( is_wp_error( $site_custom_lists ) ) {
         return $profile_fields;
     }
     $user_fields = $site_custom_lists[ 'user_fields' ];
-    
+
     foreach( $user_fields as $field ) {
         if( $field[ 'enabled' ] ) {
             $profile_fields[ $field[ 'key' ] ] = $field[ 'label' ];
         }
     }
-    
+
     return $profile_fields;
 }
 
@@ -218,13 +217,13 @@ if( is_admin() ) {
 function dt_build_user_fields_display( array $usermeta ): array
 {
     $fields = [];
-    
+
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
     if( is_wp_error( $site_custom_lists ) ) {
         return [];
     }
     $site_user_fields = $site_custom_lists[ 'user_fields' ];
-    
+
     foreach( $site_user_fields as $key => $value ) {
         foreach( $usermeta as $k => $v ) {
             if( $key == $k ) {
@@ -232,7 +231,7 @@ function dt_build_user_fields_display( array $usermeta ): array
             }
         }
     }
-    
+
     return $fields;
 }
 
@@ -244,21 +243,21 @@ function dt_build_user_fields_display( array $usermeta ): array
 function dt_get_user_locations_list( int $user_id )
 {
     global $wpdb;
-    
+
     // get connected location ids to user
     $location_ids = $wpdb->get_col(
         $wpdb->prepare(
-        "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
+            "SELECT p2p_from as location_id FROM  $wpdb->p2p WHERE p2p_to = '%d' AND p2p_type = 'team_member_locations';", $user_id )
     );
-    
+
     // check if null return
     if( empty( $location_ids ) ) {
         return false;
     }
-    
+
     // get location posts from connected array
     $location_posts = new WP_Query( [ 'post__in' => $location_ids, 'post_type' => 'locations' ] );
-    
+
     return $location_posts->posts;
 }
 
@@ -279,19 +278,19 @@ function dt_get_user_locations_list( int $user_id )
  */
 function dt_get_user_team_members_list( int $user_id )
 {
-    
+
     $team_members_list = [];
-    
+
     $teams = wp_get_object_terms( $user_id, 'user-group' );
     if( empty( $teams ) || is_wp_error( $teams ) ) {
         return false;
     }
-    
+
     foreach( $teams as $team ) {
-        
+
         $team_id = $team->term_id;
         $team_name = $team->name;
-        
+
         $members_list = [];
         $args = [
             'taxonomy' => 'user-group',
@@ -311,14 +310,14 @@ function dt_get_user_team_members_list( int $user_id )
                 }
             }
         }
-        
+
         $team_members_list[] = [
             'team_id'      => $team_id,
             'team_name'    => $team_name,
             'team_members' => $members_list,
         ];
     }
-    
+
     return $team_members_list;
 }
 

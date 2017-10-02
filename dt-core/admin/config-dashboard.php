@@ -10,9 +10,15 @@
  * @author  Chasm.Solutions & Kingdom.Training
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
-final class Disciple_Tools_Dashboard {
+/**
+ * Class Disciple_Tools_Dashboard
+ */
+final class Disciple_Tools_Dashboard
+{
 
     /**
      * Disciple_Tools_Dashboard The single instance of Disciple_Tools_Dashboard.
@@ -31,10 +37,12 @@ final class Disciple_Tools_Dashboard {
      * @static
      * @return Disciple_Tools_Dashboard
      */
-    public static function instance () {
-        if ( is_null( self::$_instance ) ) {
+    public static function instance()
+    {
+        if( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     } // End instance()
 
@@ -44,8 +52,9 @@ final class Disciple_Tools_Dashboard {
      * @access public
      * @since  0.1
      */
-    public function __construct () {
-        if ( is_admin() ) {
+    public function __construct()
+    {
+        if( is_admin() ) {
             /* Add dashboard widgets */
             add_action( 'wp_dashboard_setup', [ $this, 'add_widgets' ] );
 
@@ -61,10 +70,11 @@ final class Disciple_Tools_Dashboard {
      * @since  0.1
      * @access public
      */
-    public function add_widgets() {
+    public function add_widgets()
+    {
 
         add_meta_box( 'funnel_stats_widget', 'Funnel Stats', [ $this, 'funnel_stats_widget' ], 'dashboard', 'side', 'high' );
-        add_filter( 'dashboard_recent_posts_query_args', [ $this, 'add_page_to_dashboard_activity'] );
+        add_filter( 'dashboard_recent_posts_query_args', [ $this, 'add_page_to_dashboard_activity' ] );
     }
 
     /**
@@ -73,7 +83,8 @@ final class Disciple_Tools_Dashboard {
      * @since  0.1
      * @access public
      */
-    public function funnel_stats_widget() {
+    public function funnel_stats_widget()
+    {
         $html = Disciple_Tools()->reports_funnel->critical_path_stats();
         echo $html;
     }
@@ -84,7 +95,8 @@ final class Disciple_Tools_Dashboard {
      * @since  0.1
      * @access public
      */
-    public function remove_dashboard_meta () {
+    public function remove_dashboard_meta()
+    {
 
         remove_meta_box( 'dashboard_incoming_links', 'dashboard', 'normal' );
         remove_meta_box( 'dashboard_plugins', 'dashboard', 'normal' );
@@ -113,19 +125,21 @@ final class Disciple_Tools_Dashboard {
 
     /**
      * Add custom post types to Activity feed on dashboard
-     *
      * @source https://gist.github.com/Mte90/708e54b21b1f7372b48a
+     *
      * @since  0.1
      * @access public
      */
-    public function add_page_to_dashboard_activity ( $query_args ) {
-        if ( is_array( $query_args[ 'post_type' ] ) ) {
+    public function add_page_to_dashboard_activity( $query_args )
+    {
+        if( is_array( $query_args[ 'post_type' ] ) ) {
             //Set your post type
             $query_args[ 'post_type' ][] = 'contacts';
         } else {
             $temp = [ $query_args[ 'post_type' ], 'contacts' ];
             $query_args[ 'post_type' ] = $temp;
         }
+
         return $query_args;
     }
 

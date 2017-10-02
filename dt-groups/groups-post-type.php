@@ -23,7 +23,7 @@ class Disciple_Tools_Groups_Post_Type
      * @var    string
      */
     public $post_type;
-    
+
     /**
      * The post type singular label.
      *
@@ -32,7 +32,7 @@ class Disciple_Tools_Groups_Post_Type
      * @var    string
      */
     public $singular;
-    
+
     /**
      * The post type plural label.
      *
@@ -41,7 +41,7 @@ class Disciple_Tools_Groups_Post_Type
      * @var    string
      */
     public $plural;
-    
+
     /**
      * The post type args.
      *
@@ -50,7 +50,7 @@ class Disciple_Tools_Groups_Post_Type
      * @var    array
      */
     public $args;
-    
+
     /**
      * The taxonomies for this post type.
      *
@@ -59,7 +59,7 @@ class Disciple_Tools_Groups_Post_Type
      * @var    array
      */
     public $taxonomies;
-    
+
     /**
      * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
      *
@@ -68,7 +68,7 @@ class Disciple_Tools_Groups_Post_Type
      * @since  0.1
      */
     private static $_instance = null;
-    
+
     /**
      * Main Disciple_Tools_Groups_Post_Type Instance
      * Ensures only one instance of Disciple_Tools_Groups_Post_Type is loaded or can be loaded.
@@ -82,10 +82,10 @@ class Disciple_Tools_Groups_Post_Type
         if( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
-        
+
         return self::$_instance;
     } // End instance()
-    
+
     /**
      * Disciple_Tools_Groups_Post_Type constructor.
      *
@@ -102,28 +102,27 @@ class Disciple_Tools_Groups_Post_Type
         $this->plural = __( 'Groups', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
         //        $this->taxonomies = $taxonomies;
-        
+
         add_action( 'init', [ $this, 'register_post_type' ] );
         //        add_action( 'init', [ $this, 'register_taxonomy' ] );
         add_action( 'init', [ $this, 'groups_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'groups_permalink' ], 1, 3 );
-        
+
         if( is_admin() ) {
             global $pagenow;
-            
+
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             //            add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
-            
+
             if( $pagenow == 'edit.php' && isset( $_GET[ 'post_type' ] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] ) ) ) == $this->post_type ) {
                 add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                 add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
             }
         }
-        
     } // End __construct()
-    
+
     /**
      * Register the post type.
      *
@@ -169,10 +168,10 @@ class Disciple_Tools_Groups_Post_Type
             'publish_posts'       => 'create_groups',
             'read_private_posts'  => 'view_any_group',
         ];
-        
+
         $single_slug = apply_filters( 'dt_single_slug', sanitize_title_with_dashes( _x( 'Group', 'single post url slug', 'disciple_tools' ) ) );
         $archive_slug = apply_filters( 'dt_archive_slug', sanitize_title_with_dashes( _x( 'Groups', 'post archive url slug', 'disciple_tools' ) ) );
-        
+
         $defaults = [
             'labels'                => $labels,
             'public'                => true,
@@ -192,12 +191,12 @@ class Disciple_Tools_Groups_Post_Type
             'rest_base'             => 'groups',
             'rest_controller_class' => 'WP_REST_Posts_Controller',
         ];
-        
+
         $args = wp_parse_args( $this->args, $defaults );
-        
+
         register_post_type( $this->post_type, $args );
     } // End register_post_type()
-    
+
     /**
      * Register the "thing-category" taxonomy.
      *
@@ -210,7 +209,7 @@ class Disciple_Tools_Groups_Post_Type
         $this->taxonomies[ 'groups-type' ] = new Disciple_Tools_Taxonomy( $post_type = 'groups', $token = 'groups-type', $singular = 'Type', $plural = 'Types', $args = [] ); // Leave arguments empty, to use the default arguments.
         $this->taxonomies[ 'groups-type' ]->register();
     } // End register_taxonomy()
-    
+
     /**
      * Add custom columns for the "manage" screen of this post type.
      *
@@ -224,16 +223,16 @@ class Disciple_Tools_Groups_Post_Type
     public function register_custom_columns( $column_name )
     {
         //        global $post;
-        
+
         switch( $column_name ) {
             case 'image':
                 break;
-            
+
             default:
                 break;
         }
     } // End register_custom_columns()
-    
+
     /**
      * Add custom column headings for the "manage" screen of this post type.
      *
@@ -247,28 +246,28 @@ class Disciple_Tools_Groups_Post_Type
     public function register_custom_column_headings( $defaults )
     {
         $new_columns = [ 'location' => __( 'Location', 'disciple_tools' ) ];
-        
+
         $last_item = [];
-        
+
         //		if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
-        
+
         if( count( $defaults ) > 2 ) {
             $last_item = array_slice( $defaults, -1 );
-            
+
             array_pop( $defaults );
         }
         $defaults = array_merge( $defaults, $new_columns );
-        
+
         if( is_array( $last_item ) && 0 < count( $last_item ) ) {
             foreach( $last_item as $k => $v ) {
                 $defaults[ $k ] = $v;
                 break;
             }
         }
-        
+
         return $defaults;
     } // End register_custom_column_headings()
-    
+
     /**
      * Update messages for the post type admin.
      *
@@ -281,7 +280,7 @@ class Disciple_Tools_Groups_Post_Type
     public function updated_messages( $messages )
     {
         global $post;
-        
+
         $messages[ $this->post_type ] = [
             0  => '', // Unused. Messages start at index 1.
             1  => sprintf( __( '%3$s updated. %1$sView %4$s%$2s', 'disciple_tools' ), [ '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ] ),
@@ -303,10 +302,10 @@ class Disciple_Tools_Groups_Post_Type
             ),
             10 => sprintf( __( '%1$s draft updated. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
         ];
-        
+
         return $messages;
     } // End updated_messages()
-    
+
     /**
      * Setup the meta box.
      *
@@ -321,7 +320,7 @@ class Disciple_Tools_Groups_Post_Type
         add_meta_box( $this->post_type . '_info', __( 'Info', 'disciple_tools' ), [ $this, 'load_info_meta_box' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
-    
+
     /**
      * Load activity metabox
      */
@@ -329,7 +328,7 @@ class Disciple_Tools_Groups_Post_Type
     {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
-    
+
     /**
      * Load type metabox
      */
@@ -339,7 +338,7 @@ class Disciple_Tools_Groups_Post_Type
         $this->meta_box_content( 'church_hidden' ); // prints
         dt_church_fields_metabox()->content_display(); // prints
     }
-    
+
     /**
      * Load type metabox
      */
@@ -347,7 +346,7 @@ class Disciple_Tools_Groups_Post_Type
     {
         $this->meta_box_content( 'info' ); // prints
     }
-    
+
     /**
      * Load address metabox
      */
@@ -356,7 +355,7 @@ class Disciple_Tools_Groups_Post_Type
         $this->meta_box_content( 'address' ); // prints
         dt_address_metabox()->add_new_address_field(); // prints
     }
-    
+
     /**
      * The contents of our meta box.
      *
@@ -367,29 +366,29 @@ class Disciple_Tools_Groups_Post_Type
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
-        
+
         $html = '';
-        
+
         $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_groups' ) . '" />';
-        
+
         if( 0 < count( $field_data ) ) {
             $html .= '<table class="form-table">' . "\n";
             $html .= '<tbody>' . "\n";
-            
+
             foreach( $field_data as $k => $v ) {
-                
+
                 if( $v[ 'section' ] == $section || $section == 'all' ) {
-                    
+
                     $data = $v[ 'default' ];
-                    
+
                     if( isset( $fields[ $k ] ) && isset( $fields[ $k ][ 0 ] ) ) {
                         $data = $fields[ $k ][ 0 ];
                     }
-                    
+
                     $type = $v[ 'type' ];
-                    
+
                     switch( $type ) {
-                        
+
                         case 'text':
                             $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
                             $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
@@ -399,7 +398,7 @@ class Disciple_Tools_Groups_Post_Type
                             $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker regular-text" type="text" id="' . esc_attr( $k ) . '"  value="' . esc_attr( $data ) . '" />' . "\n";
                             $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
-                            
+
                             break;
                         case 'key_select':
                             $html .= '<tr class="' . esc_attr( $v[ 'section' ] ) . '" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
@@ -418,7 +417,7 @@ class Disciple_Tools_Groups_Post_Type
                             $html .= '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
                             $html .= '</td><tr/>' . "\n";
                             break;
-                        
+
                         case 'radio':
                             $html .= '<tr valign="top"><th scope="row">' . esc_attr( $v[ 'name' ] ) . '</th>
                                 <td><fieldset>';
@@ -442,24 +441,23 @@ class Disciple_Tools_Groups_Post_Type
                             $html .= $v[ 'default' ];
                             $html .= '</td><tr/>' . "\n";
                             break;
-                        
+
                         default:
                             break;
                     }
                 }
-                
             }
-            
+
             $html .= '</tbody>' . "\n";
             $html .= '</table>' . "\n";
         }
-        
+
         // @codingStandardsIgnoreLine
         echo $html;
         // TODO: instead of building an $html variable and then echoing it, we
         // should be using <? php and ? > as usual
     } // End meta_box_content()
-    
+
     /**
      * Save meta box fields.
      *
@@ -471,7 +469,7 @@ class Disciple_Tools_Groups_Post_Type
     public function meta_box_save( int $post_id )
     {
         //        global $post, $messages;
-        
+
         // Verify
         if( get_post_type() != $this->post_type ) {
             return $post_id;
@@ -480,7 +478,7 @@ class Disciple_Tools_Groups_Post_Type
         if( isset( $_POST[ $nonce_key ] ) && !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_key ] ) ), 'update_dt_groups' ) ) {
             return $post_id;
         }
-        
+
         if( isset( $_POST[ 'post_type' ] ) && 'page' == esc_attr( sanitize_text_field( wp_unslash( $_POST[ 'post_type' ] ) ) ) ) {
             if( !current_user_can( 'edit_page', $post_id ) ) {
                 return $post_id;
@@ -490,16 +488,16 @@ class Disciple_Tools_Groups_Post_Type
                 return $post_id;
             }
         }
-        
+
         if( isset( $_GET[ 'action' ] ) ) {
             if( $_GET[ 'action' ] == 'trash' || $_GET[ 'action' ] == 'untrash' || $_GET[ 'action' ] == 'delete' ) {
                 return $post_id;
             }
         }
-        
+
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
-        
+
         if( ( isset( $_POST[ 'new-key-address' ] ) && !empty( $_POST[ 'new-key-address' ] ) ) && ( isset( $_POST[ 'new-value-address' ] ) && !empty( $_POST[ 'new-value-address' ] ) ) ) { // catch and prepare new contact fields
             $k = explode( "_", sanitize_text_field( wp_unslash( $_POST[ 'new-key-address' ] ) ) );
             $type = $k[ 1 ];
@@ -510,13 +508,13 @@ class Disciple_Tools_Groups_Post_Type
             add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST[ 'new-value-address' ] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
-        
+
         foreach( $fields as $f ) {
-            
+
             if( isset( $_POST[ $f ] ) ) {
-                
+
                 ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) ) );
-                
+
                 if( get_post_meta( $post_id, $f ) == '' ) {
                     add_post_meta( $post_id, $f, ${$f}, true );
                 } elseif( ${$f} == '' ) {
@@ -528,10 +526,10 @@ class Disciple_Tools_Groups_Post_Type
                 throw new Exception( "Expected field $f to exist" );
             }
         }
-        
+
         return $post_id;
     } // End meta_box_save()
-    
+
     /**
      * Field: The 'Assigned To' dropdown controller
      *
@@ -540,19 +538,19 @@ class Disciple_Tools_Groups_Post_Type
     public function assigned_to_field()
     {
         global $post;
-        
-//        $exclude_group = '';
+
+        //        $exclude_group = '';
         $exclude_user = '';
         $html = '';
-        
+
         // Start drop down
         $html .= '<select name="assigned_to" id="assigned_to" class="edit-input">';
-        
+
         // Set selected state
         if( isset( $post->ID ) ) {
             $assigned_to = get_post_meta( $post->ID, 'assigned_to', true );
         }
-        
+
         if( empty( $assigned_to ) ) {
             // set default to dispatch
             $html .= '<option value="" selected></option>';
@@ -560,7 +558,7 @@ class Disciple_Tools_Groups_Post_Type
             $metadata = get_post_meta( $post->ID, 'assigned_to', true );
             $meta_array = explode( '-', $metadata ); // Separate the type and id
             $type = $meta_array[ 0 ]; // Build variables
-            
+
             // Build option for current value
             if( $type == 'user' && isset( $meta_array[ 1 ] ) ) {
                 $id = $meta_array[ 1 ];
@@ -572,26 +570,26 @@ class Disciple_Tools_Groups_Post_Type
                 $exclude_user = "'exclude' => $id";
             }
         }
-        
+
         // Collect user list
         $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user ];
         $results = get_users( $args );
-        
+
         // Loop user list
         foreach( $results as $value ) {
             $html .= '<option value="user-' . $value->ID . '">' . $value->display_name . '</option>';
         }
-        
+
         // End drop down
         $html .= '</select>  ';
-        
+
         return $html;
     }
-    
+
     /**
      * Get the settings for the custom fields.
      *
-     * @param      $include_current_post
+     * @param          $include_current_post
      * @param int|null $post_id
      *
      * @return mixed
@@ -599,9 +597,9 @@ class Disciple_Tools_Groups_Post_Type
     public function get_custom_fields_settings( $include_current_post = true, int $post_id = null )
     {
         global $post;
-        
+
         $fields = [];
-        
+
         $fields[ 'group_status' ] = [
             'name'        => __( 'Group Status', 'disciple_tools' ),
             'description' => '',
@@ -617,7 +615,7 @@ class Disciple_Tools_Groups_Post_Type
             ],
             'section'     => 'info',
         ];
-        
+
         $fields[ 'assigned_to' ] = [
             'name'        => __( 'Assigned To', 'disciple_tools' ),
             'description' => '',
@@ -625,7 +623,7 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => $this->assigned_to_field(),
             'section'     => 'info',
         ];
-        
+
         // Church
         $fields[ 'is_church' ] = [
             'name'        => __( 'Is a Church', 'disciple_tools' ),
@@ -634,7 +632,7 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
             'section'     => 'church',
         ];
-        
+
         $fields[ 'church_baptism' ] = [
             'name'        => __( 'Baptism', 'disciple_tools' ),
             'description' => '',
@@ -705,7 +703,7 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
             'section'     => 'church_hidden',
         ];
-        
+
         $fields[ 'start_date' ] = [
             'name'        => __( 'Start Date', 'disciple_tools' ),
             'description' => '',
@@ -720,7 +718,7 @@ class Disciple_Tools_Groups_Post_Type
             'default'     => '',
             'section'     => 'info',
         ];
-        
+
         $id = isset( $post->ID ) ? $post->ID : $post_id;
         if( $include_current_post &&
             ( $id ||
@@ -737,10 +735,10 @@ class Disciple_Tools_Groups_Post_Type
                 ];
             }
         }
-        
+
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
-    
+
     /**
      * Customise the "Enter title here" text.
      *
@@ -756,10 +754,10 @@ class Disciple_Tools_Groups_Post_Type
         if( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the group here', 'disciple_tools' );
         }
-        
+
         return $title;
     } // End enter_title_here()
-    
+
     /**
      * Run on activation.
      *
@@ -770,7 +768,7 @@ class Disciple_Tools_Groups_Post_Type
     {
         $this->flush_rewrite_rules();
     } // End activation()
-    
+
     /**
      * Flush the rewrite rules
      *
@@ -782,7 +780,7 @@ class Disciple_Tools_Groups_Post_Type
         $this->register_post_type();
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
-    
+
     /**
      * @param $post_link
      * @param $post
@@ -797,7 +795,7 @@ class Disciple_Tools_Groups_Post_Type
             return $post_link;
         }
     }
-    
+
     /**
      *
      */
@@ -805,5 +803,5 @@ class Disciple_Tools_Groups_Post_Type
     {
         add_rewrite_rule( 'groups/([0-9]+)?$', 'index.php?post_type=groups&p=$matches[1]', 'top' );
     }
-    
+
 } // End Class
