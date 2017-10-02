@@ -35,18 +35,12 @@ class Disciple_Tools_Users_Endpoints
         );
         
         register_rest_route(
-            $this->namespace, '/users/change_notification_preference', [
+            $this->namespace, '/users/switch_preference', [
                 'methods'  => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'change_notification_preference' ],
+                'callback' => [ $this, 'switch_preference' ],
             ]
         );
     
-        register_rest_route(
-            $this->namespace, '/users/change_availability', [
-                'methods'  => WP_REST_Server::CREATABLE,
-                'callback' => [ $this, 'change_availability' ],
-            ]
-        );
     }
     
     /**
@@ -71,12 +65,12 @@ class Disciple_Tools_Users_Endpoints
      *
      * @return array|\WP_Error
      */
-    public function change_notification_preference( WP_REST_Request $request )
+    public function switch_preference( WP_REST_Request $request )
     {
         $params = $request->get_params();
         $user_id = get_current_user_id();
         if( isset( $params[ 'preference_key' ] ) ) {
-            $result = Disciple_Tools_Users::change_notification_preference( $user_id, $params[ 'preference_key' ] );
+            $result = Disciple_Tools_Users::switch_preference( $user_id, $params[ 'preference_key' ] );
             if( $result[ "status" ] ) {
                 return $result[ "response" ];
             } else {
@@ -84,22 +78,6 @@ class Disciple_Tools_Users_Endpoints
             }
         } else {
             return new WP_Error( "preference_error", "Please provide a valid preference to change for user", [ 'status', 400 ] );
-        }
-    }
-    
-    /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array|\WP_Error
-     */
-    public function change_availability( WP_REST_Request $request )
-    {
-        $user_id = get_current_user_id();
-        $result = Disciple_Tools_Users::change_availability( $user_id );
-        if( $result[ "status" ] ) {
-            return $result[ "response" ];
-        } else {
-            return new WP_Error( "change_availability_error", $result[ "message" ], [ 'status', 400 ] );
         }
     }
     

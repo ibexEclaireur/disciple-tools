@@ -85,7 +85,7 @@ function dt_get_option( string $name )
         case 'dt_site_options':
             $site_options = dt_get_site_options_defaults();
             
-            if( !get_option( 'dt_site_options' ) ) { // options doen't exist, create new.
+            if( !get_option( 'dt_site_options' ) ) { // options doesn't exist, create new.
                 $add = add_option( 'dt_site_options', $site_options, '', true );
                 if( !$add ) {
                     return new WP_Error( 'failed_add_site_option', 'Site option dt_site_options was not able to be created' );
