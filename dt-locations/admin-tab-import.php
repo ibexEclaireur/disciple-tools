@@ -59,14 +59,14 @@ class Disciple_Tools_Locations_Tab_Import
         $result2 = '';
 
         // check if $_POST to change option
-        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_nonce' ], 'state_nonce_validate' ) ) {
+        if ( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_nonce' ] ) ), 'state_nonce_validate' ) ) {
 
             if( !isset( $_POST[ 'states-dropdown' ] ) ) { // check if file is correctly set
                 return false;
             }
 
-            $result = Disciple_Tools_Locations_Import::upload_census_tract_kml_to_post_type( $_POST[ 'states-dropdown' ] ); // run insert process TODO make this a javascript call with a spinner.
-            $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts( $_POST[ 'states-dropdown' ] );
+            $result = Disciple_Tools_Locations_Import::upload_census_tract_kml_to_post_type( sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) ) ); // run insert process TODO make this a javascript call with a spinner.
+            $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts( sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) ) );
         } /* end if $_POST */
 
         $dropdown = dt_get_states_key_dropdown_not_installed();
@@ -80,7 +80,7 @@ class Disciple_Tools_Locations_Tab_Import
                             <td>
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'state_nonce_validate', 'state_nonce', true, false ) . $dropdown . '
-                                    
+
                                     <button type="submit" class="button" value="submit">Upload State</button>
                                 </form>
                             </td>
@@ -111,14 +111,14 @@ class Disciple_Tools_Locations_Tab_Import
         $result2 = '';
 
         // check if $_POST to change option
-        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_nonce' ], 'state_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_nonce' ] ) ), 'state_nonce_validate' ) ) {
 
             if( !isset( $_POST[ 'states-dropdown' ] ) ) { // check if file is correctly set
                 return false;
             }
 
-            $result = Disciple_Tools_Locations_Import::census_tract_kml_to_post_type( $_POST[ 'states-dropdown' ] ); // run insert process TODO make this a javascript call with a spinner.
-            $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts_coordinates( $_POST[ 'states-dropdown' ] );
+            $result = Disciple_Tools_Locations_Import::census_tract_kml_to_post_type( sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) ) ); // run insert process TODO make this a javascript call with a spinner.
+            $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts_coordinates( sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) ) );
         } /* end if $_POST */
 
         $dropdown = dt_get_states_key_dropdown_not_installed();
@@ -132,7 +132,7 @@ class Disciple_Tools_Locations_Tab_Import
                             <td>
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'state_nonce_validate', 'state_nonce', true, false ) . $dropdown . '
-                                    
+
                                     <button type="submit" class="button" value="submit">Upload State</button>
                                 </form>
                             </td>
@@ -161,17 +161,17 @@ class Disciple_Tools_Locations_Tab_Import
         /*********************************/
         /* POST */
         /*********************************/
-        if( !empty( $_POST[ 'oz_nonce' ] ) && isset( $_POST[ 'oz_nonce' ] ) && wp_verify_nonce( $_POST[ 'oz_nonce' ], 'oz_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'oz_nonce' ] ) && isset( $_POST[ 'oz_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'oz_nonce' ] ) ), 'oz_nonce_validate' ) ) {
 
             if( !empty( $_POST[ 'load-oz-admin1' ] ) ) {
 
                 // insert records
                 $import = new Disciple_Tools_Locations_Import();
-                $import->insert_location_oz( $_POST[ 'load-oz-admin1' ], 'admin1' );
+                $import->insert_location_oz( sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin1' ] ) ), 'admin1' );
 
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
-                $option[ 'Adm1ID' ][] = $_POST[ 'load-oz-admin1' ];
+                $option[ 'Adm1ID' ][] = sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin1' ] ) );
                 update_option( '_dt_oz_installed', $option );
             }
 
@@ -179,11 +179,11 @@ class Disciple_Tools_Locations_Tab_Import
 
                 // insert records
                 $import = new Disciple_Tools_Locations_Import();
-                $import->insert_location_oz( $_POST[ 'load-oz-admin2' ], 'admin2' );
+                $import->insert_location_oz( sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin2' ] ) ), 'admin2' );
 
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
-                $option[ 'Adm2ID' ][] = $_POST[ 'load-oz-admin2' ];
+                $option[ 'Adm2ID' ][] = sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin2' ] ) );
                 update_option( '_dt_oz_installed', $option );
             }
 
@@ -191,11 +191,11 @@ class Disciple_Tools_Locations_Tab_Import
 
                 // insert records
                 $import = new Disciple_Tools_Locations_Import();
-                $import->insert_location_oz( $_POST[ 'load-oz-admin3' ], 'admin3' );
+                $import->insert_location_oz( sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin3' ] ) ), 'admin3' );
 
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
-                $option[ 'Adm3ID' ][] = $_POST[ 'load-oz-admin3' ];
+                $option[ 'Adm3ID' ][] = sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin3' ] ) );
                 update_option( '_dt_oz_installed', $option );
             }
 
@@ -203,11 +203,11 @@ class Disciple_Tools_Locations_Tab_Import
 
                 // insert records
                 $import = new Disciple_Tools_Locations_Import();
-                $import->insert_location_oz( $_POST[ 'load-oz-admin4' ], 'admin4' );
+                $import->insert_location_oz( sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin4' ] ) ), 'admin4' );
 
                 // Update option.
                 $option = get_option( '_dt_oz_installed' );
-                $option[ 'Adm4ID' ][] = $_POST[ 'load-oz-admin4' ];
+                $option[ 'Adm4ID' ][] = sanitize_text_field( wp_unslash( $_POST[ 'load-oz-admin4' ] ) );
                 update_option( '_dt_oz_installed', $option );
             }
         }
@@ -238,10 +238,13 @@ class Disciple_Tools_Locations_Tab_Import
         $admin1 .= '<option >- Choose</option>';
 
         foreach( $dir_contents as $value ) {
-            $test = array_search( $value->CntyID, $currently_installed[ 'Adm1ID' ] );
+            // @codingStandardsIgnoreLine
+            $country_id = $value->CntyID;
+            $test = array_search( $country_id, $currently_installed[ 'Adm1ID' ] );
             if( !( $test ) && !( $test === 0 ) ) {
-                $admin1 .= '<option value="' . $value->CntyID . '" ';
-                $admin1 .= '>' . $value->Cnty_Name;
+                $admin1 .= '<option value="' . esc_attry( $country_id ) . '" ';
+                // @codingStandardsIgnoreLine
+                $admin1 .= '>' . esc_html( $value->Cnty_Name );
                 $admin1 .= '</option>';
             }
         }
@@ -336,7 +339,7 @@ class Disciple_Tools_Locations_Tab_Import
                             <td>
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin1 . '
-                                    
+
                                     <button type="submit" class="button" value="submit">Load Admin Level 1</button>
                                 </form>
                             </td>
@@ -345,7 +348,7 @@ class Disciple_Tools_Locations_Tab_Import
                             <td>
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin2 . '
-                                    
+
                                     <button type="submit" class="button" value="submit">Load Admin Level 2</button>
                                 </form>
                             </td>
@@ -354,7 +357,7 @@ class Disciple_Tools_Locations_Tab_Import
                             <td>
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin3 . '
-                                    
+
                                     <button type="submit" class="button" value="submit">Load Admin Level 3</button>
                                 </form>
                             </td>
@@ -363,7 +366,7 @@ class Disciple_Tools_Locations_Tab_Import
                             <td>
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin4 . '
-                                    
+
                                     <button type="submit" class="button" value="submit">Load Admin Level 4</button>
                                 </form>
                             </td>

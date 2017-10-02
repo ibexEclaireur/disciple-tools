@@ -89,9 +89,12 @@ class Disciple_Tools_Locations_Tab_Global
     {
 
         // if country install
-        if( !empty( $_POST[ 'country_nonce' ] ) && isset( $_POST[ 'country_nonce' ] ) && wp_verify_nonce( $_POST[ 'country_nonce' ], 'country_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'country_nonce' ] ) && isset( $_POST[ 'country_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'country_nonce' ] ) ), 'country_nonce_validate' ) ) {
 
-            $cnty_id = $_POST[ 'countries-dropdown' ];
+            if (! isset( $_POST['countries-dropdown'] ) ) {
+                wp_die( esc_html__( "Expected countries-dropdown to be set" ) );
+            }
+            $cnty_id = sanitize_text_field( wp_unslash( $_POST[ 'countries-dropdown' ] ) );
 
             // download country info
             $geojson = $this->get_country_level( $cnty_id, '0' );
@@ -126,7 +129,7 @@ class Disciple_Tools_Locations_Tab_Global
             update_option( '_dt_installed_country', $installed_countries, false );
 
             return true;
-        } elseif( !empty( $_POST[ 'country_levels_nonce' ] ) && isset( $_POST[ 'country_levels_nonce' ] ) && wp_verify_nonce( $_POST[ 'country_levels_nonce' ], 'country_levels_nonce_validate' ) ) {
+        } elseif( !empty( $_POST[ 'country_levels_nonce' ] ) && isset( $_POST[ 'country_levels_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'country_levels_nonce' ] ) ), 'country_levels_nonce_validate' ) ) {
 
             $keys = array_keys( $_POST );
 
@@ -134,7 +137,7 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'adm1_count':
 
-                    $cnty_id = $_POST[ 'adm1_count' ];
+                    $cnty_id = isset( $_POST['adm1_count'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm1_count' ] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '1' );
@@ -164,7 +167,7 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'adm2_count':
 
-                    $cnty_id = $_POST[ 'adm2_count' ];
+                    $cnty_id = isset( $_POST['adm2_count'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm2_count' ] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '2' );
@@ -193,7 +196,7 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'adm3_count':
 
-                    $cnty_id = $_POST[ 'adm3_count' ];
+                    $cnty_id = isset( $_POST['adm3_count'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm3_count' ] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '3' );
@@ -222,7 +225,7 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'adm4_count':
 
-                    $cnty_id = $_POST[ 'adm4_count' ];
+                    $cnty_id = isset( $_POST['adm4_count'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm4_count' ] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '4' );
@@ -251,7 +254,7 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'delete':
 
-                    $cnty_id = $_POST[ 'delete' ];
+                    $cnty_id = isset( $_POST['delete'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'delete' ] ) ) : "";
 
                     Disciple_Tools_Locations_Tab_Global::delete_location_data( $cnty_id );
 
@@ -285,8 +288,20 @@ class Disciple_Tools_Locations_Tab_Global
     {
         global $wpdb;
 
-        $results1 = $wpdb->query( "DELETE from $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '$cnty_id%';" );
-        $results2 = $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE NOT EXISTS (SELECT NULL FROM $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id);" );
+        $results1 = $wpdb->query( $wpdb->prepare(
+            "DELETE FROM
+                `$wpdb->posts`
+            WHERE
+                post_type = 'locations'
+                AND post_name LIKE %s",
+            esc_like( "$cnty_id" ) . '%'
+        ) );
+        $results2 = $wpdb->query(
+            "DELETE FROM
+                `$wpdb->postmeta`
+            WHERE
+                NOT EXISTS (SELECT NULL FROM `$wpdb->posts` WHERE `$wpdb->posts`.ID = `$wpdb->postmeta`.post_id)"
+        );
 
         return ( $results1 || $results2 ) ? true : false;
     }

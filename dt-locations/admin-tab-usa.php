@@ -61,9 +61,13 @@ class Disciple_Tools_Locations_Tab_USA
     public function process_install_us_state()
     {
         // if state install
-        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_nonce' ], 'state_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_nonce' ] ) ), 'state_nonce_validate' ) ) {
 
-            $selected_state = $_POST[ 'states-dropdown' ];
+            if (! isset( $_POST['states-dropdown'] ) ) {
+                wp_die( esc_html__( "Expected states-dropdown to be defined" ) );
+            }
+
+            $selected_state = sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) );
 
             // download country info
             $geojson = $this->get_state_level( $selected_state, 'state' );
@@ -81,9 +85,9 @@ class Disciple_Tools_Locations_Tab_USA
             $state[ 'WorldID' ] = $selected_state;
 
             $dir_contents = $this->get_usa_states();
-            foreach( $dir_contents->RECORDS as $value ) {
+            foreach( $dir_contents->RECORDS as $value ) { // @codingStandardsIgnoreLine
                 if( $value->WorldID == $state[ 'WorldID' ] ) {
-                    $state[ 'Zone_Name' ] = $value->Zone_Name;
+                    $state[ 'Zone_Name' ] = $value->Zone_Name; // @codingStandardsIgnoreLine
                     break;
                 }
             }
@@ -106,7 +110,7 @@ class Disciple_Tools_Locations_Tab_USA
             update_option( '_dt_usa_installed_state', $installed_states, false );
 
             return true;
-        } elseif( !empty( $_POST[ 'state_levels_nonce' ] ) && isset( $_POST[ 'state_levels_nonce' ] ) && wp_verify_nonce( $_POST[ 'state_levels_nonce' ], 'state_levels_nonce_validate' ) ) {
+        } elseif( !empty( $_POST[ 'state_levels_nonce' ] ) && isset( $_POST[ 'state_levels_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_levels_nonce' ] ) ), 'state_levels_nonce_validate' ) ) {
 
             $keys = array_keys( $_POST );
 
@@ -114,7 +118,7 @@ class Disciple_Tools_Locations_Tab_USA
 
                 case 'county':
 
-                    $state_worldid = $_POST[ 'county' ];
+                    $state_worldid = isset( $_POST['county'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'county' ] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_state_level( $state_worldid, 'county' );
@@ -146,7 +150,7 @@ class Disciple_Tools_Locations_Tab_USA
 
                 case 'tract':
 
-                    $state_worldid = $_POST[ 'tract' ];
+                    $state_worldid = isset( $_POST['tract'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'tract' ] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_state_level( $state_worldid, 'tract' );
@@ -177,7 +181,7 @@ class Disciple_Tools_Locations_Tab_USA
 
                 case 'delete':
 
-                    $state_worldid = $_POST[ 'delete' ];
+                    $state_worldid = isset( $_POST['delete'] ) ? sanitize_text_field( wp_unslash( $_POST[ 'delete' ] ) ) : "";
 
                     $result = Disciple_Tools_Locations_Import::delete_location_data( $state_worldid );
                     if( !$result ) {
@@ -220,19 +224,23 @@ class Disciple_Tools_Locations_Tab_USA
 
         $dropdown = '<select name="states-dropdown">';
         $option = get_option( '_dt_usa_installed_state' );
+        // @codingStandardsIgnoreLine
         foreach( $dir_contents->RECORDS as $value ) {
+            // @codingStandardsIgnoreLine
+            $world_id = $value->WorldID;
             $disabled = '';
-            $dropdown .= '<option value="' . $value->WorldID . '" ';
+            $dropdown .= '<option value="' . esc_attr( $world_id ) . '" ';
             if( $option != false ) {
                 foreach( $option as $installed ) {
 
-                    if( $installed[ 'WorldID' ] == $value->WorldID ) {
+                    if( $installed[ 'WorldID' ] == $world_id ) {
                         $dropdown .= ' disabled';
                         $disabled = ' (Installed)';
                     }
                 }
             }
-            $dropdown .= '>' . $value->Zone_Name . $disabled;
+            // @codingStandardsIgnoreLine
+            $dropdown .= '>' . esc_html( $value->Zone_Name ) . $disabled;
             $dropdown .= '</option>';
         }
         $dropdown .= '</select>';

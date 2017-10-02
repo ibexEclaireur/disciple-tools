@@ -36,7 +36,7 @@ class Disciple_Tools_Map
      * @param  $zoom         int Numeric value of the zoom level 1-16
      * @param  $tract_lng    int     Longitute coordinates
      * @param  $tract_lat    int     Latitude coordinates
-     * @param  $coordinates  string  formated string of coordinates for the google map. {lat: x, lng: x},
+     * @param  $coordinates  array  array string of coordinates for the google map. ["lat" => $x, "lng" => $y],
      *
      * @return mixed
      */
@@ -66,8 +66,8 @@ class Disciple_Tools_Map
 
             function initMap() {
                 var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: <?php print $zoom; ?>,
-                    center: {lng: <?php print $tract_lng; ?>, lat: <?php print $tract_lat; ?>},
+                    zoom: <?php print intval( $zoom ); ?>,
+                    center: {lng: <?php print (float) $tract_lng; ?>, lat: <?php print (float) $tract_lat; ?>},
                     mapTypeId: 'terrain'
                 });
 
@@ -75,7 +75,7 @@ class Disciple_Tools_Map
                 <?php
 
                 print "var coords = [";
-                print $coordinates;
+                print json_encode( $coordinates );
                 print "];";
                 ?>
 
