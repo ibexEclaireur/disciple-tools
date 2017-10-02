@@ -76,10 +76,10 @@ class Disciple_Tools_People_Groups_Tab_Import
         $refresh = '';
 
         // check if $_POST to change option
-        if( !empty( $_POST[ 'jp_country_nonce' ] ) && isset( $_POST[ 'jp_country_nonce' ] ) && wp_verify_nonce( $_POST[ 'jp_country_nonce' ], 'jp_country_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'jp_country_nonce' ] ) && isset( $_POST[ 'jp_country_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'jp_country_nonce' ] ) ), 'jp_country_nonce_validate' ) ) {
 
             if( isset( $_POST[ 'jp-countries-dropdown' ] ) ) { // check if file is correctly set
-                $jp_install_request = $_POST[ 'jp-countries-dropdown' ];
+                $jp_install_request = sanitize_text_field( wp_unslash( $_POST[ 'jp-countries-dropdown' ] ) );
 
                 $jp_install_result = $this->install_jp_country( $jp_install_request );
             }
@@ -99,16 +99,16 @@ class Disciple_Tools_People_Groups_Tab_Import
                             <td>
                                 <form action="" method="POST">
                                     ' . wp_nonce_field( 'jp_country_nonce_validate', 'jp_country_nonce', true, false ) . $dropdown . '
-                                    
+
                                     <button type="submit" class="button" value="submit">Import Country</button>
                                 </form><br>
-                                
+
                                 <form action="" method="POST">
                                 ' . wp_nonce_field( 'jp_country_nonce_validate', 'jp_country_nonce', true, false ) . '
                                     <button type="submit" class="button" value="submit" name="jp-countries-refresh">Refresh JP Countries Data</button> (Countries file is from ' . date( "m-d-Y", filemtime( $this->jp_countries_path ) ) . ' )
-                                    
+
                                 </form>
-                                
+
                             </td>
                         </tr>
                     </tbody>
@@ -182,8 +182,15 @@ class Disciple_Tools_People_Groups_Tab_Import
                 if( get_option( '_installed_jp_country_' . $value->ROG3 ) ) {
                     $dropdown .= ' disabled';
                     $disabled = ' (Installed)';
-                } elseif( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->ROG3 ) {
-                    $dropdown .= ' selected';
+                } elseif( isset( $_POST[ 'states-dropdown' ] ) ) {
+                    if ( isset( $_POST['jp_country_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['jp_country_nonce'] ) ), 'jp_country_nonce_validate' ) ) {
+                        $d = sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) );
+                        if ($d == $value->ROG3 ) {
+                            $dropdown .= ' selected';
+                        }
+                    } else {
+                        wp_die( esc_html__( "Nonce did not validate" ) );
+                    }
                 }
                 $dropdown .= '>' . $value->Ctry . $disabled;
                 $dropdown .= '</option>';
