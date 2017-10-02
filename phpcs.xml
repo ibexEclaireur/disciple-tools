@@ -55,12 +55,9 @@
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_get_user_meta" />
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_add_user_meta" />
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_update_user_meta" />
-<<<<<<< HEAD
     <exclude name="WordPress.VIP.RestrictedFunctions.user_meta_delete_user_meta" />
-=======
     <exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCaseMemberVar" />
     <exclude name="WordPress.VIP.FileSystemWritesDisallow" />
->>>>>>> master
 
     <!-- We currently don't want these rules that WordPress imports: -->
 
