@@ -310,7 +310,7 @@ class Disciple_Tools_Location_Post_Type
 
         $messages[ $this->post_type ] = [
             0  => '', // Unused. Messages start at index 1.
-            1 => sprintf( __( '%s updated. %s View %s %s', 'disciple_tools' ), $this->singular,'<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', strtolower( $this->singular ), '</a>' ),
+            1 => sprintf( __( '%1$s updated. %2$s View %3$s %4$s', 'disciple_tools' ), $this->singular,'<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', strtolower( $this->singular ), '</a>' ),
             2  => __( 'Custom field updated.', 'disciple_tools' ),
             3  => __( 'Custom field deleted.', 'disciple_tools' ),
             4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
@@ -320,7 +320,7 @@ class Disciple_Tools_Location_Post_Type
             7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
             8  => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
             9  => sprintf(
-                __( '%s scheduled for: %s. %sPreview %s %s', 'disciple_tools' ),
+                __( '%1$s scheduled for: %2$s. %3$sPreview %4$s %5$s', 'disciple_tools' ),
                 $this->singular,
                 // translators: Publish box date format, see http://php.net/date
                 '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>',
