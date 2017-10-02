@@ -344,3 +344,30 @@ function dt_site_options_upgrade_version( string $name )
 
     return update_option( $name, $new_options, true );
 }
+
+/**
+ * Prepare input "type" from custom list types
+ *
+ * @param $type
+ *
+ * @return string
+ */
+function dt_prepare_user_fields_types_for_input( $type ) {
+    switch( $type ) {
+        case 'phone':
+            return 'tel';
+            break;
+        case 'email':
+            return 'email';
+            break;
+        case 'social':
+            return 'text';
+            break;
+        case 'address':
+            return 'text';
+            break;
+        case 'other':
+            return 'text';
+            break;
+    }
+}

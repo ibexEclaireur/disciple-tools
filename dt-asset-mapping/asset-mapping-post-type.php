@@ -1,9 +1,10 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
+if( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly.
 
 /**
  * Disciple Tools Post Type Class
- *
  * All functionality pertaining to post types in Disciple_Tools.
  *
  * @package    WordPress
@@ -12,7 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  * @author     Chasm.Solutions & Kingdom.Training
  * @since      0.1
  */
-class Disciple_Tools_Asset_Mapping_Post_Type {
+class Disciple_Tools_Asset_Mapping_Post_Type
+{
     /**
      * The post type token.
      *
@@ -69,17 +71,18 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
 
     /**
      * Main Disciple_Tools_Asset_Mapping_Post_Type Instance
-     *
      * Ensures only one instance of Disciple_Tools_Asset_Mapping_Post_Type is loaded or can be loaded.
      *
      * @since  0.1
      * @static
      * @return Disciple_Tools_Asset_Mapping_Post_Type instance
      */
-    public static function instance () {
-        if ( is_null( self::$_instance ) ) {
+    public static function instance()
+    {
+        if( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     } // End instance()
 
@@ -89,17 +92,18 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @access public
      * @since  0.1
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->post_type = 'assetmapping';
         $this->singular = __( 'Asset Map', 'disciple_tools' );
         $this->plural = __( 'Asset Mapping', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
-//        $this->taxonomies = [];
+        //        $this->taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-//        add_action( 'init', [ $this, 'register_taxonomy' ] );
+        //        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
-        if ( is_admin() ) {
+        if( is_admin() ) {
             global $pagenow;
 
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
@@ -107,12 +111,11 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
-            if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) == $this->post_type ) {
+            if( $pagenow == 'edit.php' && isset( $_GET[ 'post_type' ] ) && sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] ) ) == $this->post_type ) {
                 add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                 add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
             }
         }
-
     } // End __construct()
 
     /**
@@ -121,7 +124,8 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @access public
      * @return void
      */
-    public function register_post_type () {
+    public function register_post_type()
+    {
         $labels = [
             'name'                  => sprintf( __( 'Assets', 'disciple_tools' ), $this->plural ),
             'singular_name'         => sprintf( __( 'Asset', 'disciple_tools' ), $this->singular ),
@@ -150,21 +154,21 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
         ];
 
         $rewrite = [
-            'slug'                  => 'assetmapping',
-            'with_front'            => true,
-            'pages'                 => true,
-            'feeds'                 => false,
+            'slug'       => 'assetmapping',
+            'with_front' => true,
+            'pages'      => true,
+            'feeds'      => false,
         ];
         $capabilities = [
-            'edit_post'             => 'edit_assetmapping',
-            'read_post'             => 'read_assetmapping',
-            'delete_post'           => 'delete_assetmapping',
-            'delete_others_posts'   => 'delete_others_assetmappings',
-            'delete_posts'          => 'delete_assetmappings',
-            'edit_posts'            => 'edit_assetmappings',
-            'edit_others_posts'     => 'edit_others_assetmappings',
-            'publish_posts'         => 'publish_assetmappings',
-            'read_private_posts'    => 'read_private_assetmappings',
+            'edit_post'           => 'edit_assetmapping',
+            'read_post'           => 'read_assetmapping',
+            'delete_post'         => 'delete_assetmapping',
+            'delete_others_posts' => 'delete_others_assetmappings',
+            'delete_posts'        => 'delete_assetmappings',
+            'edit_posts'          => 'edit_assetmappings',
+            'edit_others_posts'   => 'edit_others_assetmappings',
+            'publish_posts'       => 'publish_assetmappings',
+            'read_private_posts'  => 'read_private_assetmappings',
         ];
         $defaults = [
             'labels'                => $labels,
@@ -197,24 +201,28 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @since  1.3.0
      * @return void
      */
-    public function register_taxonomy () {
-        $this->taxonomies['assetmapping-type'] = new Disciple_Tools_Taxonomy( $post_type = 'assetmapping', $token = 'assetmapping-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies['assetmapping-type']->register();
+    public function register_taxonomy()
+    {
+        $this->taxonomies[ 'assetmapping-type' ] = new Disciple_Tools_Taxonomy( $post_type = 'assetmapping', $token = 'assetmapping-type', $singular = 'Type', $plural = 'Type', $args = [] ); // Leave arguments empty, to use the default arguments.
+        $this->taxonomies[ 'assetmapping-type' ]->register();
     } // End register_taxonomy()
 
     /**
      * Add custom columns for the "manage" screen of this post type.
      *
      * @access public
+     *
      * @param  string $column_name
-     * @param  int $id
+     * @param  int    $id
+     *
      * @since  0.1
      * @return void
      */
-    public function register_custom_columns ( $column_name, $id ) {
+    public function register_custom_columns( $column_name, $id )
+    {
         global $post;
 
-        switch ( $column_name ) {
+        switch( $column_name ) {
             case 'image':
                 // echo $this->get_image( $id, 40 );
                 break;
@@ -228,28 +236,33 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * Add custom column headings for the "manage" screen of this post type.
      *
      * @access public
+     *
      * @param  array $defaults
+     *
      * @since  0.1
      * @return void
      */
-    public function register_custom_column_headings ( $defaults ) {
+    public function register_custom_column_headings( $defaults )
+    {
         // $new_columns = array( 'image' => __( 'Image', 'disciple_tools' ) );
         $new_columns = []; // TODO: restore above column once we know what columns we need to show.
 
         $last_item = [];
 
-        if ( isset( $defaults['date'] ) ) { unset( $defaults['date'] ); }
+        if( isset( $defaults[ 'date' ] ) ) {
+            unset( $defaults[ 'date' ] );
+        }
 
-        if ( count( $defaults ) > 2 ) {
+        if( count( $defaults ) > 2 ) {
             $last_item = array_slice( $defaults, -1 );
 
             array_pop( $defaults );
         }
         $defaults = array_merge( $defaults, $new_columns );
 
-        if ( is_array( $last_item ) && 0 < count( $last_item ) ) {
-            foreach ( $last_item as $k => $v ) {
-                $defaults[$k] = $v;
+        if( is_array( $last_item ) && 0 < count( $last_item ) ) {
+            foreach( $last_item as $k => $v ) {
+                $defaults[ $k ] = $v;
                 break;
             }
         }
@@ -261,37 +274,38 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * Update messages for the post type admin.
      *
      * @since  0.1
+     *
      * @param  array $messages Array of messages for all post types.
+     *
      * @return array           Modified array.
      */
-    public function updated_messages ( $messages ) {
+    public function updated_messages( $messages )
+    {
         global $post;
 
-        $messages[$this->post_type] = [
-            0 => '', // Unused. Messages start at index 1.
-            1 => sprintf(
+        $messages[ $this->post_type ] = [
+            0  => '', // Unused. Messages start at index 1.
+            1  => sprintf(
                 __( '%3$s updated. %1$sView %4$s%2$s', 'disciple_tools' ),
                 '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">',
                 '</a>',
                 $this->singular,
                 strtolower( $this->singular )
             ),
-            2 => __( 'Custom field updated.', 'disciple_tools' ),
-            3 => __( 'Custom field deleted.', 'disciple_tools' ),
-            4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
+            2  => __( 'Custom field updated.', 'disciple_tools' ),
+            3  => __( 'Custom field deleted.', 'disciple_tools' ),
+            4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
-            5 => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-            6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
-            7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-            8 => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
-            9 => sprintf(
-                __( '%1$s scheduled for: %3$s. %5$sPreview %2$s%6$s', 'disciple_tools' ),
+            5  => isset( $_GET[ 'revision' ] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET[ 'revision' ], false ) ) : false,
+            6  => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
+            7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
+            8  => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
+            9  => sprintf(
+                __( '%1$s scheduled for: %2$s. %3$sPreview %4$s %5$s', 'disciple_tools' ),
                 $this->singular,
-                strtolower( $this->singular ),
-                // translators: Publish box date format, see http://php.net/date
-                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ),
-                strtotime( $post->post_date ) ) . '</strong>',
+                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>',
                 '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) . '">',
+                strtolower( $this->singular ),
                 '</a>'
             ),
             10 => sprintf( __( '%1$s draft updated. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
@@ -307,7 +321,8 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @since  0.1
      * @return void
      */
-    public function meta_box_setup () {
+    public function meta_box_setup()
+    {
         add_meta_box( $this->post_type . '-data', __( 'Address', 'disciple_tools' ), [ $this, 'meta_box_content' ], $this->post_type, 'normal', 'high' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
@@ -315,7 +330,8 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
     /**
      * Load activity metabox
      */
-    public function load_activity_meta_box () {
+    public function load_activity_meta_box()
+    {
         dt_activity_metabox()->activity_meta_box( get_the_ID() );
     }
 
@@ -326,7 +342,8 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @since  0.1
      * @return void
      */
-    public function meta_box_content () {
+    public function meta_box_content()
+    {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
@@ -335,68 +352,68 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
 
         $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
 
-
-        if ( 0 < count( $field_data ) ) {
+        if( 0 < count( $field_data ) ) {
             $html .= '<table class="form-table">' . "\n";
             $html .= '<tbody>' . "\n";
 
-            foreach ( $field_data as $k => $v ) {
-                $data = $v['default'];
-                if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
-                    $data = $fields[$k][0];
+            foreach( $field_data as $k => $v ) {
+                $data = $v[ 'default' ];
+                if( isset( $fields[ $k ] ) && isset( $fields[ $k ][ 0 ] ) ) {
+                    $data = $fields[ $k ][ 0 ];
                 }
 
-                $type = $v['type'];
+                $type = $v[ 'type' ];
 
-                switch ( $type ) {
+                switch( $type ) {
 
                     case 'url':
-                        $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v[ 'name' ] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                        $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
                         $html .= '</td><tr/>' . "\n";
                         break;
                     case 'text':
-                        $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v[ 'name' ] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                        $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
                         $html .= '</td><tr/>' . "\n";
                         break;
                     case 'select':
                         $html .= '<tr valign="top"><th scope="row">
-							<label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+							<label for="' . esc_attr( $k ) . '">' . $v[ 'name' ] . '</label></th>
 							<td><select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                         // Iterate the options
-                        foreach ($v['default'] as $vv) {
+                        foreach( $v[ 'default' ] as $vv ) {
                             $html .= '<option value="' . $vv . '" ';
-                            if($vv == $data) { $html .= 'selected';}
-                            $html .= '>' .$vv . '</option>';
+                            if( $vv == $data ) {
+                                $html .= 'selected';
+                            }
+                            $html .= '>' . $vv . '</option>';
                         }
                         $html .= '</select>' . "\n";
-                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
                         $html .= '</td><tr/>' . "\n";
                         break;
                     case 'radio':
-                        $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+                        $html .= '<tr valign="top"><th scope="row">' . $v[ 'name' ] . '</th>
 							<td><fieldset>';
                         // Iterate the buttons
                         $increment_the_radio_button = 1;
-                        foreach ($v['default'] as $vv) {
-                            $html .= '<label for="'.esc_attr( "$k-$increment_the_radio_button" ) . "\">$vv</label>" .
-                                '<input class="dt-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
-                            if($vv == $data) { $html .= 'checked';}
+                        foreach( $v[ 'default' ] as $vv ) {
+                            $html .= '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . "\">$vv</label>" .
+                                '<input class="dt-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . $k . '-' . $increment_the_radio_button . '" value="' . $vv . '" ';
+                            if( $vv == $data ) {
+                                $html .= 'checked';
+                            }
                             $html .= '>';
                             $increment_the_radio_button++;
                         }
                         $html .= '</fieldset>' . "\n";
-                        $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
+                        $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
                         $html .= '</td><tr/>' . "\n";
                         break;
-
 
                     default:
                         break;
                 }
-
-
             }
 
             $html .= '</tbody>' . "\n";
@@ -413,24 +430,27 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      *
      * @access public
      * @since  0.1
+     *
      * @param  int $post_id
+     *
      * @return int $post_id
      */
-    public function meta_box_save ( $post_id ) {
+    public function meta_box_save( $post_id )
+    {
         global $post, $messages;
 
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
-        if ( ( get_post_type() != $this->post_type ) || ! (isset( $_POST[$key] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[$key] ) ), plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) ) {
+        if( ( get_post_type() != $this->post_type ) || !( isset( $_POST[ $key ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $key ] ) ), plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) ) {
             return $post_id;
         }
 
-        if ( isset( $_POST['post_type'] ) && 'page' == sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ) {
-            if ( ! current_user_can( 'edit_page', $post_id ) ) {
+        if( isset( $_POST[ 'post_type' ] ) && 'page' == sanitize_text_field( wp_unslash( $_POST[ 'post_type' ] ) ) ) {
+            if( !current_user_can( 'edit_page', $post_id ) ) {
                 return $post_id;
             }
         } else {
-            if ( ! current_user_can( 'edit_post', $post_id ) ) {
+            if( !current_user_can( 'edit_post', $post_id ) ) {
                 return $post_id;
             }
         }
@@ -438,23 +458,23 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
 
-        foreach ( $fields as $f ) {
-            if (! isset( $_POST[$f] ) ) {
+        foreach( $fields as $f ) {
+            if( !isset( $_POST[ $f ] ) ) {
                 continue;
             }
 
-            ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[$f] ) ) ) );
+            ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) ) );
 
             // Escape the URLs.
-            if ( 'url' == $field_data[$f]['type'] ) {
+            if( 'url' == $field_data[ $f ][ 'type' ] ) {
                 ${$f} = esc_url( ${$f} );
             }
 
-            if ( get_post_meta( $post_id, $f ) == '' ) {
+            if( get_post_meta( $post_id, $f ) == '' ) {
                 add_post_meta( $post_id, $f, ${$f}, true );
             } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
                 update_post_meta( $post_id, $f, ${$f} );
-            } elseif ( ${$f} == '' ) {
+            } elseif( ${$f} == '' ) {
                 delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
             }
         }
@@ -465,13 +485,17 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      *
      * @access public
      * @since  0.1
+     *
      * @param  string $title
+     *
      * @return void
      */
-    public function enter_title_here ( $title ) {
-        if ( get_post_type() == $this->post_type ) {
+    public function enter_title_here( $title )
+    {
+        if( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the asset title here', 'disciple_tools' );
         }
+
         return $title;
     } // End enter_title_here()
 
@@ -482,49 +506,48 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @since  0.1
      * @return array
      */
-    public function get_custom_fields_settings () {
+    public function get_custom_fields_settings()
+    {
         $fields = [];
 
-        $fields['address'] = [
-            'name' => __( 'Address', 'disciple_tools' ),
+        $fields[ 'address' ] = [
+            'name'        => __( 'Address', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'info',
         ];
-        $fields['city'] = [
-            'name' => __( 'City', 'disciple_tools' ),
+        $fields[ 'city' ] = [
+            'name'        => __( 'City', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'info',
         ];
-        $fields['state'] = [
-            'name' => __( 'State', 'disciple_tools' ),
+        $fields[ 'state' ] = [
+            'name'        => __( 'State', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'info',
         ];
-        $fields['zip'] = [
-            'name' => __( 'Zip Code', 'disciple_tools' ),
+        $fields[ 'zip' ] = [
+            'name'        => __( 'Zip Code', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'info',
         ];
-        $fields['country'] = [
-            'name' => __( 'Country', 'disciple_tools' ),
+        $fields[ 'country' ] = [
+            'name'        => __( 'Country', 'disciple_tools' ),
             'description' => '',
-            'type' => 'text',
-            'default' => '',
-            'section' => 'info'
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'info',
         ];
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
     } // End get_custom_fields_settings()
-
-
 
     /**
      * Run on activation.
@@ -532,7 +555,8 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @access public
      * @since  0.1
      */
-    public function activation () {
+    public function activation()
+    {
         $this->flush_rewrite_rules();
     } // End activation()
 
@@ -542,7 +566,8 @@ class Disciple_Tools_Asset_Mapping_Post_Type {
      * @access public
      * @since  0.1
      */
-    private function flush_rewrite_rules () {
+    private function flush_rewrite_rules()
+    {
         $this->register_post_type();
         flush_rewrite_rules();
     } // End flush_rewrite_rules()
