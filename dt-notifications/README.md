@@ -49,3 +49,7 @@ columns and their purposes are listed below.
 | `notification_note`   | Description for the displayed notification                                |
 | `date_notified`       | Date and time that this event occurred                                    |
 | `is_new`              | Boolean status of whether the user has viewed the notfication or not      |
+
+
+### Recommended Email Plugins
+The email 

@@ -56,6 +56,8 @@ class Disciple_Tools_Custom_Lists_Tab
                     <tbody><tr><td>';
 
         $html .= '</td></tr></tbody></table><br>';
+
+
         /* End Box */
 
         /* End Right Column*/

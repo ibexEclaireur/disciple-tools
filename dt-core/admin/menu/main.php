@@ -129,11 +129,11 @@ final class Disciple_Tools_Config
         }
         $html .= '">Import/Export</a>';
 
-        $html .= $tab_link_pre . 'tutorials' . $tab_link_post;
-        if( $tab == 'tutorials' ) {
+        $html .= $tab_link_pre . 'setup-checklist' . $tab_link_post;
+        if( $tab == 'setup-checklist' ) {
             $html .= 'nav-tab-active';
         }
-        $html .= '">Tutorials</a>';
+        $html .= '">Setup Checklist</a>';
 
         $html .= '</h2>';
 
@@ -158,13 +158,16 @@ final class Disciple_Tools_Config
                 $html .= $object->content();
                 break;
             case 'custom-lists':
-                require_once( 'tabs-custom-lists.php' );
+                require_once( 'tab-custom-lists.php' );
                 $object = new Disciple_Tools_Custom_Lists_Tab();
                 $html .= $object->content();
                 break;
-
-            case 'tutorials':
+            case 'setup-checklist':
+                require_once( 'tab-setup-checklist.php' );
+                $object = new Disciple_Tools_Setup_Steps_Tab();
+                $html .= $object->content().'';
                 break;
+
             default:
                 break;
         }

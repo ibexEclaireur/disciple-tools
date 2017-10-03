@@ -422,7 +422,6 @@ class Disciple_Tools
          */
         require_once( 'dt-notifications/notifications-hooks.php' );
         $this->notification_hooks = Disciple_Tools_Notification_Hooks::instance();
-        require_once( 'dt-notifications/notifications-email-api.php' );
         require_once( 'dt-notifications/notifications-template.php' );
         require_once( 'dt-notifications/notifications.php' );
         $this->notifications = Disciple_Tools_Notifications::instance();
