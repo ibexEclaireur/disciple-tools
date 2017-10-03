@@ -123,7 +123,7 @@ final class Disciple_Tools_Admin_User_Edit {
         }
 
         // Is this a role change?
-        if ( ! isset( $_POST['dt_multi_role_new_user_roles_nonce'] ) || ! wp_verify_nonce( $_POST['dt_multi_role_new_user_roles_nonce'], 'new_user_roles' ) ) {
+        if ( ! isset( $_POST['dt_multi_role_new_user_roles_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dt_multi_role_new_user_roles_nonce'] ) ), 'new_user_roles' ) ) {
             return;
         }
 
@@ -137,7 +137,7 @@ final class Disciple_Tools_Admin_User_Edit {
             $old_roles = (array) $user->roles;
 
             // Sanitize the posted roles.
-            $new_roles = array_map( 'dt_multi_role_sanitize_role', $_POST['dt_multi_role_user_roles'] );
+            $new_roles = array_map( 'dt_multi_role_sanitize_role', sanitize_text_field( wp_unslash( $_POST['dt_multi_role_user_roles'] ) ) );
 
             // Loop through the posted roles.
             foreach ( $new_roles as $new_role ) {
@@ -194,7 +194,7 @@ final class Disciple_Tools_Admin_User_Edit {
     public static function get_instance() {
 
         if ( ! self::$instance ) {
-            self::$instance = new self;
+            self::$instance = new self();
         }
 
         return self::$instance;

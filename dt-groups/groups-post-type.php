@@ -475,7 +475,7 @@ class Disciple_Tools_Groups_Post_Type
             return $post_id;
         }
         $nonce_key = 'dt_' . $this->post_type . '_noonce';
-        if( isset( $_POST[ $nonce_key ] ) && !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_key ] ) ), 'update_dt_groups' ) ) {
+        if( isset( $_POST[ $nonce_key ] ) && !wp_verify_nonce( sanitize_key( $_POST[ $nonce_key ] ), 'update_dt_groups' ) ) {
             return $post_id;
         }
 

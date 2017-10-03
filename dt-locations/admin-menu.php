@@ -224,7 +224,7 @@ class Disciple_Tools_Location_Tools_Menu
 
         // update from post
         if ( isset( $_POST['_wpnonce'] ) ) {
-            if (wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_wpnonce'] ) ), "get_import_config_dropdown_locations" )) {
+            if (wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), "get_import_config_dropdown_locations" )) {
                 if( isset( $_POST[ 'change_host_source' ] ) ) {
                     if( isset( $_POST[ $host ] ) ) {
                         $option[ 'selected_' . $host ] = sanitize_text_field( wp_unslash( $_POST[ $host ] ) );
@@ -379,7 +379,7 @@ function dt_get_states_key_dropdown_not_installed()
             $dropdown .= ' disabled';
             $disabled = ' (Installed)';
         } elseif( isset( $_POST['state_nonce'] ) ) {
-            if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['state_nonce'] ) ), 'state_nonce_validate' ) ) {
+            if ( wp_verify_nonce( sanitize_key( $_POST['state_nonce'] ), 'state_nonce_validate' ) ) {
                 if ( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
                     $dropdown .= ' selected';
                 }
@@ -417,7 +417,7 @@ function dt_get_states_key_dropdown_installed()
             $dropdown .= ' disabled';
             $disabled = ' (Not Installed)';
         } elseif( isset( $_POST['state_nonce'] ) ) {
-            if ( wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['state_nonce'] ) ), 'state_nonce_validate' ) ) {
+            if ( wp_verify_nonce( sanitize_key( $_POST['state_nonce'] ), 'state_nonce_validate' ) ) {
                 if ( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
                     $dropdown .= ' selected';
                 }

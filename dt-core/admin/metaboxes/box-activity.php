@@ -47,7 +47,6 @@ class Disciple_Tools_Metabox_Activity
      * @param string $order
      *
      * @return array|null|object
-     * @throws \Error
      */
     public function activity_list_for_id( $id, $order = 'DESC' )
     {
@@ -66,8 +65,9 @@ class Disciple_Tools_Metabox_Activity
                     `$wpdb->dt_activity_log`
                 WHERE
                     `object_id` = %s
-                ORDER BY
-                    `hist_time` $order
+                ORDER BY "
+                    // @codingStandardsIgnoreLine
+                    . " `hist_time` $order
                 ;",
                 $id
             ), ARRAY_A
@@ -86,23 +86,24 @@ class Disciple_Tools_Metabox_Activity
     {
         $list = $this->activity_list_for_id( $id );
 
-        $html = '<table class="widefat striped" width="100%">';
-        $html .= '<tr><th>Name</th><th>Action</th><th>Note</th><th>Date</th></tr>';
+        ?>
+        <table class="widefat striped" width="100%">
+        <tr><th>Name</th><th>Action</th><th>Note</th><th>Date</th></tr>
 
-        foreach( $list as $item ) {
-            $user = get_user_by( 'id', $item[ 'user_id' ] );
+        <?php foreach( $list as $item ): ?>
+            <?php $user = get_user_by( 'id', $item[ 'user_id' ] ); ?>
 
-            $html .= '</tr>';
+            <tr>
 
-            $html .= '<td>' . $user->display_name . '</td>';
-            $html .= '<td>' . strip_tags( $item[ 'action' ] ) . '</td>';
-            $html .= '<td>' . strip_tags( $item[ 'object_note' ] ) . '</td>';
-            $html .= '<td>' . date( 'm/d/Y h:i:s', $item[ 'hist_time' ] ) . '</td>';
+                <td><?php echo esc_html( $user->display_name ); ?></td>
+                <td><?php echo esc_html( strip_tags( $item[ 'action' ] ) ); ?></td>
+                <td><?php echo esc_html( strip_tags( $item[ 'object_note' ] ) ); ?></td>
+                <td><?php echo esc_html( date( 'm/d/Y h:i:s', $item[ 'hist_time' ] ) ); ?></td>
 
-            $html .= '</tr>';
-        }
-        $html .= '</table>';
-        echo $html;
+            </tr>
+        <?php endforeach; ?>
+        </table>
+        <?php
     }
 
 }

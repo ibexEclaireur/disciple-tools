@@ -23,18 +23,18 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
         $data = $this->get_activity_data();
         usort( $data, [&$this, 'sort_data'] );
 
-        $perPage = 15;
-        $currentPage = $this->get_pagenum();
-        $totalItems = count( $data );
+        $per_page = 15;
+        $current_page = $this->get_pagenum();
+        $total_items = count( $data );
 
         $this->set_pagination_args(
             [
-            'total_items' => $totalItems,
-            'per_page' => $perPage
+            'total_items' => $total_items,
+            'per_page' => $per_page
             ]
         );
 
-        $data = array_slice( $data, (($currentPage - 1) * $perPage), $perPage );
+        $data = array_slice( $data, (($current_page - 1) * $per_page), $per_page );
 
         $this->_column_headers = [$columns, $hidden, $sortable];
         $this->items = $data;
@@ -174,12 +174,18 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
 
         // If orderby is set, use this as the sort column
         if (!empty( $_GET['orderby'] )) {
-            $orderby = $_GET['orderby'];
+            $orderby = sanitize_sql_orderby( wp_unslash( $_GET['orderby'] ) );
+            if (! preg_match( $orderby, '/^[a-zA-Z][a-zA-Z0-9]*$/' ) ) {
+                throw new Exception( "orderby variable contains weird input" );
+            }
         }
 
         // If order is set use this as the order
         if (!empty( $_GET['order'] )) {
-            $order = $_GET['order'];
+            $order = sanitize_key( $_GET['order'] );
+            if (strtolower( $order ) != "asc" && strtolower( $order ) != "desc") {
+                throw new Exception( "expected order variable to be asc or desc" );
+            }
         }
 
 

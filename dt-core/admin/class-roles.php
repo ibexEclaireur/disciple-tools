@@ -9,7 +9,7 @@
  * @author  Chasm.Solutions & Kingdom.Training
  */
 
-$template = [
+$dt_template = [
     /* Standard Capabilities */
     'list_users'                 => true,
     'delete_others_posts'        => true,
@@ -167,7 +167,7 @@ class Disciple_Tools_Roles
         if( get_role( 'strategist' ) ) {
             remove_role( 'strategist' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'strategist', 'Strategist',
             [
                 /* Standard Capabilities */
@@ -289,7 +289,7 @@ class Disciple_Tools_Roles
         if( get_role( 'dispatcher' ) ) {
             remove_role( 'dispatcher' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'dispatcher', 'Dispatcher',
             [
                 /* Standard Capabilities */
@@ -366,7 +366,7 @@ class Disciple_Tools_Roles
         if( get_role( 'marketer' ) ) {
             remove_role( 'marketer' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'marketer', 'Marketer',
             [
                 /* Standard Capabilities */
@@ -486,7 +486,7 @@ class Disciple_Tools_Roles
         if( get_role( 'marketer_leader' ) ) {
             remove_role( 'marketer_leader' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'marketer_leader', 'Marketer Leader',
             [
                 /* Standard Capabilities */
@@ -605,7 +605,7 @@ class Disciple_Tools_Roles
         if( get_role( 'multiplier' ) ) {
             remove_role( 'multiplier' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'multiplier', 'Multiplier',
             [
                 'access_contacts'        => true,
@@ -618,7 +618,7 @@ class Disciple_Tools_Roles
         if( get_role( 'project_supporter' ) ) {
             remove_role( 'project_supporter' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'project_supporter', 'Project Supporter',
             [
                 'project_supporter' => true,
@@ -630,7 +630,7 @@ class Disciple_Tools_Roles
         if( get_role( 'prayer_supporter' ) ) {
             remove_role( 'prayer_supporter' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'prayer_supporter', 'Prayer Supporter',
             [
                 'prayer_supporter' => true,
@@ -641,7 +641,7 @@ class Disciple_Tools_Roles
         if( get_role( 'registered' ) ) {
             remove_role( 'registered' );
         }
-        add_role(
+        wpcom_vip_add_role(
             'registered', 'Registered',
             [
                 // No capabilities to this role. Must be moved to another role for permission.
@@ -761,7 +761,7 @@ class Disciple_Tools_Roles
         remove_role( 'prayer_supporter' );
         remove_role( 'project_supporter' );
 
-        add_role(
+        wpcom_vip_add_role(
             'subscriber', 'Subscriber',
             [
                 'delete_others_posts'    => true,
@@ -791,7 +791,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        add_role(
+        wpcom_vip_add_role(
             'editor', 'Editor',
             [
                 'delete_others_posts'    => true,
@@ -821,7 +821,7 @@ class Disciple_Tools_Roles
                 'level_0'                => true,
             ]
         );
-        add_role(
+        wpcom_vip_add_role(
             'author', 'Author',
             [
                 'delete_posts'           => true,
@@ -834,7 +834,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        add_role(
+        wpcom_vip_add_role(
             'contributor', 'Contributor',
             [
                 'delete_posts' => true,
@@ -845,8 +845,8 @@ class Disciple_Tools_Roles
 
         add_filter(
             'pre_option_default_role', function( $default_role ) {
-            return 'subscriber';
-        }
+                return 'subscriber';
+            }
         );
     }
 

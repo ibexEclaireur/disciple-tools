@@ -24,9 +24,9 @@ class Disciple_Tools_Hook_Comments extends Disciple_Tools_Hook_Base {
         );
     }
 
-    public function handle_comment_log( $comment_ID, $comment = null ) {
+    public function handle_comment_log( $comment_id, $comment = null ) {
         if ( is_null( $comment ) ) {
-            $comment = get_comment( $comment_ID );
+            $comment = get_comment( $comment_id );
         }
 
         $action = 'created';
@@ -60,7 +60,7 @@ class Disciple_Tools_Hook_Comments extends Disciple_Tools_Hook_Base {
                 break;
         }
 
-        $this->_add_comment_log( $comment_ID, $action, $comment );
+        $this->_add_comment_log( $comment_id, $action, $comment );
     }
 
     public function hooks_transition_comment_status( $new_status, $old_status, $comment ) {

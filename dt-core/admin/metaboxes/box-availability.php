@@ -45,8 +45,8 @@ class Disciple_Tools_Metabox_Availability
      */
     public function display_availability_box()
     {
-        echo '' . $this->availability_style();
-        echo '' . $this->availability_grid();
+        $this->availability_style(); // prints
+        $this->availability_grid(); // prints
     }
 
     /**
@@ -120,13 +120,11 @@ class Disciple_Tools_Metabox_Availability
      */
     public function availability_grid()
     {
-        $html = '';
-
-        $html .= '
+        ?>
             <div class="row">
                 <div class="small-12 column">
                     <h2>Availability</h2>
-                
+
                     <ol class="selectable_header">
                       <li class="ui-state-default">S</li>
                       <li class="ui-state-default">M</li>
@@ -144,7 +142,7 @@ class Disciple_Tools_Metabox_Availability
                       <li class="ui-state-default">M</li>
                       <li class="ui-state-default">M</li>
                       <li class="ui-state-default">M</li>
-                      
+
                       <li class="ui-state-default">N</li>
                       <li class="ui-state-default">N</li>
                       <li class="ui-state-default">N</li>
@@ -152,7 +150,7 @@ class Disciple_Tools_Metabox_Availability
                       <li class="ui-state-default">N</li>
                       <li class="ui-state-default">N</li>
                       <li class="ui-state-default">N</li>
-                      
+
                       <li class="ui-state-default">E</li>
                       <li class="ui-state-default">E</li>
                       <li class="ui-state-default">E</li>
@@ -160,7 +158,7 @@ class Disciple_Tools_Metabox_Availability
                       <li class="ui-state-default">E</li>
                       <li class="ui-state-default">E</li>
                       <li class="ui-state-default">E</li>
-                    
+
                       <li class="ui-state-default">N</li>
                       <li class="ui-state-default">N</li>
                       <li class="ui-state-default">N</li>
@@ -169,14 +167,11 @@ class Disciple_Tools_Metabox_Availability
                       <li class="ui-state-default">N</li>
                       <li class="ui-state-default">N</li>
                     </ol>
-                
+
                 </div>
             </div>
             <span id="select-result">none</span>
-            
-        ';
 
-        $html .= '
             <script>
             jQuery(document).ready(function($) {
                 jQuery( ".selectable" ).selectable({
@@ -189,11 +184,10 @@ class Disciple_Tools_Metabox_Availability
                       }
                 });
             });
-              
-            </script>
-        ';
 
-        return $html;
+            </script>
+
+        <?php
     }
 
     // end class

@@ -489,7 +489,7 @@ class Disciple_Tools_People_Groups_Post_Type
 
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
-        if( ( get_post_type() != $this->post_type ) || ! isset( $_POST[$key] ) || !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[$key] ) ), 'update_peoplegroup_info' ) ) {
+        if( ( get_post_type() != $this->post_type ) || ! isset( $_POST[$key] ) || !wp_verify_nonce( sanitize_key( $_POST[$key] ), 'update_peoplegroup_info' ) ) {
             return $post_id;
         }
 

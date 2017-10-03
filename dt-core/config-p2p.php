@@ -6,7 +6,7 @@
  * @see https://github.com/scribu/wp-posts-to-posts/wiki
  */
 
-function my_connection_types()
+function dt_my_connection_types()
 {
 
     p2p_register_connection_type(
@@ -354,7 +354,7 @@ function my_connection_types()
     //    } // end options filter for people groups
 
 }
-add_action( 'p2p_init', 'my_connection_types' );
+add_action( 'p2p_init', 'dt_my_connection_types' );
 
 /**
  * Sets the new connections to be published automatically.
@@ -363,13 +363,13 @@ add_action( 'p2p_init', 'my_connection_types' );
  *
  * @return mixed
  */
-function p2p_published_by_default( $args )
+function dt_p2p_published_by_default( $args )
 {
     $args[ 'post_status' ] = 'publish';
 
     return $args;
 }
-add_filter( 'p2p_new_post_args', 'p2p_published_by_default', 10, 1 );
+add_filter( 'p2p_new_post_args', 'dt_p2p_published_by_default', 10, 1 );
 
 /**
  * Adding the connection box to the user profile
@@ -411,10 +411,10 @@ function dt_user_location_connections( $user )
                         foreach( $connected as $next ) { ?>
                             <tr class="inactive">
                                 <td class="column-primary">
-                                    <strong><?php echo $next->post_title; ?></strong>
+                                    <strong><?php echo esc_html( $next->post_title ); ?></strong>
                                     <div class="row-actions">
-                                        <a href="<?php echo get_permalink( $next->ID ); ?>">View in Portal</a> | <a
-                                            href="<?php echo home_url( '/' ); ?>wp-admin/post.php?post=<?php echo $next->ID; ?>&action=edit">View
+                                        <a href="<?php echo esc_url( get_permalink( $next->ID ) ); ?>">View in Portal</a> | <a
+                                            href="<?php echo esc_url( home_url( '/' ) ); ?>wp-admin/post.php?post=<?php echo esc_url( $next->ID ); ?>&action=edit">View
                                             in Admin</a>
                                     </div>
                                 </td>
@@ -485,10 +485,10 @@ function dt_user_peoplegroup_connections( $user )
                         foreach( $connected as $next ) { ?>
                             <tr class="inactive">
                                 <td class="column-primary">
-                                    <strong><?php echo $next->post_title; ?></strong>
+                                    <strong><?php echo esc_html( $next->post_title ); ?></strong>
                                     <div class="row-actions">
-                                        <a href="<?php echo get_permalink( $next->ID ); ?>">View in Portal</a> | <a
-                                            href="<?php echo home_url( '/' ); ?>wp-admin/post.php?post=<?php echo $next->ID; ?>&action=edit">View
+                                        <a href="<?php echo esc_url( get_permalink( $next->ID ) ); ?>">View in Portal</a> | <a
+                                            href="<?php echo esc_url( home_url( '/' ) ); ?>wp-admin/post.php?post=<?php echo esc_url( $next->ID ); ?>&action=edit">View
                                             in Admin</a>
                                     </div>
                                 </td>

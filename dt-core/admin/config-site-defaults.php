@@ -14,8 +14,8 @@ if( !defined( 'ABSPATH' ) ) {
  * Action and Filters
  */
 
-add_action( 'init', 'set_permalink_structure' );
-add_action( 'permalink_structure_changed', 'permalink_structure_changed_callback' );
+add_action( 'init', 'dt_set_permalink_structure' );
+add_action( 'permalink_structure_changed', 'dt_permalink_structure_changed_callback' );
 //unconditionally allow duplicate comments
 add_filter( 'duplicate_comment_id', '__return_false' );
 //allow multiple comments in quick succession
@@ -29,7 +29,7 @@ add_filter( 'comment_flood_filter', '__return_false' );
  * Set default premalink structure
  * Needed for the rest api url structure (for wp-json to work)
  */
-function set_permalink_structure()
+function dt_set_permalink_structure()
 {
     global $wp_rewrite;
     $wp_rewrite->set_permalink_structure( '/%postname%/' );
@@ -39,11 +39,11 @@ function set_permalink_structure()
 /**
  *
  */
-function warn_user_about_permalink_settings()
+function dt_warn_user_about_permalink_settings()
 {
     ?>
     <div class="error notices">
-        <p><?php _e( 'You may only set your permalink settings to "Post name"' ); ?></p>
+        <p><?php esc_html_e( 'You may only set your permalink settings to "Post name"' ); ?></p>
     </div>
     <?php
 }
@@ -53,11 +53,11 @@ function warn_user_about_permalink_settings()
  *
  * @param $permalink_structure
  */
-function permalink_structure_changed_callback( $permalink_structure )
+function dt_permalink_structure_changed_callback( $permalink_structure )
 {
     global $wp_rewrite;
     if( $permalink_structure !== '/%postname%/' ) {
-        add_action( 'admin_notices', 'warn_user_about_permalink_settings' );
+        add_action( 'admin_notices', 'dt_warn_user_about_permalink_settings' );
     }
 }
 

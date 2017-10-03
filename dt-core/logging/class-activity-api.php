@@ -39,8 +39,8 @@ class Disciple_Tools_Activity_Log_API {
         ];
 
         foreach ( $server_ip_keys as $key ) {
-            if ( isset( $_SERVER[ $key ] ) && filter_var( $_SERVER[ $key ], FILTER_VALIDATE_IP ) ) {
-                return $_SERVER[ $key ];
+            if ( isset( $_SERVER[ $key ] ) && filter_var( sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) ), FILTER_VALIDATE_IP ) ) {
+                return sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) );
             }
         }
 

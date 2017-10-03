@@ -129,7 +129,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         $prev = '';
         $prev_value = '';
         if (!$new){
-            $q = $wpdb->prepare(
+            $prev = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     *
                 FROM
@@ -145,8 +145,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $parent_post['post_type'],
                 $object_id,
                 $meta_id
-            );
-            $prev = $wpdb->get_results( $q );
+            ) );
 
         }
         if (!empty( $prev )){

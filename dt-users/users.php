@@ -120,7 +120,7 @@ class Disciple_Tools_Users
         $current_user = wp_get_current_user();
 
         // validate nonce
-        if( isset( $_POST[ 'user_update_nonce' ] ) && !wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'user_update_nonce' ] ) ), 'user_' . $current_user->ID . '_update' ) ) {
+        if( isset( $_POST[ 'user_update_nonce' ] ) && !wp_verify_nonce( sanitize_key( $_POST[ 'user_update_nonce' ] ), 'user_' . $current_user->ID . '_update' ) ) {
             return new WP_Error( 'fail_nonce_verification', 'The form requires a valid nonce, in order to process.' );
         }
 

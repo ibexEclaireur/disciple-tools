@@ -357,7 +357,7 @@ class Disciple_Tools_Locations_Import
         // check if $_POST to change option
         $status = '';
 
-        if( !empty( $_POST[ 'delete_location' ] ) && isset( $_POST[ 'delete_location' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'delete_location' ] ) ), 'delete_location_validate' ) ) {
+        if( !empty( $_POST[ 'delete_location' ] ) && isset( $_POST[ 'delete_location' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'delete_location' ] ), 'delete_location_validate' ) ) {
             $status = $this->delete_locations();
         }
 

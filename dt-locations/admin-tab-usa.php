@@ -61,7 +61,7 @@ class Disciple_Tools_Locations_Tab_USA
     public function process_install_us_state()
     {
         // if state install
-        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_nonce' ] ) ), 'state_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'state_nonce' ] ), 'state_nonce_validate' ) ) {
 
             if (! isset( $_POST['states-dropdown'] ) ) {
                 wp_die( esc_html__( "Expected states-dropdown to be defined" ) );
@@ -110,7 +110,7 @@ class Disciple_Tools_Locations_Tab_USA
             update_option( '_dt_usa_installed_state', $installed_states, false );
 
             return true;
-        } elseif( !empty( $_POST[ 'state_levels_nonce' ] ) && isset( $_POST[ 'state_levels_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_levels_nonce' ] ) ), 'state_levels_nonce_validate' ) ) {
+        } elseif( !empty( $_POST[ 'state_levels_nonce' ] ) && isset( $_POST[ 'state_levels_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'state_levels_nonce' ] ), 'state_levels_nonce_validate' ) ) {
 
             $keys = array_keys( $_POST );
 

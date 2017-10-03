@@ -1,5 +1,6 @@
 <?php
 
+// @codingStandardsIgnoreLine
 class Ga_Admin
 {
 
@@ -35,8 +36,7 @@ class Ga_Admin
      */
     public static function api_client( $type = '' )
     {
-        $GA_instance = Ga_Lib_Google_Api_Client::get_instance();
-        return $GA_instance;
+        return Ga_Lib_Google_Api_Client::get_instance();
     }
 
     /*
@@ -259,6 +259,7 @@ class Ga_Admin
     public static function admin_notice_googleanalytics()
     {
         if (!empty( $_GET['settings-updated'] ) && Ga_Helper::is_plugin_page()) {
+            // @codingStandardsIgnoreLine
             echo Ga_Helper::ga_wp_notice( _( 'Settings saved' ), self::NOTICE_SUCCESS );
         }
     }
@@ -314,7 +315,7 @@ class Ga_Admin
     {
 
         if (basename( $plugin_file ) == GA_NAME . '.php') {
-            array_unshift( $actions, '<a href="' . esc_url( get_admin_url( null, Ga_Helper::GA_SETTINGS_PAGE_URL ) ) . '">' . _( 'Settings' ) . '</a>' );
+            array_unshift( $actions, '<a href="' . esc_url( get_admin_url( null, Ga_Helper::GA_SETTINGS_PAGE_URL ) ) . '">' . esc_html__( 'Settings' ) . '</a>' );
         }
 
         return $actions;
@@ -436,6 +437,7 @@ class Ga_Admin
         $errors = self::api_client( $alias )->get_errors();
         if (!empty( $errors )) {
             foreach ($errors as $error) {
+                // @codingStandardsIgnoreLine
                 echo Ga_Notice::get_message( $error );
             }
         }
