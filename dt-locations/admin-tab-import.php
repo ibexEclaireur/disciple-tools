@@ -59,7 +59,7 @@ class Disciple_Tools_Locations_Tab_Import
         $result2 = '';
 
         // check if $_POST to change option
-        if ( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_nonce' ] ) ), 'state_nonce_validate' ) ) {
+        if ( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'state_nonce' ] ), 'state_nonce_validate' ) ) {
 
             if( !isset( $_POST[ 'states-dropdown' ] ) ) { // check if file is correctly set
                 return false;
@@ -111,7 +111,7 @@ class Disciple_Tools_Locations_Tab_Import
         $result2 = '';
 
         // check if $_POST to change option
-        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'state_nonce' ] ) ), 'state_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'state_nonce' ] ) && isset( $_POST[ 'state_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'state_nonce' ] ), 'state_nonce_validate' ) ) {
 
             if( !isset( $_POST[ 'states-dropdown' ] ) ) { // check if file is correctly set
                 return false;
@@ -161,7 +161,7 @@ class Disciple_Tools_Locations_Tab_Import
         /*********************************/
         /* POST */
         /*********************************/
-        if( !empty( $_POST[ 'oz_nonce' ] ) && isset( $_POST[ 'oz_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'oz_nonce' ] ) ), 'oz_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'oz_nonce' ] ) && isset( $_POST[ 'oz_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'oz_nonce' ] ), 'oz_nonce_validate' ) ) {
 
             if( !empty( $_POST[ 'load-oz-admin1' ] ) ) {
 

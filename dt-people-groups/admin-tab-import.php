@@ -76,7 +76,7 @@ class Disciple_Tools_People_Groups_Tab_Import
         $refresh = '';
 
         // check if $_POST to change option
-        if( !empty( $_POST[ 'jp_country_nonce' ] ) && isset( $_POST[ 'jp_country_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'jp_country_nonce' ] ) ), 'jp_country_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'jp_country_nonce' ] ) && isset( $_POST[ 'jp_country_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'jp_country_nonce' ] ), 'jp_country_nonce_validate' ) ) {
 
             if( isset( $_POST[ 'jp-countries-dropdown' ] ) ) { // check if file is correctly set
                 $jp_install_request = sanitize_text_field( wp_unslash( $_POST[ 'jp-countries-dropdown' ] ) );
@@ -183,7 +183,7 @@ class Disciple_Tools_People_Groups_Tab_Import
                     $dropdown .= ' disabled';
                     $disabled = ' (Installed)';
                 } elseif( isset( $_POST[ 'states-dropdown' ] ) ) {
-                    if ( isset( $_POST['jp_country_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['jp_country_nonce'] ) ), 'jp_country_nonce_validate' ) ) {
+                    if ( isset( $_POST['jp_country_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['jp_country_nonce'] ), 'jp_country_nonce_validate' ) ) {
                         $d = sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) );
                         if ($d == $value->ROG3 ) {
                             $dropdown .= ' selected';

@@ -411,7 +411,7 @@ class Disciple_Tools_Prayer_Post_Type {
         }
 
         $key = 'dt_' . $this->post_type . '_noonce';
-        if ( isset( $_POST[$key] ) && ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[$key] ) ), plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+        if ( isset( $_POST[$key] ) && ! wp_verify_nonce( sanitize_key( $_POST[$key] ), plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
             return $post_id;
         }
 

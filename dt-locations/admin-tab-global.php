@@ -89,7 +89,7 @@ class Disciple_Tools_Locations_Tab_Global
     {
 
         // if country install
-        if( !empty( $_POST[ 'country_nonce' ] ) && isset( $_POST[ 'country_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'country_nonce' ] ) ), 'country_nonce_validate' ) ) {
+        if( !empty( $_POST[ 'country_nonce' ] ) && isset( $_POST[ 'country_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'country_nonce' ] ), 'country_nonce_validate' ) ) {
 
             if (! isset( $_POST['countries-dropdown'] ) ) {
                 wp_die( esc_html__( "Expected countries-dropdown to be set" ) );
@@ -129,7 +129,7 @@ class Disciple_Tools_Locations_Tab_Global
             update_option( '_dt_installed_country', $installed_countries, false );
 
             return true;
-        } elseif( !empty( $_POST[ 'country_levels_nonce' ] ) && isset( $_POST[ 'country_levels_nonce' ] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ 'country_levels_nonce' ] ) ), 'country_levels_nonce_validate' ) ) {
+        } elseif( !empty( $_POST[ 'country_levels_nonce' ] ) && isset( $_POST[ 'country_levels_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'country_levels_nonce' ] ), 'country_levels_nonce_validate' ) ) {
 
             $keys = array_keys( $_POST );
 
