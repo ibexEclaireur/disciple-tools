@@ -50,7 +50,16 @@ class Disciple_Tools_Metabox_Map
         global $wpdb, $post;
 
         // get coordinates for county
-        $results = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND (meta_key = 'coordinates' OR meta_key = 'Cen_x' OR meta_key = 'Cen_y')" );
+        $results = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                meta_key, meta_value
+            FROM
+                `$wpdb->postmeta`
+            WHERE
+                post_id = %s
+                AND (meta_key = 'coordinates' OR meta_key = 'Cen_x' OR meta_key = 'Cen_y')",
+            $post->ID
+        ) );
 
         $meta = [];
         foreach( $results as $result ) {
@@ -86,7 +95,7 @@ class Disciple_Tools_Metabox_Map
 
                     var map = new google.maps.Map(document.getElementById('map'), {
                         zoom: zoom,
-                        center: {lat: <?php echo $meta[ 'Cen_y' ]; ?>, lng: <?php echo $meta[ 'Cen_x' ]; ?>},
+                        center: {lat: <?php echo esc_js( (float) $meta[ 'Cen_y' ] ); ?>, lng: <?php echo esc_js( (float) $meta[ 'Cen_x' ] ); ?>},
                         mapTypeId: 'terrain'
                     });
 
@@ -133,22 +142,30 @@ class Disciple_Tools_Metabox_Map
         global $wpdb, $post;
 
         // get coordinates for county
-        $result = $wpdb->get_results( "SELECT meta_key, meta_value FROM $wpdb->postmeta WHERE post_id = '$post->ID' AND meta_key LIKE 'polygon_$post->post_content_filtered%'" );
-
+        $result = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                meta_key, meta_value
+            FROM
+                `$wpdb->postmeta`
+            WHERE
+                post_id = %s
+                AND meta_key LIKE %s",
+            $post->ID,
+            esc_like( "polygon_$post->post_content_filtered" ) . '%'
+        ) );
         if( count( $result ) > 0 ) {
 
             // build subsection
-            $html = '';
-            $html .= '<p><select name="select_tract" id="select_tract">';
-            $html .= '<option value="all">Select Subsection</option>';
-            foreach( $result as $value ) {
-                $html .= '<option value="' . substr( $value->meta_key, 8 ) . '">' . substr( $value->meta_key, 8 ) . '</option>';
-            }
-            $html .= '</select>';
-            $html .= ' <a href="javascript:location.reload();">show all</a>';
-            $html .= ' <span id="spinner"></span></p>';
-
-            echo $html;
+            ?>
+            <p><select name="select_tract" id="select_tract">
+            <option value="all">Select Subsection</option>
+            <?php foreach( $result as $value ): ?>
+                <option value="<?php echo esc_attr( substr( $value->meta_key, 8 ) ); ?>"><?php echo esc_html( substr( $value->meta_key, 8 ) ); ?></option>
+            <?php endforeach; ?>
+            </select>
+            <a href="javascript:location.reload();">show all</a>
+            <span id="spinner"></span></p>
+            <?php
 
             $meta = dt_get_coordinates_meta( $post->post_content_filtered );
 
@@ -177,11 +194,11 @@ class Disciple_Tools_Metabox_Map
 
                 jQuery(document).ready(function () {
 
-                    var zoom = <?php echo $meta[ 'zoom' ]; ?>;
+                    var zoom = <?php echo intval( $meta[ 'zoom' ] ); ?>;
 
                     var map = new google.maps.Map(document.getElementById('map'), {
                         zoom: zoom,
-                        center: {lat: <?php echo $meta[ 'center_lat' ]; ?>, lng: <?php echo $meta[ 'center_lng' ]; ?>},
+                        center: {lat: <?php echo esc_js( $meta[ 'center_lat' ] ); ?>, lng: <?php echo esc_js( $meta[ 'center_lng' ] ); ?>},
                         mapTypeId: 'terrain'
                     });
 
@@ -189,13 +206,13 @@ class Disciple_Tools_Metabox_Map
                     var coords = [ <?php
                         $rows = count( $result );
                         $i = 0;
-                        foreach( $result as $value ) {
-                            echo $value->meta_value;
-                            if( $rows > $i + 1 ) {
-                                echo ',';
-                            }
-                            $i++;
-                        } ?> ];
+                    foreach( $result as $value ) {
+                        echo esc_js( $value->meta_value );
+                        if( $rows > $i + 1 ) {
+                            echo ',';
+                        }
+                        $i++;
+                    } ?> ];
 
                     var tracts = [];
 
@@ -213,10 +230,10 @@ class Disciple_Tools_Metabox_Map
                     }
 
                     jQuery('#select_tract').change(function () {
-                        jQuery('#spinner').prepend('<img src="<?php echo Disciple_Tools()->plugin_img_url; ?>spinner.svg" style="height:30px;" />');
+                        jQuery('#spinner').prepend('<img src="<?php echo esc_url( Disciple_Tools()->plugin_img_url ); ?>spinner.svg" style="height:30px;" />');
 
                         var tract = jQuery('#select_tract').val();
-                        var restURL = '<?php echo get_rest_url( null, '/dt/v1/locations/getmapbygeoid' ); ?>';
+                        var restURL = '<?php echo esc_js( get_rest_url( null, '/dt/v1/locations/getmapbygeoid' ) ); ?>';
                         jQuery.post(restURL, {geoid: tract})
                             .done(function (data) {
                                 jQuery('#spinner').html('');

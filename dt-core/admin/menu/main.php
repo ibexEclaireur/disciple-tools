@@ -137,7 +137,9 @@ final class Disciple_Tools_Config
 
         $html .= '</h2>';
 
+        // @codingStandardsIgnoreLine
         print $html;
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
 
         $html = '';
         // End Tab Bar
@@ -171,7 +173,9 @@ final class Disciple_Tools_Config
 
         $html .= '</div>'; // end div class wrap
 
+        // @codingStandardsIgnoreLine
         echo $html;
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     }
 
     /**
@@ -213,15 +217,15 @@ final class Disciple_Tools_Config
      */
     public function build_reports_log_page()
     {
-        $ListTable = new Disciple_Tools_Reports_List_Table();
-        $ListTable->prepare_items();
+        $list_table = new Disciple_Tools_Reports_List_Table();
+        $list_table->prepare_items();
         ?>
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
             <h2>Disciple Tools Reports Log</h2>
             <p>This table displays the ongoing reports being recorded nightly from the different integration
                 sources.</p>
-            <?php $ListTable->display(); ?>
+            <?php $list_table->display(); ?>
         </div>
         <?php
     }
@@ -233,13 +237,13 @@ final class Disciple_Tools_Config
      */
     public function build_activity_page()
     {
-        $ListTable = new Disciple_Tools_Activity_List_Table();
-        $ListTable->prepare_items();
+        $list_table = new Disciple_Tools_Activity_List_Table();
+        $list_table->prepare_items();
         ?>
         <div class="wrap">
             <div id="icon-users" class="icon32"></div>
             <h2>Disciple Tools Activity Report</h2>
-            <?php $ListTable->display(); ?>
+            <?php $list_table->display(); ?>
         </div>
         <?php
     }

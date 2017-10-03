@@ -90,9 +90,12 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     {
 
         //Build row actions
+        if (! isset( $_REQUEST['page'] )) {
+            throw new Exception( "Expected page to be set" );
+        }
         $actions = [
-            'edit'   => sprintf( '<a href="?page=%s&action=%s&notification=%s">Edit</a>', $_REQUEST[ 'page' ], 'edit', $item[ 'ID' ] ),
-            'delete' => sprintf( '<a href="?page=%s&action=%s&notification=%s">Delete</a>', $_REQUEST[ 'page' ], 'delete', $item[ 'ID' ] ),
+            'edit'   => sprintf( '<a href="?page=%s&action=%s&notification=%s">Edit</a>', sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ), 'edit', $item[ 'ID' ] ),
+            'delete' => sprintf( '<a href="?page=%s&action=%s&notification=%s">Delete</a>', sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ), 'delete', $item[ 'ID' ] ),
         ];
 
         //Return the title contents
@@ -177,15 +180,14 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     {
 
         //Detect when a bulk action is being triggered...
-        if( 'viewed' === $this->current_action() ) {
-            Disciple_Tools_Notifications::mark_notification_viewed( $_GET[ 'notification' ] );
+        if( 'viewed' === $this->current_action() && isset( $_GET['notification'] ) ) {
+            Disciple_Tools_Notifications::mark_notification_viewed( sanitize_text_field( wp_unslash( $_GET[ 'notification' ] ) ) );
         }
     }
 
     /**
      * @param null $search
      *
-     * @throws \Error
      */
     function prepare_items( $search = null )
     {
@@ -204,8 +206,8 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
         $per_page = 20; // get items per page
         $page_start = (int) ( ( $current_page - 1 ) * $per_page ); // calculate starting item id
 
-        $orderby = ( !empty( $_REQUEST[ 'orderby' ] ) ) ? $_REQUEST[ 'orderby' ] : 'date_notified'; //If no sort, default to title
-        $order = ( !empty( $_REQUEST[ 'order' ] ) ) ? $_REQUEST[ 'order' ] : 'asc'; //If no order, default to asc
+        $orderby = ( !empty( $_REQUEST[ 'orderby' ] ) ) ? sanitize_sql_orderby( wp_unslash( $_REQUEST[ 'orderby' ] ) ) : 'date_notified'; //If no sort, default to title
+        $order = ( !empty( $_REQUEST[ 'order' ] ) ) ? sanitize_key( $_REQUEST[ 'order' ] ) : 'asc'; //If no order, default to asc
 
         if( !preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
             throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ order arguments are accepted" );
@@ -222,10 +224,12 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
                     *
                 FROM
                     `$wpdb->dt_notifications`
-                ORDER BY
-                    `$orderby` $order
-                LIMIT
-                    $page_start, $per_page",
+                ORDER BY "
+                    // @codingStandardsIgnoreLine
+                    . " `$orderby` $order
+                LIMIT "
+                    // @codingStandardsIgnoreLine
+                    . " $page_start, $per_page",
                 ARRAY_A
             );
         } else {
@@ -242,8 +246,9 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
                     WHERE
                         `notification_name` LIKE %1\$s
                         OR `notification_action` LIKE %1\$s
-                    ORDER BY
-                        `$orderby` $order
+                    ORDER BY "
+                        // @codingStandardsIgnoreLine
+                        . " `$orderby` $order
                     ",
                     '%' . $wpdb->esc_like( $search ) . '%'
                 ),
@@ -271,13 +276,12 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
 function dt_notifications_table()
 {
 
-    $ListTable = new Disciple_Tools_Notifications_Table();
+    $list_table = new Disciple_Tools_Notifications_Table();
     //Fetch, prepare, sort, and filter our data...
     if( isset( $_GET[ 's' ] ) ) {
-        trim( $_GET[ 's' ] );
-        $ListTable->prepare_items( $_GET[ 's' ] );
+        $list_table->prepare_items( trim( sanitize_text_field( wp_unslash( $_GET[ 's' ] ) ) ) );
     } else {
-        $ListTable->prepare_items();
+        $list_table->prepare_items();
     }
 
     ?>
@@ -290,9 +294,11 @@ function dt_notifications_table()
 
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="notifications" method="get">
-            <input type="hidden" name="page" value="<?php echo $_REQUEST[ 'page' ] ?>"/>
-            <?php $ListTable->search_box( 'Search Table', 'notifications' ); ?>
-            <?php $ListTable->display() ?>
+            <?php if (isset( $_REQUEST['page'] )): ?>
+            <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ) ); ?>"/>
+            <?php endif; ?>
+            <?php $list_table->search_box( 'Search Table', 'notifications' ); ?>
+            <?php $list_table->display() ?>
 
         </form>
 

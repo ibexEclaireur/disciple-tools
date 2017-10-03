@@ -15,7 +15,6 @@ class Disciple_Tools_Migration_Engine
 
     /**
      * @return array
-     * @throws \Exception
      */
     protected static function get_migrations(): array
     {
@@ -23,8 +22,8 @@ class Disciple_Tools_Migration_Engine
         if( self::$migrations !== null ) {
             return self::$migrations;
         }
-        require_once( plugin_dir_path(__DIR__) . "migrations/abstract.php" );
-        $filenames = scandir( plugin_dir_path(__DIR__) . "migrations/", SCANDIR_SORT_ASCENDING );
+        require_once( plugin_dir_path( __DIR__ ) . "migrations/abstract.php" );
+        $filenames = scandir( plugin_dir_path( __DIR__ ) . "migrations/", SCANDIR_SORT_ASCENDING );
         if( $filenames === false ) {
             throw new Exception( "Could not scan migrations directory" );
         }
@@ -38,7 +37,7 @@ class Disciple_Tools_Migration_Engine
                 if( $expected_migration_number !== $got_migration_number ) {
                     throw new Exception( sprintf( "Expected to find migration number %04d", $expected_migration_number ) );
                 }
-                require_once( plugin_dir_path(__DIR__) . "migrations/$filename" );
+                require_once( plugin_dir_path( __DIR__ ) . "migrations/$filename" );
                 $migration_name = sprintf( "Disciple_Tools_Migration_%04d", $got_migration_number );
                 $rv[] = new $migration_name();
                 $expected_migration_number++;
@@ -57,7 +56,6 @@ class Disciple_Tools_Migration_Engine
      *
      * @param int $target_migration_number
      *
-     * @throws \Exception
      */
     public static function migrate( int $target_migration_number )
     {
@@ -105,7 +103,6 @@ class Disciple_Tools_Migration_Engine
     /**
      * @param array $expected_tables
      *
-     * @throws \Exception
      */
     protected static function sanity_check_expected_tables( array $expected_tables )
     {

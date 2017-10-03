@@ -537,7 +537,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                             <td class="column-primary">
                                 <strong><?php echo esc_html( $term->name ); ?></strong>
                                 <div class="row-actions">
-                                    <?php echo $this->row_actions( $tax, $term ); ?>
+                                    <?php echo esc_html( $this->row_actions( $tax, $term ) ); ?>
                                 </div>
                             </td>
                             <td class="column-description"><?php echo !empty( $term->description ) ? esc_html( $term->description ) : '&#8212;'; ?></td>
@@ -760,8 +760,8 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             // Add to bulk actions array
             if( !empty( $terms ) ) {
                 foreach( $terms as $term ) {
-                    $actions[ "add-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Add to %s %s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
-                    $actions[ "remove-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Remove from %s %s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
+                    $actions[ "add-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Add to %1$s %2$s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
+                    $actions[ "remove-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Remove from %1$s %2$s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
                 }
             }
 
@@ -984,8 +984,9 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                         <?php endif; ?>
 
                         <span
-                            class="subtitle"><?php printf( esc_html__( 'Viewing users of %s: %s', 'disciple-tools-user-groups' ), $this->tax_singular_low, '<a href="' . esc_url( $url ) . '">' . $terms[ $viewing ]->name . '</a>' ); ?></span>
+                            class="subtitle"><?php printf( esc_html__( 'Viewing users of %1$s: %2$s', 'disciple-tools-user-groups' ), esc_html( $this->tax_singular_low ), '<a href="' . esc_url( $url ) . '">' . esc_html( $terms[ $viewing ]->name ) . '</a>' ); ?></span>
                     </h1>
+                    <?php // @codingStandardsIgnoreLine ?>
                     <?php echo wpautop( $terms[ $viewing ]->description ); ?>
                 </div>
                 <div class="clear"></div>
@@ -1019,7 +1020,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             }
 
             // Sanitize taxonomies
-            $groups = array_map( 'sanitize_key', explode( ',', $_GET[ $this->taxonomy ] ) );
+            $groups = array_map( 'sanitize_key', explode( ',', sanitize_text_field( wp_unslash( $_GET[ $this->taxonomy ] ) ) ) );
 
             // Get terms
             foreach( $groups as $group ) {

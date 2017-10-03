@@ -9,13 +9,12 @@
 function dt_contact_share_table()
 {
 
-    $ListTable = new MM_Table();
+    $list_table = new MM_Table();
     //Fetch, prepare, sort, and filter our data...
     if( isset( $_GET[ 's' ] ) ) {
-        trim( $_GET[ 's' ] );
-        $ListTable->prepare_items( $_GET[ 's' ] );
+        $list_table->prepare_items( trim( sanitize_text_field( wp_unslash( $_GET[ 's' ] ) ) ) );
     } else {
-        $ListTable->prepare_items();
+        $list_table->prepare_items();
     }
 
     ?>
@@ -26,9 +25,11 @@ function dt_contact_share_table()
 
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="movement-mapping" method="get">
-            <input type="hidden" name="page" value="<?php echo $_REQUEST[ 'page' ] ?>"/>
-            <?php $ListTable->search_box( 'Search Table', 'movement-mapping' ); ?>
-            <?php $ListTable->display() ?>
+            <?php if (isset( $_REQUEST['page'] ) ): ?>
+            <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ) ); ?>"/>
+            <?php endif; ?>
+            <?php $list_table->search_box( 'Search Table', 'movement-mapping' ); ?>
+            <?php $list_table->display() ?>
 
         </form>
 
@@ -216,17 +217,17 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
     {
 
         //Detect when a bulk action is being triggered...
-        if( 'sync' === $this->current_action() ) {
-            foreach( $_GET[ 'location' ] as $location ) {
-                mm_sync_by_oz_objectid( $location );
-            }
+        if( 'sync' === $this->current_action() && isset( $_GET['location'] ) ) {
+            throw new Exception( "Unimplemented, what is mm_sync_by_oz_objectid?" );
+            /* foreach( $_GET[ 'location' ] as $location ) { */
+            /*     mm_sync_by_oz_objectid( $location ); */
+            /* } */
         }
     }
 
     /**
      * @param null $search
      *
-     * @throws \Error
      */
     function prepare_items( $search = null )
     {
@@ -245,8 +246,8 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
         $per_page = 20; // get items per page
         $page_start = (int) ( ( $current_page - 1 ) * $per_page ); // calculate starting item id
 
-        $orderby = ( !empty( $_REQUEST[ 'orderby' ] ) ) ? $_REQUEST[ 'orderby' ] : 'WorldID'; //If no sort, default to title
-        $order = ( !empty( $_REQUEST[ 'order' ] ) ) ? $_REQUEST[ 'order' ] : 'asc'; //If no order, default to asc
+        $orderby = ( !empty( $_REQUEST[ 'orderby' ] ) ) ? sanitize_sql_orderby( wp_unslash( $_REQUEST[ 'orderby' ] ) ) : 'WorldID'; //If no sort, default to title
+        $order = ( !empty( $_REQUEST[ 'order' ] ) ) ? sanitize_key( $_REQUEST[ 'order' ] ) : 'asc'; //If no order, default to asc
 
         if( !preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
             throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ order arguments are accepted" );
@@ -266,12 +267,15 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
                         `$wpdb->mm`
                     WHERE
                         1=1 "
+                    // @codingStandardsIgnoreLine
                     . ( !empty( $_GET[ 'cnty-filter' ] ) ? 'AND CntyID = %1$s ' : '' )
-                    . "ORDER BY
-                        `$orderby` $order
-                    LIMIT
-                        $page_start, $per_page",
-                    $_GET[ 'cnty-filter' ]
+                    . "ORDER BY "
+                    // @codingStandardsIgnoreLine
+                        . " `$orderby` $order
+                    LIMIT "
+                    // @codingStandardsIgnoreLine
+                        . " $page_start, $per_page",
+                    sanitize_text_field( wp_unslash( $_GET[ 'cnty-filter' ] ) )
                 ),
                 ARRAY_A
             );
@@ -281,7 +285,7 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
 
             $where = '';
             if( !empty( $_GET[ 'cnty-filter' ] ) ) {
-                $where = ' AND CntyID=' . $_GET[ 'cnty-filter' ];
+                $where = sprintf( ' AND CntyID=%d', intval( $_GET[ 'cnty-filter' ] ) );
             }
 
             /* Notice how you can search multiple columns for your search term easily, and return one data set */
@@ -294,12 +298,14 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
                     WHERE
                         `WorldID` LIKE %1\$s
                         OR `Zone_Name` LIKE %1\$s "
+                    // @codingStandardsIgnoreLine
                     . ( !empty( $_GET[ 'cnty-filter' ] ) ? ' AND CntyID = %2$s ' : '' )
-                    . "ORDER BY
-                        $orderby $order
+                    . "ORDER BY "
+                    // @codingStandardsIgnoreLine
+                        . " $orderby $order
                     ",
                     '%' . $wpdb->esc_like( $search ) . '%',
-                    $_GET[ 'cnty-filter' ]
+                    sanitize_text_field( wp_unslash( $_GET[ 'cnty-filter' ] ) )
                 ),
                 ARRAY_A
             );
@@ -339,12 +345,13 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
                         <?php
                         foreach( $cnty as $cat ) {
                             $selected = '';
-                            if( $_GET[ 'cnty-filter' ] == $cat[ 'CntyID' ] ) {
+                            if ( isset( $_GET[ 'cnty-filter' ] ) && sanitize_text_field( wp_unslash( $_GET[ 'cnty-filter' ] ) ) == $cat[ 'CntyID' ] ) {
                                 $selected = ' selected = "selected"';
                             }
                             ?>
                             <option
-                                value="<?php echo $cat[ 'CntyID' ]; ?>" <?php echo $selected; ?>><?php echo $cat[ 'Cnty_Name' ]; ?></option>
+                                <?php // @codingStandardsIgnoreLine ?>
+                                value="<?php echo esc_attr( $cat[ 'CntyID' ] ); ?>" <?php echo $selected; ?>><?php echo esc_html( $cat[ 'Cnty_Name' ] ); ?></option>
                             <?php
                         }
                         ?>

@@ -7,6 +7,7 @@
     </p>
 
       <form action="" method="post">
+        <?php wp_nonce_field( 'api-keys-view', 'api-key-view-field' ); ?>
         <h2>Token Generator</h2>
         <table class="widefat striped" style="margin-bottom:50px">
           <tr>
@@ -32,13 +33,13 @@
           <tbody>
           <tr>
             <td>
-            <?php echo $key["client_id"] ?>
+            <?php echo esc_html( $key["client_id"] ); ?>
             </td>
             <td>
-            <?php echo $key["client_token"] ?>
+            <?php echo esc_html( $key["client_token"] ); ?>
             </td>
             <td>
-              <button type="submit" class="button button-delete" name="delete" value="<?php echo $id?>">Delete <?php echo $id?></button>
+              <button type="submit" class="button button-delete" name="delete" value="<?php echo esc_attr( $id ); ?>">Delete <?php echo esc_html( $id ); ?></button>
             </td>
           </tr>
           </tbody>

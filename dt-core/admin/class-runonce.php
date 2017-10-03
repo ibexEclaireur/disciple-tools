@@ -6,8 +6,8 @@
  * @since   0.1
  */
 
-if( !class_exists( 'Run_Once' ) ) {
-    class Run_Once
+if( !class_exists( 'Discple_Tools_Run_Once' ) ) {
+    class Disciple_Tools_Run_Once
     {
         function run( $key )
         {

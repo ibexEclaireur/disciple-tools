@@ -38,7 +38,7 @@ class Disciple_Tools_Api_Keys {
      * @since  0.1
      */
     public function __construct() { }
-    
+
     /**
      * Display an admin notice on the page
      *
@@ -49,8 +49,8 @@ class Disciple_Tools_Api_Keys {
      * @since  0.1
      */
     private function admin_notice( $notice, $type ) {
-        echo '<div class="notice notice-' . $type . ' is-dismissible"><p>';
-        echo $notice;
+        echo '<div class="notice notice-' . esc_attr( $type ) . ' is-dismissible"><p>';
+        echo esc_html( $notice );
         echo '</p></div>';
     }
 
@@ -62,8 +62,11 @@ class Disciple_Tools_Api_Keys {
      */
     public function api_keys_page() {
         $keys = get_option( "dt_api_keys", [] );
+        if (! isset( $_POST['api-key-view-field'] ) || ! wp_verify_nonce( sanitize_key( $_POST['api-key-view-field'] ), 'api-keys-view' ) ) {
+            throw new Exception( "nonce not verified" );
+        }
         if ( isset( $_POST["application"] ) && !empty( $_POST["application"] )) {
-            $client_id= wordwrap( strtolower( $_POST["application"] ), 1, '-', 0 );
+            $client_id= wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST["application"] ) ) ), 1, '-', 0 );
             $token = bin2hex( random_bytes( 32 ) );
             if (!isset( $keys[$client_id] )) {
                 $keys[$client_id] = [ "client_id" => $client_id, "client_token" => $token ];
@@ -72,8 +75,8 @@ class Disciple_Tools_Api_Keys {
                 $this->admin_notice( "Application already exists", "error" );
             }
         } else if (isset( $_POST["delete"] )){
-            if ($keys[$_POST["delete"]]){
-                unset( $keys[$_POST["delete"]] );
+            if ($keys[sanitize_text_field( wp_unslash( $_POST["delete"] ) )]){
+                unset( $keys[sanitize_text_field( wp_unslash( $_POST["delete"] ) )] );
                 update_option( "dt_api_keys", $keys );
             }
         }
@@ -89,9 +92,9 @@ class Disciple_Tools_Api_Keys {
      *
      * @return bool
      */
-    public function check_api_key( $client_Id, $client_token ){
+    public function check_api_key( $client_id, $client_token ){
         $keys = get_option( "dt_api_keys", [] );
-        return isset( $keys[$client_Id] ) && $keys[$client_Id]["client_token"] == $client_token;
+        return isset( $keys[$client_id] ) && $keys[$client_id]["client_token"] == $client_token;
     }
 
 }

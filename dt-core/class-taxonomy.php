@@ -111,8 +111,8 @@ class Disciple_Tools_Taxonomy
     private function _get_default_labels()
     {
         return [
-            'name'              => sprintf( _x( '%s', 'taxonomy general name', 'disciple_tools' ), $this->plural ),
-            'singular_name'     => sprintf( _x( '%s', 'taxonomy singular name', 'disciple_tools' ), $this->singular ),
+            'name'              => _x( 'Categories', 'taxonomy general name', 'disciple_tools' ),
+            'singular_name'     => _x( 'Category', 'taxonomy singular name', 'disciple_tools' ),
             'search_items'      => sprintf( __( 'Search %s', 'disciple_tools' ), $this->plural ),
             'all_items'         => sprintf( __( 'All %s', 'disciple_tools' ), $this->plural ),
             'parent_item'       => sprintf( __( 'Parent %s', 'disciple_tools' ), $this->singular ),
@@ -121,7 +121,7 @@ class Disciple_Tools_Taxonomy
             'update_item'       => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
             'add_new_item'      => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
             'new_item_name'     => sprintf( __( 'New %s Name', 'disciple_tools' ), $this->singular ),
-            'menu_name'         => sprintf( __( '%s', 'disciple_tools' ), $this->plural ),
+            'menu_name'         => __( 'Categories', 'disciple_tools' ),
         ];
     } // End _get_default_labels()
 

@@ -74,10 +74,15 @@ class Disciple_Tools_Posts
             if( $assigned_to && $assigned_to === "user-" . $user->ID ) {
                 return true;
             } else {
-                $shares = $wpdb->get_results(
-                    "SELECT * FROM $wpdb->dt_share WHERE post_id = '$post_id'",
-                    ARRAY_A
-                );
+                $shares = $wpdb->get_results( $wpdb->prepare(
+                    "SELECT
+                        *
+                    FROM
+                        `$wpdb->dt_share`
+                    WHERE
+                        post_id = %s",
+                    $post_id
+                ), ARRAY_A );
                 foreach( $shares as $share ) {
                     if( (int) $share[ 'user_id' ] === $user->ID ) {
                         return true;
@@ -106,10 +111,15 @@ class Disciple_Tools_Posts
             if( isset( $assigned_to ) && $assigned_to === "user-" . $user->ID ) {
                 return true;
             } else {
-                $shares = $wpdb->get_results(
-                    "SELECT * FROM $wpdb->dt_share WHERE post_id = '$post_id'",
-                    ARRAY_A
-                );
+                $shares = $wpdb->get_results( $wpdb->prepare(
+                    "SELECT
+                        *
+                    FROM
+                        `$wpdb->dt_share`
+                    WHERE
+                        post_id = %s",
+                    $post_id
+                ), ARRAY_A );
                 foreach( $shares as $share ) {
                     if( (int) $share[ 'user_id' ] === $user->ID ) {
                         return true;
@@ -173,7 +183,7 @@ class Disciple_Tools_Posts
         if( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
         }
-        $q = $wpdb->prepare(
+        $activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
                 *
             FROM
@@ -183,8 +193,7 @@ class Disciple_Tools_Posts
                 AND `object_id` = %s",
             $post_type,
             $post_id
-        );
-        $activity = $wpdb->get_results( $q );
+        ) );
         foreach( $activity as $a ) {
             if( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $a->name = get_user_by( "id", $a->user_id )->display_name;
@@ -204,17 +213,17 @@ class Disciple_Tools_Posts
         return $comments;
     }
 
-    public static function get_viewable_compact( string $post_type, string $searchString )
+    public static function get_viewable_compact( string $post_type, string $search_string )
     {
         if( !self::can_access( $post_type ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these" . $post_type ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
         $compact = [];
 
         $query_args = [
             'post_type' => $post_type,
-            's'         => $searchString,
+            's'         => $search_string,
         ];
         $shared_with_user = [];
         if( !self::can_view_all( $post_type ) ) {
@@ -248,7 +257,7 @@ class Disciple_Tools_Posts
     public static function get_viewable( string $post_type )
     {
         if( !self::can_access( $post_type ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have access to these" . $post_type ), [ 'status' => 403 ] );
+            return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
 
@@ -301,7 +310,15 @@ class Disciple_Tools_Posts
         }
 
         $shared_with_list = [];
-        $shares = $wpdb->get_results( "SELECT * FROM $wpdb->dt_share WHERE post_id = '$post_id'", ARRAY_A );
+        $shares = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                *
+            FROM
+                `$wpdb->dt_share`
+            WHERE
+                post_id = %s",
+            $post_id
+        ), ARRAY_A );
 
         // adds display name to the array
         foreach( $shares as $share ) {
@@ -387,7 +404,17 @@ class Disciple_Tools_Posts
             '%s',
         ];
 
-        $duplicate_check = $wpdb->get_row( "SELECT id FROM $wpdb->dt_share WHERE post_id = '$post_id' AND user_id = '$user_id'", ARRAY_A );
+        $duplicate_check = $wpdb->get_row( $wpdb->prepare(
+            "SELECT
+                id
+            FROM
+                `$wpdb->dt_share`
+            WHERE
+                post_id = %s
+                AND user_id = %s",
+            $post_id,
+            $user_id
+        ), ARRAY_A );
 
         if( is_null( $duplicate_check ) ) {
 

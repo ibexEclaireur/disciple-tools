@@ -25,8 +25,8 @@ class Disciple_Tools_Activator
     public static function activate( $network_wide )
     {
         global $wpdb;
-        $Disciple_Tools = Disciple_Tools();
-        $Disciple_Tools->_log_version_number();
+        $disciple_tools = Disciple_Tools();
+        $disciple_tools->_log_version_number();
 
         /** Create roles and capabilities */
         require_once( 'class-roles.php' );
@@ -36,10 +36,13 @@ class Disciple_Tools_Activator
         /** Setup key for JWT authentication */
         if( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
             if( get_option( "my_jwt_key" ) ) {
+                // @codingStandardsIgnoreLine
                 define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
             } else {
                 $iv = password_hash( random_bytes( 16 ), PASSWORD_DEFAULT );
+                // @codingStandardsIgnoreLine
                 update_option( 'my_jwt_key', $iv );
+                // @codingStandardsIgnoreLine
                 define( 'JWT_AUTH_SECRET_KEY', $iv );
             }
         }

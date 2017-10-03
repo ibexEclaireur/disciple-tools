@@ -232,10 +232,9 @@ class Disciple_Tools_Reports_API {
             throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ meta_key arguments are accepted, not $meta_key" );
         }
 
-        // Build full query
-        $sql = $wpdb->prepare(
-            "SELECT
-                $type(`meta_value`) AS `$meta_key`
+        $results = $wpdb->get_results( $wpdb->prepare(
+            "SELECT " // @codingStandardsIgnoreLine
+                . " $type(`meta_value`) AS `$meta_key`
                 FROM
                     `$wpdb->dt_reports`
                 RIGHT JOIN
@@ -249,10 +248,7 @@ class Disciple_Tools_Reports_API {
             $wpdb->esc_like( $date ) . '%',
             $source,
             $meta_key
-        );
-
-        // Query results
-        $results = $wpdb->get_results( $sql , ARRAY_A );
+        ), ARRAY_A );
 
         if( isset( $results[0] )) {
             $results_int = $results[0][$meta_key];
@@ -275,7 +271,7 @@ class Disciple_Tools_Reports_API {
 
         if(!empty( $subsource ) && !empty( $source )) {
             // Build full query
-            $sql = $wpdb->prepare(
+            $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     id
                 FROM
@@ -287,10 +283,10 @@ class Disciple_Tools_Reports_API {
                 $wpdb->esc_like( $date ) . '%',
                 $source,
                 $subsource
-            );
+            ), ARRAY_A );
         } elseif (!empty( $source )) {
             // Build limited query
-            $sql = $wpdb->prepare(
+            $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     id
                 FROM
@@ -300,10 +296,10 @@ class Disciple_Tools_Reports_API {
                     AND `report_source` = %s",
                 $wpdb->esc_like( $date ) . '%',
                 $source
-            );
+            ), ARRAY_A );
         } else {
             // Build date query
-            $sql = $wpdb->prepare(
+            $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     id
                 FROM
@@ -311,11 +307,8 @@ class Disciple_Tools_Reports_API {
                 WHERE
                     `report_date` LIKE %s",
                 $wpdb->esc_like( $date ) . '%'
-            );
+            ), ARRAY_A );
         }
-
-        // Query results
-        $results = $wpdb->get_results( $sql , ARRAY_A );
 
         return $results;
 
@@ -364,20 +357,14 @@ class Disciple_Tools_Reports_API {
             return $results;
         }
 
-        // prepare id or all setting
-        if ($id_only) {
-            $columns = 'id';
-        } else {
-            $columns = '*';
-        }
-
         // prepare sql
         if(!empty( $subsource )) {
             // Build full query
-            $sql = $wpdb->prepare(
-                "SELECT
-                    $columns
-                FROM
+            $results = $wpdb->get_results( $wpdb->prepare(
+                "SELECT "
+                    // @codingStandardsIgnoreLine
+                    . ($id_only ? "id " : "* ")
+                . " FROM
                     `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
@@ -386,24 +373,22 @@ class Disciple_Tools_Reports_API {
                 $wpdb->esc_like( $date ) . '%',
                 $source,
                 $subsource
-            );
+            ), ARRAY_A );
         } else {
             // Build full query
-            $sql = $wpdb->prepare(
-                "SELECT
-                    $columns
-                FROM
+            $results = $wpdb->get_results( $wpdb->prepare(
+                "SELECT "
+                    // @codingStandardsIgnoreLine
+                    . ($id_only ? "id " : "* ")
+                . " FROM
                     `$wpdb->dt_reports`
                 WHERE
                     `report_date` LIKE %s
                     AND `report_source` = %s",
                 $wpdb->esc_like( $date ) . '%',
                 $source
-            );
+            ), ARRAY_A );
         }
-
-        // query results
-        $results = $wpdb->get_results( $sql , ARRAY_A );
 
         return $results;
     }

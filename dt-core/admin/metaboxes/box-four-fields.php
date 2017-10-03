@@ -90,20 +90,21 @@ class Disciple_Tools_Metabox_Four_Fields
             ]
         );
 
-        $html .= '<table class="form-table"><tr><td>';
+        ?>
+        <table class="form-table"><tr><td>
 
-        $html .= '<h1>Unknown  : ' . $unknown->found_posts . '<br>';
-        $html .= 'Unbelieving  : ' . $unbelieving->found_posts . '<br>';
-        $html .= 'Believing  : ' . $believing->found_posts . '<br>';
-        $html .= 'Accountable  : ' . $accountable->found_posts . '<br>';
-        $html .= 'Multiplying  : ' . $multiplying->found_posts . '<br>';
-        $html .= 'Is Church  : ' . get_post_meta( $post->ID, 'is_church', true ) . '<br></h1>';
+        <h1>Unknown  : <?php echo esc_html( $unknown->found_posts ); ?><br>
+        Unbelieving  : <?php echo esc_html( $unbelieving->found_posts ); ?><br>
+        Believing  : <?php echo esc_html( $believing->found_posts ); ?><br>
+        Accountable  : <?php echo esc_html( $accountable->found_posts ); ?><br>
+        Multiplying  : <?php echo esc_html( $multiplying->found_posts ); ?><br>
+        Is Church  : <?php echo esc_html( get_post_meta( $post->ID, 'is_church', true ) ); ?><br></h1>
 
-        $html .= '</td><td>';
-        //        $html .=  '<img src="'. Disciple_Tools()->plugin_img_url . '4fields.png" >';
-        $html .= '</td></tr></table>';
+        </td><td>
+        <?php //        $html .=  '<img src="'. Disciple_Tools()->plugin_img_url . '4fields.png" >'; ?>
+        </td></tr></table>
 
-        echo $html;
+        <?php
         //        print'<pre>'; print_r($multiplying); print '</pre>';
     }
 

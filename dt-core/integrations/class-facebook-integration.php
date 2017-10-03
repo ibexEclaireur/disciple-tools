@@ -94,7 +94,7 @@ class Disciple_Tools_Facebook_Integration {
         $error = get_option( 'disciple_tools_facebook_error', "" );
         if ($error){ ?>
             <div class="notice notice-error dt-facebook-notice is-dismissible">
-                <p><?php echo $error; ?></p>
+                <p><?php echo esc_html( $error ); ?></p>
             </div>
         <?php }
     }
@@ -185,7 +185,7 @@ class Disciple_Tools_Facebook_Integration {
         $html .=  '<br>
                                      <form action="" method="post">
                         <input type="hidden" name="_wpnonce" id="_wpnonce" value="' . wp_create_nonce( 'wp_rest' ) . '" />';
-        $html .= $this->facebook_settings_functions( $_POST );
+        $html .= $this->facebook_settings_functions();
         $html .= '<table id="facebook_pages" class="widefat striped">
                     <thead><th>Facebook Pages </th></thead>
                     <tbody>';
@@ -227,7 +227,7 @@ class Disciple_Tools_Facebook_Integration {
     private function display_error( $err ){
         $err = date( "Y-m-d h:i:sa" ) . ' ' . $err;  ?>
         <div class="notice notice-error is-dismissible">
-                <p><?php echo $err; ?></p>
+                <p><?php echo esc_html( $err ); ?></p>
             </div>
         <?php
         update_option( 'disciple_tools_facebook_error', $err );
@@ -237,17 +237,16 @@ class Disciple_Tools_Facebook_Integration {
     /**
  * Functions for the pages section of the Facebook settings
      *
-     * @param  $post
      * @return string
      */
-    public function facebook_settings_functions( $post ){
+    public function facebook_settings_functions() {
         // Check noonce
-        if ( isset( $post['dt_app_form_noonce'] ) && ! wp_verify_nonce( $post['dt_app_form_noonce'], 'dt_app_form' ) ) {
+        if ( isset( $_POST['dt_app_form_noonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['dt_app_form_noonce'] ), 'dt_app_form' ) ) {
             return 'Are you cheating? Where did this form come from?';
         }
 
         // get the pages the user has access to.
-        if (isset( $post["get_pages"] )){
+        if (isset( $_POST["get_pages"] )){
             $url = "https://graph.facebook.com/v2.8/me/accounts?access_token=" . get_option( 'disciple_tools_facebook_access_token' );
             $request = wp_remote_get( $url );
 
@@ -270,20 +269,20 @@ class Disciple_Tools_Facebook_Integration {
         }
 
         //save changes made to the pages in the page list
-        if (isset( $post["save_pages"] )){
+        if (isset( $_POST["save_pages"] )){
             $get_historical_data = false;
             $facebook_pages = get_option( "disciple_tools_facebook_pages", [] );
             foreach ($facebook_pages as $id => $facebook_page){
                 //if sync contact checkbox is selected
                 $integrate = str_replace( ' ', '_', $facebook_page->name . "-integrate" );
-                if (isset( $post[$integrate] )){
+                if (isset( $_POST[$integrate] )){
                     $facebook_page->integrate = 1;
                 } else {
                     $facebook_page->integrate = 0;
                 }
                 //if the include in stats checkbox is selected
                 $report = str_replace( ' ', '_', $facebook_page->name . "-report" );
-                if (isset( $post[$report] )){
+                if (isset( $_POST[$report] )){
                     $facebook_page->report = 1;
                     $facebook_page->rebuild = true;
                     $get_historical_data = true;
@@ -313,7 +312,7 @@ class Disciple_Tools_Facebook_Integration {
                         'body' => [
                             'object' => 'page',
                             'callback_url' => $this->get_rest_url() . "/webhook",
-                            'verify_token' => $this->Authorize_secret(),
+                            'verify_token' => $this->authorize_secret(),
                             'fields' => ['conversations', 'feed']
                         ]
                         ]
@@ -353,7 +352,7 @@ class Disciple_Tools_Facebook_Integration {
 
 
     // Generate authorization secret
-    static function Authorize_secret() {
+    static function authorize_secret() {
         return 'dt_auth_' . substr( md5( AUTH_KEY ? AUTH_KEY : get_bloginfo( 'url' ) ), 0, 10 );
     }
 
@@ -364,8 +363,10 @@ class Disciple_Tools_Facebook_Integration {
      * @return mixed
      */
     public function verify_facebook_webhooks(){
-        if (isset( $_GET["hub_verify_token"] ) && $_GET["hub_verify_token"] === $this->Authorize_secret()){
-            return $_GET['hub_challenge'];
+        if (isset( $_GET["hub_verify_token"] ) && $_GET["hub_verify_token"] === $this->authorize_secret()){
+            if (isset( $_GET['hub_challenge'] )) {
+                return sanitize_text_field( wp_unslash( $_GET['hub_challenge'] ) );
+            }
         }
     }
 
@@ -412,7 +413,7 @@ class Disciple_Tools_Facebook_Integration {
 
         //get the access token
 
-        if (isset( $get["state"] ) && strpos( $get['state'], $this->Authorize_secret() ) !== false && isset( $get["code"] )){
+        if (isset( $get["state"] ) && strpos( $get['state'], $this->authorize_secret() ) !== false && isset( $get["code"] )){
             $url = "https://graph.facebook.com/v2.8/oauth/access_token";
             $url .= "?client_id=" . get_option( "disciple_tools_facebook_app_id" );
             $url .= "&redirect_uri=" . $this->get_rest_url() . "/auth";
@@ -482,7 +483,7 @@ class Disciple_Tools_Facebook_Integration {
             $url .= "?client_id=" . $_POST["app_id"];
             $url .= "&redirect_uri=" . $this->get_rest_url() . "/auth";
             $url .= "&scope=public_profile,read_insights,manage_pages,read_page_mailboxes";
-            $url .= "&state=" . $this->Authorize_secret();
+            $url .= "&state=" . $this->authorize_secret();
 
             wp_redirect( $url );
             exit;

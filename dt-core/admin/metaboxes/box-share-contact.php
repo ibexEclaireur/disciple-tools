@@ -48,16 +48,17 @@ class Disciple_Tools_Metabox_Share_Contact
         $shared_with_list = Disciple_Tools_Contacts::get_shared_with( 'contacts', $post_id );
         if( !empty( $shared_with_list ) ) {
 
-            $html = '<strong>Sharing with:</strong>';
-            $html .= '<form method="post">';
-            $html .= '<input type="hidden" name="dt_remove_shared_noonce" id="dt_remove_shared_noonce" value="' . wp_create_nonce( 'dt_remove_shared' ) . '" />';
+            ?>
+            <strong>Sharing with:</strong>
+            <form method="post">
+            <input type="hidden" name="dt_remove_shared_noonce" id="dt_remove_shared_noonce" value="<?php echo esc_html( wp_create_nonce( 'dt_remove_shared' ) ) ?>" />
 
-            foreach( $shared_with_list as $contact ) {
+            <?php foreach( $shared_with_list as $contact ): ?>
                 $html .= '<li><a href="' . admin_url() . 'user-edit.php?user_id=' . $contact[ 'user_id' ] . '">' . $contact[ 'display_name' ] . '</a>  ';
-            }
-            $html .= '</ul></form>';
+            <?php endforeach; ?>
+            </ul></form>
 
-            echo $html;
+            <?php
         } else {
 
             echo 'Not shared with any other user';

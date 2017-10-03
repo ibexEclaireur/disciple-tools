@@ -160,7 +160,7 @@ final class Disciple_Tools_Multi_Role_Factory {
         static $instance = null;
 
         if ( is_null( $instance ) ) {
-            $instance = new Disciple_Tools_Multi_Role_Factory;
+            $instance = new Disciple_Tools_Multi_Role_Factory();
             $instance->setup_roles();
         }
 
