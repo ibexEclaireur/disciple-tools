@@ -26,7 +26,7 @@ class Disciple_Tools_Setup_Steps_Tab
      */
     public function content()
     {
-        $this->process_checklist( );
+        $this->process_checklist();
         $checklist = get_option( 'dt_setup_checklist' );
         ?>
         <style>
@@ -43,7 +43,7 @@ class Disciple_Tools_Setup_Steps_Tab
         </style>
         <form method="post">
             <input type="hidden" name="checklist_nonce" id="checklist_nonce"
-                   value="<?php echo wp_create_nonce( 'checklist' ) ?>"/>
+                   value="<?php echo esc_attr( wp_create_nonce( 'checklist' ) ); ?>"/>
             <div class="wrap">
                 <div id="poststuff">
                     <div id="post-body" class="metabox-holder columns-2">
@@ -382,15 +382,20 @@ class Disciple_Tools_Setup_Steps_Tab
                 $checklist = get_option( 'dt_setup_checklist' );
             }
 
-            foreach( $_POST[ 'input' ] as $key => $value ) {
-                if( isset( $checklist[ $key ] ) && $checklist[ $key ] == $value ) {
-                    unset( $checklist[ $key ] );
-                } else {
-                    $checklist[ $key ] = $value;
-                }
-            }
+            if( isset( $_POST[ 'input' ] ) ) {
 
-            update_option( 'dt_setup_checklist', $checklist, false );
+                $post = array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'input' ] ) );
+
+                foreach( $post as $key => $value ) {
+                    if( isset( $checklist[ $key ] ) && $checklist[ $key ] == $value ) {
+                        unset( $checklist[ $key ] );
+                    } else {
+                        $checklist[ $key ] = $value;
+                    }
+                }
+
+                update_option( 'dt_setup_checklist', $checklist, false );
+            }
         }
     }
 
@@ -434,7 +439,7 @@ class Disciple_Tools_Setup_Steps_Tab
                 <td>
                     <div class="container">
                         <?php
-                        if ($percentage > 5 ) { echo '<div class="complete green"> '. $percentage . '% &nbsp;</div>';}
+                        if ($percentage > 5 ) { echo '<div class="complete green"> '. esc_attr( $percentage ) . '% &nbsp;</div>';}
                         else { echo '<div class="begin">Get Started!</div>'; }
                         ?>
 
@@ -452,7 +457,7 @@ class Disciple_Tools_Setup_Steps_Tab
                         }
 
                         .green {
-                            width: <?php echo $percentage . '%'; ?>;
+                            width: <?php echo esc_attr( $percentage ) . '%'; ?>;
                             background-color: #4CAF50;
                         }
 
@@ -468,9 +473,9 @@ class Disciple_Tools_Setup_Steps_Tab
                 </td>
             </tr>
             <?php
-        if( isset( $_GET[ "tab" ] ) && !($_GET[ "tab" ] == 'setup-checklist') ) { ?>
-            <tr><td><a href="<?php echo admin_url('admin.php?page=dt_options&tab=setup-checklist') ?>">View Setup Checklist</a></td></tr>
-        <?php } ?>
+            if( isset( $_GET[ "tab" ] ) && !($_GET[ "tab" ] == 'setup-checklist') ) { ?>
+                <tr><td><a href="<?php echo esc_url( admin_url( 'admin.php?page=dt_options&tab=setup-checklist' ) ) ?>">View Setup Checklist</a></td></tr>
+            <?php } ?>
             </tbody>
         </table>
         <br>

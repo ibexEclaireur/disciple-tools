@@ -85,7 +85,7 @@ class Disciple_Tools_Custom_Lists_Tab
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
         if( is_wp_error( $site_custom_lists ) ) {
-            print $site_custom_lists->get_error_message();
+            print esc_html( $site_custom_lists->get_error_message() );
         }
         $user_fields = $site_custom_lists[ 'user_fields' ];
         foreach( $user_fields as $field ) {
@@ -137,7 +137,7 @@ class Disciple_Tools_Custom_Lists_Tab
             // Process current fields submitted
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
             if( is_wp_error( $site_custom_lists ) ) {
-                print $site_custom_lists->get_error_message();
+                print esc_html( $site_custom_lists->get_error_message() );
             }
 
             foreach( $site_custom_lists[ 'user_fields' ] as $key => $value ) {
@@ -234,7 +234,7 @@ class Disciple_Tools_Custom_Lists_Tab
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
         if( is_wp_error( $site_custom_lists ) ) {
-            print $site_custom_lists->get_error_message();
+            print esc_html( $site_custom_lists->get_error_message() );
         }
         $sources = $site_custom_lists[ 'sources' ];
         foreach( $sources as $source ) {
@@ -275,7 +275,7 @@ class Disciple_Tools_Custom_Lists_Tab
             // Process current fields submitted
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
             if( is_wp_error( $site_custom_lists ) ) {
-                print $site_custom_lists->get_error_message();
+                print esc_html( $site_custom_lists->get_error_message() );
             }
 
             foreach( $site_custom_lists[ 'sources' ] as $key => $value ) {
