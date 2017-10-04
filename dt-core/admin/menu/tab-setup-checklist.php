@@ -172,7 +172,7 @@ class Disciple_Tools_Setup_Steps_Tab
                                         <!-- box -->
                                         <table class="widefat striped">
                                             <thead>
-                                            <th>Intall & Configure Email Service</th>
+                                            <th>Install & Configure Email Service</th>
                                             <th width="20px">Installed</th>
                                             </thead>
                                             <tbody>

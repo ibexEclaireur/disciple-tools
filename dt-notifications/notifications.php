@@ -279,38 +279,33 @@ class Disciple_Tools_Notifications
     }
 
     /**
-     * @param int $limit
-     * @param int $offset
+     * @param bool $all
+     * @param int  $page
      *
      * @return array
      */
-    public static function get_notifications( int $limit = 50, int $offset = 0 )
+    public static function get_notifications( bool $all, int $page, int $limit )
     {
         global $wpdb;
 
-        if( empty( $limit ) ) {
-            $limit = 50;
-        }
-
-        if( empty( $offset ) ) {
-            $offset = 0;
+        $all_where = '';
+        if( !$all ) {
+            $all_where = " AND is_new = '1'";
         }
 
         $user_id = get_current_user_id();
 
         $result = $wpdb->get_results( $wpdb->prepare(
-            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d ORDER BY date_notified DESC LIMIT %d OFFSET %d", // @codingStandardsIgnoreLine
+            "SELECT * FROM `$wpdb->dt_notifications` WHERE user_id = %d $all_where ORDER BY date_notified DESC LIMIT %d OFFSET %d", // @codingStandardsIgnoreLine
             $user_id,
             $limit,
-            $offset
-        ),ARRAY_A );
-
+            $page
+        ), ARRAY_A );
 
         if( $result ) {
 
             // user friendly timestamp
             foreach( $result as $key => $value ) {
-
                 $result[ $key ][ 'pretty_time' ] = self::pretty_timestamp( $value[ 'date_notified' ] );
             }
 
@@ -436,13 +431,13 @@ class Disciple_Tools_Notifications
      * @param $type
      * @param $user_id
      */
-    public static function send_email_notification( $type, $user_id ) {
+    public static function send_email_notification( $type, $user_id )
+    {
         // check if type of notification is turned on for user
 
         // call template for notification
 
         // send email
 
-        
     }
 }
