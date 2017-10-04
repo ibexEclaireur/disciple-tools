@@ -80,7 +80,7 @@ class Disciple_Tools_Notifications_Endpoints
         );
 
         register_rest_route(
-            $namespace, '/notifications/(?P<user_id>\d+)/get_notifications', [
+            $namespace, '/notifications/get_notifications', [
                 [
                     'methods'  => WP_REST_Server::CREATABLE,
                     'callback' => [ $this, 'get_notifications' ],
@@ -96,6 +96,7 @@ class Disciple_Tools_Notifications_Endpoints
                 ],
             ]
         );
+
     }
 
     /**
@@ -123,7 +124,7 @@ class Disciple_Tools_Notifications_Endpoints
     }
 
     /**
-     * Get tract from submitted address
+     * Mark all viewed
      *
      * @param  WP_REST_Request $request
      *
@@ -147,7 +148,7 @@ class Disciple_Tools_Notifications_Endpoints
     }
 
     /**
-     * Get tract from submitted address
+     * Get notifications
      *
      * @param  WP_REST_Request $request
      *
@@ -158,22 +159,20 @@ class Disciple_Tools_Notifications_Endpoints
     public function get_notifications( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'user_id' ] ) ) {
-            $result = Disciple_Tools_Notifications::get_notifications( $params );
-            if( $result[ "status" ] ) {
-                return $result[ 'result' ];
-            } else {
-                return new WP_Error( "get_user_notification_results", $result[ "message" ], [ 'status' => 204 ] );
-            }
+        $limit = ( isset( $params[ 'limit' ] ) ? (int) $params[ 'limit' ] : 50 );
+        $offset = ( isset( $params[ 'offset' ] ) ? (int) $params[ 'offset' ] : 0 );
+
+        $result = Disciple_Tools_Notifications::get_notifications( $limit, $offset );
+
+        if( $result[ 'status' ] ) {
+            return $result[ 'result' ];
         } else {
-            return new WP_Error( "get_user_notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
+            return new WP_Error( "get_user_notification_results", $result[ "message" ], [ 'status' => 204 ] );
         }
     }
 
     /**
      * Get tract from submitted address
-     *
-     * @param  WP_REST_Request $request
      *
      * @access public
      * @since  0.1
