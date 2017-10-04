@@ -97,6 +97,12 @@ add_action( 'plugins_loaded', 'dt_plugins_loaded' );
 function dt_plugins_loaded()
 {
     Disciple_Tools::instance();
+
+    /* We want to make sure migrations are run on plugin updates. The only way
+     * to do this is through the "plugins_loaded" hook. See
+     * https://www.sitepoint.com/wordpress-plugin-updates-right-way/ */
+    require_once( dirname( __FILE__ ) . '/dt-core/admin/class-migration-engine.php' );
+    Disciple_Tools_Migration_Engine::migrate( Disciple_Tools()->migration_number );
 }
 
 /**
