@@ -49,6 +49,11 @@ if( version_compare( phpversion(), '7.0', '<' ) ) {
 }
 
 /**
+ * Included WordPress plugins that are dependencies
+ */
+require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin
+
+/**
  * Activation Hook
  */
 function disciple_tools_activate( $network_wide )
@@ -435,10 +440,9 @@ class Disciple_Tools
         $this->notification_endpoints = Disciple_Tools_Notifications_Endpoints::instance();
 
         /**
-         * Post-to-Post Library
+         * Post-to-Post configuration
          */
         require_once( 'dt-core/config-p2p.php' );// Creates the post to post relationship between the post type tables.
-        require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P library/plugin
 
         // Custom Metaboxes
         require_once( 'dt-core/admin/metaboxes/box-address.php' ); // used by both theme and wp-admin
