@@ -210,7 +210,7 @@ function disciple_tools_get_users_of_group( $args = [] )
     );
 
     // Get user IDs in group
-    $term = wpcom_vip_get_term_by( $r[ 'term_by' ], $r[ 'term' ], $r[ 'taxonomy' ] );
+    $term = get_term_by( $r[ 'term_by' ], $r[ 'term' ], $r[ 'taxonomy' ] );
     $user_ids = get_objects_in_term( $term->term_id, $r[ 'taxonomy' ] );
 
     // Bail if no users in this term
