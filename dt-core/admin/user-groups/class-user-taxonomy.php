@@ -65,13 +65,8 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
          * @param array  $args
          * @param array  $labels
          */
-        public function __construct( $taxonomy = '', $slug = '', $args = [], $labels = [] )
+        public function __construct( string $taxonomy, string $slug = '', array $args = [], array $labels = [] )
         {
-
-            // Bail if no taxonomy is passed
-            if( empty( $taxonomy ) ) {
-                return;
-            }
 
             /**
              * Class Variables
