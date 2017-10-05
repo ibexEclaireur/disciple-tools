@@ -56,32 +56,6 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         public $labels = [];
 
         /**
-         * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
-         *
-         * @var    object
-         * @access private
-         * @since  0.1
-         */
-        private static $_instance = null;
-
-        /**
-         * Main Disciple_Tools_Admin_Menus Instance
-         * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
-         *
-         * @since  0.1
-         * @static
-         * @return Disciple_Tools_User_Taxonomy instance
-         */
-        public static function instance()
-        {
-            if( is_null( self::$_instance ) ) {
-                self::$_instance = new self();
-            }
-
-            return self::$_instance;
-        } // End instance()
-
-        /**
          * Main constructor
          *
          * @since 0.1.0
@@ -91,13 +65,8 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
          * @param array  $args
          * @param array  $labels
          */
-        public function __construct( $taxonomy = '', $slug = '', $args = [], $labels = [] )
+        public function __construct( string $taxonomy, string $slug = '', array $args = [], array $labels = [] )
         {
-
-            // Bail if no taxonomy is passed
-            if( empty( $taxonomy ) ) {
-                return;
-            }
 
             /**
              * Class Variables
