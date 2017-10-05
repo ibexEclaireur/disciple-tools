@@ -159,15 +159,15 @@ class Disciple_Tools_Notifications_Endpoints
     public function get_notifications( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        $limit = ( isset( $params[ 'limit' ] ) ? (int) $params[ 'limit' ] : 50 );
-        $offset = ( isset( $params[ 'offset' ] ) ? (int) $params[ 'offset' ] : 0 );
-
-        $result = Disciple_Tools_Notifications::get_notifications( $limit, $offset );
-
-        if( $result[ 'status' ] ) {
-            return $result[ 'result' ];
+        if( isset( $params[ 'all' ] ) && isset( $params[ 'page' ] ) && isset( $params[ 'limit' ] ) ) {
+            $result = Disciple_Tools_Notifications::get_notifications( $params[ 'all' ], $params[ 'page' ], $params[ 'limit' ] );
+            if( $result[ 'status' ] ) {
+                return $result[ 'result' ];
+            } else {
+                return new WP_Error( "get_user_notification_results", $result[ "message" ], [ 'status' => 204 ] );
+            }
         } else {
-            return new WP_Error( "get_user_notification_results", $result[ "message" ], [ 'status' => 204 ] );
+            return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
         }
     }
 
