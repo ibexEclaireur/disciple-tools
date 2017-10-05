@@ -311,7 +311,6 @@ class Disciple_Tools
          * User Groups & Multi Roles
          */
         require_once( 'dt-core/admin/user-groups/class-user-taxonomy.php' );
-        $this->user_tax = Disciple_Tools_User_Taxonomy::instance();
         require_once( 'dt-core/admin/user-groups/user-groups-taxonomies.php' );
         require_once( 'dt-core/admin/multi-role/multi-role.php' );
         $this->multi = Disciple_Tools_Multi_Roles::instance();
