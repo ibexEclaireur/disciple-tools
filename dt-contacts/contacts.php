@@ -137,6 +137,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         $defaults = [
             "overall_status" => "unassigned",
             "seeker_path"    => "none",
+            "assigned_to"    => sprintf( "user-%d", get_current_user_id() ),
         ];
         $fields = array_merge( $defaults, $fields );
 
