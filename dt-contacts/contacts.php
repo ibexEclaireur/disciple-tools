@@ -134,11 +134,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
         }
 
+        $current_roles = wp_get_current_user()->roles;
+
         $defaults = [
-            "overall_status" => "unassigned",
             "seeker_path"    => "none",
             "assigned_to"    => sprintf( "user-%d", get_current_user_id() ),
         ];
+        if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
+            $defaults["overall_status"] = "unassigned";
+        } else if (in_array( "multiplier", $current_roles, true ) ) {
+            $defaults["overall_status"] = "active";
+        } else {
+            $default["overall_status"] = "unassigned";
+        }
+
         $fields = array_merge( $defaults, $fields );
 
         $title = $fields[ "title" ];
