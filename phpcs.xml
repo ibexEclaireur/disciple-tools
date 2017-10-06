@@ -27,10 +27,7 @@
 
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
-  <exclude-pattern>dt-progress/*</exclude-pattern>
-  <exclude-pattern>dt-resources/*</exclude-pattern>
-  <exclude-pattern>dt-statistics/*</exclude-pattern>
-  <exclude-pattern>disciple-tools.php</exclude-pattern>
+  <exclude-pattern>dt-statistics/class-page-factory.php</exclude-pattern>
   <exclude-pattern>dt-core/integrations/class-facebook-integration.php</exclude-pattern>
   <exclude-pattern>dt-core/admin/user-groups/user-groups-taxonomies.php</exclude-pattern>
   <exclude-pattern>dt-core/admin/user-groups/class-user-taxonomy.php</exclude-pattern>

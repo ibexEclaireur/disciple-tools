@@ -91,70 +91,67 @@ class Disciple_Tools_Funnel_Reports {
 
 
 
-        // Build html
-        $html = '
-			<table class="widefat striped ">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Progress</th>
+        ?>
+        <table class="widefat striped ">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Progress</th>
 
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Prayers Network</td>
-								<td>'.$mailchimp_subscribers.'</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Prayers Network</td>
+                    <td><?php echo esc_html( $mailchimp_subscribers ); ?></td>
 
-							</tr>
-							<tr>
-								<td>Social Engagement</td>
-								<td>'.$facebook.'</td>
+                </tr>
+                <tr>
+                    <td>Social Engagement</td>
+                    <td><?php echo esc_html( $facebook ); ?></td>
 
-							</tr>
-							<tr>
-								<td>Website Visitors</td>
-								<td>'.$websites.'</td>
+                </tr>
+                <tr>
+                    <td>Website Visitors</td>
+                    <td><?php echo esc_html( $websites ); ?></td>
 
-							</tr>
-							<tr>
-								<td>New Contacts</td>
-								<td>'.$new_contacts.'</td>
-							</tr>
-							<tr>
-								<td>Contact Attempted</td>
-								<td>'.$contacts_attempted.'</td>
-							</tr>
-							<tr>
-								<td>Contact Established</td>
-								<td>'.$contacts_established.'</td>
-							</tr>
-							<tr>
-								<td>First Meeting Complete</td>
-								<td>'.$first_meetings.'</td>
-							</tr>
-							<tr>
-								<td>Baptisms</td>
-								<td>'.$baptisms.'</td>
-							</tr>
-							<tr>
-								<td>Baptizers</td>
-								<td>'.$baptizers.'</td>
-							</tr>
-							<tr>
-								<td>Active Churches</td>
-								<td>'.$active_churches.'</td>
-							</tr>
-							<tr>
-								<td>Church Planters</td>
-								<td>'.$church_planters.'</td>
-							</tr>
+                </tr>
+                <tr>
+                    <td>New Contacts</td>
+                    <td><?php echo esc_html( $new_contacts ); ?></td>
+                </tr>
+                <tr>
+                    <td>Contact Attempted</td>
+                    <td><?php echo esc_html( $contacts_attempted ); ?></td>
+                </tr>
+                <tr>
+                    <td>Contact Established</td>
+                    <td><?php echo esc_html( $contacts_established ); ?></td>
+                </tr>
+                <tr>
+                    <td>First Meeting Complete</td>
+                    <td><?php echo esc_html( $first_meetings ); ?></td>
+                </tr>
+                <tr>
+                    <td>Baptisms</td>
+                    <td><?php echo esc_html( $baptisms ); ?></td>
+                </tr>
+                <tr>
+                    <td>Baptizers</td>
+                    <td><?php echo esc_html( $baptizers ); ?></td>
+                </tr>
+                <tr>
+                    <td>Active Churches</td>
+                    <td><?php echo esc_html( $active_churches ); ?></td>
+                </tr>
+                <tr>
+                    <td>Church Planters</td>
+                    <td><?php echo esc_html( $church_planters ); ?></td>
+                </tr>
 
-						</tbody>
-					</table>
-			';
-
-        echo $html;
+            </tbody>
+        </table>
+        <?php
     }
 
     /**
@@ -199,112 +196,110 @@ class Disciple_Tools_Funnel_Reports {
 
 
 
-        // Build HTML of widget
-        $html = '
-			<table class="widefat striped ">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Count</th>
-								<th>Name</th>
-								<th>Count</th>
-							</tr>
-						</thead>
-						<tbody>
-						    <tr>
-								<td><strong>SEEKER MILESTONES</strong></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Published Contacts / New Inquirers</td>
-								<td>'. $contacts_count->publish .'</td>
-								<td>Contact Established</td>
-								<td>'. $contact_established .'</td>
-							</tr>
-							<tr>
-							    <td>Unassigned</td>
-								<td>'. $unassigned .'</td>
-								<td>Meeting Scheduled</td>
-								<td>'. $meeting_scheduled .'</td>
-							</tr>
-							<tr>
-							    <td>Assigned Inquirers</td>
-								<td>'. $assigned_inquirers .'</td>
-								<td>First Meeting Complete</td>
-								<td>'. $first_meeting_complete .'</td>
-							</tr>
-							<tr>
-							    <td>Active</td>
-								<td>'. $active_inquirers .'</td>
-							    <td>Ongoing Meetings</td>
-								<td>'. $ongoing_meetings .'</td>
-							</tr>
-							<tr>
-							    <td>Contact Attempted</td>
-								<td>'. $contact_attempted .'</td>
-							    <td></td>
-								<td></td>
-							</tr>
-						    <tr>
-								<th><strong>HAS AT LEAST</strong></th>
-								<td></td>
-								<th><strong>GENERATIONS</strong></th>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has at least 1 disciple</td>
-								<td>'. $has_at_least_1 .'</td>
-								<td>Zero Gen</td>
-								<td>'. $con_0gen .'</td>
-							</tr>
-							<tr>
-								<td>Has at least 2 disciples</td>
-								<td>'. $has_at_least_2 .'</td>
-								<td>1st Gen</td>
-								<td>'. $con_1gen .'</td>
-							</tr>
-							<tr>
-							    <td>Has more than 2 disciples</td>
-								<td>'. $has_more_than_2 .'</td>
-								<td>2nd Gen</td>
-								<td>'. $con_2gen .'</td>
-							</tr>
-							<tr>
-							    <td><strong>HAS</strong></td>
-								<td></td>
-								<td>3rd Gen</td>
-								<td>'. $con_3gen .'</td>
-							</tr>
-							<tr>
-							    <td>Has No Disciples</td>
-								<td>'. $has_0 .'</td>
-								<td>4th Gen</td>
-								<td>'. $con_4gen .'</td>
-							</tr>
-							<tr>
-								<td>Has 1 Disciple</td>
-								<td>'. $has_1 .'</td>
-								<td>5th Gen</td>
-								<td>'. $con_5gen .'</td>
-							</tr>
-							<tr>
-								<td>Has 2 Disciples</td>
-								<td>'. $has_2 .'</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has 3 Disciples</td>
-								<td>'. $has_3 .'</td>
-								<td></td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
-			';
-        echo $html;
+        ?>
+        <table class="widefat striped ">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Count</th>
+                    <th>Name</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>SEEKER MILESTONES</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Published Contacts / New Inquirers</td>
+                    <td><?php echo esc_html( $contacts_count->publish ); ?></td>
+                    <td>Contact Established</td>
+                    <td><?php echo esc_html( $contact_established ); ?></td>
+                </tr>
+                <tr>
+                    <td>Unassigned</td>
+                    <td><?php echo esc_html( $unassigned ); ?></td>
+                    <td>Meeting Scheduled</td>
+                    <td><?php echo esc_html( $meeting_scheduled ); ?></td>
+                </tr>
+                <tr>
+                    <td>Assigned Inquirers</td>
+                    <td><?php echo esc_html( $assigned_inquirers ); ?></td>
+                    <td>First Meeting Complete</td>
+                    <td><?php echo esc_html( $first_meeting_complete ); ?></td>
+                </tr>
+                <tr>
+                    <td>Active</td>
+                    <td><?php echo esc_html( $active_inquirers ); ?></td>
+                    <td>Ongoing Meetings</td>
+                    <td><?php echo esc_html( $ongoing_meetings ); ?></td>
+                </tr>
+                <tr>
+                    <td>Contact Attempted</td>
+                    <td><?php echo esc_html( $contact_attempted ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <th><strong>HAS AT LEAST</strong></th>
+                    <td></td>
+                    <th><strong>GENERATIONS</strong></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has at least 1 disciple</td>
+                    <td><?php echo esc_html( $has_at_least_1 ); ?></td>
+                    <td>Zero Gen</td>
+                    <td><?php echo esc_html( $con_0gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has at least 2 disciples</td>
+                    <td><?php echo esc_html( $has_at_least_2 ); ?></td>
+                    <td>1st Gen</td>
+                    <td><?php echo esc_html( $con_1gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has more than 2 disciples</td>
+                    <td><?php echo esc_html( $has_more_than_2 ); ?></td>
+                    <td>2nd Gen</td>
+                    <td><?php echo esc_html( $con_2gen ); ?></td>
+                </tr>
+                <tr>
+                    <td><strong>HAS</strong></td>
+                    <td></td>
+                    <td>3rd Gen</td>
+                    <td><?php echo esc_html( $con_3gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has No Disciples</td>
+                    <td><?php echo esc_html( $has_0 ); ?></td>
+                    <td>4th Gen</td>
+                    <td><?php echo esc_html( $con_4gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has 1 Disciple</td>
+                    <td><?php echo esc_html( $has_1 ); ?></td>
+                    <td>5th Gen</td>
+                    <td><?php echo esc_html( $con_5gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has 2 Disciples</td>
+                    <td><?php echo esc_html( $has_2 ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has 3 Disciples</td>
+                    <td><?php echo esc_html( $has_3 ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <?php
     }
 
     /**
@@ -337,95 +332,93 @@ class Disciple_Tools_Funnel_Reports {
         $active_churches = Disciple_Tools()->counter->groups_meta_counter( 'type', 'Church' );
 
 
-        // Build HTML of widget
-        $html = '
-			<table class="widefat striped ">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Count</th>
-								<th>Name</th>
-								<th>Count</th>
-							</tr>
-						</thead>
-						<tbody>
-						    <tr>
-								<th><strong>TOTALS</strong></th>
-								<td></td>
-								<td><strong>GENERATIONS</strong></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>2x2 or DBS Groups</td>
-								<td>'. $dbs .'</td>
-								<td>Zero Gen (has no record of being planted by another group)</td>
-								<td>'.$gr_0gen.'</td>
-							</tr>
-							<tr>
-								<td>Active Churches</td>
-								<td>'. $active_churches .'</td>
-								<td>1st Gen</td>
-								<td>'.$gr_1gen.'</td>
-							</tr>
-						    <tr>
-								<th><strong>HAS AT LEAST</strong></th>
-								<td></td>
-								<td>2nd Gen</td>
-								<td>'.$gr_2gen.'</td>
-							</tr>
-							<tr>
-								<td>Has planted at least 1 group</td>
-								<td>'. $has_at_least_1 .'</td>
-								<td>3rd Gen</td>
-								<td>'. $gr_3gen .'</td>
-							</tr>
-							<tr>
-								<td>Has planted at least 2 groups</td>
-								<td>'. $has_at_least_2 .'</td>
-								<td>4th Gen</td>
-								<td>'. $gr_4gen .'</td>
-							</tr>
-							<tr>
-								<td>Has planted at least 3 groups</td>
-								<td>'. $has_more_than_2 .'</td>
-								<td></td>
-								<td></td>
-							</tr>
-						    <tr>
-								<td><strong>HAS</strong></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has Not Planted Another Group</td>
-								<td>'. $has_0 .'</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has Planted 1 Group</td>
-								<td>'. $has_1 .'</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has Planted 2 Groups</td>
-								<td>'. $has_2 .'</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has Planted 3 Groups</td>
-								<td>'. $has_3 .'</td>
-								<td></td>
-								<td></td>
-							</tr>
+        ?>
+        <table class="widefat striped ">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Count</th>
+                    <th>Name</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th><strong>TOTALS</strong></th>
+                    <td></td>
+                    <td><strong>GENERATIONS</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>2x2 or DBS Groups</td>
+                    <td><?php echo esc_html( $dbs ); ?></td>
+                    <td>Zero Gen (has no record of being planted by another group)</td>
+                    <td><?php echo esc_html( $gr_0gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Active Churches</td>
+                    <td><?php echo esc_html( $active_churches ); ?></td>
+                    <td>1st Gen</td>
+                    <td><?php echo esc_html( $gr_1gen ); ?></td>
+                </tr>
+                <tr>
+                    <th><strong>HAS AT LEAST</strong></th>
+                    <td></td>
+                    <td>2nd Gen</td>
+                    <td><?php echo esc_html( $gr_2gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has planted at least 1 group</td>
+                    <td><?php echo esc_html( $has_at_least_1 ); ?></td>
+                    <td>3rd Gen</td>
+                    <td><?php echo esc_html( $gr_3gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has planted at least 2 groups</td>
+                    <td><?php echo esc_html( $has_at_least_2 ); ?></td>
+                    <td>4th Gen</td>
+                    <td><?php echo esc_html( $gr_4gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has planted at least 3 groups</td>
+                    <td><?php echo esc_html( $has_more_than_2 ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>HAS</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has Not Planted Another Group</td>
+                    <td><?php echo esc_html( $has_0 ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has Planted 1 Group</td>
+                    <td><?php echo esc_html( $has_1 ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has Planted 2 Groups</td>
+                    <td><?php echo esc_html( $has_2 ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has Planted 3 Groups</td>
+                    <td><?php echo esc_html( $has_3 ); ?></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-						</tbody>
-					</table>
-			';
-        echo $html;
+            </tbody>
+        </table>
+        <?php
     }
 
     /**
@@ -459,104 +452,101 @@ class Disciple_Tools_Funnel_Reports {
         $baptizers = Disciple_Tools()->counter->get_baptisms( 'baptizers' );
 
 
-        // Build HTML of widget
-        $html = '
-			<table class="widefat striped ">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Count</th>
+        ?>
+        <table class="widefat striped ">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Count</th>
 
-							</tr>
-						</thead>
-						<tbody>
-						    <tr>
-								<th><strong>TOTALS</strong></th>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Baptisms</td>
-								<td>'. $baptisms .'</td>
-							</tr>
-							<tr>
-								<td>Baptizers</td>
-								<td>'. $baptizers .'</td>
-							</tr>
-							<tr>
-								<th><strong>HAS AT LEAST</strong></th>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has baptized at least 1 disciple</td>
-								<td>'. $has_at_least_1 .'</td>
-							</tr>
-							<tr>
-								<td>Has baptized at least 2 disciples</td>
-								<td>'. $has_at_least_2 .'</td>
-							</tr>
-							<tr>
-								<td>Has baptized more than 2 disciples</td>
-								<td>'. $has_more_than_2 .'</td>
-							</tr>
-							<tr>
-								<td><strong>HAS</strong></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Has not baptized anyone</td>
-								<td>'. $has_0 .'</td>
-							</tr>
-							<tr>
-								<td>Has baptized 1</td>
-								<td>'. $has_1 .'</td>
-							</tr>
-							<tr>
-								<td>Has baptized 2</td>
-								<td>'. $has_2 .'</td>
-							</tr>
-							<tr>
-								<td>Has baptized 3</td>
-								<td>'. $has_3 .'</td>
-							</tr>
-							<tr>
-								<th><strong>BAPTISM GENERATIONS</strong></th>
-								<td></td>
-							</tr>
-							<tr>
-								<td>Zero Gen</td>
-								<td>'. $con_0gen .'</td>
-							</tr>
-							<tr>
-								<td>1st Gen</td>
-								<td>'. $con_1gen .'</td>
-							</tr>
-							<tr>
-								<td>2nd Gen</td>
-								<td>'. $con_2gen .'</td>
-							</tr>
-							<tr>
-								<td>3rd Gen</td>
-								<td>'. $con_3gen .'</td>
-							</tr>
-							<tr>
-								<td>4th Gen</td>
-								<td>'. $con_4gen .'</td>
-							</tr>
-							<tr>
-								<td>5th Gen</td>
-								<td>'. $con_5gen .'</td>
-							</tr>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th><strong>TOTALS</strong></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Baptisms</td>
+                    <td><?php echo esc_html( $baptisms ); ?></td>
+                </tr>
+                <tr>
+                    <td>Baptizers</td>
+                    <td><?php echo esc_html( $baptizers ); ?></td>
+                </tr>
+                <tr>
+                    <th><strong>HAS AT LEAST</strong></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has baptized at least 1 disciple</td>
+                    <td><?php echo esc_html( $has_at_least_1 ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has baptized at least 2 disciples</td>
+                    <td><?php echo esc_html( $has_at_least_2 ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has baptized more than 2 disciples</td>
+                    <td><?php echo esc_html( $has_more_than_2 ); ?></td>
+                </tr>
+                <tr>
+                    <td><strong>HAS</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Has not baptized anyone</td>
+                    <td><?php echo esc_html( $has_0 ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has baptized 1</td>
+                    <td><?php echo esc_html( $has_1 ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has baptized 2</td>
+                    <td><?php echo esc_html( $has_2 ); ?></td>
+                </tr>
+                <tr>
+                    <td>Has baptized 3</td>
+                    <td><?php echo esc_html( $has_3 ); ?></td>
+                </tr>
+                <tr>
+                    <th><strong>BAPTISM GENERATIONS</strong></th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Zero Gen</td>
+                    <td><?php echo esc_html( $con_0gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>1st Gen</td>
+                    <td><?php echo esc_html( $con_1gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>2nd Gen</td>
+                    <td><?php echo esc_html( $con_2gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>3rd Gen</td>
+                    <td><?php echo esc_html( $con_3gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>4th Gen</td>
+                    <td><?php echo esc_html( $con_4gen ); ?></td>
+                </tr>
+                <tr>
+                    <td>5th Gen</td>
+                    <td><?php echo esc_html( $con_5gen ); ?></td>
+                </tr>
 
-						</tbody>
-					</table>
-			';
-        echo $html;
+            </tbody>
+        </table>
+        <?php
     }
 
 
     public function page_notes () {
-        $html = '
-
+        ?>
             <p>The funnel stats report summarizes the contacts and milestones within the disciple making movement project.</p>
             <hr>
             <p>Funnel stats box highlights the critical path of seekers through the system.</p>
@@ -565,10 +555,7 @@ class Disciple_Tools_Funnel_Reports {
             <hr>
             <p>Contacts stats box highlights the current status of contacts.</p>
             <p><a href="/wp-admin/options-general.php?page=dtsample&tab=report">Sample Reports Page</a><hr></p>
-
-        ';
-        echo $html;
-
+        <?php
     }
 
 }

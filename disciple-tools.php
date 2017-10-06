@@ -107,17 +107,22 @@ function dt_plugins_loaded()
      * to do this is through the "plugins_loaded" hook. See
      * https://www.sitepoint.com/wordpress-plugin-updates-right-way/ */
     require_once( dirname( __FILE__ ) . '/dt-core/admin/class-migration-engine.php' );
-    Disciple_Tools_Migration_Engine::migrate( Disciple_Tools()->migration_number );
+    Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
 }
 
 /**
  * Returns the main instance of Disciple_Tools to prevent the need to use globals.
+ *
+ * I'm not sure why this called Disciple_Tools capitalized, maybe one day we
+ * can change it to disciple_tools to match convention for function names and
+ * to avoid conflating the function with the class.
  *
  * @since  0.1
  * @return object Disciple_Tools
  */
 
 // Creates the instance
+// @codingStandardsIgnoreLine TODO: rename this function to disciple_tools
 function Disciple_Tools()
 {
     return Disciple_Tools::instance();

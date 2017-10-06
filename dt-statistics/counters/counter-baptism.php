@@ -29,18 +29,15 @@ class Disciple_Tools_Counter_Baptism  {
     public function get_number_of_baptisms () {
         global $wpdb;
 
-        // Build full query
-        $sql =
+        $results = $wpdb->get_var(
             "SELECT
                 count(`p2p_id`)
             FROM
                 `$wpdb->p2p`
             WHERE
                 `p2p_type` = 'baptizer_to_baptized'
-            ";
-
-        // query results
-        $results = $wpdb->get_var( $sql );
+            "
+        );
 
         return $results;
     }
@@ -54,17 +51,14 @@ class Disciple_Tools_Counter_Baptism  {
     public function get_number_of_baptizers () {
         global $wpdb;
 
-        // Build full query
-        $sql =
+        $results = $wpdb->get_var(
             "SELECT
                 COUNT(DISTINCT `p2p_to`)
             FROM
                 `$wpdb->p2p`
             WHERE
-                `p2p_type` = 'baptizer_to_baptized'";
-
-        // query results
-        $results = $wpdb->get_var( $sql );
+                `p2p_type` = 'baptizer_to_baptized'"
+        );
 
         return $results;
     }
