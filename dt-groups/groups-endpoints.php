@@ -127,6 +127,13 @@ class Disciple_Tools_Groups_Endpoints
                 "callback" => [ $this, 'add_shared' ],
             ]
         );
+
+        register_rest_route(
+            $this->namespace, '/group/create', [
+                "methods" => "POST",
+                "callback" => [ $this, 'create_group' ],
+            ]
+        );
     }
 
     /**
@@ -402,6 +409,25 @@ class Disciple_Tools_Groups_Endpoints
         } else {
             return new WP_Error( 'add_shared', "Missing a valid group id", [ 'status' => 400 ] );
         }
+    }
+
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return false|int|\WP_Error|\WP_REST_Response
+     */
+    public function create_group( WP_REST_Request $request )
+    {
+        $fields = $request->get_json_params();
+        $result = Disciple_Tools_Groups::create_group( $fields, true );
+        if ( is_wp_error( $result ) ) {
+            return $result;
+        }
+        return array(
+            "post_id" => (int) $result,
+            "permalink" => get_post_permalink( $result ),
+        );
     }
 
 }

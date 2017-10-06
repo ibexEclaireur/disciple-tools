@@ -397,4 +397,35 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
         return self::add_shared( 'groups', $post_id, $user_id, $meta );
     }
 
+    /**
+     * Create a new group
+     *
+     * @param  array     $fields , the new group's data
+     * @param  bool|true $check_permissions
+     * @return int | WP_Error
+     */
+    public static function create_group( array $fields = [], $check_permissions = true )
+    {
+        if ( $check_permissions && ! current_user_can( 'create_groups' ) ) {
+            return new WP_Error( __FUNCTION__, __( "You may not public a group" ), [ 'status' => 403 ] );
+        }
+
+        if ( ! isset( $fields [ "title" ] ) ) {
+            return new WP_Error( __FUNCTION__, __( "Group needs a title" ), [ 'fields' => $fields ] );
+        }
+
+        $post = [
+            "post_title" => $fields[ "title" ],
+            "post_type" => "groups",
+            "post_status" => "publish",
+            "meta_input" => [
+                "group_status" => "no_value",
+                "assigned_to" => sprintf( "user-%d", get_current_user_id() ),
+            ],
+        ];
+
+        $post_id = wp_insert_post( $post );
+        return $post_id;
+    }
+
 }
