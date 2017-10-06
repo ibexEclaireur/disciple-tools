@@ -182,7 +182,7 @@ class Disciple_Tools
      * @since  0.1
      */
     public $plugin_path;
-
+    public $metrics;
     /**
      * Activation of roles.
      *
@@ -418,11 +418,16 @@ class Disciple_Tools
         require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
 
         /**
-         * dt-statistics
+         * dt-metrics
          */
-        require_once( 'dt-statistics/class-counter-factory.php' );
+        require_once( 'dt-metrics/class-counter-factory.php' );
         $this->counter = Disciple_Tools_Counter_Factory::instance();
-        require_once( 'dt-statistics/chart-template.php' );
+        require_once( 'dt-metrics/class-goals.php' );
+        require_once( 'dt-metrics/metrics.php' );
+        $this->metrics = Disciple_Tools_Metrics::instance();
+        require_once( 'dt-metrics/metrics-template.php' );
+        require_once( 'dt-metrics/metrics-endpoints.php' );
+        new Disciple_Tools_Metrics_Endpoints();
 
         /**
          * dt-users
@@ -503,13 +508,6 @@ class Disciple_Tools
             // Dashboard
             require_once( 'dt-core/admin/config-dashboard.php' );
             $this->config_dashboard = Disciple_Tools_Dashboard::instance();
-            require_once( 'dt-statistics/class-page-factory.php' ); // Factory class for page building
-            require_once( 'dt-statistics/reports-funnel.php' );
-            $this->reports_funnel = Disciple_Tools_Funnel_Reports::instance();
-            require_once( 'dt-statistics/reports-media.php' );
-            $this->reports_media = Disciple_Tools_Media_Reports::instance();
-            require_once( 'dt-statistics/reports-project.php' );
-            $this->reports_project = Disciple_Tools_Project_Reports::instance();
 
             // Contacts
             require_once( 'dt-contacts/contacts-config.php' );
@@ -529,7 +527,6 @@ class Disciple_Tools
             $this->people_groups_admin = Disciple_Tools_People_Groups_Admin_Menu::instance();
 
             // Assets
-
             // Progress
 
             // Notifications
@@ -596,5 +593,3 @@ class Disciple_Tools
     } // End __wakeup()
 
 } // End Class
-
-

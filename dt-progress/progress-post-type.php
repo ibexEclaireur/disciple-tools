@@ -269,7 +269,7 @@ class Disciple_Tools_Progress_Post_Type {
             7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
             8 => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
             9 => sprintf(
-                __( '%1$s scheduled for: %3$s. %5$sPreview %2$s%6$s', 'disciple_tools' ),
+                __( '%1$s scheduled for: %3$s. %4$sPreview %2$s%5$s', 'disciple_tools' ),
                 $this->singular,
                 strtolower( $this->singular ),
                 // translators: Publish box date format, see http://php.net/date

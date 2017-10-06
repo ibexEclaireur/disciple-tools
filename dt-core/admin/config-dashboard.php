@@ -85,7 +85,7 @@ final class Disciple_Tools_Dashboard
      */
     public function funnel_stats_widget()
     {
-        Disciple_Tools()->reports_funnel->critical_path_stats(); // prints
+        Disciple_Tools()->metrics->critical_path_stats(); // prints
     }
 
     /**
