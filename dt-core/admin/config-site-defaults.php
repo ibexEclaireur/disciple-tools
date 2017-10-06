@@ -161,6 +161,7 @@ function dt_get_site_options_defaults()
         'add_people_groups' => true,
         'add_assetmapping'  => true,
         'add_prayer'        => true,
+        'add_worker'        => true,
     ];
 
     $fields[ 'clear_data_on_deactivate' ] = false; // todo need to add this option wrapper to the deactivate.php file for table deletes
