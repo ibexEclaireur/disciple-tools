@@ -82,7 +82,7 @@ class Disciple_Tools_Progress_Post_Type {
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
-            if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( $_GET['post_type'] ) == $this->post_type ) {
+            if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) && esc_attr( sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ) == $this->post_type ) {
                 add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                 add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
             }
@@ -98,9 +98,9 @@ class Disciple_Tools_Progress_Post_Type {
      */
     public function register_post_type () {
         $labels = [
-            'name'                     => sprintf( _x( '%s', 'Progress Updates', 'disciple_tools' ), $this->plural ),
-            'singular_name'         => sprintf( _x( '%s', 'Progress Update', 'disciple_tools' ), $this->singular ),
-            'add_new'                 => _x( 'Add New', $this->post_type, 'disciple_tools' ),
+            'name'                     => _x( 'Progress Updates', 'Progress Updates', 'disciple_tools' ),
+            'singular_name'         => _x( 'Progress Update', 'Progress Update', 'disciple_tools' ),
+            'add_new'                 => _x( 'Add New', 'Progress Updates', 'disciple_tools' ),
             'add_new_item'             => sprintf( __( 'Add New %s', 'disciple_tools' ), $this->singular ),
             'edit_item'             => sprintf( __( 'Edit %s', 'disciple_tools' ), $this->singular ),
             'update_item'           => sprintf( __( 'Update %s', 'disciple_tools' ), $this->singular ),
@@ -249,25 +249,36 @@ class Disciple_Tools_Progress_Post_Type {
      * @return array           Modified array.
      */
     public function updated_messages ( $messages ) {
-        global $post, $post_ID;
+        global $post;
 
         $messages[$this->post_type] = [
             0 => '', // Unused. Messages start at index 1.
-            1 => sprintf( __( '%3$s updated. %sView %4$s%s', 'disciple_tools' ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>', $this->singular, strtolower( $this->singular ) ),
+            1 => sprintf(
+                __( '%3$s updated. %1$sView %4$s%2$s', 'disciple_tools' ),
+                '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">',
+                '</a>',
+                $this->singular,
+                strtolower( $this->singular )
+            ),
             2 => __( 'Progress Update updated.', 'disciple_tools' ),
             3 => __( 'Progress Update deleted.', 'disciple_tools' ),
             4 => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
-            5 => isset( $_GET['revision'] ) ? sprintf( __( '%s restored to revision from %s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-            6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>' ),
+            5 => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+            6 => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
             7 => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
-            8 => sprintf( __( '%s submitted. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+            8 => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
             9 => sprintf(
-                __( '%s scheduled for: %1$s. %2$sPreview %s%3$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ),
+                __( '%1$s scheduled for: %3$s. %5$sPreview %2$s%6$s', 'disciple_tools' ),
+                $this->singular,
+                strtolower( $this->singular ),
                 // translators: Publish box date format, see http://php.net/date
-                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ) . '</strong>', '<a target="_blank" href="' . esc_url( get_permalink( $post_ID ) ) . '">', '</a>'
+                '<strong>' . date_i18n( __( 'M j, Y @ G:i' ),
+                strtotime( $post->post_date ) ) . '</strong>',
+                '<a target="_blank" href="' . esc_url( get_permalink( $post->ID ) ) . '">',
+                '</a>'
             ),
-            10 => sprintf( __( '%s draft updated. %sPreview %s%s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ) . '">', '</a>' ),
+            10 => sprintf( __( '%1$s draft updated. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
         ];
 
         return $messages;
@@ -292,7 +303,7 @@ class Disciple_Tools_Progress_Post_Type {
      * @since  0.1
      */
     public function load_progress_info_meta_box () {
-        echo ''. $this->meta_box_content( 'info' );
+        $this->meta_box_content( 'info' ); // prints
     }
 
     /**
@@ -383,7 +394,9 @@ class Disciple_Tools_Progress_Post_Type {
             $html .= '</table>' . "\n";
         }
 
+        // @codingStandardsIgnoreLine
         echo $html;
+        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     } // End meta_box_content()
 
 
@@ -403,11 +416,11 @@ class Disciple_Tools_Progress_Post_Type {
             return $post_id;
         }
 
-        if ( isset( $_POST['dt_' . $this->post_type . '_noonce'] ) && ! wp_verify_nonce( $_POST['dt_' . $this->post_type . '_noonce'], plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
+        if ( isset( $_POST['dt_' . $this->post_type . '_noonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['dt_' . $this->post_type . '_noonce'] ), plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) {
             return $post_id;
         }
 
-        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( $_POST['post_type'] ) ) {
+        if ( isset( $_POST['post_type'] ) && 'page' == esc_attr( sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ) ) {
             if ( ! current_user_can( 'edit_page', $post_id ) ) {
                 return $post_id;
             }
@@ -427,8 +440,11 @@ class Disciple_Tools_Progress_Post_Type {
         $fields = array_keys( $field_data );
 
         foreach ( $fields as $f ) {
+            if (! isset( $_POST[$f] ) ) {
+                continue;
+            }
 
-            ${$f} = strip_tags( trim( $_POST[$f] ) );
+            ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[$f] ) ) ) );
 
             // Escape the URLs.
             if ( 'url' == $field_data[$f]['type'] ) {

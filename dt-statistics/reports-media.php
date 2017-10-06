@@ -64,7 +64,7 @@ class Disciple_Tools_Media_Reports {
 
 
     public function page_notes () {
-        $html = '
+        ?>
             <p>The media stats report summarizes the web and social media properties being used by the project.</p>
             <hr>
             <p>Box 1...</p>
@@ -72,8 +72,7 @@ class Disciple_Tools_Media_Reports {
             <p>Box 2...</p>
             <hr>
             <p>Box 3...</p>
-        ';
-        echo $html;
+        <?php
     }
 
     /**
@@ -83,47 +82,41 @@ class Disciple_Tools_Media_Reports {
      * @access public
      */
     public function content_locations_widget () {
+        ?>
+        <table class="widefat striped ">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Url</th>
+                    <th>Launch Date</th>
 
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Pray4Colorado</th>
+                    <td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+                    <td>Jan 1, 2017</td>
+                </tr>
+                <tr>
+                    <th>Pray4Colorado</th>
+                    <td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+                    <td>Jan 1, 2017</td>
+                </tr>
+                <tr>
+                    <th>Pray4Colorado</th>
+                    <td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+                    <td>Jan 1, 2017</td>
+                </tr>
+                <tr>
+                    <th>Pray4Colorado</th>
+                    <td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
+                    <td>Jan 1, 2017</td>
+                </tr>
 
-
-        // Build html
-        $html = '
-			<table class="widefat striped ">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Url</th>
-								<th>Launch Date</th>
-
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<th>Pray4Colorado</th>
-								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
-								<td>Jan 1, 2017</td>
-							</tr>
-							<tr>
-								<th>Pray4Colorado</th>
-								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
-								<td>Jan 1, 2017</td>
-							</tr>
-							<tr>
-								<th>Pray4Colorado</th>
-								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
-								<td>Jan 1, 2017</td>
-							</tr>
-							<tr>
-								<th>Pray4Colorado</th>
-								<td><a href="https://pray4colorado.org">https://www.pray4colorado.org</a></td>
-								<td>Jan 1, 2017</td>
-							</tr>
-
-						</tbody>
-					</table>
-			';
-
-        echo $html;
+            </tbody>
+        </table>
+        <?php
     }
 
 }

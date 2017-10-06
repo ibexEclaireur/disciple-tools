@@ -87,73 +87,71 @@ class Disciple_Tools_Project_Reports {
 
         $comments_for_dispatcher = 'x';
 
-        // Build HTML of widget
-        $html = '
-			<table class="widefat striped ">
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Progress</th>
+        ?>
+        <table class="widefat striped ">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Progress</th>
 
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>System Users</td>
-								<td>'. $system_users['total_users'] .'</td>
-							</tr>
-							<tr>
-								<td>Dispatchers</td>
-								<td>'. $dispatchers .'</td>
-							</tr>
-							<tr>
-								<td>Marketers</td>
-								<td>'. $marketers .'</td>
-							</tr>
-							<tr>
-								<td>Multipliers</td>
-								<td>'. $multipliers .'</td>
-							</tr>
-							<tr>
-								<td>Multiplier Leaders</td>
-								<td>'. $multiplier_leader .'</td>
-							</tr>
-							<tr>
-								<td>Prayer Supporters</td>
-								<td>'. $prayer_supporters .'</td>
-							</tr>
-							<tr>
-								<td>Project Supporters</td>
-								<td>'. $project_supporters .'</td>
-							</tr>
-							<tr>
-								<td>Registered</td>
-								<td>'. $registered .'</td>
-							</tr>
-							<tr>
-								<td>Monitored Websites</td>
-								<td>'. $monitored_websites .'</td>
-							</tr>
-							<tr>
-								<td>Monitored Facebook</td>
-								<td>'. $monitored_facebook_pages .'</td>
-							</tr>
-							<tr>
-								<td>Comments</td>
-								<td>'. $comments .'</td>
-							</tr>
-							<tr>
-								<td>Comments for @dispatcher</td>
-								<td>'. $comments_for_dispatcher .'</td>
-							</tr>
-						</tbody>
-					</table>
-			';
-        echo $html;
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>System Users</td>
+                    <td><?php echo esc_html( $system_users['total_users'] ); ?></td>
+                </tr>
+                <tr>
+                    <td>Dispatchers</td>
+                    <td><?php echo esc_html( $dispatchers ); ?></td>
+                </tr>
+                <tr>
+                    <td>Marketers</td>
+                    <td><?php echo esc_html( $marketers ); ?></td>
+                </tr>
+                <tr>
+                    <td>Multipliers</td>
+                    <td><?php echo esc_html( $multipliers ); ?></td>
+                </tr>
+                <tr>
+                    <td>Multiplier Leaders</td>
+                    <td><?php echo esc_html( $multiplier_leader ); ?></td>
+                </tr>
+                <tr>
+                    <td>Prayer Supporters</td>
+                    <td><?php echo esc_html( $prayer_supporters ); ?></td>
+                </tr>
+                <tr>
+                    <td>Project Supporters</td>
+                    <td><?php echo esc_html( $project_supporters ); ?></td>
+                </tr>
+                <tr>
+                    <td>Registered</td>
+                    <td><?php echo esc_html( $registered ); ?></td>
+                </tr>
+                <tr>
+                    <td>Monitored Websites</td>
+                    <td><?php echo esc_html( $monitored_websites ); ?></td>
+                </tr>
+                <tr>
+                    <td>Monitored Facebook</td>
+                    <td><?php echo esc_html( $monitored_facebook_pages ); ?></td>
+                </tr>
+                <tr>
+                    <td>Comments</td>
+                    <td><?php echo esc_html( $comments ); ?></td>
+                </tr>
+                <tr>
+                    <td>Comments for @dispatcher</td>
+                    <td><?php echo esc_html( $comments_for_dispatcher ); ?></td>
+                </tr>
+            </tbody>
+        </table>
+        <?php
     }
 
     public function page_notes () {
-        $html = '
+        ?>
             <p>Project stats summarizes the people and activities within the disciple making movement project.</p>
             <ul>
                 <li>
@@ -163,8 +161,7 @@ class Disciple_Tools_Project_Reports {
                     System statistics covers counts of features inside the Disciple Tools system.
                 </li>
             </ul>
-        ';
-        echo $html;
+        <?php
     }
 
 

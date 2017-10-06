@@ -27,10 +27,7 @@
 
   <!-- TODO: remove these exclude-pattern elements, we want to test the entire
        codebase! -->
-  <exclude-pattern>dt-progress/*</exclude-pattern>
-  <exclude-pattern>dt-resources/*</exclude-pattern>
-  <exclude-pattern>dt-statistics/*</exclude-pattern>
-  <exclude-pattern>disciple-tools.php</exclude-pattern>
+  <exclude-pattern>dt-statistics/class-page-factory.php</exclude-pattern>
   <exclude-pattern>dt-core/integrations/class-facebook-integration.php</exclude-pattern>
   <exclude-pattern>dt-core/admin/user-groups/user-groups-taxonomies.php</exclude-pattern>
   <exclude-pattern>dt-core/admin/user-groups/class-user-taxonomy.php</exclude-pattern>
@@ -129,6 +126,7 @@
     <exclude name="Squiz.Commenting.VariableComment.Missing" />
     <exclude name="Squiz.Commenting.VariableComment.MissingVar" />
     <exclude name="Squiz.Commenting.VariableComment.WrongStyle" />
+    <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndFile" />
     <exclude name="Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
     <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
@@ -184,6 +182,7 @@
     <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
     <exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
     <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingAfter" />
+    <exclude name="WordPress.WhiteSpace.OperatorSpacing.SpacingBefore" />
 
   </rule>
 

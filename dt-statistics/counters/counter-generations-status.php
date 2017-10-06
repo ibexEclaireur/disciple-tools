@@ -56,7 +56,15 @@ class Disciple_Tools_Counter_Generations  {
         $full_p2p_array = [];
 
         // Get records from P2P table
-        $p2p_array = $wpdb->get_results( " SELECT p2p_to, p2p_from FROM $wpdb->p2p WHERE p2p_type = '$type'", ARRAY_A );
+        $p2p_array = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                p2p_to, p2p_from
+            FROM
+                `$wpdb->p2p`
+            WHERE
+                p2p_type = %s",
+            $type
+        ), ARRAY_A );
 
         // Prepare arrays of all people involved in discipleship
         $p2p_array_from = array_column( $p2p_array , 'p2p_from' );

@@ -34,7 +34,15 @@ class Disciple_Tools_Counter_Connected  {
 
         // Get values
         $total_contacts = wp_count_posts( $post_type )->publish;
-        $wpdb->get_var( "SELECT DISTINCT p2p_to FROM $wpdb->p2p WHERE p2p_type = '$type'", ARRAY_A );
+        $wpdb->get_var( $wpdb->prepare(
+            "SELECT DISTINCT
+                p2p_to
+            FROM
+                `$wpdb->p2p`
+            WHERE
+                p2p_type = %s",
+            $type
+        ), ARRAY_A );
         $has_disciples = $wpdb->num_rows;
 
         // Subtract total contacts from contacts with disciples
@@ -54,7 +62,15 @@ class Disciple_Tools_Counter_Connected  {
         global $wpdb;
         $i = 0;
 
-        $p2p_array_to = $wpdb->get_results( " SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = '$type'", ARRAY_A );
+        $p2p_array_to = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                p2p_to
+            FROM
+                `$wpdb->p2p`
+            WHERE
+                p2p_type = %s",
+            $type
+        ), ARRAY_A );
         $p2p_distinct = array_unique( $p2p_array_to, SORT_REGULAR );
 
         foreach ($p2p_distinct as $item) {
@@ -78,7 +94,15 @@ class Disciple_Tools_Counter_Connected  {
         global $wpdb;
         $i = 0;
 
-        $p2p_array_to = $wpdb->get_results( " SELECT p2p_to FROM $wpdb->p2p WHERE p2p_type = '$type'", ARRAY_A );
+        $p2p_array_to = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                p2p_to
+            FROM
+                `$wpdb->p2p`
+            WHERE
+                p2p_type = %s",
+            $type
+        ), ARRAY_A );
         $p2p_distinct = array_unique( $p2p_array_to, SORT_REGULAR );
 
         foreach ($p2p_distinct as $item) {
@@ -113,7 +137,8 @@ class Disciple_Tools_Counter_Connected  {
     {
         global $wpdb;
 
-        $sql = $wpdb->prepare( //Select count(DISTINCT p2p_to) as planters from wp_p2p INNER JOIN wp_p2pmeta ON wp_p2p.p2p_id=wp_p2pmeta.p2p_id  where meta_value = 'Planting'
+        //Select count(DISTINCT p2p_to) as planters from wp_p2p INNER JOIN wp_p2pmeta ON wp_p2p.p2p_id=wp_p2pmeta.p2p_id  where meta_value = 'Planting'
+        $results = $wpdb->get_var( $wpdb->prepare(
             "SELECT
                 count(DISTINCT `p2p_to`)
             FROM
@@ -127,10 +152,7 @@ class Disciple_Tools_Counter_Connected  {
                 AND `p2p_type` = %s",
             $meta_value,
             $type
-        );
-
-        // query results
-        $results = $wpdb->get_var( $sql );
+        ) );
 
         return $results;
 
