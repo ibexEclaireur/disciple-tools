@@ -137,7 +137,7 @@ final class Disciple_Tools_Admin_User_Edit {
             $old_roles = (array) $user->roles;
 
             // Sanitize the posted roles.
-            $new_roles = array_map( 'dt_multi_role_sanitize_role', sanitize_text_field( wp_unslash( $_POST['dt_multi_role_user_roles'] ) ) );
+            $new_roles = array_map( 'dt_multi_role_sanitize_role', array_map( 'sanitize_text_field',  wp_unslash( $_POST['dt_multi_role_user_roles'] ) ) );
 
             // Loop through the posted roles.
             foreach ( $new_roles as $new_role ) {
