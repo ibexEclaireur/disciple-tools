@@ -163,7 +163,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         foreach( $matches[ 1 ] as $match ) {
 
             // trim punctuation
-            $match = preg_replace('/\W+/', '', $match);
+            $match = preg_replace( '/\W+/', '', $match );
 
             // get user_id by name match
             $user = get_user_by( 'login', $match );
