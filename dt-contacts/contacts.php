@@ -145,7 +145,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         } else if (in_array( "multiplier", $current_roles, true ) ) {
             $defaults["overall_status"] = "active";
         } else {
-            $default["overall_status"] = "unassigned";
+            $defaults["overall_status"] = "unassigned";
         }
 
         $fields = array_merge( $defaults, $fields );
