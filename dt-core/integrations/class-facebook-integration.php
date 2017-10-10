@@ -634,7 +634,7 @@ class Disciple_Tools_Facebook_Integration {
                 "meta_input" => [
                     "facebook" => $facebook_url,
                     "preferred_contact_method" => "Facebook",
-                    "source_details" => $source
+                    "sources" => $source
                 ],
             ];
             $post_id = wp_insert_post( $post );

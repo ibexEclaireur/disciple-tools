@@ -873,10 +873,10 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'status',
         ];
 
-        $fields[ 'source_details' ] = [
+        $fields[ 'sources' ] = [
             'name'        => __( 'Source Details', 'disciple_tools' ),
             'description' => '',
-            'type'        => 'text',
+            'type'        => 'multi_select',
             'default'     => '',
             'section'     => 'misc',
         ];
