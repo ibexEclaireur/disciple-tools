@@ -287,13 +287,23 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             }
         } else if ($p2p_type === "contacts_to_groups"){
             if ($action == "connected to"){
-                $object_note_to = $p2p_from['post_title'] . ' in group ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' in group ' . $p2p_to['post_title'];
+                $object_note_to = $p2p_from['post_title'] . ' added to group ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' added to group ' . $p2p_to['post_title'];
             } else {
-                $object_note_to = $p2p_from['post_title'] . ' no longer in group ' . $p2p_to['post_title'];
-                $object_note_from = $p2p_from['post_title'] . ' no longer in group ' . $p2p_to['post_title'];
+                $object_note_to = $p2p_from['post_title'] . ' removed from group ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' removed from group ' . $p2p_to['post_title'];
             }
-        } else if( $p2p_type === "contacts_to_contacts"){
+        }
+        else if ($p2p_type === "contacts_to_peoplegroups"){
+            if ($action == "connected to"){
+                $object_note_to = $p2p_from['post_title'] . ' added to people group: ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' added to people group: ' . $p2p_to['post_title'];
+            } else {
+                $object_note_to = $p2p_from['post_title'] . ' removed from people group: ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' removed from people group: ' . $p2p_to['post_title'];
+            }
+        }
+        else if( $p2p_type === "contacts_to_contacts"){
             if ($action === "connected to"){
                 $object_note_to = $p2p_to['post_title'] . ' is coaching ' . $p2p_from['post_title'];
                 $object_note_from= $p2p_from['post_title'] . ' is coached by ' . $p2p_to['post_title'];
