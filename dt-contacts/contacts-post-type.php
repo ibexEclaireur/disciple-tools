@@ -731,6 +731,13 @@ class Disciple_Tools_Contact_Post_Type
         //        }
 
         // Status information section
+        $fields[ 'milestone_reading_bible' ] = [
+            'name'        => __( 'Reading Bible', 'disciple_tools' ),
+            'description' => '',
+            'type'        => 'key_select',
+            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'section'     => 'milestone',
+        ];
         $fields[ 'milestone_belief' ] = [
             'name'        => __( 'States Belief', 'disciple_tools' ),
             'description' => '',
