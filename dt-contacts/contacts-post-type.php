@@ -788,6 +788,14 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'milestone',
         ];
 
+        $fields[ 'baptism_date' ] = [
+            'name'        => __( 'Baptism Date', 'disciple_tools' ),
+            'description' => '',
+            'type'        => 'date',
+            'default'     => date( 'Y-m-d' ),
+            'section'     => 'info',
+        ];
+
         // Misc Information fields
         $fields[ 'bible' ] = [
             'name'        => __( 'Bible', 'disciple_tools' ),
