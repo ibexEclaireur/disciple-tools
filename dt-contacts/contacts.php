@@ -662,6 +662,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     }
+                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
+                    $fields[ $key ] = $value;
                 } else {
                     $fields[ $key ] = $value[ 0 ];
                 }
