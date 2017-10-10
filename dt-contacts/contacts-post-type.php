@@ -731,6 +731,13 @@ class Disciple_Tools_Contact_Post_Type
         //        }
 
         // Status information section
+        $fields[ 'milestone_has_bible' ] = [
+            'name'        => __( 'Has Bible', 'disciple_tools' ),
+            'description' => '',
+            'type'        => 'key_select',
+            'default'     => [ 'no' => __( 'No', 'disciple_tools' ), 'yes' => __( 'Yes', 'disciple_tools' ) ],
+            'section'     => 'milestone',
+        ];
         $fields[ 'milestone_reading_bible' ] = [
             'name'        => __( 'Reading Bible', 'disciple_tools' ),
             'description' => '',
@@ -797,17 +804,15 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         // Misc Information fields
-        $fields[ 'bible' ] = [
-            'name'        => __( 'Bible', 'disciple_tools' ),
+        $fields[ 'bible_mailing' ] = [
+            'name'        => __( 'Bible Mailing', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [
                 'not-set'   => '',
-                'gives'     => __( 'Yes - given by hand', 'disciple_tools' ),
-                'has'       => __( 'Yes - already had one', 'disciple_tools' ),
-                'received'  => __( 'Yes - receipt by mail confirmed', 'disciple_tools' ),
+                'requested' => __( 'Requested', 'disciple_tools' ),
                 'mailed'    => __( 'Bible mailed', 'disciple_tools' ),
-                'requested' => __( 'Needs / Requests Bible', 'disciple_tools' ),
+                'received'  => __( 'Received', 'disciple_tools' ),
             ],
             'section'     => 'misc',
         ];
