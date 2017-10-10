@@ -107,7 +107,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function create_contact( array $fields = [], $check_permissions = true )
     {
         //@TODO search for duplicates
-        //@TODO set defaults
 
         if( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
