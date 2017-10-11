@@ -182,8 +182,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                     $object_note = chop( $object_note, ', ' );
                 }
                 if (strpos( $meta_key, "assigned_to" ) !== false ){
-                    $user = get_user_by( "ID", $object_id );
-                    $object_note = "Assigned to: " . $user->display_name;
+                    $meta_array = explode( '-', $meta_value ); // Separate the type and id
+                    if( isset( $meta_array[ 1 ] ) ) {
+                        $user = get_user_by( "ID", $meta_array[1] );
+                        $object_note = "Assigned to: " . $user->display_name;
+                    }
                 }
                 break;
             case 'groups':
