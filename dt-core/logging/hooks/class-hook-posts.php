@@ -181,6 +181,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                     }
                     $object_note = chop( $object_note, ', ' );
                 }
+                if (strpos( $meta_key, "assigned_to" ) !== false ){
+                    $user = get_user_by( "ID", $object_id );
+                    $object_note = "Assigned to: " . $user->display_name;
+                }
                 break;
             case 'groups':
                 $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
