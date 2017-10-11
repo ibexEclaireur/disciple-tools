@@ -20,6 +20,7 @@ add_action( 'permalink_structure_changed', 'dt_permalink_structure_changed_callb
 add_filter( 'duplicate_comment_id', '__return_false' );
 //allow multiple comments in quick succession
 add_filter( 'comment_flood_filter', '__return_false' );
+add_filter( 'pre_comment_approved' , 'dt_filter_handler' , '99', 2 );
 
 /*********************************************************************************************
  * Functions
@@ -371,4 +372,11 @@ function dt_prepare_user_fields_types_for_input( $type ) {
             return 'text';
             break;
     }
+}
+
+
+function dt_filter_handler( $approved, $commentdata ){
+    // inspect $commentdata to determine approval, disapproval, or spam status
+    //approve all comments.
+    return 1;
 }
