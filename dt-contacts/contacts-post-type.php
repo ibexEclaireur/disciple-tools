@@ -392,6 +392,7 @@ class Disciple_Tools_Contact_Post_Type
                             break;
 
                         default:
+                            error_log( "Unrecognised meta box type $type" );
                             break;
                     }
                 }
@@ -873,11 +874,16 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'status',
         ];
 
-        $fields[ 'source_details' ] = [
+        $sources_default = [];
+        foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
+            $sources_default[$key] = $value['label'];
+        }
+
+        $fields[ 'sources' ] = [
             'name'        => __( 'Source Details', 'disciple_tools' ),
             'description' => '',
-            'type'        => 'text',
-            'default'     => '',
+            'type'        => 'key_select',
+            'default'     => $sources_default,
             'section'     => 'misc',
         ];
 
