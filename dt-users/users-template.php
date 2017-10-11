@@ -159,15 +159,15 @@ function dt_get_site_notification_defaults()
  *
  * @return array
  */
-function dt_get_site_default_user_fields(): array {
+function dt_get_site_default_user_fields(): array
+{
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
     if( is_wp_error( $site_custom_lists ) ) {
         return [];
     }
+
     return $site_custom_lists[ 'user_fields' ];
 }
-
-
 
 /**
  * Echos user display name
@@ -240,7 +240,7 @@ function dt_build_user_fields_display( array $usermeta ): array
     $site_user_fields = $site_custom_lists[ 'user_fields' ];
 
     foreach( $site_user_fields as $key => $value ) {
-        if($value['enabled']) { // if the site field is enabled
+        if( $value[ 'enabled' ] ) { // if the site field is enabled
             $i = 0;
 
             foreach( $usermeta as $k => $v ) {
@@ -250,7 +250,7 @@ function dt_build_user_fields_display( array $usermeta ): array
                 }
             }
 
-            if($i === 0) { // if usermeta has no matching field to the standard site fields, then set value to empty string.
+            if( $i === 0 ) { // if usermeta has no matching field to the standard site fields, then set value to empty string.
                 $fields[] = array_merge( $value, [ 'value' => '' ] );
             }
         }
@@ -343,5 +343,38 @@ function dt_get_user_team_members_list( int $user_id )
     }
 
     return $team_members_list;
+}
+
+/**
+ * Tests if a user notification is enabled.
+ *
+ *
+ * @param string   $notification_name
+ * @param int|null $user_id
+ * @param null     $user_meta_data
+ *
+ * @return bool
+ */
+function dt_user_notification_is_enabled( string $notification_name, $user_meta_data = null, int $user_id = null ): bool
+{
+    if( empty( $user_id ) ) {
+        $user_id = get_current_user_id();
+    }
+
+    // Check status of site defined defaults
+    $site_defaults = dt_get_site_notification_defaults();
+    if( $site_defaults[ $notification_name ] ) { // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
+        return true;
+    }
+
+    if( empty( $user_meta_data ) ) {
+        $user_meta_data = get_user_meta( $user_id );
+    }
+
+    if( isset( $user_meta_data[ $notification_name ] ) && $user_meta_data[ $notification_name ][ 0 ] == true ) {
+        return true;
+    } else {
+        return false;
+    }
 }
 

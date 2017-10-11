@@ -303,12 +303,7 @@ class Disciple_Tools
         /* End prep variables */
 
         require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
-
-        /**
-         * Background and Async Task Processing
-         */
-        require_once( 'dt-core/wp-async-request.php' );
-        require_once( 'dt-core/wp-background-process.php' );
+        require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
 
         /**
          * Rest API Support
@@ -453,7 +448,7 @@ class Disciple_Tools
         $this->notifications = Disciple_Tools_Notifications::instance();
         require_once( 'dt-notifications/notifications-endpoints.php' );
         $this->notification_endpoints = Disciple_Tools_Notifications_Endpoints::instance();
-        require_once( 'dt-notifications/notifications-email.php' );
+        require_once( 'dt-notifications/notifications-email.php' ); // sends notification emails through the async task process
 
 
 

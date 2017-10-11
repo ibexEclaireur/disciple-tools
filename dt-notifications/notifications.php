@@ -427,17 +427,5 @@ class Disciple_Tools_Notifications
         }
     }
 
-    /**
-     * @param $type
-     * @param $user_id
-     */
-    public static function send_email_notification( $type, $user_id )
-    {
-        // check if type of notification is turned on for user
 
-        // call template for notification
-
-        // send email
-
-    }
 }

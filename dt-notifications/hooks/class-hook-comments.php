@@ -82,15 +82,18 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         // set a share record for the @mention so that the person mentioned can view the record and interact.
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
 
-                        // TODO inprogress implementing the email system.
-                        // get_user_meta( $mentioned_user_id, 'mentions_email', true )
+
                         // check if users has set to allow email notification for this notification
-                        if( false ) {
-                            dt_write_log( 'Made it to the beginning of $this->email_mention = new Disciple_Tools_Notifications_Email().' );
-                            $this->email_mention = new Disciple_Tools_Notifications_Email();
-                            $this->email_mention->data( array( 'mentioned_user_id' => $mentioned_user_id, 'source_user_id' => $source_user_id, 'note' => $notification_note ) );
-                            $this->email_mention->dispatch();
-                            dt_write_log( 'Made it after the email system.' );
+                        if( dt_user_notification_is_enabled( 'mentions_email' ) ) {
+
+                            $email_mention = new Disciple_Tools_Notifications_Email();
+                            $email_mention->launch(
+                                [
+                                    'user_id' => $mentioned_user_id,
+                                    'subject' => 'Disciple Tools: You were mentioned!',
+                                    'message' => $notification_note,
+                                ]
+                            );
                         }
 
                         break;
