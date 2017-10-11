@@ -983,9 +983,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if( is_wp_error( $update ) ) {
                 return $update;
             }
+            $current_seeker_path = $path_option;
         }
 
         return [
+            "currentKey" => $current_seeker_path,
             "current" => $seeker_path_options[ $option_keys[ $current_index ] ],
             "next"    => isset( $option_keys[ $current_index + 1 ] ) ? $seeker_path_options[ $option_keys[ $current_index + 1 ] ] : "",
         ];
