@@ -342,6 +342,18 @@ class Disciple_Tools_Roles
                 'assign_any_groups'         => true,  //assign groups to others
                 'update_any_groups'         => true,  //update any groups
                 'delete_any_groups'         => true,  //delete any groups
+
+                /* Add custom caps for locations */
+                'read_location'              => true,
+                'edit_location'              => true,
+                'delete_location'            => true,
+                'delete_others_locations'    => true,
+                'delete_locations'           => true,
+                'edit_locations'             => true,
+                'edit_others_locations'      => true,
+                'publish_locations'          => true,
+                'read_private_locations'     => true,
+
                 /* Add custom caps for resources */
                 'read_resource'             => true,
                 'edit_resource'             => true,
@@ -615,6 +627,8 @@ class Disciple_Tools_Roles
                 'update_shared_contacts' => true,
 
                 'access_groups' => true,
+
+                'read_location' => true
             ]
         );
 
