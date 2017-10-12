@@ -129,6 +129,19 @@ class Disciple_Tools_Reports_Cron {
             // Schedule the event
             wp_schedule_event( strtotime( 'today midnight' ), 'daily', 'build_youtube_reports' );
         }
+
+        register_deactivation_hook( dirname( dirname( __DIR__ ) ) . "/disciple-tools.php", function() {
+            $events = array(
+                "build_disciple_tools_contacts_reports",
+                "build_disciple_tools_groups_reports",
+                "build_facebook_reports", "build_twitter_reports",
+                "build_analytics_reports", "build_adwords_reports",
+                "build_mailchimp_reports", "build_youtube_reports"
+            );
+            foreach ($events as $event) {
+                wp_unschedule_event( wp_next_scheduled( $event ), $event );
+            }
+        } );
     }
 
     /**

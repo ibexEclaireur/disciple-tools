@@ -107,7 +107,6 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function create_contact( array $fields = [], $check_permissions = true )
     {
         //@TODO search for duplicates
-        //@TODO set defaults
 
         if( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
@@ -128,6 +127,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $initial_comment = $fields[ "initial_comment" ];
             unset( $fields[ "initial_comment" ] );
         }
+        $location_id = null;
+        if ( isset( $fields[ "location_id" ] ) ) {
+            $location_id = $fields[ "location_id" ];
+            unset( $fields[ "location_id" ] );
+        }
 
         $bad_fields = self::check_for_invalid_fields( $fields );
         if( !empty( $bad_fields ) ) {
@@ -145,7 +149,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         } else if (in_array( "multiplier", $current_roles, true ) ) {
             $defaults["overall_status"] = "active";
         } else {
-            $default["overall_status"] = "unassigned";
+            $defaults["overall_status"] = "unassigned";
         }
 
         $fields = array_merge( $defaults, $fields );
@@ -174,6 +178,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if( is_wp_error( $potential_error ) ) {
                 return $potential_error;
             }
+        }
+
+        if ( $location_id ) {
+            // TODO: check permissions: can any user connect a contact to any
+            // location he/she pleases?
+            self::add_location_to_contact( $post_id, $location_id );
         }
 
         return $post_id;
