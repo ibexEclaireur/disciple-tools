@@ -72,22 +72,19 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
          *  - BOTH
          * $auth_level defaults to BOTH
          *
-         * @throws Exception If the class' $action value hasn't been set
+         * @throws Exception If the class' $action value hasn't been set.
          *
          * @param int $auth_level The authentication level to use (see above)
          */
         public function __construct( $auth_level = self::LOGGED_IN ) {
             if ( empty( $this->action ) ) {
-                dt_write_log( '@'.'_construct exception' );
                 throw new Exception( 'Action not defined for class ' . __CLASS__ );
             }
             add_action( $this->action, array( $this, 'launch' ), (int) $this->priority, (int) $this->argument_count );
             if ( $auth_level & self::LOGGED_IN ) {
-                dt_write_log( '@'.'_construct auth level logged in' );
                 add_action( "admin_post_wp_async_$this->action", array( $this, 'handle_postback' ) );
             }
             if ( $auth_level & self::LOGGED_OUT ) {
-                dt_write_log( '@'.'_construct auth level logged out' );
                 add_action( "admin_post_nopriv_wp_async_$this->action", array( $this, 'handle_postback' ) );
             }
         }
@@ -110,7 +107,6 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
             $data['_nonce'] = $this->create_async_nonce();
 
             $this->_body_data = $data;
-            dt_write_log( '@'.'launch' );
             if ( ! has_action( 'shutdown', array( $this, 'launch_on_shutdown' ) ) ) {
                 add_action( 'shutdown', array( $this, 'launch_on_shutdown' ) );
             }
@@ -141,6 +137,7 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
                 $request_args = array(
                     'timeout'   => 0.01,
                     'blocking'  => false,
+                    // @codingStandardsIgnoreLine
                     'sslverify' => apply_filters( 'https_local_ssl_verify', true ),
                     'body'      => $this->_body_data,
                     'headers'   => array(
@@ -149,8 +146,7 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
                 );
 
                 $url = admin_url( 'admin-post.php' );
-                dt_write_log( '@'.'launch_on_shutdown' );
-                dt_write_log( $request_args );
+
                 wp_remote_post( $url, $request_args );
             }
         }
@@ -164,14 +160,15 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
          * @uses wp_die()
          */
         public function handle_postback() {
-            if ( isset( $_POST['_nonce'] ) && $this->verify_async_nonce( $_POST['_nonce'] ) ) {
+            // @codingStandardsIgnoreLine
+            if ( isset( $_POST['_nonce'] ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST['_nonce'] ) ) ) ) {
                 if ( ! is_user_logged_in() ) {
                     $this->action = "nopriv_$this->action";
                 }
                 $this->run_action();
             }
-            dt_write_log( '@'.'handle_postback' );
-            add_filter( 'wp_die_handler', function() { die();
+
+            add_filter( 'dt_die_handler', function() { die();
             } );
             wp_die();
         }
@@ -218,7 +215,6 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
                 return 2;
             }
 
-            dt_write_log( '@'.'verify_async_nonce' );
             // Invalid nonce
             return false;
         }
@@ -234,7 +230,7 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
                 $action = substr( $action, 7 );
             }
             $action = "wp_async_$action";
-            dt_write_log( '@'.'get_nonce_action' );
+
             return $action;
         }
 
@@ -252,7 +248,7 @@ if ( ! class_exists( 'Disciple_Tools_Async_Task' ) ) {
          * Do not set values for 'action' or '_nonce', as those will get overwritten
          * later in launch().
          *
-         * @throws Exception If the postback should not occur for any reason
+         * @throws Exception If the postback should not occur for any reason.
          *
          * @param array $data The raw data received by the launch method
          *

@@ -117,6 +117,9 @@ $dt_template = [
 
 ];
 
+/**
+ * Class Disciple_Tools_Roles
+ */
 class Disciple_Tools_Roles
 {
 

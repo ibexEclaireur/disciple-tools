@@ -26,7 +26,7 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
     /**
      * Prepare data for the asynchronous request
      *
-     * @throws Exception If for any reason the request should not happen
+     * @throws Exception If for any reason the request should not happen.
      *
      * @param array $data An array of data sent to the hook
      *
@@ -52,7 +52,7 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
 
         // TODO: This section is not working properly. I'm going around it somehow with the init hook below.
 
-        do_action( "wp_async_$this->action", '' );
+        do_action( "dt_async_$this->action", '' );
         dt_write_log( '@run_action complete' );
     }
 
@@ -64,7 +64,12 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
  */
 function dt_send_email()
 {
-    if( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] == 'wp_async_email_notification' ) {
+    if( isset( $_POST[ 'action' ] ) && isset( $_POST[ '_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' ) {
+
+        // nonce verification
+        if( isset( $_POST[ '_nonce' ] ) && !wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
+            return;
+        }
 
         dt_write_log( '@dt_send_email to ' . $_POST[ 0 ][ 'email' ] . ' saying ' . $_POST[ 0 ][ 'message' ] );
 

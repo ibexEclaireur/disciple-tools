@@ -120,6 +120,11 @@ class Disciple_Tools_Reports_API {
         );
     }
 
+    /**
+     * @param $report_source
+     *
+     * @return array|null|object
+     */
     public function get_reports_by_source ( $report_source ) {
         global $wpdb;
 
@@ -212,13 +217,13 @@ class Disciple_Tools_Reports_API {
     }
 
     /**
-     * Get sum total of a meta key for a date range
+     * @param        $date
+     * @param        $source
+     * @param        $meta_key
+     * @param string $type
      *
-     * @param   $date       string      (required)
-     * @param   $source     string      (required)
-     * @param   $meta_key   string      (required)
-     * @param   $type       string      (optional) Takes sum, max, min, average. Defaults to sum.
-     * @returns int
+     * @return int
+     * @throws \Error Protective filters.
      */
     public function get_meta_key_total ( $date, $source, $meta_key, $type = 'sum' ) {
         global $wpdb;
@@ -413,6 +418,13 @@ class Disciple_Tools_Reports_API {
         return $report;
     }
 
+    /**
+     * @param        $source
+     * @param        $meta_key
+     * @param string $subsource
+     *
+     * @return bool|int
+     */
     public function get_last_value ( $source, $meta_key, $subsource = '' ) {
 
         global $wpdb;
@@ -441,6 +453,11 @@ class Disciple_Tools_Reports_API {
 
     }
 
+    /**
+     * @param $source
+     *
+     * @return bool
+     */
     public static function get_last_record_of_source ( $source ) {
         global $wpdb;
         if(empty( $source )) {
@@ -468,6 +485,12 @@ class Disciple_Tools_Reports_API {
         }
     }
 
+    /**
+     * @param $source
+     * @param $subsource
+     *
+     * @return bool
+     */
     public static function get_last_record_of_source_and_subsource( $source, $subsource ){
         global $wpdb;
         if(empty( $source )) {
