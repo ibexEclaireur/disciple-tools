@@ -292,6 +292,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     /**
      * @param $contact_id
+     * @param $people_group_id
+     *
+     * @return mixed
+     */
+    public static function add_people_group_to_contact( $contact_id, $people_group_id )
+    {
+        return p2p_type( 'contacts_to_peoplegroups' )->connect(
+            $people_group_id, $contact_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
+    /**
+     * @param $contact_id
      * @param $baptized_by
      *
      * @return mixed
@@ -359,13 +373,24 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
     /**
      * @param $contact_id
+     * @param $people_group_id
+     *
+     * @return mixed
+     */
+    public static function remove_group_from_contact( $contact_id, $people_group_id )
+    {
+        return p2p_type( 'contacts_to_groups' )->disconnect( $people_group_id, $contact_id );
+    }
+
+    /**
+     * @param $contact_id
      * @param $group_id
      *
      * @return mixed
      */
-    public static function remove_group_from_contact( $contact_id, $group_id )
+    public static function remove_people_group_from_contact( $contact_id, $group_id )
     {
-        return p2p_type( 'contacts_to_groups' )->disconnect( $group_id, $contact_id );
+        return p2p_type( 'contacts_to_peoplegroups' )->disconnect( $group_id, $contact_id );
     }
 
     /**
@@ -446,6 +471,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $connect = self::add_location_to_contact( $contact_id, $value );
         } elseif( $key === "groups" ) {
             $connect = self::add_group_to_contact( $contact_id, $value );
+        } elseif( $key === "people_groups" ) {
+            $connect = self::add_people_group_to_contact( $contact_id, $value );
         } elseif( $key === "baptized_by" ) {
             $connect = self::add_baptized_by_to_contact( $contact_id, $value );
         } elseif( $key === "baptized" ) {
@@ -522,6 +549,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return self::remove_coached_by_from_contact( $contact_id, $value );
         } elseif( $key === "coaching" ) {
             return self::remove_coaching_from_contact( $contact_id, $value );
+        } elseif ( $key === "people_groups" ) {
+            return self::remove_people_group_from_contact( $contact_id, $value );
         }
 
         return false;
@@ -580,6 +609,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 $g->permalink = get_permalink( $g->ID );
             }
             $fields[ "groups" ] = $groups;
+
+            $people_groups = get_posts(
+                [
+                    'connected_type'   => 'contacts_to_peoplegroups',
+                    'connected_items'  => $contact,
+                    'nopaging'         => true,
+                    'suppress_filters' => false,
+                ]
+            );
+            foreach( $people_groups as $g ) {
+                $g->permalink = get_permalink( $g->ID );
+            }
+            $fields[ "people_groups" ] = $people_groups;
+
             $baptized = get_posts(
                 [
                     'connected_type'      => 'baptizer_to_baptized',
@@ -672,6 +715,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             }
                         }
                     }
+                } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
+                    $fields[ $key ] = $value;
                 } else {
                     $fields[ $key ] = $value[ 0 ];
                 }
@@ -727,7 +772,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_activity( $contact_id )
     {
-        //        @todo permissions
+        if(!self::can_view( 'contacts', $contact_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact activity" ), [ 'status' => 403 ] );
+        }
 
         global $wpdb;
 
@@ -948,9 +995,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if( is_wp_error( $update ) ) {
                 return $update;
             }
+            $current_seeker_path = $path_option;
         }
 
         return [
+            "currentKey" => $current_seeker_path,
             "current" => $seeker_path_options[ $option_keys[ $current_index ] ],
             "next"    => isset( $option_keys[ $current_index + 1 ] ) ? $seeker_path_options[ $option_keys[ $current_index + 1 ] ] : "",
         ];
