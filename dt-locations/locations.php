@@ -129,11 +129,14 @@ class Disciple_Tools_Locations
     }
 
     /**
-     * @return array
+     * @return array|WP_Error
      */
     public static function get_locations()
     {
-        //        @todo check permisions
+        if (!current_user_can( 'read_location' )){
+            return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
+        }
+
         $query_args = [
             'post_type' => 'locations',
             'orderby'   => 'ID',
@@ -147,11 +150,13 @@ class Disciple_Tools_Locations
     /**
      * @param $search
      *
-     * @return array
+     * @return array|WP_Error
      */
     public static function get_locations_compact( $search )
     {
-        //        @todo check permisions
+        if (!current_user_can( 'read_location' )){
+            return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
+        }
         $query_args = [
             'post_type' => 'locations',
             'orderby'   => 'ID',
