@@ -772,7 +772,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_activity( $contact_id )
     {
-        //        @todo permissions
+        if(!self::can_view( 'contacts', $contact_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact activity" ), [ 'status' => 403 ] );
+        }
 
         global $wpdb;
 
