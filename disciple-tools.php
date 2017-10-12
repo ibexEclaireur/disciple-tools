@@ -303,6 +303,7 @@ class Disciple_Tools
         /* End prep variables */
 
         require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
+        require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
 
         /**
          * Rest API Support
@@ -447,11 +448,14 @@ class Disciple_Tools
         $this->notifications = Disciple_Tools_Notifications::instance();
         require_once( 'dt-notifications/notifications-endpoints.php' );
         $this->notification_endpoints = Disciple_Tools_Notifications_Endpoints::instance();
+        require_once( 'dt-notifications/notifications-email.php' ); // sends notification emails through the async task process
+
+
 
         /**
          * Post-to-Post configuration
          */
-        require_once( 'dt-core/config-p2p.php' );// Creates the post to post relationship between the post type tables.
+        require_once( 'dt-core/config-p2p.php' ); // Creates the post to post relationship between the post type tables.
 
         // Custom Metaboxes
         require_once( 'dt-core/admin/metaboxes/box-address.php' ); // used by both theme and wp-admin
@@ -468,6 +472,7 @@ class Disciple_Tools
         require_once( 'dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
         $this->report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once( 'dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
+        require_once( 'dt-core/logging/debug-logger.php' );
 
         /**
          * Integrations

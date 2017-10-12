@@ -9,6 +9,8 @@ if( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifications_Hook_Base
 {
 
+    private $email_mention;
+
     /**
      * Disciple_Tools_Notifications_Hook_Comments constructor.
      */
@@ -61,6 +63,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                     case 'wp_insert_comment' :
                         $notification_action = 'mentioned';
 
+                        // check if user has set preference to receive this notification
+
+
                         $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
                             . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
 
@@ -74,7 +79,22 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                             $date_notified
                         );
 
+                        // set a share record for the @mention so that the person mentioned can view the record and interact.
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
+
+
+                        // check if users has set to allow email notification for this notification
+                        if( dt_user_notification_is_enabled( 'mentions_email' ) ) {
+
+                            $email_mention = new Disciple_Tools_Notifications_Email();
+                            $email_mention->launch(
+                                [
+                                    'user_id' => $mentioned_user_id,
+                                    'subject' => 'Disciple Tools: You were mentioned!',
+                                    'message' => $notification_note,
+                                ]
+                            );
+                        }
 
                         break;
 

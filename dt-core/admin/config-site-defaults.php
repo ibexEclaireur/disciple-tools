@@ -371,8 +371,12 @@ function dt_prepare_user_fields_types_for_input( $type ) {
         case 'other':
             return 'text';
             break;
+        default:
+            return 'text';
+            break;
     }
 }
+
 
 
 function dt_filter_handler( $approved, $commentdata ){
@@ -380,3 +384,4 @@ function dt_filter_handler( $approved, $commentdata ){
     //approve all comments.
     return 1;
 }
+

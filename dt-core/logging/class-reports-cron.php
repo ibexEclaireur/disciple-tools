@@ -12,6 +12,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Reports_Cron
+ */
 class Disciple_Tools_Reports_Cron {
 
     /**
@@ -272,6 +275,24 @@ class Disciple_Tools_Reports_Cron {
         }
     }
     public function build_all_youtube_reports () {
+        // Calculate the next date(s) needed reporting
+        $var_date = date( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
+        $dates = [$var_date]; // array of dates
+
+        // Request dates needed for reporting (loop)
+        foreach ($dates as $date) {
+            // Get arrays from integrations
+            $results = Disciple_Tools_Reports_Integrations::youtube_prepared_data( $date );
+
+            // Insert Report
+            $status = [];
+            $i = 0; // setup variables
+            foreach($results as $result) {
+                $status[$i] = dt_report_insert( $result );
+            }
+        }
+    }
+    public function build_all_twitter_reports () {
         // Calculate the next date(s) needed reporting
         $var_date = date( 'Y-m-d', strtotime( '-1 day' ) ); //TODO: should replace this with a foreach loop that queries that last day recorded
         $dates = [$var_date]; // array of dates

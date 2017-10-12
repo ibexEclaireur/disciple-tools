@@ -62,10 +62,7 @@ class Disciple_Tools_Api_Keys {
      */
     public function api_keys_page() {
         $keys = get_option( "dt_api_keys", [] );
-        if (! isset( $_POST['api-key-view-field'] ) || ! wp_verify_nonce( sanitize_key( $_POST['api-key-view-field'] ), 'api-keys-view' ) ) {
-            throw new Exception( "nonce not verified" );
-        }
-        if ( isset( $_POST["application"] ) && !empty( $_POST["application"] )) {
+        if ( isset( $_POST["application"] ) && isset( $_POST['api-key-view-field'] ) && wp_verify_nonce( sanitize_key( $_POST['api-key-view-field'] ) , 'api-keys-view' ) && !empty( $_POST["application"] ) ) {
             $client_id= wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST["application"] ) ) ), 1, '-', 0 );
             $token = bin2hex( random_bytes( 32 ) );
             if (!isset( $keys[$client_id] )) {
