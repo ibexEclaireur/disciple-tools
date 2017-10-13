@@ -104,44 +104,37 @@ final class Disciple_Tools_Config
             $tab = 'general';
         }
 
-        $tab_link_pre = '<a href="admin.php?page=dt_options&tab=';
-        $tab_link_post = '" class="nav-tab ';
 
-        $html = '<div class="wrap">
+        echo '<div class="wrap">
             <h2>DISCIPLE TOOLS OPTIONS</h2>
             <h2 class="nav-tab-wrapper">';
 
-        $html .= $tab_link_pre . 'general' . $tab_link_post;
+        echo '<a href="admin.php?page=dt_options&tab=general" class="nav-tab ';
         if( $tab == 'general' || !isset( $tab ) ) {
-            $html .= 'nav-tab-active';
+            echo 'nav-tab-active';
         }
-        $html .= '">General</a>';
+        echo '">General</a>';
 
-        $html .= $tab_link_pre . 'custom-lists' . $tab_link_post;
+        echo '<a href="admin.php?page=dt_options&tab=custom-lists" class="nav-tab ';
         if( $tab == 'custom-lists' ) {
-            $html .= 'nav-tab-active';
+            echo 'nav-tab-active';
         }
-        $html .= '">Custom Lists</a>';
+        echo '">Custom Lists</a>';
 
-        $html .= $tab_link_pre . 'import-export' . $tab_link_post;
+        echo '<a href="admin.php?page=dt_options&tab=import-export" class="nav-tab ';
         if( $tab == 'import-export' ) {
-            $html .= 'nav-tab-active';
+            echo 'nav-tab-active';
         }
-        $html .= '">Import/Export</a>';
+        echo '">Import/Export</a>';
 
-        $html .= $tab_link_pre . 'setup-checklist' . $tab_link_post;
+        echo '<a href="admin.php?page=dt_options&tab=setup-checklist" class="nav-tab ';
         if( $tab == 'setup-checklist' ) {
-            $html .= 'nav-tab-active';
+            echo 'nav-tab-active';
         }
-        $html .= '">Setup Checklist</a>';
+        echo '">Setup Checklist</a>';
 
-        $html .= '</h2>';
+        echo '</h2>';
 
-        // @codingStandardsIgnoreLine
-        print $html;
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
-
-        $html = '';
         // End Tab Bar
 
         /**
@@ -152,33 +145,30 @@ final class Disciple_Tools_Config
             case 'general':
                 require_once( 'tab-general.php' );
                 $object = new Disciple_Tools_General_Tab();
-                $html .= $object->content();
+                $object->content(); // prints
                 break;
             case 'import-export':
                 require_once( 'tab-import-export.php' );
                 $object = new Disciple_Tools_Import_Export_Tab();
-                $html .= $object->content();
+                $object->content(); // prints
                 break;
             case 'custom-lists':
                 require_once( 'tab-custom-lists.php' );
                 $object = new Disciple_Tools_Custom_Lists_Tab();
-                $html .= $object->content();
+                $object->content(); // prints
                 break;
             case 'setup-checklist':
                 require_once( 'tab-setup-checklist.php' );
                 $object = new Disciple_Tools_Setup_Steps_Tab();
-                $html .= $object->content().'';
+                $object->content(); // prints
                 break;
 
             default:
                 break;
         }
 
-        $html .= '</div>'; // end div class wrap
+        echo '</div>'; // end div class wrap
 
-        // @codingStandardsIgnoreLine
-        echo $html;
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     }
 
     /**

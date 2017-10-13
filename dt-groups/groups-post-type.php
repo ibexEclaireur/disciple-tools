@@ -367,13 +367,11 @@ class Disciple_Tools_Groups_Post_Type
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
 
-        $html = '';
-
-        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( 'update_dt_groups' ) . '" />';
+        echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_dt_groups' ) ) . '" />';
 
         if( 0 < count( $field_data ) ) {
-            $html .= '<table class="form-table">' . "\n";
-            $html .= '<tbody>' . "\n";
+            echo '<table class="form-table">' . "\n";
+            echo '<tbody>' . "\n";
 
             foreach( $field_data as $k => $v ) {
 
@@ -390,56 +388,56 @@ class Disciple_Tools_Groups_Post_Type
                     switch( $type ) {
 
                         case 'text':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
                             break;
                         case 'date':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker regular-text" type="text" id="' . esc_attr( $k ) . '"  value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v[ 'description' ] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker regular-text" type="text" id="' . esc_attr( $k ) . '"  value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
 
                             break;
                         case 'key_select':
-                            $html .= '<tr class="' . esc_attr( $v[ 'section' ] ) . '" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
+                            echo '<tr class="' . esc_attr( $v[ 'section' ] ) . '" id="row_' . esc_attr( $k ) . '" valign="top"><th scope="row">
                                 <label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
                             foreach( $v[ 'default' ] as $kk => $vv ) {
-                                $html .= '<option value="' . $kk . '" ';
+                                echo '<option value="' . esc_attr( $kk ) . '" ';
                                 if( $kk == $data ) {
-                                    $html .= 'selected';
+                                    echo 'selected';
                                 }
-                                $html .= '>' . esc_attr( $vv ) . '</option>';
+                                echo '>' . esc_attr( $vv ) . '</option>';
                             }
-                            $html .= '</select>' . "\n";
-                            $html .= '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '</select>' . "\n";
+                            echo '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
                             break;
 
                         case 'radio':
-                            $html .= '<tr valign="top"><th scope="row">' . esc_attr( $v[ 'name' ] ) . '</th>
+                            echo '<tr valign="top"><th scope="row">' . esc_attr( $v[ 'name' ] ) . '</th>
                                 <td><fieldset>';
                             // Iterate the buttons
                             $increment_the_radio_button = 1;
                             foreach( $v[ 'default' ] as $vv ) {
-                                $html .= '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . '">' . esc_attr( $vv ) . '</label>
-                                    <input class="drm-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . $k . '-' . $increment_the_radio_button . '" value="' . $vv . '" ';
+                                echo '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . '">' . esc_attr( $vv ) . '</label>
+                                    <input class="drm-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . esc_attr( $k . '-' . $increment_the_radio_button ) . '" value="' . esc_attr( $vv ) . '" ';
                                 if( $vv == $data ) {
-                                    $html .= 'checked';
+                                    echo 'checked';
                                 }
-                                $html .= '>';
+                                echo '>';
                                 $increment_the_radio_button++;
                             }
-                            $html .= '</fieldset>' . "\n";
-                            $html .= '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '</fieldset>' . "\n";
+                            echo '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
                             break;
                         case 'custom':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v[ 'name' ] ) . '</label></th><td>';
-                            $html .= $v[ 'default' ];
-                            $html .= '</td><tr/>' . "\n";
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v[ 'name' ] ) . '</label></th><td>';
+                            echo esc_html( $v[ 'default' ] );
+                            echo '</td><tr/>' . "\n";
                             break;
 
                         default:
@@ -448,14 +446,10 @@ class Disciple_Tools_Groups_Post_Type
                 }
             }
 
-            $html .= '</tbody>' . "\n";
-            $html .= '</table>' . "\n";
+            echo '</tbody>' . "\n";
+            echo '</table>' . "\n";
         }
 
-        // @codingStandardsIgnoreLine
-        echo $html;
-        // TODO: instead of building an $html variable and then echoing it, we
-        // should be using <? php and ? > as usual
     } // End meta_box_content()
 
     /**
@@ -541,10 +535,10 @@ class Disciple_Tools_Groups_Post_Type
 
         //        $exclude_group = '';
         $exclude_user = '';
-        $html = '';
+        ob_start();
 
         // Start drop down
-        $html .= '<select name="assigned_to" id="assigned_to" class="edit-input">';
+        echo '<select name="assigned_to" id="assigned_to" class="edit-input">';
 
         // Set selected state
         if( isset( $post->ID ) ) {
@@ -553,7 +547,7 @@ class Disciple_Tools_Groups_Post_Type
 
         if( empty( $assigned_to ) ) {
             // set default to dispatch
-            $html .= '<option value="" selected></option>';
+            echo '<option value="" selected></option>';
         } elseif( !empty( $assigned_to ) ) { // If there is already a record
             $metadata = get_post_meta( $post->ID, 'assigned_to', true );
             $meta_array = explode( '-', $metadata ); // Separate the type and id
@@ -564,7 +558,7 @@ class Disciple_Tools_Groups_Post_Type
                 $id = $meta_array[ 1 ];
                 $value = get_user_by( 'id', $id );
                 if( $value ) {
-                    $html .= '<option value="user-' . $id . '" selected>' . $value->display_name . '</option>';
+                    echo '<option value="user-' . esc_attr( $id ) . '" selected>' . esc_html( $value->display_name ) . '</option>';
                 }
                 // exclude the current id from the $results list
                 $exclude_user = "'exclude' => $id";
@@ -577,13 +571,13 @@ class Disciple_Tools_Groups_Post_Type
 
         // Loop user list
         foreach( $results as $value ) {
-            $html .= '<option value="user-' . $value->ID . '">' . $value->display_name . '</option>';
+            echo '<option value="user-' . esc_attr( $value->ID ) . '">' . esc_html( $value->display_name ) . '</option>';
         }
 
         // End drop down
-        $html .= '</select>  ';
+        echo '</select>  ';
 
-        return $html;
+        return ob_get_clean();
     }
 
     /**

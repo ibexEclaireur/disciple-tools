@@ -21,66 +21,58 @@ class Disciple_Tools_Custom_Lists_Tab
 {
 
     /**
-     * Packages and returns tab page
-     *
-     * @return string
+     * Packages and prints tab page
      */
     public function content()
     {
-        $html = '';
-        $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
-        $html .= '<div id="post-body-content">';
+        echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
+        echo '<div id="post-body-content">';
         /* Main Column */
 
         /* Box */
-        $html .= '<table class="widefat striped"><thead><th>User (Worker) Contact Profile</th></thead><tbody><tr><td>';
+        echo '<table class="widefat striped"><thead><th>User (Worker) Contact Profile</th></thead><tbody><tr><td>';
         $this->process_user_profile_box();
-        $html .= $this->user_profile_box();
-        $html .= '</td></tr></tbody></table><br>';
+        $this->user_profile_box(); // prints
+        echo '</td></tr></tbody></table><br>';
         /* End Box */
 
         /* Box */
-        $html .= '<table class="widefat striped"><thead><th>Sources</th></thead><tbody><tr><td>';
+        echo '<table class="widefat striped"><thead><th>Sources</th></thead><tbody><tr><td>';
         $this->process_sources_box();
-        $html .= $this->sources_box();
-        $html .= '</td></tr></tbody></table><br>';
+        $this->sources_box(); // prints
+        echo '</td></tr></tbody></table><br>';
         /* End Box */
 
         /* End Main Column */
-        $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
+        echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         /* Right Column */
 
         /* Box */
-        $html .= '<table class="widefat striped">
+        echo '<table class="widefat striped">
                     <thead><th>Instructions</th></thead>
                     <tbody><tr><td>';
 
-        $html .= '</td></tr></tbody></table><br>';
+        echo '</td></tr></tbody></table><br>';
 
 
         /* End Box */
 
         /* End Right Column*/
-        $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
-        $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
-
-        return $html;
+        echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
+        echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
     }
 
     /**
-     * Build the contact settings box.
-     *
-     * @return string
+     * Print the contact settings box.
      */
     public function user_profile_box()
     {
-        $html = '';
-        $html .= '<form method="post" name="user_fields_form">';
-        $html .= '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">reset</button>';
-        $html .= '<p>You can add or remove types of contact fields for worker profiles.</p>';
-        $html .= '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . wp_create_nonce( 'user_fields' ) . '" />';
-        $html .= '<table class="widefat">';
-        $html .= '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
+        echo '<form method="post" name="user_fields_form">';
+        echo '<button type="submit" class="button-like-link" name="user_fields_reset" value="1">reset</button>';
+        echo '<p>You can add or remove types of contact fields for worker profiles.</p>';
+        echo '<input type="hidden" name="user_fields_nonce" id="user_fields_nonce" value="' . esc_attr( wp_create_nonce( 'user_fields' ) ) . '" />';
+        echo '<table class="widefat">';
+        echo '<thead><tr><td>Label</td><td>Type</td><td>Description</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -89,37 +81,35 @@ class Disciple_Tools_Custom_Lists_Tab
         }
         $user_fields = $site_custom_lists[ 'user_fields' ];
         foreach( $user_fields as $field ) {
-            $html .= '<tr>
+            echo '<tr>
                         <td>' . esc_attr( $field[ 'label' ] ) . '</td>
                         <td>' . esc_attr( $field[ 'type' ] ) . '</td>
                         <td>' . esc_attr( $field[ 'description' ] ) . ' </td>
-                        <td><input name="user_fields[' . $field[ 'key' ] . ']" type="checkbox" ' . $this->is_checked( $field[ 'enabled' ] ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . $field[ 'key' ] . '" class="button small" >delete</button> </td>
+                        <td><input name="user_fields[' . esc_attr( $field[ 'key' ] ) . ']" type="checkbox" ' . ( $field[ 'enabled' ] ? "checked" : "" ) . ' /></td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $field[ 'key' ] ) . '" class="button small" >delete</button> </td>
                       </tr>';
         }
         // end list block
 
-        $html .= '</table>';
-        $html .= '<br><button type="button" onclick="jQuery(\'#add_user\').toggle();" class="button">Add</button>
+        echo '</table>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_user\').toggle();" class="button">Add</button>
                         <button type="submit" style="float:right;" class="button">Save</button>';
-        $html .= '<div id="add_user" style="display:none;">';
-        $html .= '<table width="100%"><tr><td><hr><br>
+        echo '<div id="add_user" style="display:none;">';
+        echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
-        $html .= '<select name="add_input_field[type]" id="add_input_field_type">';
+        echo '<select name="add_input_field[type]" id="add_input_field_type">';
         // Iterate the options
         $user_fields_types = $site_custom_lists[ 'user_fields_types' ];
         foreach( $user_fields_types as $value ) {
-            $html .= '<option value="' . $value[ 'key' ] . '" >' . esc_attr( $value[ 'label' ] ) . '</option>';
+            echo '<option value="' . esc_attr( $value[ 'key' ] ) . '" >' . esc_attr( $value[ 'label' ] ) . '</option>';
         }
-        $html .= '</select>' . "\n";
+        echo '</select>' . "\n";
 
-        $html .= '<input type="text" name="add_input_field[description]" placeholder="description" />&nbsp;
+        echo '<input type="text" name="add_input_field[description]" placeholder="description" />&nbsp;
                     <button type="submit">Add</button>
                     </td></tr></table></div>';
 
-        $html .= '</tbody></form>';
-
-        return $html;
+        echo '</tbody></form>';
     }
 
     /**
@@ -205,31 +195,16 @@ class Disciple_Tools_Custom_Lists_Tab
     }
 
     /**
-     * Helper function to translate boolean values into 'checked' value for checkbox inputs.
-     *
-     * @param $value
-     *
-     * @return string
-     */
-    public function is_checked( $value )
-    {
-        return $value ? 'checked' : '';
-    }
-
-    /**
-     * Build the sources settings box.
-     *
-     * @return string
+     * Prints the sources settings box.
      */
     public function sources_box()
     {
-        $html = '';
-        $html .= '<form method="post" name="sources_form">';
-        $html .= '<button type="submit" class="button-like-link" name="sources_reset" value="1">reset</button>';
-        $html .= '<p>Add or remove sources for new contacts.</p>';
-        $html .= '<input type="hidden" name="sources_nonce" id="sources_nonce" value="' . wp_create_nonce( 'sources' ) . '" />';
-        $html .= '<table class="widefat">';
-        $html .= '<thead><tr><td>Label</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
+        echo '<form method="post" name="sources_form">';
+        echo '<button type="submit" class="button-like-link" name="sources_reset" value="1">reset</button>';
+        echo '<p>Add or remove sources for new contacts.</p>';
+        echo '<input type="hidden" name="sources_nonce" id="sources_nonce" value="' . esc_attr( wp_create_nonce( 'sources' ) ) . '" />';
+        echo '<table class="widefat">';
+        echo '<thead><tr><td>Label</td><td>Enabled</td><td>Delete</td></tr></thead><tbody>';
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
@@ -238,26 +213,24 @@ class Disciple_Tools_Custom_Lists_Tab
         }
         $sources = $site_custom_lists[ 'sources' ];
         foreach( $sources as $source ) {
-            $html .= '<tr>
+            echo '<tr>
                         <td>' . esc_attr( $source[ 'label' ] ) . '</td>
-                        <td><input name="sources[' . $source[ 'key' ] . ']" type="checkbox" ' . $this->is_checked( $source[ 'enabled' ] ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . $source[ 'key' ] . '" class="button small" >delete</button> </td>
+                        <td><input name="sources[' . esc_attr( $source[ 'key' ] ) . ']" type="checkbox" ' . ( $source[ 'enabled' ] ? "checked" : "" ) . ' /></td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $source[ 'key' ] ) . '" class="button small" >delete</button> </td>
                       </tr>';
         }
         // end list block
 
-        $html .= '</table>';
-        $html .= '<br><button type="button" onclick="jQuery(\'#add_source\').toggle();" class="button">Add</button>
+        echo '</table>';
+        echo '<br><button type="button" onclick="jQuery(\'#add_source\').toggle();" class="button">Add</button>
                         <button type="submit" style="float:right;" class="button">Save</button>';
-        $html .= '<div id="add_source" style="display:none;">';
-        $html .= '<table width="100%"><tr><td><hr><br>
+        echo '<div id="add_source" style="display:none;">';
+        echo '<table width="100%"><tr><td><hr><br>
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
-        $html .= '<button type="submit">Add</button>
+        echo '<button type="submit">Add</button>
                     </td></tr></table></div>';
 
-        $html .= '</tbody></form>';
-
-        return $html;
+        echo '</tbody></form>';
     }
 
     /**

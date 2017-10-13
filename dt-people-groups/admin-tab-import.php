@@ -45,33 +45,29 @@ class Disciple_Tools_People_Groups_Tab_Import
      */
     public function page_contents()
     {
-        $html = '';
-        $html .= '<div class="wrap">'; // Block title
-        $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
-        $html .= '<div id="post-body-content">';
-        $html .= $this->joshua_project_country_install_box();
+        echo '<div class="wrap">'; // Block title
+        echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
+        echo '<div id="post-body-content">';
+        $this->joshua_project_country_install_box(); // prints
         //        print '<pre>'; print_r($this->get_joshua_project_country_names()); print '</pre>';
 
-        $html .= '<br>'; /* Add content to column */
-        $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
-        $html .= '<br>'; /* Add content to column */
-        $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
-        $html .= '';/* Add content to column */
-        $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
+        echo '<br>'; /* Add content to column */
+        echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
+        echo '<br>'; /* Add content to column */
+        echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
+        echo '';/* Add content to column */
+        echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
 
-        return $html;
     }
 
     /**
      * Joshua Project install metabox
      *
-     * @return bool|string
      */
     public function joshua_project_country_install_box()
     {
         $this->check_data_age( 'jp_countries' ); // Checks the age of the static json countries data
 
-        $html = '';
         $jp_install_request = '';
         $refresh = '';
 
@@ -89,23 +85,25 @@ class Disciple_Tools_People_Groups_Tab_Import
             }
         } /* end if $_POST */
 
-        $dropdown = $this->get_joshua_project_countries_dropdown_not_installed();
-
         // return form and dropdown
-        $html .= '<table class="widefat ">
+        echo '<table class="widefat ">
                     <thead><th>Joshua Project Country Install</th></thead>
                     <tbody>
                         <tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'jp_country_nonce_validate', 'jp_country_nonce', true, false ) . $dropdown . '
+                                    ';
+                                    wp_nonce_field( 'jp_country_nonce_validate', 'jp_country_nonce', true );
+                                    $this->get_joshua_project_countries_dropdown_not_installed();
 
-                                    <button type="submit" class="button" value="submit">Import Country</button>
+                                    echo '<button type="submit" class="button" value="submit">Import Country</button>
                                 </form><br>
 
                                 <form action="" method="POST">
-                                ' . wp_nonce_field( 'jp_country_nonce_validate', 'jp_country_nonce', true, false ) . '
-                                    <button type="submit" class="button" value="submit" name="jp-countries-refresh">Refresh JP Countries Data</button> (Countries file is from ' . date( "m-d-Y", filemtime( $this->jp_countries_path ) ) . ' )
+                                ';
+                                wp_nonce_field( 'jp_country_nonce_validate', 'jp_country_nonce', true );
+                                echo '
+                                    <button type="submit" class="button" value="submit" name="jp-countries-refresh">Refresh JP Countries Data</button> (Countries file is from ' . esc_html( date( "m-d-Y", filemtime( $this->jp_countries_path ) ) ) . ' )
 
                                 </form>
 
@@ -116,26 +114,25 @@ class Disciple_Tools_People_Groups_Tab_Import
 
         // Displays success/fail message for the import selection.
         if( !empty( $jp_install_result ) ) {
-            $html .= '<table class="widefat striped">
+            echo '<table class="widefat striped">
                         <tbody>
                             <tr>
-                                <td>JP Install Request for ' . $jp_install_request . ': ' . $jp_install_result . '</td>
+                                <td>JP Install Request for ' . esc_html( $jp_install_request ) . ': ' . esc_html( $jp_install_result ) . '</td>
                             </tr>
                         </tbody>
                     </table>';
         }
         // Displays success message for the refresh button
         if( !empty( $refresh ) ) {
-            $html .= '<table class="widefat striped">
+            echo '<table class="widefat striped">
                         <tbody>
                             <tr>
-                                <td>Result of refreshing Joshua Project data: ' . $refresh . '</td>
+                                <td>Result of refreshing Joshua Project data: ' . esc_html( $refresh ) . '</td>
                             </tr>
                         </tbody>
                     </table>';
         }
 
-        return $html;
     }
 
     /**
@@ -163,9 +160,8 @@ class Disciple_Tools_People_Groups_Tab_Import
     }
 
     /**
-     * Builds dropdown menu for Joshua Project countries
+     * Prints dropdown menu for Joshua Project countries
      *
-     * @return string
      */
     public function get_joshua_project_countries_dropdown_not_installed()
     {
@@ -174,35 +170,34 @@ class Disciple_Tools_People_Groups_Tab_Import
 
         if( $jp_countries ) { // check if no error
 
-            $dropdown = '<select name="jp-countries-dropdown">';
+            echo '<select name="jp-countries-dropdown">';
 
             foreach( $jp_countries->data as $value ) {
                 $disabled = '';
-                $dropdown .= '<option value="' . $value->ROG3 . '" ';
+                echo '<option value="' . esc_attr( $value->ROG3 ) . '" ';
                 if( get_option( '_installed_jp_country_' . $value->ROG3 ) ) {
-                    $dropdown .= ' disabled';
+                    echo ' disabled';
                     $disabled = ' (Installed)';
                 } elseif( isset( $_POST[ 'states-dropdown' ] ) ) {
                     if ( isset( $_POST['jp_country_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['jp_country_nonce'] ), 'jp_country_nonce_validate' ) ) {
                         $d = sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) );
                         if ($d == $value->ROG3 ) {
-                            $dropdown .= ' selected';
+                            echo ' selected';
                         }
                     } else {
                         wp_die( esc_html__( "Nonce did not validate" ) );
                     }
                 }
-                $dropdown .= '>' . $value->Ctry . $disabled;
-                $dropdown .= '</option>';
+                echo '>' . esc_html( $value->Ctry ) . esc_html( $disabled );
+                echo '</option>';
             }
 
-            $dropdown .= '</select>';
+            echo '</select>';
         } else {
 
-            $dropdown = 'Unable to retrieve country list';
+            echo 'Unable to retrieve country list';
         }
 
-        return $dropdown;
     }
 
     /**
