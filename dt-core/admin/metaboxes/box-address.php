@@ -48,21 +48,21 @@ class Disciple_Tools_Metabox_Address
     {
         global $post;
 
-        $html = '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
-        $html .= '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
+        echo '<p><a href="javascript:void(0);" onclick="jQuery(\'#new-address\').toggle();"><strong>+ Address Detail</strong></a></p>';
+        echo '<table class="form-table" id="new-address" style="display: none;"><tbody>' . "\n";
 
         $address_types = $this->get_address_type_list( $post->post_type );
 
-        $html .= '<tr><th>
+        echo '<tr><th>
                 <select name="new-key-address" class="edit-input"><option value=""></option> ';
         foreach( $address_types as $type => $value ) {
 
             $key = "address_" . $type;
 
-            $html .= '<option value="' . $key . '">' . $value[ "label" ] . '</option>';
+            echo '<option value="' . esc_attr( $key ) . '">' . esc_html( $value[ "label" ] ) . '</option>';
         }
-        $html .= '</select></th>';
-        $html .= '<td>
+        echo '</select></th>';
+        echo '<td>
                 <input type="text" name="new-value-address" id="new-address" class="edit-input" placeholder="i.e. 888 West Street, Los Angelos CO 90210" />
             </td>
             <td>
@@ -70,11 +70,7 @@ class Disciple_Tools_Metabox_Address
             </td>
             </tr>';
 
-        $html .= '</tbody></table>';
-        // @codingStandardsIgnoreLine
-        echo $html;
-        // TODO: instead of building an $html variable and then echoing it, we
-        // should be using <? php and ? > as usual
+        echo '</tbody></table>';
     }
 
     /**

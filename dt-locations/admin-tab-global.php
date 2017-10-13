@@ -30,24 +30,24 @@ class Disciple_Tools_Locations_Tab_Global
 
         /*  Step 1
          *  This section controls the dropdown selection of the countries */
-        $html = '<form method="post" name="country_step1" id="country_step1">';
-        $html .= wp_nonce_field( 'country_nonce_validate', 'country_nonce', true, false );
-        $html .= '<h1>(Step 1) Select a Country to Install:</h1><br>';
-        $html .= $this->get_country_dropdown_not_installed();
-        $html .= ' <button type="submit" class="button">Install Country</button>';
-        $html .= '<br><br>';
-        $html .= '</form>'; // end form
+        echo '<form method="post" name="country_step1" id="country_step1">';
+        wp_nonce_field( 'country_nonce_validate', 'country_nonce', true );
+        echo '<h1>(Step 1) Select a Country to Install:</h1><br>';
+        $this->get_country_dropdown_not_installed(); // prints
+        echo ' <button type="submit" class="button">Install Country</button>';
+        echo '<br><br>';
+        echo '</form>'; // end form
 
         /*  Step 2
          *  This section lists the available administrative units for each of the installed countries */
-        $html .= '<form method="post" name="country_step2" id="country_step2">';
-        $html .= wp_nonce_field( 'country_levels_nonce_validate', 'country_levels_nonce', true, false );
+        echo '<form method="post" name="country_step2" id="country_step2">';
+        wp_nonce_field( 'country_levels_nonce_validate', 'country_levels_nonce', true );
         $option = get_option( '_dt_installed_country' ); // this installer relies heavily on this options table row to store status
         if( !empty( $option ) ) { // if options are empty hide section
-            $html .= '<h1>(Step 2) Add Admin Levels to Installed Countries:</h1><br>';
+            echo '<h1>(Step 2) Add Admin Levels to Installed Countries:</h1><br>';
             foreach( $option as $country ) {
-                $html .= '<hr><h2>' . $country[ 'Zone_Name' ] . '</h2>';
-                $html .= '<p>Add Levels: ';
+                echo '<hr><h2>' . esc_html( $country[ 'Zone_Name' ] ) . '</h2>';
+                echo '<p>Add Levels: ';
                 $i = 0; // increment makes sure that only the highest level of install is available at a time. This controls the order of install.
                 if( !empty( $country[ 'levels' ] ) ) { // if level is empty array, hide section
                     foreach( $country[ 'levels' ] as $key => $value ) {
@@ -68,18 +68,21 @@ class Disciple_Tools_Locations_Tab_Global
                         }
 
                         if( $value > 0 || $value == 'installed' ) { // hide admin areas with zero value, but still show admin areas that have been installed
-                            $html .= '<button type="submit" name="' . $key . '" value="' . $country[ 'WorldID' ] . '" ';
-                            ( $i > 0 || $value == 'installed' ) ? $html .= 'disabled' : $i++; //check if already installed or needs to be installed first
-                            $html .= '>' . $label . ' (' . $value . ')</button> ';
+                            echo '<button type="submit" name="' . esc_attr( $key ) . '" value="' . esc_attr( $country[ 'WorldID' ] ) . '" ';
+                            if ( $i > 0 || $value == 'installed' ) {
+                                echo 'disabled';
+                            } else {
+                                $i++; //check if already installed or needs to be installed first
+                            }
+                            echo '>' . esc_html( $label ) . ' (' . esc_html( $value ) . ')</button> ';
                         }
                     }
                 }
-                $html .= '<span style="float:right"><button type="submit" name="delete" value="' . $country[ 'WorldID' ] . '">delete all</button></span></p>';
+                echo '<span style="float:right"><button type="submit" name="delete" value="' . esc_html( $country[ 'WorldID' ] ) . '">delete all</button></span></p>';
             }
         }
-        $html .= '</form>';
+        echo '</form>';
 
-        return $html;
     }
 
     /**
@@ -307,35 +310,32 @@ class Disciple_Tools_Locations_Tab_Global
     }
 
     /**
-     * Creates a dropdown of the countries with the country key as the value.
+     * Prints a dropdown of the countries with the country key as the value.
      *
      * @usage USA locations
-     * @return string
      */
     public function get_country_dropdown_not_installed()
     {
 
         $dir_contents = $this->get_countries_json();
 
-        $dropdown = '<select name="countries-dropdown">';
+        echo '<select name="countries-dropdown">';
         $option = get_option( '_dt_installed_country' );
         foreach( $dir_contents[ 'RECORDS' ] as $value ) {
             $disabled = '';
-            $dropdown .= '<option value="' . $value[ 'WorldID' ] . '" ';
+            echo '<option value="' . esc_attr( $value[ 'WorldID' ] ) . '" ';
             if( $option != false ) {
                 foreach( $option as $installed ) {
                     if( $installed[ 'WorldID' ] == $value[ 'WorldID' ] ) {
-                        $dropdown .= ' disabled';
+                        echo ' disabled';
                         $disabled = ' (Installed)';
                     }
                 }
             }
-            $dropdown .= '>' . $value[ 'Zone_Name' ] . $disabled;
-            $dropdown .= '</option>';
+            echo '>' . esc_html( $value[ 'Zone_Name' ] ) . esc_html( $disabled );
+            echo '</option>';
         }
-        $dropdown .= '</select>';
-
-        return $dropdown;
+        echo '</select>';
     }
 
     /**

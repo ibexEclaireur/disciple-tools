@@ -90,36 +90,29 @@ class Disciple_Tools_Location_Tools_Menu
             $tab = 'global';
         }
 
-        $tab_link_pre = '<a href="edit.php?post_type=locations&page=disciple_tools_locations&tab=';
-        $tab_link_post = '" class="nav-tab ';
-
-        $html = '<div class="wrap">
+        echo '<div class="wrap">
             <h2>Import Locations</h2>
             <h2 class="nav-tab-wrapper">';
 
-        $html .= $tab_link_pre . 'global' . $tab_link_post;
+        echo '<a href="edit.php?post_type=locations&page=disciple_tools_locations&tab=global" class="nav-tab ';
+
         if( $tab == 'global' ) {
-            $html .= 'nav-tab-active';
+            echo 'nav-tab-active';
         }
-        $html .= '">Global</a>';
+        echo '">Global</a>';
 
-        $html .= $tab_link_pre . 'usa' . $tab_link_post;
+        echo '<a href="edit.php?post_type=locations&page=disciple_tools_locations&tab=usa" class="nav-tab ';
         if( $tab == 'usa' ) {
-            $html .= 'nav-tab-active';
+            echo 'nav-tab-active';
         }
-        $html .= '">USA</a>';
+        echo '">USA</a>';
 
-        //        $html .= $tab_link_pre . 'import' . $tab_link_post;
-        //        if ($tab == 'import' ) {$html .= 'nav-tab-active';}
-        //        $html .= '">Temp Import</a>';
+        //        echo $tab_link_pre . 'import' . $tab_link_post;
+        //        if ($tab == 'import' ) {echo 'nav-tab-active';}
+        //        echo '">Temp Import</a>';
 
-        $html .= '</h2>';
+        echo '</h2>';
 
-        // @codingStandardsIgnoreLine
-        echo $html; // Echo tabs
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
-
-        $html = '';
         // End Tab Bar
 
         /**
@@ -129,20 +122,20 @@ class Disciple_Tools_Location_Tools_Menu
 
             case "global":
 
-                $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
-                $html .= '<div id="post-body-content">';
+                echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
+                echo '<div id="post-body-content">';
 
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Install</th></thead><tbody><tr><td>';
+                echo '<table class="widefat striped"><thead><th>Install</th></thead><tbody><tr><td>';
 
                 /* Build content of box */
                 require_once( 'admin-tab-global.php' );
                 $object = new Disciple_Tools_Locations_Tab_Global();
                 $object->process_install_country();
-                $html .= $object->install_country();
+                $object->install_country(); // prints
                 /* End build */
 
-                $html .= '</td></tr></tbody></table>';
+                echo '</td></tr></tbody></table>';
 
                 //                print '<pre>';
                 //
@@ -152,29 +145,29 @@ class Disciple_Tools_Location_Tools_Menu
                 //
                 //                print '</pre>';
 
-                $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
+                echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
 
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Source</th></thead><tbody><tr><td>';
-                $html .= $this->get_import_config_dropdown( 'mm_hosts' );
-                $html .= '</td></tr></tbody></table><br>';
-                $html .= $this->locations_currently_installed();
+                echo '<table class="widefat striped"><thead><th>Source</th></thead><tbody><tr><td>';
+                $this->get_import_config_dropdown( 'mm_hosts' ); // prints
+                echo '</td></tr></tbody></table><br>';
+                $this->locations_currently_installed(); // prints
 
-                $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
-                $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
+                echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
+                echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
                 break;
 
             case "usa":
-                $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
-                $html .= '<div id="post-body-content">';
+                echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
+                echo '<div id="post-body-content">';
 
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Install by State</th></thead><tbody><tr><td>';
+                echo '<table class="widefat striped"><thead><th>Install by State</th></thead><tbody><tr><td>';
 
                 require_once( 'admin-tab-usa.php' );
                 $object = new Disciple_Tools_Locations_Tab_USA(); // create object
                 $object->process_install_us_state();
-                $html .= $object->install_us_state();
+                $object->install_us_state(); // prints
 
                 //                print '<pre>';
                 //
@@ -184,34 +177,31 @@ class Disciple_Tools_Location_Tools_Menu
                 //
                 //                print '</pre>';
 
-                $html .= '</td></tr></tbody></table><br>';
-                $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
+                echo '</td></tr></tbody></table><br>';
+                echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
 
                 /* BOX */
-                $html .= '<table class="widefat striped"><thead><th>Instructions</th></thead><tbody><tr><td>';
+                echo '<table class="widefat striped"><thead><th>Instructions</th></thead><tbody><tr><td>';
 
-                $html .= '</td></tr></tbody></table><br>';
+                echo '</td></tr></tbody></table><br>';
 
-                $html .= $this->usa_states_currently_installed();
+                $this->usa_states_currently_installed(); // prints
 
-                $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
-                $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
+                echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
+                echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
                 break;
 
             case 'import':
                 require_once( 'admin-tab-import.php' );
                 $content = new Disciple_Tools_Locations_Tab_Import();
-                $html .= $content->page_contents();
+                $content->page_contents(); // prints
                 break;
             default:
                 break;
         }
 
-        $html .= '</div>'; // end div class wrap
+        echo '</div>'; // end div class wrap
 
-        // @codingStandardsIgnoreLine
-        echo $html; // Echo contents
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     }
 
     /**
@@ -238,18 +228,17 @@ class Disciple_Tools_Location_Tools_Menu
 
         // create dropdown
         $html = '';
-        $html .= '<form method="post"><select name="' . $host . '" >';
+        echo '<form method="post"><select name="' . esc_attr( $host ) . '" >';
         foreach( $option[ $host ] as $key => $value ) {
-            $html .= '<option value="' . $key . '" ';
+            echo '<option value="' . esc_attr( $key ) . '" ';
             if( $option[ 'selected_' . $host ] == $key ) {
-                $html .= ' selected';
+                echo ' selected';
             }
-            $html .= '>' . $key . '</option>';
-            $html .= wp_nonce_field( "get_import_config_dropdown_locations", "_wpnonce", true, false );
+            echo '>' . esc_html( $key ) . '</option>';
+            wp_nonce_field( "get_import_config_dropdown_locations", "_wpnonce", true );
         }
-        $html .= '</select> <button type="submit" name="change_host_source" value="true">Save</button></form>';
+        echo '</select> <button type="submit" name="change_host_source" value="true">Save</button></form>';
 
-        return $html;
     }
 
     /**
@@ -269,91 +258,85 @@ class Disciple_Tools_Location_Tools_Menu
     }
 
     /**
-     * @return string
+     * Prints
      */
     public function locations_currently_installed()
     {
         global $wpdb;
         $count = [];
-        $html = '';
 
         // Search for currently installed locations
 
-        $html .= '<table class="widefat ">
+        echo '<table class="widefat ">
                     <thead><th>Currently Installed</th></thead>
                     <tbody>
                         <tr>
                             <td>';
         // Total number of locations in database
-        $html .= 'Total number of locations: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
+        echo 'Total number of locations: <br>' . esc_html( wp_count_posts( 'locations' )->publish ) . '<br>';
 
         // Total number of countries
         $count[ 'countries' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
-        $html .= 'Total number of countries (admin0): <br>' . $count[ 'countries' ] . '<br>';
+        echo 'Total number of countries (admin0): <br>' . intval( $count[ 'countries' ] ) . '<br>';
 
         // Total number of admin1
         $count[ 'admin1' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
-        $html .= 'Total number of Admin1: <br>' . $count[ 'admin1' ] . '<br>';
+        echo 'Total number of Admin1: <br>' . intval( $count[ 'admin1' ] ) . '<br>';
 
         // Total number of admin2
         $count[ 'admin2' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
-        $html .= 'Total number of Admin2: <br>' . $count[ 'admin2' ] . '<br>';
+        echo 'Total number of Admin2: <br>' . intval( $count[ 'admin2' ] ) . '<br>';
 
         // Total number of admin3
         $count[ 'admin3' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
-        $html .= 'Total number of Admin3: <br>' . $count[ 'admin3' ] . '<br>';
+        echo 'Total number of Admin3: <br>' . intval( $count[ 'admin3' ] ) . '<br>';
 
         // Total number of admin4
         $count[ 'admin4' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
-        $html .= 'Total number of Admin4: <br>' . $count[ 'admin4' ] . '<br>';
+        echo 'Total number of Admin4: <br>' . intval( $count[ 'admin4' ] ) . '<br>';
 
-        $html .= '      </td>
+        echo '      </td>
                         </tr>';
 
-        $html .= '</tbody>
+        echo '</tbody>
                 </table>';
-
-        return $html;
     }
 
     /**
-     * @return string
+     * Prints
      */
     public function usa_states_currently_installed()
     {
         global $wpdb;
         $count = [];
-        $html = '';
 
         // Search for currently installed locations
 
-        $html .= '<table class="widefat ">
+        echo '<table class="widefat ">
                     <thead><th>Currently Installed</th></thead>
                     <tbody>
                         <tr>
                             <td>';
         // Total number of locations in database
-        $html .= 'Total number of locations: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
+        echo 'Total number of locations: <br>' . esc_html( wp_count_posts( 'locations' )->publish ) . '<br>';
 
         // Total number of admin1
         $count[ 'admin1' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___'" );
-        $html .= 'Total number of States: <br>' . $count[ 'admin1' ] . '<br>';
+        echo 'Total number of States: <br>' . intval( $count[ 'admin1' ] ) . '<br>';
 
         // Total number of admin2
         $count[ 'admin2' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___'" );
-        $html .= 'Total number of Counties: <br>' . $count[ 'admin2' ] . '<br>';
+        echo 'Total number of Counties: <br>' . intval( $count[ 'admin2' ] ) . '<br>';
 
         // Total number of admin3
         $count[ 'admin3' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___-%'" );
-        $html .= 'Total number of Tracts: <br>' . $count[ 'admin3' ] . '<br>';
+        echo 'Total number of Tracts: <br>' . intval( $count[ 'admin3' ] ) . '<br>';
 
-        $html .= '      </td>
+        echo '      </td>
                         </tr>';
 
-        $html .= '</tbody>
+        echo '</tbody>
                 </table>';
-
-        return $html;
     }
 }
 

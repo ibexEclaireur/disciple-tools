@@ -17,42 +17,43 @@ if( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Locations_Tab_USA
 {
     /**
-     * @return string
+     * Prints
      */
     public function install_us_state()
     {
 
         /*  Step 1
          *  This section controls the dropdown selection of the states */
-        $html = '<form method="post" name="state_step1" id="state_step1">';
-        $html .= wp_nonce_field( 'state_nonce_validate', 'state_nonce', true, false );
-        $html .= '<h1>(Step 1) Select a State to Install:</h1><br>';
-        $html .= $this->get_usa_states_dropdown_not_installed();
-        $html .= ' <button type="submit" class="button">Install State</button>';
-        $html .= '<br><br>';
-        $html .= '</form>'; // end form
+        echo '<form method="post" name="state_step1" id="state_step1">';
+        wp_nonce_field( 'state_nonce_validate', 'state_nonce', true );
+        echo '<h1>(Step 1) Select a State to Install:</h1><br>';
+        $this->get_usa_states_dropdown_not_installed(); // prints
+        echo ' <button type="submit" class="button">Install State</button>';
+        echo '<br><br>';
+        echo '</form>'; // end form
 
         /*  Step 2
          *  This section lists the available administrative units for each of the installed states */
-        $html .= '<form method="post" name="state_step2" id="state_step2">';
-        $html .= wp_nonce_field( 'state_levels_nonce_validate', 'state_levels_nonce', true, false );
+        echo '<form method="post" name="state_step2" id="state_step2">';
+        wp_nonce_field( 'state_levels_nonce_validate', 'state_levels_nonce', true );
         $option = get_option( '_dt_usa_installed_state' ); // this installer relies heavily on this options table row to store status
         if( $option ) {
-            $html .= '<h1>(Step 2) Add Levels to Installed States:</h1><br>';
+            echo '<h1>(Step 2) Add Levels to Installed States:</h1><br>';
             foreach( $option as $state ) {
-                $html .= '<hr><h2>' . $state[ 'Zone_Name' ] . '</h2>';
-                $html .= '<p>Add levels: ';
+                echo '<hr><h2>' . esc_html( $state[ 'Zone_Name' ] ) . '</h2>';
+                echo '<p>Add levels: ';
                 foreach( $state[ 'levels' ] as $key => $value ) {
-                    $html .= '<button type="submit" name="' . $key . '" value="' . $state[ 'WorldID' ] . '" ';
-                    ( $value == 1 ) ? $html .= 'disabled' : null; //check if already installed
-                    $html .= '>' . $key . '</button> ';
+                    echo '<button type="submit" name="' . esc_attr( $key ) . '" value="' . esc_attr( $state[ 'WorldID' ] ) . '" ';
+                    if ( $value == 1 ) {
+                        echo 'disabled'; //check if already installed
+                    }
+                    echo '>' . esc_html( $key ) . '</button> ';
                 }
-                $html .= '<span style="float:right"><button type="submit" name="delete" value="' . $state[ 'WorldID' ] . '">delete all</button></span></p>';
+                echo '<span style="float:right"><button type="submit" name="delete" value="' . esc_attr( $state[ 'WorldID' ] ) . '">delete all</button></span></p>';
             }
         }
-        $html .= '</form>';
+        echo '</form>';
 
-        return $html;
     }
 
     /**
@@ -212,40 +213,37 @@ class Disciple_Tools_Locations_Tab_USA
     }
 
     /**
-     * Creates a dropdown of the states with the state key as the value.
+     * Prints a dropdown of the states with the state key as the value.
      *
      * @usage USA locations
-     * @return string
      */
     public function get_usa_states_dropdown_not_installed()
     {
 
         $dir_contents = $this->get_usa_states();
 
-        $dropdown = '<select name="states-dropdown">';
+        echo '<select name="states-dropdown">';
         $option = get_option( '_dt_usa_installed_state' );
         // @codingStandardsIgnoreLine
         foreach( $dir_contents->RECORDS as $value ) {
             // @codingStandardsIgnoreLine
             $world_id = $value->WorldID;
             $disabled = '';
-            $dropdown .= '<option value="' . esc_attr( $world_id ) . '" ';
+            echo '<option value="' . esc_attr( $world_id ) . '" ';
             if( $option != false ) {
                 foreach( $option as $installed ) {
 
                     if( $installed[ 'WorldID' ] == $world_id ) {
-                        $dropdown .= ' disabled';
+                        echo ' disabled';
                         $disabled = ' (Installed)';
                     }
                 }
             }
             // @codingStandardsIgnoreLine
-            $dropdown .= '>' . esc_html( $value->Zone_Name ) . $disabled;
-            $dropdown .= '</option>';
+            echo '>' . esc_html( $value->Zone_Name ) . $disabled;
+            echo '</option>';
         }
-        $dropdown .= '</select>';
-
-        return $dropdown;
+        echo '</select>';
     }
 
     /**
