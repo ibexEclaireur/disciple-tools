@@ -16,8 +16,8 @@ if( !defined( 'ABSPATH' ) ) {
 if( is_admin() ) {
     add_action( 'admin_bar_menu', 'dt_modify_admin_bar', 999 );
 
-    add_filter( 'admin_footer_text', '__empty_footer_string', 11 );
-    add_filter( 'update_footer', '__empty_footer_string', 11 );
+    add_filter( 'admin_footer_text', 'dt_empty_footer_string', 11 );
+    add_filter( 'update_footer', 'dt_empty_footer_string', 11 );
 }
 
 /*********************************************************************************************
@@ -61,7 +61,7 @@ function dt_modify_admin_bar( $wp_admin_bar )
 /**
  * Remove Admin Footer and Version Number
  */
-function __empty_footer_string()
+function dt_empty_footer_string()
 {
     // Update the text area with an empty string.
     return '';

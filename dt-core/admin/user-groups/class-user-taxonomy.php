@@ -172,26 +172,32 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             // Hook into early actions to load custom CSS and our init handler.
             add_action( 'load-users.php', [ $this, 'admin_load' ] );
             add_action( 'load-edit-tags.php', [ $this, 'admin_load' ] );
-            add_action( 'load-term.php', [ $this, 'admin_menu_highlight' ] );
-            add_action( 'load-edit-tags.php', [ $this, 'admin_menu_highlight' ] );
+            /* add_action( 'load-term.php', [ $this, 'admin_menu_highlight' ] ); */
+            /* add_action( 'load-edit-tags.php', [ $this, 'admin_menu_highlight' ] ); */
         }
 
-        /**
-         * This tells WordPress to highlight the "Users" menu item when viewing a
-         * user taxonomy.
-         *
-         * @since 0.1.0
-         * @global string $plugin_page
+        /*
+         * I commented out this code, as I'm not sure what it does, and I'm not
+         * confident that overriding a WordPress global is a good idea.
+         * Certainly, PHPCS complains when a WordPress global is overridden.
          */
-        public function admin_menu_highlight()
-        {
-            global $plugin_page;
 
-            // Set plugin page to "users.php" to get highlighting to be correct
-            if( isset( $_GET[ 'taxonomy' ] ) && ( $_GET[ 'taxonomy' ] === $this->taxonomy ) ) {
-                $plugin_page = 'users.php';
-            }
-        }
+        /* /** */
+        /*  * This tells WordPress to highlight the "Users" menu item when viewing a */
+        /*  * user taxonomy. */
+        /*  * */
+        /*  * @since 0.1.0 */
+        /*  * @global string $plugin_page */
+        /*  *1/ */
+        /* public function admin_menu_highlight() */
+        /* { */
+        /*     global $plugin_page; */
+
+        /*     // Set plugin page to "users.php" to get highlighting to be correct */
+        /*     if( isset( $_GET[ 'taxonomy' ] ) && ( $_GET[ 'taxonomy' ] === $this->taxonomy ) ) { */
+        /*         $plugin_page = 'users.php'; */
+        /*     } */
+        /* } */
 
         /**
          * Filter the body class

@@ -143,21 +143,22 @@ class Disciple_Tools_Facebook_Integration {
      */
     public function facebook_settings_page(){
 
-        echo "<h1>Facebook Integration Settings</h1>";
-        echo "<h3>Hook up Disciple tools to a Facebook app in order to get contacts or useful stats from your Facebook pages. </h3>";
-        $html = '<div class="wrap">
+        ?>
+        <h1>Facebook Integration Settings</h1>
+        <h3>Hook up Disciple tools to a Facebook app in order to get contacts or useful stats from your Facebook pages. </h3>
+        <div class="wrap">
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
                     <div id="post-body-content">
 
-                        <form action="'.  $this->get_rest_url() . "/add-app" .'" method="post">
-                        <input type="hidden" name="_wpnonce" id="_wpnonce" value="' . wp_create_nonce( 'wp_rest' ) . '" />';
-        $html .=            '<table class="widefat striped">
+                        <form action="<?php echo esc_url( $this->get_rest_url() ); ?>/add-app" method="post">
+                        <input type="hidden" name="_wpnonce" id="_wpnonce" value="' . wp_create_nonce( 'wp_rest' ) . '" />
+                            <table class="widefat striped">
 
                                 <thead><th>Facebook App Settings</th><th></th></thead>
-                                <p>For this integration to work, go to your <a href="https://developers.facebook.com/apps">Facebook app\'s settings page</a>.
-                                 Under <strong>Add Platform</strong>, choose the website option, put: <strong>' . get_site_url() . '</strong> as the site URL and click save changes.<br>
-                                From your Facebook App\'s settings page get the App ID and the App Secret and paste them bellow and click the "Save App Settings" button.<br>
+                                <p>For this integration to work, go to your <a href="https://developers.facebook.com/apps">Facebook app's settings page</a>.
+                                 Under <strong>Add Platform</strong>, choose the website option, put: <strong><?php echo esc_url( get_site_url() ); ?></strong> as the site URL and click save changes.<br>
+                                From your Facebook App's settings page get the App ID and the App Secret and paste them bellow and click the "Save App Settings" button.<br>
                                 If you have any Facebook pages, they should appear in the Facebook Pages Table bellow.<br>
                                 You will need to re-authenticate (by clicking the "Save App Settings" button bellow) if:<br>
                                 &nbsp;&nbsp;    •You change your Facebook account password<br>
@@ -167,55 +168,58 @@ class Disciple_Tools_Facebook_Integration {
                                 <tbody>
 
                                     <tr><td>Facebook App Id</td><td>
-                                        <input type="text" class="regular-text" name="app_id" value="' . get_option( "disciple_tools_facebook_app_id", "" )  . '"/>
+                                        <input type="text" class="regular-text" name="app_id" value="<?php echo esc_attr( get_option( "disciple_tools_facebook_app_id", "" ) ); ?>"/>
                                     </td></tr>
                                     <tr><td>Facebook App Secret</td><td>
-                                    <input type="text" class="regular-text" name="app_secret" value="'. get_option( "disciple_tools_facebook_app_secret" ) .'"/>
+                                    <input type="text" class="regular-text" name="app_secret" value="<?php echo esc_attr( get_option( "disciple_tools_facebook_app_secret" ) ); ?>"/>
                                      </td></tr>
-                                    <tr><td>Access Token</td><td>'
-                                        .  (get_option( "disciple_tools_facebook_access_token" ) ? "Access token is saved" : "No Access Token")  .
-                                     '</td></tr>
+                                    <tr><td>Access Token</td><td>
+                                        <?php echo  (get_option( "disciple_tools_facebook_access_token" ) ? "Access token is saved" : "No Access Token") ?>
+                                     </td></tr>
 
                                     <tr><td>Save app</td><td><input type="submit" class="button" name="save_app" value="Save app Settings" /> </td></tr>
-                                    ';
-        $html .= '              </tbody>
+                                </tbody>
                             </table>
-                        </form>';
+                        </form>
 
-        $html .=  '<br>
+                   <br>
                                      <form action="" method="post">
-                        <input type="hidden" name="_wpnonce" id="_wpnonce" value="' . wp_create_nonce( 'wp_rest' ) . '" />';
-        $html .= $this->facebook_settings_functions();
-        $html .= '<table id="facebook_pages" class="widefat striped">
+                        <input type="hidden" name="_wpnonce" id="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'wp_rest' ) ); ?>" />
+        <?php $this->facebook_settings_functions(); ?>
+        <table id="facebook_pages" class="widefat striped">
                     <thead><th>Facebook Pages </th></thead>
-                    <tbody>';
+                    <tbody>
+        <?php
         $facebook_pages = get_option( "disciple_tools_facebook_pages", [] );
 
         foreach($facebook_pages as $id => $facebook_page){
-            $html .=  "<tr><td>$facebook_page->name ($id)</td>
+            ?>
+            <tr><td><?php echo esc_html( $facebook_page->name( $id ) ); ?></td>
                <td>
-                   <label for=\"$facebook_page->name-integrate\" >Sync Contacts </label>
-                   <input name=\"$facebook_page->name-integrate\" type=\"checkbox\" value=\"$facebook_page->name\" " . checked( 1, isset( $facebook_page->integrate ) ? $facebook_page->integrate : false, false )."/>
+                   <label for="<?php echo esc_attr( $facebook_page->name-integrate ); ?>" >Sync Contacts </label>
+                   <input name="<?php echo esc_attr( $facebook_page->name-integrate ); ?>" type="checkbox" value="<?php echo esc_attr( $facebook_page->name ); ?>" <?php echo checked( 1, isset( $facebook_page->integrate ) ? $facebook_page->integrate : false, false ); ?> />
                </td>
                <td>
-                   <label for=\"$facebook_page->name-report\" >Include in Stats </label>
-                   <input name=\"$facebook_page->name-report\" type=\"checkbox\" value=\"$facebook_page->name\" " . checked( 1, isset( $facebook_page->report ) ? $facebook_page->report : false, false )."/>
-               </td>";
+                   <label for="<?php echo esc_attr( $facebook_page->name-report ); ?>" >Include in Stats </label>
+                   <input name="<?php echo esc_attr( $facebook_page->name-report ); ?>" type="checkbox" value="<?php echo esc_attr( $facebook_page->name ); ?>" <?php echo checked( 1, isset( $facebook_page->report ) ? $facebook_page->report : false, false ); ?> />
+               </td>
+            <?php
         }
-        $html .= '</tbody>
+        ?>
+        </tbody>
                 </table>
         <input type="submit" class="button" name="get_pages" value="Refresh Page List" />
-        <input type="submit" class="button" name="save_pages" value="Save Pages Settings" />';
+        <input type="submit" class="button" name="save_pages" value="Save Pages Settings" />
 
 
-        $html .=       '</form>';
-        $html .= '</div><!-- end post-body-content -->';
+                        </form>
+                  </div><!-- end post-body-content -->
 
-        $html .=   '</div><!-- post-body meta box container -->
+                    </div><!-- post-body meta box container -->
             </div><!--poststuff end -->
-        </div><!-- wrap end -->';
+        </div><!-- wrap end -->
 
-        echo $html;
+        <?php
     }
 
 
@@ -235,14 +239,14 @@ class Disciple_Tools_Facebook_Integration {
 
 
     /**
- * Functions for the pages section of the Facebook settings
+    * Functions for the pages section of the Facebook settings
      *
-     * @return string
      */
     public function facebook_settings_functions() {
         // Check noonce
         if ( isset( $_POST['dt_app_form_noonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['dt_app_form_noonce'] ), 'dt_app_form' ) ) {
-            return 'Are you cheating? Where did this form come from?';
+            echo 'Are you cheating? Where did this form come from?';
+            return;
         }
 
         // get the pages the user has access to.
@@ -394,10 +398,15 @@ class Disciple_Tools_Facebook_Integration {
         ob_flush();
         flush();
         // Close current session (if it exists).
-        if(session_id()) { session_write_close();
+        // TODO: look into whether session_ functions should really be used
+        // here, as PHPCS does not like it
+        // @codingStandardsIgnoreStart
+        if (session_id()) {
+            session_write_close();
         }
         //for nginx systems
         session_write_close(); //close the session
+        // @codingStandardsIgnoreEnd
         fastcgi_finish_request(); //this returns 200 to the user, and processing continues
     }
 
@@ -471,16 +480,16 @@ class Disciple_Tools_Facebook_Integration {
      */
     public function add_app(){
         // Check noonce
-        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( $_POST['_wpnonce'], 'wp_rest' ) ) {
+        if ( isset( $_POST['_wpnonce'] ) && ! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'wp_rest' ) ) {
             return 'Are you cheating? Where did this form come from?';
         }
         if (current_user_can( "manage_options" ) && check_admin_referer( 'wp_rest' ) && isset( $_POST["save_app"] ) && isset( $_POST["app_secret"] ) && isset( $_POST["app_id"] )){
-            update_option( 'disciple_tools_facebook_app_id', $_POST["app_id"] );
-            update_option( 'disciple_tools_facebook_app_secret', $_POST["app_secret"] );
+            update_option( 'disciple_tools_facebook_app_id', sanitize_key( $_POST["app_id"] ) );
+            update_option( 'disciple_tools_facebook_app_secret', sanitize_key( $_POST["app_secret"] ) );
             delete_option( 'disciple_tools_facebook_access_token' );
 
             $url = "https://facebook.com/v2.8/dialog/oauth";
-            $url .= "?client_id=" . $_POST["app_id"];
+            $url .= "?client_id=" . sanitize_key( $_POST["app_id"] );
             $url .= "&redirect_uri=" . $this->get_rest_url() . "/auth";
             $url .= "&scope=public_profile,read_insights,manage_pages,read_page_mailboxes";
             $url .= "&state=" . $this->authorize_secret();
@@ -539,15 +548,15 @@ class Disciple_Tools_Facebook_Integration {
     private function get_conversation_update( $page_id, $thread_id ){
         //check the settings array to see if we have settings saved for the page
         //get the access token and custom page name by looking for the page Id
-        $facebookPages = get_option( "disciple_tools_facebook_pages", [] );
+        $facebook_pages = get_option( "disciple_tools_facebook_pages", [] );
         //if we have the access token, get and save the conversation
         //make sure the "sync contacts" setting is set.
-        if (isset( $facebookPages[$page_id] ) && isset( $facebookPages[$page_id]->integrate ) && $facebookPages[$page_id]->integrate == 1){
+        if (isset( $facebook_pages[$page_id] ) && isset( $facebook_pages[$page_id]->integrate ) && $facebook_pages[$page_id]->integrate == 1){
 
-            $access_token = $facebookPages[$page_id]->access_token;
-            $uriForConversations = "https://graph.facebook.com/v2.7/". $thread_id . "?fields=message_count,messages{from,created_time,message},updated_time,participants&access_token=". $access_token;
-            $response = wp_remote_get( $uriForConversations );
-            $page_name = $facebookPages[$page_id]->name;
+            $access_token = $facebook_pages[$page_id]->access_token;
+            $uri_for_conversations = "https://graph.facebook.com/v2.7/". $thread_id . "?fields=message_count,messages{from,created_time,message},updated_time,participants&access_token=". $access_token;
+            $response = wp_remote_get( $uri_for_conversations );
+            $page_name = $facebook_pages[$page_id]->name;
 
             $body = json_decode( $response["body"], true );
             if ($body){
@@ -595,11 +604,11 @@ class Disciple_Tools_Facebook_Integration {
      * @param $participant
      * @param $messages, the messaging object from facebook
      * @param $updated_time, the time of the last message
-     * @param $pageId, the id of the facebook page where the conversation is happening
+     * @param $page_id, the id of the facebook page where the conversation is happening
      * @param $page_name, the name given to the facebook page in settings
      * @param $message_count, the number of messages in the conversation
      */
-    private function update_or_create_contact( $participant, $messages, $updated_time, $pageId, $page_name, $message_count ){
+    private function update_or_create_contact( $participant, $messages, $updated_time, $page_id, $page_name, $message_count ){
         $facebook_url = "https://www.facebook.com/" . $participant["id"];
         $query = new WP_Query(
             [
@@ -690,19 +699,21 @@ class Disciple_Tools_Facebook_Integration {
             'default' => serialize( [] ),
             'section' => 'facebook'
         ];
-        $html = '';
 
         if (!is_string( $contact_post_type )){
             $contact_post_type = $contact_post_type->post_type;
         }
 
-        $html .= '<input type="hidden" name="dt_' . $contact_post_type . '_noonce" id="dt_' . $contact_post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
-
+        ?>
+        <input type="hidden" name="<?php echo esc_attr( "dt_{$contact_post_type}_noonce" ); ?>" id="<?php echo esc_attr( "dt_{$contact_post_type}_noonce" ); ?>" value="<?php echo esc_attr( wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ); ?>" />
+        <?php
 
         if ( 0 < count( $field_data ) ) {
-            $html .= '<table class="form-table">' . "\n";
-            $html .= '<tbody>' . "\n";
+            ?>
+            <table class="form-table">
+            <tbody>
 
+            <?php
             foreach ( $field_data as $k => $v ) {
                 $data = $v['default'];
                 if ( isset( $fields[$k] ) && isset( $fields[$k][0] ) ) {
@@ -714,13 +725,19 @@ class Disciple_Tools_Facebook_Integration {
                     case 'serialized':
                         if (gettype( $data )=="string"){
                             $data = unserialize( $data );
-                            $html .= '<strong>Messages</strong>';
-                            $html .= '<ul>';
+                            ?>
+                            <strong>Messages</strong>
+                            <ul>
+                            <?php
                             usort( $data, [$this, "sort_function"] );
                             foreach ($data as $o){
-                                $html .= '<li>'. $o["from"]["name"].': ' . $o["message"] . '</li>';
+                                ?>
+                                <li><?php echo esc_html( $o["from"]["name"] . ': ' . $o["message"] ); ?></li>
+                                <?php
                             }
-                            $html .= '</ul>';
+                            ?>
+                            </ul>
+                            <?php
                         }
                         break;
 
@@ -729,11 +746,12 @@ class Disciple_Tools_Facebook_Integration {
                 }
             }
 
-            $html .= '</tbody>' . "\n";
-            $html .= '</table>' . "\n";
+            ?>
+            </tbody>
+            </table>
+            <?php
         }
 
-        echo $html;
     }
 
 }

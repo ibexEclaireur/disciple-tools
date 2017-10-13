@@ -124,11 +124,15 @@ function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = [], $b
         return false;
     }
 
-    if( empty( $terms ) && empty( $bulk ) ) {
-        $terms = isset( $_POST[ $taxonomy ] )
-            ? $_POST[ $taxonomy ]
-            : null;
-    }
+    /* This doesn't seem like correct code to me, why should this function read
+     * $_POST? And if it does, where is the nonce verification? I commented the
+     * code out. */
+
+    /* if( empty( $terms ) && empty( $bulk ) ) { */
+    /*     $terms = isset( $_POST[ $taxonomy ] ) */
+    /*         ? $_POST[ $taxonomy ] */
+    /*         : null; */
+    /* } */
 
     // Delete all user terms
     if( is_null( $terms ) || empty( $terms ) ) {

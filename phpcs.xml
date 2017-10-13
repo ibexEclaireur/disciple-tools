@@ -24,19 +24,8 @@
   <exclude-pattern>*/vendor/*</exclude-pattern>
   <exclude-pattern>dt-core/libraries/*</exclude-pattern>
   <exclude-pattern>dt-notifications/wp_mail_smtp.php</exclude-pattern>
-
-  <!-- TODO: remove these exclude-pattern elements, we want to test the entire
-       codebase! -->
-  <exclude-pattern>dt-statistics/class-page-factory.php</exclude-pattern>
-  <exclude-pattern>dt-core/integrations/class-facebook-integration.php</exclude-pattern>
-  <exclude-pattern>dt-core/admin/user-groups/user-groups-taxonomies.php</exclude-pattern>
-  <exclude-pattern>dt-core/admin/user-groups/class-user-taxonomy.php</exclude-pattern>
-  <exclude-pattern>dt-core/admin/admin-theme-design.php</exclude-pattern>
-  <exclude-pattern>dt-core/admin/config-options-settings.php</exclude-pattern>
-  <exclude-pattern>dt-core/admin/menu/tabs-custom-lists.php</exclude-pattern>
-  <exclude-pattern>dt-core/admin/class-better-author-metabox.php</exclude-pattern>
   <exclude-pattern>dt-core/admin/three-column-screen-layout.php</exclude-pattern>
-  <exclude-pattern>dt-core/logging/hooks/class-hook-theme.php</exclude-pattern>
+  <exclude-pattern>dt-core/admin/class-better-author-metabox.php</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
