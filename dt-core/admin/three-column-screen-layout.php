@@ -83,6 +83,7 @@ if( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
             global $post;
             ob_start();
             $name = sprintf( 'side%d', $i );
+            // @codingStandardsIgnoreLine
             do_action( 'do_meta_boxes', $post_type, $name, $post );
             do_meta_boxes( $post_type, $name, $post );
 
@@ -120,6 +121,6 @@ if( !class_exists( 'Disciple_Tools_Three_Column_Screen_Layout' ) ) {
         }
     }
 
-    $Disciple_Tools_Three_Column_Screen_Layout = new Disciple_Tools_Three_Column_Screen_Layout();
+    new Disciple_Tools_Three_Column_Screen_Layout();
 }
 ?>

@@ -145,7 +145,7 @@ class Disciple_Tools_Reports_Integrations {
      */
     public static function twitter_prepared_data ( $date ) {
         $report = [];
-        
+
         $report[0] = [
             'report_date' => $date,
             'report_source' => 'Twitter',
@@ -213,7 +213,7 @@ class Disciple_Tools_Reports_Integrations {
      */
     public static function adwords_prepared_data ( $date ) {
         $report = [];
-        
+
         $report[0] = [
             'report_date' => $date,
             'report_source' => 'Adwords',
@@ -252,7 +252,7 @@ class Disciple_Tools_Reports_Integrations {
      */
     public static function mailchimp_prepared_data ( $date ) {
         $report = [];
-        
+
         $report[0] = [
             'report_date' => $date,
             'report_source' => 'Mailchimp',
@@ -294,7 +294,7 @@ class Disciple_Tools_Reports_Integrations {
      */
     public static function youtube_prepared_data ( $date ) {
         $report = [];
-        
+
         $report[0] = [
             'report_date' => $date,
             'report_source' => 'Youtube',

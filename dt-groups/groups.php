@@ -84,6 +84,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             }
             $fields[ "locations" ] = $locations;
 
+
+            $people_groups = get_posts(
+                [
+                    'connected_type'   => 'groups_to_peoplegroups',
+                    'connected_items'  => $group,
+                    'nopaging'         => true,
+                    'suppress_filters' => false,
+                ]
+            );
+            foreach( $people_groups as $g ) {
+                $g->permalink = get_permalink( $g->ID );
+            }
+            $fields[ "people_groups" ] = $people_groups;
+
             $members = get_posts(
                 [
                     'connected_type'   => 'contacts_to_groups',
@@ -163,7 +177,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         $bad_fields = [];
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
-        $group_model_fields[ 'title' ] = "";
+        $group_fields[ 'title' ] = "";
         foreach( $fields as $field => $value ) {
             if( !isset( $group_fields[ $field ] ) ) {
                 $bad_fields[] = $field;
@@ -230,6 +244,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
+     * @param $group_id
+     * @param $people_group_id
+     *
+     * @return mixed
+     */
+    public static function add_people_group_to_group( $group_id, $people_group_id )
+    {
+        return p2p_type( 'groups_to_peoplegroups' )->connect(
+            $people_group_id, $group_id,
+            [ 'date' => current_time( 'mysql' ) ]
+        );
+    }
+
+    /**
      * @param  $group_id
      * @param  $member_id
      *
@@ -253,6 +281,18 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         return p2p_type( 'groups_to_locations' )->disconnect( $location_id, $group_id );
     }
+
+    /**
+     * @param $group_id
+     * @param $people_group_id
+     *
+     * @return mixed
+     */
+    public static function remove_people_group_from_group( $group_id, $people_group_id )
+    {
+        return p2p_type( 'groups_to_peoplegroups' )->disconnect( $people_group_id, $group_id );
+    }
+
 
     /**
      * @param  $group_id
@@ -291,6 +331,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             $connect = self::add_location_to_group( $group_id, $value );
         } elseif( $key === "members" ) {
             $connect = self::add_member_to_group( $group_id, $value );
+        } elseif( $key === "people_groups" ) {
+            $connect = self::add_people_group_to_group( $group_id, $value );
         }
         if( is_wp_error( $connect ) ) {
             return $connect;
@@ -322,6 +364,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return self::remove_location_from_group( $group_id, $value );
         } elseif( $key === "members" ) {
             return self::remove_member_from_group( $group_id, $value );
+        } elseif ( $key === "people_groups" ) {
+            return self::remove_people_group_from_group( $group_id, $value );
         }
 
         return false;

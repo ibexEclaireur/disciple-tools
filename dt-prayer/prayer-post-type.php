@@ -312,14 +312,12 @@ class Disciple_Tools_Prayer_Post_Type {
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
 
-        $html = '';
-
-        $html .= '<input type="hidden" name="dt_' . $this->post_type . '_noonce" id="dt_' . $this->post_type . '_noonce" value="' . wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) . '" />';
+        echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ) . '" />';
 
 
         if ( 0 < count( $field_data ) ) {
-            $html .= '<table class="form-table">' . "\n";
-            $html .= '<tbody>' . "\n";
+            echo '<table class="form-table">' . "\n";
+            echo '<tbody>' . "\n";
 
             foreach ( $field_data as $k => $v ) {
 
@@ -335,46 +333,46 @@ class Disciple_Tools_Prayer_Post_Type {
                     switch ( $type ) {
 
                         case 'url':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
                             break;
                         case 'text':
-                            $html .= '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
                                 <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
                             break;
                         case 'select':
-                            $html .= '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . $v['name'] . '</label></th>
+                            echo '<tr valign="top"><th scope="row">
+                                <label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
                             foreach ($v['default'] as $vv) {
-                                $html .= '<option value="' . $vv . '" ';
-                                if($vv == $data) { $html .= 'selected';}
-                                $html .= '>' .$vv . '</option>';
+                                echo '<option value="' . esc_attr( $vv ) . '" ';
+                                if($vv == $data) { echo 'selected';}
+                                echo '>' . esc_html( $vv ) . '</option>';
                             }
-                            $html .= '</select>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '</select>' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
                             break;
                         case 'radio':
-                            $html .= '<tr valign="top"><th scope="row">' . $v['name'] . '</th>
+                            echo '<tr valign="top"><th scope="row">' . esc_html( $v['name'] ) . '</th>
                                 <td><fieldset>';
                             // Iterate the buttons
                             $increment_the_radio_button = 1;
                             foreach ($v['default'] as $vv) {
-                                $html .= '<label for="'.esc_attr( "$k-$increment_the_radio_button" )."\">$vv</label>" .
-                                    '<input class="drm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.$k.'-'.$increment_the_radio_button.'" value="'.$vv.'" ';
-                                if($vv == $data) { $html .= 'checked';}
-                                $html .= '>';
+                                echo '<label for="'.esc_attr( "$k-$increment_the_radio_button" )."\">" . esc_html( $vv ) . "</label>" .
+                                    '<input class="drm-radio" type="radio" name="'.esc_attr( $k ).'" id="'.esc_attr( $k.'-'.$increment_the_radio_button ) .'" value="'. esc_attr( $vv ) .'" ';
+                                if($vv == $data) { echo 'checked';}
+                                echo '>';
                                 $increment_the_radio_button++;
                             }
-                            $html .= '</fieldset>' . "\n";
-                            $html .= '<p class="description">' . $v['description'] . '</p>' . "\n";
-                            $html .= '</td><tr/>' . "\n";
+                            echo '</fieldset>' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
                             break;
 
                         default:
@@ -384,13 +382,10 @@ class Disciple_Tools_Prayer_Post_Type {
                 }
             }
 
-            $html .= '</tbody>' . "\n";
-            $html .= '</table>' . "\n";
+            echo '</tbody>' . "\n";
+            echo '</table>' . "\n";
         }
 
-        // @codingStandardsIgnoreLine
-        echo $html;
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
     } // End meta_box_content()
 
 

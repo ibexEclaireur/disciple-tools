@@ -4,25 +4,35 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
 
     public function hooks_theme_modify( $location, $status ) {
+        global $file;
         if ( false !== strpos( $location, 'theme-editor.php?file=' ) ) {
-            if ( ! empty( $_POST ) && 'update' === $_POST['action'] ) {
-                $aal_args = [
-                    'action'         => 'file_updated',
-                    'object_type'    => 'Theme',
-                    'object_subtype' => 'theme_unknown',
-                    'object_id'      => 0,
-                    'object_name'    => 'file_unknown',
-                ];
-
-                if ( ! empty( $_POST['file'] ) ) {
-                    $aal_args['object_name'] = $_POST['file'];
+            if ( isset( $_POST['_wpnonce'] ) && isset( $_POST['action'] ) && isset( $_POST['theme'] ) ) {
+                // We're doing nonce verification later, and it's OK if the
+                // action name is built on POST parameters.
+                // @codingStandardsIgnoreLine
+                $stylesheet = $_POST['theme'] ? wp_unslash( $_POST['theme'] ) : get_stylesheet();
+                if (! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'edit-theme_' . $file . $stylesheet ) ) {
+                    throw new Exception( "Could not verify nonce" );
                 }
+                if ( 'update' === $_POST['action'] ) {
+                    $aal_args = [
+                        'action'         => 'file_updated',
+                        'object_type'    => 'Theme',
+                        'object_subtype' => 'theme_unknown',
+                        'object_id'      => 0,
+                        'object_name'    => 'file_unknown',
+                    ];
 
-                if ( ! empty( $_POST['theme'] ) ) {
-                    $aal_args['object_subtype'] = $_POST['theme'];
+                    if ( ! empty( $_POST['file'] ) ) {
+                        $aal_args['object_name'] = sanitize_text_field( wp_unslash( $_POST['file'] ) );
+                    }
+
+                    if ( ! empty( $_POST['theme'] ) ) {
+                        $aal_args['object_subtype'] = sanitize_text_field( wp_unslash( $_POST['theme'] ) );
+                    }
+
+                    dt_activity_insert( $aal_args );
                 }
-
-                dt_activity_insert( $aal_args );
             }
         }
 
@@ -74,7 +84,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
         }
 
         $name = $delete_theme_call['args'][0];
-        
+
         dt_activity_insert(
             [
                 'action' => 'deleted',
@@ -92,7 +102,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
         if ( ! isset( $extra['type'] ) || 'theme' !== $extra['type'] ) {
             return;
         }
-        
+
         if ( 'install' === $extra['action'] ) {
             $slug = $upgrader->theme_info();
             if ( ! $slug ) {
@@ -113,7 +123,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
                 ]
             );
         }
-        
+
         if ( 'update' === $extra['action'] ) {
             if ( isset( $extra['bulk'] ) && true == $extra['bulk'] ) {
                 $slugs = $extra['themes'];
@@ -125,7 +135,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
                 $theme      = wp_get_theme( $slug );
                 $stylesheet = $theme['Stylesheet Dir'] . '/style.css';
                 $theme_data = get_file_data( $stylesheet, [ 'Version' => 'Version' ] );
-                
+
                 $name    = $theme['Name'];
                 $version = $theme_data['Version'];
 

@@ -26,25 +26,24 @@ class Disciple_Tools_Locations_Tab_Import
     public function page_contents()
     {
 
-        $html = '';
+        echo '<div class="wrap"><h2>Import</h2>'; // Block title
 
-        $html .= '<div class="wrap"><h2>Import</h2>'; // Block title
+        echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
+        echo '<div id="post-body-content">';
+        $this->select_oz_data_dropdown(); // prints
+        echo '<br>';
+        $this->select_us_census_data_dropdown(); // prints
+        echo '<br>';
+        $this->us_census_data_dropdown(); // prints
+        echo '<br>';
 
-        $html .= '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
-        $html .= '<div id="post-body-content">';
-        $html .= $this->select_oz_data_dropdown() . '<br>';
-        $html .= $this->select_us_census_data_dropdown() . '<br>';
-        $html .= $this->us_census_data_dropdown() . '<br>';
+        echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
+        $this->locations_currently_installed(); // prints /* Add content to column */
 
-        $html .= '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
-        $html .= $this->locations_currently_installed(); /* Add content to column */
+        echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
+        echo '';/* Add content to column */
 
-        $html .= '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';
-        $html .= '';/* Add content to column */
-
-        $html .= '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
-
-        return $html;
+        echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
     }
 
     /**
@@ -54,7 +53,6 @@ class Disciple_Tools_Locations_Tab_Import
      */
     public function select_us_census_data_dropdown()
     {
-        $html = '';
         $result = '';
         $result2 = '';
 
@@ -69,44 +67,43 @@ class Disciple_Tools_Locations_Tab_Import
             $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts( sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) ) );
         } /* end if $_POST */
 
-        $dropdown = dt_get_states_key_dropdown_not_installed();
 
         // return form and dropdown
 
-        $html .= '<table class="widefat ">
+        echo '<table class="widefat ">
                     <thead><th>Zume Project - USA Census Data </th></thead>
                     <tbody>
                         <tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'state_nonce_validate', 'state_nonce', true, false ) . $dropdown . '
+                                    ';
+                                    wp_nonce_field( 'state_nonce_validate', 'state_nonce', true );
+                                    // TODO: make this function print instead of returning HTML
+                                    // @codingStandardsIgnoreLine
+                                    echo dt_get_states_key_dropdown_not_installed();
 
-                                    <button type="submit" class="button" value="submit">Upload State</button>
+                                    echo '<button type="submit" class="button" value="submit">Upload State</button>
                                 </form>
                             </td>
                         </tr>';
 
         if( !empty( $result ) || !empty( $result2 ) ) {
-            $html .= '<tr>
-                            <td>State Counties: ' . $result . '<br>State Tracts: ' . $result2 . '</td>
+            echo '<tr>
+                            <td>State Counties: ' . esc_html( $result ) . '<br>State Tracts: ' . esc_html( $result2 ) . '</td>
                       </tr>';
         }
 
-        $html .= '</tbody>
+        echo '</tbody>
                 </table>';
-
-        return $html;
     }
 
     /**
-     * Creates drop down for uploading state xml files
+     * Creates drop down for uploading state xml files and prints
      *
      * @version 2
-     * @return mixed
      */
     public function us_census_data_dropdown()
     {
-        $html = '';
         $result = '';
         $result2 = '';
 
@@ -121,39 +118,38 @@ class Disciple_Tools_Locations_Tab_Import
             $result2 = Disciple_Tools_Locations_Import::upload_us_state_tracts_coordinates( sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) ) );
         } /* end if $_POST */
 
-        $dropdown = dt_get_states_key_dropdown_not_installed();
 
         // return form and dropdown
 
-        $html .= '<table class="widefat ">
+        echo '<table class="widefat ">
                     <thead><th>Zume Project - USA Census Data </th></thead>
                     <tbody>
                         <tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'state_nonce_validate', 'state_nonce', true, false ) . $dropdown . '
+                                    ';
+                                    wp_nonce_field( 'state_nonce_validate', 'state_nonce', true );
+                                    // TODO: make this print HTML instead of returning it
+                                    // @codingStandardsIgnoreLine
+                                    echo dt_get_states_key_dropdown_not_installed();
 
-                                    <button type="submit" class="button" value="submit">Upload State</button>
+                                    echo '<button type="submit" class="button" value="submit">Upload State</button>
                                 </form>
                             </td>
                         </tr>';
 
         if( !empty( $result ) || !empty( $result2 ) ) {
-            $html .= '<tr>
-                            <td>State Counties: ' . $result . '<br>State Tracts: ' . $result2 . '</td>
+            echo '<tr>
+                            <td>State Counties: ' . esc_html( $result ) . '<br>State Tracts: ' . esc_html( $result2 ) . '</td>
                       </tr>';
         }
 
-        $html .= '</tbody>
+        echo '</tbody>
                 </table>';
-
-        return $html;
     }
 
     /**
-     * Creates drop down meta box for loading Omega Zone files
-     *
-     * @return mixed
+     * Creates drop down meta box for loading Omega Zone files and prints
      */
     public function select_oz_data_dropdown()
     {
@@ -332,100 +328,111 @@ class Disciple_Tools_Locations_Tab_Import
         /* Build form box                */
         /*********************************/
         $html = '';
-        $html .= '<table class="widefat ">
+        echo '<table class="widefat ">
                     <thead><th>Import Omega Zones/2414/Zume International</th></thead>
                     <tbody>
                         <tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin1 . '
+                                    ';
+                                    wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true );
+                                    // TODO: refactor to avoid building a variable containing HTML
+                                    // @codingStandardsIgnoreLine
+                                    echo $admin1;
 
-                                    <button type="submit" class="button" value="submit">Load Admin Level 1</button>
+                                    echo '<button type="submit" class="button" value="submit">Load Admin Level 1</button>
                                 </form>
                             </td>
                         </tr>';
-        $html .= '<tr>
+        echo '<tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin2 . '
+                                    ';
+                                    wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true );
+                                    // TODO: refactor to avoid building a variable containing HTML
+                                    // @codingStandardsIgnoreLine
+                                    echo $admin2;
 
-                                    <button type="submit" class="button" value="submit">Load Admin Level 2</button>
+                                    echo '<button type="submit" class="button" value="submit">Load Admin Level 2</button>
                                 </form>
                             </td>
                         </tr>';
-        $html .= '<tr>
+        echo '<tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin3 . '
+                                    ';
+                                    wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true );
+                                    // TODO: refactor to avoid building a variable containing HTML
+                                    // @codingStandardsIgnoreLine
+                                    echo $admin3;
 
-                                    <button type="submit" class="button" value="submit">Load Admin Level 3</button>
+                                    echo '<button type="submit" class="button" value="submit">Load Admin Level 3</button>
                                 </form>
                             </td>
                         </tr>';
-        $html .= '<tr>
+        echo '<tr>
                             <td>
                                 <form action="" method="POST">
-                                    ' . wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true, false ) . $admin4 . '
+                                    ';
+                                    wp_nonce_field( 'oz_nonce_validate', 'oz_nonce', true );
+                                    // TODO: refactor to avoid building a variable containing HTML
+                                    // @codingStandardsIgnoreLine
+                                    echo $admin4;
 
-                                    <button type="submit" class="button" value="submit">Load Admin Level 4</button>
+                                    echo '<button type="submit" class="button" value="submit">Load Admin Level 4</button>
                                 </form>
                             </td>
                         </tr>';
 
-        $html .= '</tbody>
+        echo '</tbody>
                 </table>';
 
         /* End Build Form Box */
-
-        return $html;
     }
 
     /**
-     * @return string
+     * prints
      */
     public function locations_currently_installed()
     {
         global $wpdb;
         $count = [];
-        $html = '';
 
         // Search for currently installed locations
 
-        $html .= '<table class="widefat ">
+        echo '<table class="widefat ">
                     <thead><th>Currently Installed</th></thead>
                     <tbody>
                         <tr>
                             <td>';
         // Total number of locations in database
-        $html .= 'Total number of location posts: <br>' . wp_count_posts( 'locations' )->publish . '<br>';
+        echo 'Total number of location posts: <br>' . esc_html( wp_count_posts( 'locations' )->publish ) . '<br>';
 
         // Total number of countries
         $count[ 'countries' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
-        $html .= 'Total number of countries (admin0): <br>' . $count[ 'countries' ] . '<br>';
+        echo 'Total number of countries (admin0): <br>' . intval( $count[ 'countries' ] ) . '<br>';
 
         // Total number of admin1
         $count[ 'admin1' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
-        $html .= 'Total number of Admin1: <br>' . $count[ 'admin1' ] . '<br>';
+        echo 'Total number of Admin1: <br>' . intval( $count[ 'admin1' ] ) . '<br>';
 
         // Total number of admin2
         $count[ 'admin2' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
-        $html .= 'Total number of Admin2: <br>' . $count[ 'admin2' ] . '<br>';
+        echo 'Total number of Admin2: <br>' . intval( $count[ 'admin2' ] ) . '<br>';
 
         // Total number of admin3
         $count[ 'admin3' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
-        $html .= 'Total number of Admin3: <br>' . $count[ 'admin3' ] . '<br>';
+        echo 'Total number of Admin3: <br>' . intval( $count[ 'admin3' ] ) . '<br>';
 
         // Total number of admin4
         $count[ 'admin4' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
-        $html .= 'Total number of Admin4: <br>' . $count[ 'admin4' ] . '<br>';
+        echo 'Total number of Admin4: <br>' . intval( $count[ 'admin4' ] ) . '<br>';
 
-        $html .= '      </td>
+        echo '      </td>
                         </tr>';
 
-        $html .= '</tbody>
+        echo '</tbody>
                 </table>';
-
-        return $html;
     }
 
 }

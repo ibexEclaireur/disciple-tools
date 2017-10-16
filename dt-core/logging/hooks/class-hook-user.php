@@ -11,7 +11,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
             'user_id'     => $user->ID,
             'object_id'   => $user->ID,
             'object_name' => $user->user_nicename,
-             ] 
+             ]
         );
     }
 
@@ -24,7 +24,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
             'object_type' => 'User',
             'object_id'   => $user->ID,
             'object_name' => $user->user_nicename,
-             ] 
+             ]
         );
     }
     public function hooks_delete_user( $user_id ) {
@@ -36,7 +36,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
             'object_type' => 'User',
             'object_id'   => $user->ID,
             'object_name' => $user->user_nicename,
-             ] 
+             ]
         );
     }
 
@@ -50,7 +50,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
             'user_id'     => $user->ID,
             'object_id'   => $user->ID,
             'object_name' => $user->user_nicename,
-             ] 
+             ]
         );
     }
 
@@ -63,7 +63,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
             'object_type' => 'User',
             'object_id'   => $user->ID,
             'object_name' => $user->user_nicename,
-             ] 
+             ]
         );
     }
 
@@ -75,7 +75,7 @@ class Disciple_Tools_Hook_User extends Disciple_Tools_Hook_Base {
             'user_id'     => 0,
             'object_id'   => 0,
             'object_name' => $username,
-             ] 
+             ]
         );
     }
 

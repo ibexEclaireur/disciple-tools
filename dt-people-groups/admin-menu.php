@@ -90,30 +90,25 @@ class Disciple_Tools_People_Groups_Admin_Menu
             $tab = 'import';
         }
 
-        $tab_link_pre = '<a href="edit.php?post_type=peoplegroups&page=disciple_tools_people_groups&tab=';
 
-        $tab_link_post = '" class="nav-tab ';
 
-        $html = '<div class="wrap">
+        echo '<div class="wrap">
 
             <h2>People Group Settings</h2>
             <h2 class="nav-tab-wrapper">';
 
-        $html .= $tab_link_pre . 'import' . $tab_link_post;
+        echo '<a href="edit.php?post_type=peoplegroups&page=disciple_tools_people_groups&tab=import" class="nav-tab ';
+
         if( $tab == 'import' || !isset( $tab ) ) {
-            $html .= 'nav-tab-active';
+            echo 'nav-tab-active';
         }
-        $html .= '">Import</a>';
+        echo '">Import</a>';
 
-        //        $html .= $tab_link_pre . 'address_tract' . $tab_link_post;
-        //        if ($tab == 'address_tract' ) {$html .= 'nav-tab-active';}
-        //        $html .= '">Address to Tract</a>';
+        //        echo $tab_link_pre . 'address_tract' . $tab_link_post;
+        //        if ($tab == 'address_tract' ) {echo 'nav-tab-active';}
+        //        echo '">Address to Tract</a>';
 
-        $html .= '</h2>';
-        // @codingStandardsIgnoreLine
-        echo $html; // Echo tabs
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
-        $html = '';
+        echo '</h2>';
 
         // End Tab Bar
 
@@ -125,12 +120,9 @@ class Disciple_Tools_People_Groups_Admin_Menu
 
             default:
                 $class_object = new Disciple_Tools_People_Groups_Tab_Import();
-                $html .= '' . $class_object->page_contents();
+                $class_object->page_contents(); // prints
                 break;
         }
-        $html .= '</div>'; // end div class wrap
-        // @codingStandardsIgnoreLine
-        echo $html; // Echo contents
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
+        echo '</div>'; // end div class wrap
     }
 }

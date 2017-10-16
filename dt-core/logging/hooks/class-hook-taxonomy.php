@@ -32,7 +32,7 @@ class Disciple_Tools_Hook_Taxonomy extends Disciple_Tools_Hook_Base {
                 'object_subtype' => $taxonomy,
                 'object_id'      => $term_id,
                 'object_name'    => $term->name,
-                 ] 
+                 ]
             );
         }
     }
