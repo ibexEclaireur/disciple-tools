@@ -26,6 +26,7 @@
   <exclude-pattern>dt-notifications/wp_mail_smtp.php</exclude-pattern>
   <exclude-pattern>dt-core/admin/three-column-screen-layout.php</exclude-pattern>
   <exclude-pattern>dt-core/admin/class-better-author-metabox.php</exclude-pattern>
+  <exclude-pattern>dt-core/wp-async-request.php</exclude-pattern>
 
   <arg name="extensions" value="php,inc,lib"/>
   <arg value="n"/>
