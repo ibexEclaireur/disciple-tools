@@ -37,6 +37,11 @@ class Disciple_Tools_Posts
      *  delete_any_contacts  //delete any contact
      */
 
+    /**
+     * @param string $post_type
+     *
+     * @return bool
+     */
     public static function can_access( string $post_type )
     {
         return current_user_can( "access_" . $post_type );

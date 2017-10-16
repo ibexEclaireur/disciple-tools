@@ -110,9 +110,6 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
 
             $this->_body_data = $data;
 
-            dt_write_log( '@launch' ); // TODO remove
-            dt_write_log( $data ); // TODO remove
-
             if( !has_action( 'shutdown', [ $this, 'launch_on_shutdown' ] ) ) {
                 add_action( 'shutdown', [ $this, 'launch_on_shutdown' ] );
             }
@@ -152,9 +149,6 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
 
                 $url = admin_url( 'admin-post.php' );
 
-                dt_write_log( '@launch_on_shutdown' ); // TODO remove
-                dt_write_log( $request_args ); // TODO remove
-
                 wp_remote_post( $url, $request_args );
             }
         }
@@ -169,21 +163,17 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          */
         public function handle_postback()
         {
-            dt_write_log( 'Made it to handle_postback' );// TODO remove
-
             // @codingStandardsIgnoreLine
             if( isset( $_POST[ '_nonce' ] ) && $this->verify_async_nonce( $_POST[ '_nonce' ] ) ) {
                 if( !is_user_logged_in() ) {
                     $this->action = "nopriv_$this->action";
                 }
-                dt_write_log( '@handle_postback > run_action' );// TODO remove
                 $this->run_action();
             }
 
             add_filter( 'dt_die_handler', function() {
                 die();
             } );
-            dt_write_log( '@handle_postback > wp_die' );// TODO remove
             wp_die();
         }
 
@@ -201,8 +191,6 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
             $action = $this->get_nonce_action();
             $i = wp_nonce_tick();
 
-            dt_write_log( '@create_async_nonce' ); // TODO remove
-
             return substr( wp_hash( $i . $action . get_class( $this ), 'nonce' ), -12, 10 );
         }
 
@@ -218,8 +206,6 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
          */
         protected function verify_async_nonce( $nonce )
         {
-            dt_write_log( '@verify_async_nonce' ); // TODO remove
-
             $action = $this->get_nonce_action();
             $i = wp_nonce_tick();
 
@@ -249,8 +235,6 @@ if( !class_exists( 'Disciple_Tools_Async_Task' ) ) {
                 $action = substr( $action, 7 );
             }
             $action = "dt_async_$action";
-
-            dt_write_log( '@get_nonce_action' ); // TODO remove
 
             return $action;
         }
