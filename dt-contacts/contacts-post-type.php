@@ -317,6 +317,12 @@ class Disciple_Tools_Contact_Post_Type
                             echo '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
+                        case 'date':
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" class="datepicker regular-text" type="text" id="' . esc_attr( $k ) . '"  value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '</td><tr/>' . "\n";
+
+                            break;
                         case 'select':
                             echo '<tr valign="top"><th scope="row">
                                 <label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th>
