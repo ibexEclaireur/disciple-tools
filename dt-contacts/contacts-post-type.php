@@ -1201,6 +1201,7 @@ class Disciple_Tools_Contact_Post_Type
                 $id = $meta_array[ 1 ];
                 $value = get_user_by( 'id', $id );
                 echo '<option value="user-' . esc_attr( $id ) . '" selected>' . esc_html( $value->display_name ) . '</option>';
+                echo '<option>---</option>';
 
                 // exclude the current id from the $results list
                 $exclude_user = "'exclude' => $id";
@@ -1208,7 +1209,7 @@ class Disciple_Tools_Contact_Post_Type
         }
 
         // Collect user list
-        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user ];
+        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC'  ];
         $results = get_users( $args );
 
         // Loop user list

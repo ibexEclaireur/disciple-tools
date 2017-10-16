@@ -436,7 +436,37 @@ class Disciple_Tools_Groups_Post_Type
                             break;
                         case 'custom':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v[ 'name' ] ) . '</label></th><td>';
-                            echo esc_html( $v[ 'default' ] );
+                            echo wp_kses(
+                                $v[ 'default' ],
+                                [
+                                    'a'      => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'href'  => [],
+                                        'class' => [],
+                                    ],
+                                    'select' => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'class' => [],
+                                    ],
+                                    'option' => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'class' => [],
+                                        'value' => [],
+                                    ],
+                                    'input'  => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'class' => [],
+                                        'value' => [],
+                                    ],
+                                    'br'     => [],
+                                    'strong' => [],
+                                    'em'     => [],
+                                ]
+                            );
                             echo '</td><tr/>' . "\n";
                             break;
 
@@ -559,6 +589,7 @@ class Disciple_Tools_Groups_Post_Type
                 $value = get_user_by( 'id', $id );
                 if( $value ) {
                     echo '<option value="user-' . esc_attr( $id ) . '" selected>' . esc_html( $value->display_name ) . '</option>';
+                    echo '<option>---</option>';
                 }
                 // exclude the current id from the $results list
                 $exclude_user = "'exclude' => $id";
@@ -566,7 +597,7 @@ class Disciple_Tools_Groups_Post_Type
         }
 
         // Collect user list
-        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user ];
+        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC' ];
         $results = get_users( $args );
 
         // Loop user list
