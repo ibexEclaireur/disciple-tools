@@ -305,6 +305,7 @@ class Disciple_Tools
         require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
         require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
 
+
         /**
          * Rest API Support
          */

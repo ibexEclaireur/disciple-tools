@@ -20,7 +20,6 @@ if( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
 {
-
     protected $action = 'email_notification';
 
     /**
@@ -34,54 +33,84 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
      */
     protected function prepare_data( $data )
     {
+        // TODO: sanitize submitted info
         dt_write_log( '@prepare_data' );
-        $user_id = $data[ 0 ][ 'user_id' ]; // TODO add processing on of data and throw any exceptions
-        $user = get_userdata( $user_id );
-        $data[ 0 ][ 'email' ] = $user->user_email;
-
-        dt_write_log( $user_id );
 
         return $data;
     }
 
     /**
      * Run the async task action
+     * TODO: not working
      */
     protected function run_action()
     {
+        $email = sanitize_email( $_POST[ 0 ][ 'email' ] );
+        $subject = sanitize_text_field( $_POST[ 0 ][ 'subject' ] );
+        $message = sanitize_text_field( $_POST[ 0 ][ 'message' ] );
 
-        // TODO: This section is not working properly. I'm going around it somehow with the init hook below.
+        do_action( "dt_async_$this->action", $email, $subject, $message );
 
-        do_action( "dt_async_$this->action", '' );
-        dt_write_log( '@run_action complete' );
+        dt_write_log( '@run_action' );
     }
 
+    public function send_email()
+    {
+        // Nonce validation through custom nonce process inside Disciple_Tools_Async_Task to allow for asynchronous processing
+        // @codingStandardsIgnoreLine
+        if( ( isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' ) && ( isset( $_POST[ '_nonce' ] ) ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
+
+            dt_write_log( '@send_email' );
+
+            // @codingStandardsIgnoreLine
+            $sent = wp_mail( sanitize_email( $_POST[ 0 ][ 'email' ] ), sanitize_text_field( $_POST[ 0 ][ 'subject' ] ), sanitize_text_field( $_POST[ 0 ][ 'message' ] ) );
+
+            if( $sent ) {
+                dt_write_log( 'Mail was sent!' );
+            } else {
+                dt_write_log( 'Mail failed to send. Boo.' );
+            }
+        }
+    }
 }
+
+function dt_load_async_email()
+{
+    if( isset( $_POST[ '_wp_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ '_wp_nonce' ] ) ) ) && isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' ) {
+
+        dt_write_log( '@dt_load_async_email' );
+        $send_email = new Disciple_Tools_Notifications_Email();
+        $send_email->send_email();
+    }
+}
+add_action( 'init', 'dt_load_async_email' );
 
 /**
- * Sends email after load.
- * TODO: This is not properly using the class to run action on a hook. It is instead watching for the wp_remote_post post and catching that and processing, while loading the function through an init hook.
+ * Shared DT email function
+ *
+ * @param $email
+ * @param $subject
+ * @param $message
  */
-function dt_send_email()
+function dt_send_email( $email, $subject, $message )
 {
-    if( isset( $_POST[ 'action' ] ) && isset( $_POST[ '_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' ) {
+    // Check permission to send email
+    // TODO
 
-        // nonce verification
-        if( isset( $_POST[ '_nonce' ] ) && !wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
-            return;
-        }
+    // Sanitize
+    $email = sanitize_email( $email );
+    $subject = sanitize_text_field( $subject );
+    $message = sanitize_text_field( $message );
 
-        dt_write_log( '@dt_send_email to ' . $_POST[ 0 ][ 'email' ] . ' saying ' . $_POST[ 0 ][ 'message' ] );
-
-        $sent = wp_mail( $_POST[ 0 ][ 'email' ], $_POST[ 0 ][ 'subject' ], $_POST[ 0 ][ 'message' ] );
-
-        if( $sent ) {
-            dt_write_log( 'Mail was sent!' );
-        } else {
-            dt_write_log( 'Mail failed to send. Boo.' );
-        }
-    }
+    // Send email
+    $send_email = new Disciple_Tools_Notifications_Email();
+    $send_email->launch(
+        [
+            'email'   => $email,
+            'subject' => $subject,
+            'message' => $message,
+        ]
+    );
+    dt_write_log( '@dt_send_email' );
 }
-add_action( 'init', 'dt_send_email' );
-
 
