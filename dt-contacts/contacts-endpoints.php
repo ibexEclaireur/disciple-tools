@@ -35,7 +35,7 @@ class Disciple_Tools_Contacts_Endpoints
     private $namespace;
     private $contacts_instance;
     private $api_keys_controller;
-    
+
     /**
      * Disciple_Tools_Contacts_Endpoints constructor.
      */
@@ -279,7 +279,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "update_contact", "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param array $contacts
      *
@@ -331,7 +331,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
         return $rv;
     }
-    
+
     /**
      * @param string $yes_no
      *
@@ -347,7 +347,7 @@ class Disciple_Tools_Contacts_Endpoints
             throw new Error( "Expected yes or no, instead got $yes_no" );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -369,7 +369,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -388,7 +388,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "add_contact_details", "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -485,7 +485,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "get_team_contacts", "Missing a valid user id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -505,7 +505,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "quick_action_button", "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -528,7 +528,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -549,7 +549,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -569,7 +569,7 @@ class Disciple_Tools_Contacts_Endpoints
         }
 
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -590,7 +590,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( "accept_contact", "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -610,7 +610,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( 'shared_with', "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -630,7 +630,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( 'remove_shared', "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *
@@ -650,7 +650,7 @@ class Disciple_Tools_Contacts_Endpoints
             return new WP_Error( 'add_shared', "Missing a valid contact id", ['status' => 400] );
         }
     }
-    
+
     /**
      * @param \WP_REST_Request $request
      *

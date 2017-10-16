@@ -13,7 +13,7 @@ class Disciple_Tools_Hook_Attachment extends Disciple_Tools_Hook_Base {
             'object_subtype' => $post->post_type,
             'object_id'      => $attachment_id,
             'object_name'    => get_the_title( $post->ID ),
-             ] 
+             ]
         );
     }
 
