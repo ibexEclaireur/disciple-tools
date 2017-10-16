@@ -33,15 +33,12 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
      */
     protected function prepare_data( $data )
     {
-        // TODO: sanitize submitted info
-        dt_write_log( '@prepare_data' );
-
         return $data;
     }
 
     /**
      * Run the async task action
-     * TODO: not working
+     * Used when loading long running process with add_action
      */
     protected function run_action()
     {
@@ -51,7 +48,6 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
 
         do_action( "dt_async_$this->action", $email, $subject, $message );
 
-        dt_write_log( '@run_action' );
     }
 
     public function send_email()
@@ -60,20 +56,16 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
         // @codingStandardsIgnoreLine
         if( ( isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' ) && ( isset( $_POST[ '_nonce' ] ) ) && $this->verify_async_nonce( sanitize_key( wp_unslash( $_POST[ '_nonce' ] ) ) ) ) {
 
-            dt_write_log( '@send_email' );
-
             // @codingStandardsIgnoreLine
             $sent = wp_mail( sanitize_email( $_POST[ 0 ][ 'email' ] ), sanitize_text_field( $_POST[ 0 ][ 'subject' ] ), sanitize_text_field( $_POST[ 0 ][ 'message' ] ) );
 
-            if( $sent ) {
-                dt_write_log( 'Mail was sent!' );
-            } else {
-                dt_write_log( 'Mail failed to send. Boo.' );
-            }
         }
     }
 }
 
+/**
+ *
+ */
 function dt_load_async_email()
 {
     if( isset( $_POST[ '_wp_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ '_wp_nonce' ] ) ) ) && isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' ) {
