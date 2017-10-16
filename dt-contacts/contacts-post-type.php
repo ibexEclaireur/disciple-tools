@@ -400,12 +400,6 @@ class Disciple_Tools_Contact_Post_Type
             echo '</table>' . "\n";
         }
 
-<<<<<<< HEAD
-        // @codingStandardsIgnoreLine
-        echo $html;
-
-=======
->>>>>>> master
     } // End meta_box_content()
 
     /**
