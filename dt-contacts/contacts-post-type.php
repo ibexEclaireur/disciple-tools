@@ -819,13 +819,14 @@ class Disciple_Tools_Contact_Post_Type
             'section'     => 'milestone',
         ];
 
-        $fields[ 'baptism_date' ] = [
-            'name'        => __( 'Baptism Date', 'disciple_tools' ),
-            'description' => '',
-            'type'        => 'date',
-            'default'     => date( 'Y-m-d' ),
-            'section'     => 'info',
-        ];
+        // TODO: is this baptism date still neccissary? Baptism dates are recorded in the P2P connection record
+        //        $fields[ 'baptism_date' ] = [
+        //            'name'        => __( 'Baptism Date', 'disciple_tools' ),
+        //            'description' => '',
+        //            'type'        => 'date',
+        //            'default'     => date( 'Y-m-d' ),
+        //            'section'     => 'misc',
+        //        ];
 
         // Misc Information fields
         $fields[ 'bible_mailing' ] = [

@@ -100,19 +100,42 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 if( $type == 'user' ) {
 
-                    $notification_note = 'You have been assigned <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+                    $user = get_userdata( $user_id );
+                    $user_meta = get_user_meta( $user_id );
 
-                    // build elements and submit notification
-                    $this->add_notification(
-                        $user_id,
-                        $source_user_id,
-                        $post_id = (int) $object_id,
-                        $secondary_item_id = (int) $meta_id,
-                        $notification_name,
-                        $notification_action = 'alert',
-                        $notification_note,
-                        $date_notified = current_time( 'mysql' )
-                    );
+                    // web notification
+                    if( dt_user_notification_is_enabled( 'new_web', $user_meta, $user->ID ) ) {
+
+                        $notification_note = 'You have been assigned <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
+
+                        $this->add_notification(
+                            $user_id,
+                            $source_user_id,
+                            $post_id = (int) $object_id,
+                            $secondary_item_id = (int) $meta_id,
+                            $notification_name,
+                            $notification_action = 'alert',
+                            $notification_note,
+                            $date_notified = current_time( 'mysql' )
+                        );
+
+                        dt_write_log( '@new_web' ); // todo remove after dev
+                    }
+
+                    // email notification
+                    if( dt_user_notification_is_enabled( 'new_email', $user_meta, $user->ID ) ) {
+
+                        $message = 'You have a new contact: '. strip_tags( get_the_title( $object_id ) ) .'. View the new contact at: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+
+                        dt_send_email(
+                            $user->user_email,
+                            'Disciple Tools: You have a new contact assigned!',
+                            $message
+                        );
+
+                        dt_write_log( '@new_email' ); // todo remove after dev
+                    }
+
                 } else { // if group, do nothing. Option for future development.
                     return;
                 }
@@ -155,19 +178,41 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                     if( $type == 'user' ) {
 
-                        $notification_note = 'An update on <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a> is requested.';
+                        $user = get_userdata( $user_id );
+                        $user_meta = get_user_meta( $user_id );
 
-                        // build elements and submit notification
-                        $this->add_notification(
-                            $user_id,
-                            $source_user_id,
-                            $post_id = (int) $object_id,
-                            $secondary_item_id = (int) $meta_id,
-                            $notification_name,
-                            $notification_action = 'alert',
-                            $notification_note,
-                            $date_notified = current_time( 'mysql' )
-                        );
+                        // web notification
+                        if( dt_user_notification_is_enabled( 'updates_web', $user_meta, $user->ID ) ) {
+
+                            $notification_note = 'An update on <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a> is requested.';
+
+                            $this->add_notification(
+                                $user_id,
+                                $source_user_id,
+                                $post_id = (int) $object_id,
+                                $secondary_item_id = (int) $meta_id,
+                                $notification_name,
+                                $notification_action = 'alert',
+                                $notification_note,
+                                $date_notified = current_time( 'mysql' )
+                            );
+
+                            dt_write_log( '@updates_web' ); // todo remove after dev
+                        }
+
+                        // email notification
+                        if( dt_user_notification_is_enabled( 'updates_email', $user_meta, $user->ID ) ) {
+
+                            $message = 'You have an update requested for: '. strip_tags( get_the_title( $object_id ) ) .'. Link for updating contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+
+                            dt_send_email(
+                                $user->user_email,
+                                'Disciple Tools: Update requested!',
+                                $message
+                            );
+
+                            dt_write_log( '@updates_email' ); // todo remove after dev
+                        }
                     } else { // if group, do nothing. Option for future development.
                         return;
                     }
@@ -207,24 +252,45 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 if( $type == 'user' ) {
 
-                    $user_object = get_userdata( $user_id );
+                    $user = get_userdata( $user_id );
+                    $user_meta = get_user_meta( $user_id );
+                    $source_user = get_userdata( $source_user_id );
 
-                    $notification_note = $element . ' details on <a href="' . home_url( '/' ) .
-                        get_post_type( $object_id ) . '/' . $object_id . '">' .
-                        strip_tags( get_the_title( $object_id ) ) . '</a> were just updated by <strong>' .
-                        $user_object->display_name . '</strong>';
+                    // web notification
+                    if( dt_user_notification_is_enabled( 'changes_web', $user_meta, $user->ID ) ) {
 
-                    // build elements and submit notification
-                    $this->add_notification(
-                        $user_id,
-                        $source_user_id,
-                        $post_id = (int) $object_id,
-                        $secondary_item_id = (int) $meta_id,
-                        $notification_name,
-                        $notification_action = 'alert',
-                        $notification_note,
-                        $date_notified = current_time( 'mysql' )
-                    );
+                        $notification_note = $element . ' details on <a href="' . home_url( '/' ) .
+                            get_post_type( $object_id ) . '/' . $object_id . '">' .
+                            strip_tags( get_the_title( $object_id ) ) . '</a> were modified by <strong>' .
+                            $source_user->display_name . '</strong>';
+
+                        $this->add_notification(
+                            $user_id,
+                            $source_user_id,
+                            $post_id = (int) $object_id,
+                            $secondary_item_id = (int) $meta_id,
+                            $notification_name,
+                            $notification_action = 'alert',
+                            $notification_note,
+                            $date_notified = current_time( 'mysql' )
+                        );
+
+                        dt_write_log( '@changes_web' ); // todo remove after dev
+                    }
+
+                    // email notification
+                    if( dt_user_notification_is_enabled( 'changes_email', $user_meta, $user->ID ) ) {
+
+                        $message = 'There were changes made to: '. strip_tags( get_the_title( $object_id ) ) .'. Link for viewing contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+
+                        dt_send_email(
+                            $user->user_email,
+                            'Disciple Tools: Changes to your contact added.',
+                            $message
+                        );
+
+                        dt_write_log( '@changes_email' ); // todo remove after dev
+                    }
                 } else { // if group, do nothing. Option for future development.
                     return;
                 }
@@ -283,24 +349,47 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 if( $type == 'user' ) {
 
-                    $user_object = get_userdata( $user_id );
+                    $user = get_userdata( $user_id );
+                    $user_meta = get_user_meta( $user_id );
+                    $source_user = get_userdata( $source_user_id );
 
-                    $notification_note = $element . ' has been ' . $value . ' for <a href="' . home_url( '/' ) .
-                        get_post_type( $object_id ) . '/' . $object_id . '">' .
-                        strip_tags( get_the_title( $object_id ) ) . '</a> by <strong>' .
-                        $user_object->display_name . '</strong>';
+                    // web notification
+                    if( dt_user_notification_is_enabled( 'milestones_web', $user_meta, $user->ID ) ) {
 
-                    // build elements and submit notification
-                    $this->add_notification(
-                        $user_id,
-                        $source_user_id,
-                        $post_id = (int) $object_id,
-                        $secondary_item_id = (int) $meta_id,
-                        $notification_name,
-                        $notification_action = 'alert',
-                        $notification_note,
-                        $date_notified = current_time( 'mysql' )
-                    );
+                        $notification_note = $element . ' has been ' . $value . ' for <a href="' . home_url( '/' ) .
+                            get_post_type( $object_id ) . '/' . $object_id . '">' .
+                            strip_tags( get_the_title( $object_id ) ) . '</a> by <strong>' .
+                            $source_user->display_name . '</strong>';
+
+                        $this->add_notification(
+                            $user_id,
+                            $source_user_id,
+                            $post_id = (int) $object_id,
+                            $secondary_item_id = (int) $meta_id,
+                            $notification_name,
+                            $notification_action = 'alert',
+                            $notification_note,
+                            $date_notified = current_time( 'mysql' )
+                        );
+
+                        dt_write_log( '@milestones_web' ); // todo remove after dev
+                    }
+
+                    // email notification
+                    if( dt_user_notification_is_enabled( 'milestones_email', $user_meta, $user->ID ) ) {
+
+                        $message = 'A milestone was update for '. strip_tags( get_the_title( $object_id ) ) .'. Link to view contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+
+                        dt_send_email(
+                            $user->user_email,
+                            'Disciple Tools: Milestones update on ' . strip_tags( get_the_title( $object_id ) ),
+                            $message
+                        );
+
+                        dt_write_log( '@milestones_email' ); // todo remove after dev
+                    }
+
+
                 } else { // if group, do nothing. Option for future development.
                     return;
                 }
