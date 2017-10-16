@@ -103,7 +103,6 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                     case 'edit_comment' :
                         $notification_action = 'updated';
 
-
                         // share record with mentioned individual
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
 
