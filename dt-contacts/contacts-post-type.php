@@ -331,7 +331,7 @@ class Disciple_Tools_Contact_Post_Type
                                 echo '>' . esc_attr( $vv ) . '</option>';
                             }
                             echo '</select>' . "\n";
-                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
+                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
                         case 'key_select':
@@ -385,7 +385,37 @@ class Disciple_Tools_Contact_Post_Type
                             break;
                         case 'custom':
                             echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '" class="selectit">' . esc_attr( $v[ 'name' ] ) . '</label></th><td>';
-                            echo esc_html( $v[ 'default' ] );
+                            echo wp_kses(
+                                $v[ 'default' ],
+                                [
+                                    'a'      => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'href'  => [],
+                                        'class' => [],
+                                    ],
+                                    'select' => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'class' => [],
+                                    ],
+                                    'option' => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'class' => [],
+                                        'value' => [],
+                                    ],
+                                    'input'  => [
+                                        'id'    => [],
+                                        'name'  => [],
+                                        'class' => [],
+                                        'value' => [],
+                                    ],
+                                    'br'     => [],
+                                    'strong' => [],
+                                    'em'     => [],
+                                ]
+                            );
                             echo '</td><tr/>' . "\n";
                             break;
 
@@ -399,7 +429,6 @@ class Disciple_Tools_Contact_Post_Type
             echo '</tbody>' . "\n";
             echo '</table>' . "\n";
         }
-
     } // End meta_box_content()
 
     /**
@@ -889,8 +918,8 @@ class Disciple_Tools_Contact_Post_Type
         ];
 
         $sources_default = [];
-        foreach ( dt_get_option( 'dt_site_custom_lists' )['sources'] as $key => $value ) {
-            $sources_default[$key] = $value['label'];
+        foreach( dt_get_option( 'dt_site_custom_lists' )[ 'sources' ] as $key => $value ) {
+            $sources_default[ $key ] = $value[ 'label' ];
         }
 
         $fields[ 'sources' ] = [
@@ -1035,7 +1064,7 @@ class Disciple_Tools_Contact_Post_Type
         echo '</select></th>';
 
         echo
-            '<td>
+        '<td>
                 <input type="text" name="new-value-contact" id="new-value" class="edit-input" />
             </td>
             <td>
@@ -1134,8 +1163,6 @@ class Disciple_Tools_Contact_Post_Type
 
     /**
      * Field: The 'Assigned To' dropdown controller
-     *
-     * @return string
      */
     public function assigned_to_field()
     {
