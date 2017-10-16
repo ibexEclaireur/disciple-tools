@@ -142,8 +142,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $defaults = [
             "seeker_path"    => "none",
-            "assigned_to"    => sprintf( "user-%d", get_current_user_id() ),
         ];
+        if (get_current_user_id()) {
+            $defaults["assigned_to"] = sprintf( "user-%d", get_current_user_id() );
+        }
         if (in_array( "dispatcher", $current_roles, true ) || in_array( "marketer", $current_roles, true )) {
             $defaults["overall_status"] = "unassigned";
         } else if (in_array( "multiplier", $current_roles, true ) ) {
@@ -163,6 +165,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             "post_status" => 'publish',
             "meta_input"  => $fields,
         ];
+
+
+        if (isset( $fields["assigned-to"] ) && (! get_current_user_id() || $fields["assigned-to"] !== sprintf( "user-%d", get_current_user_id() ))) {
+            return new WP_Error( __FUNCTION__, __( "You may not assign a new contact to this user" ), [ 'status' => 403 ] );
+        }
 
         $post_id = wp_insert_post( $post );
 
