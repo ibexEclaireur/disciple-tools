@@ -404,7 +404,6 @@ class Disciple_Tools_Contact_Post_Type
 
         // @codingStandardsIgnoreLine
         echo $html;
-        // TODO: instead of building an $html variable and then echoing it, we should be using <? php and ? > as usual
 
     } // End meta_box_content()
 

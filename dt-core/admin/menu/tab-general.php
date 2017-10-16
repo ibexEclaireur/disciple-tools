@@ -31,14 +31,7 @@ class Disciple_Tools_General_Tab
         $html .= '<div id="post-body-content">';
         /* Main Column */
 
-        $email_mention = new Disciple_Tools_Notifications_Email();
-        $email_mention->launch(
-            [
-                'user_id' => '5',
-                'subject' => 'Disciple Tools: You were mentioned!',
-                'message' => 'sample note',
-            ]
-        );
+
 
         /* Box */
         $html .= '<table class="widefat striped">
