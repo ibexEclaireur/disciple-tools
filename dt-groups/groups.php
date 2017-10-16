@@ -177,7 +177,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         $bad_fields = [];
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
-        $group_model_fields[ 'title' ] = "";
+        $group_fields[ 'title' ] = "";
         foreach( $fields as $field => $value ) {
             if( !isset( $group_fields[ $field ] ) ) {
                 $bad_fields[] = $field;
