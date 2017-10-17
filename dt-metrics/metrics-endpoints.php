@@ -5,7 +5,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
@@ -18,7 +18,7 @@ class Disciple_Tools_Metrics_Endpoints {
      *
      * @var     object
      * @access    private
-     * @since     0.1
+     * @since     1.0.0
      */
     private static $_instance = null;
 
@@ -26,7 +26,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * Main Disciple_Tools_Metrics_Endpoints Instance
      * Ensures only one instance of Disciple_Tools_Metrics_Endpoints is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since 1.0.0
      * @static
      * @return Disciple_Tools_Metrics_Endpoints instance
      */
@@ -43,7 +43,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * Constructor function.
      *
      * @access  public
-     * @since   0.1
+     * @since   1.0.0
      */
     public function __construct()
     {
@@ -97,7 +97,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * Get tract from submitted address
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|WP_Error|array The contact on success
      */
     public function critical_path_prayer()
@@ -118,7 +118,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * Get tract from submitted address
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|WP_Error|array The contact on success
      */
     public function critical_path_media()
@@ -139,7 +139,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * Get tract from submitted address
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|WP_Error|array The contact on success
      */
     public function critical_path_fup()
@@ -160,7 +160,7 @@ class Disciple_Tools_Metrics_Endpoints {
      * Get tract from submitted address
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|WP_Error|array The contact on success
      */
     public function critical_path_multiplication()

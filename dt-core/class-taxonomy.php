@@ -11,7 +11,7 @@ if( !defined( 'ABSPATH' ) ) {
  * @subpackage Disciple_Tools
  * @category   Plugin
  * @author     Matty
- * @since      0.1
+ * @since      1.0.0
  */
 class Disciple_Tools_Taxonomy
 {

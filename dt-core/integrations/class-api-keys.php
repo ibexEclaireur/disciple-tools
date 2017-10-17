@@ -12,7 +12,7 @@ class Disciple_Tools_Api_Keys {
     /**
      * @var object instance. The class instance
      * @access private
-     * @since 0.1
+     * @since 1.0.0
      */
     private static $_instance = null;
 
@@ -20,7 +20,7 @@ class Disciple_Tools_Api_Keys {
      * Main Disciple_Tools_Api_Keys Instance
      * Ensures only one instance of Disciple_Tools_Api_Keys is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Api_Keys instance
      */
@@ -35,7 +35,7 @@ class Disciple_Tools_Api_Keys {
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct() { }
 
@@ -46,7 +46,7 @@ class Disciple_Tools_Api_Keys {
      * @param $type , the type of message to display
      *
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private function admin_notice( $notice, $type ) {
         echo '<div class="notice notice-' . esc_attr( $type ) . ' is-dismissible"><p>';
@@ -58,7 +58,7 @@ class Disciple_Tools_Api_Keys {
      * The API keys page html
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function api_keys_page() {
         if (! current_user_can( "export" ) ) {

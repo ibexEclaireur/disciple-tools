@@ -6,7 +6,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 if( !defined( 'ABSPATH' ) ) {
     exit;
@@ -170,7 +170,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @param  $post_id , the id of the group
      *
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      * @return array
      */
     private static function check_for_invalid_fields( array $fields, int $post_id = null )
@@ -195,7 +195,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * @param  bool $check_permissions
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return int | WP_Error of group ID
      */
     public static function update_group( int $group_id, array $fields, $check_permissions = true )

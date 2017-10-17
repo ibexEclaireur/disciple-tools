@@ -5,7 +5,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 if( !defined( 'ABSPATH' ) ) {
     exit;
@@ -233,7 +233,7 @@ class Disciple_Tools_Groups_Endpoints
      * @param  WP_REST_Request $request
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return array|WP_Error The group on success
      */
     public function get_group( WP_REST_Request $request )

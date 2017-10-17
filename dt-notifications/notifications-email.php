@@ -5,8 +5,8 @@
  *
  * @see     https://github.com/techcrunch/wp-async-task
  * @class   Disciple_Tools_Notifications_Email
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */

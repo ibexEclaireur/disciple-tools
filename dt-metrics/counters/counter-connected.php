@@ -5,7 +5,7 @@
  * @package Disciple_Tools
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @license GPL-3.0
- * @version 0.1
+ * @version 1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
@@ -16,7 +16,7 @@ class Disciple_Tools_Counter_Connected  {
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct () { } // End __construct()
 
@@ -24,7 +24,7 @@ class Disciple_Tools_Counter_Connected  {
      * Counts the number of contacts with no disciples in database
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function has_zero ( $type ) {
         global $wpdb;
@@ -55,7 +55,7 @@ class Disciple_Tools_Counter_Connected  {
      * Counts the number of contacts with at least two disciples
      *
      * @access  public
-     * @since   0.1
+     * @since   1.0.0
      * @returns number
      */
     public function has_at_least ( $min_number, $type ) {
@@ -87,7 +87,7 @@ class Disciple_Tools_Counter_Connected  {
      * This helps identify general fruitfulness.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return number
      */
     public function has_exactly ( $exact_number, $type ) {

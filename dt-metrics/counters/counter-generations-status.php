@@ -5,7 +5,7 @@
  * @package Disciple_Tools
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @license GPL-3.0
- * @version 0.1
+ * @version 1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
@@ -14,7 +14,7 @@ class Disciple_Tools_Counter_Generations  {
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct () {
 
@@ -24,7 +24,7 @@ class Disciple_Tools_Counter_Generations  {
      * Counts the number of records at the supplied generation level
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @param  number
      * @return number
      */
@@ -45,7 +45,7 @@ class Disciple_Tools_Counter_Generations  {
      * Returns an array of all contacts in discipleship and their generation status.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return array
      */
     public function generation_status_list ( $type = 'contacts_to_contacts' ) {
@@ -112,7 +112,7 @@ class Disciple_Tools_Counter_Generations  {
      * Helper: Checks if the parent is first generation
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @param  number
      * @param  array
      * @return string
@@ -132,7 +132,7 @@ class Disciple_Tools_Counter_Generations  {
      * Helper: Checks if record is zero generation
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @parent Single number taken from the wp_p2p.p2p_to column
      * @column An array with the entire column of wp_p2p.p2p_from data
      */

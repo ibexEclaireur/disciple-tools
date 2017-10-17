@@ -5,8 +5,8 @@
  * the database
  *
  * @class      Disciple_Tools_Notifications
- * @version    0.1
- * @since      0.1
+ * @version    1.0.0
+ * @since      1.0.0
  * @package    Disciple_Tools
  * @author     Chasm.Solutions & Kingdom.Training
  */
@@ -55,7 +55,7 @@ class Disciple_Tools_Notifications
      *
      * @var     object
      * @access    private
-     * @since     0.1
+     * @since     1.0.0
      */
     private static $_instance = null;
 
@@ -63,7 +63,7 @@ class Disciple_Tools_Notifications
      * Main Disciple_Tools_Notifications Instance
      * Ensures only one instance of Disciple_Tools_Notifications is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since 1.0.0
      * @static
      * @return Disciple_Tools_Notifications instance
      */
@@ -80,7 +80,7 @@ class Disciple_Tools_Notifications
      * Constructor function.
      *
      * @access  public
-     * @since   0.1
+     * @since   1.0.0
      */
     public function __construct()
     {

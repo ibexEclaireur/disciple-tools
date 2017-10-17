@@ -4,7 +4,7 @@
  *
  * This class handles the creation and destruction of the report and activity tables for Disciple Tools.
  *
- * @since 0.1
+ * @since 1.0.0
  * @class Disciple_Tools_Activity_Log_DB
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
