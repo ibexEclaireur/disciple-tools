@@ -438,6 +438,7 @@ class Disciple_Tools
         require_once( 'dt-users/users-template.php' );
         require_once( 'dt-users/users-endpoints.php' );
         new Disciple_Tools_Users_Endpoints();
+        new Disciple_Tools_Users();
 
         /**
          * dt-notifications

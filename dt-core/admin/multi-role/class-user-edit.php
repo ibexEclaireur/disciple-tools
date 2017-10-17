@@ -55,7 +55,7 @@ final class Disciple_Tools_Admin_User_Edit {
         add_action( 'edit_user_profile', [ $this, 'profile_fields' ] );
 
         // Must use `profile_update` to change role. Otherwise, WP will wipe it out.
-        add_action( 'profile_update',  [ $this, 'role_update' ] );
+        add_action( 'profile_update',  [ $this, 'role_update' ], 0 );
     }
 
     /**
