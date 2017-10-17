@@ -33,6 +33,9 @@ class Disciple_Tools_Reports_Contacts_Groups
      * Returns a prepared array for the dt_report_insert()
      *
      * @see    Disciple_Tools_Reports_API
+     *
+     * @param $date
+     *
      * @return array
      */
     public static function contacts_prepared_data( $date ) {
@@ -65,6 +68,9 @@ class Disciple_Tools_Reports_Contacts_Groups
      * Returns a prepared array for the dt_report_insert()
      *
      * @see    Disciple_Tools_Reports_API
+     *
+     * @param $date
+     *
      * @return array
      */
     public static function groups_prepared_data( $date ) {

@@ -6,6 +6,8 @@
  *
  * @since 1.0.0
  * @class Disciple_Tools_Activity_Log_DB
+ *
+ * TODO: Determine if this class is redundant to the migration db strategy.
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
@@ -93,7 +95,6 @@ class Disciple_Tools_Activity_Log_DB {
         dbDelta( $sql1 );
         dbDelta( $sql2 );
         dbDelta( $sql3 );
-
 
     }
 

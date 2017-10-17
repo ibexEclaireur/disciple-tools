@@ -83,7 +83,7 @@ abstract class Disciple_Tools_Migration {
     }
 
     /**
-     * @return void
+     * @throws \DT_Migration_Test_Exception Table $name not as expected, see error log.
      */
     protected function test_expected_tables() {
         global $wpdb;
@@ -102,6 +102,10 @@ abstract class Disciple_Tools_Migration {
     /**
      * Private function that is used to delete some information from "CREATE
      * TABLE" queries, to make them easier to compare.
+     *
+     * @param string $table_definition
+     *
+     * @return string
      */
     private static function clean_create_query( string $table_definition ): string {
         $rv = preg_replace( '/^\s*/m', '', strtolower( $table_definition ) );
@@ -119,5 +123,8 @@ abstract class Disciple_Tools_Migration {
 
 }
 
+/**
+ * Class DT_Migration_Test_Exception
+ */
 class DT_Migration_Test_Exception extends Exception {
 }
