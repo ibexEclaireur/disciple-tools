@@ -1,16 +1,10 @@
 <?php
 /**
- * Plugin Name: Disciple Tools - Analytics
- * Plugin URI:
- * Description: Disciple Tools -  Google Analytics Integration
- *
  * Adapted from Google Analytics Plugin by Sharethis
  * Original Plugin URI: http://wordpress.org/extend/plugins/googleanalytics/
  * Original Version: 2.1.1
  * Original Author: ShareThis
  * Original Author URI: http://sharethis.com
- *
- *
  */
 
 

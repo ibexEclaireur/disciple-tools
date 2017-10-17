@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Disciple_Tools_Tabs
+ * Disciple_Tools_Google_Geolocation
  *
- * @class   Disciple_Tools_Tabs
- * @version 0.1
- * @since   0.1
+ * @class   Disciple_Tools_Google_Geolocation
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools_Tabs
  * @author  Chasm.Solutions
  */
@@ -24,7 +24,7 @@ class Disciple_Tools_Google_Geolocation
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -75,7 +75,7 @@ class Disciple_Tools_Google_Geolocation
     }
 
     /**
-     * @param $Url
+     * @param $url
      *
      * @return mixed
      */

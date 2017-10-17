@@ -5,7 +5,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 if( !defined( 'ABSPATH' ) ) {
     exit;
@@ -23,16 +23,16 @@ function dt_get_group_edit_form()
 
         // Create the title field
         ?>
+        <input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce"
+               value="<?php echo esc_attr( wp_create_nonce( 'update_dt_groups' ) ) ?>"/>
         <table class="form-table">
             <tbody>
-            <input type="hidden" name="dt_contacts_noonce" id="dt_contacts_noonce"
-                   value="<?php echo esc_attr( wp_create_nonce( 'update_dt_groups' ) ) ?>"/>
             <tr valign="top">
-                <th scope="row"><label for="post_title">Title</label></th>
+                <td scope="row"><label for="post_title">Title</label></td>
                 <td><input name="post_title" type="text" id="post_title" class="regular-text"
                            value="<?php echo esc_html( get_the_title() ); ?>"/>
                 </td>
-            <tr/>
+            </tr>
             </tbody>
         </table>
         <?php

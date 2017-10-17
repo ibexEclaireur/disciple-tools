@@ -4,7 +4,7 @@
  * Fired during plugin deactivation.
  * This class defines all code necessary to run during the plugin's deactivation.
  *
- * @since      0.1
+ * @since      1.0.0
  * @package    Disciple_Tools
  * @subpackage Disciple_Tools/includes/admin
  * @author
@@ -24,7 +24,7 @@ class Disciple_Tools_Deactivator
      * Short Description. (use period)
      * Long Description.
      *
-     * @since 0.1
+     * @since 1.0.0
      */
     public static function deactivate( $network_wide )
     {

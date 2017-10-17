@@ -21,14 +21,14 @@ class Ga_Helper {
 
 		// Displays errors related to required PHP version
 		if ( !self::is_php_version_valid() ) {
-			add_action( 'admin_notices', 'Ga_Admin::admin_notice_googleanalytics_php_version' );
+			add_action( 'admin_notices', 'DT_Ga_Admin::admin_notice_googleanalytics_php_version' );
 
 			return false;
 		}
 
 		// Displays errors related to required WP version
 		if ( !self::is_wp_version_valid() ) {
-			add_action( 'admin_notices', 'Ga_Admin::admin_notice_googleanalytics_wp_version' );
+			add_action( 'admin_notices', 'DT_Ga_Admin::admin_notice_googleanalytics_wp_version' );
 
 			return false;
 		}
@@ -77,7 +77,7 @@ class Ga_Helper {
 	 * @return boolean
 	 */
 	public static function is_authorized($token) {
-		return Ga_Admin::api_client()->get_instance()->is_authorized($token);
+		return DT_Ga_Admin::api_client()->get_instance()->is_authorized($token);
 	}
 
 	/**
@@ -133,7 +133,7 @@ class Ga_Helper {
 	 */
 	public static function ga_wp_notice( $message, $type = '', $is_dismissable = false, $action = array() ) {
 		return Ga_View_Core::load( 'ga_wp_notice', array(
-			'type'			 => empty( $type ) ? Ga_Admin::NOTICE_WARNING : $type,
+			'type'			 => empty( $type ) ? DT_Ga_Admin::NOTICE_WARNING : $type,
 			'msg'			 => $message,
 			'is_dismissable' => $is_dismissable,
 			'action'		 => $action
@@ -184,7 +184,7 @@ class Ga_Helper {
 	public static function is_wp_version_valid() {
 		$wp_version = get_bloginfo( 'version' );
 
-		return version_compare( $wp_version, Ga_Admin::MIN_WP_VERSION, 'ge' );
+		return version_compare( $wp_version, DT_Ga_Admin::MIN_WP_VERSION, 'ge' );
 	}
 
 

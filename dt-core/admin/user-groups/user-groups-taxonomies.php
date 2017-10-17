@@ -78,7 +78,7 @@ add_filter( 'disciple_tools_profiles_sections', 'disciple_tools_groups_add_profi
  * @param mixed $user
  * @param int   $taxonomy
  *
- * @return object //corrected from boolean
+ * @return object|bool //corrected from boolean
  */
 function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
 {
@@ -104,7 +104,7 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
 /**
  * Save taxonomy terms for a specific user
  *
- * @since 0.1.0
+ * @since 1.0.0
  *
  * @param int     $user_id
  * @param string  $taxonomy
@@ -247,8 +247,8 @@ function dt_groups_admin_assets()
 
     if( 'users.php' === $pagenow || 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow || 'edit-tags.php' === $pagenow || 'profile.php' === $pagenow ) {
 
-        $url = Disciple_Tools()->plugin_url;
-        $ver = Disciple_Tools()->version;
+        $url = disciple_tools()->plugin_url;
+        $ver = disciple_tools()->version;
 
         wp_enqueue_style( 'disciple_tools_groups', $url . 'dt-core/admin/css/user-groups.css', false, $ver, false );
     }

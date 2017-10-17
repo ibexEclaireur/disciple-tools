@@ -2,6 +2,7 @@
 
 /**
  * Gets Coordinates from Database
+ * Disciple_Tools_Coordinates_DB
  */
 
 if( !defined( 'ABSPATH' ) ) {
@@ -63,7 +64,7 @@ class Disciple_Tools_Coordinates_DB
                 `$wpdb->postmeta`
             WHERE
                 meta_key LIKE %s",
-            esc_like( "polygon_$state" ) . "%"
+            $wpdb->esc_like( "polygon_$state" ) . "%"
         ), ARRAY_A );
 
         foreach( $results as $value ) {

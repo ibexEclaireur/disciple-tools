@@ -14,7 +14,7 @@ class Disciple_Tools_Notification_Hooks
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -22,7 +22,7 @@ class Disciple_Tools_Notification_Hooks
      * Main Disciple_Tools_Notification_Hooks Instance
      * Ensures only one instance of Disciple_Tools_Notification_Hooks is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Notification_Hooks instance
      */

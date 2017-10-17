@@ -51,7 +51,7 @@ function disciple_tools_is_private_feed()
 /**
  * Redirects users that are not logged in to the 'wp-login.php' page.
  *
- * @since  0.1.0
+ * @since  1.0.0.0
  * @access public
  * @return void
  */

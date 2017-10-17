@@ -10,6 +10,9 @@ if( !defined( 'ABSPATH' ) ) {
 abstract class Disciple_Tools_Notifications_Hook_Base
 {
 
+    /**
+     * Disciple_Tools_Notifications_Hook_Base constructor.
+     */
     public function __construct()
     {
     }

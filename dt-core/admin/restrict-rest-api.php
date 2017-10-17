@@ -12,7 +12,7 @@
 /**
  * Integrated into Disciple Tools core to require authentication for all Rest API interactions.
  *
- * @since 0.1
+ * @since 1.0.0
  */
 
 $dt_dra_current_wp_version = get_bloginfo( 'version' );

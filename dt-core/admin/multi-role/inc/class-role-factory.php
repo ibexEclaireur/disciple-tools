@@ -100,7 +100,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * @since  1.0.0
      * @access public
      * @param  string  $role
-     * @return object
+     * @return object|bool
      */
     public function get_role( $role ) {
 

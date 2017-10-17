@@ -2,15 +2,16 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * @since 1.0.0
+ * Disciple_Tools_Activity_Log_API
  *
  * @see Disciple_Tools_Activity_Log_API::insert
  *
+ * @since 1.0.0
  * @param array $args
  * @return void
  */
 function dt_activity_insert( $args = [] ) {
-    Disciple_Tools()->activity_api->insert( $args );
+    disciple_tools()->logging_activity_api->insert( $args );
 }
 
 /**
@@ -19,11 +20,10 @@ function dt_activity_insert( $args = [] ) {
  */
 class Disciple_Tools_Activity_Log_API {
 
-
     /**
      * Get real address
      *
-     * @since 2.1.4
+     * @since 1.0.0
      *
      * @return string real address IP
      */
@@ -49,7 +49,7 @@ class Disciple_Tools_Activity_Log_API {
     }
 
     /**
-     * @since 2.0.0
+     * @since 1.0.0
      * @return void
      */
     public function erase_all_items() {

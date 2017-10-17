@@ -4,14 +4,17 @@
  * Disciple Tools Reports for Contacts and Groups
  *
  * @class   Disciple_Tools_Reports_Contacts_Groups
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
- * @author  Chasm.Solutions & Kingdom.Training
+ *
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Reports_Contacts_Groups
+ */
 class Disciple_Tools_Reports_Contacts_Groups
 {
 
@@ -19,7 +22,7 @@ class Disciple_Tools_Reports_Contacts_Groups
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -30,6 +33,9 @@ class Disciple_Tools_Reports_Contacts_Groups
      * Returns a prepared array for the dt_report_insert()
      *
      * @see    Disciple_Tools_Reports_API
+     *
+     * @param $date
+     *
      * @return array
      */
     public static function contacts_prepared_data( $date ) {
@@ -62,6 +68,9 @@ class Disciple_Tools_Reports_Contacts_Groups
      * Returns a prepared array for the dt_report_insert()
      *
      * @see    Disciple_Tools_Reports_API
+     *
+     * @param $date
+     *
      * @return array
      */
     public static function groups_prepared_data( $date ) {

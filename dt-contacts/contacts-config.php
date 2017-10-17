@@ -5,10 +5,10 @@
  * This class serves as master configuration and modification class to the contacts post type within the admin screens.
  *
  * @class   Disciple_Tools_Config_Contacts
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
- * @author  Chasm.Solutions & Kingdom.Training
+ *
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
@@ -23,7 +23,7 @@ class Disciple_Tools_Config_Contacts {
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -32,7 +32,7 @@ class Disciple_Tools_Config_Contacts {
      *
      * Ensures only one instance of Disciple_Tools_Config_Contacts is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Config_Contacts instance
      */
@@ -47,7 +47,7 @@ class Disciple_Tools_Config_Contacts {
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct () {
 

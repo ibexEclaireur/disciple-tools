@@ -4,14 +4,12 @@ if( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 /**
- * Disciple_Tools Plugin Taxonomy Class
+ * Disciple_Tools Taxonomy Class
  * Re-usable class for registering post type taxonomies.
  *
- * @package    WordPress
- * @subpackage Disciple_Tools
+ * @package    Disciple_Tools
  * @category   Plugin
- * @author     Matty
- * @since      0.1
+ * @since      1.0.0
  */
 class Disciple_Tools_Taxonomy
 {
@@ -19,7 +17,7 @@ class Disciple_Tools_Taxonomy
      * The post type to register the taxonomy for.
      *
      * @access private
-     * @since  1.3.0
+     * @since  1.0.0
      * @var    string
      */
     private $post_type;
@@ -28,7 +26,7 @@ class Disciple_Tools_Taxonomy
      * The key of the taxonomy.
      *
      * @access private
-     * @since  1.3.0
+     * @since  1.0.0
      * @var    string
      */
     private $token;
@@ -37,7 +35,7 @@ class Disciple_Tools_Taxonomy
      * The singular name for the taxonomy.
      *
      * @access private
-     * @since  1.3.0
+     * @since  1.0.0
      * @var    string
      */
     private $singular;
@@ -46,7 +44,7 @@ class Disciple_Tools_Taxonomy
      * The plural name for the taxonomy.
      *
      * @access private
-     * @since  1.3.0
+     * @since  1.0.0
      * @var    string
      */
     private $plural;
@@ -55,7 +53,7 @@ class Disciple_Tools_Taxonomy
      * The arguments to use when registering the taxonomy.
      *
      * @access private
-     * @since  1.3.0
+     * @since  1.0.0
      * @var    string
      */
     private $args;
@@ -64,7 +62,7 @@ class Disciple_Tools_Taxonomy
      * Class constructor.
      *
      * @access public
-     * @since  1.3.0
+     * @since  1.0.0
      *
      * @param  string $post_type The post type key.
      * @param  string $token     The taxonomy key.
@@ -93,7 +91,7 @@ class Disciple_Tools_Taxonomy
      * Return an array of default arguments.
      *
      * @access private
-     * @since  1.3.0
+     * @since  1.0.0
      * @return array Default arguments.
      */
     private function _get_default_args()
@@ -105,7 +103,7 @@ class Disciple_Tools_Taxonomy
      * Return an array of default labels.
      *
      * @access private
-     * @since  1.3.0
+     * @since  1.0.0
      * @return array Default labels.
      */
     private function _get_default_labels()
@@ -136,5 +134,4 @@ class Disciple_Tools_Taxonomy
     {
         register_taxonomy( esc_attr( $this->token ), esc_attr( $this->post_type ), (array) $this->args );
     } // End register()
-} // End Class
-?>
+}

@@ -3,10 +3,10 @@
  * Disciple_Tools_People_Groups_Admin_Menu
  *
  * @class   Disciple_Tools_People_Groups_Admin_Menu
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools_People_Groups_Admin_Menu
- * @author  Chasm.Solutions & Kingdom.Training
+ *
  */
 if( !defined( 'ABSPATH' ) ) {
     exit;
@@ -24,7 +24,7 @@ class Disciple_Tools_People_Groups_Admin_Menu
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -32,9 +32,9 @@ class Disciple_Tools_People_Groups_Admin_Menu
      * Main Disciple_Tools_People_Groups_Admin_Menu Instance
      * Ensures only one instance of Disciple_Tools_People_Groups_Admin_Menu is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
-     * @see    Disciple_Tools()
+     * @see    disciple_tools()
      * @return Disciple_Tools_People_Groups_Admin_Menu instance
      */
     public static function instance()
@@ -50,7 +50,7 @@ class Disciple_Tools_People_Groups_Admin_Menu
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -72,7 +72,7 @@ class Disciple_Tools_People_Groups_Admin_Menu
     /**
      * Builds the tab bar
      *
-     * @since 0.1
+     * @since 1.0.0
      */
     public function page_content()
     {

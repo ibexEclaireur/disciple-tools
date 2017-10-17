@@ -5,7 +5,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 if( !defined( 'ABSPATH' ) ) {
     exit;
@@ -26,7 +26,7 @@ class Disciple_Tools_People_Groups_Endpoints
      *
      * @var     object
      * @access    private
-     * @since     0.1
+     * @since     1.0.0
      */
     private static $_instance = null;
 
@@ -34,7 +34,7 @@ class Disciple_Tools_People_Groups_Endpoints
      * Main Disciple_Tools_People_Groups_Endpoints Instance
      * Ensures only one instance of Disciple_Tools_People_Groups_Endpoints is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since 1.0.0
      * @static
      * @return Disciple_Tools_People_Groups_Endpoints instance
      */
@@ -51,7 +51,7 @@ class Disciple_Tools_People_Groups_Endpoints
      * Constructor function.
      *
      * @access  public
-     * @since   0.1
+     * @since   1.0.0
      */
     public function __construct()
     {
@@ -63,12 +63,11 @@ class Disciple_Tools_People_Groups_Endpoints
     {
         register_rest_route(
             $this->namespace, '/people-groups-compact', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_people_groups_compact'],
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_people_groups_compact' ],
             ]
         );
     }
-
 
     /**
      * @param \WP_REST_Request $request

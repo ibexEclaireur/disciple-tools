@@ -4,118 +4,10 @@
  *
  * @class   Disciple_Tools_Roles
  * @version 1.0.0
- * @since   0.1
+ * @since   1.0.0
  * @package Disciple_Tools
- * @author  Chasm.Solutions & Kingdom.Training
+ *
  */
-
-$dt_template = [
-    /* Standard Capabilities */
-    'list_users'                 => true,
-    'delete_others_posts'        => true,
-    'delete_pages'               => true,
-    'delete_posts'               => true,
-    'delete_private_pages'       => true,
-    'delete_private_posts'       => true,
-    'delete_published_pages'     => true,
-    'delete_published_posts'     => true,
-    'edit_others_pages'          => true,
-    'edit_others_posts'          => true,
-    'edit_pages'                 => true,
-    'edit_posts'                 => true,
-    'edit_private_pages'         => true,
-    'edit_private_posts'         => true,
-    'edit_published_pages'       => true,
-    'edit_published_posts'       => true,
-    'manage_categories'          => true,
-    'manage_links'               => true,
-    'moderate_comments'          => true,
-    'publish_pages'              => true,
-    'publish_posts'              => true,
-    'read'                       => true,
-    'read_private_pages'         => true,
-    'read_private_posts'         => true,
-    'upload_files'               => true,
-    'level_0'                    => true,
-    /* See all contacts */
-    'manage_contacts'            => true,
-    /* Add custom caps for contacts */
-    'create_contacts'            => true,  //create a new contact
-    'update_shared_contacts'     => true,
-    'view_any_contacts'          => true,    //view any contacts
-    'assign_any_contacts'        => true,  //assign contacts to others
-    'update_any_contacts'        => true,  //update any contacts
-    'delete_any_contacts'        => true,  //delete any contacts
-
-    /* Add custom caps for groups */
-    'access_groups'              => true,
-    'create_groups'              => true,
-    'view_any_groups'            => true,    //view any groups
-    'assign_any_groups'          => true,  //assign groups to others
-    'update_any_groups'          => true,  //update any groups
-    'delete_any_groups'          => true,  //delete any groups
-    /* Add custom caps for prayer updates */
-    'read_prayer'                => true,
-    'edit_prayer'                => true,
-    'delete_prayer'              => true,
-    'delete_others_prayers'      => true,
-    'delete_prayers'             => true,
-    'edit_prayers'               => true,
-    'edit_others_prayers'        => true,
-    'publish_prayers'            => true,
-    'read_private_prayers'       => true,
-    /* Add custom caps for locations */
-    'read_location'              => true,
-    'edit_location'              => true,
-    'delete_location'            => true,
-    'delete_others_locations'    => true,
-    'delete_locations'           => true,
-    'edit_locations'             => true,
-    'edit_others_locations'      => true,
-    'publish_locations'          => true,
-    'read_private_locations'     => true,
-    /* Add custom caps for progresss */
-    'read_progress'              => true,
-    'edit_progress'              => true,
-    'delete_progress'            => true,
-    'delete_others_progresss'    => true,
-    'delete_progresss'           => true,
-    'edit_progresss'             => true,
-    'edit_others_progresss'      => true,
-    'publish_progresss'          => true,
-    'read_private_progresss'     => true,
-    /* Add custom caps for assets */
-    'read_assetmapping'          => true,
-    'edit_assetmapping'          => true,
-    'delete_assetmapping'        => true,
-    'delete_others_assetmapping' => true,
-    'delete_assetmappings'       => true,
-    'edit_assetmappings'         => true,
-    'edit_others_assetmapping'   => true,
-    'publish_assetmapping'       => true,
-    'read_private_assetmappings' => true,
-    /* Add custom caps for resources */
-    'read_resource'              => true,
-    'edit_resource'              => true,
-    'delete_resource'            => true,
-    'delete_others_resource'     => true,
-    'delete_resources'           => true,
-    'edit_resources'             => true,
-    'edit_others_resource'       => true,
-    'publish_resource'           => true,
-    'read_private_resources'     => true,
-    /* Add custom caps for people groups */
-    'read_peoplegroup'           => true,
-    'edit_peoplegroup'           => true,
-    'delete_peoplegroup'         => true,
-    'delete_others_peoplegroup'  => true,
-    'delete_peoplegroups'        => true,
-    'edit_peoplegroups'          => true,
-    'edit_others_peoplegroup'    => true,
-    'publish_peoplegroup'        => true,
-    'read_private_peoplegroups'  => true,
-
-];
 
 /**
  * Class Disciple_Tools_Roles
@@ -128,7 +20,7 @@ class Disciple_Tools_Roles
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -136,7 +28,7 @@ class Disciple_Tools_Roles
      * Main Disciple_Tools_P2P_Metabox Instance
      * Ensures only one instance of Disciple_Tools_P2P_Metabox is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Roles instance
      */
@@ -153,7 +45,7 @@ class Disciple_Tools_Roles
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct() {} // End __construct()
 
@@ -737,7 +629,7 @@ class Disciple_Tools_Roles
             $role->add_cap( 'delete_assetmappings' );
             $role->add_cap( 'edit_assetmappings' );
             $role->add_cap( 'edit_others_assetmapping' );
-            $role->add_cap( 'publish_assetmapping' );
+            $role->add_cap( 'publish_assetmappings' );
             $role->add_cap( 'read_private_assetmappings' );
             /* Add Resource permissions */
             $role->add_cap( 'edit_resource' );
@@ -869,3 +761,113 @@ class Disciple_Tools_Roles
 
 }
 
+/**
+ * This is unused record of the capabilities possible in the system. For reference only.
+ */
+$dt_template = [
+    /* Standard Capabilities */
+    'list_users'                 => true,
+    'delete_others_posts'        => true,
+    'delete_pages'               => true,
+    'delete_posts'               => true,
+    'delete_private_pages'       => true,
+    'delete_private_posts'       => true,
+    'delete_published_pages'     => true,
+    'delete_published_posts'     => true,
+    'edit_others_pages'          => true,
+    'edit_others_posts'          => true,
+    'edit_pages'                 => true,
+    'edit_posts'                 => true,
+    'edit_private_pages'         => true,
+    'edit_private_posts'         => true,
+    'edit_published_pages'       => true,
+    'edit_published_posts'       => true,
+    'manage_categories'          => true,
+    'manage_links'               => true,
+    'moderate_comments'          => true,
+    'publish_pages'              => true,
+    'publish_posts'              => true,
+    'read'                       => true,
+    'read_private_pages'         => true,
+    'read_private_posts'         => true,
+    'upload_files'               => true,
+    'level_0'                    => true,
+    /* See all contacts */
+    'manage_contacts'            => true,
+    /* Add custom caps for contacts */
+    'create_contacts'            => true,  //create a new contact
+    'update_shared_contacts'     => true,
+    'view_any_contacts'          => true,    //view any contacts
+    'assign_any_contacts'        => true,  //assign contacts to others
+    'update_any_contacts'        => true,  //update any contacts
+    'delete_any_contacts'        => true,  //delete any contacts
+
+    /* Add custom caps for groups */
+    'access_groups'              => true,
+    'create_groups'              => true,
+    'view_any_groups'            => true,    //view any groups
+    'assign_any_groups'          => true,  //assign groups to others
+    'update_any_groups'          => true,  //update any groups
+    'delete_any_groups'          => true,  //delete any groups
+    /* Add custom caps for prayer updates */
+    'read_prayer'                => true,
+    'edit_prayer'                => true,
+    'delete_prayer'              => true,
+    'delete_others_prayers'      => true,
+    'delete_prayers'             => true,
+    'edit_prayers'               => true,
+    'edit_others_prayers'        => true,
+    'publish_prayers'            => true,
+    'read_private_prayers'       => true,
+    /* Add custom caps for locations */
+    'read_location'              => true,
+    'edit_location'              => true,
+    'delete_location'            => true,
+    'delete_others_locations'    => true,
+    'delete_locations'           => true,
+    'edit_locations'             => true,
+    'edit_others_locations'      => true,
+    'publish_locations'          => true,
+    'read_private_locations'     => true,
+    /* Add custom caps for progresss */
+    'read_progress'              => true,
+    'edit_progress'              => true,
+    'delete_progress'            => true,
+    'delete_others_progresss'    => true,
+    'delete_progresss'           => true,
+    'edit_progresss'             => true,
+    'edit_others_progresss'      => true,
+    'publish_progresss'          => true,
+    'read_private_progresss'     => true,
+    /* Add custom caps for assets */
+    'read_assetmapping'          => true,
+    'edit_assetmapping'          => true,
+    'delete_assetmapping'        => true,
+    'delete_others_assetmapping' => true,
+    'delete_assetmappings'       => true,
+    'edit_assetmappings'         => true,
+    'edit_others_assetmapping'   => true,
+    'publish_assetmapping'       => true,
+    'read_private_assetmappings' => true,
+    /* Add custom caps for resources */
+    'read_resource'              => true,
+    'edit_resource'              => true,
+    'delete_resource'            => true,
+    'delete_others_resource'     => true,
+    'delete_resources'           => true,
+    'edit_resources'             => true,
+    'edit_others_resource'       => true,
+    'publish_resource'           => true,
+    'read_private_resources'     => true,
+    /* Add custom caps for people groups */
+    'read_peoplegroup'           => true,
+    'edit_peoplegroup'           => true,
+    'delete_peoplegroup'         => true,
+    'delete_others_peoplegroup'  => true,
+    'delete_peoplegroups'        => true,
+    'edit_peoplegroups'          => true,
+    'edit_others_peoplegroup'    => true,
+    'publish_peoplegroup'        => true,
+    'read_private_peoplegroups'  => true,
+
+];
