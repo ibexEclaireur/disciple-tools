@@ -200,23 +200,7 @@ class Disciple_Tools
      * @since  1.0.0
      */
     public $plugin_path;
-    public $metrics;
-    /**
-     * Activation of roles.
-     *
-     * @var    string
-     * @access public
-     * @since  1.0.0
-     */
-    private $roles;
-    /**
-     * Reports cron job process.
-     *
-     * @var    string
-     * @access public
-     * @since  1.0.0
-     */
-    public $report_cron;
+
     /**
      * SVG code for DT logo.
      *
@@ -225,14 +209,6 @@ class Disciple_Tools
      * @since  1.0.0
      */
     public $dt_svg;
-    /**
-     * Notification object
-     *
-     * @var    string
-     * @access public
-     * @since  1.0.0
-     */
-    public $notifications;
 
     /**
      * The admin object.
@@ -262,13 +238,30 @@ class Disciple_Tools
     public $facebook_integration;
 
     /**
-     * The post types we're registering.
+     * Object holders for for different post types
      *
      * @var    array
      * @access public
      * @since  1.0.0
      */
     public $post_types = [];
+    public $endpoints = [];
+    public $core = [];
+    public $hooks = [];
+
+    public $logging = [];
+    public $metrics;
+    public $notifications;
+
+    /**
+     * The core controller files we're registering.
+     *
+     * @var    array
+     * @access public
+     * @since  1.0.0
+     */
+
+
 
     /**
      * Main Disciple_Tools Instance
@@ -302,7 +295,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '0.1';
+        $this->version = '1.0.0';
         $this->migration_number = 0;
         $this->plugin_url = plugin_dir_url( __FILE__ );
         $this->plugin_path = plugin_dir_path( __FILE__ );
@@ -366,7 +359,7 @@ class Disciple_Tools
         require_once( 'dt-contacts/contacts-post-type.php' );
         $this->post_types[ 'contacts' ] = Disciple_Tools_Contact_Post_Type::instance();
         require_once( 'dt-contacts/contacts-endpoints.php' );
-        Disciple_Tools_Contacts_Endpoints::instance();
+        $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
         require_once( 'dt-contacts/contacts-template.php' ); // Functions to support theme
 
         /**
@@ -374,10 +367,10 @@ class Disciple_Tools
          */
         require_once( 'dt-groups/groups-post-type.php' );
         $this->post_types[ 'groups' ] = Disciple_Tools_Groups_Post_Type::instance();
+        require_once( 'dt-groups/groups-template.php' ); // Functions to support theme
         require_once( 'dt-groups/groups.php' );
         require_once( 'dt-groups/groups-endpoints.php' ); // builds rest endpoints
-        Disciple_Tools_Groups_Endpoints::instance();
-        require_once( 'dt-groups/groups-template.php' ); // Functions to support theme
+        $this->endpoints['groups'] = Disciple_Tools_Groups_Endpoints::instance();
 
         /**
          * dt-locations
@@ -388,10 +381,11 @@ class Disciple_Tools
         require_once( 'dt-locations/class-census-geolocation-api.php' );// APIs
         require_once( 'dt-locations/class-google-geolocation-api.php' );
         require_once( 'dt-locations/class-coordinates-db.php' );
+
+        require_once( 'dt-locations/locations-template.php' );
         require_once( 'dt-locations/locations.php' ); // serves the locations rest endpoints
         require_once( 'dt-locations/locations-endpoints.php' ); // builds rest endpoints
-        $this->location_api = Disciple_Tools_Locations_Endpoints::instance();
-        require_once( 'dt-locations/locations-template.php' );
+        $this->endpoints['locations'] = Disciple_Tools_Locations_Endpoints::instance();
 
         /**
          * dt-people-groups
@@ -401,16 +395,17 @@ class Disciple_Tools
         require_once( 'dt-people-groups/people-groups-template.php' );
         require_once( 'dt-people-groups/people-groups.php' );
         require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
-        $this->peoplegroups_api = Disciple_Tools_People_Groups_Endpoints::instance();
+        $this->endpoints['peoplegroups'] = Disciple_Tools_People_Groups_Endpoints::instance();
 
         /**
-         * dt-assets
+         * dt-assetmapping
          */
-        require_once( 'dt-asset-mapping/asset-mapping-post-type.php' );
-        $this->post_types[ 'assetmapping' ] = Disciple_Tools_Asset_Mapping_Post_Type::instance();
-        require_once( 'dt-asset-mapping/asset-mapping-template.php' );
-        require_once( 'dt-asset-mapping/asset-mapping.php' );
-        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
+        require_once( 'dt-assetmapping/assetmapping-post-type.php' );
+        $this->post_types[ 'assetmapping' ] = Disciple_Tools_Assetmapping_Post_Type::instance();
+        require_once( 'dt-assetmapping/assetmapping-template.php' );
+        require_once( 'dt-assetmapping/assetmapping.php' );
+        require_once( 'dt-assetmapping/assetmapping-endpoints.php' ); // builds rest endpoints
+        $this->endpoints['assetmapping'] = new Disciple_Tools_Assetmapping_Endpoints();
 
         /**
          * dt-resources
@@ -420,6 +415,7 @@ class Disciple_Tools
         require_once( 'dt-resources/resources-template.php' );
         require_once( 'dt-resources/resources.php' );
         require_once( 'dt-resources/resources-endpoints.php' ); // builds rest endpoints
+        $this->endpoints['resources'] = new Disciple_Tools_Resources_Endpoints();
 
         /**
          * dt-prayer
@@ -429,13 +425,17 @@ class Disciple_Tools
         require_once( 'dt-prayer/prayer-template.php' );
         require_once( 'dt-prayer/prayer.php' );
         require_once( 'dt-prayer/prayer-endpoints.php' ); // builds rest endpoints
+        $this->endpoints['prayer'] = new Disciple_Tools_Prayer_Endpoints();
 
         /**
          * dt-progress
          */
         require_once( 'dt-progress/progress-post-type.php' );
         $this->post_types[ 'progress' ] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
-        require_once( 'dt-asset-mapping/asset-mapping-endpoints.php' ); // builds rest endpoints
+        require_once( 'dt-progress/progress.php' );
+        require_once( 'dt-progress/progress-template.php' );
+        require_once( 'dt-progress/progress-endpoints.php' );
+        $this->endpoints['progress'] = new Disciple_Tools_Progress_Endpoints();
 
         /**
          * dt-metrics
@@ -443,11 +443,11 @@ class Disciple_Tools
         require_once( 'dt-metrics/class-counter-factory.php' );
         $this->counter = Disciple_Tools_Counter_Factory::instance();
         require_once( 'dt-metrics/class-goals.php' );
-        require_once( 'dt-metrics/metrics.php' );
-        $this->metrics = Disciple_Tools_Metrics::instance();
         require_once( 'dt-metrics/metrics-template.php' );
+        require_once( 'dt-metrics/metrics.php' );
+        $this->core['metrics'] = Disciple_Tools_Metrics::instance();
         require_once( 'dt-metrics/metrics-endpoints.php' );
-        new Disciple_Tools_Metrics_Endpoints();
+        $this->endpoints['metrics'] = new Disciple_Tools_Metrics_Endpoints();
 
         /**
          * dt-users
@@ -455,21 +455,19 @@ class Disciple_Tools
         require_once( 'dt-users/users.php' );
         require_once( 'dt-users/users-template.php' );
         require_once( 'dt-users/users-endpoints.php' );
-        new Disciple_Tools_Users_Endpoints();
+        $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
 
         /**
          * dt-notifications
          */
         require_once( 'dt-notifications/notifications-hooks.php' );
-        $this->notification_hooks = Disciple_Tools_Notification_Hooks::instance();
+        $this->hooks['notifications'] = Disciple_Tools_Notification_Hooks::instance();
         require_once( 'dt-notifications/notifications-template.php' );
         require_once( 'dt-notifications/notifications.php' );
-        $this->notifications = Disciple_Tools_Notifications::instance();
+        $this->core['notifications'] = Disciple_Tools_Notifications::instance();
         require_once( 'dt-notifications/notifications-endpoints.php' );
-        $this->notification_endpoints = Disciple_Tools_Notifications_Endpoints::instance();
+        $this->endpoints['notifications'] = Disciple_Tools_Notifications_Endpoints::instance();
         require_once( 'dt-notifications/notifications-email.php' ); // sends notification emails through the async task process
-
-
 
         /**
          * Post-to-Post configuration
@@ -477,19 +475,19 @@ class Disciple_Tools
         require_once( 'dt-core/config-p2p.php' ); // Creates the post to post relationship between the post type tables.
 
         // Custom Metaboxes
-        require_once( 'dt-core/admin/metaboxes/box-address.php' ); // used by both theme and wp-admin
+        require_once( 'dt-core/admin/metaboxes/box-address.php' ); // todo remove theme dependency on this box. used by both theme and wp-admin
 
         /**
          * Logging
          */
         require_once( 'dt-core/logging/class-activity-api.php' );
-        $this->activity_api = new Disciple_Tools_Activity_Log_API();
+        $this->logging_activity_api = new Disciple_Tools_Activity_Log_API();
         require_once( 'dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
-        $this->activity_hooks = Disciple_Tools_Activity_Hooks::instance();
+        $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
         require_once( 'dt-core/logging/class-reports-api.php' );
-        $this->report_api = new Disciple_Tools_Reports_API();
+        $this->logging_report_api = new Disciple_Tools_Reports_API();
         require_once( 'dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
-        $this->report_cron = Disciple_Tools_Reports_Cron::instance();
+        $this->logging_report_cron = Disciple_Tools_Reports_Cron::instance();
         require_once( 'dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
         require_once( 'dt-core/logging/debug-logger.php' );
 

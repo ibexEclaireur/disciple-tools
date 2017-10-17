@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @return void
  */
 function dt_activity_insert( $args = [] ) {
-    disciple_tools()->activity_api->insert( $args );
+    disciple_tools()->logging_activity_api->insert( $args );
 }
 
 /**
@@ -18,7 +18,6 @@ function dt_activity_insert( $args = [] ) {
  * This handles the insert and other functions for the table _dt_activity_log
  */
 class Disciple_Tools_Activity_Log_API {
-
 
     /**
      * Get real address

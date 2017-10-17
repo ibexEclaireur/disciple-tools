@@ -9,11 +9,15 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Activity_Log_DB
+ */
 class Disciple_Tools_Activity_Log_DB {
 
     /**
      * Create table preprocessor
      *
+     * @since 1.0.0
      * @access static public
      */
     public static function activate() {
@@ -24,6 +28,7 @@ class Disciple_Tools_Activity_Log_DB {
     /**
      * Delete table preprocessor
      *
+     * @since 1.0.0
      * @access static public
      */
     public static function uninstall() {
@@ -35,6 +40,7 @@ class Disciple_Tools_Activity_Log_DB {
     /**
      * Creates the tables for the activity and report logs.
      *
+     * @since 1.0.0
      * @access protected
      */
     protected static function _create_tables() {
@@ -94,6 +100,7 @@ class Disciple_Tools_Activity_Log_DB {
     /**
      * Removes the tables for the activity and report logs.
      *
+     * @since 1.0.0
      * @access protected
      */
     protected static function _remove_tables() {

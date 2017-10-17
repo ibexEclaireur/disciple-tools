@@ -13,7 +13,7 @@ if( !defined( 'ABSPATH' ) ) {
  * @author     Chasm.Solutions & Kingdom.Training
  * @since      1.0.0
  */
-class Disciple_Tools_Asset_Mapping_Post_Type
+class Disciple_Tools_Assetmapping_Post_Type
 {
     /**
      * The post type token.

@@ -28,8 +28,6 @@ class Disciple_Tools_General_Tab
         echo '<div id="post-body-content">';
         /* Main Column */
 
-
-
         /* Box */
         echo '<table class="widefat striped">
                     <thead><th>Site Notifications</th></thead>
