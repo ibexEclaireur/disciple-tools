@@ -17,7 +17,9 @@ class Disciple_Tools_Locations_Import
     /**
      * Uploads US Census Tract KML file to Locations Post Type
      *
-     * @return boolean
+     * @param $state
+     *
+     * @return string
      */
     public static function upload_census_tract_kml_to_post_type( $state )
     {
@@ -100,14 +102,14 @@ class Disciple_Tools_Locations_Import
      *
      * @param $state
      *
-     * @return string
+     * @return string|\WP_Error
      */
     public static function upload_us_state_tracts( $state )
     {
         global $wpdb;
 
         if( !post_type_exists( 'locations' ) ) {
-            return 'Fail: You need the locations post type installed through Disciple Tools.';
+            return new WP_Error( 'no_post_type','Fail: You need the locations post type installed through Disciple Tools.' );
         }
 
         if( !get_option( '_installed_us_tracts_' . $state ) ) { // check if counties are installed for the state
@@ -182,8 +184,9 @@ class Disciple_Tools_Locations_Import
     /**
      * Uploads US Census Tract KML file to Locations Post Type
      *
-     * @version 2.0
-     * @return boolean
+     * @param $state
+     *
+     * @return string
      */
     public static function census_tract_kml_to_post_type( $state )
     {
@@ -264,7 +267,7 @@ class Disciple_Tools_Locations_Import
     /**
      * Import US State Tracks.
      *
-     * @version 2.0
+     * @since 1.0.0
      *
      * @param $state
      *
@@ -350,6 +353,8 @@ class Disciple_Tools_Locations_Import
     /**
      * The box for deleting locations
      *
+     * @since 1.0.0
+     *
      * @return string
      */
     public function delete_locations_box()
@@ -379,6 +384,8 @@ class Disciple_Tools_Locations_Import
     /**
      * Delete all locations in database
      *
+     * @since 1.0.0
+     *
      * @return string
      */
     public function delete_locations()
@@ -404,6 +411,9 @@ class Disciple_Tools_Locations_Import
     /**
      * Import Omega Zone locations
      *
+     * @since 1.0.0
+     *
+     * @param $cnty_id
      * @param $admin
      */
     public function insert_location_oz( $cnty_id, $admin )
@@ -464,13 +474,15 @@ class Disciple_Tools_Locations_Import
                     "post_author"  => get_current_user_id(),
                 ];
 
-                $new_post_id = wp_insert_post( $post );
+                wp_insert_post( $post );
             }
         }
     }
 
     /**
      * @param $geojson
+     *
+     * @since 1.0.0
      *
      * @return bool
      */
@@ -572,6 +584,8 @@ class Disciple_Tools_Locations_Import
     }
 
     /**
+     * @since 1.0.0
+     *
      * @param $cnty_id
      *
      * @return bool
@@ -586,7 +600,7 @@ class Disciple_Tools_Locations_Import
             WHERE
                 post_type = 'locations'
                 AND post_name LIKE %s",
-            esc_like( $cnty_id ) . "%"
+            $wpdb->esc_like( $cnty_id ) . "%"
         ) );
         $results2 = $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE NOT EXISTS (SELECT NULL FROM $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->postmeta.post_id);" );
 

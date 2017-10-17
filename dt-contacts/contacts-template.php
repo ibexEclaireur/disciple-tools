@@ -5,7 +5,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  *
  * @param  int  $contact_id
  * @param  bool $return
- * @return void | string
+ * @return string
  */
 function dt_get_assigned_name ( int $contact_id, bool $return = false ) {
 
@@ -49,6 +49,11 @@ function dt_get_assigned_name ( int $contact_id, bool $return = false ) {
 
 }
 
+/**
+ * @param $contact_id
+ *
+ * @return array|mixed
+ */
 function dt_get_users_shared_with( $contact_id ) {
     return Disciple_Tools_Contacts::get_shared_with_on_contact( $contact_id );
 }

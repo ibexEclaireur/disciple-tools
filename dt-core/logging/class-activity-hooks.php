@@ -1,24 +1,28 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Activity_Hooks
+ *
+ * @since  1.0.0
+ */
 class Disciple_Tools_Activity_Hooks {
 
     /**
-     * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
+     * Disciple_Tools_Activity_Hooks The single instance of Disciple_Tools_Activity_Hooks.
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Admin_Menus Instance
+     * Main Disciple_Tools_Activity_Hooks Instance
      *
-     * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Activity_Hooks is loaded or can be loaded.
      *
-     * @since  0.1
-     * @static
+     * @since  1.0.0
      * @return Disciple_Tools_Activity_Hooks instance
      */
     public static function instance () {
@@ -26,8 +30,11 @@ class Disciple_Tools_Activity_Hooks {
             self::$_instance = new self();
         }
         return self::$_instance;
-    } // End instance()
+    }
 
+    /**
+     * Disciple_Tools_Activity_Hooks constructor.
+     */
     public function __construct() {
         // Load abstract class.
         include( 'hooks/abstract-class-hook-base.php' );

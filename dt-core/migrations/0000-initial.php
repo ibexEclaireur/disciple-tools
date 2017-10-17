@@ -3,8 +3,14 @@ declare(strict_types=1);
 
 require_once( 'abstract.php' );
 
+/**
+ * Class Disciple_Tools_Migration_0000
+ */
 class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
 
+    /**
+     * @throws \Exception  Got error when creating table $name.
+     */
     public function up() {
         global $wpdb;
         $expected_tables = $this->get_expected_tables();
@@ -16,8 +22,12 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
         }
     }
 
+    /**
+     * @throws \Exception  Got error when dropping table $name.
+     */
     public function down() {
         global $wpdb;
+        $expected_tables = $this->get_expected_tables();
         foreach ( $expected_tables as $name => $table) {
             $rv = $wpdb->query( "DROP TABLE `{$name}`" ); // WPCS: unprepared SQL OK
             if ( $rv == false ) {
@@ -26,6 +36,9 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
         }
     }
 
+    /**
+     * @return array
+     */
     public function get_expected_tables(): array {
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
@@ -90,7 +103,9 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
         );
     }
 
-
+    /**
+     * Test function
+     */
     public function test() {
         $this->test_expected_tables();
     }

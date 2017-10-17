@@ -10,7 +10,7 @@ if( !defined( 'ABSPATH' ) ) {
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 
 /**
@@ -22,7 +22,7 @@ class Disciple_Tools_Contact_Post_Type
      * The post type token.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @var    string
      */
     public $post_type;
@@ -31,7 +31,7 @@ class Disciple_Tools_Contact_Post_Type
      * The post type singular label.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @var    string
      */
     public $singular;
@@ -40,7 +40,7 @@ class Disciple_Tools_Contact_Post_Type
      * The post type plural label.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @var    string
      */
     public $plural;
@@ -49,7 +49,7 @@ class Disciple_Tools_Contact_Post_Type
      * The post type args.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @var    array
      */
     public $args;
@@ -58,7 +58,7 @@ class Disciple_Tools_Contact_Post_Type
      * The taxonomies for this post type.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @var    array
      */
     public $taxonomies;
@@ -68,7 +68,7 @@ class Disciple_Tools_Contact_Post_Type
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -76,7 +76,7 @@ class Disciple_Tools_Contact_Post_Type
      * Main Disciple_Tools_Contact_Post_Type Instance
      * Ensures only one instance of Disciple_Tools_Contact_Post_Type is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Contact_Post_Type instance
      */
@@ -101,7 +101,7 @@ class Disciple_Tools_Contact_Post_Type
     public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = [], $taxonomies = [] )
     {
         $this->post_type = 'contacts';
-        $this->singular = _x( 'Contact', 'singlular of contact', 'disciple_tools' );
+        $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
         $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
         $this->taxonomies = $taxonomies = [];
@@ -219,7 +219,7 @@ class Disciple_Tools_Contact_Post_Type
     /**
      * Update messages for the post type admin.
      *
-     * @since  0.1
+     * @since  1.0.0
      *
      * @param  array $messages Array of messages for all post types.
      *
@@ -259,7 +259,7 @@ class Disciple_Tools_Contact_Post_Type
      * Setup the meta box.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return void
      */
     public function meta_box_setup()
@@ -441,7 +441,7 @@ class Disciple_Tools_Contact_Post_Type
      * Save meta box fields.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      *
      * @param  int $post_id
      *
@@ -540,7 +540,7 @@ class Disciple_Tools_Contact_Post_Type
      * Meta box for Status Information
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function load_milestone_meta_box()
     {
@@ -551,7 +551,7 @@ class Disciple_Tools_Contact_Post_Type
      * Meta box for Status Information
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function load_contact_info_meta_box()
     {
@@ -563,7 +563,7 @@ class Disciple_Tools_Contact_Post_Type
      * Meta box for Status Information
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function load_address_info_meta_box()
     {
@@ -575,7 +575,7 @@ class Disciple_Tools_Contact_Post_Type
      * Meta box for Status Information
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function load_status_info_meta_box()
     {
@@ -586,7 +586,7 @@ class Disciple_Tools_Contact_Post_Type
      * Meta box for Status Information
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function load_misc_meta_box()
     {
@@ -720,45 +720,7 @@ class Disciple_Tools_Contact_Post_Type
                 ];
             }
         }
-        // else {
-        // TODO: I don't understand why this is only run when we're not getting info for the current post. @C I believe it is from a previous requirement for Facebook integration.
 
-        //            $channels = $this->get_channels_list();
-
-        //            foreach ($channels as $channel_key => $channel) {
-        //                foreach($channel["types"] as $type_key => $type){
-        //
-        //                    $tag = null;
-        //
-        //                    $key =  strtolower( 'contact_' . $channel_key . '_' . $type_key . '_111' );
-        //
-        //                    if($channel["label"] != $type["label"]) { $tag = ' ('. ucwords( $type["label"] ) . ')'; }
-        //
-        //                    $fields[$key] = [
-        //                        'name' => ucwords( $channel["label"] ) . $tag,
-        //                        'description' => '',
-        //                        'type' => 'text',
-        //                        'default' => '',
-        //                        'section' => 'info'
-        //                    ];
-        //                }
-        //            }
-
-        //            $address_types = dt_address_metabox()->get_address_type_list( $this->post_type );
-
-        //            foreach ($address_types as $key => $type) {
-        //
-        //                $key =  strtolower( 'address_11' . $index );
-        //
-        //                $fields[$key] = [
-        //                    'name' => ucwords( $type ) ,
-        //                    'description' => '',
-        //                    'type' => 'text',
-        //                    'default' => '',
-        //                    'section' => 'address'
-        //                ];
-        //            }
-        //        }
 
         // Status information section
         $fields[ 'milestone_has_bible' ] = [
@@ -1125,7 +1087,7 @@ class Disciple_Tools_Contact_Post_Type
      * Get a list of the contact channels and their types
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return mixed
      */
     public function get_channels_list()
@@ -1225,7 +1187,7 @@ class Disciple_Tools_Contact_Post_Type
         }
 
         // Collect user list
-        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC'  ];
+        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC' ];
         $results = get_users( $args );
 
         // Loop user list
@@ -1243,7 +1205,7 @@ class Disciple_Tools_Contact_Post_Type
      * Customise the "Enter title here" text.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      *
      * @param  string $title
      *
@@ -1262,7 +1224,7 @@ class Disciple_Tools_Contact_Post_Type
      * Run on activation.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function activation()
     {
@@ -1273,7 +1235,7 @@ class Disciple_Tools_Contact_Post_Type
      * Flush the rewrite rules
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     private function flush_rewrite_rules()
     {

@@ -4,16 +4,22 @@
  *
  * This class handles the creation and destruction of the report and activity tables for Disciple Tools.
  *
- * @since 0.1
+ * @since 1.0.0
  * @class Disciple_Tools_Activity_Log_DB
+ *
+ * TODO: Determine if this class is redundant to the migration db strategy.
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Activity_Log_DB
+ */
 class Disciple_Tools_Activity_Log_DB {
 
     /**
      * Create table preprocessor
      *
+     * @since 1.0.0
      * @access static public
      */
     public static function activate() {
@@ -24,6 +30,7 @@ class Disciple_Tools_Activity_Log_DB {
     /**
      * Delete table preprocessor
      *
+     * @since 1.0.0
      * @access static public
      */
     public static function uninstall() {
@@ -35,6 +42,7 @@ class Disciple_Tools_Activity_Log_DB {
     /**
      * Creates the tables for the activity and report logs.
      *
+     * @since 1.0.0
      * @access protected
      */
     protected static function _create_tables() {
@@ -88,12 +96,12 @@ class Disciple_Tools_Activity_Log_DB {
         dbDelta( $sql2 );
         dbDelta( $sql3 );
 
-
     }
 
     /**
      * Removes the tables for the activity and report logs.
      *
+     * @since 1.0.0
      * @access protected
      */
     protected static function _remove_tables() {

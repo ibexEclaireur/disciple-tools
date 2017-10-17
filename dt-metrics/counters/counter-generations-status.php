@@ -1,32 +1,33 @@
 <?php
 /**
- * Count generations status
+ * Disciple_Tools_Counter_Generations
  *
  * @package Disciple_Tools
- * @author  Chasm Solutions <chasm.crew@chasm.solutions>
- * @license GPL-3.0
- * @version 0.1
+ * @class Disciple_Tools_Counter_Generations
+ * @version 1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Counter_Generations
+ */
 class Disciple_Tools_Counter_Generations  {
+
     /**
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
-    public function __construct () {
-
-    } // End __construct()
+    public function __construct () { } // End __construct()
 
     /**
      * Counts the number of records at the supplied generation level
      *
-     * @access public
-     * @since  0.1
-     * @param  number
-     * @return number
+     * @param $level
+     * @param $type
+     *
+     * @return int
      */
     public function gen_level ( $level, $type ) {
         $i = 0;
@@ -44,8 +45,8 @@ class Disciple_Tools_Counter_Generations  {
      * Counts generation status
      * Returns an array of all contacts in discipleship and their generation status.
      *
-     * @access public
-     * @since  0.1
+     * @param string $type
+     *
      * @return array
      */
     public function generation_status_list ( $type = 'contacts_to_contacts' ) {
@@ -107,14 +108,12 @@ class Disciple_Tools_Counter_Generations  {
         return $gen_count;
     }
 
-
     /**
      * Helper: Checks if the parent is first generation
      *
-     * @access public
-     * @since  0.1
-     * @param  number
-     * @param  array
+     * @param $target
+     * @param $p2p_array
+     *
      * @return string
      */
     protected function get_parent_id( $target, $p2p_array ) {
@@ -131,10 +130,10 @@ class Disciple_Tools_Counter_Generations  {
     /**
      * Helper: Checks if record is zero generation
      *
-     * @access public
-     * @since  0.1
-     * @parent Single number taken from the wp_p2p.p2p_to column
-     * @column An array with the entire column of wp_p2p.p2p_from data
+     * @param $contact
+     * @param $p2p_array_from
+     *
+     * @return bool
      */
     protected function zero_generation_check ( $contact, $p2p_array_from ) {
         foreach ($p2p_array_from as $value) {
@@ -144,5 +143,4 @@ class Disciple_Tools_Counter_Generations  {
         }
         return true;
     }
-
 }

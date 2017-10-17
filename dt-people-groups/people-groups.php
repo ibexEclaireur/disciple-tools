@@ -6,7 +6,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    0.1
+ * @since    1.0.0
  */
 if( !defined( 'ABSPATH' ) ) {
     exit;
@@ -22,7 +22,7 @@ class Disciple_Tools_People_Groups
      *
      * @var     object
      * @access    private
-     * @since     0.1
+     * @since     1.0.0
      */
     private static $_instance = null;
 
@@ -30,7 +30,7 @@ class Disciple_Tools_People_Groups
      * Main Disciple_Tools_People_Groups Instance
      * Ensures only one instance of Disciple_Tools_People_Groups is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since 1.0.0
      * @static
      * @return Disciple_Tools_People_Groups instance
      */
@@ -47,29 +47,32 @@ class Disciple_Tools_People_Groups
      * Constructor function.
      *
      * @access  public
-     * @since   0.1
+     * @since   1.0.0
      */
     public function __construct()
     {
-
     } // End __construct()
 
-
-
+    /**
+     * @param $search
+     *
+     * @return array
+     */
     public static function get_people_groups_compact( $search )
     {
-        //        @todo check permisions
+        //        @todo check permissions
         $query_args = [
             'post_type' => 'peoplegroups',
             'orderby'   => 'ID',
             'nopaging'  => true,
-            's'         => $search
+            's'         => $search,
         ];
         $query = new WP_Query( $query_args );
         $list = [];
         foreach( $query->posts as $post ) {
             $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
         }
+
         return $list;
     }
 }

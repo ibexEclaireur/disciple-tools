@@ -4,10 +4,10 @@
  * Disciple_Tools_Locations_Endpoints
  *
  * @class   Disciple_Tools_Locations_Endpoints
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
- * @author  Chasm.Solutions & Kingdom.Training
+ *
  */
 
 if( !defined( 'ABSPATH' ) ) {
@@ -29,7 +29,7 @@ class Disciple_Tools_Locations_Endpoints
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -37,7 +37,7 @@ class Disciple_Tools_Locations_Endpoints
      * Main Disciple_Tools_Locations_Endpoints Instance
      * Ensures only one instance of Disciple_Tools_Locations_Endpoints is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Locations_Endpoints instance
      */
@@ -54,7 +54,7 @@ class Disciple_Tools_Locations_Endpoints
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -113,7 +113,7 @@ class Disciple_Tools_Locations_Endpoints
      * @param  WP_REST_Request $request
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|WP_Error The contact on success
      */
     public function find_by_address( WP_REST_Request $request )
@@ -137,7 +137,7 @@ class Disciple_Tools_Locations_Endpoints
      * @param  WP_REST_Request $request
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|WP_Error|array The contact on success
      */
     public function get_tract_map( WP_REST_Request $request )
@@ -161,7 +161,7 @@ class Disciple_Tools_Locations_Endpoints
      * @param  WP_REST_Request $request
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|WP_Error|array The contact on success
      */
     public function get_map_by_geoid( WP_REST_Request $request )
@@ -180,13 +180,11 @@ class Disciple_Tools_Locations_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array
+     * @return array|\WP_Error
      */
-    public function get_locations( WP_REST_Request $request )
+    public function get_locations()
     {
-        $params = $request->get_params();
+        //        $params = $request->get_params();
         //        @TODO check permissions
         $locations = Disciple_Tools_Locations::get_locations();
 

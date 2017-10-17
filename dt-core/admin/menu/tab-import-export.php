@@ -4,8 +4,8 @@
  * Disciple Tools
  *
  * @class      Disciple_Tools_
- * @version    0.1
- * @since      0.1
+ * @version    1.0.0
+ * @since      1.0.0
  * @package    Disciple_Tools
  * @author     Chasm.Solutions & Kingdom.Training
  */
@@ -27,11 +27,6 @@ class Disciple_Tools_Import_Export_Tab
         echo '<div class="wrap"><div id="poststuff"><div id="post-body" class="metabox-holder columns-2">';
         echo '<div id="post-body-content">';
         /* Main Column */
-
-        // print '<pre>';
-        //        print_r( $_POST );
-        //        print_r( dt_get_option( 'dt_site_options' ) );
-        // print '</pre>';
 
         /* Box */
         echo '<table class="widefat striped">

@@ -9,8 +9,6 @@ if( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifications_Hook_Base
 {
 
-    private $email_mention;
-
     /**
      * Disciple_Tools_Notifications_Hook_Comments constructor.
      */

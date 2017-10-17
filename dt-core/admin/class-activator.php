@@ -3,7 +3,7 @@
  * Fired during plugin activation.
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      0.1
+ * @since      1.0.0
  * @package    Disciple_Tools
  * @subpackage Disciple_Tools/includes/admin
  * @author
@@ -20,12 +20,12 @@ class Disciple_Tools_Activator
     /**
      * Activities to run during installation.
      *
-     * @since 0.1
+     * @since 1.0.0
      */
     public static function activate( $network_wide )
     {
         global $wpdb;
-        $disciple_tools = Disciple_Tools();
+        $disciple_tools = disciple_tools();
         $disciple_tools->_log_version_number();
 
         /** Create roles and capabilities */
@@ -57,11 +57,11 @@ class Disciple_Tools_Activator
             $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
             foreach( $blog_ids as $blog_id ) {
                 switch_to_blog( $blog_id );
-                Disciple_Tools_Migration_Engine::migrate( Disciple_Tools()->migration_number );
+                Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
                 restore_current_blog();
             }
         } else {
-            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools()->migration_number );
+            Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
         }
         // TODO: we need to run the migrations on updates as well, not just on activations
     }
@@ -80,7 +80,7 @@ class Disciple_Tools_Activator
     {
         if( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
             switch_to_blog( $blog_id );
-            Disciple_Tools_Migration_Engine::migrate( Disciple_Tools()->migration_number );
+            Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
             restore_current_blog();
         }
     }

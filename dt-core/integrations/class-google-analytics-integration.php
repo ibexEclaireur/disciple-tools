@@ -1,7 +1,16 @@
 <?php
+/**
+ * Google Analytics Integration Class
+ *
+ * @since 1.0.0
+ */
 
-// @codingStandardsIgnoreLine
-class Ga_Admin
+
+/**
+ * Class DT_Ga_Admin
+ */
+
+class DT_Ga_Admin
 {
 
     //stores the selected account id
@@ -22,6 +31,9 @@ class Ga_Admin
 
     private static $_instance = null;
 
+    /**
+     * @return \DT_Ga_Admin|null
+     */
     public static function instance () {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
@@ -32,17 +44,18 @@ class Ga_Admin
     /**
      * Instantiate API client.
      *
-     * @return Ga_Lib_Google_Api_Client|null
+     * @param string $type
+     *
+     * @return \Ga_Lib_Api_Client|null
      */
     public static function api_client( $type = '' )
     {
         return Ga_Lib_Google_Api_Client::get_instance();
     }
 
-    /*
+    /**
      * Initializes plugin's options during plugin activation process.
      */
-
     public static function activate_googleanalytics()
     {
         add_option( self::GA_ACCOUNT_AND_DATA_ARRAY, wp_json_encode( [] ) );
@@ -53,7 +66,7 @@ class Ga_Admin
         Ga_Cache::add_cache_options();
     }
 
-    /*
+    /**
      * Deletes plugin's options during plugin activation process.
      */
 
@@ -89,10 +102,19 @@ class Ga_Admin
         }
     }
 
+    /**
+     * DT_Ga_Admin constructor.
+     */
     public function __construct () {
         $this->init_admin();
     }
 
+    /**
+     * @param $new_value
+     * @param $old_value
+     *
+     * @return false|mixed|string
+     */
     public static function preupdate_selected_views( $new_value, $old_value )
     {
         $data = json_decode( get_option( self::GA_ACCOUNT_AND_DATA_ARRAY, [] ) );
@@ -127,21 +149,9 @@ class Ga_Admin
     }
 
     /**
-     * Builds plugin's menu structure.
-     */
-//    public static function admin_menu_googleanalytics()  // Relocated to the main admin menu TODO Remove
-//    {
-//        if (current_user_can( 'manage_options' )) {
-//            add_submenu_page(
-//                'dt_options', __( 'Analytics (DT)', 'disciple_tools' ),
-//                __( 'Analytics (DT)', 'disciple_tools' ), 'manage_options', 'googleanalytics/settings', 'Ga_Admin::options_page_googleanalytics'
-//            );
-//        }
-//    }
-
-
-    /**
      * Prepares and displays plugin's settings page.
+     *
+     * @return bool
      */
     public static function options_page_googleanalytics()
     {
@@ -186,6 +196,8 @@ class Ga_Admin
         );
 
         self::display_api_errors();
+
+        return true;
     }
 
     /**
@@ -270,11 +282,10 @@ class Ga_Admin
      */
     public static function add_actions()
     {
-        add_action( 'admin_init', 'Ga_Admin::admin_init_googleanalytics' );
-//        add_action( 'admin_menu', 'Ga_Admin::admin_menu_googleanalytics' ); // Relocated to the main menu TODO Remove
-        add_action( 'admin_enqueue_scripts', 'Ga_Admin::enqueue_scripts' );
-        add_action( 'wp_ajax_ga_ajax_data_change', 'Ga_Admin::ga_ajax_data_change' );
-        add_action( 'heartbeat_tick', 'Ga_Admin::run_heartbeat_jobs' );
+        add_action( 'admin_init', 'DT_Ga_Admin::admin_init_googleanalytics' );
+        add_action( 'admin_enqueue_scripts', 'DT_Ga_Admin::enqueue_scripts' );
+        add_action( 'wp_ajax_ga_ajax_data_change', 'DT_Ga_Admin::ga_ajax_data_change' );
+        add_action( 'heartbeat_tick', 'DT_Ga_Admin::run_heartbeat_jobs' );
     }
 
     /**
@@ -286,7 +297,7 @@ class Ga_Admin
     public static function run_heartbeat_jobs( $response, $screen_id = '' )
     {
 
-        if (Ga_Admin::GA_HEARTBEAT_API_CACHE_UPDATE) {
+        if (DT_Ga_Admin::GA_HEARTBEAT_API_CACHE_UPDATE) {
             // Disable cache for ajax request
             self::api_client()->set_disable_cache( true );
 
@@ -300,7 +311,7 @@ class Ga_Admin
      */
     public static function add_filters()
     {
-        add_filter( 'plugin_action_links', 'Ga_Admin::ga_action_links', 10, 5 );
+        add_filter( 'plugin_action_links', 'DT_Ga_Admin::ga_action_links', 10, 5 );
     }
 
     /**
@@ -321,6 +332,9 @@ class Ga_Admin
         return $actions;
     }
 
+    /**
+     * @return bool
+     */
     public static function init_oauth()
     {
 
@@ -346,7 +360,10 @@ class Ga_Admin
             }
 
             wp_redirect( admin_url( Ga_Helper::GA_SETTINGS_PAGE_URL . $param ) );
+        } else {
+            return false;
         }
+
     }
 
     /**
@@ -394,7 +411,12 @@ class Ga_Admin
 
     }
 
-
+    /**
+     * @param        $response
+     * @param string $refresh_token
+     *
+     * @return bool
+     */
     public static function parse_access_token( $response, $refresh_token = '' )
     {
         $access_token = $response->getData();
@@ -411,6 +433,12 @@ class Ga_Admin
 
     }
 
+    /**
+     * @param $response
+     * @param $token
+     *
+     * @return bool
+     */
     public static function save_access_token( $response, $token ){
         if (isset( $token['account_id'] )){
             $new_token = self::parse_access_token( $response );
@@ -427,8 +455,6 @@ class Ga_Admin
         }
     }
 
-
-
     /**
      * Displays API error messages.
      */
@@ -443,8 +469,11 @@ class Ga_Admin
         }
     }
 
-
-
+    /**
+     * @param $last_report
+     *
+     * @return array
+     */
     public static function get_report_data( $last_report ){
 
         $data = json_decode( get_option( self::GA_ACCOUNT_AND_DATA_ARRAY, "[]" ), true );

@@ -83,7 +83,7 @@ function dt_multi_role_get_cap_roles( $cap ) {
  * different functions to make sure we get all of the capabilities that we need for use in the
  * plugin components.
  *
- * @since  0.1.0
+ * @since  1.0.0.0
  * @access public
  * @return array
  */
@@ -114,7 +114,7 @@ function dt_multi_role_get_capabilities() {
  * a problem with folks accidentally deleting the default WordPress capabilities, the
  * `dt_multi_role_get_plugin_capabilities()` will return all the defaults.
  *
- * @since  0.1.0
+ * @since  1.0.0.0
  * @global object  $wp_roles
  * @return array
  */
@@ -236,7 +236,7 @@ function dt_multi_role_get_wp_capabilities() {
  * Checks if a specific capability has been given to at least one role. If it has, return true.
  * Else, return false.
  *
- * @since  0.1.0
+ * @since  1.0.0.0
  * @access public
  * @param  string  $cap
  * @return bool
@@ -316,7 +316,7 @@ function dt_multi_role_remove_hidden_caps( $caps ) {
  * in admin screen.  Plugins shouldn't rely on these levels to create permissions for users.
  * They should move to the newer system of checking for a specific capability instead.
  *
- * @since  0.1.0
+ * @since  1.0.0.0
  * @access public
  * @return array
  */
@@ -341,7 +341,7 @@ function dt_multi_role_get_old_levels() {
  * Get rid of levels since these are mostly useless in newer versions of WordPress.  Devs should
  * add the `__return_false` filter to the `dt_multi_role_remove_old_levels` hook to utilize user levels.
  *
- * @since  0.1.0
+ * @since  1.0.0.0
  * @access public
  * @param  array  $caps
  * @return array
@@ -355,7 +355,7 @@ function dt_multi_role_remove_old_levels( $caps ) {
  * the only capability checked is 'read' because it's needed for users of the role to view their
  * profile in the admin.
  *
- * @since  0.1.0
+ * @since  1.0.0.0
  * @access public
  * @return array
  */

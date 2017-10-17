@@ -32,7 +32,7 @@
         <form id="ga_form" method="post" action="options.php">
 	        <?php settings_fields( 'googleanalytics' ); ?>
             <input id="ga_access_code" type="hidden"
-                   name="<?php echo esc_attr( Ga_Admin::GA_OAUTH_AUTH_CODE_OPTION_NAME ); ?>" value=""/>
+                   name="<?php echo esc_attr( DT_Ga_Admin::GA_OAUTH_AUTH_CODE_OPTION_NAME ); ?>" value=""/>
             <table class="form-table">
                 <tr valign="top">
 	                <?php if ( ! empty( $data['popup_url'] ) ): ?>
@@ -58,8 +58,8 @@
                     <td><?php echo $data['ga_accounts_selector']; ?></td>
                 <?php endif; ?>
 
-                <?php if (!empty($data[Ga_Admin::GA_ACCOUNT_AND_DATA_ARRAY])) :
-                    foreach ($data[Ga_Admin::GA_ACCOUNT_AND_DATA_ARRAY] as $account_email => $account) : ?>
+                <?php if (!empty($data[DT_Ga_Admin::GA_ACCOUNT_AND_DATA_ARRAY])) :
+                    foreach ($data[DT_Ga_Admin::GA_ACCOUNT_AND_DATA_ARRAY] as $account_email => $account) : ?>
                         <tr>
                             <th><?php echo esc_attr($account_email) ?></th>
                             <td><strong>Include in stats and reports</strong></td>
@@ -74,7 +74,7 @@
                                             <label class="ga_checkbox_label"
                                                    for="checkbox_<?php echo $profile['id']; ?>">
                                                 <input id="checkbox_<?php echo $profile['id']; ?>" type="checkbox"
-                                                       name="<?php echo esc_attr( Ga_Admin::GA_SELECTED_VIEWS . "[" . $profile['id'] . "]" ); ?>"
+                                                       name="<?php echo esc_attr( DT_Ga_Admin::GA_SELECTED_VIEWS . "[" . $profile['id'] . "]" ); ?>"
                                                        id="<?php echo esc_attr( $profile['id'] ); ?>"
                                                     <?php if (!empty($profile['include_in_stats'])){ echo esc_attr( ( $profile['include_in_stats'] ? 'checked="checked"' : '' ) ); }?> />&nbsp;
                                                 <?php echo esc_html( $profile['name'] . ' (' . $profile['id'] . ')'); ?>

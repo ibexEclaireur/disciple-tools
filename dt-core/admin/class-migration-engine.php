@@ -15,6 +15,7 @@ class Disciple_Tools_Migration_Engine
 
     /**
      * @return array
+     * @throws \Exception Could not scan migrations directory.
      */
     protected static function get_migrations(): array
     {
@@ -56,6 +57,7 @@ class Disciple_Tools_Migration_Engine
      *
      * @param int $target_migration_number
      *
+     * @throws \Exception Migration number $target_migration_number does not exist.
      */
     public static function migrate( int $target_migration_number )
     {
@@ -103,6 +105,7 @@ class Disciple_Tools_Migration_Engine
     /**
      * @param array $expected_tables
      *
+     * @throws \Exception Expected to find table name in table definition of $name.
      */
     protected static function sanity_check_expected_tables( array $expected_tables )
     {
