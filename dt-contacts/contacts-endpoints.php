@@ -208,7 +208,7 @@ class Disciple_Tools_Contacts_Endpoints
         $query_params = $request->get_query_params();
         if($this->check_api_token( $query_params )){
             $fields = $request->get_json_params();
-            $result = Disciple_Tools_Contacts::create_contact( $fields, true );
+            $result = Disciple_Tools_Contacts::create_contact( $fields, false );
             return $result; // Could be permission WP_Error
         } else {
             return new WP_Error(
