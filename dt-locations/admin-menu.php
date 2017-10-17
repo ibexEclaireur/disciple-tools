@@ -1,9 +1,8 @@
 <?php
-
 /**
- * Disciple_Tools_Tabs
+ * Disciple_Tools_Location_Tools_Menu
  *
- * @class   Disciple_Tools_Tabs
+ * @class   Disciple_Tools_Location_Tools_Menu
  * @version 1.0.0
  * @since   1.0.0
  * @package Disciple_Tools_Tabs
@@ -107,10 +106,6 @@ class Disciple_Tools_Location_Tools_Menu
         }
         echo '">USA</a>';
 
-        //        echo $tab_link_pre . 'import' . $tab_link_post;
-        //        if ($tab == 'import' ) {echo 'nav-tab-active';}
-        //        echo '">Temp Import</a>';
-
         echo '</h2>';
 
         // End Tab Bar
@@ -137,14 +132,6 @@ class Disciple_Tools_Location_Tools_Menu
 
                 echo '</td></tr></tbody></table>';
 
-                //                print '<pre>';
-                //
-                //                print_r( $_POST );
-                //                print '<br>';
-                //                print_r( get_option( '_dt_installed_country' ) );
-                //
-                //                print '</pre>';
-
                 echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
 
                 /* BOX */
@@ -169,14 +156,6 @@ class Disciple_Tools_Location_Tools_Menu
                 $object->process_install_us_state();
                 $object->install_us_state(); // prints
 
-                //                print '<pre>';
-                //
-                //                print_r( $_POST );
-                //                print '<br>';
-                //                print_r( get_option( '_dt_usa_installed_state' ) );
-                //
-                //                print '</pre>';
-
                 echo '</td></tr></tbody></table><br>';
                 echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
 
@@ -191,11 +170,6 @@ class Disciple_Tools_Location_Tools_Menu
                 echo '</div><!-- postbox-container 2 --></div><!-- post-body meta box container --></div><!--poststuff end --></div><!-- wrap end -->';
                 break;
 
-            case 'import':
-                require_once( 'admin-tab-import.php' );
-                $content = new Disciple_Tools_Locations_Tab_Import();
-                $content->page_contents(); // prints
-                break;
             default:
                 break;
         }
@@ -213,8 +187,8 @@ class Disciple_Tools_Location_Tools_Menu
         $option = $this->get_config_option();
 
         // update from post
-        if ( isset( $_POST['_wpnonce'] ) ) {
-            if (wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), "get_import_config_dropdown_locations" )) {
+        if( isset( $_POST[ '_wpnonce' ] ) ) {
+            if( wp_verify_nonce( sanitize_key( $_POST[ '_wpnonce' ] ), "get_import_config_dropdown_locations" ) ) {
                 if( isset( $_POST[ 'change_host_source' ] ) ) {
                     if( isset( $_POST[ $host ] ) ) {
                         $option[ 'selected_' . $host ] = sanitize_text_field( wp_unslash( $_POST[ $host ] ) );
@@ -227,7 +201,6 @@ class Disciple_Tools_Location_Tools_Menu
         }
 
         // create dropdown
-        $html = '';
         echo '<form method="post"><select name="' . esc_attr( $host ) . '" >';
         foreach( $option[ $host ] as $key => $value ) {
             echo '<option value="' . esc_attr( $key ) . '" ';
@@ -238,7 +211,6 @@ class Disciple_Tools_Location_Tools_Menu
             wp_nonce_field( "get_import_config_dropdown_locations", "_wpnonce", true );
         }
         echo '</select> <button type="submit" name="change_host_source" value="true">Save</button></form>';
-
     }
 
     /**
@@ -361,9 +333,9 @@ function dt_get_states_key_dropdown_not_installed()
         if( get_option( '_installed_us_county_' . $value->key ) ) {
             $dropdown .= ' disabled';
             $disabled = ' (Installed)';
-        } elseif( isset( $_POST['state_nonce'] ) ) {
-            if ( wp_verify_nonce( sanitize_key( $_POST['state_nonce'] ), 'state_nonce_validate' ) ) {
-                if ( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
+        } elseif( isset( $_POST[ 'state_nonce' ] ) ) {
+            if( wp_verify_nonce( sanitize_key( $_POST[ 'state_nonce' ] ), 'state_nonce_validate' ) ) {
+                if( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
                     $dropdown .= ' selected';
                 }
             } else {
@@ -399,9 +371,9 @@ function dt_get_states_key_dropdown_installed()
         if( !get_option( '_installed_us_county_' . $value->key ) ) {
             $dropdown .= ' disabled';
             $disabled = ' (Not Installed)';
-        } elseif( isset( $_POST['state_nonce'] ) ) {
-            if ( wp_verify_nonce( sanitize_key( $_POST['state_nonce'] ), 'state_nonce_validate' ) ) {
-                if ( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
+        } elseif( isset( $_POST[ 'state_nonce' ] ) ) {
+            if( wp_verify_nonce( sanitize_key( $_POST[ 'state_nonce' ] ), 'state_nonce_validate' ) ) {
+                if( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
                     $dropdown .= ' selected';
                 }
             } else {
@@ -430,7 +402,9 @@ function dt_get_usa_meta()
 /**
  * Get the master list of countries for omega zones including country abbreviation, country name, and zone.
  *
- * @return array|mixed|object
+ * @param string $admin
+ *
+ * @return array
  */
 function dt_get_oz_country_list( $admin = 'cnty' )
 {
@@ -462,10 +436,9 @@ function dt_get_oz_country_list( $admin = 'cnty' )
             return $result->RECORDS; // @codingStandardsIgnoreLine
             break;
         default:
+            return [];
             break;
     }
-
-    return false;
 }
 
 /**
@@ -489,7 +462,7 @@ function dt_get_coordinates_meta( $geoid )
             `$wpdb->postmeta`
         WHERE
             meta_key LIKE %s",
-        esc_like( "polygon_$geoid" ) . "%"
+        $wpdb->esc_like( "polygon_$geoid" ) . "%"
     ), ARRAY_A );
 
     /* build full json of coodinates*/
@@ -530,21 +503,15 @@ function dt_get_coordinates_meta( $geoid )
             }
         }
     }
-    //    print ' | n : '. $high_lat_n;
-    //    print ' | s : '. $low_lat_s;
-    //    print ' | e : '. $high_lng_e;
-    //    print ' | w : '. $low_lng_w;
 
     // calculate centers
     $lng_size = $high_lng_e - $low_lng_w;
     $half_lng_difference = $lng_size / 2;
     $center_lng = $high_lng_e - $half_lng_difference;
-    //    print ' | lng size: '.$lng_size ;
 
     $lat_size = $high_lat_n - $low_lat_s;
     $half_lat_difference = $lat_size / 2;
     $center_lat = $high_lat_n - $half_lat_difference;
-    //    print ' | lat size: '.$lat_size ;
 
     // get zoom level
     if( $lat_size > 3 || $lng_size > 3 ) {
@@ -566,8 +533,6 @@ function dt_get_coordinates_meta( $geoid )
     } else {
         $zoom = 14;
     }
-
-    //    print ' | zoom: '.$zoom ;
 
     $meta = [ "center_lng" => (float) $center_lng, "center_lat" => (float) $center_lat, "ne" => $high_lat_n . ',' . $high_lng_e, "sw" => $low_lat_s . ',' . $low_lng_w, "zoom" => (float) $zoom ];
 

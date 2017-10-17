@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Disciple_Tools_Tabs
+ * Disciple_Tools_Census_Geolocation
  *
- * @class   Disciple_Tools_Tabs
+ * @class   Disciple_Tools_Census_Geolocation
  * @version 1.0.0
  * @since   1.0.0
  * @package Disciple_Tools_Tabs
@@ -33,6 +33,8 @@ class Disciple_Tools_Census_Geolocation
     /**
      * Gets the census data query object using longitude and latitude
      *
+     * @since  1.0.0
+     *
      * @param  $lng
      * @param  $lat
      * @param  $type
@@ -44,7 +46,6 @@ class Disciple_Tools_Census_Geolocation
 
         $tract_address = 'https://geocoding.geo.census.gov/geocoder/geographies/coordinates?x=' . $lng . '&y=' . $lat . '&benchmark=4&vintage=4&format=json';
         $census_result = json_decode( self::url_get_contents( $tract_address ) );
-        //        return $census_result;
 
         if( $census_result == '' || !isset( $census_result->result->geographies->{'Census Tracts'}[ 0 ]->STATE ) ) { /* Census API gives false errors. This is attempting to try a couple times before returning error. */
 
@@ -104,7 +105,9 @@ class Disciple_Tools_Census_Geolocation
     }
 
     /**
-     * @param $Url
+     * @since  1.0.0
+     *
+     * @param $url
      *
      * @return mixed
      */

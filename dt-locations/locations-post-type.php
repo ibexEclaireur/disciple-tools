@@ -5,11 +5,7 @@ if( !defined( 'ABSPATH' ) ) {
 
 /**
  * Disciple Tools Post Type Class
- * All functionality pertaining to post types in Disciple_Tools.
  *
- * @package    WordPress
- * @subpackage Disciple_Tools
- * @category   Plugin
  * @author     Chasm.Solutions & Kingdom.Training
  * @since      1.0.0
  */
@@ -98,10 +94,8 @@ class Disciple_Tools_Location_Post_Type
         $this->singular = __( 'Location', 'disciple_tools' );
         $this->plural = __( 'Locations', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
-        //        $this->taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        //        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
         if( is_admin() ) {
             global $pagenow;
@@ -111,9 +105,9 @@ class Disciple_Tools_Location_Post_Type
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
-            if (isset( $_GET['post_type'] )) {
-                $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
-                if ( $pagenow == 'edit.php' && $this->post_type === $post_type ) {
+            if( isset( $_GET[ 'post_type' ] ) ) {
+                $post_type = sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] ) );
+                if( $pagenow == 'edit.php' && $this->post_type === $post_type ) {
                     add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                     add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
                 }
@@ -200,34 +194,13 @@ class Disciple_Tools_Location_Post_Type
     } // End register_post_type()
 
     /**
-     * Register the "thing-category" taxonomy.
-     *
-     * @access public
-     * @since  1.3.0
-     * @return void
-     */
-    public function register_taxonomy()
-    {
-        //		TODO: commented out taxonomies until we know how we want to use them. Chris
-        //
-        //      $this->taxonomies['locations-type'] = new Disciple_Tools_Taxonomy($post_type = 'locations', $token = 'locations-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
-        //		$this->taxonomies['locations-type']->register();
-    } // End register_taxonomy()
-
-    /**
      * Add custom columns for the "manage" screen of this post type.
      *
-     * @access public
-     *
-     * @param  string $column_name
-     * @param  int    $id
-     *
-     * @since  1.0.0
-     * @return void
+     * @param $column_name
      */
-    public function register_custom_columns( $column_name, $id )
+    public function register_custom_columns( $column_name )
     {
-        global $post;
+//        global $post;
 
         switch( $column_name ) {
             case 'WorldId':
@@ -247,12 +220,9 @@ class Disciple_Tools_Location_Post_Type
     /**
      * Add custom column headings for the "manage" screen of this post type.
      *
-     * @access public
+     * @param $defaults
      *
-     * @param  array $defaults
-     *
-     * @since  1.0.0
-     * @return void
+     * @return array
      */
     public function register_custom_column_headings( $defaults )
     {
@@ -310,7 +280,7 @@ class Disciple_Tools_Location_Post_Type
 
         $messages[ $this->post_type ] = [
             0  => '', // Unused. Messages start at index 1.
-            1 => sprintf( __( '%1$s updated. %2$s View %3$s %4$s', 'disciple_tools' ), $this->singular,'<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', strtolower( $this->singular ), '</a>' ),
+            1  => sprintf( __( '%1$s updated. %2$s View %3$s %4$s', 'disciple_tools' ), $this->singular, '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', strtolower( $this->singular ), '</a>' ),
             2  => __( 'Custom field updated.', 'disciple_tools' ),
             3  => __( 'Custom field deleted.', 'disciple_tools' ),
             4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
@@ -384,9 +354,7 @@ class Disciple_Tools_Location_Post_Type
     /**
      * The contents of our meta box.
      *
-     * @access public
-     * @since  1.0.0
-     * @return void
+     * @param string $section
      */
     public function meta_box_content( $section = 'info' )
     {
@@ -479,26 +447,20 @@ class Disciple_Tools_Location_Post_Type
             echo '</tbody>' . "\n";
             echo '</table>' . "\n";
         }
-
     } // End meta_box_content()
 
     /**
      * Save meta box fields.
      *
-     * @access public
-     * @since  1.0.0
+     * @param $post_id
      *
-     * @param  int $post_id
-     *
-     * @return int $post_id
+     * @return mixed
      */
     public function meta_box_save( $post_id )
     {
-        global $post, $messages;
-
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
-        if( ( get_post_type() != $this->post_type ) || ! isset( $_POST[$key] ) || !wp_verify_nonce( sanitize_key( $_POST[$key] ), 'update_location_info' ) ) {
+        if( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
             return $post_id;
         }
 
@@ -527,7 +489,7 @@ class Disciple_Tools_Location_Post_Type
         }
 
         foreach( $fields as $f ) {
-            if (! isset( $_POST[$f] ) ) {
+            if( !isset( $_POST[ $f ] ) ) {
                 continue;
             }
 
@@ -541,17 +503,15 @@ class Disciple_Tools_Location_Post_Type
                 update_post_meta( $post_id, $f, ${$f} );
             }
         }
-    } // End meta_box_save()
+        return $post_id;
+    }
 
     /**
      * Customise the "Enter title here" text.
      *
-     * @access public
-     * @since  1.0.0
+     * @param $title
      *
-     * @param  string $title
-     *
-     * @return void
+     * @return string
      */
     public function enter_title_here( $title )
     {
@@ -560,7 +520,7 @@ class Disciple_Tools_Location_Post_Type
         }
 
         return $title;
-    } // End enter_title_here()
+    }
 
     /**
      * Get the settings for the custom fields.
@@ -587,25 +547,10 @@ class Disciple_Tools_Location_Post_Type
                 ];
             }
         }
-        //        else {
-        //            $channels = dt_address_metabox()->get_address_list( $this->post_type );
-        //
-        //            foreach ($channels as $channel) {
-        //
-        //                $key =  strtolower( 'address_' . $channel . '_111' );
-        //
-        //                $fields[$key] = [
-        //                    'name' => ucwords( $channel ) ,
-        //                    'description' => '',
-        //                    'type' => 'text',
-        //                    'default' => '',
-        //                    'section' => 'address'
-        //                ];
-        //            }
-        //        }
+
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
-    } // End get_custom_fields_settings()
+    }
 
     /**
      * Run on activation.
@@ -616,7 +561,7 @@ class Disciple_Tools_Location_Post_Type
     public function activation()
     {
         $this->flush_rewrite_rules();
-    } // End activation()
+    }
 
     /**
      * Flush the rewrite rules
@@ -628,7 +573,7 @@ class Disciple_Tools_Location_Post_Type
     {
         $this->register_post_type();
         flush_rewrite_rules();
-    } // End flush_rewrite_rules()
+    }
 
     /**
      * Remove the add new submenu from the locaions menu
@@ -641,4 +586,4 @@ class Disciple_Tools_Location_Post_Type
         );
     }
 
-} // End Class
+}

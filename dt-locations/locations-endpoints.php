@@ -180,13 +180,11 @@ class Disciple_Tools_Locations_Endpoints
     }
 
     /**
-     * @param \WP_REST_Request $request
-     *
-     * @return array
+     * @return array|\WP_Error
      */
-    public function get_locations( WP_REST_Request $request )
+    public function get_locations()
     {
-        $params = $request->get_params();
+        //        $params = $request->get_params();
         //        @TODO check permissions
         $locations = Disciple_Tools_Locations::get_locations();
 

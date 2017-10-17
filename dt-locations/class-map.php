@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Disciple Tools
+ * Disciple_Tools_Map
  *
- * @class   Disciple_Tools_
+ * @class   Disciple_Tools_Map
  * @version 1.0.0
  * @since   1.0.0
  * @package Disciple_Tools
@@ -65,7 +65,7 @@ class Disciple_Tools_Map
             // This example creates a simple polygon representing the Bermuda Triangle.
 
             function initMap() {
-                var map = new google.maps.Map(document.getElementById('map'), {
+                let map = new google.maps.Map(document.getElementById('map'), {
                     zoom: <?php print intval( $zoom ); ?>,
                     center: {lng: <?php print (float) $tract_lng; ?>, lat: <?php print (float) $tract_lat; ?>},
                     mapTypeId: 'terrain'
@@ -79,7 +79,7 @@ class Disciple_Tools_Map
                 print "];";
                 ?>
 
-                var tracts = [];
+                let tracts = [];
 
                 for (i = 0; i < coords.length; i++) {
                     tracts.push(new google.maps.Polygon({

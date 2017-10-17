@@ -4,7 +4,6 @@
  * the database
  *
  * @package  Disciple_Tools
- * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */

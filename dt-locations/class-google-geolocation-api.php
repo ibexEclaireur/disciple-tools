@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Disciple_Tools_Tabs
+ * Disciple_Tools_Google_Geolocation
  *
- * @class   Disciple_Tools_Tabs
+ * @class   Disciple_Tools_Google_Geolocation
  * @version 1.0.0
  * @since   1.0.0
  * @package Disciple_Tools_Tabs
@@ -75,7 +75,7 @@ class Disciple_Tools_Google_Geolocation
     }
 
     /**
-     * @param $Url
+     * @param $url
      *
      * @return mixed
      */
