@@ -60,7 +60,7 @@ class Disciple_Tools_People_Groups
      */
     public static function get_people_groups_compact( $search )
     {
-        //        @todo check permisions
+        //        @todo check permissions
         $query_args = [
             'post_type' => 'peoplegroups',
             'orderby'   => 'ID',

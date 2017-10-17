@@ -8,7 +8,6 @@ if( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to progress update post types in Disciple_Tools.
  *
  * @package  Disciple_Tools
- * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
@@ -60,10 +59,13 @@ class Disciple_Tools_Progress_Post_Type
     public $taxonomies;
 
     /**
-     * Constructor function.
+     * Disciple_Tools_Progress_Post_Type constructor.
      *
-     * @access public
-     * @since  1.0.0
+     * @param string $post_type
+     * @param string $singular
+     * @param string $plural
+     * @param array  $args
+     * @param array  $taxonomies
      */
     public function __construct( $post_type = 'progress', $singular = '', $plural = '', $args = [], $taxonomies = [] )
     {
@@ -194,14 +196,13 @@ class Disciple_Tools_Progress_Post_Type
      * @access public
      *
      * @param  string $column_name
-     * @param  int    $id
      *
      * @since  1.0.0
      * @return void
      */
-    public function register_custom_columns( $column_name, $id )
+    public function register_custom_columns( $column_name )
     {
-        global $post;
+        //        global $post;
 
         switch( $column_name ) {
             case 'image':
@@ -321,9 +322,7 @@ class Disciple_Tools_Progress_Post_Type
     /**
      * The contents of our meta box.
      *
-     * @access public
-     * @since  1.0.0
-     * @return void
+     * @param string $section
      */
     public function meta_box_content( $section = 'info' )
     {
@@ -420,8 +419,6 @@ class Disciple_Tools_Progress_Post_Type
      */
     public function meta_box_save( $post_id )
     {
-        global $post, $messages;
-
         // Verify
         if( get_post_type() != $this->post_type ) {
             return $post_id;
@@ -470,7 +467,9 @@ class Disciple_Tools_Progress_Post_Type
                 delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
             }
         }
-    } // End meta_box_save()
+
+        return $post_id;
+    }
 
     /**
      * Customise the "Enter title here" text.

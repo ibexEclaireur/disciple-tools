@@ -63,12 +63,11 @@ class Disciple_Tools_People_Groups_Endpoints
     {
         register_rest_route(
             $this->namespace, '/people-groups-compact', [
-                'methods' => 'GET',
-                'callback' => [$this, 'get_people_groups_compact'],
+                'methods'  => 'GET',
+                'callback' => [ $this, 'get_people_groups_compact' ],
             ]
         );
     }
-
 
     /**
      * @param \WP_REST_Request $request

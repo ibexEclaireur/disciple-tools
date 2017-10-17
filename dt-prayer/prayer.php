@@ -10,6 +10,9 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
+/**
+ * Class Disciple_Tools_Prayer
+ */
 class Disciple_Tools_Prayer {
 
 }

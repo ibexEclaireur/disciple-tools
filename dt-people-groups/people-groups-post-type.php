@@ -7,9 +7,7 @@ if( !defined( 'ABSPATH' ) ) {
  * Disciple Tools Post Type Class
  * All functionality pertaining to post types in Disciple_Tools.
  *
- * @package    WordPress
- * @subpackage Disciple_Tools
- * @category   Plugin
+ * @package    Disciple_Tools
  * @author     Chasm.Solutions & Kingdom.Training
  * @since      1.0.0
  */
@@ -98,10 +96,8 @@ class Disciple_Tools_People_Groups_Post_Type
         $this->singular = __( 'People Group', 'disciple_tools' );
         $this->plural = __( 'People Groups', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
-        //        $this->taxonomies = [];
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        //        add_action( 'init', [ $this, 'register_taxonomy' ] );
 
         if( is_admin() ) {
             global $pagenow;
@@ -113,7 +109,7 @@ class Disciple_Tools_People_Groups_Post_Type
 
             if( $pagenow == 'edit.php' && isset( $_GET[ 'post_type' ] ) ) {
                 $pt = sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] ) );
-                if ( $pt == $this->post_type ) {
+                if( $pt == $this->post_type ) {
                     add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                     add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
                 }
@@ -121,7 +117,7 @@ class Disciple_Tools_People_Groups_Post_Type
 
             add_action( 'admin_init', [ $this, 'remove_add_new_submenu' ] );
         }
-    } // End __construct()
+    }
 
     /**
      * Register the post type.
@@ -200,34 +196,13 @@ class Disciple_Tools_People_Groups_Post_Type
     } // End register_post_type()
 
     /**
-     * Register the "thing-category" taxonomy.
-     *
-     * @access public
-     * @since  1.3.0
-     * @return void
-     */
-    public function register_taxonomy()
-    {
-        //		TODO: commented out taxonomies until we know how we want to use them. Chris
-        //
-        //      $this->taxonomies['peoplegroups-type'] = new Disciple_Tools_Taxonomy($post_type = 'peoplegroups', $token = 'peoplegroups-type', $singular = 'Type', $plural = 'Type', $args = array()); // Leave arguments empty, to use the default arguments.
-        //		$this->taxonomies['peoplegroups-type']->register();
-    } // End register_taxonomy()
-
-    /**
      * Add custom columns for the "manage" screen of this post type.
      *
-     * @access public
-     *
-     * @param  string $column_name
-     * @param  int    $id
-     *
-     * @since  1.0.0
-     * @return void
+     * @param $column_name
      */
-    public function register_custom_columns( $column_name, $id )
+    public function register_custom_columns( $column_name )
     {
-        global $post;
+        //        global $post;
 
         switch( $column_name ) {
             case 'image':
@@ -236,7 +211,7 @@ class Disciple_Tools_People_Groups_Post_Type
             default:
                 break;
         }
-    } // End register_custom_columns()
+    }
 
     /**
      * Add custom column headings for the "manage" screen of this post type.
@@ -246,7 +221,7 @@ class Disciple_Tools_People_Groups_Post_Type
      * @param  array $defaults
      *
      * @since  1.0.0
-     * @return void
+     * @return array
      */
     public function register_custom_column_headings( $defaults )
     {
@@ -370,17 +345,13 @@ class Disciple_Tools_People_Groups_Post_Type
     /**
      * The contents of our meta box.
      *
-     * @access public
-     * @since  1.0.0
-     * @return void
+     * @param string $section
      */
     public function meta_box_content( $section = 'info' )
     {
         global $post_id;
         $fields = get_post_custom( $post_id );
         $field_data = $this->get_custom_fields_settings();
-
-        $html = '';
 
         echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_peoplegroup_info' ) ) . '" />';
 
@@ -467,26 +438,20 @@ class Disciple_Tools_People_Groups_Post_Type
             echo '</tbody>' . "\n";
             echo '</table>' . "\n";
         }
-
     } // End meta_box_content()
 
     /**
      * Save meta box fields.
      *
-     * @access public
-     * @since  1.0.0
+     * @param $post_id
      *
-     * @param  int $post_id
-     *
-     * @return int $post_id
+     * @return mixed
      */
     public function meta_box_save( $post_id )
     {
-        global $post, $messages;
-
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
-        if( ( get_post_type() != $this->post_type ) || ! isset( $_POST[$key] ) || !wp_verify_nonce( sanitize_key( $_POST[$key] ), 'update_peoplegroup_info' ) ) {
+        if( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_peoplegroup_info' ) ) {
             return $post_id;
         }
 
@@ -515,7 +480,7 @@ class Disciple_Tools_People_Groups_Post_Type
         }
 
         foreach( $fields as $f ) {
-            if (! isset( $_POST[$f] ) ) {
+            if( !isset( $_POST[ $f ] ) ) {
                 continue;
             }
 
@@ -529,6 +494,8 @@ class Disciple_Tools_People_Groups_Post_Type
                 update_post_meta( $post_id, $f, ${$f} );
             }
         }
+
+        return $post_id;
     } // End meta_box_save()
 
     /**
@@ -539,7 +506,7 @@ class Disciple_Tools_People_Groups_Post_Type
      *
      * @param  string $title
      *
-     * @return void
+     * @return string
      */
     public function enter_title_here( $title )
     {
@@ -559,9 +526,10 @@ class Disciple_Tools_People_Groups_Post_Type
      */
     public function get_custom_fields_settings()
     {
-        global $post;
+        //        global $post;
         $fields = [];
 
+        //        /* Sample */
         //        $fields['overall_status'] = [
         //            'name' => __( 'Overall Status', 'disciple_tools' ),
         //            'description' => '',
@@ -571,7 +539,7 @@ class Disciple_Tools_People_Groups_Post_Type
         //        ];
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
-    } // End get_custom_fields_settings()
+    }
 
     /**
      * Field: People Group Fields

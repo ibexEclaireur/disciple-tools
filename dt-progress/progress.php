@@ -10,6 +10,11 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
+/**
+ * Class Disciple_Tools_Progress
+ */
 class Disciple_Tools_Progress {
+
+    // TODO: Develop
 
 }
