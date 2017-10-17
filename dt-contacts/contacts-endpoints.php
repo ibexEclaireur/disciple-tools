@@ -638,8 +638,8 @@ class Disciple_Tools_Contacts_Endpoints
      */
     public function add_shared( WP_REST_Request $request ){
         $params = $request->get_params();
-        if ( isset( $params['id'] )){
-            $result = Disciple_Tools_Contacts::add_shared_on_contact( $params['id'], $params['user_id'] );
+        if ( isset( $params['id'] ) && isset( $params['user_id'] )){
+            $result = Disciple_Tools_Contacts::add_shared_on_contact( (int) $params['id'], (int) $params['user_id'] );
 
             if ( is_wp_error( $result ) ){
                 return $result;
@@ -647,7 +647,7 @@ class Disciple_Tools_Contacts_Endpoints
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( 'add_shared', "Missing a valid contact id", ['status' => 400] );
+            return new WP_Error( 'add_shared', "Missing a valid contact or user id", ['status' => 400] );
         }
     }
 
