@@ -51,11 +51,13 @@ class Disciple_Tools_People_Groups
      */
     public function __construct()
     {
-
     } // End __construct()
 
-
-
+    /**
+     * @param $search
+     *
+     * @return array
+     */
     public static function get_people_groups_compact( $search )
     {
         //        @todo check permisions
@@ -63,13 +65,14 @@ class Disciple_Tools_People_Groups
             'post_type' => 'peoplegroups',
             'orderby'   => 'ID',
             'nopaging'  => true,
-            's'         => $search
+            's'         => $search,
         ];
         $query = new WP_Query( $query_args );
         $list = [];
         foreach( $query->posts as $post ) {
             $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
         }
+
         return $list;
     }
 }

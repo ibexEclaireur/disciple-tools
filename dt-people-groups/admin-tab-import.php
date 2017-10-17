@@ -18,6 +18,13 @@ if( !defined( 'ABSPATH' ) ) {
 class Disciple_Tools_People_Groups_Tab_Import
 {
 
+    public $jp_api_key;
+    public $jp_json_path;
+    public $jp_countries_path;
+    public $jp_query_countries_all;
+    public $jp_query_pg_by_country_all;
+
+
     /**
      * Constructor function.
      *
@@ -202,6 +209,8 @@ class Disciple_Tools_People_Groups_Tab_Import
 
     /**
      * Queries the Joshua Project API for all country data and saves it to jp_countries.json.
+     *
+     * @param $file
      *
      * @return bool
      */

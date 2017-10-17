@@ -233,7 +233,7 @@ class Disciple_Tools_Notifications
     /**
      * Mark the is_new field to 0 after user has viewed notification
      *
-     * @param $notification_ids array
+     * @param $notification_id
      *
      * @return array
      */
@@ -279,8 +279,11 @@ class Disciple_Tools_Notifications
     }
 
     /**
+     * Get notifications
+     *
      * @param bool $all
      * @param int  $page
+     * @param int  $limit
      *
      * @return array
      */
@@ -353,8 +356,6 @@ class Disciple_Tools_Notifications
 
     /**
      * Get user notifications
-     *
-     * @param     $params array     user_id (required)
      *
      * @return array
      */

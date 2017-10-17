@@ -16,7 +16,7 @@ if( !defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Shared DT email function to be used throughout the system
+ * Shared DT email function to be used throughout the DT system. It provides asynchonous mail delivery that does not halt page load.
  *
  * Example:
  * dt_send_email(
