@@ -4,8 +4,8 @@
  * Disciple_Tools_Tabs
  *
  * @class   Disciple_Tools_Tabs
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools_Tabs
  * @author  Chasm.Solutions
  */
@@ -27,7 +27,7 @@ class Disciple_Tools_Location_Tools_Menu
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -35,9 +35,9 @@ class Disciple_Tools_Location_Tools_Menu
      * Main Disciple_Tools_Tabs Instance
      * Ensures only one instance of Disciple_Tools_Tabs is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
-     * @see    Disciple_Tools()
+     * @see    disciple_tools()
      * @return Disciple_Tools_Location_Tools_Menu instance
      */
     public static function instance()
@@ -53,7 +53,7 @@ class Disciple_Tools_Location_Tools_Menu
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -72,7 +72,7 @@ class Disciple_Tools_Location_Tools_Menu
     /**
      * Builds the tab bar
      *
-     * @since 0.1
+     * @since 1.0.0
      */
     public function page_content()
     {

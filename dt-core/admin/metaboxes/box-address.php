@@ -4,8 +4,8 @@
  * Disciple_Tools_Metabox_Address
  *
  * @class   Disciple_Tools_Metabox_Address
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */
@@ -33,7 +33,7 @@ class Disciple_Tools_Metabox_Address
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {

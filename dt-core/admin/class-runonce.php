@@ -3,7 +3,7 @@
  * Simple helper class to set something to run once.
  *
  * @package Disciple_Tools
- * @since   0.1
+ * @since   1.0.0
  */
 
 if( !class_exists( 'Discple_Tools_Run_Once' ) ) {

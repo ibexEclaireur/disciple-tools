@@ -186,7 +186,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  $query_params
        * @access private
-     * @since  0.1
+     * @since  1.0.0
      * @return bool
      */
     private function check_api_token( $query_params ){
@@ -201,7 +201,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  WP_REST_Request $request as application/json
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return array|WP_Error The new contact Id on success, an error on failure
      */
     public function public_create_contact( WP_REST_Request $request ){
@@ -224,7 +224,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  WP_REST_Request $request
       * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return string|array The contact on success
      */
     public function create_contact( WP_REST_Request $request ){
@@ -244,7 +244,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  WP_REST_Request $request
       * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return array|WP_Error The contact on success
      */
     public function get_contact( WP_REST_Request $request ){
@@ -262,7 +262,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  WP_REST_Request $request
       * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return WP_REST_Response|WP_Error Contact_id on success
      */
     public function update_contact( WP_REST_Request $request ){
@@ -435,7 +435,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  WP_REST_Request $request
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return array|WP_Error return the user's contacts
      */
     public function get_user_contacts( WP_REST_Request $request ){
@@ -456,7 +456,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  WP_REST_Request $request
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return array|WP_Error return the user's contacts
      */
     public function get_viewable_contacts( WP_REST_Request $request ) {
@@ -473,7 +473,7 @@ class Disciple_Tools_Contacts_Endpoints
      *
      * @param  WP_REST_Request $request
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      * @return array|WP_Error return the user's team's contacts
      */
     public function get_team_contacts( WP_REST_Request $request ){

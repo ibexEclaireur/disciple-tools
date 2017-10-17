@@ -25,6 +25,13 @@ if( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
+/**
+ * File Organization Notes:
+ * The section below contains functions that must run immediately on plugin load for database maintenance and migration,
+ * and for that reason must load before the class. It is always preferred that new files and functions be linked from within
+ * the Disciple_Tools() class inside the __construct.
+ */
+
 function dt_admin_notice_required_php_version()
 {
     ?>
@@ -58,25 +65,32 @@ require_once( 'dt-core/libraries/posts-to-posts/posts-to-posts.php' ); // P2P li
 /**
  * Activation Hook
  */
-function disciple_tools_activate( $network_wide )
+function dt_activate( $network_wide )
 {
     require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-activator.php';
     Disciple_Tools_Activator::activate( $network_wide );
 }
-register_activation_hook( __FILE__, 'disciple_tools_activate' );
+register_activation_hook( __FILE__, 'dt_activate' );
 
 /**
  * Deactivation Hook
  */
-function disciple_tools_deactivate( $network_wide )
+function dt_deactivate( $network_wide )
 {
     require_once plugin_dir_path( __FILE__ ) . 'dt-core/admin/class-deactivator.php';
     Disciple_Tools_Deactivator::deactivate( $network_wide );
 }
-register_deactivation_hook( __FILE__, 'disciple_tools_deactivate' );
+register_deactivation_hook( __FILE__, 'dt_deactivate' );
 
 /**
- * Multisite datatable maintenance
+ * Multisite: Create new blog db maintainance
+ *
+ * @param $blog_id
+ * @param $user_id
+ * @param $domain
+ * @param $path
+ * @param $site_id
+ * @param $meta
  */
 function dt_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta )
 {
@@ -84,7 +98,10 @@ function dt_on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta 
     Disciple_Tools_Activator::on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta );
 }
 add_action( 'wpmu_new_blog', 'dt_on_create_blog', 10, 6 );
+
 /**
+ * Multisite: Delete blog db maintenance
+ *
  * @param $tables
  *
  * @return array
@@ -96,36 +113,35 @@ function dt_on_delete_blog( $tables )
     return Disciple_Tools_Activator::on_delete_blog( $tables );
 }
 add_filter( 'wpmu_drop_tables', 'dt_on_delete_blog' );
-/* End Multisite datatable maintenance */
 
-// Adds the Disciple_Tools Plugin after plugins load
-add_action( 'plugins_loaded', 'dt_plugins_loaded' );
 
+/**
+ * Adds the Disciple_Tools Plugin after plugins load
+ */
 function dt_plugins_loaded()
 {
     Disciple_Tools::instance();
 
-    /* We want to make sure migrations are run on plugin updates. The only way
+    /** We want to make sure migrations are run on plugin updates. The only way
      * to do this is through the "plugins_loaded" hook. See
-     * https://www.sitepoint.com/wordpress-plugin-updates-right-way/ */
+     * @see https://www.sitepoint.com/wordpress-plugin-updates-right-way/
+     */
     require_once( dirname( __FILE__ ) . '/dt-core/admin/class-migration-engine.php' );
     Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
 }
+add_action( 'plugins_loaded', 'dt_plugins_loaded' );
 
 /**
  * Returns the main instance of Disciple_Tools to prevent the need to use globals.
  *
- * I'm not sure why this called Disciple_Tools capitalized, maybe one day we
- * can change it to disciple_tools to match convention for function names and
- * to avoid conflating the function with the class.
+ * @example
  *
- * @since  0.1
+ * @since  1.0.0
  * @return object Disciple_Tools
  */
 
 // Creates the instance
-// @codingStandardsIgnoreLine TODO: rename this function to disciple_tools
-function Disciple_Tools()
+function disciple_tools()
 {
     return Disciple_Tools::instance();
 }
@@ -134,7 +150,7 @@ function Disciple_Tools()
  * Main Disciple_Tools Class
  *
  * @class   Disciple_Tools
- * @since   0.1
+ * @since   1.0.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */
@@ -145,7 +161,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -154,7 +170,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $token;
 
@@ -163,7 +179,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $version;
 
@@ -172,7 +188,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $plugin_url;
 
@@ -181,7 +197,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $plugin_path;
     public $metrics;
@@ -190,7 +206,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     private $roles;
     /**
@@ -198,7 +214,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $report_cron;
     /**
@@ -206,7 +222,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $dt_svg;
     /**
@@ -214,7 +230,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $notifications;
 
@@ -223,7 +239,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $admin;
 
@@ -232,7 +248,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $settings;
 
@@ -241,7 +257,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $facebook_integration;
 
@@ -250,7 +266,7 @@ class Disciple_Tools
      *
      * @var    array
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public $post_types = [];
 
@@ -258,9 +274,9 @@ class Disciple_Tools
      * Main Disciple_Tools Instance
      * Ensures only one instance of Disciple_Tools is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
-     * @see    Disciple_Tools()
+     * @see    disciple_tools()
      * @return Disciple_Tools instance
      */
     public static function instance()
@@ -276,7 +292,7 @@ class Disciple_Tools
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -559,7 +575,7 @@ class Disciple_Tools
      * Load the localisation file.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function load_plugin_textdomain()
     {
@@ -570,7 +586,7 @@ class Disciple_Tools
      * Log the plugin version number.
      *
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     public function _log_version_number()
     {
@@ -582,7 +598,7 @@ class Disciple_Tools
      * Cloning is forbidden.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __clone()
     {
@@ -593,7 +609,7 @@ class Disciple_Tools
      * Unserializing instances of this class is forbidden.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __wakeup()
     {

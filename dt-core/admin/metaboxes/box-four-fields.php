@@ -4,8 +4,8 @@
  * Disciple Tools
  *
  * @class   Disciple_Tools_
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */
@@ -33,7 +33,7 @@ class Disciple_Tools_Metabox_Four_Fields
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -101,7 +101,7 @@ class Disciple_Tools_Metabox_Four_Fields
         Is Church  : <?php echo esc_html( get_post_meta( $post->ID, 'is_church', true ) ); ?><br></h1>
 
         </td><td>
-        <?php //        $html .=  '<img src="'. Disciple_Tools()->plugin_img_url . '4fields.png" >'; ?>
+        <?php //        $html .=  '<img src="'. disciple_tools()->plugin_img_url . '4fields.png" >'; ?>
         </td></tr></table>
 
         <?php

@@ -235,7 +235,7 @@ function dt_my_connection_types()
      *
      * @see disciple-tools.php for the people groups registration
      */
-    //    if(isset( get_option( Disciple_Tools()->token.'-general', false )['add_people_groups'] )) { // TODO need to create the options filter for people groups
+    //    if(isset( get_option( disciple_tools()->token.'-general', false )['add_people_groups'] )) { // TODO need to create the options filter for people groups
     p2p_register_connection_type(
         [
             'name'  => 'team_member_peoplegroups',

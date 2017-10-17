@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @return mixed
  */
 function dt_report_insert( $args = [] ) {
-    return Disciple_Tools()->report_api->insert( $args );
+    return disciple_tools()->report_api->insert( $args );
 }
 
 /**
@@ -26,7 +26,7 @@ class Disciple_Tools_Reports_API {
     /**
      * Insert Report into _reports and _reportmeta tables
      *
-     * @since  0.1
+     * @since  1.0.0
      * @param  array     $args
      * @param  date      'report_date'
      * @param  string    'report_source'
@@ -99,7 +99,7 @@ class Disciple_Tools_Reports_API {
     /**
      * Add Report Metadata
      *
-     * @since 0.1
+     * @since 1.0.0
      *
      * @param  int $report_id
      * @param  string $field

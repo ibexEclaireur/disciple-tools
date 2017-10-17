@@ -6,7 +6,7 @@
  * @package Disciple_Tools
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @license GPL-3.0
- * @version 0.1
+ * @version 1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
@@ -18,7 +18,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -26,7 +26,7 @@ class Disciple_Tools_Counter_Factory {
      * Main Disciple_Tools_Counter_Factory Instance
      * Ensures only one instance of Disciple_Tools_Counter_Factory is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Counter_Factory
      */
@@ -41,7 +41,7 @@ class Disciple_Tools_Counter_Factory {
      * Constructor function
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct () {
 
@@ -58,15 +58,15 @@ class Disciple_Tools_Counter_Factory {
      * Returns count of contacts publish status
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function contacts_post_status ( $status = '' ) {
 
         /**
-         * @usage Disciple_Tools()->counter->contacts_post_status()
+         * @usage disciple_tools()->counter->contacts_post_status()
          * @returns array of status counts
          *
-         * @usage Disciple_Tools()->counter->contacts_post_status('publish')
+         * @usage disciple_tools()->counter->contacts_post_status('publish')
          * @returns number count
          */
 
@@ -133,7 +133,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
-     * @usage  Disciple_Tools()->counter->contacts_counter('overall_status','active');
+     * @usage  disciple_tools()->counter->contacts_counter('overall_status','active');
      * @return int
      */
     public function contacts_meta_counter ( $meta_key, $meta_value ) {
@@ -147,7 +147,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
-     * @usage  Disciple_Tools()->counter->contacts_counter('overall_status','active');
+     * @usage  disciple_tools()->counter->contacts_counter('overall_status','active');
      * @return int
      */
     public function groups_meta_counter ( $meta_key, $meta_value ) {

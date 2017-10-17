@@ -4,8 +4,8 @@
  * Disciple Tools
  *
  * @class   Disciple_Tools_
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */
@@ -35,7 +35,7 @@ class Disciple_Tools_Metabox_Map
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -230,7 +230,7 @@ class Disciple_Tools_Metabox_Map
                     }
 
                     jQuery('#select_tract').change(function () {
-                        jQuery('#spinner').prepend('<img src="<?php echo esc_url( Disciple_Tools()->plugin_img_url ); ?>spinner.svg" style="height:30px;" />');
+                        jQuery('#spinner').prepend('<img src="<?php echo esc_url( disciple_tools()->plugin_img_url ); ?>spinner.svg" style="height:30px;" />');
 
                         var tract = jQuery('#select_tract').val();
                         var restURL = '<?php echo esc_js( get_rest_url( null, '/dt/v1/locations/getmapbygeoid' ) ); ?>';

@@ -4,8 +4,8 @@
  * Disciple_Tools_Multi_Roles
  *
  * @class   Disciple_Tools_Multi_Roles
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */
@@ -19,7 +19,7 @@ class Disciple_Tools_Multi_Roles {
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -28,7 +28,7 @@ class Disciple_Tools_Multi_Roles {
      *
      * Ensures only one instance of Disciple_Tools_Multi_Roles is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Multi_Roles instance
      */
@@ -43,7 +43,7 @@ class Disciple_Tools_Multi_Roles {
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct () {
 

@@ -4,8 +4,8 @@
  * Disciple_Tools_Metrics
  *
  * @class      Disciple_Tools_Metrics
- * @version    0.1
- * @since      0.1
+ * @version    1.0.0
+ * @since      1.0.0
  * @package    Disciple_Tools
  * @author     Chasm.Solutions & Kingdom.Training
  */
@@ -25,7 +25,7 @@ class Disciple_Tools_Metrics
      *
      * @var    object
      * @access   private
-     * @since    0.1
+     * @since    1.0.0
      */
     private static $_instance = null;
 
@@ -33,7 +33,7 @@ class Disciple_Tools_Metrics
      * Main Disciple_Tools_Admin_Menus Instance
      * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
      *
-     * @since 0.1
+     * @since 1.0.0
      * @static
      * @return Disciple_Tools_Metrics instance
      */
@@ -50,7 +50,7 @@ class Disciple_Tools_Metrics
      * Constructor function.
      *
      * @access  public
-     * @since   0.1
+     * @since   1.0.0
      */
     public function __construct()
     {
@@ -160,10 +160,10 @@ class Disciple_Tools_Metrics
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
 
-        $current[ 'new_contacts' ] = Disciple_Tools()->counter->contacts_post_status( 'publish' );
-        $current[ 'contacts_attempted' ] = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );
-        $current[ 'contacts_established' ] = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'established' );
-        $current[ 'first_meetings' ] = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'met' );
+        $current[ 'new_contacts' ] = disciple_tools()->counter->contacts_post_status( 'publish' );
+        $current[ 'contacts_attempted' ] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );
+        $current[ 'contacts_established' ] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'established' );
+        $current[ 'first_meetings' ] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'met' );
 
         $report = [
             [ 'Followup', 'Current'],
@@ -215,10 +215,10 @@ class Disciple_Tools_Metrics
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
 
-        $current[ 'baptisms' ] = Disciple_Tools()->counter->get_baptisms( 'baptisms' );
-        $current[ 'baptizers' ] = Disciple_Tools()->counter->get_baptisms( 'baptizers' );
-        $current[ 'active_churches' ] = Disciple_Tools()->counter->groups_meta_counter( 'is_church', '1' );
-        $current[ 'church_planters' ] = Disciple_Tools()->counter->connection_type_counter( 'participation', 'Planting' );
+        $current[ 'baptisms' ] = disciple_tools()->counter->get_baptisms( 'baptisms' );
+        $current[ 'baptizers' ] = disciple_tools()->counter->get_baptisms( 'baptizers' );
+        $current[ 'active_churches' ] = disciple_tools()->counter->groups_meta_counter( 'is_church', '1' );
+        $current[ 'church_planters' ] = disciple_tools()->counter->connection_type_counter( 'participation', 'Planting' );
 
         $report = [
             [ 'Multiplication', 'Current' ],
@@ -284,7 +284,7 @@ class Disciple_Tools_Metrics
     /**
      * System stats dashboard widget
      *
-     * @since  0.1
+     * @since  1.0.0
      * @access public
      */
     public function system_stats_widget()
@@ -374,7 +374,7 @@ class Disciple_Tools_Metrics
     /**
      * Movement funnel path dashboard widget
      *
-     * @since  0.1
+     * @since  1.0.0
      * @access public
      */
     public function critical_path_stats()
@@ -382,19 +382,19 @@ class Disciple_Tools_Metrics
         global $wpdb;
 
         // Build variables
-        $prayer = Disciple_Tools()->report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers' );
-        $mailchimp_subscribers = Disciple_Tools()->report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers', 'max' );
-        $facebook = Disciple_Tools()->report_api->get_meta_key_total( '2017', 'Facebook', 'page_likes_count' );
-        $websites = Disciple_Tools()->report_api->get_meta_key_total( '2017', 'Analytics', 'unique_website_visitors' );
+        $prayer = disciple_tools()->report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers' );
+        $mailchimp_subscribers = disciple_tools()->report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers', 'max' );
+        $facebook = disciple_tools()->report_api->get_meta_key_total( '2017', 'Facebook', 'page_likes_count' );
+        $websites = disciple_tools()->report_api->get_meta_key_total( '2017', 'Analytics', 'unique_website_visitors' );
 
-        $new_contacts = Disciple_Tools()->counter->contacts_post_status( 'publish' );
-        $contacts_attempted = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );
-        $contacts_established = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'established' );
-        $first_meetings = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'met' );
-        $baptisms = Disciple_Tools()->counter->get_baptisms( 'baptisms' );
-        $baptizers = Disciple_Tools()->counter->get_baptisms( 'baptizers' );
-        $active_churches = Disciple_Tools()->counter->groups_meta_counter( 'type', 'Church' );
-        $church_planters = Disciple_Tools()->counter->connection_type_counter( 'participation', 'Planting' );
+        $new_contacts = disciple_tools()->counter->contacts_post_status( 'publish' );
+        $contacts_attempted = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );
+        $contacts_established = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'established' );
+        $first_meetings = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'met' );
+        $baptisms = disciple_tools()->counter->get_baptisms( 'baptisms' );
+        $baptizers = disciple_tools()->counter->get_baptisms( 'baptizers' );
+        $active_churches = disciple_tools()->counter->groups_meta_counter( 'type', 'Church' );
+        $church_planters = disciple_tools()->counter->connection_type_counter( 'participation', 'Planting' );
 
         ?>
         <table class="widefat striped ">
@@ -462,43 +462,43 @@ class Disciple_Tools_Metrics
     /**
      * Contacts stats widget
      *
-     * @since  0.1
+     * @since  1.0.0
      * @access public
      */
     public function contacts_stats_widget()
     {
 
-        //        print '<pre>'; print_r( Disciple_Tools()->counter->get_generation('generation_list') ); print '</pre>';
+        //        print '<pre>'; print_r( disciple_tools()->counter->get_generation('generation_list') ); print '</pre>';
 
         // Build counters
-        $has_at_least_1 = Disciple_Tools()->counter->get_generation( 'has_one_or_more' );
-        $has_at_least_2 = Disciple_Tools()->counter->get_generation( 'has_two_or_more' );
-        $has_more_than_2 = Disciple_Tools()->counter->get_generation( 'has_three_or_more' );
+        $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more' );
+        $has_at_least_2 = disciple_tools()->counter->get_generation( 'has_two_or_more' );
+        $has_more_than_2 = disciple_tools()->counter->get_generation( 'has_three_or_more' );
 
-        $has_0 = Disciple_Tools()->counter->get_generation( 'has_0' );
-        $has_1 = Disciple_Tools()->counter->get_generation( 'has_1' );
-        $has_2 = Disciple_Tools()->counter->get_generation( 'has_2' );
-        $has_3 = Disciple_Tools()->counter->get_generation( 'has_3' );
+        $has_0 = disciple_tools()->counter->get_generation( 'has_0' );
+        $has_1 = disciple_tools()->counter->get_generation( 'has_1' );
+        $has_2 = disciple_tools()->counter->get_generation( 'has_2' );
+        $has_3 = disciple_tools()->counter->get_generation( 'has_3' );
 
-        $con_0gen = '';//Disciple_Tools()->counter->get_generation('at_zero');
-        $con_1gen = '';//Disciple_Tools()->counter->get_generation('at_first');
-        $con_2gen = '';//Disciple_Tools()->counter->get_generation('at_second');
-        $con_3gen = '';//Disciple_Tools()->counter->get_generation('at_third');
-        $con_4gen = '';//Disciple_Tools()->counter->get_generation('at_fourth');
-        $con_5gen = '';//Disciple_Tools()->counter->get_generation('at_fifth');
+        $con_0gen = '';//disciple_tools()->counter->get_generation('at_zero');
+        $con_1gen = '';//disciple_tools()->counter->get_generation('at_first');
+        $con_2gen = '';//disciple_tools()->counter->get_generation('at_second');
+        $con_3gen = '';//disciple_tools()->counter->get_generation('at_third');
+        $con_4gen = '';//disciple_tools()->counter->get_generation('at_fourth');
+        $con_5gen = '';//disciple_tools()->counter->get_generation('at_fifth');
 
         // Build counters
-        $contacts_count = Disciple_Tools()->counter->contacts_post_status();
-        $unassigned = Disciple_Tools()->counter->contacts_meta_counter( 'overall_status', 'unassigned' );
+        $contacts_count = disciple_tools()->counter->contacts_post_status();
+        $unassigned = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'unassigned' );
 
-        $new_inquirers = Disciple_Tools()->counter->contacts_post_status();
-        $assigned_inquirers = Disciple_Tools()->counter->contacts_meta_counter( 'overall_status', 'assigned' );
-        $active_inquirers = Disciple_Tools()->counter->contacts_meta_counter( 'overall_status', 'active' );
-        $contact_attempted = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'Contact Attempted' );
-        $contact_established = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'Contact Established' );
-        $meeting_scheduled = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'Meeting Scheduled' );
-        $first_meeting_complete = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'First Meeting Complete' );
-        $ongoing_meetings = Disciple_Tools()->counter->contacts_meta_counter( 'seeker_path', 'Ongoing Meetings' );
+        $new_inquirers = disciple_tools()->counter->contacts_post_status();
+        $assigned_inquirers = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'assigned' );
+        $active_inquirers = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'active' );
+        $contact_attempted = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Contact Attempted' );
+        $contact_established = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Contact Established' );
+        $meeting_scheduled = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Meeting Scheduled' );
+        $first_meeting_complete = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'First Meeting Complete' );
+        $ongoing_meetings = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Ongoing Meetings' );
 
         ?>
         <table class="widefat striped ">
@@ -609,32 +609,32 @@ class Disciple_Tools_Metrics
     /**
      * Groups stats widget
      *
-     * @since  0.1
+     * @since  1.0.0
      * @access public
      */
     public function groups_stats_widget()
     {
 
-        //        print '<pre>'; print_r( Disciple_Tools()->counter->get_generation('generation_list') ); print '</pre>';
+        //        print '<pre>'; print_r( disciple_tools()->counter->get_generation('generation_list') ); print '</pre>';
 
         // Build counters
-        $has_at_least_1 = Disciple_Tools()->counter->get_generation( 'has_one_or_more', 'groups' );
-        $has_at_least_2 = Disciple_Tools()->counter->get_generation( 'has_two_or_more', 'groups' );
-        $has_more_than_2 = Disciple_Tools()->counter->get_generation( 'has_three_or_more', 'groups' );
+        $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more', 'groups' );
+        $has_at_least_2 = disciple_tools()->counter->get_generation( 'has_two_or_more', 'groups' );
+        $has_more_than_2 = disciple_tools()->counter->get_generation( 'has_three_or_more', 'groups' );
 
-        $has_0 = Disciple_Tools()->counter->get_generation( 'has_0', 'groups' );
-        $has_1 = Disciple_Tools()->counter->get_generation( 'has_1', 'groups' );
-        $has_2 = Disciple_Tools()->counter->get_generation( 'has_2', 'groups' );
-        $has_3 = Disciple_Tools()->counter->get_generation( 'has_3', 'groups' );
+        $has_0 = disciple_tools()->counter->get_generation( 'has_0', 'groups' );
+        $has_1 = disciple_tools()->counter->get_generation( 'has_1', 'groups' );
+        $has_2 = disciple_tools()->counter->get_generation( 'has_2', 'groups' );
+        $has_3 = disciple_tools()->counter->get_generation( 'has_3', 'groups' );
 
-        $gr_0gen = '';//Disciple_Tools()->counter->get_generation('at_zero', 'groups');
-        $gr_1gen = '';//Disciple_Tools()->counter->get_generation('at_first', 'groups');
-        $gr_2gen = '';//Disciple_Tools()->counter->get_generation('at_second', 'groups');
-        $gr_3gen = '';//Disciple_Tools()->counter->get_generation('at_third', 'groups');
-        $gr_4gen = '';//Disciple_Tools()->counter->get_generation('at_fourth', 'groups');
+        $gr_0gen = '';//disciple_tools()->counter->get_generation('at_zero', 'groups');
+        $gr_1gen = '';//disciple_tools()->counter->get_generation('at_first', 'groups');
+        $gr_2gen = '';//disciple_tools()->counter->get_generation('at_second', 'groups');
+        $gr_3gen = '';//disciple_tools()->counter->get_generation('at_third', 'groups');
+        $gr_4gen = '';//disciple_tools()->counter->get_generation('at_fourth', 'groups');
 
-        $dbs = Disciple_Tools()->counter->groups_meta_counter( 'type', 'DBS' );
-        $active_churches = Disciple_Tools()->counter->groups_meta_counter( 'type', 'Church' );
+        $dbs = disciple_tools()->counter->groups_meta_counter( 'type', 'DBS' );
+        $active_churches = disciple_tools()->counter->groups_meta_counter( 'type', 'Church' );
 
         ?>
         <table class="widefat striped ">
@@ -728,33 +728,33 @@ class Disciple_Tools_Metrics
     /**
      * Baptism Generations stats dashboard widget
      *
-     * @since  0.1
+     * @since  1.0.0
      * @access public
      */
     public function baptism_stats_widget()
     {
 
-        //        print '<pre>'; print_r( Disciple_Tools()->counter->get_generation('generation_list') ); print '</pre>';
+        //        print '<pre>'; print_r( disciple_tools()->counter->get_generation('generation_list') ); print '</pre>';
 
         // Build counters
-        $has_at_least_1 = Disciple_Tools()->counter->get_generation( 'has_one_or_more', 'baptisms' );
-        $has_at_least_2 = Disciple_Tools()->counter->get_generation( 'has_two_or_more', 'baptisms' );
-        $has_more_than_2 = Disciple_Tools()->counter->get_generation( 'has_three_or_more', 'baptisms' );
+        $has_at_least_1 = disciple_tools()->counter->get_generation( 'has_one_or_more', 'baptisms' );
+        $has_at_least_2 = disciple_tools()->counter->get_generation( 'has_two_or_more', 'baptisms' );
+        $has_more_than_2 = disciple_tools()->counter->get_generation( 'has_three_or_more', 'baptisms' );
 
-        $has_0 = Disciple_Tools()->counter->get_generation( 'has_0', 'baptisms' );
-        $has_1 = Disciple_Tools()->counter->get_generation( 'has_1', 'baptisms' );
-        $has_2 = Disciple_Tools()->counter->get_generation( 'has_2', 'baptisms' );
-        $has_3 = Disciple_Tools()->counter->get_generation( 'has_3', 'baptisms' );
+        $has_0 = disciple_tools()->counter->get_generation( 'has_0', 'baptisms' );
+        $has_1 = disciple_tools()->counter->get_generation( 'has_1', 'baptisms' );
+        $has_2 = disciple_tools()->counter->get_generation( 'has_2', 'baptisms' );
+        $has_3 = disciple_tools()->counter->get_generation( 'has_3', 'baptisms' );
 
-        $con_0gen = '';//Disciple_Tools()->counter->get_generation('at_zero', 'baptisms');
-        $con_1gen = '';//Disciple_Tools()->counter->get_generation('at_first', 'baptisms');
-        $con_2gen = '';//Disciple_Tools()->counter->get_generation('at_second', 'baptisms');
-        $con_3gen = '';//Disciple_Tools()->counter->get_generation('at_third', 'baptisms');
-        $con_4gen = '';//Disciple_Tools()->counter->get_generation('at_fourth', 'baptisms');
-        $con_5gen = '';//Disciple_Tools()->counter->get_generation('at_fifth', 'baptisms');
+        $con_0gen = '';//disciple_tools()->counter->get_generation('at_zero', 'baptisms');
+        $con_1gen = '';//disciple_tools()->counter->get_generation('at_first', 'baptisms');
+        $con_2gen = '';//disciple_tools()->counter->get_generation('at_second', 'baptisms');
+        $con_3gen = '';//disciple_tools()->counter->get_generation('at_third', 'baptisms');
+        $con_4gen = '';//disciple_tools()->counter->get_generation('at_fourth', 'baptisms');
+        $con_5gen = '';//disciple_tools()->counter->get_generation('at_fifth', 'baptisms');
 
-        $baptisms = Disciple_Tools()->counter->get_baptisms( 'baptisms' );
-        $baptizers = Disciple_Tools()->counter->get_baptisms( 'baptizers' );
+        $baptisms = disciple_tools()->counter->get_baptisms( 'baptisms' );
+        $baptizers = disciple_tools()->counter->get_baptisms( 'baptizers' );
 
         ?>
         <table class="widefat striped ">

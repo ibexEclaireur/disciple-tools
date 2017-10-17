@@ -67,7 +67,7 @@ final class Disciple_Tools_Config
     /**
      * Loads the subnav page
      *
-     * @since 0.1
+     * @since 1.0.0
      */
     public function add_dt_options_menu()
     {
@@ -86,7 +86,7 @@ final class Disciple_Tools_Config
     /**
      * Builds default options page with the tab bar and tab page content
      *
-     * @since 0.1
+     * @since 1.0.0
      */
     public function build_default_page()
     {

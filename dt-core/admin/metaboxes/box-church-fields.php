@@ -4,8 +4,8 @@
  * Disciple Tools
  *
  * @class   Disciple_Tools_
- * @version 0.1
- * @since   0.1
+ * @version 1.0.0
+ * @since   1.0.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions & Kingdom.Training
  */
@@ -33,7 +33,7 @@ class Disciple_Tools_Metabox_Church_Fields
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct()
     {
@@ -49,7 +49,7 @@ class Disciple_Tools_Metabox_Church_Fields
 
         // Shows the church graphic
         //        if(get_post_meta( $post->ID, 'is_church', true ) == '1') {
-        //            echo '<div class="center"><img src="' . Disciple_Tools()->plugin_img_url . 'church.png" style="text-align: center; margin: 0 auto;" ></div>';
+        //            echo '<div class="center"><img src="' . disciple_tools()->plugin_img_url . 'church.png" style="text-align: center; margin: 0 auto;" ></div>';
         //        }
 
         // Prints javascript to hide dependent fields

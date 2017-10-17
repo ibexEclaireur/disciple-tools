@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  * @return void
  */
 function dt_activity_insert( $args = [] ) {
-    Disciple_Tools()->activity_api->insert( $args );
+    disciple_tools()->activity_api->insert( $args );
 }
 
 /**

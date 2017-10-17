@@ -9,7 +9,7 @@ class Disciple_Tools_Facebook_Integration {
      *
      * @var    object
      * @access private
-     * @since  0.1
+     * @since  1.0.0
      */
     private static $_instance = null;
 
@@ -18,7 +18,7 @@ class Disciple_Tools_Facebook_Integration {
      *
      * Ensures only one instance of Disciple_Tools_Facebook_Integration is loaded or can be loaded.
      *
-     * @since  0.1
+     * @since  1.0.0
      * @static
      * @return Disciple_Tools_Facebook_Integration instance
      */
@@ -38,7 +38,7 @@ class Disciple_Tools_Facebook_Integration {
      * Constructor function.
      *
      * @access public
-     * @since  0.1
+     * @since  1.0.0
      */
     public function __construct () {
         $this->namespace = $this->context . "/v" . intval( $this->version );
@@ -705,7 +705,7 @@ class Disciple_Tools_Facebook_Integration {
         }
 
         ?>
-        <input type="hidden" name="<?php echo esc_attr( "dt_{$contact_post_type}_noonce" ); ?>" id="<?php echo esc_attr( "dt_{$contact_post_type}_noonce" ); ?>" value="<?php echo esc_attr( wp_create_nonce( plugin_basename( dirname( Disciple_Tools()->plugin_path ) ) ) ); ?>" />
+        <input type="hidden" name="<?php echo esc_attr( "dt_{$contact_post_type}_noonce" ); ?>" id="<?php echo esc_attr( "dt_{$contact_post_type}_noonce" ); ?>" value="<?php echo esc_attr( wp_create_nonce( plugin_basename( dirname( disciple_tools()->plugin_path ) ) ) ); ?>" />
         <?php
 
         if ( 0 < count( $field_data ) ) {
