@@ -15,7 +15,9 @@
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link    https://github.com/DiscipleTools
  * @license GPL-2.0 and later
+ *          https://www.gnu.org/licenses/gpl-2.0.html
  * @version 1.0.0
+ *
  */
 
 // If this file is called directly, abort.
