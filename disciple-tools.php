@@ -445,7 +445,7 @@ class Disciple_Tools
         require_once( 'dt-metrics/class-goals.php' );
         require_once( 'dt-metrics/metrics-template.php' );
         require_once( 'dt-metrics/metrics.php' );
-        $this->core['metrics'] = Disciple_Tools_Metrics::instance();
+        $this->metrics = Disciple_Tools_Metrics::instance();
         require_once( 'dt-metrics/metrics-endpoints.php' );
         $this->endpoints['metrics'] = new Disciple_Tools_Metrics_Endpoints();
 
@@ -498,7 +498,7 @@ class Disciple_Tools
         if( !class_exists( 'Ga_Autoloader' ) ) {
             require_once( 'dt-core/libraries/google-analytics/disciple-tools-analytics.php' );
             require_once( 'dt-core/integrations/class-google-analytics-integration.php' );
-            $this->analytics_integration = Ga_Admin::instance();
+            $this->analytics_integration = DT_Ga_Admin::instance();
         }
         require_once( 'dt-core/integrations/class-facebook-integration.php' ); // integrations to facebook
         $this->facebook_integration = Disciple_Tools_Facebook_Integration::instance();

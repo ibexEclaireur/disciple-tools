@@ -205,7 +205,7 @@ class Disciple_Tools_Reports_Cron
     public function build_all_facebook_reports()
     {
         //get the facebook pages and access tokens from the settings
-        $facebook_pages = get_option( "disciple_tools_facebook_pages", [] );
+        $facebook_pages = get_option( "dt_facebook_pages", [] );
         foreach( $facebook_pages as $page_id => $facebook_page ) {
             $last_facebook_report = Disciple_Tools_Reports_API::get_last_record_of_source_and_subsource( 'Facebook', $page_id );
             if( $last_facebook_report && isset( $last_facebook_report->report_date ) ) {

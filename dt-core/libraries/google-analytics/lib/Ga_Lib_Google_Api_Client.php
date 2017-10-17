@@ -267,7 +267,7 @@ class Ga_Lib_Google_Api_Client extends Ga_Lib_Api_Client {
 		// Request for a new Access Token
 		$response = $this->call_api_method( 'ga_auth_refresh_access_token', array( $token['refresh_token'] ) );
 
-		return Ga_Admin::save_access_token( $response, $token );
+		return DT_Ga_Admin::save_access_token( $response, $token );
 	}
 
 

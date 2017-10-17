@@ -81,6 +81,9 @@ class Disciple_Tools_Posts
      * A user can view the record if they have the global permission or
      * if the post if assigned or shared with them
      *
+     * @param string $post_type
+     * @param int    $post_id
+     *
      * @return bool
      */
     public static function can_view( string $post_type, int $post_id )
@@ -117,6 +120,9 @@ class Disciple_Tools_Posts
     /**
      * A user can update the record if they have the global permission or
      * if the post if assigned or shared with them
+     *
+     * @param string $post_type
+     * @param int    $post_id
      *
      * @return bool
      */
@@ -243,6 +249,8 @@ class Disciple_Tools_Posts
     }
 
     /**
+     * Get post comments
+     *
      * @param string $post_type
      * @param int    $post_id
      *
@@ -259,6 +267,8 @@ class Disciple_Tools_Posts
     }
 
     /**
+     * Get viewable in compact form
+     *
      * @param string $post_type
      * @param string $search_string
      *
@@ -502,10 +512,4 @@ class Disciple_Tools_Posts
             return new WP_Error( 'add_shared', __( "Post already shared with user." ), [ 'status' => 418 ] );
         }
     }
-
 }
-
-
-
-
-

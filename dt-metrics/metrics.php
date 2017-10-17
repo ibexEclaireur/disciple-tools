@@ -382,10 +382,10 @@ class Disciple_Tools_Metrics
         global $wpdb;
 
         // Build variables
-        $prayer = disciple_tools()->report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers' );
-        $mailchimp_subscribers = disciple_tools()->report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers', 'max' );
-        $facebook = disciple_tools()->report_api->get_meta_key_total( '2017', 'Facebook', 'page_likes_count' );
-        $websites = disciple_tools()->report_api->get_meta_key_total( '2017', 'Analytics', 'unique_website_visitors' );
+        $prayer = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers' );
+        $mailchimp_subscribers = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers', 'max' );
+        $facebook = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Facebook', 'page_likes_count' );
+        $websites = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Analytics', 'unique_website_visitors' );
 
         $new_contacts = disciple_tools()->counter->contacts_post_status( 'publish' );
         $contacts_attempted = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );

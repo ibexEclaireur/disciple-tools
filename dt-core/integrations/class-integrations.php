@@ -12,6 +12,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Reports_Integrations
+ */
 class Disciple_Tools_Reports_Integrations {
 
     /**
@@ -21,8 +24,6 @@ class Disciple_Tools_Reports_Integrations {
      * @since  1.0.0
      */
     public function __construct () {} // End __construct()
-
-
 
     /**
      * @param $url, the facebook url to query for the next stats
@@ -55,9 +56,6 @@ class Disciple_Tools_Reports_Integrations {
         }
         return [];
     }
-
-
-
 
     /**
      * Facebook report data
@@ -131,9 +129,9 @@ class Disciple_Tools_Reports_Integrations {
      * Update the flag for rebuilding the reports for a page.
      */
     public static function disable_rebuild_flag_on_facebook_page ( $page_id ){
-        $facebook_pages = get_option( "disciple_tools_facebook_pages", [] );
+        $facebook_pages = get_option( "dt_facebook_pages", [] );
         $facebook_pages[$page_id]->rebuild = false;
-        update_option( "disciple_tools_facebook_pages", $facebook_pages );
+        update_option( "dt_facebook_pages", $facebook_pages );
     }
 
     /**
@@ -184,7 +182,7 @@ class Disciple_Tools_Reports_Integrations {
     public static function analytics_prepared_data ( $last_date_recorded ) {
         $reports = [];
 
-        $website_unique_visits = Ga_Admin::get_report_data( $last_date_recorded );
+        $website_unique_visits = DT_Ga_Admin::get_report_data( $last_date_recorded );
 
         foreach($website_unique_visits as $website => $days){
             foreach ($days as $day) {

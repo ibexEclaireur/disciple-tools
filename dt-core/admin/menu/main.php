@@ -184,7 +184,7 @@ final class Disciple_Tools_Config
      */
     public function build_analytics_page()
     {
-        Ga_Admin::options_page_googleanalytics();
+        DT_Ga_Admin::options_page_googleanalytics();
     }
 
     /**

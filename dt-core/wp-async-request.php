@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP Asynchronous Tasks
+ * Asynchronous Tasks
  *
  * @see https://github.com/techcrunch/wp-async-task
  * Version: 1.0
