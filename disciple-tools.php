@@ -3,19 +3,19 @@
  * Plugin Name: Disciple Tools
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Description: Disciple Tools is a disciple relationship management system for disciple making movements. The plugin is the core of the system. It is intended to work with the Disciple Tools Theme, and Disciple Tools extension plugins.
- * Version: 0.1
+ * Version: 1.0.0
  * Author: Chasm.Solutions
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Requires at least: 4.7.0
  * (Requires 4.7+ because of the integration of the REST API at 4.7 and the security requirements of this milestone version.)
- * Tested up to: 4.7.2
+ * Tested up to: 4.8.2
  *
  * @package Disciple_Tools
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link    https://github.com/DiscipleTools
- * @license GPL-3.0
- * @version 0.1
+ * @license GPL-2.0 and later
+ * @version 1.0.0
  */
 
 // If this file is called directly, abort.

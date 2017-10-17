@@ -5,6 +5,11 @@
       API from external websites and applications. To get an API key, fill in what what you want to call it below.
       We will generate Client Token and Client Id base on the name.
     </p>
+    <?php /* This warning may be worded too strongly, we might want to review
+    it after we've done a security review of the API. */ ?>
+    <p><strong>Do not give access to anyone or anything</strong> you do not
+    trust with all the data stored in this website.</p>
+
 
       <form action="" method="post">
         <?php wp_nonce_field( 'api-keys-view', 'api-key-view-field' ); ?>
