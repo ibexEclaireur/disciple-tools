@@ -9,7 +9,6 @@ if( !defined( 'ABSPATH' ) ) {
  *
  * @package    Disciple_Tools
  * @category   Plugin
- * @author     Chasm.Solutions & Kingdom.Training
  * @since      1.0.0
  */
 class Disciple_Tools_Taxonomy

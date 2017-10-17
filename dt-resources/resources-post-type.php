@@ -8,8 +8,6 @@ if( !defined( 'ABSPATH' ) ) {
  * All functionality pertaining to post resources in Disciple_Tools.
  *
  * @package  Disciple_Tools
- * @category Plugin
- * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
 class Disciple_Tools_Resources_Post_Type
@@ -86,10 +84,13 @@ class Disciple_Tools_Resources_Post_Type
     } // End instance()
 
     /**
-     * Constructor function.
+     * Disciple_Tools_Resources_Post_Type constructor.
      *
-     * @access public
-     * @since  1.0.0
+     * @param string $post_type
+     * @param string $singular
+     * @param string $plural
+     * @param array  $args
+     * @param array  $taxonomies
      */
     public function __construct( $post_type = 'resources', $singular = '', $plural = '', $args = [], $taxonomies = [] )
     {
@@ -103,13 +104,11 @@ class Disciple_Tools_Resources_Post_Type
         //		add_action( 'init', array( $this, 'register_taxonomy' ) );
 
         if( is_admin() ) {
-            global $pagenow;
-
             add_action( 'save_post', [ $this, 'meta_box_save' ] );
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
         }
-    } // End __construct()
+    }
 
     /**
      * Register the post type.
@@ -206,7 +205,7 @@ class Disciple_Tools_Resources_Post_Type
     {
         //        $this->taxonomies['resource-type'] = new Disciple_Tools_Taxonomy( $post_type = 'resource', $token = 'resource-type', $singular = 'Type', $plural = 'Types', $args = [] ); // Leave arguments empty, to use the default arguments.
         //        $this->taxonomies['resource-type']->register();
-    } // End register_taxonomy()
+    }
 
     /**
      * Add custom columns for the "manage" screen of this post type.
@@ -214,15 +213,12 @@ class Disciple_Tools_Resources_Post_Type
      * @access public
      *
      * @param  string $column_name
-     * @param  int    $id
      *
      * @since  1.0.0
      * @return void
      */
-    public function register_custom_columns( $column_name, $id )
+    public function register_custom_columns( $column_name )
     {
-        global $post;
-
         switch( $column_name ) {
             case 'image':
                 break;
@@ -233,7 +229,7 @@ class Disciple_Tools_Resources_Post_Type
             default:
                 break;
         }
-    } // End register_custom_columns()
+    }
 
     /**
      * Add custom column headings for the "manage" screen of this post type.
@@ -330,6 +326,8 @@ class Disciple_Tools_Resources_Post_Type
     /**
      * The contents of our meta box.
      *
+     * @param $section
+     *
      * @access public
      * @since  1.0.0
      * @return void
@@ -415,7 +413,7 @@ class Disciple_Tools_Resources_Post_Type
             echo '</tbody>' . "\n";
             echo '</table>' . "\n";
         }
-    } // End meta_box_content()
+    }
 
     /**
      * Save meta box fields.
@@ -429,8 +427,6 @@ class Disciple_Tools_Resources_Post_Type
      */
     public function meta_box_save( $post_id )
     {
-        global $post, $messages;
-
         // Verify
         if( get_post_type() != $this->post_type ) {
             return $post_id;
@@ -479,6 +475,7 @@ class Disciple_Tools_Resources_Post_Type
                 delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
             }
         }
+        return $post_id;
     } // End meta_box_save()
 
     /**
