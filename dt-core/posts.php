@@ -366,7 +366,7 @@ class Disciple_Tools_Posts
                     'object_type'    => get_post_type( $post_id ),
                     'object_subtype' => 'share',
                     'object_name'    => get_the_title( $post_id ),
-                    'object_id'      => $wpdb->insert_id,
+                    'object_id'      => $post_id,
                     'meta_id'        => '', // id of the comment
                     'meta_key'       => '',
                     'meta_value'     => '',
@@ -433,7 +433,7 @@ class Disciple_Tools_Posts
                     'object_type'    => get_post_type( $post_id ),
                     'object_subtype' => 'share',
                     'object_name'    => get_the_title( $post_id ),
-                    'object_id'      => $wpdb->insert_id,
+                    'object_id'      => $post_id,
                     'meta_id'        => '', // id of the comment
                     'meta_key'       => '',
                     'meta_value'     => '',
