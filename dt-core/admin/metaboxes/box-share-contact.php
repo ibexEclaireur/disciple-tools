@@ -56,7 +56,7 @@ class Disciple_Tools_Metabox_Share_Contact
                     <?php foreach( $shared_with_list as $contact ): ?>
 
                         <li>
-                            <a href="<?php echo admin_url( 'user-edit.php?user_id=' ) . $contact[ 'user_id' ] ?> "><?php echo $contact[ 'display_name' ] ?></a>
+                            <a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' ) ) . esc_attr( $contact[ 'user_id' ] ) ?> "><?php echo esc_attr( $contact[ 'display_name' ] ) ?></a>
                         </li>
 
                     <?php endforeach; ?>

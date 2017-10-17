@@ -178,7 +178,7 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
      * @param $b
      *
      * @return int
-     * @throws \Exception
+     * @throws \Exception Expected order variable to be asc or desc.
      */
     private function sort_data( $a, $b )
     {

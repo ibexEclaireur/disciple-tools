@@ -377,8 +377,12 @@ function dt_prepare_user_fields_types_for_input( $type ) {
     }
 }
 
-
-
+/**
+ * @param $approved
+ * @param $commentdata
+ *
+ * @return int
+ */
 function dt_filter_handler( $approved, $commentdata ){
     // inspect $commentdata to determine approval, disapproval, or spam status
     //approve all comments.

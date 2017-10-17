@@ -9,7 +9,6 @@
  * @author  Chasm.Solutions & Kingdom.Training
  */
 
-
 /**
  * Class Disciple_Tools_Roles
  */
@@ -762,7 +761,9 @@ class Disciple_Tools_Roles
 
 }
 
-
+/**
+ * This is unused record of the capabilities possible in the system. For reference only.
+ */
 $dt_template = [
     /* Standard Capabilities */
     'list_users'                 => true,

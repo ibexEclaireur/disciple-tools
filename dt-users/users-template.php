@@ -189,8 +189,19 @@ function dt_user_display_name( int $user_id )
 function dt_get_user_display_name( $user_id )
 {
     $user = get_userdata( $user_id );
+    if(! $user ) {
+        return;
+    }
 
-    return $user->display_name;
+    $display_name = $user->display_name;
+    if( empty( $display_name ) ) {
+        $display_name = $user->nickname;
+        if( empty( $display_name ) ) {
+            $display_name = $user->user_login;
+        }
+    }
+
+    return $display_name;
 }
 
 /**

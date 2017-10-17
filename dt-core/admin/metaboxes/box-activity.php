@@ -47,14 +47,14 @@ class Disciple_Tools_Metabox_Activity
      * @param string $order
      *
      * @return array|null|object
-     * @throws \Error
+     * @throws \Error Order argument expected to be ASC or DESC.
      */
     public function activity_list_for_id( $id, $order = 'DESC' )
     {
         global $wpdb;
 
         if( strtolower( $order ) != "desc" && strtolower( $order ) != "asc" ) {
-            throw new Error( "order argument expected to be ASC or DESC" );
+            throw new Error( "Order argument expected to be ASC or DESC" );
         }
 
         // Query activity with the contact id

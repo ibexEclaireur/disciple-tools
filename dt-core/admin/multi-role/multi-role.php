@@ -12,6 +12,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Multi_Roles
+ */
 class Disciple_Tools_Multi_Roles {
 
     /**
@@ -22,6 +25,8 @@ class Disciple_Tools_Multi_Roles {
      * @since  1.0.0
      */
     private static $_instance = null;
+
+    public $role_user_count = [];
 
     /**
      * Main Disciple_Tools_Multi_Roles Instance

@@ -47,16 +47,31 @@ class Disciple_Tools_Posts
         return current_user_can( "access_" . $post_type );
     }
 
+    /**
+     * @param string $post_type
+     *
+     * @return bool
+     */
     public static function can_view_all( string $post_type )
     {
         return current_user_can( "view_any_" . $post_type );
     }
 
+    /**
+     * @param string $post_type
+     *
+     * @return bool
+     */
     public static function can_create( string $post_type )
     {
         return current_user_can( 'create_' . $post_type );
     }
 
+    /**
+     * @param string $post_type
+     *
+     * @return bool
+     */
     public static function can_delete( string $post_type )
     {
         return current_user_can( 'delete_any_' . $post_type );
@@ -136,6 +151,12 @@ class Disciple_Tools_Posts
         return false;
     }
 
+    /**
+     * @param string $post_type
+     * @param int    $user_id
+     *
+     * @return array
+     */
     public static function get_posts_shared_with_user( string $post_type, int $user_id )
     {
         global $wpdb;
@@ -162,6 +183,13 @@ class Disciple_Tools_Posts
         return $list;
     }
 
+    /**
+     * @param string $post_type
+     * @param int    $group_id
+     * @param string $comment
+     *
+     * @return false|int|\WP_Error
+     */
     public static function add_post_comment( string $post_type, int $group_id, string $comment )
     {
         if( !self::can_update( $post_type, $group_id ) ) {
@@ -182,6 +210,12 @@ class Disciple_Tools_Posts
         return wp_new_comment( $comment_data );
     }
 
+    /**
+     * @param string $post_type
+     * @param int    $post_id
+     *
+     * @return array|null|object|\WP_Error
+     */
     public static function get_post_activity( string $post_type, int $post_id )
     {
         global $wpdb;
@@ -208,6 +242,12 @@ class Disciple_Tools_Posts
         return $activity;
     }
 
+    /**
+     * @param string $post_type
+     * @param int    $post_id
+     *
+     * @return array|int|\WP_Error
+     */
     public static function get_post_comments( string $post_type, int $post_id )
     {
         if( !self::can_view( $post_type, $post_id ) ) {
@@ -218,6 +258,12 @@ class Disciple_Tools_Posts
         return $comments;
     }
 
+    /**
+     * @param string $post_type
+     * @param string $search_string
+     *
+     * @return array|\WP_Error|\WP_Query
+     */
     public static function get_viewable_compact( string $post_type, string $search_string )
     {
         if( !self::can_access( $post_type ) ) {
@@ -259,6 +305,11 @@ class Disciple_Tools_Posts
         return $compact;
     }
 
+    /**
+     * @param string $post_type
+     *
+     * @return array|\WP_Error|\WP_Query
+     */
     public static function get_viewable( string $post_type )
     {
         if( !self::can_access( $post_type ) ) {

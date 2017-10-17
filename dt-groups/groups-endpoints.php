@@ -411,11 +411,10 @@ class Disciple_Tools_Groups_Endpoints
         }
     }
 
-
     /**
      * @param \WP_REST_Request $request
      *
-     * @return false|int|\WP_Error|\WP_REST_Response
+     * @return array|int|\WP_Error
      */
     public function create_group( WP_REST_Request $request )
     {

@@ -3,9 +3,15 @@ if( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
-/*
+/**
  * Sanitize image file name
  * https://wordpress.org/plugins/wp-hash-filename/
+ *
+ * This process is in an effort to harden the files uploaded to the uploads area, so they are not recognizable through the file name.
+ *
+ * @param $filename
+ *
+ * @return string
  */
 function dt_make_filename_hash( $filename )
 {
@@ -15,7 +21,7 @@ function dt_make_filename_hash( $filename )
 
     return md5( $name ) . $ext;
 }
-//add_filter( 'sanitize_file_name', 'dt_make_filename_hash', 10 );
+//add_filter( 'sanitize_file_name', 'dt_make_filename_hash', 10 ); //todo Hash process turned off. Determine if it is still necessary
 
 /**
  * Add Categories to Attachments

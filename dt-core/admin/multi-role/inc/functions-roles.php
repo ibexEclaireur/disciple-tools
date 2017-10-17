@@ -16,7 +16,7 @@
  * @since  1.0.0
  * @access public
  * @param  string
- * @return bool
+ * @return object|bool
  */
 function dt_multi_role_role_factory() {
     return Disciple_Tools_Multi_Role_Factory::get_instance();
@@ -312,24 +312,24 @@ function dt_multi_role_role_has_caps( $role ) {
 function dt_multi_role_get_role_user_count( $role = '' ) {
 
     // If the count is not already set for all roles, let's get it.
-    if ( empty( dt_multi_role_plugin()->role_user_count ) ) {
+    if ( empty( disciple_tools()->multi->role_user_count ) ) {
 
         // Count users.
         $user_count = count_users();
 
         // Loop through the user count by role to get a count of the users with each role.
         foreach ( $user_count['avail_roles'] as $_role => $count ) {
-            dt_multi_role_plugin()->role_user_count[ $_role ] = $count;
+            disciple_tools()->multi->role_user_count[ $_role ] = $count;
         }
     }
 
     // Return the role count.
     if ( $role ) {
-        return isset( dt_multi_role_plugin()->role_user_count[ $role ] ) ? dt_multi_role_plugin()->role_user_count[ $role ] : 0;
+        return isset( disciple_tools()->multi->role_user_count[ $role ] ) ? disciple_tools()->multi->role_user_count[ $role ] : 0;
     }
 
     // If the `$role` parameter wasn't passed into this function, return the array of user counts.
-    return dt_multi_role_plugin()->role_user_count;
+    return disciple_tools()->multi->role_user_count;
 }
 
 /**

@@ -78,7 +78,7 @@ add_filter( 'disciple_tools_profiles_sections', 'disciple_tools_groups_add_profi
  * @param mixed $user
  * @param int   $taxonomy
  *
- * @return object //corrected from boolean
+ * @return object|bool //corrected from boolean
  */
 function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
 {
@@ -104,7 +104,7 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
 /**
  * Save taxonomy terms for a specific user
  *
- * @since 1.0.0.0
+ * @since 1.0.0
  *
  * @param int     $user_id
  * @param string  $taxonomy

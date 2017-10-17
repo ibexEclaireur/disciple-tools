@@ -28,6 +28,8 @@ class Disciple_Tools_General_Tab
         echo '<div id="post-body-content">';
         /* Main Column */
 
+        dt_write_log( dt_multi_role_get_role_user_count() );
+
         /* Box */
         echo '<table class="widefat striped">
                     <thead><th>Site Notifications</th></thead>
