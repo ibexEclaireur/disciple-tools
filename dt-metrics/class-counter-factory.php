@@ -11,6 +11,9 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Counter_Factory
+ */
 class Disciple_Tools_Counter_Factory {
 
     /**
@@ -57,8 +60,9 @@ class Disciple_Tools_Counter_Factory {
     /**
      * Returns count of contacts publish status
      *
-     * @access public
-     * @since  1.0.0
+     * @param string $status
+     *
+     * @return object
      */
     public function contacts_post_status ( $status = '' ) {
 
@@ -114,10 +118,10 @@ class Disciple_Tools_Counter_Factory {
     /**
      * Counts the meta_data attached to a P2P connection
      *
-     * @param  $type    string   Can be either contacts, groups, baptisms
-     * @param  $meta_value     string
-     * @param  $meta_key       string
-     * @return int
+     * @param $type
+     * @param $meta_value
+     *
+     * @return null|string
      */
     public function connection_type_counter ( $type, $meta_value ) {
         $type = $this->set_connection_type( $type );
@@ -126,14 +130,15 @@ class Disciple_Tools_Counter_Factory {
         return $result;
     }
 
-
     /**
      * Counts Contacts with matching $meta_key and $meta_value provided.
      * Used to retrieve the number of contacts that match the meta_key and meta_value supplied.
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
-     * @usage  disciple_tools()->counter->contacts_counter('overall_status','active');
+     * @param $meta_key
+     * @param $meta_value
+     *
      * @return int
      */
     public function contacts_meta_counter ( $meta_key, $meta_value ) {
@@ -147,7 +152,9 @@ class Disciple_Tools_Counter_Factory {
      *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
-     * @usage  disciple_tools()->counter->contacts_counter('overall_status','active');
+     * @param $meta_key
+     * @param $meta_value
+     *
      * @return int
      */
     public function groups_meta_counter ( $meta_key, $meta_value ) {
@@ -155,9 +162,12 @@ class Disciple_Tools_Counter_Factory {
         return $query->found_posts;
     }
 
-
     /**
      * Counts baptisms
+     *
+     * @param $type
+     *
+     * @return null|string
      */
     public function get_baptisms ( $type ) {
         switch ($type) {

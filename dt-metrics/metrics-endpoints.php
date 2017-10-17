@@ -50,6 +50,9 @@ class Disciple_Tools_Metrics_Endpoints {
         add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
     } // End __construct()
 
+    /**
+     * API Routes
+     */
     public function add_api_routes()
     {
         $version = '1';

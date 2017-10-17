@@ -270,6 +270,12 @@ class Disciple_Tools_Metrics
         // TODO decide on permission strategy for reporting
         // Do we hardwire permissions to reports to the roles of a person?
         // Do we set up a permission assignment tool in the config area, so that a group could assign reports to a role
+        if( empty( $user_id ) ) {
+            $user_id = get_current_user_id();
+        }
+        if( ! $user_id ) {
+            return false;
+        }
 
         switch( $report_name ) {
             case 'critical_path':
@@ -379,10 +385,7 @@ class Disciple_Tools_Metrics
      */
     public function critical_path_stats()
     {
-        global $wpdb;
-
         // Build variables
-        $prayer = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers' );
         $mailchimp_subscribers = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Mailchimp', 'new_subscribers', 'max' );
         $facebook = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Facebook', 'page_likes_count' );
         $websites = disciple_tools()->logging_report_api->get_meta_key_total( '2017', 'Analytics', 'unique_website_visitors' );
@@ -491,7 +494,6 @@ class Disciple_Tools_Metrics
         $contacts_count = disciple_tools()->counter->contacts_post_status();
         $unassigned = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'unassigned' );
 
-        $new_inquirers = disciple_tools()->counter->contacts_post_status();
         $assigned_inquirers = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'assigned' );
         $active_inquirers = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'active' );
         $contact_attempted = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'Contact Attempted' );

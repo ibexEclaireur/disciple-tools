@@ -31,7 +31,7 @@ class Disciple_Tools_Goals {
      * @return bool
      */
     public function has_goals() {
-        return false;
+        return false; // TODO: Build the wp-admin area to determine project goals.
     }
 
 }

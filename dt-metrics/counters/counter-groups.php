@@ -9,8 +9,10 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Counter_Groups
+ */
 class Disciple_Tools_Counter_Groups  {
-
 
     /**
      * Constructor function.
@@ -24,7 +26,7 @@ class Disciple_Tools_Counter_Groups  {
      * Counts the number of active churches in the database
      */
     public function active_churches () {
-        return true;
+        return true; // TODO actually data.
     }
 
 }

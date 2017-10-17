@@ -3,14 +3,15 @@
  * Counts Baptism statistics in database
  *
  * @package Disciple_Tools
- * @author  Chasm Solutions <chasm.crew@chasm.solutions>
- * @license GPL-3.0
+ * @author  Chasm.Solutions & Kingdom.Training
  * @version 1.0.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Counter_Baptism
+ */
 class Disciple_Tools_Counter_Baptism  {
-
 
     /**
      * Constructor function.

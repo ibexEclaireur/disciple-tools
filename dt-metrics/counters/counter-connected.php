@@ -9,8 +9,10 @@
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
+/**
+ * Class Disciple_Tools_Counter_Connected
+ */
 class Disciple_Tools_Counter_Connected  {
-
 
     /**
      * Constructor function.
@@ -23,8 +25,9 @@ class Disciple_Tools_Counter_Connected  {
     /**
      * Counts the number of contacts with no disciples in database
      *
-     * @access public
-     * @since  1.0.0
+     * @param $type
+     *
+     * @return int
      */
     public function has_zero ( $type ) {
         global $wpdb;
@@ -54,9 +57,10 @@ class Disciple_Tools_Counter_Connected  {
     /**
      * Counts the number of contacts with at least two disciples
      *
-     * @access  public
-     * @since   1.0.0
-     * @returns number
+     * @param $min_number
+     * @param $type
+     *
+     * @return int
      */
     public function has_at_least ( $min_number, $type ) {
         global $wpdb;
@@ -86,9 +90,10 @@ class Disciple_Tools_Counter_Connected  {
      * Example: How many contacts have one disciple? How many have two disciples?
      * This helps identify general fruitfulness.
      *
-     * @access public
-     * @since  1.0.0
-     * @return number
+     * @param $exact_number
+     * @param $type
+     *
+     * @return int
      */
     public function has_exactly ( $exact_number, $type ) {
         global $wpdb;
@@ -113,11 +118,13 @@ class Disciple_Tools_Counter_Connected  {
         return $i;
     }
 
-
     /**
      * Query: number of disciples of a given record
      *
-     * @returns number
+     * @param $contact
+     * @param $column
+     *
+     * @return int
      */
     protected function get_number_disciples ( $contact, $column ) {
         $i = 0;
@@ -132,6 +139,11 @@ class Disciple_Tools_Counter_Connected  {
 
     /**
      * Has Meta Key
+     *
+     * @param $type
+     * @param $meta_value
+     *
+     * @return null|string
      */
     public function has_meta_value ( $type, $meta_value )
     {
