@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Disciple_Tools_Metabox_Address
  *
@@ -13,6 +12,7 @@
 if( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
+
 /**
  * @return \Disciple_Tools_Metabox_Address
  */

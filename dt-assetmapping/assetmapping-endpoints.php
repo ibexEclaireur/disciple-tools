@@ -15,9 +15,9 @@ class Disciple_Tools_Assetmapping_Endpoints {
 
     /**
      * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
-     * @var 	object
+     * @var     object
      * @access  private
-     * @since 	0.1
+     * @since   0.1
      */
     private static $_instance = null;
 
@@ -31,8 +31,9 @@ class Disciple_Tools_Assetmapping_Endpoints {
      * @return Disciple_Tools_Assetmapping_Endpoints instance
      */
     public static function instance () {
-        if ( is_null( self::$_instance ) )
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
+        }
         return self::$_instance;
     } // End instance()
 

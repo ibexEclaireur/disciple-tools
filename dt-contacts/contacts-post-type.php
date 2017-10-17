@@ -101,7 +101,7 @@ class Disciple_Tools_Contact_Post_Type
     public function __construct( $post_type = 'contacts', $singular = '', $plural = '', $args = [], $taxonomies = [] )
     {
         $this->post_type = 'contacts';
-        $this->singular = _x( 'Contact', 'singlular of contact', 'disciple_tools' );
+        $this->singular = _x( 'Contact', 'singular of contact', 'disciple_tools' );
         $this->plural = _x( 'Contacts', 'plural of contact', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
         $this->taxonomies = $taxonomies = [];
@@ -720,45 +720,7 @@ class Disciple_Tools_Contact_Post_Type
                 ];
             }
         }
-        // else {
-        // TODO: I don't understand why this is only run when we're not getting info for the current post. @C I believe it is from a previous requirement for Facebook integration.
 
-        //            $channels = $this->get_channels_list();
-
-        //            foreach ($channels as $channel_key => $channel) {
-        //                foreach($channel["types"] as $type_key => $type){
-        //
-        //                    $tag = null;
-        //
-        //                    $key =  strtolower( 'contact_' . $channel_key . '_' . $type_key . '_111' );
-        //
-        //                    if($channel["label"] != $type["label"]) { $tag = ' ('. ucwords( $type["label"] ) . ')'; }
-        //
-        //                    $fields[$key] = [
-        //                        'name' => ucwords( $channel["label"] ) . $tag,
-        //                        'description' => '',
-        //                        'type' => 'text',
-        //                        'default' => '',
-        //                        'section' => 'info'
-        //                    ];
-        //                }
-        //            }
-
-        //            $address_types = dt_address_metabox()->get_address_type_list( $this->post_type );
-
-        //            foreach ($address_types as $key => $type) {
-        //
-        //                $key =  strtolower( 'address_11' . $index );
-        //
-        //                $fields[$key] = [
-        //                    'name' => ucwords( $type ) ,
-        //                    'description' => '',
-        //                    'type' => 'text',
-        //                    'default' => '',
-        //                    'section' => 'address'
-        //                ];
-        //            }
-        //        }
 
         // Status information section
         $fields[ 'milestone_has_bible' ] = [
@@ -1209,7 +1171,7 @@ class Disciple_Tools_Contact_Post_Type
         }
 
         // Collect user list
-        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC'  ];
+        $args = [ 'role__not_in' => [ 'registered', 'prayer_supporter', 'project_supporter' ], 'fields' => [ 'ID', 'display_name' ], 'exclude' => $exclude_user, 'order' => 'ASC' ];
         $results = get_users( $args );
 
         // Loop user list

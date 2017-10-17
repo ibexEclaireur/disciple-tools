@@ -559,11 +559,8 @@ class Disciple_Tools
             require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
 
             // Metaboxes
-            require_once( 'dt-core/admin/metaboxes/box-four-fields.php' );
-            require_once( 'dt-core/admin/metaboxes/box-church-fields.php' );
             require_once( 'dt-core/admin/metaboxes/box-map.php' );
             require_once( 'dt-core/admin/metaboxes/box-activity.php' );
-            require_once( 'dt-core/admin/metaboxes/box-availability.php' );
             require_once( 'dt-core/admin/metaboxes/box-share-contact.php' );
         }
         /* End Admin configuration section */

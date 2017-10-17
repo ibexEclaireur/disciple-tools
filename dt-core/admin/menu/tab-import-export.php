@@ -28,11 +28,6 @@ class Disciple_Tools_Import_Export_Tab
         echo '<div id="post-body-content">';
         /* Main Column */
 
-        // print '<pre>';
-        //        print_r( $_POST );
-        //        print_r( dt_get_option( 'dt_site_options' ) );
-        // print '</pre>';
-
         /* Box */
         echo '<table class="widefat striped">
                     <thead><th>Import Disciple Tools Data</th></thead>

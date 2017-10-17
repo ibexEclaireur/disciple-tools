@@ -563,7 +563,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         return false;
     }
 
-
+    /**
+     * @param int    $contact_id
+     * @param string $key
+     *
+     * @return bool|\WP_Error
+     */
     public static function delete_contact_field( int $contact_id, string $key ){
         if (!self::can_update( 'contacts', $contact_id )){
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 401] );

@@ -4,11 +4,10 @@ if( !defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly.
 
 /**
- * DmmCRM Plugin Post Type Class
+ * Groups Post Type Class
  * All functionality pertaining to post types in Disciple_Tools.
  *
- * @package    WordPress
- * @subpackage Disciple_Tools
+ * @package    Disciple_Tools
  * @category   Plugin
  * @author     Chasm.Solutions & Kingdom.Training
  * @since      1.0.0
@@ -61,7 +60,7 @@ class Disciple_Tools_Groups_Post_Type
     public $taxonomies;
 
     /**
-     * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
+     * Disciple_Tools_Groups_Post_Type The single instance of Disciple_Tools_Groups_Post_Type.
      *
      * @var    object
      * @access private
@@ -101,10 +100,8 @@ class Disciple_Tools_Groups_Post_Type
         $this->singular = __( 'Group', 'disciple_tools' );
         $this->plural = __( 'Groups', 'disciple_tools' );
         $this->args = [ 'menu_icon' => dt_svg_icon() ];
-        //        $this->taxonomies = $taxonomies;
 
         add_action( 'init', [ $this, 'register_post_type' ] );
-        //        add_action( 'init', [ $this, 'register_taxonomy' ] );
         add_action( 'init', [ $this, 'groups_rewrites_init' ] );
         add_filter( 'post_type_link', [ $this, 'groups_permalink' ], 1, 3 );
 
@@ -197,18 +194,6 @@ class Disciple_Tools_Groups_Post_Type
         register_post_type( $this->post_type, $args );
     } // End register_post_type()
 
-    /**
-     * Register the "thing-category" taxonomy.
-     *
-     * @access public
-     * @since  1.3.0
-     * @return void
-     */
-    public function register_taxonomy()
-    {
-        $this->taxonomies[ 'groups-type' ] = new Disciple_Tools_Taxonomy( $post_type = 'groups', $token = 'groups-type', $singular = 'Type', $plural = 'Types', $args = [] ); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies[ 'groups-type' ]->register();
-    } // End register_taxonomy()
 
     /**
      * Add custom columns for the "manage" screen of this post type.
@@ -336,7 +321,6 @@ class Disciple_Tools_Groups_Post_Type
     {
         $this->meta_box_content( 'church' ); // prints
         $this->meta_box_content( 'church_hidden' ); // prints
-        dt_church_fields_metabox()->content_display(); // prints
     }
 
     /**
@@ -479,7 +463,6 @@ class Disciple_Tools_Groups_Post_Type
             echo '</tbody>' . "\n";
             echo '</table>' . "\n";
         }
-
     } // End meta_box_content()
 
     /**
@@ -722,7 +705,7 @@ class Disciple_Tools_Groups_Post_Type
             'section'     => 'church_hidden',
         ];
         $fields[ 'church_commitment' ] = [
-            'name'        => __( 'Leaders', 'disciple_tools' ),
+            'name'        => __( 'Church Commitment', 'disciple_tools' ),
             'description' => '',
             'type'        => 'key_select',
             'default'     => [ '0' => __( 'No', 'disciple_tools' ), '1' => __( 'Yes', 'disciple_tools' ) ],
