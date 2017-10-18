@@ -510,4 +510,24 @@ class Disciple_Tools_Posts
             return new WP_Error( 'add_shared', __( "Post already shared with user." ), [ 'status' => 418 ] );
         }
     }
+
+    public static function get_most_recent_activity_for_field( $post_id, $field_id ){
+        global $wpdb;
+        $most_recent_activity = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                *
+            FROM
+                `$wpdb->dt_activity_log`
+            WHERE
+                `object_id` = %s
+                AND `meta_id` = %s
+            ORDER BY
+                `hist_time` DESC
+            LIMIT
+                0,1;",
+            $post_id,
+            $field_id
+        ) );
+        return $most_recent_activity[0];
+    }
 }

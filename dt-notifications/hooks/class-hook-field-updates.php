@@ -94,7 +94,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 // get source user id and check if same as notification target
                 $source_user_id = get_current_user_id();
-                if( $source_user_id == $user_id ) {
+                if( $source_user_id == $user_id || !$user_id) {
                     return;
                 }
 

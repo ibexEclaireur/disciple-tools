@@ -167,7 +167,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                     $meta_array = explode( '-', $meta_value ); // Separate the type and id
                     if( isset( $meta_array[ 1 ] ) ) {
                         $user = get_user_by( "ID", $meta_array[1] );
-                        $object_note = "Assigned to: " . $user->display_name;
+                        $object_note = "Assigned to: " . ($user ? $user->display_name : "Nobody");
                     }
                 }
                 break;

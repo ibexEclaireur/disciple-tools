@@ -256,10 +256,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             wp_update_post( [ 'ID' => $contact_id, 'post_title' => $fields[ 'title' ] ] );
         }
 
-        if( current_user_can( "assign_any_contact" ) ) {
-            if( isset( $fields[ "assigned_to" ] ) ) {
+        if( isset( $fields[ "assigned_to" ] ) ) {
+            if( current_user_can( "assign_any_contact" ) ) {
                 $fields[ "overall_status" ] = 'assigned';
             }
+            $fields[ 'accepted' ] = 'no';
         }
 
         foreach( $fields as $field_id => $value ) {
@@ -721,7 +722,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                         $type = $meta_array[ 0 ]; // Build variables
                         if( isset( $meta_array[ 1 ] ) ) {
                             $id = $meta_array[ 1 ];
-                            if( $type == 'user' ) {
+                            if( $type == 'user' && $id) {
                                 $user = get_user_by( 'id', $id );
                                 $fields[ $key ] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[ 0 ] ];
                             }
@@ -1116,11 +1117,27 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
             return [ "overall_status" => self::$contact_fields[ "overall_status" ][ "default" ][ 'active' ] ];
         } else {
-            update_post_meta( $contact_id, 'assigned_to', $meta_value = 'dispatch' );
+            $assign_to_id = 0;
+            $last_activity = self::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
+            if(isset( $last_activity->user_id )){
+                $assign_to_id = $last_activity->user_id;
+            } else {
+//                @todo replace with main dispatcher
+                //grab any dispatcher
+                $args = array(
+                    'role' => 'dispatcher',
+                );
+                $dispatchers = get_users( $args );
+                if (sizeof( $dispatchers ) > 0 ){
+                    $assign_to_id = $dispatchers[0]->ID;
+                }
+            }
+            update_post_meta( $contact_id, 'assigned_to', $meta_value = "user-" . $assign_to_id );
             update_post_meta( $contact_id, 'overall_status', $meta_value = 'unassigned' );
-
+            $assign = get_user_by( 'id', $assign_to_id );
             return [
-                "assigned_to" => 'dispatch',
+                "assigned_to" => $assign->display_name,
+                "overall_status" => 'unassigned'
             ];
         }
     }
