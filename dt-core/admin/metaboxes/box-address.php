@@ -9,7 +9,7 @@
  *
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -55,11 +55,11 @@ class Disciple_Tools_Metabox_Address
 
         echo '<tr><th>
                 <select name="new-key-address" class="edit-input"><option value=""></option> ';
-        foreach( $address_types as $type => $value ) {
+        foreach ( $address_types as $type => $value ) {
 
             $key = "address_" . $type;
 
-            echo '<option value="' . esc_attr( $key ) . '">' . esc_html( $value[ "label" ] ) . '</option>';
+            echo '<option value="' . esc_attr( $key ) . '">' . esc_html( $value["label"] ) . '</option>';
         }
         echo '</select></th>';
         echo '<td>
@@ -103,7 +103,7 @@ class Disciple_Tools_Metabox_Address
     public function get_address_type_list( $post_type )
     {
 
-        switch( $post_type ) {
+        switch ( $post_type ) {
             case 'contacts':
                 $addresses = [
                     "home"  => [ "label" => __( 'Home', 'disciple_tools' ) ],
@@ -146,7 +146,7 @@ class Disciple_Tools_Metabox_Address
         $current_fields = [];
 
         $id = $post->ID ?? $post_id;
-        if( isset( $id ) ) {
+        if ( isset( $id ) ) {
             $current_fields = $wpdb->get_results(
                 $wpdb->prepare(
                     "SELECT
@@ -164,14 +164,14 @@ class Disciple_Tools_Metabox_Address
             );
         }
 
-        foreach( $current_fields as $value ) {
-            if( strpos( $value[ "meta_key" ], "_details" ) == false ) {
-                $details = get_post_meta( $id, $value[ 'meta_key' ] . "_details", true );
+        foreach ( $current_fields as $value ) {
+            if ( strpos( $value["meta_key"], "_details" ) == false ) {
+                $details = get_post_meta( $id, $value['meta_key'] . "_details", true );
                 $name = "";
-                if( $details && isset( $details[ "type" ] ) ) {
-                    $name = $details[ "type" ];
+                if ( $details && isset( $details["type"] ) ) {
+                    $name = $details["type"];
                 }
-                $fields[ $value[ 'meta_key' ] ] = [
+                $fields[ $value['meta_key'] ] = [
                     'name' => $name,
                 ];
             }

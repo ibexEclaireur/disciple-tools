@@ -11,7 +11,7 @@
  *
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
@@ -34,7 +34,7 @@ if( !defined( 'ABSPATH' ) ) {
 function dt_send_email( $email, $subject, $message )
 {
     // Check permission to send email
-    if( ! Disciple_Tools_Posts::can_access( 'contacts' ) ) {
+    if ( ! Disciple_Tools_Posts::can_access( 'contacts' ) ) {
         return new WP_Error( 'send_email_permission_error', 'You do not have the minimum permissions to send an email' );
     }
 
@@ -102,9 +102,9 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
      */
     protected function run_action()
     {
-        $email = sanitize_email( $_POST[ 0 ][ 'email' ] );
-        $subject = sanitize_text_field( $_POST[ 0 ][ 'subject' ] );
-        $message = sanitize_text_field( $_POST[ 0 ][ 'message' ] );
+        $email = sanitize_email( $_POST[0]['email'] );
+        $subject = sanitize_text_field( $_POST[0]['subject'] );
+        $message = sanitize_text_field( $_POST[0]['message'] );
 
         do_action( "dt_async_$this->action", $email, $subject, $message );
 
@@ -116,7 +116,7 @@ class Disciple_Tools_Notifications_Email extends Disciple_Tools_Async_Task
  */
 function dt_load_async_email()
 {
-    if( isset( $_POST[ '_wp_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ '_wp_nonce' ] ) ) ) && isset( $_POST[ 'action' ] ) && sanitize_key( wp_unslash( $_POST[ 'action' ] ) ) == 'dt_async_email_notification' ) {
+    if ( isset( $_POST['_wp_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wp_nonce'] ) ) ) && isset( $_POST['action'] ) && sanitize_key( wp_unslash( $_POST['action'] ) ) == 'dt_async_email_notification' ) {
         $send_email = new Disciple_Tools_Notifications_Email();
         $send_email->send_email();
     }

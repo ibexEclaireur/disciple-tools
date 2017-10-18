@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -45,12 +45,12 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
     {
 
         // check if $meta_value is empty
-        if( empty( $meta_value ) ) {
+        if ( empty( $meta_value ) ) {
             return;
         }
 
         // Check for specific key or trigger
-        if( !( $meta_key == 'assigned_to'
+        if ( !( $meta_key == 'assigned_to'
             || $meta_key == 'requires_update'
             || strpos( $meta_key, "address" ) === 0
             || strpos( $meta_key, "contact" ) === 0
@@ -61,16 +61,16 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
         // Configure switch statement
         $original_meta_key = '';
-        if( strpos( $meta_key, "address" ) === 0 || strpos( $meta_key, "contact" ) === 0 ) {
+        if ( strpos( $meta_key, "address" ) === 0 || strpos( $meta_key, "contact" ) === 0 ) {
             $original_meta_key = $meta_key;
             $meta_key = 'contact_info_update';
-        } elseif( strpos( $meta_key, "milestone" ) === 0 ) {
+        } elseif ( strpos( $meta_key, "milestone" ) === 0 ) {
             $original_meta_key = $meta_key;
             $meta_key = 'milestone';
         }
 
         // Switch between types of notifications
-        switch( $meta_key ) {
+        switch ( $meta_key ) {
 
             case 'assigned_to':
 
@@ -89,22 +89,22 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 // get user or team assigned_to
                 $meta_array = explode( '-', $meta_value ); // Separate the type and id
-                $type = $meta_array[ 0 ]; // parse type
-                $user_id = (int) $meta_array[ 1 ];
+                $type = $meta_array[0]; // parse type
+                $user_id = (int) $meta_array[1];
 
                 // get source user id and check if same as notification target
                 $source_user_id = get_current_user_id();
-                if( $source_user_id == $user_id || !$user_id) {
+                if ( $source_user_id == $user_id || !$user_id ) {
                     return;
                 }
 
-                if( $type == 'user' ) {
+                if ( $type == 'user' ) {
 
                     $user = get_userdata( $user_id );
                     $user_meta = get_user_meta( $user_id );
 
                     // web notification
-                    if( dt_user_notification_is_enabled( 'new_web', $user_meta, $user->ID ) ) {
+                    if ( dt_user_notification_is_enabled( 'new_web', $user_meta, $user->ID ) ) {
 
                         $notification_note = 'You have been assigned <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a>';
 
@@ -123,7 +123,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                     }
 
                     // email notification
-                    if( dt_user_notification_is_enabled( 'new_email', $user_meta, $user->ID ) ) {
+                    if ( dt_user_notification_is_enabled( 'new_email', $user_meta, $user->ID ) ) {
 
                         $message = 'You have a new contact: '. strip_tags( get_the_title( $object_id ) ) .'. View the new contact at: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
@@ -135,7 +135,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                         dt_write_log( '@new_email' ); // todo remove after dev
                     }
-
                 } else { // if group, do nothing. Option for future development.
                     return;
                 }
@@ -144,7 +143,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
             case 'requires_update':
 
-                if( $meta_value == 'yes' ) {
+                if ( $meta_value == 'yes' ) {
 
                     $notification_name = 'requires_update';
 
@@ -161,28 +160,28 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                     // get post meta assigned_to
                     $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
-                    if( empty( $assigned_to ) ) { // if assigned_to is empty, there is no one to notify.
+                    if ( empty( $assigned_to ) ) { // if assigned_to is empty, there is no one to notify.
                         return;
                     }
 
                     // parse assigned to
                     $meta_array = explode( '-', $assigned_to ); // Separate the type and id
-                    $type = $meta_array[ 0 ]; // parse type
-                    $user_id = (int) $meta_array[ 1 ];
+                    $type = $meta_array[0]; // parse type
+                    $user_id = (int) $meta_array[1];
 
                     // get source user id and check if same as notification target
                     $source_user_id = get_current_user_id();
-                    if( $source_user_id == $user_id ) {
+                    if ( $source_user_id == $user_id ) {
                         return;
                     }
 
-                    if( $type == 'user' ) {
+                    if ( $type == 'user' ) {
 
                         $user = get_userdata( $user_id );
                         $user_meta = get_user_meta( $user_id );
 
                         // web notification
-                        if( dt_user_notification_is_enabled( 'updates_web', $user_meta, $user->ID ) ) {
+                        if ( dt_user_notification_is_enabled( 'updates_web', $user_meta, $user->ID ) ) {
 
                             $notification_note = 'An update on <a href="' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id . '">' . strip_tags( get_the_title( $object_id ) ) . '</a> is requested.';
 
@@ -201,7 +200,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                         }
 
                         // email notification
-                        if( dt_user_notification_is_enabled( 'updates_email', $user_meta, $user->ID ) ) {
+                        if ( dt_user_notification_is_enabled( 'updates_email', $user_meta, $user->ID ) ) {
 
                             $message = 'You have an update requested for: '. strip_tags( get_the_title( $object_id ) ) .'. Link for updating contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
@@ -226,38 +225,38 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 // get post meta assigned_to
                 $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
-                if( empty( $assigned_to ) ) { // if assigned_to is empty, there is no one to notify.
+                if ( empty( $assigned_to ) ) { // if assigned_to is empty, there is no one to notify.
                     return;
                 }
 
                 // parse assigned to
                 $meta_array = explode( '-', $assigned_to ); // Separate the type and id
-                $type = $meta_array[ 0 ]; // parse type
-                $user_id = (int) $meta_array[ 1 ];
+                $type = $meta_array[0]; // parse type
+                $user_id = (int) $meta_array[1];
 
                 // get source user id and check if same as notification target
                 $source_user_id = get_current_user_id();
-                if( $source_user_id == $user_id ) {
+                if ( $source_user_id == $user_id ) {
                     return;
                 }
 
                 // parse kind of details changed
-                if( strpos( $meta_key, "address" ) === 0 ) {
+                if ( strpos( $meta_key, "address" ) === 0 ) {
                     $element = 'Address';
-                } elseif( strpos( $meta_key, "contact" ) === 0 ) {
+                } elseif ( strpos( $meta_key, "contact" ) === 0 ) {
                     $element = 'Contact';
                 } else {
                     $element = 'Contact';
                 }
 
-                if( $type == 'user' ) {
+                if ( $type == 'user' ) {
 
                     $user = get_userdata( $user_id );
                     $user_meta = get_user_meta( $user_id );
                     $source_user = get_userdata( $source_user_id );
 
                     // web notification
-                    if( dt_user_notification_is_enabled( 'changes_web', $user_meta, $user->ID ) ) {
+                    if ( dt_user_notification_is_enabled( 'changes_web', $user_meta, $user->ID ) ) {
 
                         $notification_note = $element . ' details on <a href="' . home_url( '/' ) .
                             get_post_type( $object_id ) . '/' . $object_id . '">' .
@@ -279,7 +278,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                     }
 
                     // email notification
-                    if( dt_user_notification_is_enabled( 'changes_email', $user_meta, $user->ID ) ) {
+                    if ( dt_user_notification_is_enabled( 'changes_email', $user_meta, $user->ID ) ) {
 
                         $message = 'There were changes made to: '. strip_tags( get_the_title( $object_id ) ) .'. Link for viewing contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
@@ -303,22 +302,22 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 // get post meta assigned_to
                 $assigned_to = get_post_meta( $object_id, $key = 'assigned_to', $single = true );
-                if( empty( $assigned_to ) ) { // if assigned_to is empty, there is contact owner to notify.
+                if ( empty( $assigned_to ) ) { // if assigned_to is empty, there is contact owner to notify.
                     return;
                 }
 
                 // parse assigned to
                 $meta_array = explode( '-', $assigned_to ); // Separate the type and id
-                $type = $meta_array[ 0 ]; // parse type
-                $user_id = (int) $meta_array[ 1 ];
+                $type = $meta_array[0]; // parse type
+                $user_id = (int) $meta_array[1];
 
                 // get source user id and check if same as notification target
                 $source_user_id = get_current_user_id();
-                if( $source_user_id == $user_id ) {
+                if ( $source_user_id == $user_id ) {
                     return;
                 }
 
-                switch( $original_meta_key ) {
+                switch ( $original_meta_key ) {
                     case 'milestone_belief':
                         $element = '"Belief" Milestone';
                         break;
@@ -347,14 +346,14 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                 $meta_value == 'yes' ? $value = 'added' : $value = 'removed';
 
-                if( $type == 'user' ) {
+                if ( $type == 'user' ) {
 
                     $user = get_userdata( $user_id );
                     $user_meta = get_user_meta( $user_id );
                     $source_user = get_userdata( $source_user_id );
 
                     // web notification
-                    if( dt_user_notification_is_enabled( 'milestones_web', $user_meta, $user->ID ) ) {
+                    if ( dt_user_notification_is_enabled( 'milestones_web', $user_meta, $user->ID ) ) {
 
                         $notification_note = $element . ' has been ' . $value . ' for <a href="' . home_url( '/' ) .
                             get_post_type( $object_id ) . '/' . $object_id . '">' .
@@ -376,7 +375,7 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                     }
 
                     // email notification
-                    if( dt_user_notification_is_enabled( 'milestones_email', $user_meta, $user->ID ) ) {
+                    if ( dt_user_notification_is_enabled( 'milestones_email', $user_meta, $user->ID ) ) {
 
                         $message = 'A milestone was update for '. strip_tags( get_the_title( $object_id ) ) .'. Link to view contact: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
@@ -388,8 +387,6 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
 
                         dt_write_log( '@milestones_email' ); // todo remove after dev
                     }
-
-
                 } else { // if group, do nothing. Option for future development.
                     return;
                 }

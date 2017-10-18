@@ -21,7 +21,7 @@ class Disciple_Tools_Goals {
      * @access  public
      * @since   1.0.0
      */
-    public function __construct () {
+    public function __construct() {
 
     } // End __construct()
 

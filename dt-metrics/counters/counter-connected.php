@@ -20,7 +20,7 @@ class Disciple_Tools_Counter_Connected  {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () { } // End __construct()
+    public function __construct() { } // End __construct()
 
     /**
      * Counts the number of contacts with no disciples in database
@@ -29,11 +29,11 @@ class Disciple_Tools_Counter_Connected  {
      *
      * @return int
      */
-    public function has_zero ( $type ) {
+    public function has_zero( $type ) {
         global $wpdb;
 
         $post_type = 'contacts';
-        if($type ==  'groups_to_groups') { $post_type = 'groups'; }
+        if ($type == 'groups_to_groups') { $post_type = 'groups'; }
 
         // Get values
         $total_contacts = wp_count_posts( $post_type )->publish;
@@ -62,7 +62,7 @@ class Disciple_Tools_Counter_Connected  {
      *
      * @return int
      */
-    public function has_at_least ( $min_number, $type ) {
+    public function has_at_least( $min_number, $type ) {
         global $wpdb;
         $i = 0;
 
@@ -95,7 +95,7 @@ class Disciple_Tools_Counter_Connected  {
      *
      * @return int
      */
-    public function has_exactly ( $exact_number, $type ) {
+    public function has_exactly( $exact_number, $type ) {
         global $wpdb;
         $i = 0;
 
@@ -126,11 +126,11 @@ class Disciple_Tools_Counter_Connected  {
      *
      * @return int
      */
-    protected function get_number_disciples ( $contact, $column ) {
+    protected function get_number_disciples( $contact, $column ) {
         $i = 0;
 
-        foreach($column as $item) {
-            if($item == $contact) {
+        foreach ($column as $item) {
+            if ($item == $contact) {
                 $i++;
             }
         }
@@ -145,7 +145,7 @@ class Disciple_Tools_Counter_Connected  {
      *
      * @return null|string
      */
-    public function has_meta_value ( $type, $meta_value )
+    public function has_meta_value( $type, $meta_value )
     {
         global $wpdb;
 

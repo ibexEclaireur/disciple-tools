@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -77,10 +77,10 @@ class Disciple_Tools_Taxonomy
         $this->singular = esc_html( $singular );
         $this->plural = esc_html( $plural );
 
-        if( '' == $this->singular ) {
+        if ( '' == $this->singular ) {
             $this->singular = __( 'Category', 'disciple_tools' );
         }
-        if( '' == $this->plural ) {
+        if ( '' == $this->plural ) {
             $this->plural = __( 'Categories', 'disciple_tools' );
         }
 

@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -16,7 +16,7 @@ if( !defined( 'ABSPATH' ) ) {
 function dt_make_filename_hash( $filename )
 {
     $info = pathinfo( $filename );
-    $ext = empty( $info[ 'extension' ] ) ? '' : '.' . $info[ 'extension' ];
+    $ext = empty( $info['extension'] ) ? '' : '.' . $info['extension'];
     $name = basename( $filename, $ext );
 
     return md5( $name ) . $ext;

@@ -8,7 +8,7 @@
  * @package Disciple_Tools_People_Groups_Admin_Menu
  *
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -39,7 +39,7 @@ class Disciple_Tools_People_Groups_Admin_Menu
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -77,15 +77,15 @@ class Disciple_Tools_People_Groups_Admin_Menu
     public function page_content()
     {
 
-        if( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
 
         /**
          * Begin Header & Tab Bar
          */
-        if( isset( $_GET[ "tab" ] ) ) {
-            $tab = sanitize_text_field( wp_unslash( $_GET[ "tab" ] ) );
+        if ( isset( $_GET["tab"] ) ) {
+            $tab = sanitize_text_field( wp_unslash( $_GET["tab"] ) );
         } else {
             $tab = 'import';
         }
@@ -99,7 +99,7 @@ class Disciple_Tools_People_Groups_Admin_Menu
 
         echo '<a href="edit.php?post_type=peoplegroups&page=disciple_tools_people_groups&tab=import" class="nav-tab ';
 
-        if( $tab == 'import' || !isset( $tab ) ) {
+        if ( $tab == 'import' || !isset( $tab ) ) {
             echo 'nav-tab-active';
         }
         echo '">Import</a>';
@@ -116,7 +116,7 @@ class Disciple_Tools_People_Groups_Admin_Menu
          * Begin Page Content
          */
 
-        switch( $tab ) {
+        switch ( $tab ) {
 
             default:
                 $class_object = new Disciple_Tools_People_Groups_Tab_Import();

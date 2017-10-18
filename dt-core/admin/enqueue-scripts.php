@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 /**
@@ -32,7 +32,7 @@ function dt_contact_page_scripts()
 {
     global $pagenow, $post;
 
-    if( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'contacts' === get_post_type( $post ) ) {
+    if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'contacts' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
@@ -52,7 +52,7 @@ function dt_group_page_scripts()
 {
     global $pagenow, $post;
 
-    if( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'groups' === get_post_type( $post ) ) {
+    if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'groups' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
@@ -78,7 +78,7 @@ function dt_location_page_scripts()
 {
     global $pagenow, $post;
 
-    if( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'locations' === get_post_type( $post ) ) {
+    if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'locations' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
@@ -98,7 +98,7 @@ function dt_asset_page_scripts()
 {
     global $pagenow, $post;
 
-    if( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'assets' === get_post_type( $post ) ) {
+    if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow ) && 'assets' === get_post_type( $post ) ) {
 
         wp_register_style( 'dt_admin_css', disciple_tools()->plugin_css_url . 'disciple-tools-admin-styles.css', [], filemtime( disciple_tools()->plugin_css_path . 'disciple-tools-admin-styles.css' ) );
         wp_enqueue_style( 'dt_admin_css' );
@@ -118,7 +118,7 @@ function dt_people_groups_post_type_scripts()
 {
     global $pagenow, $post;
 
-    if( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow || 'edit.php' === $pagenow ) && 'peoplegroups' === get_post_type( $post ) ) {
+    if ( ( 'post.php' === $pagenow || 'post-new.php' === $pagenow || 'edit.php' === $pagenow ) && 'peoplegroups' === get_post_type( $post ) ) {
 
         wp_enqueue_script( 'dt_peoplegroups_scripts', disciple_tools()->plugin_js_url . 'dt-peoplegroups.js', [
             'jquery',
@@ -133,7 +133,7 @@ function dt_people_groups_post_type_scripts()
  */
 function dt_options_scripts()
 {
-    if( isset( $_GET[ "page" ] ) && $_GET[ "page" ] === 'dt_options' ) {
+    if ( isset( $_GET["page"] ) && $_GET["page"] === 'dt_options' ) {
         wp_enqueue_script( 'dt_options_script', disciple_tools()->plugin_js_url . 'dt-options.js', [
             'jquery',
             'jquery-ui-core',
@@ -151,7 +151,7 @@ function dt_options_scripts()
 function dt_dismiss_notice_callback_script()
 {
     global $pagenow;
-    if( is_admin() && $pagenow === 'options-general.php' ) {
+    if ( is_admin() && $pagenow === 'options-general.php' ) {
         wp_enqueue_script( 'disciple-tools-admin_script', disciple_tools()->plugin_js_url . 'disciple-tools-admin.js', [ 'jquery' ], filemtime( disciple_tools()->plugin_js_path . 'disciple-tools-admin.js' ), true );
     }
 }

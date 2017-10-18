@@ -34,8 +34,8 @@ class Disciple_Tools_Activator
         $roles->set_roles();
 
         /** Setup key for JWT authentication */
-        if( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
-            if( get_option( "my_jwt_key" ) ) {
+        if ( !defined( 'JWT_AUTH_SECRET_KEY' ) ) {
+            if ( get_option( "my_jwt_key" ) ) {
                 // @codingStandardsIgnoreLine
                 define( 'JWT_AUTH_SECRET_KEY', get_option( "my_jwt_key" ) );
             } else {
@@ -52,10 +52,10 @@ class Disciple_Tools_Activator
         dt_get_option( 'dt_site_custom_lists' );
 
         /** Activate database creation for Disciple Tools Activity logs */
-        if( is_multisite() && $network_wide ) {
+        if ( is_multisite() && $network_wide ) {
             // Get all blogs in the network and activate plugin on each one
             $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );
-            foreach( $blog_ids as $blog_id ) {
+            foreach ( $blog_ids as $blog_id ) {
                 switch_to_blog( $blog_id );
                 Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
                 restore_current_blog();
@@ -63,7 +63,8 @@ class Disciple_Tools_Activator
         } else {
             Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
         }
-        // TODO: we need to run the migrations on updates as well, not just on activations
+        // Disciple_Tools_Migration_Engine::migrate is also run on updates, see
+        // the code in disciple-tools.php
     }
 
     /**
@@ -78,7 +79,7 @@ class Disciple_Tools_Activator
      */
     public static function on_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta )
     {
-        if( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
+        if ( is_plugin_active_for_network( 'disciple-tools/disciple-tools.php' ) ) {
             switch_to_blog( $blog_id );
             Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
             restore_current_blog();

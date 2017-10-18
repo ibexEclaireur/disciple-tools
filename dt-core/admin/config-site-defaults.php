@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 /**
@@ -57,7 +57,7 @@ function dt_warn_user_about_permalink_settings()
 function dt_permalink_structure_changed_callback( $permalink_structure )
 {
     global $wp_rewrite;
-    if( $permalink_structure !== '/%postname%/' ) {
+    if ( $permalink_structure !== '/%postname%/' ) {
         add_action( 'admin_notices', 'dt_warn_user_about_permalink_settings' );
     }
 }
@@ -83,20 +83,20 @@ function dt_svg_icon()
 function dt_get_option( string $name )
 {
 
-    switch( $name ) {
+    switch ( $name ) {
         case 'dt_site_options':
             $site_options = dt_get_site_options_defaults();
 
-            if( !get_option( 'dt_site_options' ) ) { // options doesn't exist, create new.
+            if ( !get_option( 'dt_site_options' ) ) { // options doesn't exist, create new.
                 $add = add_option( 'dt_site_options', $site_options, '', true );
-                if( !$add ) {
+                if ( !$add ) {
                     return new WP_Error( 'failed_add_site_option', 'Site option dt_site_options was not able to be created' );
                 }
 
                 return get_option( 'dt_site_options' );
-            } elseif( get_option( 'dt_site_options' )[ 'version' ] < $site_options[ 'version' ] ) { // option exists but version is behind
+            } elseif ( get_option( 'dt_site_options' )['version'] < $site_options['version'] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_options' );
-                if( !$upgrade ) {
+                if ( !$upgrade ) {
                     return new WP_Error( 'failed_site_option_upgrade', 'Versions of site options requires upgrade, but upgrade attempt failed.' );
                 }
 
@@ -110,13 +110,13 @@ function dt_get_option( string $name )
         case 'dt_site_custom_lists':
             $custom_lists = dt_get_site_custom_lists();
 
-            if( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
+            if ( !get_option( 'dt_site_custom_lists' ) ) { // options doen't exist, create new.
                 add_option( 'dt_site_custom_lists', $custom_lists, '', true );
 
                 return get_option( 'dt_site_custom_lists' );
-            } elseif( get_option( 'dt_site_custom_lists' )[ 'version' ] < $custom_lists[ 'version' ] ) { // option exists but version is behind
+            } elseif ( get_option( 'dt_site_custom_lists' )['version'] < $custom_lists['version'] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
-                if( !$upgrade ) {
+                if ( !$upgrade ) {
                     return new WP_Error( 'failed_site_option_custom_list_upgrade', 'Versions of site options custom lists requires upgrade, but upgrade attempt failed.' );
                 }
 
@@ -143,9 +143,9 @@ function dt_get_site_options_defaults()
 {
     $fields = [];
 
-    $fields[ 'version' ] = '1.0';
+    $fields['version'] = '1.0';
 
-    $fields[ 'user_notifications' ] = [
+    $fields['user_notifications'] = [
         'new_web'          => true,
         'new_email'        => true,
         'mentions_web'     => true,
@@ -158,16 +158,16 @@ function dt_get_site_options_defaults()
         'milestones_email' => false,
     ];
 
-    $fields[ 'extension_modules' ] = [
+    $fields['extension_modules'] = [
         'add_people_groups' => true,
         'add_assetmapping'  => true,
         'add_prayer'        => true,
         'add_worker'        => true,
     ];
 
-    $fields[ 'clear_data_on_deactivate' ] = false; // todo need to add this option wrapper to the deactivate.php file for table deletes
+    $fields['clear_data_on_deactivate'] = false; // todo need to add this option wrapper to the deactivate.php file for table deletes
 
-    $fields[ 'daily_reports' ] = [
+    $fields['daily_reports'] = [
         'build_report_for_contacts'  => true,
         'build_report_for_groups'    => true,
         'build_report_for_facebook'  => false,
@@ -193,10 +193,10 @@ function dt_get_site_custom_lists( string $list_title = null )
 {
     $fields = [];
 
-    $fields[ 'version' ] = '1.0';
+    $fields['version'] = '1.0';
 
     // the prefix dt_user_ assists db meta queries on the user
-    $fields[ 'user_fields' ] = [
+    $fields['user_fields'] = [
         'dt_user_personal_phone'   => [
             'label'       => 'Personal Phone',
             'key'         => 'dt_user_personal_phone',
@@ -248,7 +248,7 @@ function dt_get_site_custom_lists( string $list_title = null )
         ],
     ];
 
-    $fields[ 'user_fields_types' ] = [
+    $fields['user_fields_types'] = [
         'phone'   => [
             'label' => 'Phone',
             'key'   => 'phone',
@@ -271,7 +271,7 @@ function dt_get_site_custom_lists( string $list_title = null )
         ],
     ];
 
-    $fields[ 'sources' ] = [
+    $fields['sources'] = [
         'web'           => [
             'label'       => 'Web',
             'key'         => 'web',
@@ -318,7 +318,7 @@ function dt_get_site_custom_lists( string $list_title = null )
 
     // $fields = apply_filters( 'dt_site_custom_lists', $fields );
 
-    if( is_null( $list_title ) ) {
+    if ( is_null( $list_title ) ) {
         return $fields;
     } else {
         return $fields[ $list_title ];
@@ -335,14 +335,14 @@ function dt_site_options_upgrade_version( string $name )
     $site_options_current = get_option( $name );
     $site_options_defaults = dt_get_site_options_defaults();
 
-    $new_version_number = $site_options_defaults[ 'version' ];
+    $new_version_number = $site_options_defaults['version'];
 
-    if( !is_array( $site_options_current ) ) {
+    if ( !is_array( $site_options_current ) ) {
         return false;
     }
 
     $new_options = array_replace_recursive( $site_options_defaults, $site_options_current );
-    $new_options[ 'version' ] = $new_version_number;
+    $new_options['version'] = $new_version_number;
 
     return update_option( $name, $new_options, true );
 }
@@ -355,7 +355,7 @@ function dt_site_options_upgrade_version( string $name )
  * @return string
  */
 function dt_prepare_user_fields_types_for_input( $type ) {
-    switch( $type ) {
+    switch ( $type ) {
         case 'phone':
             return 'tel';
             break;

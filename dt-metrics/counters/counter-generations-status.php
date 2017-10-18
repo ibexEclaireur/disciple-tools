@@ -19,7 +19,7 @@ class Disciple_Tools_Counter_Generations  {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () { } // End __construct()
+    public function __construct() { } // End __construct()
 
     /**
      * Counts the number of records at the supplied generation level
@@ -29,12 +29,12 @@ class Disciple_Tools_Counter_Generations  {
      *
      * @return int
      */
-    public function gen_level ( $level, $type ) {
+    public function gen_level( $level, $type ) {
         $i = 0;
         $list = $this->generation_status_list( $type );
 
-        foreach($list as $item) {
-            if($item == $level) {
+        foreach ($list as $item) {
+            if ($item == $level) {
                 $i++; // counts how many records at that generation level
             }
         }
@@ -49,7 +49,7 @@ class Disciple_Tools_Counter_Generations  {
      *
      * @return array
      */
-    public function generation_status_list ( $type = 'contacts_to_contacts' ) {
+    public function generation_status_list( $type = 'contacts_to_contacts' ) {
 
         // Load variables
         global $wpdb;
@@ -75,12 +75,12 @@ class Disciple_Tools_Counter_Generations  {
         // Run checks on every contact in discipleship
         foreach ($full_p2p_array as $contact) {
             // Check if contact is first generation. If true, create array item and move to next item in loop.
-            if($this->zero_generation_check( $contact, $p2p_array_from )) {
-                $gen_count[$contact] = 0;
+            if ($this->zero_generation_check( $contact, $p2p_array_from )) {
+                $gen_count[ $contact ] = 0;
             }
 
             // If first generation is not true, then check for what generation the contact is.
-            else  {
+            else {
 
                 // While loop checks for the first generation and increments the generation above the target until it gets to the first generation.
                 $target_inc = $contact; // separates the target from the increment
@@ -88,11 +88,11 @@ class Disciple_Tools_Counter_Generations  {
                 $i = 1;
 
                 while (true) {
-                    if (! $this->zero_generation_check( $target_inc, $p2p_array_from )) { // is initial condition true
+                    if ( ! $this->zero_generation_check( $target_inc, $p2p_array_from )) { // is initial condition true
 
                         // get the parent id & replace target with parent id
                         $parent_id = $this->get_parent_id( $target_inc, $p2p_array );
-                        $gen_ids[$i] = $parent_id;
+                        $gen_ids[ $i ] = $parent_id;
                         $target_inc = $parent_id;
                         $i++;
 
@@ -102,7 +102,7 @@ class Disciple_Tools_Counter_Generations  {
                     }
                 }
                 // Count the number of records
-                $gen_count[$contact] = count( $gen_ids );
+                $gen_count[ $contact ] = count( $gen_ids );
             } // end else
         }
         return $gen_count;
@@ -121,7 +121,7 @@ class Disciple_Tools_Counter_Generations  {
 
         foreach ($p2p_array as $row) {
             if ($row['p2p_from'] == $target) {
-                $parent =  $row['p2p_to'];
+                $parent = $row['p2p_to'];
             }
         }
         return $parent;
@@ -135,7 +135,7 @@ class Disciple_Tools_Counter_Generations  {
      *
      * @return bool
      */
-    protected function zero_generation_check ( $contact, $p2p_array_from ) {
+    protected function zero_generation_check( $contact, $p2p_array_from ) {
         foreach ($p2p_array_from as $value) {
             if ($value == $contact) {
                 return false;

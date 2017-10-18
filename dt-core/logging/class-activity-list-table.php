@@ -1,6 +1,6 @@
 <?php
 // WP_List_Table is not loaded automatically so we need to load it in our application
-if( !class_exists( 'WP_List_Table' ) ) {
+if ( !class_exists( 'WP_List_Table' ) ) {
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
@@ -116,21 +116,21 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
             ARRAY_A
         );
 
-        foreach( $results as $result ) {
+        foreach ( $results as $result ) {
             $mapped_array = [
-                'date'        => date( 'm/d/Y h:i:s', $result[ 'hist_time' ] ),
-                'ID'          => $result[ 'object_id' ],
-                'author'      => $result[ 'user_id' ],//dt_get_user_display_name($result['user_id']),
-                'ip'          => $result[ 'hist_ip' ],
-                'type'        => $result[ 'object_type' ],
-                'label'       => $result[ 'object_subtype' ],
-                'action'      => $result[ 'action' ],
-                'description' => $result[ 'object_name' ],
-                'meta_id'     => $result[ 'meta_id' ],
-                'meta_key'    => $result[ 'meta_key' ],
-                'meta_value'  => $result[ 'meta_value' ],
-                'meta_parent' => $result[ 'meta_parent' ],
-                'object_note' => $result[ 'object_note' ],
+                'date'        => date( 'm/d/Y h:i:s', $result['hist_time'] ),
+                'ID'          => $result['object_id'],
+                'author'      => $result['user_id'],//dt_get_user_display_name($result['user_id']),
+                'ip'          => $result['hist_ip'],
+                'type'        => $result['object_type'],
+                'label'       => $result['object_subtype'],
+                'action'      => $result['action'],
+                'description' => $result['object_name'],
+                'meta_id'     => $result['meta_id'],
+                'meta_key'    => $result['meta_key'],
+                'meta_value'  => $result['meta_value'],
+                'meta_parent' => $result['meta_parent'],
+                'object_note' => $result['object_note'],
             ];
 
             $data[] = $mapped_array;
@@ -151,7 +151,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
      */
     public function column_default( $item, $column_name )
     {
-        switch( $column_name ) {
+        switch ( $column_name ) {
             case 'date':
             case 'ID':
             case 'author':
@@ -189,24 +189,24 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
         $order = 'desc';
 
         // If orderby is set, use this as the sort column
-        if( !empty( $_GET[ 'orderby' ] ) ) {
-            $orderby = sanitize_sql_orderby( wp_unslash( $_GET[ 'orderby' ] ) );
-            if( !preg_match( $orderby, '/^[a-zA-Z][a-zA-Z0-9]*$/' ) ) {
+        if ( !empty( $_GET['orderby'] ) ) {
+            $orderby = sanitize_sql_orderby( wp_unslash( $_GET['orderby'] ) );
+            if ( !preg_match( $orderby, '/^[a-zA-Z][a-zA-Z0-9]*$/' ) ) {
                 throw new Exception( "Orderby variable contains weird input." );
             }
         }
 
         // If order is set use this as the order
-        if( !empty( $_GET[ 'order' ] ) ) {
-            $order = sanitize_key( $_GET[ 'order' ] );
-            if( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
+        if ( !empty( $_GET['order'] ) ) {
+            $order = sanitize_key( $_GET['order'] );
+            if ( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
                 throw new Exception( "expected order variable to be asc or desc." );
             }
         }
 
         $result = strcmp( $a[ $orderby ], $b[ $orderby ] );
 
-        if( $order === 'asc' ) {
+        if ( $order === 'asc' ) {
             return $result;
         }
 

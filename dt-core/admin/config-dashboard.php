@@ -10,7 +10,7 @@
  *
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -39,7 +39,7 @@ final class Disciple_Tools_Dashboard
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -54,7 +54,7 @@ final class Disciple_Tools_Dashboard
      */
     public function __construct()
     {
-        if( is_admin() ) {
+        if ( is_admin() ) {
             /* Add dashboard widgets */
             add_action( 'wp_dashboard_setup', [ $this, 'add_widgets' ] );
 
@@ -131,12 +131,12 @@ final class Disciple_Tools_Dashboard
      */
     public function add_page_to_dashboard_activity( $query_args )
     {
-        if( is_array( $query_args[ 'post_type' ] ) ) {
+        if ( is_array( $query_args['post_type'] ) ) {
             //Set your post type
-            $query_args[ 'post_type' ][] = 'contacts';
+            $query_args['post_type'][] = 'contacts';
         } else {
-            $temp = [ $query_args[ 'post_type' ], 'contacts' ];
-            $query_args[ 'post_type' ] = $temp;
+            $temp = [ $query_args['post_type'], 'contacts' ];
+            $query_args['post_type'] = $temp;
         }
 
         return $query_args;

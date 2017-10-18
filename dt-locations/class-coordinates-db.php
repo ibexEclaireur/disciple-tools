@@ -5,7 +5,7 @@
  * Disciple_Tools_Coordinates_DB
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -24,7 +24,7 @@ class Disciple_Tools_Coordinates_DB
     {
         global $wpdb;
 
-        if( !post_type_exists( 'locations' ) ) {
+        if ( !post_type_exists( 'locations' ) ) {
             return 'post type locations is not registered';
         }
 
@@ -50,7 +50,7 @@ class Disciple_Tools_Coordinates_DB
      */
     public static function get_db_state( $state )
     {
-        if( !post_type_exists( 'locations' ) ) {
+        if ( !post_type_exists( 'locations' ) ) {
             return 'post type locations is not registered';
         }
 
@@ -67,8 +67,8 @@ class Disciple_Tools_Coordinates_DB
             $wpdb->esc_like( "polygon_$state" ) . "%"
         ), ARRAY_A );
 
-        foreach( $results as $value ) {
-            $coordinates_array[ $value[ 'meta_key' ] ] = json_decode( $value[ 'meta_value' ] );
+        foreach ( $results as $value ) {
+            $coordinates_array[ $value['meta_key'] ] = json_decode( $value['meta_value'] );
         }
 
         return $coordinates_array;

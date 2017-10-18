@@ -6,11 +6,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     public function __construct() {
         add_action( 'transition_post_status', [ &$this, 'hooks_transition_post_status' ], 10, 3 );
         add_action( 'delete_post', [ &$this, 'hooks_delete_post' ] );
-        add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta'], 10, 4 );
-        add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta'], 10, 4 );
-        add_action( "delete_post_meta", [ &$this, 'post_meta_deleted'], 10, 4 );
-        add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created'], 10, 1 );
-        add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted'], 10, 1 );
+        add_action( "added_post_meta", [ &$this, 'hooks_added_post_meta' ], 10, 4 );
+        add_action( "updated_post_meta", [ &$this, 'hooks_updated_post_meta' ], 10, 4 );
+        add_action( "delete_post_meta", [ &$this, 'post_meta_deleted' ], 10, 4 );
+        add_action( 'p2p_created_connection', [ &$this, 'hooks_p2p_created' ], 10, 1 );
+        add_action( 'p2p_delete_connections', [ &$this, 'hooks_p2p_deleted' ], 10, 1 );
 
         parent::__construct();
     }
@@ -105,14 +105,14 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         );
     }
 
-    public function hooks_added_post_meta ( $mid, $object_id, $meta_key, $meta_value ) {
+    public function hooks_added_post_meta( $mid, $object_id, $meta_key, $meta_value ) {
 
         return $this->hooks_updated_post_meta( $mid, $object_id, $meta_key, $meta_value, true );
 
     }
 
 
-    public function hooks_updated_post_meta ( $meta_id, $object_id, $meta_key, $meta_value, $new = false, $deleted = false ) {
+    public function hooks_updated_post_meta( $meta_id, $object_id, $meta_key, $meta_value, $new = false, $deleted = false ) {
         global $wpdb;
         $parent_post = get_post( $object_id, ARRAY_A ); // get object info
 
@@ -120,7 +120,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             return;
         }
 
-        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type']  ) { // ignore nav items
+        if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] ) { // ignore nav items
             return;
         }
 
@@ -128,7 +128,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         // get the previous value
         $prev = '';
         $prev_value = '';
-        if (!$new){
+        if ( !$new){
             $prev = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
                     *
@@ -148,7 +148,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             ) );
 
         }
-        if (!empty( $prev )){
+        if ( !empty( $prev )){
             if ( is_array( $meta_value )){
                 $prev_value = unserialize( $prev[0]->meta_value );
             } else {
@@ -165,7 +165,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 }
                 if (strpos( $meta_key, "assigned_to" ) !== false ){
                     $meta_array = explode( '-', $meta_value ); // Separate the type and id
-                    if( isset( $meta_array[ 1 ] ) ) {
+                    if ( isset( $meta_array[1] ) ) {
                         $user = get_user_by( "ID", $meta_array[1] );
                         $object_note = "Assigned to: " . ($user ? $user->display_name : "Nobody");
                     }
@@ -187,8 +187,8 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $original_key = str_replace( "_details", "", $meta_key );
             $original = get_post_meta( $object_id, $original_key, true );
             $object_note = $this->_key_name( $original_key, $fields ) . ' "'. $original .'" ';
-            foreach($meta_value as $k => $v){
-                if (is_array( $prev_value ) && isset( $prev_value[$k] ) && $prev_value[$k] == $v){
+            foreach ($meta_value as $k => $v){
+                if (is_array( $prev_value ) && isset( $prev_value[ $k ] ) && $prev_value[ $k ] == $v){
                     continue;
                 }
                 if ($k === "verified") {
@@ -203,7 +203,7 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         }
 
 
-        if (!empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
+        if ( !empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
             if ($new){
                 $object_note = 'Added ' . $this->_key_name( $meta_key, $fields ) . ': ' . $this->_value_name( $meta_key, $meta_value, $fields );
             } else if ($deleted){
@@ -239,9 +239,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      * @param  $fields
      * @return mixed
      */
-    protected function _key_name ( $meta_key, $fields ) {
-        if(isset( $fields[$meta_key]['name'] )) { // test if field exists
-            return $fields[$meta_key]['name'];
+    protected function _key_name( $meta_key, $fields ) {
+        if (isset( $fields[ $meta_key ]['name'] )) { // test if field exists
+            return $fields[ $meta_key ]['name'];
         } else {
             return $meta_key;
         }
@@ -256,25 +256,24 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
      * @param  $fields
      * @return mixed
      */
-    protected function _value_name ( $meta_key, $meta_value, $fields ) {
+    protected function _value_name( $meta_key, $meta_value, $fields ) {
         if ( is_array( $meta_value )){
             return serialize( $meta_value );
         }
 
-        if(isset( $fields[$meta_key]['default'][$meta_value] )) { // test if value exists
+        if (isset( $fields[ $meta_key ]['default'][ $meta_value ] )) { // test if value exists
 
-            if(!is_array( $fields[$meta_key]['default'] )) { // test if array
+            if ( !is_array( $fields[ $meta_key ]['default'] )) { // test if array
                 return $meta_value;
             } else {
-                return $fields[$meta_key]['default'][$meta_value];
+                return $fields[ $meta_key ]['default'][ $meta_value ];
             }
-
         } else { // if field not set
             return $meta_value;
         }
     }
 
-    public function hooks_p2p_created ( $p2p_id, $action = 'connected to' ) { // I need to create two records. One for each end of the connection.
+    public function hooks_p2p_created( $p2p_id, $action = 'connected to' ) { // I need to create two records. One for each end of the connection.
         // Get p2p record
         $p2p_record = p2p_get_connection( $p2p_id ); // returns object
         $p2p_from = get_post( $p2p_record->p2p_from, ARRAY_A );
@@ -287,10 +286,10 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         if ($p2p_type === "baptizer_to_baptized"){
             if ($action === "connected to"){
                 $object_note_to = $p2p_to['post_title'] . ' baptized ' . $p2p_from['post_title'];
-                $object_note_from= $p2p_from['post_title'] . ' was baptized by ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' was baptized by ' . $p2p_to['post_title'];
             } else {
                 $object_note_to = $p2p_to['post_title'] . ' did not baptize ' . $p2p_from['post_title'];
-                $object_note_from= $p2p_from['post_title'] . ' was not baptized by ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' was not baptized by ' . $p2p_to['post_title'];
             }
         } else if ($p2p_type === "contacts_to_groups"){
             if ($action == "connected to"){
@@ -310,15 +309,15 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 $object_note_from = $p2p_from['post_title'] . ' removed from people group: ' . $p2p_to['post_title'];
             }
         }
-        else if( $p2p_type === "contacts_to_contacts"){
+        else if ( $p2p_type === "contacts_to_contacts"){
             if ($action === "connected to"){
                 $object_note_to = $p2p_to['post_title'] . ' is coaching ' . $p2p_from['post_title'];
-                $object_note_from= $p2p_from['post_title'] . ' is coached by ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' is coached by ' . $p2p_to['post_title'];
             } else {
                 $object_note_to = $p2p_to['post_title'] . ' no longer coaching ' . $p2p_from['post_title'];
-                $object_note_from= $p2p_from['post_title'] . ' no longed coached by ' . $p2p_to['post_title'];
+                $object_note_from = $p2p_from['post_title'] . ' no longed coached by ' . $p2p_to['post_title'];
             }
-        } else if( $p2p_type === "contacts_to_locations"){
+        } else if ( $p2p_type === "contacts_to_locations"){
             if ($action == "connected to"){
                 $object_note_to = $p2p_from['post_title'] . ' in location ' . $p2p_to['post_title'];
                 $object_note_from = $p2p_from['post_title'] . ' in location ' . $p2p_to['post_title'];
@@ -371,11 +370,11 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
     }
 
     //note: delete is given an array of ids
-    public function hooks_p2p_deleted ( $p2p_ids ) {
+    public function hooks_p2p_deleted( $p2p_ids ) {
         $this->hooks_p2p_created( $p2p_ids[0], $action = 'disconnected from' );
     }
 
-    public function post_meta_deleted ( $meta_id, $object_id, $meta_key, $meta_value, $new = false ){
+    public function post_meta_deleted( $meta_id, $object_id, $meta_key, $meta_value, $new = false ){
         if ( strpos( $meta_key, "_details" ) === false ){
             $this->hooks_updated_post_meta( $meta_id[0], $object_id, $meta_key, $meta_value, $new, true );
         }

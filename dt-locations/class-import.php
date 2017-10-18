@@ -4,7 +4,7 @@
  * KML File Update Class
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -26,16 +26,16 @@ class Disciple_Tools_Locations_Import
         global $wpdb;
 
         // test if locations post type exists
-        if( !post_type_exists( 'locations' ) ) {
+        if ( !post_type_exists( 'locations' ) ) {
             return 'Fail: You need the locations post type installed through Disciple Tools.';
         }
 
-        if( !get_option( '_installed_us_county_' . $state ) ) { // check if counties are installed for the state
+        if ( !get_option( '_installed_us_county_' . $state ) ) { // check if counties are installed for the state
 
             $counties = dt_get_usa_meta();
 
-            foreach( $counties->USA_counties as $county ) {
-                if( $county->STATE == $state ) {
+            foreach ( $counties->USA_counties as $county ) {
+                if ( $county->STATE == $state ) {
                     $post = [
                         "post_title"            => $county->COUNTY_NAME . ', ' . $county->STUSAB,
                         'post_type'             => 'locations',
@@ -108,25 +108,25 @@ class Disciple_Tools_Locations_Import
     {
         global $wpdb;
 
-        if( !post_type_exists( 'locations' ) ) {
+        if ( !post_type_exists( 'locations' ) ) {
             return new WP_Error( 'no_post_type','Fail: You need the locations post type installed through Disciple Tools.' );
         }
 
-        if( !get_option( '_installed_us_tracts_' . $state ) ) { // check if counties are installed for the state
+        if ( !get_option( '_installed_us_tracts_' . $state ) ) { // check if counties are installed for the state
 
             $directory = dt_get_usa_meta(); // get directory;
             $file = $directory->USA_states->{$state}->file;
 
             $kml_object = simplexml_load_file( $directory->base_url . $file ); // get xml from amazon
 
-            foreach( $kml_object->Document->Folder->Placemark as $place ) {
+            foreach ( $kml_object->Document->Folder->Placemark as $place ) {
 
                 // Parse Coordinates
                 $value = '';
-                if( $place->Polygon ) {
+                if ( $place->Polygon ) {
                     $value .= $place->Polygon->outerBoundaryIs->LinearRing->coordinates;
-                } elseif( $place->MultiGeometry ) {
-                    foreach( $place->MultiGeometry->Polygon as $polygon ) {
+                } elseif ( $place->MultiGeometry ) {
+                    foreach ( $place->MultiGeometry->Polygon as $polygon ) {
                         $value .= $polygon->outerBoundaryIs->LinearRing->coordinates;
                     }
                 }
@@ -136,10 +136,10 @@ class Disciple_Tools_Locations_Import
                 $value_array = explode( ',0.0 ', $value_array ); // create array from coordinates string
 
                 $coordinates = '['; //Create JSON format coordinates. Display in Google Map
-                foreach( $value_array as $va ) {
-                    if( !empty( $va ) ) {
+                foreach ( $value_array as $va ) {
+                    if ( !empty( $va ) ) {
                         $coord = explode( ',', $va );
-                        $coordinates .= '{"lat": ' . $coord[ 1 ] . ', "lng": ' . $coord[ 0 ] . '},';
+                        $coordinates .= '{"lat": ' . $coord[1] . ', "lng": ' . $coord[0] . '},';
                     }
                 }
 
@@ -148,7 +148,7 @@ class Disciple_Tools_Locations_Import
                 $coordinates .= ']'; // close JSON array
 
                 // Find County Post ID
-                $geoid = $place->ExtendedData->SchemaData->SimpleData[ 4 ];
+                $geoid = $place->ExtendedData->SchemaData->SimpleData[4];
                 $state_county_key = substr( $geoid, 0, 5 );
                 $post_id = $wpdb->get_var( $wpdb->prepare(
                     "SELECT
@@ -193,16 +193,16 @@ class Disciple_Tools_Locations_Import
         global $wpdb;
 
         // test if locations post type exists
-        if( !post_type_exists( 'locations' ) ) {
+        if ( !post_type_exists( 'locations' ) ) {
             return 'Fail: You need the locations post type installed through Disciple Tools.';
         }
 
-        if( !get_option( '_installed_us_county_' . $state ) ) { // check if counties are installed for the state
+        if ( !get_option( '_installed_us_county_' . $state ) ) { // check if counties are installed for the state
 
             $counties = dt_get_usa_meta();
 
-            foreach( $counties->USA_counties as $county ) {
-                if( $county->STATE == $state ) {
+            foreach ( $counties->USA_counties as $county ) {
+                if ( $county->STATE == $state ) {
                     $post = [
                         "post_title"            => $county->COUNTY_NAME . ', ' . $county->STUSAB,
                         'post_type'             => 'locations',
@@ -277,25 +277,25 @@ class Disciple_Tools_Locations_Import
     {
         global $wpdb;
 
-        if( !post_type_exists( 'locations' ) ) {
+        if ( !post_type_exists( 'locations' ) ) {
             return 'Fail: You need the locations post type installed through Disciple Tools.';
         }
 
-        if( !get_option( '_installed_us_tracts_' . $state ) ) { // check if counties are installed for the state
+        if ( !get_option( '_installed_us_tracts_' . $state ) ) { // check if counties are installed for the state
 
             $directory = dt_get_usa_meta(); // get directory;
             $file = $directory->USA_states->{$state}->file;
 
             $kml_object = simplexml_load_file( $directory->base_url . $file ); // get xml from amazon
 
-            foreach( $kml_object->Document->Folder->Placemark as $place ) {
+            foreach ( $kml_object->Document->Folder->Placemark as $place ) {
 
                 // Parse Coordinates
                 $value = '';
-                if( $place->Polygon ) {
+                if ( $place->Polygon ) {
                     $value .= $place->Polygon->outerBoundaryIs->LinearRing->coordinates;
-                } elseif( $place->MultiGeometry ) {
-                    foreach( $place->MultiGeometry->Polygon as $polygon ) {
+                } elseif ( $place->MultiGeometry ) {
+                    foreach ( $place->MultiGeometry->Polygon as $polygon ) {
                         $value .= $polygon->outerBoundaryIs->LinearRing->coordinates;
                     }
                 }
@@ -305,10 +305,10 @@ class Disciple_Tools_Locations_Import
                 $value_array = explode( ',0.0 ', $value_array ); // create array from coordinates string
 
                 $coordinates = '['; //Create JSON format coordinates. Display in Google Map
-                foreach( $value_array as $va ) {
-                    if( !empty( $va ) ) {
+                foreach ( $value_array as $va ) {
+                    if ( !empty( $va ) ) {
                         $coord = explode( ',', $va );
-                        $coordinates .= '{"lat": ' . $coord[ 1 ] . ', "lng": ' . $coord[ 0 ] . '},';
+                        $coordinates .= '{"lat": ' . $coord[1] . ', "lng": ' . $coord[0] . '},';
                     }
                 }
 
@@ -317,7 +317,7 @@ class Disciple_Tools_Locations_Import
                 $coordinates .= ']'; // close JSON array
 
                 // Find County Post ID
-                $geoid = $place->ExtendedData->SchemaData->SimpleData[ 4 ];
+                $geoid = $place->ExtendedData->SchemaData->SimpleData[4];
                 $state_county_key = substr( $geoid, 0, 5 );
                 $post_id = $wpdb->get_var( $wpdb->prepare(
                     "SELECT
@@ -362,7 +362,7 @@ class Disciple_Tools_Locations_Import
         // check if $_POST to change option
         $status = '';
 
-        if( !empty( $_POST[ 'delete_location' ] ) && isset( $_POST[ 'delete_location' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'delete_location' ] ), 'delete_location_validate' ) ) {
+        if ( !empty( $_POST['delete_location'] ) && isset( $_POST['delete_location'] ) && wp_verify_nonce( sanitize_key( $_POST['delete_location'] ), 'delete_location_validate' ) ) {
             $status = $this->delete_locations();
         }
 
@@ -398,7 +398,7 @@ class Disciple_Tools_Locations_Import
         ];
 
         $locations = get_posts( $args );
-        foreach( $locations as $location ) {
+        foreach ( $locations as $location ) {
             $id = $location->ID;
             wp_delete_post( $id, true );
         }
@@ -423,21 +423,21 @@ class Disciple_Tools_Locations_Import
         $parent_post_id = '';
 
         // Install single top level country record for Admin1 only
-        if( $admin == 'admin1' ) {
+        if ( $admin == 'admin1' ) {
 
             $country_list = dt_get_oz_country_list( 'cnty' );
             $country_name = '';
             $country_id = '';
 
-            foreach( $country_list as $value ) {
-                if( $value->CntyID == $cnty_id ) {
+            foreach ( $country_list as $value ) {
+                if ( $value->CntyID == $cnty_id ) {
                     $country_name = $value->Zone_Name;
                     $country_id = $value->WorldID;
                     break;
                 }
             }
 
-            if( !empty( $country_name ) || !empty( $country_id ) ) {
+            if ( !empty( $country_name ) || !empty( $country_id ) ) {
                 $post = [
                     "post_title"   => $country_name . ' ( ' . $country_id . ' )',
                     'post_type'    => 'locations',
@@ -453,13 +453,13 @@ class Disciple_Tools_Locations_Import
         }
 
         // Loop the admin level list
-        foreach( $list as $item ) {
+        foreach ( $list as $item ) {
 
-            if( $item->CntyID == $cnty_id ) {
+            if ( $item->CntyID == $cnty_id ) {
 
                 $content = '';
 
-                foreach( $item as $key => $value ) {
+                foreach ( $item as $key => $value ) {
                     $content .= $key . ': ' . $value . '<br>';
                 }
 
@@ -490,19 +490,19 @@ class Disciple_Tools_Locations_Import
     {
         global $wpdb;
 
-        if( empty( $geojson ) ) {
+        if ( empty( $geojson ) ) {
             return false;
         }
 
-        $record_count = count( $geojson[ 'features' ] );
+        $record_count = count( $geojson['features'] );
         $i = 0;
 
-        foreach( $geojson[ 'features' ] as $place ) {
-            $properties = $place[ 'properties' ];
-            $properties[ 'coordinates' ] = json_encode( $place[ 'geometry' ][ 'coordinates' ] ); // combine coordinates into a the single properties array
-            $properties[ 'coordinates_type' ] = $place[ 'geometry' ][ 'type' ];
+        foreach ( $geojson['features'] as $place ) {
+            $properties = $place['properties'];
+            $properties['coordinates'] = json_encode( $place['geometry']['coordinates'] ); // combine coordinates into a the single properties array
+            $properties['coordinates_type'] = $place['geometry']['type'];
 
-            $world_id = $properties[ 'WorldID' ];
+            $world_id = $properties['WorldID'];
 
             // duplicate check
             $duplicate_post_id = $wpdb->get_var( $wpdb->prepare(
@@ -520,18 +520,18 @@ class Disciple_Tools_Locations_Import
                 $wpdb->posts,
                 [
                     'ID'                => $duplicate_post_id,
-                    'post_name'         => strtolower( $properties[ 'WorldID' ] ),
+                    'post_name'         => strtolower( $properties['WorldID'] ),
                     'post_author'       => get_current_user_id(),
                     'post_date'         => current_time( 'mysql' ),
                     'post_date_gmt'     => current_time( 'mysql' ),
-                    'post_content'      => $properties[ 'Zone_Name' ] . ' (' . $properties[ 'WorldID' ] . ')',
-                    'post_title'        => $properties[ 'Zone_Name' ],
+                    'post_content'      => $properties['Zone_Name'] . ' (' . $properties['WorldID'] . ')',
+                    'post_title'        => $properties['Zone_Name'],
                     'post_status'       => 'publish',
                     'ping_status'       => 'closed',
                     'post_modified'     => current_time( 'mysql' ),
                     'post_modified_gmt' => current_time( 'mysql' ),
                     'post_parent'       => 0,
-                    'guid'              => home_url() . '/locations/' . strtolower( $properties[ 'WorldID' ] ),
+                    'guid'              => home_url() . '/locations/' . strtolower( $properties['WorldID'] ),
                     'post_type'         => 'locations',
                 ],
                 [
@@ -554,14 +554,14 @@ class Disciple_Tools_Locations_Import
             $new_post_id = $wpdb->insert_id;
 
             // insert metadata
-            if( !empty( $new_post_id ) ) {
+            if ( !empty( $new_post_id ) ) {
 
                 // delete previous meta records
-                if( !empty( $duplicate_post_id ) ) {
+                if ( !empty( $duplicate_post_id ) ) {
                     $wpdb->delete( $wpdb->postmeta, [ 'post_id' => $duplicate_post_id ], $where_format = null );
                 }
 
-                foreach( $properties as $key => $value ) {
+                foreach ( $properties as $key => $value ) {
                     $wpdb->insert(
                         $wpdb->postmeta,
                         [

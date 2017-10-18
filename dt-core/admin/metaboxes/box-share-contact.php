@@ -10,7 +10,7 @@
  *
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -44,7 +44,7 @@ class Disciple_Tools_Metabox_Share_Contact
     public function content_display( $post_id )
     {
         $shared_with_list = Disciple_Tools_Contacts::get_shared_with( 'contacts', $post_id );
-        if( !empty( $shared_with_list ) ) { ?>
+        if ( !empty( $shared_with_list ) ) { ?>
 
             <strong>Sharing with:</strong>
 
@@ -53,10 +53,10 @@ class Disciple_Tools_Metabox_Share_Contact
                 <input type="hidden" name="dt_remove_shared_noonce" id="dt_remove_shared_noonce"
                        value="<?php echo esc_html( wp_create_nonce( 'dt_remove_shared' ) ) ?>"/>
                 <ul>
-                    <?php foreach( $shared_with_list as $contact ): ?>
+                    <?php foreach ( $shared_with_list as $contact ): ?>
 
                         <li>
-                            <a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' ) ) . esc_attr( $contact[ 'user_id' ] ) ?> "><?php echo esc_attr( $contact[ 'display_name' ] ) ?></a>
+                            <a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' ) ) . esc_attr( $contact['user_id'] ) ?> "><?php echo esc_attr( $contact['display_name'] ) ?></a>
                         </li>
 
                     <?php endforeach; ?>

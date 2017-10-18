@@ -20,12 +20,12 @@ class Disciple_Tools_Counter_Contacts  {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () { } // End __construct()
+    public function __construct() { } // End __construct()
 
     /**
      * Count of Current Church Planters
      */
-    public function church_planters () {
+    public function church_planters() {
         return 10; // TODO: This is just a placeholder
     }
 

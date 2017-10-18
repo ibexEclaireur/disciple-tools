@@ -7,7 +7,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -40,7 +40,7 @@ class Disciple_Tools_People_Groups_Endpoints
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -79,8 +79,8 @@ class Disciple_Tools_People_Groups_Endpoints
 
         $params = $request->get_params();
         $search = "";
-        if( isset( $params[ 's' ] ) ) {
-            $search = $params[ 's' ];
+        if ( isset( $params['s'] ) ) {
+            $search = $params['s'];
         }
         $people_groups = Disciple_Tools_people_groups::get_people_groups_compact( $search );
 

@@ -8,7 +8,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -63,12 +63,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function get_group( int $group_id, $check_permissions = true )
     {
-        if( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
+        if ( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
         }
 
         $group = get_post( $group_id );
-        if( $group ) {
+        if ( $group ) {
             $fields = [];
 
             $locations = get_posts(
@@ -79,10 +79,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     'suppress_filters' => false,
                 ]
             );
-            foreach( $locations as $l ) {
+            foreach ( $locations as $l ) {
                 $l->permalink = get_permalink( $l->ID );
             }
-            $fields[ "locations" ] = $locations;
+            $fields["locations"] = $locations;
 
 
             $people_groups = get_posts(
@@ -93,10 +93,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     'suppress_filters' => false,
                 ]
             );
-            foreach( $people_groups as $g ) {
+            foreach ( $people_groups as $g ) {
                 $g->permalink = get_permalink( $g->ID );
             }
-            $fields[ "people_groups" ] = $people_groups;
+            $fields["people_groups"] = $people_groups;
 
             $members = get_posts(
                 [
@@ -106,55 +106,55 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
                     'suppress_filters' => false,
                 ]
             );
-            foreach( $members as $l ) {
+            foreach ( $members as $l ) {
                 $l->permalink = get_permalink( $l->ID );
             }
-            $fields[ "members" ] = $members;
+            $fields["members"] = $members;
 
             $meta_fields = get_post_custom( $group_id );
-            foreach( $meta_fields as $key => $value ) {
-                if( strpos( $key, "address" ) === 0 ) {
-                    if( strpos( $key, "_details" ) === false ) {
+            foreach ( $meta_fields as $key => $value ) {
+                if ( strpos( $key, "address" ) === 0 ) {
+                    if ( strpos( $key, "_details" ) === false ) {
 
                         $details = [];
-                        if( isset( $meta_fields[ $key . '_details' ][ 0 ] ) ) {
-                            $details = unserialize( $meta_fields[ $key . '_details' ][ 0 ] );
+                        if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
+                            $details = unserialize( $meta_fields[ $key . '_details' ][0] );
                         }
-                        $details[ "value" ] = $value[ 0 ];
-                        $details[ "key" ] = $key;
-                        if( isset( $details[ "type" ] ) ) {
-                            $details[ "type_label" ] = self::$address_types[ $details[ "type" ] ][ "label" ];
+                        $details["value"] = $value[0];
+                        $details["key"] = $key;
+                        if ( isset( $details["type"] ) ) {
+                            $details["type_label"] = self::$address_types[ $details["type"] ]["label"];
                         }
-                        $fields[ "address" ][] = $details;
+                        $fields["address"][] = $details;
                     }
-                } elseif( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ][ "type" ] == "key_select" ) {
-                    $label = self::$group_fields[ $key ][ "default" ][ $value[ 0 ] ] ?? current( self::$group_fields[ $key ][ "default" ] );
-                    $fields[ $key ] = [ "key" => $value[ 0 ], "label" => $label ];
-                } elseif( $key === "assigned_to" ) {
-                    if( $value ) {
-                        $meta_array = explode( '-', $value[ 0 ] ); // Separate the type and id
-                        $type = $meta_array[ 0 ]; // Build variables
-                        if( isset( $meta_array[ 1 ] ) ) {
-                            $id = $meta_array[ 1 ];
-                            if( $type == 'user' ) {
+                } elseif ( isset( self::$group_fields[ $key ] ) && self::$group_fields[ $key ]["type"] == "key_select" ) {
+                    $label = self::$group_fields[ $key ]["default"][ $value[0] ] ?? current( self::$group_fields[ $key ]["default"] );
+                    $fields[ $key ] = [ "key" => $value[0], "label" => $label ];
+                } elseif ( $key === "assigned_to" ) {
+                    if ( $value ) {
+                        $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                        $type = $meta_array[0]; // Build variables
+                        if ( isset( $meta_array[1] ) ) {
+                            $id = $meta_array[1];
+                            if ( $type == 'user' ) {
                                 $user = get_user_by( 'id', $id );
-                                if( $user ) {
+                                if ( $user ) {
                                     $fields[ $key ] = [
                                         "ID"          => (int) $id,
                                         "type"        => $type,
                                         "display"     => $user->display_name,
-                                        "assigned-to" => $value[ 0 ],
+                                        "assigned-to" => $value[0],
                                     ];
                                 }
                             }
                         }
                     }
                 } else {
-                    $fields[ $key ] = $value[ 0 ];
+                    $fields[ $key ] = $value[0];
                 }
             }
-            $fields[ "ID" ] = $group->ID;
-            $fields[ "name" ] = $group->post_title;
+            $fields["ID"] = $group->ID;
+            $fields["name"] = $group->post_title;
 
             return $fields;
         } else {
@@ -177,9 +177,9 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     {
         $bad_fields = [];
         $group_fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
-        $group_fields[ 'title' ] = "";
-        foreach( $fields as $field => $value ) {
-            if( !isset( $group_fields[ $field ] ) ) {
+        $group_fields['title'] = "";
+        foreach ( $fields as $field => $value ) {
+            if ( !isset( $group_fields[ $field ] ) ) {
                 $bad_fields[] = $field;
             }
         }
@@ -201,28 +201,28 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     public static function update_group( int $group_id, array $fields, $check_permissions = true )
     {
 
-        if( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
+        if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
         $post = get_post( $group_id );
-        if( isset( $fields[ 'id' ] ) ) {
-            unset( $fields[ 'id' ] );
+        if ( isset( $fields['id'] ) ) {
+            unset( $fields['id'] );
         }
 
-        if( !$post ) {
+        if ( !$post ) {
             return new WP_Error( __FUNCTION__, __( "Group does not exist" ) );
         }
         $bad_fields = self::check_for_invalid_fields( $fields, $group_id );
-        if( !empty( $bad_fields ) ) {
+        if ( !empty( $bad_fields ) ) {
             return new WP_Error( __FUNCTION__, __( "One or more fields do not exist" ), [ 'bad_fields' => $bad_fields, 'status' => 400 ] );
         }
 
-        if( isset( $fields[ 'title' ] ) ) {
-            wp_update_post( [ 'ID' => $group_id, 'post_title' => $fields[ 'title' ] ] );
+        if ( isset( $fields['title'] ) ) {
+            wp_update_post( [ 'ID' => $group_id, 'post_title' => $fields['title'] ] );
         }
 
-        foreach( $fields as $field_id => $value ) {
+        foreach ( $fields as $field_id => $value ) {
             update_post_meta( $group_id, $field_id, $value );
         }
 
@@ -315,10 +315,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function add_item_to_field( int $group_id, string $key, string $value, bool $check_permissions )
     {
-        if( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
+        if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        if( $key === "new-address" ) {
+        if ( $key === "new-address" ) {
             $new_meta_key = dt_address_metabox()->create_channel_metakey( "address" );
             update_post_meta( $group_id, $new_meta_key, $value );
             $details = [ "verified" => false ];
@@ -327,17 +327,17 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return $new_meta_key;
         }
         $connect = null;
-        if( $key === "locations" ) {
+        if ( $key === "locations" ) {
             $connect = self::add_location_to_group( $group_id, $value );
-        } elseif( $key === "members" ) {
+        } elseif ( $key === "members" ) {
             $connect = self::add_member_to_group( $group_id, $value );
-        } elseif( $key === "people_groups" ) {
+        } elseif ( $key === "people_groups" ) {
             $connect = self::add_people_group_to_group( $group_id, $value );
         }
-        if( is_wp_error( $connect ) ) {
+        if ( is_wp_error( $connect ) ) {
             return $connect;
         }
-        if( $connect ) {
+        if ( $connect ) {
             $connection = get_post( $value );
             $connection->guid = get_permalink( $value );
 
@@ -357,16 +357,16 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function update_detail_on_field( int $group_id, string $key, array $values, bool $check_permissions )
     {
-        if( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
+        if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        if( ( strpos( $key, "group_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
+        if ( ( strpos( $key, "group_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
             strpos( $key, "_details" ) === false
         ) {
             $details_key = $key . "_details";
             $details = get_post_meta( $group_id, $details_key, true );
             $details = isset( $details ) ? $details : [];
-            foreach( $values as $detail_key => $detail_value ) {
+            foreach ( $values as $detail_key => $detail_value ) {
                 $details[ $detail_key ] = $detail_value;
             }
             update_post_meta( $group_id, $details_key, $details );
@@ -386,12 +386,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      */
     public static function remove_item_from_field( int $group_id, string $key, string $value, bool $check_permissions )
     {
-        if( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
+        if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have have permission for this" ), [ 'status' => 403 ] );
         }
-        if( $key === "locations" ) {
+        if ( $key === "locations" ) {
             return self::remove_location_from_group( $group_id, $value );
-        } elseif( $key === "members" ) {
+        } elseif ( $key === "members" ) {
             return self::remove_member_from_group( $group_id, $value );
         } elseif ( $key === "people_groups" ) {
             return self::remove_people_group_from_group( $group_id, $value );
@@ -483,12 +483,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
             return new WP_Error( __FUNCTION__, __( "You may not public a group" ), [ 'status' => 403 ] );
         }
 
-        if ( ! isset( $fields [ "title" ] ) ) {
+        if ( ! isset( $fields ["title"] ) ) {
             return new WP_Error( __FUNCTION__, __( "Group needs a title" ), [ 'fields' => $fields ] );
         }
 
         $post = [
-            "post_title" => $fields[ "title" ],
+            "post_title" => $fields["title"],
             "post_type" => "groups",
             "post_status" => "publish",
             "meta_input" => [

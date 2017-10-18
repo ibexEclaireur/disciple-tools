@@ -5,7 +5,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -57,20 +57,27 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     private static function query_with_pagination( array $query_args, array $query_pagination_args )
     {
         $allowed_keys = [
-            'order', 'orderby', 'nopaging', 'posts_per_page', 'posts_per_archive_page', 'offset',
-            'paged', 'page', 'ignore_sticky_posts',
+            'order',
+        'orderby',
+        'nopaging',
+        'posts_per_page',
+        'posts_per_archive_page',
+        'offset',
+            'paged',
+        'page',
+        'ignore_sticky_posts',
         ];
         $error = new WP_Error();
-        foreach( $query_pagination_args as $key => $value ) {
-            if( !in_array( $key, $allowed_keys ) ) {
+        foreach ( $query_pagination_args as $key => $value ) {
+            if ( !in_array( $key, $allowed_keys ) ) {
                 $error->add( __FUNCTION__, sprintf( __( "Key %s was an unexpected pagination key" ), $key ) );
             }
         }
-        if( count( $error->errors ) ) {
+        if ( count( $error->errors ) ) {
             return $error;
         }
-        if( count( $query_pagination_args ) ) {
-            foreach( $allowed_keys as $pagination_key ) {
+        if ( count( $query_pagination_args ) ) {
+            foreach ( $allowed_keys as $pagination_key ) {
                 unset( $query_args[ $pagination_key ] );
             }
         }
@@ -108,33 +115,33 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     {
         //@TODO search for duplicates
 
-        if( $check_permissions && !current_user_can( 'create_contacts' ) ) {
+        if ( $check_permissions && !current_user_can( 'create_contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You may not publish a contact" ), [ 'status' => 403 ] );
         }
 
         //required fields
-        if( !isset( $fields[ "title" ] ) ) {
+        if ( !isset( $fields["title"] ) ) {
             return new WP_Error( __FUNCTION__, __( "Contact needs a title" ), [ 'fields' => $fields ] );
         }
 
         $phone = null;
-        if( isset( $fields[ "phone" ] ) ) {
-            $phone = $fields[ "phone" ];
-            unset( $fields[ "phone" ] );
+        if ( isset( $fields["phone"] ) ) {
+            $phone = $fields["phone"];
+            unset( $fields["phone"] );
         }
         $initial_comment = null;
-        if( isset( $fields[ "initial_comment" ] ) ) {
-            $initial_comment = $fields[ "initial_comment" ];
-            unset( $fields[ "initial_comment" ] );
+        if ( isset( $fields["initial_comment"] ) ) {
+            $initial_comment = $fields["initial_comment"];
+            unset( $fields["initial_comment"] );
         }
         $location_id = null;
-        if ( isset( $fields[ "location_id" ] ) ) {
-            $location_id = $fields[ "location_id" ];
-            unset( $fields[ "location_id" ] );
+        if ( isset( $fields["location_id"] ) ) {
+            $location_id = $fields["location_id"];
+            unset( $fields["location_id"] );
         }
 
         $bad_fields = self::check_for_invalid_fields( $fields );
-        if( !empty( $bad_fields ) ) {
+        if ( !empty( $bad_fields ) ) {
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
         }
 
@@ -156,8 +163,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
 
         $fields = array_merge( $defaults, $fields );
 
-        $title = $fields[ "title" ];
-        unset( $fields[ "title" ] );
+        $title = $fields["title"];
+        unset( $fields["title"] );
 
         $post = [
             "post_title"  => $title,
@@ -167,22 +174,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ];
 
 
-        if (isset( $fields["assigned-to"] ) && (! get_current_user_id() || $fields["assigned-to"] !== sprintf( "user-%d", get_current_user_id() ))) {
+        if (isset( $fields["assigned-to"] ) && ( ! get_current_user_id() || $fields["assigned-to"] !== sprintf( "user-%d", get_current_user_id() ))) {
             return new WP_Error( __FUNCTION__, __( "You may not assign a new contact to this user" ), [ 'status' => 403 ] );
         }
 
         $post_id = wp_insert_post( $post );
 
-        if( $phone ) {
+        if ( $phone ) {
             $potential_error = self::add_contact_detail( $post_id, "new-phone", $phone, false );
-            if( is_wp_error( $potential_error ) ) {
+            if ( is_wp_error( $potential_error ) ) {
                 return $potential_error;
             }
         }
 
-        if( $initial_comment ) {
+        if ( $initial_comment ) {
             $potential_error = self::add_comment( $post_id, $initial_comment, false );
-            if( is_wp_error( $potential_error ) ) {
+            if ( is_wp_error( $potential_error ) ) {
                 return $potential_error;
             }
         }
@@ -211,9 +218,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     {
         $bad_fields = [];
         $contact_fields = Disciple_Tools_Contact_Post_Type::instance()->get_custom_fields_settings( isset( $post_id ), $post_id );
-        $contact_fields[ 'title' ] = "";
-        foreach( $fields as $field => $value ) {
-            if( !isset( $contact_fields[ $field ] ) ) {
+        $contact_fields['title'] = "";
+        foreach ( $fields as $field => $value ) {
+            if ( !isset( $contact_fields[ $field ] ) ) {
                 $bad_fields[] = $field;
             }
         }
@@ -235,35 +242,35 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function update_contact( int $contact_id, array $fields, $check_permissions = true )
     {
 
-        if( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
         $post = get_post( $contact_id );
-        if( isset( $fields[ 'id' ] ) ) {
-            unset( $fields[ 'id' ] );
+        if ( isset( $fields['id'] ) ) {
+            unset( $fields['id'] );
         }
 
-        if( !$post ) {
+        if ( !$post ) {
             return new WP_Error( __FUNCTION__, __( "Contact does not exist" ) );
         }
         $bad_fields = self::check_for_invalid_fields( $fields, $contact_id );
-        if( !empty( $bad_fields ) ) {
+        if ( !empty( $bad_fields ) ) {
             return new WP_Error( __FUNCTION__, __( "These fields do not exist" ), [ 'bad_fields' => $bad_fields ] );
         }
 
-        if( isset( $fields[ 'title' ] ) ) {
-            wp_update_post( [ 'ID' => $contact_id, 'post_title' => $fields[ 'title' ] ] );
+        if ( isset( $fields['title'] ) ) {
+            wp_update_post( [ 'ID' => $contact_id, 'post_title' => $fields['title'] ] );
         }
 
-        if( isset( $fields[ "assigned_to" ] ) ) {
-            if( current_user_can( "assign_any_contact" ) ) {
+        if ( isset( $fields[ "assigned_to" ] ) ) {
+            if ( current_user_can( "assign_any_contact" ) ) {
                 $fields[ "overall_status" ] = 'assigned';
             }
             $fields[ 'accepted' ] = 'no';
         }
 
-        foreach( $fields as $field_id => $value ) {
+        foreach ( $fields as $field_id => $value ) {
             update_post_meta( $contact_id, $field_id, $value );
         }
 
@@ -455,16 +462,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function add_contact_detail( int $contact_id, string $key, string $value, bool $check_permissions )
     {
-        if( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        if( strpos( $key, "new-" ) === 0 ) {
-            $type = explode( '-', $key )[ 1 ];
+        if ( strpos( $key, "new-" ) === 0 ) {
+            $type = explode( '-', $key )[1];
 
             $new_meta_key = '';
-            if( $key === "new-address" ) {
+            if ( $key === "new-address" ) {
                 $new_meta_key = dt_address_metabox()->create_channel_metakey( "address" );
-            } elseif( isset( self::$channel_list[ $type ] ) ) {
+            } elseif ( isset( self::$channel_list[ $type ] ) ) {
                 //check if this is a new field and is in the channel list
                 $new_meta_key = Disciple_Tools_Contact_Post_Type::instance()->create_channel_metakey( $type, "contact" );
             }
@@ -475,25 +482,25 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             return $new_meta_key;
         }
         $connect = null;
-        if( $key === "locations" ) {
+        if ( $key === "locations" ) {
             $connect = self::add_location_to_contact( $contact_id, $value );
-        } elseif( $key === "groups" ) {
+        } elseif ( $key === "groups" ) {
             $connect = self::add_group_to_contact( $contact_id, $value );
-        } elseif( $key === "people_groups" ) {
+        } elseif ( $key === "people_groups" ) {
             $connect = self::add_people_group_to_contact( $contact_id, $value );
-        } elseif( $key === "baptized_by" ) {
+        } elseif ( $key === "baptized_by" ) {
             $connect = self::add_baptized_by_to_contact( $contact_id, $value );
-        } elseif( $key === "baptized" ) {
+        } elseif ( $key === "baptized" ) {
             $connect = self::add_baptized_to_contact( $contact_id, $value );
-        } elseif( $key === "coached_by" ) {
+        } elseif ( $key === "coached_by" ) {
             $connect = self::add_coached_by_to_contact( $contact_id, $value );
-        } elseif( $key === "coaching" ) {
+        } elseif ( $key === "coaching" ) {
             $connect = self::add_coaching_to_contact( $contact_id, $value );
         }
-        if( is_wp_error( $connect ) ) {
+        if ( is_wp_error( $connect ) ) {
             return $connect;
         }
-        if( $connect ) {
+        if ( $connect ) {
             $connection = get_post( $value );
             $connection->permalink = get_permalink( $value );
 
@@ -513,16 +520,16 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function update_contact_details( int $contact_id, string $key, array $values, bool $check_permissions )
     {
-        if( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        if( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
+        if ( ( strpos( $key, "contact_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
             strpos( $key, "_details" ) === false
         ) {
             $details_key = $key . "_details";
             $details = get_post_meta( $contact_id, $details_key, true );
             $details = isset( $details ) ? $details : [];
-            foreach( $values as $detail_key => $detail_value ) {
+            foreach ( $values as $detail_key => $detail_value ) {
                 $details[ $detail_key ] = $detail_value;
             }
             update_post_meta( $contact_id, $details_key, $details );
@@ -542,20 +549,20 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     //    @todo rename this to delete connection or lump with delete field
     public static function delete_contact_details( int $contact_id, string $key, string $value, bool $check_permissions )
     {
-        if( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
-        if( $key === "locations" ) {
+        if ( $key === "locations" ) {
             return self::remove_location_from_contact( $contact_id, $value );
-        } elseif( $key === "groups" ) {
+        } elseif ( $key === "groups" ) {
             return self::remove_group_from_contact( $contact_id, $value );
-        } elseif( $key === "baptized_by" ) {
+        } elseif ( $key === "baptized_by" ) {
             return self::remove_baptized_by_from_contact( $contact_id, $value );
-        } elseif( $key === "baptized" ) {
+        } elseif ( $key === "baptized" ) {
             return self::remove_baptized_from_contact( $contact_id, $value );
-        } elseif( $key === "coached_by" ) {
+        } elseif ( $key === "coached_by" ) {
             return self::remove_coached_by_from_contact( $contact_id, $value );
-        } elseif( $key === "coaching" ) {
+        } elseif ( $key === "coaching" ) {
             return self::remove_coaching_from_contact( $contact_id, $value );
         } elseif ( $key === "people_groups" ) {
             return self::remove_people_group_from_contact( $contact_id, $value );
@@ -571,7 +578,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @return bool|\WP_Error
      */
     public static function delete_contact_field( int $contact_id, string $key ){
-        if (!self::can_update( 'contacts', $contact_id )){
+        if ( !self::can_update( 'contacts', $contact_id )){
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 401] );
         }
         delete_post_meta( $contact_id, $key .'_details' );
@@ -590,12 +597,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_contact( int $contact_id, $check_permissions = true )
     {
-        if( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
+        if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
 
         $contact = get_post( $contact_id );
-        if( $contact ) {
+        if ( $contact ) {
             $fields = [];
 
             $locations = get_posts(
@@ -606,10 +613,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'suppress_filters' => false,
                 ]
             );
-            foreach( $locations as $l ) {
+            foreach ( $locations as $l ) {
                 $l->permalink = get_permalink( $l->ID );
             }
-            $fields[ "locations" ] = $locations;
+            $fields["locations"] = $locations;
             $groups = get_posts(
                 [
                     'connected_type'   => 'contacts_to_groups',
@@ -618,10 +625,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'suppress_filters' => false,
                 ]
             );
-            foreach( $groups as $g ) {
+            foreach ( $groups as $g ) {
                 $g->permalink = get_permalink( $g->ID );
             }
-            $fields[ "groups" ] = $groups;
+            $fields["groups"] = $groups;
 
             $people_groups = get_posts(
                 [
@@ -631,10 +638,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'suppress_filters' => false,
                 ]
             );
-            foreach( $people_groups as $g ) {
+            foreach ( $people_groups as $g ) {
                 $g->permalink = get_permalink( $g->ID );
             }
-            $fields[ "people_groups" ] = $people_groups;
+            $fields["people_groups"] = $people_groups;
 
             $baptized = get_posts(
                 [
@@ -645,11 +652,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'suppress_filters'    => false,
                 ]
             );
-            foreach( $baptized as $b ) {
+            foreach ( $baptized as $b ) {
                 $b->fields = p2p_get_meta( $b->p2p_id );
                 $b->permalink = get_permalink( $b->ID );
             }
-            $fields[ "baptized" ] = $baptized;
+            $fields["baptized"] = $baptized;
             $baptized_by = get_posts(
                 [
                     'connected_type'      => 'baptizer_to_baptized',
@@ -659,11 +666,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'suppress_filters'    => false,
                 ]
             );
-            foreach( $baptized_by as $b ) {
+            foreach ( $baptized_by as $b ) {
                 $b->fields = p2p_get_meta( $b->p2p_id );
                 $b->permalink = get_permalink( $b->ID );
             }
-            $fields[ "baptized_by" ] = $baptized_by;
+            $fields["baptized_by"] = $baptized_by;
             $coaching = get_posts(
                 [
                     'connected_type'      => 'contacts_to_contacts',
@@ -673,10 +680,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'suppress_filters'    => false,
                 ]
             );
-            foreach( $coaching as $c ) {
+            foreach ( $coaching as $c ) {
                 $c->permalink = get_permalink( $c->ID );
             }
-            $fields[ "coaching" ] = $coaching;
+            $fields["coaching"] = $coaching;
             $coached_by = get_posts(
                 [
                     'connected_type'      => 'contacts_to_contacts',
@@ -686,57 +693,57 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                     'suppress_filters'    => false,
                 ]
             );
-            foreach( $coached_by as $c ) {
+            foreach ( $coached_by as $c ) {
                 $c->permalink = get_permalink( $c->ID );
             }
-            $fields[ "coached_by" ] = $coached_by;
+            $fields["coached_by"] = $coached_by;
 
             $meta_fields = get_post_custom( $contact_id );
-            foreach( $meta_fields as $key => $value ) {
+            foreach ( $meta_fields as $key => $value ) {
                 //if is contact details and is in a channel
-                if( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[ 1 ] ] ) ) {
-                    if( strpos( $key, "details" ) === false ) {
-                        $type = explode( '_', $key )[ 1 ];
-                        $fields[ "contact_" . $type ][] = self::format_contact_details( $meta_fields, $type, $key, $value[ 0 ] );
+                if ( strpos( $key, "contact_" ) === 0 && isset( self::$channel_list[ explode( '_', $key )[1] ] ) ) {
+                    if ( strpos( $key, "details" ) === false ) {
+                        $type = explode( '_', $key )[1];
+                        $fields[ "contact_" . $type ][] = self::format_contact_details( $meta_fields, $type, $key, $value[0] );
                     }
-                } elseif( strpos( $key, "address" ) === 0 ) {
-                    if( strpos( $key, "_details" ) === false ) {
+                } elseif ( strpos( $key, "address" ) === 0 ) {
+                    if ( strpos( $key, "_details" ) === false ) {
 
                         $details = [];
-                        if( isset( $meta_fields[ $key . '_details' ][ 0 ] ) ) {
-                            $details = unserialize( $meta_fields[ $key . '_details' ][ 0 ] );
+                        if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
+                            $details = unserialize( $meta_fields[ $key . '_details' ][0] );
                         }
-                        $details[ "value" ] = $value[ 0 ];
-                        $details[ "key" ] = $key;
-                        if( isset( $details[ "type" ] ) ) {
-                            $details[ "type_label" ] = self::$address_types[ $details[ "type" ] ][ "label" ];
+                        $details["value"] = $value[0];
+                        $details["key"] = $key;
+                        if ( isset( $details["type"] ) ) {
+                            $details["type_label"] = self::$address_types[ $details["type"] ]["label"];
                         }
-                        $fields[ "address" ][] = $details;
+                        $fields["address"][] = $details;
                     }
-                } elseif( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ][ "type" ] == "key_select" ) {
-                    $label = self::$contact_fields[ $key ][ "default" ][ $value[ 0 ] ] ?? current( self::$contact_fields[ $key ][ "default" ] );
-                    $fields[ $key ] = [ "key" => $value[ 0 ], "label" => $label ];
-                } elseif( $key === "assigned_to" ) {
-                    if( $value ) {
-                        $meta_array = explode( '-', $value[ 0 ] ); // Separate the type and id
-                        $type = $meta_array[ 0 ]; // Build variables
-                        if( isset( $meta_array[ 1 ] ) ) {
-                            $id = $meta_array[ 1 ];
-                            if( $type == 'user' && $id) {
+                } elseif ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]["type"] == "key_select" ) {
+                    $label = self::$contact_fields[ $key ]["default"][ $value[0] ] ?? current( self::$contact_fields[ $key ]["default"] );
+                    $fields[ $key ] = [ "key" => $value[0], "label" => $label ];
+                } elseif ( $key === "assigned_to" ) {
+                    if ( $value ) {
+                        $meta_array = explode( '-', $value[0] ); // Separate the type and id
+                        $type = $meta_array[0]; // Build variables
+                        if ( isset( $meta_array[1] ) ) {
+                            $id = $meta_array[1];
+                            if ( $type == 'user' && $id) {
                                 $user = get_user_by( 'id', $id );
-                                $fields[ $key ] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[ 0 ] ];
+                                $fields[ $key ] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0] ];
                             }
                         }
                     }
                 } else if ( isset( self::$contact_fields[ $key ] ) && self::$contact_fields[ $key ]['type'] === 'multi_select' ){
                     $fields[ $key ] = $value;
                 } else {
-                    $fields[ $key ] = $value[ 0 ];
+                    $fields[ $key ] = $value[0];
                 }
             }
 
             $comments = get_comments( [ 'post_id' => $contact_id ] );
-            $fields[ "comments" ] = $comments;
+            $fields["comments"] = $comments;
             $contact->fields = $fields;
 
             return $contact;
@@ -757,13 +764,13 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     {
 
         $details = [];
-        if( isset( $meta_fields[ $key . '_details' ][ 0 ] ) ) {
-            $details = unserialize( $meta_fields[ $key . '_details' ][ 0 ] );
+        if ( isset( $meta_fields[ $key . '_details' ][0] ) ) {
+            $details = unserialize( $meta_fields[ $key . '_details' ][0] );
         }
-        $details[ "value" ] = $value;
-        $details[ "key" ] = $key;
-        if( isset( $details[ "type" ] ) ) {
-            $details[ "type_label" ] = self::$channel_list[ $type ][ "types" ][ $details[ "type" ] ][ "label" ];
+        $details["value"] = $value;
+        $details["key"] = $key;
+        if ( isset( $details["type"] ) ) {
+            $details["type_label"] = self::$channel_list[ $type ]["types"][ $details["type"] ]["label"];
         }
 
         return $details;
@@ -785,7 +792,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_activity( $contact_id )
     {
-        if(!self::can_view( 'contacts', $contact_id ) ) {
+        if ( !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact activity" ), [ 'status' => 403 ] );
         }
 
@@ -801,8 +808,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 AND `object_id` = %s",
             $contact_id
         ) );
-        foreach( $activity as $a ) {
-            if( isset( $a->user_id ) && $a->user_id > 0 ) {
+        foreach ( $activity as $a ) {
+            if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $a->name = get_user_by( "id", $a->user_id )->display_name;
             }
         }
@@ -823,7 +830,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] )
     {
-        if( $check_permissions && !self::can_access( 'contacts' ) ) {
+        if ( $check_permissions && !self::can_access( 'contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
         }
 
@@ -850,7 +857,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_viewable_contacts( bool $check_permissions = true, array $query_pagination_args = [] )
     {
-        if( $check_permissions && !self::can_access( 'contacts' ) ) {
+        if ( $check_permissions && !self::can_access( 'contacts' ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have access to these contacts" ), [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
@@ -860,14 +867,14 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'nopaging'  => true,
         ];
         $contacts_shared_with_user = [];
-        if( !self::can_view_all( 'contacts' ) ) {
+        if ( !self::can_view_all( 'contacts' ) ) {
             $contacts_shared_with_user = self::get_posts_shared_with_user( 'contacts', $current_user->ID );
 
-            $query_args[ 'meta_key' ] = 'assigned_to';
-            $query_args[ 'meta_value' ] = "user-" . $current_user->ID;
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-" . $current_user->ID;
         }
         $queried_contacts = self::query_with_pagination( $query_args, $query_pagination_args );
-        if( is_wp_error( $queried_contacts ) ) {
+        if ( is_wp_error( $queried_contacts ) ) {
             return $queried_contacts;
         }
         $contacts = $queried_contacts->posts;
@@ -878,8 +885,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $contacts
         );
         //add shared contacts to the list avoiding duplicates
-        foreach( $contacts_shared_with_user as $shared ) {
-            if( !in_array( $shared->ID, $contact_ids ) ) {
+        foreach ( $contacts_shared_with_user as $shared ) {
+            if ( !in_array( $shared->ID, $contact_ids ) ) {
                 $contacts[] = $shared;
             }
         }
@@ -909,17 +916,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_team_contacts( int $user_id, bool $check_permissions = true )
     {
-        if( $check_permissions ) {
+        if ( $check_permissions ) {
             $current_user = wp_get_current_user();
             // TODO: the current permissions required don't make sense
-            if( !self::can_access( 'contacts' )
+            if ( !self::can_access( 'contacts' )
                 || ( $user_id != $current_user->ID && !current_user_can( 'edit_team_contacts' ) ) ) {
                 return new WP_Error( __FUNCTION__, __( "You do not have permission" ), [ 'status' => 404 ] );
             }
         }
         global $wpdb;
         $user_connections = [];
-        $user_connections[ 'relation' ] = 'OR';
+        $user_connections['relation'] = 'OR';
         $members = [];
 
         // First Query
@@ -942,9 +949,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ), ARRAY_A );
 
         // Loop
-        foreach( $results as $result ) {
+        foreach ( $results as $result ) {
             // create the meta query for the group
-            $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result[ 'term_taxonomy_id' ] ];
+            $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id'] ];
 
             // Second Query
             // query a member list for this group
@@ -957,21 +964,21 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 WHERE
                     `term_taxonomy_id` = %d
                 ",
-                $result[ 'term_taxonomy_id' ]
+                $result['term_taxonomy_id']
             ), ARRAY_A );
 
             // Inner Loop
-            foreach( $results2 as $result2 ) {
+            foreach ( $results2 as $result2 ) {
 
-                if( $result2[ 'object_id' ] != $user_id ) {
-                    $members[] = $result2[ 'object_id' ];
+                if ( $result2['object_id'] != $user_id ) {
+                    $members[] = $result2['object_id'];
                 }
             }
         }
 
         $members = array_unique( $members );
 
-        foreach( $members as $member ) {
+        foreach ( $members as $member ) {
             $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'user-' . $member ];
         }
 
@@ -997,15 +1004,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function update_seeker_path( int $contact_id, string $path_option, $check_permissions = true )
     {
-        $seeker_path_options = self::$contact_fields[ "seeker_path" ][ "default" ];
+        $seeker_path_options = self::$contact_fields["seeker_path"]["default"];
         $option_keys = array_keys( $seeker_path_options );
         $current_seeker_path = get_post_meta( $contact_id, "seeker_path", true );
         $current_index = array_search( $current_seeker_path, $option_keys );
         $new_index = array_search( $path_option, $option_keys );
-        if( $new_index > $current_index ) {
+        if ( $new_index > $current_index ) {
             $current_index = $new_index;
             $update = self::update_contact( $contact_id, [ "seeker_path" => $path_option ], $check_permissions );
-            if( is_wp_error( $update ) ) {
+            if ( is_wp_error( $update ) ) {
                 return $update;
             }
             $current_seeker_path = $path_option;
@@ -1029,26 +1036,26 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     public static function quick_action_button( int $contact_id, array $field, bool $check_permissions = true )
     {
         $response = self::update_contact( $contact_id, $field, true );
-        if( !isset( $response->ID ) || $response->ID != $contact_id ) {
+        if ( !isset( $response->ID ) || $response->ID != $contact_id ) {
             return $response;
         } else {
             $update = [];
             $key = key( $field );
 
-            if( $key == "quick_button_no_answer" ) {
-                $update[ "seeker_path" ] = "attempted";
-            } elseif( $key == "quick_button_phone_off" ) {
-                $update[ "seeker_path" ] = "attempted";
-            } elseif( $key == "quick_button_contact_established" ) {
-                $update[ "seeker_path" ] = "established";
-            } elseif( $key == "quick_button_meeting_scheduled" ) {
-                $update[ "seeker_path" ] = "scheduled";
-            } elseif( $key == "quick_button_meeting_complete" ) {
-                $update[ "seeker_path" ] = "met";
+            if ( $key == "quick_button_no_answer" ) {
+                $update["seeker_path"] = "attempted";
+            } elseif ( $key == "quick_button_phone_off" ) {
+                $update["seeker_path"] = "attempted";
+            } elseif ( $key == "quick_button_contact_established" ) {
+                $update["seeker_path"] = "established";
+            } elseif ( $key == "quick_button_meeting_scheduled" ) {
+                $update["seeker_path"] = "scheduled";
+            } elseif ( $key == "quick_button_meeting_complete" ) {
+                $update["seeker_path"] = "met";
             }
 
-            if( isset( $update[ "seeker_path" ] ) ) {
-                return self::update_seeker_path( $contact_id, $update[ "seeker_path" ], $check_permissions );
+            if ( isset( $update["seeker_path"] ) ) {
+                return self::update_seeker_path( $contact_id, $update["seeker_path"], $check_permissions );
             } else {
                 return $contact_id;
             }
@@ -1064,7 +1071,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function add_comment( int $contact_id, string $comment, bool $check_permissions = true )
     {
-        if( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
+        if ( $check_permissions && !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $user = wp_get_current_user();
@@ -1090,7 +1097,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function get_comments( int $contact_id, bool $check_permissions = true )
     {
-        if( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
+        if ( $check_permissions && !self::can_view( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
         $comments = get_comments( [ 'post_id' => $contact_id ] );
@@ -1107,15 +1114,15 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      */
     public static function accept_contact( int $contact_id, bool $accepted, bool $check_permissions )
     {
-        if( !self::can_update( 'contacts', $contact_id ) ) {
+        if ( !self::can_update( 'contacts', $contact_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
-        if( $accepted ) {
+        if ( $accepted ) {
             update_post_meta( $contact_id, 'overall_status', 'active' );
             update_post_meta( $contact_id, 'accepted', 'Yes' );
 
-            return [ "overall_status" => self::$contact_fields[ "overall_status" ][ "default" ][ 'active' ] ];
+            return [ "overall_status" => self::$contact_fields["overall_status"]["default"]['active'] ];
         } else {
             $assign_to_id = 0;
             $last_activity = self::get_most_recent_activity_for_field( $contact_id, "assigned_to" );

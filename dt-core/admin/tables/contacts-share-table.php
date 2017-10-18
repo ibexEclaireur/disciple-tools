@@ -11,8 +11,8 @@ function dt_contact_share_table()
 
     $list_table = new MM_Table();
     //Fetch, prepare, sort, and filter our data...
-    if( isset( $_GET[ 's' ] ) ) {
-        $list_table->prepare_items( trim( sanitize_text_field( wp_unslash( $_GET[ 's' ] ) ) ) );
+    if ( isset( $_GET['s'] ) ) {
+        $list_table->prepare_items( trim( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ) );
     } else {
         $list_table->prepare_items();
     }
@@ -26,7 +26,7 @@ function dt_contact_share_table()
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="movement-mapping" method="get">
             <?php if (isset( $_REQUEST['page'] ) ): ?>
-            <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ) ); ?>"/>
+            <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) ); ?>"/>
             <?php endif; ?>
             <?php $list_table->search_box( 'Search Table', 'movement-mapping' ); ?>
             <?php $list_table->display() ?>
@@ -40,7 +40,7 @@ function dt_contact_share_table()
 /**
  * Make sure wp-list-table is loaded
  */
-if( !class_exists( 'WP_List_Table' ) ) {
+if ( !class_exists( 'WP_List_Table' ) ) {
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
@@ -72,7 +72,7 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
      */
     function column_default( $item, $column_name )
     {
-        switch( $column_name ) {
+        switch ( $column_name ) {
             case 'WorldID':
             case 'Zone_Name':
             case 'CntyID':
@@ -93,11 +93,11 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
             case 'Sync_Source':
                 return $item[ $column_name ];
             case 'Center':
-                return !empty( $item[ 'Cen_x' ] ) ? '<a href="https://www.google.com/maps/@' . $item[ 'Cen_y' ] . ',' . $item[ 'Cen_x' ] . ',10z" target="_blank">' . $item[ 'Cen_x' ] . ', ' . $item[ 'Cen_y' ] . '</a>' : '';
+                return !empty( $item['Cen_x'] ) ? '<a href="https://www.google.com/maps/@' . $item['Cen_y'] . ',' . $item['Cen_x'] . ',10z" target="_blank">' . $item['Cen_x'] . ', ' . $item['Cen_y'] . '</a>' : '';
             case 'geometry':
                 return empty( $item[ $column_name ] ) ? 'No' : 'Yes';
             case 'Source_Key':
-                return !empty( $item[ $column_name ] ) && ( $item[ 'Sync_Source' ] == '4KArcGIS' ) ? $item[ $column_name ] . ' (<a href="https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/0/query?outFields=*&returnGeometry=true&resultRecordCount=1&f=html&where=WorldID=\'' . $item[ 'WorldID' ] . '\'">html</a>, <a href="https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/0/query?outFields=*&returnGeometry=true&resultRecordCount=1&f=pgeojson&where=WorldID=\'' . $item[ 'WorldID' ] . '\'">json</a>)' : $item[ $column_name ];
+                return !empty( $item[ $column_name ] ) && ( $item['Sync_Source'] == '4KArcGIS' ) ? $item[ $column_name ] . ' (<a href="https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/0/query?outFields=*&returnGeometry=true&resultRecordCount=1&f=html&where=WorldID=\'' . $item['WorldID'] . '\'">html</a>, <a href="https://services1.arcgis.com/DnZ5orhsUGGdUZ3h/ArcGIS/rest/services/OmegaZones082016/FeatureServer/0/query?outFields=*&returnGeometry=true&resultRecordCount=1&f=pgeojson&where=WorldID=\'' . $item['WorldID'] . '\'">json</a>)' : $item[ $column_name ];
             case 'Population':
                 return !empty( $item[ $column_name ] ) ? number_format_i18n( $item[ $column_name ] ) : '';
             default:
@@ -122,9 +122,9 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
         //Return the title contents
         return sprintf( '%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
             /*$1%s*/
-            $item[ 'Zone_name' ],
+            $item['Zone_name'],
             /*$2%s*/
-            $item[ 'WorldID' ],
+            $item['WorldID'],
             /*$3%s*/
             $this->row_actions( $actions )
         );
@@ -140,9 +140,9 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             /*$1%s*/
-            $this->_args[ 'singular' ],  //Let's simply repurpose the table's singular label ("locations")
+            $this->_args['singular'],  //Let's simply repurpose the table's singular label ("locations")
             /*$2%s*/
-            $item[ 'WorldID' ]                //The value of the checkbox should be the record's id
+            $item['WorldID']                //The value of the checkbox should be the record's id
         );
     }
 
@@ -217,7 +217,7 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
     {
 
         //Detect when a bulk action is being triggered...
-        if( 'sync' === $this->current_action() && isset( $_GET['location'] ) ) {
+        if ( 'sync' === $this->current_action() && isset( $_GET['location'] ) ) {
             throw new Exception( "Unimplemented, what is mm_sync_by_oz_objectid?" );
             /* foreach( $_GET[ 'location' ] as $location ) { */
             /*     mm_sync_by_oz_objectid( $location ); */
@@ -246,18 +246,18 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
         $per_page = 20; // get items per page
         $page_start = (int) ( ( $current_page - 1 ) * $per_page ); // calculate starting item id
 
-        $orderby = ( !empty( $_REQUEST[ 'orderby' ] ) ) ? sanitize_sql_orderby( wp_unslash( $_REQUEST[ 'orderby' ] ) ) : 'WorldID'; //If no sort, default to title
-        $order = ( !empty( $_REQUEST[ 'order' ] ) ) ? sanitize_key( $_REQUEST[ 'order' ] ) : 'asc'; //If no order, default to asc
+        $orderby = ( !empty( $_REQUEST['orderby'] ) ) ? sanitize_sql_orderby( wp_unslash( $_REQUEST['orderby'] ) ) : 'WorldID'; //If no sort, default to title
+        $order = ( !empty( $_REQUEST['order'] ) ) ? sanitize_key( $_REQUEST['order'] ) : 'asc'; //If no order, default to asc
 
-        if( !preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
+        if ( !preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
             throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ order arguments are accepted" );
         }
 
-        if( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
+        if ( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
             throw new Error( "order argument must be ASC or DESC" );
         }
 
-        if( empty( $search ) ) {
+        if ( empty( $search ) ) {
 
             $data = $wpdb->get_results(
                 $wpdb->prepare(
@@ -275,7 +275,7 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
                     LIMIT "
                     // @codingStandardsIgnoreLine
                         . " $page_start, $per_page",
-                    sanitize_text_field( wp_unslash( $_GET[ 'cnty-filter' ] ) )
+                    sanitize_text_field( wp_unslash( $_GET['cnty-filter'] ) )
                 ),
                 ARRAY_A
             );
@@ -284,8 +284,8 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
             $search = trim( $search );
 
             $where = '';
-            if( !empty( $_GET[ 'cnty-filter' ] ) ) {
-                $where = sprintf( ' AND CntyID=%d', intval( $_GET[ 'cnty-filter' ] ) );
+            if ( !empty( $_GET['cnty-filter'] ) ) {
+                $where = sprintf( ' AND CntyID=%d', intval( $_GET['cnty-filter'] ) );
             }
 
             /* Notice how you can search multiple columns for your search term easily, and return one data set */
@@ -305,7 +305,7 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
                         . " $orderby $order
                     ",
                     '%' . $wpdb->esc_like( $search ) . '%',
-                    sanitize_text_field( wp_unslash( $_GET[ 'cnty-filter' ] ) )
+                    sanitize_text_field( wp_unslash( $_GET['cnty-filter'] ) )
                 ),
                 ARRAY_A
             );
@@ -330,22 +330,22 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
     {
         global $wpdb;
 
-        if( $which == "top" ) {
+        if ( $which == "top" ) {
             ?>
             <div class="alignleft actions bulkactions">
                 <?php
                 $cnty = $wpdb->get_results( 'SELECT CntyID, Cnty_Name FROM ' . $wpdb->mm . ' GROUP BY CntyID, Cnty_Name ORDER BY Cnty_Name ASC', ARRAY_A );
 
-                if( $cnty ) {
+                if ( $cnty ) {
                     ?>
 
                     <select name="cnty-filter" id="cnty-filter">
 
                         <option value="">Filter by Country</option>
                         <?php
-                        foreach( $cnty as $cat ) {
+                        foreach ( $cnty as $cat ) {
                             $selected = '';
-                            if ( isset( $_GET[ 'cnty-filter' ] ) && sanitize_text_field( wp_unslash( $_GET[ 'cnty-filter' ] ) ) == $cat[ 'CntyID' ] ) {
+                            if ( isset( $_GET['cnty-filter'] ) && sanitize_text_field( wp_unslash( $_GET['cnty-filter'] ) ) == $cat['CntyID'] ) {
                                 $selected = ' selected = "selected"';
                             }
                             ?>
@@ -364,7 +364,7 @@ class Disciple_Tools_Contact_Share_Table extends WP_List_Table
             </div>
             <?php
         }
-        if( $which == "bottom" ) {
+        if ( $which == "bottom" ) {
             //The code that goes after the table is there
 
         }

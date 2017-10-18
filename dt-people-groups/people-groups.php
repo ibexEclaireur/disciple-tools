@@ -8,7 +8,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -36,7 +36,7 @@ class Disciple_Tools_People_Groups
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -69,7 +69,7 @@ class Disciple_Tools_People_Groups
         ];
         $query = new WP_Query( $query_args );
         $list = [];
-        foreach( $query->posts as $post ) {
+        foreach ( $query->posts as $post ) {
             $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
         }
 

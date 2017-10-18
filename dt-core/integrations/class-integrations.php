@@ -23,7 +23,7 @@ class Disciple_Tools_Reports_Integrations {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () {} // End __construct()
+    public function __construct() {} // End __construct()
 
     /**
      * @param $url, the facebook url to query for the next stats
@@ -33,10 +33,10 @@ class Disciple_Tools_Reports_Integrations {
      */
     private static function get_facebook_insights_with_paging( $url, $since, $page_id ){
         $request = wp_remote_get( $url );
-        if( !is_wp_error( $request ) ) {
+        if ( !is_wp_error( $request ) ) {
             $body = wp_remote_retrieve_body( $request );
             $data = json_decode( $body );
-            if (!empty( $data )) {
+            if ( !empty( $data )) {
                 if (isset( $data->error )) {
                     return $data->error->message;
                 } elseif (isset( $data->data )) {
@@ -64,7 +64,7 @@ class Disciple_Tools_Reports_Integrations {
      * @see    Disciple_Tools_Reports_API
      * @return array
      */
-    public static function facebook_prepared_data ( $date_of_last_record, $facebook_page ) {
+    public static function facebook_prepared_data( $date_of_last_record, $facebook_page ) {
         $date_of_last_record = date( 'Y-m-d', strtotime( $date_of_last_record ) );
         $since = date( 'Y-m-d', strtotime( '-30 days' ) );
         if ($date_of_last_record > $since){
@@ -75,7 +75,7 @@ class Disciple_Tools_Reports_Integrations {
         }
         $page_reports = [];
 
-        if(isset( $facebook_page->report ) && $facebook_page->report == 1){
+        if (isset( $facebook_page->report ) && $facebook_page->report == 1){
             $access_token = $facebook_page->access_token;
             $url = "https://graph.facebook.com/v2.8/" . $facebook_page->id . "/insights?metric=";
             $url .= "page_fans";
@@ -88,27 +88,27 @@ class Disciple_Tools_Reports_Integrations {
             $all_page_data = self::get_facebook_insights_with_paging( $url,  $date_of_last_record, $facebook_page->id );
 
             $month_metrics = [];
-            foreach($all_page_data as $metric){
+            foreach ($all_page_data as $metric){
                 if ($metric->name === "page_engaged_users" && $metric->period === "day"){
-                    foreach($metric->values as $day){
-                        $month_metrics[$day->end_time]['page_engagement'] = isset( $day->value ) ? $day->value : 0;
+                    foreach ($metric->values as $day){
+                        $month_metrics[ $day->end_time ]['page_engagement'] = isset( $day->value ) ? $day->value : 0;
                     }
                 }
                 if ($metric->name === "page_fans"){
-                    foreach($metric->values as $day){
-                        $month_metrics[$day->end_time]['page_likes_count'] = isset( $day->value ) ? $day->value : 0;
+                    foreach ($metric->values as $day){
+                        $month_metrics[ $day->end_time ]['page_likes_count'] = isset( $day->value ) ? $day->value : 0;
                     }
                 }
                 if ($metric->name === "page_admin_num_posts" && $metric->period === "day"){
-                    foreach($metric->values as $day){
-                        $month_metrics[$day->end_time]['page_post_count'] = isset( $day->value ) ? $day->value : 0;
+                    foreach ($metric->values as $day){
+                        $month_metrics[ $day->end_time ]['page_post_count'] = isset( $day->value ) ? $day->value : 0;
                     }
                 }
             }
-            foreach($month_metrics as $day => $value){
+            foreach ($month_metrics as $day => $value){
                 array_push(
                     $page_reports, [
-                        'report_date' =>  date( 'Y-m-d h:m:s', strtotime( $day ) ),
+                        'report_date' => date( 'Y-m-d h:m:s', strtotime( $day ) ),
                         'report_source' => "Facebook",
                         'report_subsource' => $facebook_page->id,
                         'meta_input' => $value,
@@ -128,9 +128,9 @@ class Disciple_Tools_Reports_Integrations {
     /**
      * Update the flag for rebuilding the reports for a page.
      */
-    public static function disable_rebuild_flag_on_facebook_page ( $page_id ){
+    public static function disable_rebuild_flag_on_facebook_page( $page_id ){
         $facebook_pages = get_option( "dt_facebook_pages", [] );
-        $facebook_pages[$page_id]->rebuild = false;
+        $facebook_pages[ $page_id ]->rebuild = false;
         update_option( "dt_facebook_pages", $facebook_pages );
     }
 
@@ -141,7 +141,7 @@ class Disciple_Tools_Reports_Integrations {
      * @see    Disciple_Tools_Reports_API
      * @return array
      */
-    public static function twitter_prepared_data ( $date ) {
+    public static function twitter_prepared_data( $date ) {
         $report = [];
 
         $report[0] = [
@@ -179,12 +179,12 @@ class Disciple_Tools_Reports_Integrations {
      * @see    Disciple_Tools_Reports_API
      * @return array
      */
-    public static function analytics_prepared_data ( $last_date_recorded ) {
+    public static function analytics_prepared_data( $last_date_recorded ) {
         $reports = [];
 
         $website_unique_visits = DT_Ga_Admin::get_report_data( $last_date_recorded );
 
-        foreach($website_unique_visits as $website => $days){
+        foreach ($website_unique_visits as $website => $days){
             foreach ($days as $day) {
                 //set report date to the day after the day of the data
                 $report_date = strtotime( '+1day', $day['date'] );
@@ -209,7 +209,7 @@ class Disciple_Tools_Reports_Integrations {
      * @see    Disciple_Tools_Reports_API
      * @return array
      */
-    public static function adwords_prepared_data ( $date ) {
+    public static function adwords_prepared_data( $date ) {
         $report = [];
 
         $report[0] = [
@@ -248,7 +248,7 @@ class Disciple_Tools_Reports_Integrations {
      * @see    Disciple_Tools_Reports_API
      * @return array
      */
-    public static function mailchimp_prepared_data ( $date ) {
+    public static function mailchimp_prepared_data( $date ) {
         $report = [];
 
         $report[0] = [
@@ -290,7 +290,7 @@ class Disciple_Tools_Reports_Integrations {
      * @see    Disciple_Tools_Reports_API
      * @return array
      */
-    public static function youtube_prepared_data ( $date ) {
+    public static function youtube_prepared_data( $date ) {
         $report = [];
 
         $report[0] = [

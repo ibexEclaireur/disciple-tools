@@ -51,8 +51,8 @@ class Disciple_Tools_Users_Endpoints
     {
         $params = $request->get_params();
         $search = "";
-        if( isset( $params[ 's' ] ) ) {
-            $search = $params[ 's' ];
+        if ( isset( $params['s'] ) ) {
+            $search = $params['s'];
         }
         $users = Disciple_Tools_Users::get_assignable_users_compact( $search );
 
@@ -68,12 +68,12 @@ class Disciple_Tools_Users_Endpoints
     {
         $params = $request->get_params();
         $user_id = get_current_user_id();
-        if( isset( $params[ 'preference_key' ] ) ) {
-            $result = Disciple_Tools_Users::switch_preference( $user_id, $params[ 'preference_key' ] );
-            if( $result[ "status" ] ) {
-                return $result[ "response" ];
+        if ( isset( $params['preference_key'] ) ) {
+            $result = Disciple_Tools_Users::switch_preference( $user_id, $params['preference_key'] );
+            if ( $result["status"] ) {
+                return $result["response"];
             } else {
-                return new WP_Error( "changed_notification_error", $result[ "message" ], [ 'status', 400 ] );
+                return new WP_Error( "changed_notification_error", $result["message"], [ 'status', 400 ] );
             }
         } else {
             return new WP_Error( "preference_error", "Please provide a valid preference to change for user", [ 'status', 400 ] );

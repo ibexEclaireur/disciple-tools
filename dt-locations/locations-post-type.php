@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -75,7 +75,7 @@ class Disciple_Tools_Location_Post_Type
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -97,7 +97,7 @@ class Disciple_Tools_Location_Post_Type
 
         add_action( 'init', [ $this, 'register_post_type' ] );
 
-        if( is_admin() ) {
+        if ( is_admin() ) {
             global $pagenow;
 
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
@@ -105,9 +105,9 @@ class Disciple_Tools_Location_Post_Type
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
-            if( isset( $_GET[ 'post_type' ] ) ) {
-                $post_type = sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] ) );
-                if( $pagenow == 'edit.php' && $this->post_type === $post_type ) {
+            if ( isset( $_GET['post_type'] ) ) {
+                $post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+                if ( $pagenow == 'edit.php' && $this->post_type === $post_type ) {
                     add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                     add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
                 }
@@ -202,7 +202,7 @@ class Disciple_Tools_Location_Post_Type
     {
 //        global $post;
 
-        switch( $column_name ) {
+        switch ( $column_name ) {
             case 'WorldId':
                 break;
             case 'Adm1_Name':
@@ -230,7 +230,7 @@ class Disciple_Tools_Location_Post_Type
         /* Determine if Zume/24:14/4K Geographic zones are installed.
          * If so, then render columns for those grid systems. */
         // TODO finish the if/then logic of having admin areas. The if/then controls if Zume/24:14/4K units are used, then show these columns, if not show other defaults.
-        if( get_option( '_dt_usa_installed_state' ) || get_option( '_dt_installed_country' ) ) {
+        if ( get_option( '_dt_usa_installed_state' ) || get_option( '_dt_installed_country' ) ) {
             $new_columns =
                 [
                     'WorldID'   => __( 'WorldID', 'disciple_tools' ),
@@ -244,19 +244,19 @@ class Disciple_Tools_Location_Post_Type
 
         $last_item = [];
 
-        if( isset( $defaults[ 'date' ] ) ) {
-            unset( $defaults[ 'date' ] );
+        if ( isset( $defaults['date'] ) ) {
+            unset( $defaults['date'] );
         }
 
-        if( count( $defaults ) > 2 ) {
+        if ( count( $defaults ) > 2 ) {
             $last_item = array_slice( $defaults, -1 );
 
             array_pop( $defaults );
         }
         $defaults = array_merge( $defaults, $new_columns );
 
-        if( is_array( $last_item ) && 0 < count( $last_item ) ) {
-            foreach( $last_item as $k => $v ) {
+        if ( is_array( $last_item ) && 0 < count( $last_item ) ) {
+            foreach ( $last_item as $k => $v ) {
                 $defaults[ $k ] = $v;
                 break;
             }
@@ -285,7 +285,7 @@ class Disciple_Tools_Location_Post_Type
             3  => __( 'Custom field deleted.', 'disciple_tools' ),
             4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
-            5  => isset( $_GET[ 'revision' ] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET[ 'revision' ], false ) ) : false,
+            5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
             6  => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
             7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
             8  => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
@@ -364,77 +364,77 @@ class Disciple_Tools_Location_Post_Type
 
         echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
 
-        if( 0 < count( $field_data ) ) {
+        if ( 0 < count( $field_data ) ) {
             echo '<table class="form-table">' . "\n";
             echo '<tbody>' . "\n";
 
-            foreach( $field_data as $k => $v ) {
+            foreach ( $field_data as $k => $v ) {
 
-                if( $v[ 'section' ] == $section || $section == 'all' ) {
+                if ( $v['section'] == $section || $section == 'all' ) {
 
-                    $data = $v[ 'default' ];
-                    if( isset( $fields[ $k ] ) && isset( $fields[ $k ][ 0 ] ) ) {
-                        $data = $fields[ $k ][ 0 ];
+                    $data = $v['default'];
+                    if ( isset( $fields[ $k ] ) && isset( $fields[ $k ][0] ) ) {
+                        $data = $fields[ $k ][0];
                     }
 
-                    $type = $v[ 'type' ];
+                    $type = $v['type'];
 
-                    switch( $type ) {
+                    switch ( $type ) {
 
                         case 'text':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            echo '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
                         case 'select':
                             echo '<tr valign="top"><th scope="row">
-							<label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th>
+							<label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th>
 							<td><select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
-                            foreach( $v[ 'default' ] as $vv ) {
+                            foreach ( $v['default'] as $vv ) {
                                 echo '<option value="' . esc_attr( $vv ) . '" ';
-                                if( $vv == $data ) {
+                                if ( $vv == $data ) {
                                     echo 'selected';
                                 }
                                 echo '>' . esc_html( $vv ) . '</option>';
                             }
                             echo '</select>' . "\n";
-                            echo '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
                         case 'key_select':
                             echo '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . esc_attr( $v[ 'name' ] ) . '</label></th>
+                                <label for="' . esc_attr( $k ) . '">' . esc_attr( $v['name'] ) . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
-                            foreach( $v[ 'default' ] as $kk => $vv ) {
+                            foreach ( $v['default'] as $kk => $vv ) {
                                 echo '<option value="' . esc_attr( $kk ) . '" ';
-                                if( $kk == $data ) {
+                                if ( $kk == $data ) {
                                     echo 'selected';
                                 }
                                 echo '>' . esc_html( $vv ) . '</option>';
                             }
                             echo '</select>' . "\n";
-                            echo '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
                         case 'radio':
-                            echo '<tr valign="top"><th scope="row">' . esc_attr( $v[ 'name' ] ) . '</th>
+                            echo '<tr valign="top"><th scope="row">' . esc_attr( $v['name'] ) . '</th>
 							<td><fieldset>';
                             // Iterate the buttons
                             $increment_the_radio_button = 1;
-                            foreach( $v[ 'default' ] as $vv ) {
+                            foreach ( $v['default'] as $vv ) {
                                 echo '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . '">' . esc_attr( $vv ) . '</label>
                                 <input class="dt-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . esc_attr( $k . '-' . $increment_the_radio_button ) . '" value="' . esc_attr( $vv ) . '" ';
-                                if( $vv == $data ) {
+                                if ( $vv == $data ) {
                                     echo 'checked';
                                 }
                                 echo '>';
                                 $increment_the_radio_button++;
                             }
                             echo '</fieldset>' . "\n";
-                            echo '<p class="description">' . esc_attr( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<p class="description">' . esc_attr( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
 
@@ -460,16 +460,16 @@ class Disciple_Tools_Location_Post_Type
     {
         // Verify
         $key = 'dt_' . $this->post_type . '_noonce';
-        if( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
+        if ( ( get_post_type() != $this->post_type ) || !isset( $_POST[ $key ] ) || !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
             return $post_id;
         }
 
-        if( isset( $_POST[ 'post_type' ] ) && 'page' == sanitize_text_field( wp_unslash( $_POST[ 'post_type' ] ) ) ) {
-            if( !current_user_can( 'edit_page', $post_id ) ) {
+        if ( isset( $_POST['post_type'] ) && 'page' == sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ) {
+            if ( !current_user_can( 'edit_page', $post_id ) ) {
                 return $post_id;
             }
         } else {
-            if( !current_user_can( 'edit_post', $post_id ) ) {
+            if ( !current_user_can( 'edit_post', $post_id ) ) {
                 return $post_id;
             }
         }
@@ -477,29 +477,29 @@ class Disciple_Tools_Location_Post_Type
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
 
-        if( ( isset( $_POST[ 'new-key-address' ] ) && !empty( $_POST[ 'new-key-address' ] ) ) && ( isset( $_POST[ 'new-value-address' ] ) && !empty( $_POST[ 'new-value-address' ] ) ) ) { // catch and prepare new contact fields
-            $k = explode( "_", sanitize_text_field( wp_unslash( $_POST[ 'new-key-address' ] ) ) );
-            $type = $k[ 1 ];
+        if ( ( isset( $_POST['new-key-address'] ) && !empty( $_POST['new-key-address'] ) ) && ( isset( $_POST['new-value-address'] ) && !empty( $_POST['new-value-address'] ) ) ) { // catch and prepare new contact fields
+            $k = explode( "_", sanitize_text_field( wp_unslash( $_POST['new-key-address'] ) ) );
+            $type = $k[1];
             $number_key = dt_address_metabox()->create_channel_metakey( "address" );
             $details_key = $number_key . "_details";
             $details = [ 'type' => $type, 'verified' => false ];
             //save the field and the field details
-            add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST[ 'new-value-address' ] ) ), true );
+            add_post_meta( $post_id, strtolower( $number_key ), sanitize_text_field( wp_unslash( $_POST['new-value-address'] ) ), true );
             add_post_meta( $post_id, strtolower( $details_key ), $details, true );
         }
 
-        foreach( $fields as $f ) {
-            if( !isset( $_POST[ $f ] ) ) {
+        foreach ( $fields as $f ) {
+            if ( !isset( $_POST[ $f ] ) ) {
                 continue;
             }
 
             ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) ) );
 
-            if( get_post_meta( $post_id, $f ) == '' ) {
+            if ( get_post_meta( $post_id, $f ) == '' ) {
                 add_post_meta( $post_id, $f, ${$f}, true );
-            } elseif( ${$f} == '' ) {
+            } elseif ( ${$f} == '' ) {
                 delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
-            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+            } elseif ( ${$f} != get_post_meta( $post_id, $f, true ) ) {
                 update_post_meta( $post_id, $f, ${$f} );
             }
         }
@@ -515,7 +515,7 @@ class Disciple_Tools_Location_Post_Type
      */
     public function enter_title_here( $title )
     {
-        if( get_post_type() == $this->post_type ) {
+        if ( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the location title here', 'disciple_tools' );
         }
 
@@ -534,12 +534,12 @@ class Disciple_Tools_Location_Post_Type
         global $post;
         $fields = [];
 
-        if( isset( $post->ID ) && $post->post_status != 'auto-draft' ) { // if being called for a specific record or new record.
+        if ( isset( $post->ID ) && $post->post_status != 'auto-draft' ) { // if being called for a specific record or new record.
             // Address
             $addresses = dt_address_metabox()->address_fields( $post->ID );
-            foreach( $addresses as $k => $v ) { // sets all others third
+            foreach ( $addresses as $k => $v ) { // sets all others third
                 $fields[ $k ] = [
-                    'name'        => ucwords( $v[ 'name' ] ),
+                    'name'        => ucwords( $v['name'] ),
                     'description' => '',
                     'type'        => 'text',
                     'default'     => '',
@@ -582,7 +582,7 @@ class Disciple_Tools_Location_Post_Type
     {
         global $submenu;
         unset(
-            $submenu[ 'edit.php?post_type=locations' ][ 10 ]
+            $submenu['edit.php?post_type=locations'][10]
         );
     }
 
