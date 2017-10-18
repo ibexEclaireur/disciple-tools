@@ -63,7 +63,7 @@ class Disciple_Tools_Roles
             remove_role( 'strategist' );
         }
         add_role(
-            'strategist', 'Strategist',
+            'strategist', __( 'Strategist' ),
             [
                 /* Standard Capabilities */
                 'list_users'                 => true,
@@ -185,7 +185,7 @@ class Disciple_Tools_Roles
             remove_role( 'dispatcher' );
         }
         add_role(
-            'dispatcher', 'Dispatcher',
+            'dispatcher', __( 'Dispatcher' ),
             [
                 /* Standard Capabilities */
                 //'list_users' => false,
@@ -274,7 +274,7 @@ class Disciple_Tools_Roles
             remove_role( 'marketer' );
         }
         add_role(
-            'marketer', 'Marketer',
+            'marketer', __( 'Marketer' ),
             [
                 /* Standard Capabilities */
                 'list_users'                => true,
@@ -394,7 +394,7 @@ class Disciple_Tools_Roles
             remove_role( 'marketer_leader' );
         }
         add_role(
-            'marketer_leader', 'Marketer Leader',
+            'marketer_leader', __( 'Marketer Leader' ),
             [
                 /* Standard Capabilities */
                 'list_users'                 => true,
@@ -513,7 +513,7 @@ class Disciple_Tools_Roles
             remove_role( 'multiplier' );
         }
         add_role(
-            'multiplier', 'Multiplier',
+            'multiplier', __( 'Multiplier' ),
             [
                 'access_contacts'        => true,
                 'update_shared_contacts' => true,
@@ -528,7 +528,7 @@ class Disciple_Tools_Roles
             remove_role( 'project_supporter' );
         }
         add_role(
-            'project_supporter', 'Project Supporter',
+            'project_supporter', __( 'Project Supporter' ),
             [
                 'project_supporter' => true,
                 'read_prayer'       => true,
@@ -540,7 +540,7 @@ class Disciple_Tools_Roles
             remove_role( 'prayer_supporter' );
         }
         add_role(
-            'prayer_supporter', 'Prayer Supporter',
+            'prayer_supporter', __( 'Prayer Supporter' ),
             [
                 'prayer_supporter' => true,
                 'read_prayer'      => true,
@@ -551,7 +551,7 @@ class Disciple_Tools_Roles
             remove_role( 'registered' );
         }
         add_role(
-            'registered', 'Registered',
+            'registered', __( 'Registered' ),
             [
                 // No capabilities to this role. Must be moved to another role for permission.
             ]
@@ -671,7 +671,7 @@ class Disciple_Tools_Roles
         remove_role( 'project_supporter' );
 
         add_role(
-            'subscriber', 'Subscriber',
+            'subscriber', __( 'Subscriber' ),
             [
                 'delete_others_posts'    => true,
                 'delete_pages'           => true,
@@ -701,7 +701,7 @@ class Disciple_Tools_Roles
         );
 
         add_role(
-            'editor', 'Editor',
+            'editor', __( 'Editor' ),
             [
                 'delete_others_posts'    => true,
                 'delete_pages'           => true,
@@ -731,7 +731,7 @@ class Disciple_Tools_Roles
             ]
         );
         add_role(
-            'author', 'Author',
+            'author', __( 'Author' ),
             [
                 'delete_posts'           => true,
                 'delete_published_posts' => true,
@@ -744,7 +744,7 @@ class Disciple_Tools_Roles
         );
 
         add_role(
-            'contributor', 'Contributor',
+            'contributor', __( 'Contributor' ),
             [
                 'delete_posts' => true,
                 'edit_posts'   => true,
