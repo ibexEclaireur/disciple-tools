@@ -193,7 +193,7 @@ class Disciple_Tools_Users
     public static function create_contact_for_user( $user_id )
     {
         $user = get_user_by( 'id', $user_id );
-        if( $user->has_cap( 'access_contacts' ) ) {
+        if ( $user->has_cap( 'access_contacts' ) ) {
             $args = [
                 'post_type'  => 'contacts',
                 'relation'   => 'AND',
@@ -203,7 +203,7 @@ class Disciple_Tools_Users
                 ],
             ];
             $contacts = new WP_Query( $args );
-            if( empty( $contacts->posts ) ) {
+            if ( empty( $contacts->posts ) ) {
                 Disciple_Tools_Contacts::create_contact( [
                     "title"               => $user->display_name,
                     "assigned_to"         => "user-" . $user_id,
