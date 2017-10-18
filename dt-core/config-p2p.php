@@ -365,7 +365,7 @@ add_action( 'p2p_init', 'dt_my_connection_types' );
  */
 function dt_p2p_published_by_default( $args )
 {
-    $args[ 'post_status' ] = 'publish';
+    $args['post_status'] = 'publish';
 
     return $args;
 }
@@ -390,7 +390,7 @@ function dt_user_location_connections( $user )
     $connected = get_posts( $args );
 
     // Display connected posts
-    if( count( $connected ) ) {
+    if ( count( $connected ) ) {
         ?>
         <h3>User Locations</h3>
         <table class="form-table">
@@ -408,7 +408,7 @@ function dt_user_location_connections( $user )
                         </thead>
                         <tbody>
                         <?php
-                        foreach( $connected as $next ) { ?>
+                        foreach ( $connected as $next ) { ?>
                             <tr class="inactive">
                                 <td class="column-primary">
                                     <strong><?php echo esc_html( $next->post_title ); ?></strong>
@@ -464,7 +464,7 @@ function dt_user_peoplegroup_connections( $user )
     $connected = get_posts( $args );
 
     // Display connected posts
-    if( count( $connected ) ) {
+    if ( count( $connected ) ) {
         ?>
         <h3>User People Groups</h3>
         <table class="form-table">
@@ -482,7 +482,7 @@ function dt_user_peoplegroup_connections( $user )
                         </thead>
                         <tbody>
                         <?php
-                        foreach( $connected as $next ) { ?>
+                        foreach ( $connected as $next ) { ?>
                             <tr class="inactive">
                                 <td class="column-primary">
                                     <strong><?php echo esc_html( $next->post_title ); ?></strong>

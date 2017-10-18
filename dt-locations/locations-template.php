@@ -6,7 +6,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 

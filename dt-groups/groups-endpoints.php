@@ -7,7 +7,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -24,7 +24,7 @@ class Disciple_Tools_Groups_Endpoints
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -148,7 +148,7 @@ class Disciple_Tools_Groups_Endpoints
     public function get_viewable_groups()
     {
         $groups = Disciple_Tools_Groups::get_viewable_groups();
-        if( is_wp_error( $groups ) ) {
+        if ( is_wp_error( $groups ) ) {
             return $groups;
         }
 
@@ -165,31 +165,31 @@ class Disciple_Tools_Groups_Endpoints
         p2p_type( 'groups_to_locations' )->each_connected( $groups, [], 'locations' );
         p2p_type( 'contacts_to_groups' )->each_connected( $groups, [], 'contacts' );
         $rv = [];
-        foreach( $groups as $group ) {
+        foreach ( $groups as $group ) {
             $meta_fields = get_post_custom( $group->ID );
             $group_array = $group->to_array();
-            unset( $group_array[ 'contacts' ] );
-            $group_array[ 'permalink' ] = get_post_permalink( $group->ID );
-            $group_array[ 'locations' ] = [];
-            foreach( $group->locations as $location ) {
-                $group_array[ 'locations' ][] = $location->post_title;
+            unset( $group_array['contacts'] );
+            $group_array['permalink'] = get_post_permalink( $group->ID );
+            $group_array['locations'] = [];
+            foreach ( $group->locations as $location ) {
+                $group_array['locations'][] = $location->post_title;
             }
-            $group_array[ 'leaders' ] = [];
-            $group_array[ 'member_count' ] = 0;
-            foreach( $group->contacts as $contact ) {
-                if( (int) p2p_get_meta( $contact->p2p_id, 'leader' ) ) {
-                    $group_array[ 'leaders' ][] = [
+            $group_array['leaders'] = [];
+            $group_array['member_count'] = 0;
+            foreach ( $group->contacts as $contact ) {
+                if ( (int) p2p_get_meta( $contact->p2p_id, 'leader' ) ) {
+                    $group_array['leaders'][] = [
                         'post_title' => $contact->post_title,
                         'permalink'  => get_permalink( $contact->ID ),
                     ];
                 }
-                $group_array[ 'member_count' ]++;
+                $group_array['member_count']++;
             }
-            foreach( $meta_fields as $meta_key => $meta_value ) {
-                if( $meta_key == 'group_status' ) {
-                    $group_array[ $meta_key ] = $meta_value[ 0 ];
-                } elseif( $meta_key == 'last_modified' ) {
-                    $group_array[ $meta_key ] = (int) $meta_value[ 0 ];
+            foreach ( $meta_fields as $meta_key => $meta_value ) {
+                if ( $meta_key == 'group_status' ) {
+                    $group_array[ $meta_key ] = $meta_value[0];
+                } elseif ( $meta_key == 'last_modified' ) {
+                    $group_array[ $meta_key ] = (int) $meta_value[0];
                 }
             }
             $rv[] = $group_array;
@@ -207,8 +207,8 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         $search = "";
-        if( isset( $params[ 's' ] ) ) {
-            $search = $params[ 's' ];
+        if ( isset( $params['s'] ) ) {
+            $search = $params['s'];
         }
         $groups = Disciple_Tools_Groups::get_groups_compact( $search );
 
@@ -224,8 +224,8 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $result = Disciple_Tools_Groups::update_group( $params[ 'id' ], $body, true );
+        if ( isset( $params['id'] ) ) {
+            $result = Disciple_Tools_Groups::update_group( $params['id'], $body, true );
 
             return $result;
         } else {
@@ -245,8 +245,8 @@ class Disciple_Tools_Groups_Endpoints
     public function get_group( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $result = Disciple_Tools_Groups::get_group( $params[ 'id' ], true );
+        if ( isset( $params['id'] ) ) {
+            $result = Disciple_Tools_Groups::get_group( $params['id'], true );
 
             return $result; // Could be permission WP_Error
         } else {
@@ -263,10 +263,10 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        if( isset( $params[ 'id' ] ) ) {
+        if ( isset( $params['id'] ) ) {
             reset( $body );
             $field = key( $body );
-            $result = Disciple_Tools_Groups::add_item_to_field( $params[ 'id' ], $field, $body[ $field ], true );
+            $result = Disciple_Tools_Groups::add_item_to_field( $params['id'], $field, $body[ $field ], true );
 
             return $result;
         } else {
@@ -283,11 +283,11 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $field_key = $body[ "key" ];
-            $values = $body[ "values" ];
+        if ( isset( $params['id'] ) ) {
+            $field_key = $body["key"];
+            $values = $body["values"];
 
-            $result = Disciple_Tools_Groups::update_detail_on_field( $params[ 'id' ], $field_key, $values, true );
+            $result = Disciple_Tools_Groups::update_detail_on_field( $params['id'], $field_key, $values, true );
 
             return $result;
         } else {
@@ -304,14 +304,14 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $field_key = $body[ "key" ];
-            $value = $body[ "value" ];
+        if ( isset( $params['id'] ) ) {
+            $field_key = $body["key"];
+            $value = $body["value"];
 
-            $result = Disciple_Tools_Groups::remove_item_from_field( $params[ 'id' ], $field_key, $value, true );
-            if( is_wp_error( $result ) ) {
+            $result = Disciple_Tools_Groups::remove_item_from_field( $params['id'], $field_key, $value, true );
+            if ( is_wp_error( $result ) ) {
                 return $result;
-            } elseif( $result == 0 ) {
+            } elseif ( $result == 0 ) {
                 return new WP_Error( "delete_group_details", "Could not update group", [ 'status' => 400 ] );
             } else {
                 return new WP_REST_Response( $result );
@@ -330,10 +330,10 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         $body = $request->get_json_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $result = Disciple_Tools_Groups::add_comment( $params[ 'id' ], $body[ "comment" ] );
+        if ( isset( $params['id'] ) ) {
+            $result = Disciple_Tools_Groups::add_comment( $params['id'], $body["comment"] );
 
-            if( is_wp_error( $result ) ) {
+            if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
                 $comment = get_comment( $result );
@@ -353,8 +353,8 @@ class Disciple_Tools_Groups_Endpoints
     public function get_comments( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'id' ] ) ) {
-            return Disciple_Tools_Groups::get_comments( $params[ 'id' ] );
+        if ( isset( $params['id'] ) ) {
+            return Disciple_Tools_Groups::get_comments( $params['id'] );
         } else {
             return new WP_Error( "get_comments", "Missing a valid group id", [ 'status' => 400 ] );
         }
@@ -368,8 +368,8 @@ class Disciple_Tools_Groups_Endpoints
     public function get_activity( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'id' ] ) ) {
-            return Disciple_Tools_Groups::get_activity( $params[ 'id' ] );
+        if ( isset( $params['id'] ) ) {
+            return Disciple_Tools_Groups::get_activity( $params['id'] );
         } else {
             return new WP_Error( "get_activity", "Missing a valid group id", [ 'status' => 400 ] );
         }
@@ -383,10 +383,10 @@ class Disciple_Tools_Groups_Endpoints
     public function shared_with( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $result = Disciple_Tools_Groups::get_shared_with_on_group( $params[ 'id' ] );
+        if ( isset( $params['id'] ) ) {
+            $result = Disciple_Tools_Groups::get_shared_with_on_group( $params['id'] );
 
-            if( is_wp_error( $result ) ) {
+            if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
                 return new WP_REST_Response( $result );
@@ -404,10 +404,10 @@ class Disciple_Tools_Groups_Endpoints
     public function remove_shared( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $result = Disciple_Tools_Groups::remove_shared_on_group( $params[ 'id' ], $params[ 'user_id' ] );
+        if ( isset( $params['id'] ) ) {
+            $result = Disciple_Tools_Groups::remove_shared_on_group( $params['id'], $params['user_id'] );
 
-            if( is_wp_error( $result ) ) {
+            if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
                 return new WP_REST_Response( $result );
@@ -425,10 +425,10 @@ class Disciple_Tools_Groups_Endpoints
     public function add_shared( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'id' ] ) ) {
-            $result = Disciple_Tools_Groups::add_shared_on_group( $params[ 'id' ], $params[ 'user_id' ] );
+        if ( isset( $params['id'] ) ) {
+            $result = Disciple_Tools_Groups::add_shared_on_group( $params['id'], $params['user_id'] );
 
-            if( is_wp_error( $result ) ) {
+            if ( is_wp_error( $result ) ) {
                 return $result;
             } else {
                 return new WP_REST_Response( $result );

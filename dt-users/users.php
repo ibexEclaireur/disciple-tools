@@ -7,7 +7,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -37,7 +37,7 @@ class Disciple_Tools_Users
     {
         //        @todo better permissions?
         //        @todo return only the users the user has the permission to assign to
-        if( !current_user_can( "access_contacts" ) ) {
+        if ( !current_user_can( "access_contacts" ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to assign" ), [ 'status' => 403 ] );
         }
 
@@ -66,8 +66,8 @@ class Disciple_Tools_Users
         $users = $user_query->get_results();
         $list = [];
 
-        foreach( $users as $user ) {
-            if( user_can( $user, "access_contacts" ) ) {
+        foreach ( $users as $user ) {
+            if ( user_can( $user, "access_contacts" ) ) {
                 $list[] = [
                     "name" => $user->display_name,
                     "ID"   => $user->ID,
@@ -91,9 +91,9 @@ class Disciple_Tools_Users
 
         $value = get_user_meta( $user_id, $preference_key, true );
 
-        if( empty( $value ) ) {
+        if ( empty( $value ) ) {
             $status = update_metadata( 'user', $user_id, $preference_key, true );
-            if( $status ) {
+            if ( $status ) {
                 return [
                     'status'   => true,
                     'response' => $status,
@@ -106,7 +106,7 @@ class Disciple_Tools_Users
             }
         } else {
             $status = update_metadata( 'user', $user_id, $preference_key, false );
-            if( $status ) {
+            if ( $status ) {
                 return [
                     'status'   => true,
                     'response' => $status,
@@ -130,53 +130,53 @@ class Disciple_Tools_Users
         $current_user = wp_get_current_user();
 
         // validate nonce
-        if( isset( $_POST[ 'user_update_nonce' ] ) && !wp_verify_nonce( sanitize_key( $_POST[ 'user_update_nonce' ] ), 'user_' . $current_user->ID . '_update' ) ) {
+        if ( isset( $_POST['user_update_nonce'] ) && !wp_verify_nonce( sanitize_key( $_POST['user_update_nonce'] ), 'user_' . $current_user->ID . '_update' ) ) {
             return new WP_Error( 'fail_nonce_verification', 'The form requires a valid nonce, in order to process.' );
         }
 
         $args = [];
-        $args[ 'ID' ] = $current_user->ID;
+        $args['ID'] = $current_user->ID;
 
         // build user name variables
-        if( isset( $_POST[ 'first_name' ] ) ) {
-            $args[ 'first_name' ] = sanitize_text_field( wp_unslash( $_POST[ 'first_name' ] ) );
+        if ( isset( $_POST['first_name'] ) ) {
+            $args['first_name'] = sanitize_text_field( wp_unslash( $_POST['first_name'] ) );
         }
-        if( isset( $_POST[ 'last_name' ] ) ) {
-            $args[ 'last_name' ] = sanitize_text_field( wp_unslash( $_POST[ 'last_name' ] ) );
+        if ( isset( $_POST['last_name'] ) ) {
+            $args['last_name'] = sanitize_text_field( wp_unslash( $_POST['last_name'] ) );
         }
-        if( isset( $_POST[ 'display_name' ] ) && !empty( $_POST[ 'display_name' ] ) ) {
-            $args[ 'display_name' ] = sanitize_text_field( wp_unslash( $_POST[ 'display_name' ] ) );
+        if ( isset( $_POST['display_name'] ) && !empty( $_POST['display_name'] ) ) {
+            $args['display_name'] = sanitize_text_field( wp_unslash( $_POST['display_name'] ) );
         }
-        if( isset( $_POST[ 'user_email' ] ) && !empty( $_POST[ 'user_email' ] ) ) {
-            $args[ 'user_email' ] = sanitize_email( wp_unslash( $_POST[ 'user_email' ] ) );
+        if ( isset( $_POST['user_email'] ) && !empty( $_POST['user_email'] ) ) {
+            $args['user_email'] = sanitize_email( wp_unslash( $_POST['user_email'] ) );
         }
-        if( isset( $_POST[ 'description' ] ) ) {
-            $args[ 'description' ] = sanitize_text_field( wp_unslash( $_POST[ 'description' ] ) );
+        if ( isset( $_POST['description'] ) ) {
+            $args['description'] = sanitize_text_field( wp_unslash( $_POST['description'] ) );
         }
-        if( isset( $_POST[ 'nickname' ] ) ) {
-            $args[ 'nickname' ] = sanitize_text_field( wp_unslash( $_POST[ 'nickname' ] ) );
+        if ( isset( $_POST['nickname'] ) ) {
+            $args['nickname'] = sanitize_text_field( wp_unslash( $_POST['nickname'] ) );
         }
 
         // _user table defaults
         $result = wp_update_user( $args );
 
-        if( is_wp_error( $result ) ) {
+        if ( is_wp_error( $result ) ) {
             return new WP_Error( 'fail_update_user_data', 'Error while updating user data in user table.' );
         }
 
         // Update custom site fields
         $fields = array_keys( dt_get_site_default_user_fields() );
 
-        foreach( $fields as $f ) {
+        foreach ( $fields as $f ) {
 
-            if( isset( $_POST[ $f ] ) ) {
+            if ( isset( $_POST[ $f ] ) ) {
                 ${$f} = trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) );
 
-                if( get_user_meta( $current_user->ID, $f, true ) == '' ) {
+                if ( get_user_meta( $current_user->ID, $f, true ) == '' ) {
                     update_user_meta( $current_user->ID, $f, ${$f} );
-                } elseif( ${$f} == '' ) {
+                } elseif ( ${$f} == '' ) {
                     delete_user_meta( $current_user->ID, $f, get_user_meta( $current_user->ID, $f, true ) );
-                } elseif( ${$f} != get_user_meta( $current_user->ID, $f, true ) ) {
+                } elseif ( ${$f} != get_user_meta( $current_user->ID, $f, true ) ) {
                     update_user_meta( $current_user->ID, $f, ${$f} );
                 }
             }
@@ -198,8 +198,13 @@ class Disciple_Tools_Users
                 'post_type'  => 'contacts',
                 'relation'   => 'AND',
                 'meta_query' => [
+<<<<<<< HEAD
                     [ 'key' => "corresponds_to_user", "value" => $user_id ],
                     [ 'key' => "is_a_user", "value" => "yes" ],
+=======
+                    ['key' =>"corresponds_to_user", "value" =>$user_id],
+                    ['key' =>"is_a_user", "value" =>"yes"]
+>>>>>>> master
                 ],
             ];
             $contacts = new WP_Query( $args );

@@ -10,7 +10,7 @@
  * @author     Chasm.Solutions & Kingdom.Training
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
@@ -375,19 +375,19 @@ class Disciple_Tools_Setup_Steps_Tab
      */
     protected function process_checklist( $checklist = null )
     {
-        if( isset( $_POST[ 'checklist_nonce' ] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST[ 'checklist_nonce' ] ) ), 'checklist' ) ) {
+        if ( isset( $_POST['checklist_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['checklist_nonce'] ) ), 'checklist' ) ) {
 
             // get option
-            if( is_null( $checklist ) ) {
+            if ( is_null( $checklist ) ) {
                 $checklist = get_option( 'dt_setup_checklist' );
             }
 
-            if( isset( $_POST[ 'input' ] ) ) {
+            if ( isset( $_POST['input'] ) ) {
 
-                $post = array_map( 'sanitize_text_field', wp_unslash( $_POST[ 'input' ] ) );
+                $post = array_map( 'sanitize_text_field', wp_unslash( $_POST['input'] ) );
 
-                foreach( $post as $key => $value ) {
-                    if( isset( $checklist[ $key ] ) && $checklist[ $key ] == $value ) {
+                foreach ( $post as $key => $value ) {
+                    if ( isset( $checklist[ $key ] ) && $checklist[ $key ] == $value ) {
                         unset( $checklist[ $key ] );
                     } else {
                         $checklist[ $key ] = $value;
@@ -410,11 +410,11 @@ class Disciple_Tools_Setup_Steps_Tab
      */
     protected function selected( string $group, string $item, $checklist = null )
     {
-        if( is_null( $checklist ) ) {
+        if ( is_null( $checklist ) ) {
             $checklist = get_option( 'dt_setup_checklist' );
         }
 
-        if( isset( $checklist[ $group ] ) && $checklist[ $group ] == $item ) {
+        if ( isset( $checklist[ $group ] ) && $checklist[ $group ] == $item ) {
             echo 'green-check';
 
             return true;
@@ -473,7 +473,7 @@ class Disciple_Tools_Setup_Steps_Tab
                 </td>
             </tr>
             <?php
-            if( isset( $_GET[ "tab" ] ) && !($_GET[ "tab" ] == 'setup-checklist') ) { ?>
+            if ( isset( $_GET["tab"] ) && !($_GET["tab"] == 'setup-checklist') ) { ?>
                 <tr><td><a href="<?php echo esc_url( admin_url( 'admin.php?page=dt_options&tab=setup-checklist' ) ) ?>">View Setup Checklist</a></td></tr>
             <?php } ?>
             </tbody>

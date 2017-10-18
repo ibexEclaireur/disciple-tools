@@ -7,7 +7,7 @@
  * @author   Chasm.Solutions & Kingdom.Training
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -43,7 +43,7 @@ function dt_get_user_associations()
     $user_connections = [];
 
     // Set constructor
-    $user_connections[ 'relation' ] = 'OR';
+    $user_connections['relation'] = 'OR';
 
     // Get current user ID and build meta_key for current user
     $user_id = get_current_user_id();
@@ -58,8 +58,8 @@ function dt_get_user_associations()
         WHERE
             object_id = %d", $user_id ), ARRAY_A );
 
-    foreach( $results as $result ) {
-        $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result[ 'term_taxonomy_id' ] ];
+    foreach ( $results as $result ) {
+        $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id'] ];
     }
 
     // Return array to the meta_query
@@ -93,7 +93,7 @@ function dt_get_team_contacts( $user_id )
     // get variables
     global $wpdb;
     $user_connections = [];
-    $user_connections[ 'relation' ] = 'OR';
+    $user_connections['relation'] = 'OR';
     $members = [];
 
     // First Query
@@ -111,9 +111,9 @@ function dt_get_team_contacts( $user_id )
             AND taxonomy = 'user-group'", $user_id ), ARRAY_A );
 
     // Loop
-    foreach( $results as $result ) {
+    foreach ( $results as $result ) {
         // create the meta query for the group
-        $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result[ 'term_taxonomy_id' ] ];
+        $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'group-' . $result['term_taxonomy_id'] ];
 
         // Second Query
         // query a member list for this group
@@ -123,20 +123,20 @@ function dt_get_team_contacts( $user_id )
             FROM
                 `$wpdb->term_relationships`
             WHERE
-                term_taxonomy_id = %d", $result[ 'term_taxonomy_id' ] ), ARRAY_A );
+                term_taxonomy_id = %d", $result['term_taxonomy_id'] ), ARRAY_A );
 
         // Inner Loop
-        foreach( $results2 as $result2 ) {
+        foreach ( $results2 as $result2 ) {
 
-            if( $result2[ 'object_id' ] != $user_id ) {
-                $members[] = $result2[ 'object_id' ];
+            if ( $result2['object_id'] != $user_id ) {
+                $members[] = $result2['object_id'];
             }
         }
     }
 
     $members = array_unique( $members );
 
-    foreach( $members as $member ) {
+    foreach ( $members as $member ) {
         $user_connections[] = [ 'key' => 'assigned_to', 'value' => 'user-' . $member ];
     }
 
@@ -153,7 +153,7 @@ function dt_get_site_notification_defaults()
 {
     $site_options = dt_get_option( 'dt_site_options' );
 
-    return $site_options[ 'user_notifications' ];
+    return $site_options['user_notifications'];
 }
 
 /**
@@ -164,11 +164,11 @@ function dt_get_site_notification_defaults()
 function dt_get_site_default_user_fields(): array
 {
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if( is_wp_error( $site_custom_lists ) ) {
+    if ( is_wp_error( $site_custom_lists ) ) {
         return [];
     }
 
-    return $site_custom_lists[ 'user_fields' ];
+    return $site_custom_lists['user_fields'];
 }
 
 /**
@@ -191,14 +191,19 @@ function dt_user_display_name( int $user_id )
 function dt_get_user_display_name( $user_id )
 {
     $user = get_userdata( $user_id );
+<<<<<<< HEAD
     if(! $user ) {
         return new WP_Error( 'get_user_display_name_error', 'Could not find user object with that user id.' );
+=======
+    if ( ! $user ) {
+        return;
+>>>>>>> master
     }
 
     $display_name = $user->display_name;
-    if( empty( $display_name ) ) {
+    if ( empty( $display_name ) ) {
         $display_name = $user->nickname;
-        if( empty( $display_name ) ) {
+        if ( empty( $display_name ) ) {
             $display_name = $user->user_login;
         }
     }
@@ -215,21 +220,21 @@ function dt_modify_profile_fields( $profile_fields )
 {
 
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if( is_wp_error( $site_custom_lists ) ) {
+    if ( is_wp_error( $site_custom_lists ) ) {
         return $profile_fields;
     }
-    $user_fields = $site_custom_lists[ 'user_fields' ];
+    $user_fields = $site_custom_lists['user_fields'];
 
-    foreach( $user_fields as $field ) {
-        if( $field[ 'enabled' ] ) {
-            $profile_fields[ $field[ 'key' ] ] = $field[ 'label' ];
+    foreach ( $user_fields as $field ) {
+        if ( $field['enabled'] ) {
+            $profile_fields[ $field['key'] ] = $field['label'];
         }
     }
 
     return $profile_fields;
 }
 
-if( is_admin() ) {
+if ( is_admin() ) {
     // Add elements to the contact section of the profile.
     add_filter( 'user_contactmethods', 'dt_modify_profile_fields' );
 }
@@ -247,23 +252,23 @@ function dt_build_user_fields_display( array $usermeta ): array
     $fields = [];
 
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if( is_wp_error( $site_custom_lists ) ) {
+    if ( is_wp_error( $site_custom_lists ) ) {
         return [];
     }
-    $site_user_fields = $site_custom_lists[ 'user_fields' ];
+    $site_user_fields = $site_custom_lists['user_fields'];
 
-    foreach( $site_user_fields as $key => $value ) {
-        if( $value[ 'enabled' ] ) { // if the site field is enabled
+    foreach ( $site_user_fields as $key => $value ) {
+        if ( $value['enabled'] ) { // if the site field is enabled
             $i = 0;
 
-            foreach( $usermeta as $k => $v ) {
-                if( $key == $k ) {
-                    $fields[] = array_merge( $value, [ 'value' => $v[ 0 ] ] );
+            foreach ( $usermeta as $k => $v ) {
+                if ( $key == $k ) {
+                    $fields[] = array_merge( $value, [ 'value' => $v[0] ] );
                     $i++;
                 }
             }
 
-            if( $i === 0 ) { // if usermeta has no matching field to the standard site fields, then set value to empty string.
+            if ( $i === 0 ) { // if usermeta has no matching field to the standard site fields, then set value to empty string.
                 $fields[] = array_merge( $value, [ 'value' => '' ] );
             }
         }
@@ -288,7 +293,7 @@ function dt_get_user_locations_list( int $user_id )
     );
 
     // check if null return
-    if( empty( $location_ids ) ) {
+    if ( empty( $location_ids ) ) {
         return false;
     }
 
@@ -319,11 +324,11 @@ function dt_get_user_team_members_list( int $user_id )
     $team_members_list = [];
 
     $teams = wp_get_object_terms( $user_id, 'user-group' );
-    if( empty( $teams ) || is_wp_error( $teams ) ) {
+    if ( empty( $teams ) || is_wp_error( $teams ) ) {
         return false;
     }
 
-    foreach( $teams as $team ) {
+    foreach ( $teams as $team ) {
 
         $team_id = $team->term_id;
         $team_name = $team->name;
@@ -335,9 +340,9 @@ function dt_get_user_team_members_list( int $user_id )
             'term_by'  => 'id',
         ];
         $results = disciple_tools_get_users_of_group( $args );
-        if( !empty( $results ) ) {
-            foreach( $results as $result ) {
-                if( !( $user_id == $result->data->ID ) ) {
+        if ( !empty( $results ) ) {
+            foreach ( $results as $result ) {
+                if ( !( $user_id == $result->data->ID ) ) {
                     $members_list[] = [
                         'ID'           => $result->data->ID,
                         'display_name' => $result->data->display_name,
@@ -370,21 +375,21 @@ function dt_get_user_team_members_list( int $user_id )
  */
 function dt_user_notification_is_enabled( string $notification_name, $user_meta_data = null, int $user_id = null ): bool
 {
-    if( empty( $user_id ) ) {
+    if ( empty( $user_id ) ) {
         $user_id = get_current_user_id();
     }
 
     // Check status of site defined defaults
     $site_defaults = dt_get_site_notification_defaults();
-    if( $site_defaults[ $notification_name ] ) { // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
+    if ( $site_defaults[ $notification_name ] ) { // This checks to see if the site has required this notification to be true. If true, then personal preference is not checked.
         return true;
     }
 
-    if( empty( $user_meta_data ) ) {
+    if ( empty( $user_meta_data ) ) {
         $user_meta_data = get_user_meta( $user_id );
     }
 
-    if( isset( $user_meta_data[ $notification_name ] ) && $user_meta_data[ $notification_name ][ 0 ] == true ) {
+    if ( isset( $user_meta_data[ $notification_name ] ) && $user_meta_data[ $notification_name ][0] == true ) {
         return true;
     } else {
         return false;

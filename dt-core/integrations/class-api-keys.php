@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -27,7 +27,7 @@ class Disciple_Tools_Api_Keys
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -69,7 +69,7 @@ class Disciple_Tools_Api_Keys
     public function api_keys_page()
     {
 
-        if( !current_user_can( "manage_dt" ) ) {
+        if ( !current_user_can( "manage_dt" ) ) {
             // I'm not sure this check is necessary, but it can't hurt.
             // Only admins are expected to have the "export" capability.
             throw new Exception( 'Current user does not have "export" capability' );
@@ -77,20 +77,20 @@ class Disciple_Tools_Api_Keys
 
         $keys = get_option( "dt_api_keys", [] );
 
-        if( isset( $_POST[ 'api-key-view-field' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'api-key-view-field' ] ), 'api-keys-view' ) ) {
+        if ( isset( $_POST['api-key-view-field'] ) && wp_verify_nonce( sanitize_key( $_POST['api-key-view-field'] ), 'api-keys-view' ) ) {
 
-            if( isset( $_POST[ "application" ] ) && !empty( $_POST[ "application" ] ) ) {
-                $client_id = wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST[ "application" ] ) ) ), 1, '-', 0 );
+            if ( isset( $_POST["application"] ) && !empty( $_POST["application"] ) ) {
+                $client_id = wordwrap( strtolower( sanitize_text_field( wp_unslash( $_POST["application"] ) ) ), 1, '-', 0 );
                 $token = bin2hex( random_bytes( 32 ) );
-                if( !isset( $keys[ $client_id ] ) ) {
+                if ( !isset( $keys[ $client_id ] ) ) {
                     $keys[ $client_id ] = [ "client_id" => $client_id, "client_token" => $token ];
                     update_option( "dt_api_keys", $keys );
                 } else {
                     $this->admin_notice( "Application already exists", "error" );
                 }
-            } elseif( isset( $_POST[ "delete" ] ) ) {
-                if( $keys[ sanitize_text_field( wp_unslash( $_POST[ "delete" ] ) ) ] ) {
-                    unset( $keys[ sanitize_text_field( wp_unslash( $_POST[ "delete" ] ) ) ] );
+            } elseif ( isset( $_POST["delete"] ) ) {
+                if ( $keys[ sanitize_text_field( wp_unslash( $_POST["delete"] ) ) ] ) {
+                    unset( $keys[ sanitize_text_field( wp_unslash( $_POST["delete"] ) ) ] );
                     update_option( "dt_api_keys", $keys );
                 }
             }
@@ -110,7 +110,7 @@ class Disciple_Tools_Api_Keys
     {
         $keys = get_option( "dt_api_keys", [] );
 
-        return isset( $keys[ $client_id ] ) && $keys[ $client_id ][ "client_token" ] == $client_token;
+        return isset( $keys[ $client_id ] ) && $keys[ $client_id ]["client_token"] == $client_token;
     }
 
 }

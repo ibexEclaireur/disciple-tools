@@ -10,7 +10,7 @@
  * @author  Chasm.Solutions
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -41,16 +41,16 @@ class Disciple_Tools_Locations_Tab_Global
         echo '<form method="post" name="country_step2" id="country_step2">';
         wp_nonce_field( 'country_levels_nonce_validate', 'country_levels_nonce', true );
         $option = get_option( '_dt_installed_country' ); // this installer relies heavily on this options table row to store status
-        if( !empty( $option ) ) { // if options are empty hide section
+        if ( !empty( $option ) ) { // if options are empty hide section
             echo '<h1>(Step 2) Add Admin Levels to Installed Countries:</h1><br>';
-            foreach( $option as $country ) {
-                echo '<hr><h2>' . esc_html( $country[ 'Zone_Name' ] ) . '</h2>';
+            foreach ( $option as $country ) {
+                echo '<hr><h2>' . esc_html( $country['Zone_Name'] ) . '</h2>';
                 echo '<p>Add Levels: ';
                 $i = 0; // increment makes sure that only the highest level of install is available at a time. This controls the order of install.
-                if( !empty( $country[ 'levels' ] ) ) { // if level is empty array, hide section
-                    foreach( $country[ 'levels' ] as $key => $value ) {
+                if ( !empty( $country['levels'] ) ) { // if level is empty array, hide section
+                    foreach ( $country['levels'] as $key => $value ) {
                         $label = '';
-                        switch( $key ) {
+                        switch ( $key ) {
                             case 'adm1_count':
                                 $label = 'Admin1';
                                 break;
@@ -65,9 +65,9 @@ class Disciple_Tools_Locations_Tab_Global
                                 break;
                         }
 
-                        if( $value > 0 || $value == 'installed' ) { // hide admin areas with zero value, but still show admin areas that have been installed
-                            echo '<button type="submit" name="' . esc_attr( $key ) . '" value="' . esc_attr( $country[ 'WorldID' ] ) . '" ';
-                            if( $i > 0 || $value == 'installed' ) {
+                        if ( $value > 0 || $value == 'installed' ) { // hide admin areas with zero value, but still show admin areas that have been installed
+                            echo '<button type="submit" name="' . esc_attr( $key ) . '" value="' . esc_attr( $country['WorldID'] ) . '" ';
+                            if ( $i > 0 || $value == 'installed' ) {
                                 echo 'disabled';
                             } else {
                                 $i++; //check if already installed or needs to be installed first
@@ -76,7 +76,7 @@ class Disciple_Tools_Locations_Tab_Global
                         }
                     }
                 }
-                echo '<span style="float:right"><button type="submit" name="delete" value="' . esc_html( $country[ 'WorldID' ] ) . '">delete all</button></span></p>';
+                echo '<span style="float:right"><button type="submit" name="delete" value="' . esc_html( $country['WorldID'] ) . '">delete all</button></span></p>';
             }
         }
         echo '</form>';
@@ -89,38 +89,38 @@ class Disciple_Tools_Locations_Tab_Global
     {
 
         // if country install
-        if( !empty( $_POST[ 'country_nonce' ] ) && isset( $_POST[ 'country_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'country_nonce' ] ), 'country_nonce_validate' ) ) {
+        if ( !empty( $_POST['country_nonce'] ) && isset( $_POST['country_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['country_nonce'] ), 'country_nonce_validate' ) ) {
 
-            if( !isset( $_POST[ 'countries-dropdown' ] ) ) {
+            if ( !isset( $_POST['countries-dropdown'] ) ) {
                 wp_die( esc_html__( "Expected countries-dropdown to be set" ) );
             }
-            $cnty_id = sanitize_text_field( wp_unslash( $_POST[ 'countries-dropdown' ] ) );
+            $cnty_id = sanitize_text_field( wp_unslash( $_POST['countries-dropdown'] ) );
 
             // download country info
             $geojson = $this->get_country_level( $cnty_id, '0' );
-            if( empty( $geojson ) ) {
+            if ( empty( $geojson ) ) {
                 return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', [ 'status' => 400 ] );
             }
 
             // install country info
             $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
-            if( !$result ) {
+            if ( !$result ) {
                 return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', [ 'status' => 400 ] );
             }
 
             /*  Build and Add options information on install
              *  This section established the country, calls the api for summary info on the country, and builds the option record */
-            $country[ 'WorldID' ] = $cnty_id;
+            $country['WorldID'] = $cnty_id;
             $dir_contents = $this->get_countries_json(); // gets stored list of countries
-            foreach( $dir_contents[ 'RECORDS' ] as $value ) { // filters for the country name
-                if( $value[ 'WorldID' ] == $country[ 'WorldID' ] ) {
-                    $country[ 'Zone_Name' ] = $value[ 'Zone_Name' ];
+            foreach ( $dir_contents['RECORDS'] as $value ) { // filters for the country name
+                if ( $value['WorldID'] == $country['WorldID'] ) {
+                    $country['Zone_Name'] = $value['Zone_Name'];
                     break;
                 }
             }
-            $country[ 'levels' ] = $this->get_country_summary( $cnty_id ); // retrieves the summary info from the hosted movement mapping api
+            $country['levels'] = $this->get_country_summary( $cnty_id ); // retrieves the summary info from the hosted movement mapping api
             $installed_countries = [];
-            if( get_option( '_dt_installed_country' ) ) {
+            if ( get_option( '_dt_installed_country' ) ) {
                 // Installed State List
                 $installed_countries = get_option( '_dt_installed_country' );
             }
@@ -129,35 +129,35 @@ class Disciple_Tools_Locations_Tab_Global
             update_option( '_dt_installed_country', $installed_countries, false );
 
             return true;
-        } elseif( !empty( $_POST[ 'country_levels_nonce' ] ) && isset( $_POST[ 'country_levels_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'country_levels_nonce' ] ), 'country_levels_nonce_validate' ) ) {
+        } elseif ( !empty( $_POST['country_levels_nonce'] ) && isset( $_POST['country_levels_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['country_levels_nonce'] ), 'country_levels_nonce_validate' ) ) {
 
             $keys = array_keys( $_POST );
 
-            switch( $keys[ 2 ] ) {
+            switch ( $keys[2] ) {
 
                 case 'adm1_count':
 
-                    $cnty_id = isset( $_POST[ 'adm1_count' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm1_count' ] ) ) : "";
+                    $cnty_id = isset( $_POST['adm1_count'] ) ? sanitize_text_field( wp_unslash( $_POST['adm1_count'] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '1' );
-                    if( empty( $geojson ) ) {
+                    if ( empty( $geojson ) ) {
                         return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', [ 'status' => 400 ] );
                         break;
                     }
 
                     // install country info
                     $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
-                    if( !$result ) {
+                    if ( !$result ) {
                         return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', [ 'status' => 400 ] );
                         break;
                     }
 
                     // update option record for county
                     $options = get_option( '_dt_installed_country' );
-                    foreach( $options as $key => $value ) {
-                        if( $value[ 'WorldID' ] === $cnty_id ) {
-                            $options[ $key ][ 'levels' ][ 'adm1_count' ] = (string) 'installed';
+                    foreach ( $options as $key => $value ) {
+                        if ( $value['WorldID'] === $cnty_id ) {
+                            $options[ $key ]['levels']['adm1_count'] = (string) 'installed';
                             update_option( '_dt_installed_country', $options, false );
                         }
                     }
@@ -167,26 +167,26 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'adm2_count':
 
-                    $cnty_id = isset( $_POST[ 'adm2_count' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm2_count' ] ) ) : "";
+                    $cnty_id = isset( $_POST['adm2_count'] ) ? sanitize_text_field( wp_unslash( $_POST['adm2_count'] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '2' );
-                    if( empty( $geojson ) ) {
+                    if ( empty( $geojson ) ) {
                         return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', [ 'status' => 400 ] );
                     }
 
                     // install country info
                     $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
-                    if( !$result ) {
+                    if ( !$result ) {
                         return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', [ 'status' => 400 ] );
                     }
 
                     // update option record for county
                     $options = get_option( '_dt_installed_country' );
 
-                    foreach( $options as $key => $value ) {
-                        if( $value[ 'WorldID' ] === $cnty_id ) {
-                            $options[ $key ][ 'levels' ][ 'adm2_count' ] = (string) 'installed';
+                    foreach ( $options as $key => $value ) {
+                        if ( $value['WorldID'] === $cnty_id ) {
+                            $options[ $key ]['levels']['adm2_count'] = (string) 'installed';
                             update_option( '_dt_installed_country', $options, false );
                         }
                     }
@@ -196,26 +196,26 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'adm3_count':
 
-                    $cnty_id = isset( $_POST[ 'adm3_count' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm3_count' ] ) ) : "";
+                    $cnty_id = isset( $_POST['adm3_count'] ) ? sanitize_text_field( wp_unslash( $_POST['adm3_count'] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '3' );
-                    if( empty( $geojson ) ) {
+                    if ( empty( $geojson ) ) {
                         return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', [ 'status' => 400 ] );
                     }
 
                     // install country info
                     $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
-                    if( !$result ) {
+                    if ( !$result ) {
                         return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', [ 'status' => 400 ] );
                     }
 
                     // update option record for county
                     $options = get_option( '_dt_installed_country' );
 
-                    foreach( $options as $key => $value ) {
-                        if( $value[ 'WorldID' ] === $cnty_id ) {
-                            $options[ $key ][ 'levels' ][ 'adm3_count' ] = (string) 'installed';
+                    foreach ( $options as $key => $value ) {
+                        if ( $value['WorldID'] === $cnty_id ) {
+                            $options[ $key ]['levels']['adm3_count'] = (string) 'installed';
                             update_option( '_dt_installed_country', $options, false );
                         }
                     }
@@ -225,26 +225,26 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'adm4_count':
 
-                    $cnty_id = isset( $_POST[ 'adm4_count' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'adm4_count' ] ) ) : "";
+                    $cnty_id = isset( $_POST['adm4_count'] ) ? sanitize_text_field( wp_unslash( $_POST['adm4_count'] ) ) : "";
 
                     // download country info
                     $geojson = $this->get_country_level( $cnty_id, '4' );
-                    if( empty( $geojson ) ) {
+                    if ( empty( $geojson ) ) {
                         return new WP_Error( "geojson_error", 'Failed to retrieve geojson info from API', [ 'status' => 400 ] );
                     }
 
                     // install country info
                     $result = Disciple_Tools_Locations_Import::insert_geojson( $geojson );
-                    if( !$result ) {
+                    if ( !$result ) {
                         return new WP_Error( "insert_error", 'insert_geojson returned a false value and likely failed to insert all records', [ 'status' => 400 ] );
                     }
 
                     // update option record for county
                     $options = get_option( '_dt_installed_country' );
 
-                    foreach( $options as $key => $value ) {
-                        if( $value[ 'WorldID' ] === $cnty_id ) {
-                            $options[ $key ][ 'levels' ][ 'adm4_count' ] = (string) 'installed';
+                    foreach ( $options as $key => $value ) {
+                        if ( $value['WorldID'] === $cnty_id ) {
+                            $options[ $key ]['levels']['adm4_count'] = (string) 'installed';
                             update_option( '_dt_installed_country', $options, false );
                         }
                     }
@@ -254,16 +254,16 @@ class Disciple_Tools_Locations_Tab_Global
 
                 case 'delete':
 
-                    $cnty_id = isset( $_POST[ 'delete' ] ) ? sanitize_text_field( wp_unslash( $_POST[ 'delete' ] ) ) : "";
+                    $cnty_id = isset( $_POST['delete'] ) ? sanitize_text_field( wp_unslash( $_POST['delete'] ) ) : "";
 
                     Disciple_Tools_Locations_Tab_Global::delete_location_data( $cnty_id );
 
                     // update option record
                     $options = get_option( '_dt_installed_country' );
 
-                    foreach( $options as $key => $value ) {
+                    foreach ( $options as $key => $value ) {
 
-                        if( $value[ 'WorldID' ] == $cnty_id ) {
+                        if ( $value['WorldID'] == $cnty_id ) {
                             unset( $options[ $key ] );
                             break;
                         }
@@ -322,18 +322,18 @@ class Disciple_Tools_Locations_Tab_Global
 
         echo '<select name="countries-dropdown">';
         $option = get_option( '_dt_installed_country' );
-        foreach( $dir_contents[ 'RECORDS' ] as $value ) {
+        foreach ( $dir_contents['RECORDS'] as $value ) {
             $disabled = '';
-            echo '<option value="' . esc_attr( $value[ 'WorldID' ] ) . '" ';
-            if( $option != false ) {
-                foreach( $option as $installed ) {
-                    if( $installed[ 'WorldID' ] == $value[ 'WorldID' ] ) {
+            echo '<option value="' . esc_attr( $value['WorldID'] ) . '" ';
+            if ( $option != false ) {
+                foreach ( $option as $installed ) {
+                    if ( $installed['WorldID'] == $value['WorldID'] ) {
                         echo ' disabled';
                         $disabled = ' (Installed)';
                     }
                 }
             }
-            echo '>' . esc_html( $value[ 'Zone_Name' ] ) . esc_html( $disabled );
+            echo '>' . esc_html( $value['Zone_Name'] ) . esc_html( $disabled );
             echo '</option>';
         }
         echo '</select>';
@@ -361,11 +361,11 @@ class Disciple_Tools_Locations_Tab_Global
     {
         $option = get_option( '_dt_locations_import_config' );
 
-        if( empty( $option[ 'mm_hosts' ][ $option[ 'selected_mm_hosts' ] ] ) ) {
+        if ( empty( $option['mm_hosts'][ $option['selected_mm_hosts'] ] ) ) {
             $option = Disciple_Tools_Location_Tools_Menu::get_config_option();
         }
 
-        return json_decode( file_get_contents( $option[ 'mm_hosts' ][ $option[ 'selected_mm_hosts' ] ] . 'get_summary?cnty_id=' . $cnty_id ), true );
+        return json_decode( file_get_contents( $option['mm_hosts'][ $option['selected_mm_hosts'] ] . 'get_summary?cnty_id=' . $cnty_id ), true );
     }
 
     /**
@@ -380,11 +380,11 @@ class Disciple_Tools_Locations_Tab_Global
     {
         $option = get_option( '_dt_locations_import_config' );
 
-        if( empty( $option[ 'mm_hosts' ][ $option[ 'selected_mm_hosts' ] ] ) ) {
+        if ( empty( $option['mm_hosts'][ $option['selected_mm_hosts'] ] ) ) {
             $option = Disciple_Tools_Location_Tools_Menu::get_config_option();
         }
 
-        return json_decode( file_get_contents( $option[ 'mm_hosts' ][ $option[ 'selected_mm_hosts' ] ] . 'getcountrybylevel?cnty_id=' . $cnty_id . '&level=' . $level_number ), true );
+        return json_decode( file_get_contents( $option['mm_hosts'][ $option['selected_mm_hosts'] ] . 'getcountrybylevel?cnty_id=' . $cnty_id . '&level=' . $level_number ), true );
     }
 
     /**
@@ -398,8 +398,8 @@ class Disciple_Tools_Locations_Tab_Global
      */
     public function find_key_index( $arrays, $field, $value )
     {
-        foreach( $arrays as $key => $array ) {
-            if( $array[ $field ] === $value ) {
+        foreach ( $arrays as $key => $array ) {
+            if ( $array[ $field ] === $value ) {
                 return $key;
             }
         }

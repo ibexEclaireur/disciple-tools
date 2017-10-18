@@ -9,7 +9,7 @@
  * @author  Chasm.Solutions
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -41,7 +41,7 @@ class Disciple_Tools_Location_Tools_Menu
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -76,15 +76,15 @@ class Disciple_Tools_Location_Tools_Menu
     public function page_content()
     {
 
-        if( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
 
         /**
          * Begin Header & Tab Bar
          */
-        if( isset( $_GET[ "tab" ] ) ) {
-            $tab = sanitize_text_field( wp_unslash( $_GET[ "tab" ] ) );
+        if ( isset( $_GET["tab"] ) ) {
+            $tab = sanitize_text_field( wp_unslash( $_GET["tab"] ) );
         } else {
             $tab = 'global';
         }
@@ -95,13 +95,13 @@ class Disciple_Tools_Location_Tools_Menu
 
         echo '<a href="edit.php?post_type=locations&page=disciple_tools_locations&tab=global" class="nav-tab ';
 
-        if( $tab == 'global' ) {
+        if ( $tab == 'global' ) {
             echo 'nav-tab-active';
         }
         echo '">Global</a>';
 
         echo '<a href="edit.php?post_type=locations&page=disciple_tools_locations&tab=usa" class="nav-tab ';
-        if( $tab == 'usa' ) {
+        if ( $tab == 'usa' ) {
             echo 'nav-tab-active';
         }
         echo '">USA</a>';
@@ -113,7 +113,7 @@ class Disciple_Tools_Location_Tools_Menu
         /**
          * Begin Page Content
          */
-        switch( $tab ) {
+        switch ( $tab ) {
 
             case "global":
 
@@ -187,10 +187,10 @@ class Disciple_Tools_Location_Tools_Menu
         $option = $this->get_config_option();
 
         // update from post
-        if( isset( $_POST[ '_wpnonce' ] ) ) {
-            if( wp_verify_nonce( sanitize_key( $_POST[ '_wpnonce' ] ), "get_import_config_dropdown_locations" ) ) {
-                if( isset( $_POST[ 'change_host_source' ] ) ) {
-                    if( isset( $_POST[ $host ] ) ) {
+        if ( isset( $_POST['_wpnonce'] ) ) {
+            if ( wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), "get_import_config_dropdown_locations" ) ) {
+                if ( isset( $_POST['change_host_source'] ) ) {
+                    if ( isset( $_POST[ $host ] ) ) {
                         $option[ 'selected_' . $host ] = sanitize_text_field( wp_unslash( $_POST[ $host ] ) );
                         update_option( '_dt_locations_import_config', $option, false );
                     }
@@ -202,9 +202,9 @@ class Disciple_Tools_Location_Tools_Menu
 
         // create dropdown
         echo '<form method="post"><select name="' . esc_attr( $host ) . '" >';
-        foreach( $option[ $host ] as $key => $value ) {
+        foreach ( $option[ $host ] as $key => $value ) {
             echo '<option value="' . esc_attr( $key ) . '" ';
-            if( $option[ 'selected_' . $host ] == $key ) {
+            if ( $option[ 'selected_' . $host ] == $key ) {
                 echo ' selected';
             }
             echo '>' . esc_html( $key ) . '</option>';
@@ -221,7 +221,7 @@ class Disciple_Tools_Location_Tools_Menu
         $option = get_option( '_dt_locations_import_config' );
         $config = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'config.json' ), true );
         // check on option status
-        if( empty( $option ) || $option[ 'version' ] < $config[ 'version' ] ) { // check if option exists
+        if ( empty( $option ) || $option['version'] < $config['version'] ) { // check if option exists
             update_option( '_dt_locations_import_config', $config, false );
             $option = get_option( '_dt_locations_import_config' );
         }
@@ -248,24 +248,24 @@ class Disciple_Tools_Location_Tools_Menu
         echo 'Total number of locations: <br>' . esc_html( wp_count_posts( 'locations' )->publish ) . '<br>';
 
         // Total number of countries
-        $count[ 'countries' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
-        echo 'Total number of countries (admin0): <br>' . intval( $count[ 'countries' ] ) . '<br>';
+        $count['countries'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
+        echo 'Total number of countries (admin0): <br>' . intval( $count['countries'] ) . '<br>';
 
         // Total number of admin1
-        $count[ 'admin1' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
-        echo 'Total number of Admin1: <br>' . intval( $count[ 'admin1' ] ) . '<br>';
+        $count['admin1'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
+        echo 'Total number of Admin1: <br>' . intval( $count['admin1'] ) . '<br>';
 
         // Total number of admin2
-        $count[ 'admin2' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
-        echo 'Total number of Admin2: <br>' . intval( $count[ 'admin2' ] ) . '<br>';
+        $count['admin2'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
+        echo 'Total number of Admin2: <br>' . intval( $count['admin2'] ) . '<br>';
 
         // Total number of admin3
-        $count[ 'admin3' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
-        echo 'Total number of Admin3: <br>' . intval( $count[ 'admin3' ] ) . '<br>';
+        $count['admin3'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
+        echo 'Total number of Admin3: <br>' . intval( $count['admin3'] ) . '<br>';
 
         // Total number of admin4
-        $count[ 'admin4' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
-        echo 'Total number of Admin4: <br>' . intval( $count[ 'admin4' ] ) . '<br>';
+        $count['admin4'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
+        echo 'Total number of Admin4: <br>' . intval( $count['admin4'] ) . '<br>';
 
         echo '      </td>
                         </tr>';
@@ -293,16 +293,16 @@ class Disciple_Tools_Location_Tools_Menu
         echo 'Total number of locations: <br>' . esc_html( wp_count_posts( 'locations' )->publish ) . '<br>';
 
         // Total number of admin1
-        $count[ 'admin1' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___'" );
-        echo 'Total number of States: <br>' . intval( $count[ 'admin1' ] ) . '<br>';
+        $count['admin1'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___'" );
+        echo 'Total number of States: <br>' . intval( $count['admin1'] ) . '<br>';
 
         // Total number of admin2
-        $count[ 'admin2' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___'" );
-        echo 'Total number of Counties: <br>' . intval( $count[ 'admin2' ] ) . '<br>';
+        $count['admin2'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___'" );
+        echo 'Total number of Counties: <br>' . intval( $count['admin2'] ) . '<br>';
 
         // Total number of admin3
-        $count[ 'admin3' ] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___-%'" );
-        echo 'Total number of Tracts: <br>' . intval( $count[ 'admin3' ] ) . '<br>';
+        $count['admin3'] = $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE 'USA-___-___-%'" );
+        echo 'Total number of Tracts: <br>' . intval( $count['admin3'] ) . '<br>';
 
         echo '      </td>
                         </tr>';
@@ -330,12 +330,12 @@ function dt_get_states_key_dropdown_not_installed()
         $disabled = '';
 
         $dropdown .= '<option value="' . $value->key . '" ';
-        if( get_option( '_installed_us_county_' . $value->key ) ) {
+        if ( get_option( '_installed_us_county_' . $value->key ) ) {
             $dropdown .= ' disabled';
             $disabled = ' (Installed)';
-        } elseif( isset( $_POST[ 'state_nonce' ] ) ) {
-            if( wp_verify_nonce( sanitize_key( $_POST[ 'state_nonce' ] ), 'state_nonce_validate' ) ) {
-                if( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
+        } elseif ( isset( $_POST['state_nonce'] ) ) {
+            if ( wp_verify_nonce( sanitize_key( $_POST['state_nonce'] ), 'state_nonce_validate' ) ) {
+                if ( isset( $_POST['states-dropdown'] ) && $_POST['states-dropdown'] == $value->key ) {
                     $dropdown .= ' selected';
                 }
             } else {
@@ -368,12 +368,12 @@ function dt_get_states_key_dropdown_installed()
         $disabled = '';
 
         $dropdown .= '<option value="' . $value->key . '" ';
-        if( !get_option( '_installed_us_county_' . $value->key ) ) {
+        if ( !get_option( '_installed_us_county_' . $value->key ) ) {
             $dropdown .= ' disabled';
             $disabled = ' (Not Installed)';
-        } elseif( isset( $_POST[ 'state_nonce' ] ) ) {
-            if( wp_verify_nonce( sanitize_key( $_POST[ 'state_nonce' ] ), 'state_nonce_validate' ) ) {
-                if( isset( $_POST[ 'states-dropdown' ] ) && $_POST[ 'states-dropdown' ] == $value->key ) {
+        } elseif ( isset( $_POST['state_nonce'] ) ) {
+            if ( wp_verify_nonce( sanitize_key( $_POST['state_nonce'] ), 'state_nonce_validate' ) ) {
+                if ( isset( $_POST['states-dropdown'] ) && $_POST['states-dropdown'] == $value->key ) {
                     $dropdown .= ' selected';
                 }
             } else {
@@ -409,7 +409,7 @@ function dt_get_usa_meta()
 function dt_get_oz_country_list( $admin = 'cnty' )
 {
 
-    switch( $admin ) {
+    switch ( $admin ) {
         case 'cnty':
             $result = json_decode( file_get_contents( plugin_dir_path( __FILE__ ) . 'json/oz/oz_cnty.json' ) );
 
@@ -469,9 +469,9 @@ function dt_get_coordinates_meta( $geoid )
     $rows = count( $county_coords );
     $string = '[';
     $i = 0;
-    foreach( $county_coords as $value ) {
-        $string .= $value[ 'meta_value' ];
-        if( $rows > $i + 1 ) {
+    foreach ( $county_coords as $value ) {
+        $string .= $value['meta_value'];
+        if ( $rows > $i + 1 ) {
             $string .= ',';
         }
         $i++;
@@ -487,18 +487,18 @@ function dt_get_coordinates_meta( $geoid )
     $low_lat_s = 9999999; //will hold max val
 
     /* filter for high and lows*/
-    foreach( $coords_objects as $coords ) {
-        foreach( $coords as $k => $v ) {
-            if( $v->lng > $high_lng_e ) {
+    foreach ( $coords_objects as $coords ) {
+        foreach ( $coords as $k => $v ) {
+            if ( $v->lng > $high_lng_e ) {
                 $high_lng_e = $v->lng;
             }
-            if( $v->lng < $low_lng_w ) {
+            if ( $v->lng < $low_lng_w ) {
                 $low_lng_w = $v->lng;
             }
-            if( $v->lat > $high_lat_n ) {
+            if ( $v->lat > $high_lat_n ) {
                 $high_lat_n = $v->lat;
             }
-            if( $v->lat < $low_lat_s ) {
+            if ( $v->lat < $low_lat_s ) {
                 $low_lat_s = $v->lat;
             }
         }
@@ -514,21 +514,21 @@ function dt_get_coordinates_meta( $geoid )
     $center_lat = $high_lat_n - $half_lat_difference;
 
     // get zoom level
-    if( $lat_size > 3 || $lng_size > 3 ) {
+    if ( $lat_size > 3 || $lng_size > 3 ) {
         $zoom = 6;
-    } elseif( $lat_size > 2 || $lng_size > 2 ) {
+    } elseif ( $lat_size > 2 || $lng_size > 2 ) {
         $zoom = 7;
-    } elseif( $lat_size > 1 || $lng_size > 1 ) {
+    } elseif ( $lat_size > 1 || $lng_size > 1 ) {
         $zoom = 8;
-    } elseif( $lat_size > .4 || $lng_size > .4 ) {
+    } elseif ( $lat_size > .4 || $lng_size > .4 ) {
         $zoom = 9;
-    } elseif( $lat_size > .2 || $lng_size > .2 ) {
+    } elseif ( $lat_size > .2 || $lng_size > .2 ) {
         $zoom = 10;
-    } elseif( $lat_size > .1 || $lng_size > .1 ) {
+    } elseif ( $lat_size > .1 || $lng_size > .1 ) {
         $zoom = 11;
-    } elseif( $lat_size > .07 || $lng_size > .07 ) {
+    } elseif ( $lat_size > .07 || $lng_size > .07 ) {
         $zoom = 12;
-    } elseif( $lat_size > .01 || $lng_size > .01 ) {
+    } elseif ( $lat_size > .01 || $lng_size > .01 ) {
         $zoom = 13;
     } else {
         $zoom = 14;
@@ -551,7 +551,7 @@ function dt_locations_match_country_to_key( $key )
 
     $countries = dt_get_oz_country_list();
 
-    foreach( $countries as $country ) {
+    foreach ( $countries as $country ) {
         if( $country->CntyID == $key ) { // @codingStandardsIgnoreLine
             return $country->Cnty_Name;
         }

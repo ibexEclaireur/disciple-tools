@@ -11,7 +11,7 @@
  * @author     Chasm.Solutions & Kingdom.Training
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
@@ -69,7 +69,7 @@ class Disciple_Tools_Notifications
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -118,38 +118,38 @@ class Disciple_Tools_Notifications
                     AND `date_notified` = %s
                     AND `is_new` = %s
 				;",
-                $args[ 'user_id' ],
-                $args[ 'source_user_id' ],
-                $args[ 'post_id' ],
-                $args[ 'secondary_item_id' ],
-                $args[ 'notification_name' ],
-                $args[ 'notification_action' ],
-                $args[ 'notification_note' ],
-                $args[ 'date_notified' ],
-                $args[ 'is_new' ]
+                $args['user_id'],
+                $args['source_user_id'],
+                $args['post_id'],
+                $args['secondary_item_id'],
+                $args['notification_name'],
+                $args['notification_action'],
+                $args['notification_note'],
+                $args['date_notified'],
+                $args['is_new']
             )
         );
 
-        if( $check_duplicate ) { // don't create a duplicate record
+        if ( $check_duplicate ) { // don't create a duplicate record
             return;
         }
 
-        if( $args[ 'user_id' ] == $args[ 'source_user_id' ] ) { // check if source of the event and notification target are the same, if so, don't create notification. i.e. I don't want notifications of my own actions.
+        if ( $args['user_id'] == $args['source_user_id'] ) { // check if source of the event and notification target are the same, if so, don't create notification. i.e. I don't want notifications of my own actions.
             return;
         }
 
         $wpdb->insert(
             $wpdb->dt_notifications,
             [
-                'user_id'             => $args[ 'user_id' ],
-                'source_user_id'      => $args[ 'source_user_id' ],
-                'post_id'             => $args[ 'post_id' ],
-                'secondary_item_id'   => $args[ 'secondary_item_id' ],
-                'notification_name'   => $args[ 'notification_name' ],
-                'notification_action' => $args[ 'notification_action' ],
-                'notification_note'   => $args[ 'notification_note' ],
-                'date_notified'       => $args[ 'date_notified' ],
-                'is_new'              => $args[ 'is_new' ],
+                'user_id'             => $args['user_id'],
+                'source_user_id'      => $args['source_user_id'],
+                'post_id'             => $args['post_id'],
+                'secondary_item_id'   => $args['secondary_item_id'],
+                'notification_name'   => $args['notification_name'],
+                'notification_action' => $args['notification_action'],
+                'notification_note'   => $args['notification_note'],
+                'date_notified'       => $args['date_notified'],
+                'is_new'              => $args['is_new'],
             ],
             [ '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d' ]
         );
@@ -185,11 +185,11 @@ class Disciple_Tools_Notifications
         $wpdb->delete(
             $wpdb->dt_notifications,
             [
-                'user_id'           => $args[ 'user_id' ],
-                'post_id'           => $args[ 'post_id' ],
-                'secondary_item_id' => $args[ 'secondary_item_id' ],
-                'notification_name' => $args[ 'notification_name' ],
-                'date_notified'     => $args[ 'date_notified' ],
+                'user_id'           => $args['user_id'],
+                'post_id'           => $args['post_id'],
+                'secondary_item_id' => $args['secondary_item_id'],
+                'notification_name' => $args['notification_name'],
+                'date_notified'     => $args['date_notified'],
             ]
         );
 
@@ -221,8 +221,8 @@ class Disciple_Tools_Notifications
         $wpdb->delete(
             $wpdb->dt_notifications,
             [
-                'post_id'           => $args[ 'post_id' ],
-                'notification_name' => $args[ 'notification_name' ],
+                'post_id'           => $args['post_id'],
+                'notification_name' => $args['notification_name'],
             ]
         );
 
@@ -292,7 +292,7 @@ class Disciple_Tools_Notifications
         global $wpdb;
 
         $all_where = '';
-        if( !$all ) {
+        if ( !$all ) {
             $all_where = " AND is_new = '1'";
         }
 
@@ -305,11 +305,11 @@ class Disciple_Tools_Notifications
             $page
         ), ARRAY_A );
 
-        if( $result ) {
+        if ( $result ) {
 
             // user friendly timestamp
-            foreach( $result as $key => $value ) {
-                $result[ $key ][ 'pretty_time' ] = self::pretty_timestamp( $value[ 'date_notified' ] );
+            foreach ( $result as $key => $value ) {
+                $result[ $key ]['pretty_time'] = self::pretty_timestamp( $value['date_notified'] );
             }
 
             return [
@@ -338,14 +338,14 @@ class Disciple_Tools_Notifications
         $yesterday = date( 'Y-m-d', strtotime( '-1 day', strtotime( $current_time ) ) );
         $seven_days_ago = date( 'Y-m-d', strtotime( '-7 days', strtotime( $current_time ) ) );
 
-        if( $timestamp > $one_hour_ago ) {
+        if ( $timestamp > $one_hour_ago ) {
             $current = new DateTime( $current_time );
             $stamp = new DateTime( $timestamp );
             $diff = date_diff( $current, $stamp );
             $friendly_time = date( "i", mktime( $diff->h, $diff->i, $diff->s ) ) . ' minutes ago';
-        } elseif( $timestamp > $yesterday ) {
+        } elseif ( $timestamp > $yesterday ) {
             $friendly_time = date( "g:i a", strtotime( $timestamp ) );
-        } elseif( $timestamp > $seven_days_ago ) {
+        } elseif ( $timestamp > $seven_days_ago ) {
             $friendly_time = date( "l g:i a", strtotime( $timestamp ) );
         } else {
             $friendly_time = date( 'F j, Y, g:i a', strtotime( $timestamp ) );
@@ -376,7 +376,7 @@ class Disciple_Tools_Notifications
             $user_id
         ) );
 
-        if( $result ) {
+        if ( $result ) {
             return [
                 'status' => true,
                 'result' => (int) $result,
@@ -410,7 +410,7 @@ class Disciple_Tools_Notifications
     public static function insert_notification_for_share( int $user_id, int $post_id )
     {
 
-        if( $user_id != get_current_user_id() ) { // check if share is not to self, else don't notify
+        if ( $user_id != get_current_user_id() ) { // check if share is not to self, else don't notify
 
             dt_notification_insert(
                 [

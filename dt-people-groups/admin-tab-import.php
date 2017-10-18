@@ -8,7 +8,7 @@
  * @package Disciple_Tools
  * @author  Chasm.Solutions
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -79,15 +79,15 @@ class Disciple_Tools_People_Groups_Tab_Import
         $refresh = '';
 
         // check if $_POST to change option
-        if( !empty( $_POST[ 'jp_country_nonce' ] ) && isset( $_POST[ 'jp_country_nonce' ] ) && wp_verify_nonce( sanitize_key( $_POST[ 'jp_country_nonce' ] ), 'jp_country_nonce_validate' ) ) {
+        if ( !empty( $_POST['jp_country_nonce'] ) && isset( $_POST['jp_country_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['jp_country_nonce'] ), 'jp_country_nonce_validate' ) ) {
 
-            if( isset( $_POST[ 'jp-countries-dropdown' ] ) ) { // check if file is correctly set
-                $jp_install_request = sanitize_text_field( wp_unslash( $_POST[ 'jp-countries-dropdown' ] ) );
+            if ( isset( $_POST['jp-countries-dropdown'] ) ) { // check if file is correctly set
+                $jp_install_request = sanitize_text_field( wp_unslash( $_POST['jp-countries-dropdown'] ) );
 
                 $jp_install_result = $this->install_jp_country( $jp_install_request );
             }
 
-            if( isset( $_POST[ 'jp-countries-refresh' ] ) ) { // check if file is correctly set
+            if ( isset( $_POST['jp-countries-refresh'] ) ) { // check if file is correctly set
                 $refresh = $this->json_refresh( 'jp_countries' );
             }
         } /* end if $_POST */
@@ -120,7 +120,7 @@ class Disciple_Tools_People_Groups_Tab_Import
                 </table>';
 
         // Displays success/fail message for the import selection.
-        if( !empty( $jp_install_result ) ) {
+        if ( !empty( $jp_install_result ) ) {
             echo '<table class="widefat striped">
                         <tbody>
                             <tr>
@@ -130,7 +130,7 @@ class Disciple_Tools_People_Groups_Tab_Import
                     </table>';
         }
         // Displays success message for the refresh button
-        if( !empty( $refresh ) ) {
+        if ( !empty( $refresh ) ) {
             echo '<table class="widefat striped">
                         <tbody>
                             <tr>
@@ -153,12 +153,12 @@ class Disciple_Tools_People_Groups_Tab_Import
 
         $jp_countries = json_decode( file_get_contents( $this->jp_countries_path ) ); // load countries data
 
-        if( !$jp_countries ) { // if countries file not available, refresh Joshua Project data to file
+        if ( !$jp_countries ) { // if countries file not available, refresh Joshua Project data to file
 
             $this->json_refresh( 'jp_countries' );
             $jp_countries = json_decode( file_get_contents( $this->jp_countries_path ) );
 
-            if( !$jp_countries ) {
+            if ( !$jp_countries ) {
                 return false;
             }
         }
@@ -175,19 +175,19 @@ class Disciple_Tools_People_Groups_Tab_Import
 
         $jp_countries = $this->get_joshua_project_country_names();
 
-        if( $jp_countries ) { // check if no error
+        if ( $jp_countries ) { // check if no error
 
             echo '<select name="jp-countries-dropdown">';
 
-            foreach( $jp_countries->data as $value ) {
+            foreach ( $jp_countries->data as $value ) {
                 $disabled = '';
                 echo '<option value="' . esc_attr( $value->ROG3 ) . '" ';
-                if( get_option( '_installed_jp_country_' . $value->ROG3 ) ) {
+                if ( get_option( '_installed_jp_country_' . $value->ROG3 ) ) {
                     echo ' disabled';
                     $disabled = ' (Installed)';
-                } elseif( isset( $_POST[ 'states-dropdown' ] ) ) {
+                } elseif ( isset( $_POST['states-dropdown'] ) ) {
                     if ( isset( $_POST['jp_country_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['jp_country_nonce'] ), 'jp_country_nonce_validate' ) ) {
-                        $d = sanitize_text_field( wp_unslash( $_POST[ 'states-dropdown' ] ) );
+                        $d = sanitize_text_field( wp_unslash( $_POST['states-dropdown'] ) );
                         if ($d == $value->ROG3 ) {
                             echo ' selected';
                         }
@@ -217,18 +217,18 @@ class Disciple_Tools_People_Groups_Tab_Import
     public function json_refresh( $file )
     {
 
-        switch( $file ) {
+        switch ( $file ) {
             case 'jp_countries':
 
                 $jp_countries = file_get_contents( $this->jp_query_countries_all );
 
-                if( !$jp_countries ) {
+                if ( !$jp_countries ) {
                     wp_die( 'Failed to get data from Joshua Project' );
                 }
 
                 $put_file = file_put_contents( $this->jp_countries_path, $jp_countries );
 
-                if( !$put_file ) {
+                if ( !$put_file ) {
                     wp_die( 'Failed to write to .json file' );
                 }
 
@@ -251,14 +251,14 @@ class Disciple_Tools_People_Groups_Tab_Import
 
         $one_month_ago = date( "Ymd", mktime( 0, 0, 0, date( "m" ) - 1, date( "d" ), date( "Y" ) ) );
 
-        switch( $file ) {
+        switch ( $file ) {
             case 'jp_countries':
 
                 // Static country data should not be older than 30 days.
-                if( file_exists( $this->jp_countries_path ) ) {
+                if ( file_exists( $this->jp_countries_path ) ) {
                     $jp_countries_json_age = date( "Ymd", filemtime( $this->jp_countries_path ) );
 
-                    if( $jp_countries_json_age < $one_month_ago ) {
+                    if ( $jp_countries_json_age < $one_month_ago ) {
                         $this->json_refresh( 'jp_countries' );
                     }
                 } else {
@@ -283,7 +283,7 @@ class Disciple_Tools_People_Groups_Tab_Import
         // get people group data for the country
         $jp_pg_by_country_json = file_get_contents( $this->jp_query_pg_by_country_all . '&ROG3=' . $jp_install_request );
 
-        if( !$jp_pg_by_country_json ) {
+        if ( !$jp_pg_by_country_json ) {
             return new WP_Error( 'failed_api_call', 'Failed to get API data from Joshua Project' );
         }
 
@@ -292,7 +292,7 @@ class Disciple_Tools_People_Groups_Tab_Import
         $json_file = $this->jp_json_path . 'jp_pg_country_' . $jp_install_request . '.json';
         file_put_contents( $json_file, $jp_pg_by_country_json );
 
-        foreach( $results->data as $people_group ) {
+        foreach ( $results->data as $people_group ) {
             $post = [
                 "post_title"   => $people_group->PeopNameInCountry . ' (' . $people_group->CtryShort . ' | ' . $people_group->ROP3 . ') ',
                 'post_type'    => 'peoplegroups',
@@ -305,7 +305,7 @@ class Disciple_Tools_People_Groups_Tab_Import
 
             $new_post_id = wp_insert_post( $post );
 
-            foreach( $people_group as $key => $value ) {
+            foreach ( $people_group as $key => $value ) {
                 $wpdb->insert(
                     $wpdb->postmeta,
                     [

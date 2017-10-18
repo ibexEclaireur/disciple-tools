@@ -37,7 +37,7 @@ class Disciple_Tools_Multi_Roles {
      * @static
      * @return Disciple_Tools_Multi_Roles instance
      */
-    public static function instance () {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -50,7 +50,7 @@ class Disciple_Tools_Multi_Roles {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () {
+    public function __construct() {
 
         // Load class files.
         require_once( 'inc/class-role.php' );
@@ -63,7 +63,7 @@ class Disciple_Tools_Multi_Roles {
         require_once( 'inc/functions-roles.php' );
         require_once( 'inc/functions-users.php' );
 
-        if(is_admin()) {
+        if (is_admin()) {
 
             // General admin functions.
             require_once( 'functions-admin.php' );

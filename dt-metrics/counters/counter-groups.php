@@ -20,12 +20,12 @@ class Disciple_Tools_Counter_Groups  {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () { } // End __construct()
+    public function __construct() { } // End __construct()
 
     /**
      * Counts the number of active churches in the database
      */
-    public function active_churches () {
+    public function active_churches() {
         return true; // TODO actually data.
     }
 

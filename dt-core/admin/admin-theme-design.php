@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 /**
@@ -13,7 +13,7 @@ if( !defined( 'ABSPATH' ) ) {
 /*********************************************************************************************
  * Action and Filters
  */
-if( is_admin() ) {
+if ( is_admin() ) {
     add_action( 'admin_bar_menu', 'dt_modify_admin_bar', 999 );
 
     add_filter( 'admin_footer_text', 'dt_empty_footer_string', 11 );
@@ -38,7 +38,7 @@ function dt_modify_admin_bar( $wp_admin_bar )
     $current_user = wp_get_current_user();
     $profile_url = get_edit_profile_url( $user_id );
 
-    if( 0 != $user_id ) {
+    if ( 0 != $user_id ) {
         /* Add the "My Account" menu */
         $avatar = get_avatar( $user_id, 28 );
         $howdy = sprintf( __( 'Welcome, %1$s' ), $current_user->display_name );

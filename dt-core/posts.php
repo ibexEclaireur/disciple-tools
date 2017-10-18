@@ -6,7 +6,7 @@
  * @package  Disciple_Tools
  * @since    1.0.0
  */
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -87,12 +87,12 @@ class Disciple_Tools_Posts
     public static function can_view( string $post_type, int $post_id )
     {
         global $wpdb;
-        if( current_user_can( 'view_any_' . $post_type ) ) {
+        if ( current_user_can( 'view_any_' . $post_type ) ) {
             return true;
         } else {
             $user = wp_get_current_user();
             $assigned_to = get_post_meta( $post_id, "assigned_to", true );
-            if( $assigned_to && $assigned_to === "user-" . $user->ID ) {
+            if ( $assigned_to && $assigned_to === "user-" . $user->ID ) {
                 return true;
             } else {
                 $shares = $wpdb->get_results( $wpdb->prepare(
@@ -104,8 +104,8 @@ class Disciple_Tools_Posts
                         post_id = %s",
                     $post_id
                 ), ARRAY_A );
-                foreach( $shares as $share ) {
-                    if( (int) $share[ 'user_id' ] === $user->ID ) {
+                foreach ( $shares as $share ) {
+                    if ( (int) $share['user_id'] === $user->ID ) {
                         return true;
                     }
                 }
@@ -127,12 +127,12 @@ class Disciple_Tools_Posts
     public static function can_update( string $post_type, int $post_id )
     {
         global $wpdb;
-        if( current_user_can( 'update_any_' . $post_type ) ) {
+        if ( current_user_can( 'update_any_' . $post_type ) ) {
             return true;
         } else {
             $user = wp_get_current_user();
             $assigned_to = get_post_meta( $post_id, "assigned_to", true );
-            if( isset( $assigned_to ) && $assigned_to === "user-" . $user->ID ) {
+            if ( isset( $assigned_to ) && $assigned_to === "user-" . $user->ID ) {
                 return true;
             } else {
                 $shares = $wpdb->get_results( $wpdb->prepare(
@@ -144,8 +144,8 @@ class Disciple_Tools_Posts
                         post_id = %s",
                     $post_id
                 ), ARRAY_A );
-                foreach( $shares as $share ) {
-                    if( (int) $share[ 'user_id' ] === $user->ID ) {
+                foreach ( $shares as $share ) {
+                    if ( (int) $share['user_id'] === $user->ID ) {
                         return true;
                     }
                 }
@@ -177,9 +177,9 @@ class Disciple_Tools_Posts
             ARRAY_A
         );
         $list = [];
-        foreach( $shares as $share ) {
-            $post = get_post( $share[ "post_id" ] );
-            if( isset( $post->post_type ) && $post->post_type === $post_type ) {
+        foreach ( $shares as $share ) {
+            $post = get_post( $share["post_id"] );
+            if ( isset( $post->post_type ) && $post->post_type === $post_type ) {
                 $list[] = $post;
             }
         }
@@ -196,7 +196,7 @@ class Disciple_Tools_Posts
      */
     public static function add_post_comment( string $post_type, int $group_id, string $comment )
     {
-        if( !self::can_update( $post_type, $group_id ) ) {
+        if ( !self::can_update( $post_type, $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
         $user = wp_get_current_user();
@@ -223,7 +223,7 @@ class Disciple_Tools_Posts
     public static function get_post_activity( string $post_type, int $post_id )
     {
         global $wpdb;
-        if( !self::can_view( $post_type, $post_id ) ) {
+        if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
         }
         $activity = $wpdb->get_results( $wpdb->prepare(
@@ -237,8 +237,8 @@ class Disciple_Tools_Posts
             $post_type,
             $post_id
         ) );
-        foreach( $activity as $a ) {
-            if( isset( $a->user_id ) && $a->user_id > 0 ) {
+        foreach ( $activity as $a ) {
+            if ( isset( $a->user_id ) && $a->user_id > 0 ) {
                 $a->name = get_user_by( "id", $a->user_id )->display_name;
             }
         }
@@ -256,7 +256,7 @@ class Disciple_Tools_Posts
      */
     public static function get_post_comments( string $post_type, int $post_id )
     {
-        if( !self::can_view( $post_type, $post_id ) ) {
+        if ( !self::can_view( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
         }
         $comments = get_comments( [ 'post_id' => $post_id ] );
@@ -274,7 +274,7 @@ class Disciple_Tools_Posts
      */
     public static function get_viewable_compact( string $post_type, string $search_string )
     {
-        if( !self::can_access( $post_type ) ) {
+        if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
@@ -285,17 +285,17 @@ class Disciple_Tools_Posts
             's'         => $search_string,
         ];
         $shared_with_user = [];
-        if( !self::can_view_all( $post_type ) ) {
+        if ( !self::can_view_all( $post_type ) ) {
             $shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
 
-            $query_args[ 'meta_key' ] = 'assigned_to';
-            $query_args[ 'meta_value' ] = "user-" . $current_user->ID;
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-" . $current_user->ID;
         }
         $posts = new WP_Query( $query_args );
-        if( is_wp_error( $posts ) ) {
+        if ( is_wp_error( $posts ) ) {
             return $posts;
         }
-        foreach( $posts->posts as $post ) {
+        foreach ( $posts->posts as $post ) {
             $compact[] = [ "ID" => $post->ID, "name" => $post->post_title ];
         }
         $post_ids = array_map(
@@ -304,8 +304,8 @@ class Disciple_Tools_Posts
             },
             $posts->posts
         );
-        foreach( $shared_with_user as $shared ) {
-            if( !in_array( $shared->ID, $post_ids ) ) {
+        foreach ( $shared_with_user as $shared ) {
+            if ( !in_array( $shared->ID, $post_ids ) ) {
                 $compact[] = [ "ID" => $shared->ID, "name" => $shared->post_title ];
             }
         }
@@ -320,7 +320,7 @@ class Disciple_Tools_Posts
      */
     public static function get_viewable( string $post_type )
     {
-        if( !self::can_access( $post_type ) ) {
+        if ( !self::can_access( $post_type ) ) {
             return new WP_Error( __FUNCTION__, sprintf( __( "You do not have access to these %s" ), $post_type ), [ 'status' => 403 ] );
         }
         $current_user = wp_get_current_user();
@@ -330,14 +330,14 @@ class Disciple_Tools_Posts
             'nopaging'  => true,
         ];
         $posts_shared_with_user = [];
-        if( !self::can_view_all( $post_type ) ) {
+        if ( !self::can_view_all( $post_type ) ) {
             $posts_shared_with_user = self::get_posts_shared_with_user( $post_type, $current_user->ID );
 
-            $query_args[ 'meta_key' ] = 'assigned_to';
-            $query_args[ 'meta_value' ] = "user-" . $current_user->ID;
+            $query_args['meta_key'] = 'assigned_to';
+            $query_args['meta_value'] = "user-" . $current_user->ID;
         }
         $queried_posts = new WP_Query( $query_args );
-        if( is_wp_error( $queried_posts ) ) {
+        if ( is_wp_error( $queried_posts ) ) {
             return $queried_posts;
         }
         $posts = $queried_posts->posts;
@@ -348,8 +348,8 @@ class Disciple_Tools_Posts
             $posts
         );
         //add shared posts to the list avoiding duplicates
-        foreach( $posts_shared_with_user as $shared ) {
-            if( !in_array( $shared->ID, $post_ids ) ) {
+        foreach ( $posts_shared_with_user as $shared ) {
+            if ( !in_array( $shared->ID, $post_ids ) ) {
                 $posts[] = $shared;
             }
         }
@@ -369,7 +369,7 @@ class Disciple_Tools_Posts
     {
         global $wpdb;
 
-        if( !self::can_update( $post_type, $post_id ) ) {
+        if ( !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
@@ -385,8 +385,8 @@ class Disciple_Tools_Posts
         ), ARRAY_A );
 
         // adds display name to the array
-        foreach( $shares as $share ) {
-            $share[ 'display_name' ] = dt_get_user_display_name( $share[ 'user_id' ] );
+        foreach ( $shares as $share ) {
+            $share['display_name'] = dt_get_user_display_name( $share['user_id'] );
             $shared_with_list[] = $share;
         }
 
@@ -406,7 +406,7 @@ class Disciple_Tools_Posts
     {
         global $wpdb;
 
-        if( !self::can_update( $post_type, $post_id ) ) {
+        if ( !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
@@ -414,7 +414,7 @@ class Disciple_Tools_Posts
         $where = [ 'user_id' => $user_id, 'post_id' => $post_id ];
         $result = $wpdb->delete( $table, $where );
 
-        if( $result == false ) {
+        if ( $result == false ) {
             return new WP_Error( 'remove_shared', __( "Record not deleted." ), [ 'status' => 418 ] );
         } else {
 
@@ -452,7 +452,7 @@ class Disciple_Tools_Posts
     {
         global $wpdb;
 
-        if( !self::can_update( $post_type, $post_id ) ) {
+        if ( !self::can_update( $post_type, $post_id ) ) {
             return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
@@ -480,7 +480,7 @@ class Disciple_Tools_Posts
             $user_id
         ), ARRAY_A );
 
-        if( is_null( $duplicate_check ) ) {
+        if ( is_null( $duplicate_check ) ) {
 
             // insert share record
             $results = $wpdb->insert( $table, $data, $format );
@@ -509,5 +509,25 @@ class Disciple_Tools_Posts
         } else {
             return new WP_Error( 'add_shared', __( "Post already shared with user." ), [ 'status' => 418 ] );
         }
+    }
+
+    public static function get_most_recent_activity_for_field( $post_id, $field_id ){
+        global $wpdb;
+        $most_recent_activity = $wpdb->get_results( $wpdb->prepare(
+            "SELECT
+                *
+            FROM
+                `$wpdb->dt_activity_log`
+            WHERE
+                `object_id` = %s
+                AND `meta_id` = %s
+            ORDER BY
+                `hist_time` DESC
+            LIMIT
+                0,1;",
+            $post_id,
+            $field_id
+        ) );
+        return $most_recent_activity[0];
     }
 }

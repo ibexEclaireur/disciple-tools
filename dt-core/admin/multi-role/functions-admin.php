@@ -30,7 +30,7 @@ function dt_multi_role_admin_register_scripts() {
 
     $min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-    wp_register_script( 'members-settings',  "js/settings{$min}.js",  [ 'jquery'  ], '', true );
+    wp_register_script( 'members-settings',  "js/settings{$min}.js",  [ 'jquery' ], '', true );
     wp_register_script( 'members-edit-role', "js/edit-role{$min}.js", [ 'postbox', 'wp-util' ], '', true );
 
     // Localize our script with some text we want to pass in.

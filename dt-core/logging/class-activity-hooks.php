@@ -25,7 +25,7 @@ class Disciple_Tools_Activity_Hooks {
      * @since  1.0.0
      * @return Disciple_Tools_Activity_Hooks instance
      */
-    public static function instance () {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }

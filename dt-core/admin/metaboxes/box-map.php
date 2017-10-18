@@ -10,7 +10,7 @@
  *
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 /**
@@ -62,11 +62,11 @@ class Disciple_Tools_Metabox_Map
         ) );
 
         $meta = [];
-        foreach( $results as $result ) {
+        foreach ( $results as $result ) {
             $meta[ $result->meta_key ] = $result->meta_value;
         }
 
-        if( !empty( $meta ) ) {
+        if ( !empty( $meta ) ) {
             ?>
 
             <style>
@@ -95,7 +95,7 @@ class Disciple_Tools_Metabox_Map
 
                     var map = new google.maps.Map(document.getElementById('map'), {
                         zoom: zoom,
-                        center: {lat: <?php echo esc_js( (float) $meta[ 'Cen_y' ] ); ?>, lng: <?php echo esc_js( (float) $meta[ 'Cen_x' ] ); ?>},
+                        center: {lat: <?php echo esc_js( (float) $meta['Cen_y'] ); ?>, lng: <?php echo esc_js( (float) $meta['Cen_x'] ); ?>},
                         mapTypeId: 'terrain'
                     });
 
@@ -153,13 +153,13 @@ class Disciple_Tools_Metabox_Map
             $post->ID,
             esc_like( "polygon_$post->post_content_filtered" ) . '%'
         ) );
-        if( count( $result ) > 0 ) {
+        if ( count( $result ) > 0 ) {
 
             // build subsection
             ?>
             <p><select name="select_tract" id="select_tract">
             <option value="all">Select Subsection</option>
-            <?php foreach( $result as $value ): ?>
+            <?php foreach ( $result as $value ): ?>
                 <option value="<?php echo esc_attr( substr( $value->meta_key, 8 ) ); ?>"><?php echo esc_html( substr( $value->meta_key, 8 ) ); ?></option>
             <?php endforeach; ?>
             </select>
@@ -194,11 +194,11 @@ class Disciple_Tools_Metabox_Map
 
                 jQuery(document).ready(function () {
 
-                    var zoom = <?php echo intval( $meta[ 'zoom' ] ); ?>;
+                    var zoom = <?php echo intval( $meta['zoom'] ); ?>;
 
                     var map = new google.maps.Map(document.getElementById('map'), {
                         zoom: zoom,
-                        center: {lat: <?php echo esc_js( $meta[ 'center_lat' ] ); ?>, lng: <?php echo esc_js( $meta[ 'center_lng' ] ); ?>},
+                        center: {lat: <?php echo esc_js( $meta['center_lat'] ); ?>, lng: <?php echo esc_js( $meta['center_lng'] ); ?>},
                         mapTypeId: 'terrain'
                     });
 
@@ -206,9 +206,9 @@ class Disciple_Tools_Metabox_Map
                     var coords = [ <?php
                         $rows = count( $result );
                         $i = 0;
-                    foreach( $result as $value ) {
+                    foreach ( $result as $value ) {
                         echo esc_js( $value->meta_value );
-                        if( $rows > $i + 1 ) {
+                        if ( $rows > $i + 1 ) {
                             echo ',';
                         }
                         $i++;

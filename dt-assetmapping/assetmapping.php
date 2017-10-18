@@ -31,7 +31,7 @@ class Disciple_Tools_Assetmapping {
      * @static
      * @return Disciple_Tools_Assetmapping instance
      */
-    public static function instance () {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -43,7 +43,7 @@ class Disciple_Tools_Assetmapping {
      * @access  public
      * @since   0.1
      */
-    public function __construct () {
+    public function __construct() {
 
     } // End __construct()
 

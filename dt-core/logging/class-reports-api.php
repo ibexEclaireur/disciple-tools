@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -50,8 +50,8 @@ class Disciple_Tools_Reports_API
             ]
         );
 
-        $args[ 'report_date' ] = date_create( $args[ 'report_date' ] ); // Format submitted date
-        $args[ 'report_date' ] = date_format( $args[ 'report_date' ], "Y-m-d" );
+        $args['report_date'] = date_create( $args['report_date'] ); // Format submitted date
+        $args['report_date'] = date_format( $args['report_date'], "Y-m-d" );
 
         // Make sure for non duplicate.
         $check_duplicate = $wpdb->get_row(
@@ -64,30 +64,30 @@ class Disciple_Tools_Reports_API
                     `report_date` = %s
                     AND `report_source` = %s
                     AND `report_subsource` = %s",
-                $args[ 'report_date' ],
-                $args[ 'report_source' ],
-                $args[ 'report_subsource' ]
+                $args['report_date'],
+                $args['report_source'],
+                $args['report_subsource']
             )
         );
 
-        if( $check_duplicate ) {
+        if ( $check_duplicate ) {
             return false;
         }
 
         $wpdb->insert(
             $wpdb->dt_reports,
             [
-                'report_date'      => $args[ 'report_date' ],
-                'report_source'    => $args[ 'report_source' ],
-                'report_subsource' => $args[ 'report_subsource' ],
+                'report_date'      => $args['report_date'],
+                'report_source'    => $args['report_source'],
+                'report_subsource' => $args['report_subsource'],
             ],
             [ '%s', '%s', '%s' ]
         );
 
         $report_id = $wpdb->insert_id;
 
-        if( !empty( $args[ 'meta_input' ] ) ) {
-            foreach( $args[ 'meta_input' ] as $field => $value ) {
+        if ( !empty( $args['meta_input'] ) ) {
+            foreach ( $args['meta_input'] as $field => $value ) {
                 $this->add_report_meta( $report_id, $field, $value );
             }
         }
@@ -188,7 +188,7 @@ class Disciple_Tools_Reports_API
         );
 
         // Add meta_input to the report array and return
-        $results[ 'meta_input' ] = $meta_input;
+        $results['meta_input'] = $meta_input;
 
         return $results;
     }
@@ -221,7 +221,7 @@ class Disciple_Tools_Reports_API
             ARRAY_A
         );
 
-        return $meta_value[ 'meta_value' ];
+        return $meta_value['meta_value'];
     }
 
     /**
@@ -240,11 +240,11 @@ class Disciple_Tools_Reports_API
         global $wpdb;
         $results_int = 0;
 
-        if( !in_array( strtolower( $type ), [ 'sum', 'max', 'min', 'average' ], true ) ) {
+        if ( !in_array( strtolower( $type ), [ 'sum', 'max', 'min', 'average' ], true ) ) {
             throw new Exception( "Type should be one of sum max min and average" );
         }
 
-        if( !preg_match( '/^[a-zA-Z_]+$/', $meta_key ) ) {
+        if ( !preg_match( '/^[a-zA-Z_]+$/', $meta_key ) ) {
             throw new Exception( "To protect against SQL injection attacks, only [a-zA-Z_]+ meta_key arguments are accepted, not $meta_key" );
         }
 
@@ -266,8 +266,8 @@ class Disciple_Tools_Reports_API
             $meta_key
         ), ARRAY_A );
 
-        if( isset( $results[ 0 ] ) ) {
-            $results_int = $results[ 0 ][ $meta_key ];
+        if ( isset( $results[0] ) ) {
+            $results_int = $results[0][ $meta_key ];
         }
 
         return (int) $results_int;
@@ -286,7 +286,7 @@ class Disciple_Tools_Reports_API
     {
         global $wpdb;
 
-        if( !empty( $subsource ) && !empty( $source ) ) {
+        if ( !empty( $subsource ) && !empty( $source ) ) {
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
@@ -301,7 +301,7 @@ class Disciple_Tools_Reports_API
                 $source,
                 $subsource
             ), ARRAY_A );
-        } elseif( !empty( $source ) ) {
+        } elseif ( !empty( $source ) ) {
             // Build limited query
             $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT
@@ -348,8 +348,8 @@ class Disciple_Tools_Reports_API
         $results = $this->get_report_ids_by_date( $date, $source, $subsource );
 
         // build full record by the id
-        foreach( $results as $result ) {
-            $report[ $i ] = $this->get_report_by_id( $result[ 'id' ] );
+        foreach ( $results as $result ) {
+            $report[ $i ] = $this->get_report_by_id( $result['id'] );
             $i++;
         }
 
@@ -373,14 +373,14 @@ class Disciple_Tools_Reports_API
         $results = [];
 
         // check required fields
-        if( empty( $date ) || empty( $source ) ) {
-            $results[ 'error' ] = 'required fields error';
+        if ( empty( $date ) || empty( $source ) ) {
+            $results['error'] = 'required fields error';
 
             return $results;
         }
 
         // prepare sql
-        if( !empty( $subsource ) ) {
+        if ( !empty( $subsource ) ) {
             // Build full query
             $results = $wpdb->get_results( $wpdb->prepare(
                 "SELECT "
@@ -430,8 +430,8 @@ class Disciple_Tools_Reports_API
         $i = 0;
         $results = $this->get_month_by_source( $date, $source, $subsource, true );
 
-        foreach( $results as $result ) {
-            $report[ $i ] = $this->get_report_by_id( $result[ 'id' ] );
+        foreach ( $results as $result ) {
+            $report[ $i ] = $this->get_report_by_id( $result['id'] );
             $i++;
         }
 
@@ -453,12 +453,12 @@ class Disciple_Tools_Reports_API
 //        global $wpdb;
 //        $today = date( 'Y-m-d' );
 
-        if( empty( $source ) || empty( $meta_key ) ) {
+        if ( empty( $source ) || empty( $meta_key ) ) {
             return false;
         }
 
         // check for recent date
-        if( !empty( $subsource ) ) {
+        if ( !empty( $subsource ) ) {
             // loop date to find match with source and subsource
 
             // select meta value
@@ -481,7 +481,7 @@ class Disciple_Tools_Reports_API
     public static function get_last_record_of_source( $source )
     {
         global $wpdb;
-        if( empty( $source ) ) {
+        if ( empty( $source ) ) {
             return false;
         }
 
@@ -499,8 +499,8 @@ class Disciple_Tools_Reports_API
             )
         );
 
-        if( sizeof( $results ) > 0 ) {
-            return $results[ 0 ];
+        if ( sizeof( $results ) > 0 ) {
+            return $results[0];
         } else {
             return false;
         }
@@ -515,7 +515,7 @@ class Disciple_Tools_Reports_API
     public static function get_last_record_of_source_and_subsource( $source, $subsource )
     {
         global $wpdb;
-        if( empty( $source ) ) {
+        if ( empty( $source ) ) {
             return false;
         }
 
@@ -535,8 +535,8 @@ class Disciple_Tools_Reports_API
             )
         );
 
-        if( sizeof( $results ) > 0 ) {
-            return $results[ 0 ];
+        if ( sizeof( $results ) > 0 ) {
+            return $results[0];
         } else {
             return false;
         }
