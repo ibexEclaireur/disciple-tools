@@ -6,7 +6,7 @@
 /**
  * Make sure wp-list-table is loaded
  */
-if( !class_exists( 'WP_List_Table' ) ) {
+if ( !class_exists( 'WP_List_Table' ) ) {
     require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
 }
 
@@ -38,7 +38,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
      */
     function column_default( $item, $column_name )
     {
-        switch( $column_name ) {
+        switch ( $column_name ) {
             case 'notification_name':
             case 'notification_action':
             case 'date_notified':
@@ -51,26 +51,26 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
                 return $item[ $column_name ] ? 'Yes' : 'No';
                 break;
             case 'item_id':
-                if( $item[ 'notification_name' ] == 'mention' ) {
+                if ( $item['notification_name'] == 'mention' ) {
                     $comment = get_comment( $item[ $column_name ] );
 
                     return '<a href="' . home_url( '/contacts/' ) . $comment->comment_post_ID . '">' . $comment->comment_content . '</a>';
-                } elseif( $item[ 'notification_name' ] == 'field_update' ) {
+                } elseif ( $item['notification_name'] == 'field_update' ) {
                     return $item[ $column_name ];
-                } elseif( $item[ 'notification_name' ] == 'follow_activity' ) {
+                } elseif ( $item['notification_name'] == 'follow_activity' ) {
                     return $item[ $column_name ];
                 }
                 break;
             case 'secondary_item_id':
-                if( $item[ 'notification_name' ] == 'mention' ) {
+                if ( $item['notification_name'] == 'mention' ) {
                     $post_object = get_post( $item[ $column_name ] );
 
                     return '<a href="' . $post_object->guid . '">' . $post_object->post_title . '</a>';
-                } elseif( $item[ 'notification_name' ] == 'field_update' ) {
+                } elseif ( $item['notification_name'] == 'field_update' ) {
                     $post_object = get_post( $item[ $column_name ] );
 
                     return '<a href="' . $post_object->guid . '">' . $post_object->post_title . '</a>';
-                } elseif( $item[ 'notification_name' ] == 'follow_activity' ) {
+                } elseif ( $item['notification_name'] == 'follow_activity' ) {
                     $post_object = get_post( $item[ $column_name ] );
 
                     return '<a href="' . $post_object->guid . '">' . $post_object->post_title . '</a>';
@@ -90,20 +90,20 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     {
 
         //Build row actions
-        if (! isset( $_REQUEST['page'] )) {
+        if ( ! isset( $_REQUEST['page'] )) {
             throw new Exception( "Expected page to be set" );
         }
         $actions = [
-            'edit'   => sprintf( '<a href="?page=%s&action=%s&notification=%s">Edit</a>', sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ), 'edit', $item[ 'ID' ] ),
-            'delete' => sprintf( '<a href="?page=%s&action=%s&notification=%s">Delete</a>', sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ), 'delete', $item[ 'ID' ] ),
+            'edit'   => sprintf( '<a href="?page=%s&action=%s&notification=%s">Edit</a>', sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ), 'edit', $item['ID'] ),
+            'delete' => sprintf( '<a href="?page=%s&action=%s&notification=%s">Delete</a>', sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ), 'delete', $item['ID'] ),
         ];
 
         //Return the title contents
         return sprintf( '%1$s <span style="color:silver">(id:%2$s)</span>%3$s',
             /*$1%s*/
-            $item[ 'notification_name' ],
+            $item['notification_name'],
             /*$2%s*/
-            $item[ 'notification_action' ],
+            $item['notification_action'],
             /*$3%s*/
             $this->row_actions( $actions )
         );
@@ -119,9 +119,9 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
             /*$1%s*/
-            $this->_args[ 'singular' ],  //Let's simply repurpose the table's singular label ("notifications")
+            $this->_args['singular'],  //Let's simply repurpose the table's singular label ("notifications")
             /*$2%s*/
-            $item[ 'id' ]                //The value of the checkbox should be the record's id
+            $item['id']                //The value of the checkbox should be the record's id
         );
     }
 
@@ -180,8 +180,8 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
     {
 
         //Detect when a bulk action is being triggered...
-        if( 'viewed' === $this->current_action() && isset( $_GET['notification'] ) ) {
-            Disciple_Tools_Notifications::mark_notification_viewed( sanitize_text_field( wp_unslash( $_GET[ 'notification' ] ) ) );
+        if ( 'viewed' === $this->current_action() && isset( $_GET['notification'] ) ) {
+            Disciple_Tools_Notifications::mark_notification_viewed( sanitize_text_field( wp_unslash( $_GET['notification'] ) ) );
         }
     }
 
@@ -206,18 +206,18 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
         $per_page = 20; // get items per page
         $page_start = (int) ( ( $current_page - 1 ) * $per_page ); // calculate starting item id
 
-        $orderby = ( !empty( $_REQUEST[ 'orderby' ] ) ) ? sanitize_sql_orderby( wp_unslash( $_REQUEST[ 'orderby' ] ) ) : 'date_notified'; //If no sort, default to title
-        $order = ( !empty( $_REQUEST[ 'order' ] ) ) ? sanitize_key( $_REQUEST[ 'order' ] ) : 'asc'; //If no order, default to asc
+        $orderby = ( !empty( $_REQUEST['orderby'] ) ) ? sanitize_sql_orderby( wp_unslash( $_REQUEST['orderby'] ) ) : 'date_notified'; //If no sort, default to title
+        $order = ( !empty( $_REQUEST['order'] ) ) ? sanitize_key( $_REQUEST['order'] ) : 'asc'; //If no order, default to asc
 
-        if( !preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
+        if ( !preg_match( '/^[a-zA-Z_]+$/', $orderby ) ) {
             throw new Error( "To protect agains SQL injection attacks, only [a-zA-Z_]+ order arguments are accepted" );
         }
 
-        if( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
+        if ( strtolower( $order ) != "asc" && strtolower( $order ) != "desc" ) {
             throw new Error( "order argument must be ASC or DESC" );
         }
 
-        if( empty( $search ) ) {
+        if ( empty( $search ) ) {
 
             $data = $wpdb->get_results(
                 "SELECT
@@ -278,8 +278,8 @@ function dt_notifications_table()
 
     $list_table = new Disciple_Tools_Notifications_Table();
     //Fetch, prepare, sort, and filter our data...
-    if( isset( $_GET[ 's' ] ) ) {
-        $list_table->prepare_items( trim( sanitize_text_field( wp_unslash( $_GET[ 's' ] ) ) ) );
+    if ( isset( $_GET['s'] ) ) {
+        $list_table->prepare_items( trim( sanitize_text_field( wp_unslash( $_GET['s'] ) ) ) );
     } else {
         $list_table->prepare_items();
     }
@@ -295,7 +295,7 @@ function dt_notifications_table()
         <!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
         <form id="notifications" method="get">
             <?php if (isset( $_REQUEST['page'] )): ?>
-            <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST[ 'page' ] ) ) ); ?>"/>
+            <input type="hidden" name="page" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_REQUEST['page'] ) ) ); ?>"/>
             <?php endif; ?>
             <?php $list_table->search_box( 'Search Table', 'notifications' ); ?>
             <?php $list_table->display() ?>

@@ -10,7 +10,7 @@
  * @author     Chasm.Solutions & Kingdom.Training
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
@@ -76,17 +76,17 @@ class Disciple_Tools_Custom_Lists_Tab
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-        if( is_wp_error( $site_custom_lists ) ) {
+        if ( is_wp_error( $site_custom_lists ) ) {
             print esc_html( $site_custom_lists->get_error_message() );
         }
-        $user_fields = $site_custom_lists[ 'user_fields' ];
-        foreach( $user_fields as $field ) {
+        $user_fields = $site_custom_lists['user_fields'];
+        foreach ( $user_fields as $field ) {
             echo '<tr>
-                        <td>' . esc_attr( $field[ 'label' ] ) . '</td>
-                        <td>' . esc_attr( $field[ 'type' ] ) . '</td>
-                        <td>' . esc_attr( $field[ 'description' ] ) . ' </td>
-                        <td><input name="user_fields[' . esc_attr( $field[ 'key' ] ) . ']" type="checkbox" ' . ( $field[ 'enabled' ] ? "checked" : "" ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . esc_attr( $field[ 'key' ] ) . '" class="button small" >delete</button> </td>
+                        <td>' . esc_attr( $field['label'] ) . '</td>
+                        <td>' . esc_attr( $field['type'] ) . '</td>
+                        <td>' . esc_attr( $field['description'] ) . ' </td>
+                        <td><input name="user_fields[' . esc_attr( $field['key'] ) . ']" type="checkbox" ' . ( $field['enabled'] ? "checked" : "" ) . ' /></td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $field['key'] ) . '" class="button small" >delete</button> </td>
                       </tr>';
         }
         // end list block
@@ -99,9 +99,9 @@ class Disciple_Tools_Custom_Lists_Tab
                     <input type="text" name="add_input_field[label]" placeholder="label" />&nbsp;';
         echo '<select name="add_input_field[type]" id="add_input_field_type">';
         // Iterate the options
-        $user_fields_types = $site_custom_lists[ 'user_fields_types' ];
-        foreach( $user_fields_types as $value ) {
-            echo '<option value="' . esc_attr( $value[ 'key' ] ) . '" >' . esc_attr( $value[ 'label' ] ) . '</option>';
+        $user_fields_types = $site_custom_lists['user_fields_types'];
+        foreach ( $user_fields_types as $value ) {
+            echo '<option value="' . esc_attr( $value['key'] ) . '" >' . esc_attr( $value['label'] ) . '</option>';
         }
         echo '</select>' . "\n";
 
@@ -118,42 +118,42 @@ class Disciple_Tools_Custom_Lists_Tab
     public function process_user_profile_box()
     {
 
-        if( isset( $_POST[ 'user_fields_nonce' ] ) ) {
+        if ( isset( $_POST['user_fields_nonce'] ) ) {
 
-            if( !wp_verify_nonce( sanitize_key( $_POST[ 'user_fields_nonce' ] ), 'user_fields' ) ) {
+            if ( !wp_verify_nonce( sanitize_key( $_POST['user_fields_nonce'] ), 'user_fields' ) ) {
                 return;
             }
 
             // Process current fields submitted
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-            if( is_wp_error( $site_custom_lists ) ) {
+            if ( is_wp_error( $site_custom_lists ) ) {
                 print esc_html( $site_custom_lists->get_error_message() );
             }
 
-            foreach( $site_custom_lists[ 'user_fields' ] as $key => $value ) {
-                if( isset( $_POST[ 'user_fields' ][ $key ] ) ) {
-                    $site_custom_lists[ 'user_fields' ][ $key ][ 'enabled' ] = true;
+            foreach ( $site_custom_lists['user_fields'] as $key => $value ) {
+                if ( isset( $_POST['user_fields'][ $key ] ) ) {
+                    $site_custom_lists['user_fields'][ $key ]['enabled'] = true;
                 } else {
-                    $site_custom_lists[ 'user_fields' ][ $key ][ 'enabled' ] = false;
+                    $site_custom_lists['user_fields'][ $key ]['enabled'] = false;
                 }
             }
 
             // Process new field submitted
-            if( !empty( $_POST[ 'add_input_field' ][ 'label' ] ) ) {
+            if ( !empty( $_POST['add_input_field']['label'] ) ) {
 
-                $label = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'label' ] ) );
-                if( empty( $label ) ) {
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                if ( empty( $label ) ) {
                     return;
                 }
 
-                if( !empty( $_POST[ 'add_input_field' ][ 'description' ] ) ) {
-                    $description = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'description' ] ) );
+                if ( !empty( $_POST['add_input_field']['description'] ) ) {
+                    $description = sanitize_text_field( wp_unslash( $_POST['add_input_field']['description'] ) );
                 } else {
                     $description = '';
                 }
 
-                if( !empty( $_POST[ 'add_input_field' ][ 'type' ] ) ) {
-                    $type = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'type' ] ) );
+                if ( !empty( $_POST['add_input_field']['type'] ) ) {
+                    $type = sanitize_text_field( wp_unslash( $_POST['add_input_field']['type'] ) );
                 } else {
                     $type = 'other';
                 }
@@ -162,7 +162,7 @@ class Disciple_Tools_Custom_Lists_Tab
                 $enabled = true;
 
                 // strip and make lowercase process
-                $site_custom_lists[ 'user_fields' ][ $key ] = [
+                $site_custom_lists['user_fields'][ $key ] = [
                     'label'       => $label,
                     'key'         => $key,
                     'type'        => $type,
@@ -172,21 +172,21 @@ class Disciple_Tools_Custom_Lists_Tab
             }
 
             // Process a field to delete.
-            if( isset( $_POST[ 'delete_field' ] ) ) {
+            if ( isset( $_POST['delete_field'] ) ) {
 
-                $delete_key = sanitize_text_field( wp_unslash( $_POST[ 'delete_field' ] ) );
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
 
-                unset( $site_custom_lists[ 'user_fields' ][ $delete_key ] );
+                unset( $site_custom_lists['user_fields'][ $delete_key ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
 
             }
 
             // Process reset request
-            if( isset( $_POST[ 'user_fields_reset' ] ) ) {
+            if ( isset( $_POST['user_fields_reset'] ) ) {
 
-                unset( $site_custom_lists[ 'user_fields' ] );
+                unset( $site_custom_lists['user_fields'] );
 
-                $site_custom_lists[ 'user_fields' ] = dt_get_site_custom_lists( 'user_fields' );
+                $site_custom_lists['user_fields'] = dt_get_site_custom_lists( 'user_fields' );
             }
 
             // Update the site option
@@ -208,15 +208,15 @@ class Disciple_Tools_Custom_Lists_Tab
 
         // custom list block
         $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-        if( is_wp_error( $site_custom_lists ) ) {
+        if ( is_wp_error( $site_custom_lists ) ) {
             print esc_html( $site_custom_lists->get_error_message() );
         }
-        $sources = $site_custom_lists[ 'sources' ];
-        foreach( $sources as $source ) {
+        $sources = $site_custom_lists['sources'];
+        foreach ( $sources as $source ) {
             echo '<tr>
-                        <td>' . esc_attr( $source[ 'label' ] ) . '</td>
-                        <td><input name="sources[' . esc_attr( $source[ 'key' ] ) . ']" type="checkbox" ' . ( $source[ 'enabled' ] ? "checked" : "" ) . ' /></td>
-                        <td><button type="submit" name="delete_field" value="' . esc_attr( $source[ 'key' ] ) . '" class="button small" >delete</button> </td>
+                        <td>' . esc_attr( $source['label'] ) . '</td>
+                        <td><input name="sources[' . esc_attr( $source['key'] ) . ']" type="checkbox" ' . ( $source['enabled'] ? "checked" : "" ) . ' /></td>
+                        <td><button type="submit" name="delete_field" value="' . esc_attr( $source['key'] ) . '" class="button small" >delete</button> </td>
                       </tr>';
         }
         // end list block
@@ -239,42 +239,42 @@ class Disciple_Tools_Custom_Lists_Tab
     public function process_sources_box()
     {
 
-        if( isset( $_POST[ 'sources_nonce' ] ) ) {
+        if ( isset( $_POST['sources_nonce'] ) ) {
 
-            if( !wp_verify_nonce( sanitize_key( $_POST[ 'sources_nonce' ] ), 'sources' ) ) {
+            if ( !wp_verify_nonce( sanitize_key( $_POST['sources_nonce'] ), 'sources' ) ) {
                 return;
             }
 
             // Process current fields submitted
             $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-            if( is_wp_error( $site_custom_lists ) ) {
+            if ( is_wp_error( $site_custom_lists ) ) {
                 print esc_html( $site_custom_lists->get_error_message() );
             }
 
-            foreach( $site_custom_lists[ 'sources' ] as $key => $value ) {
-                if( isset( $_POST[ 'sources' ][ $key ] ) ) {
-                    $site_custom_lists[ 'sources' ][ $key ][ 'enabled' ] = true;
+            foreach ( $site_custom_lists['sources'] as $key => $value ) {
+                if ( isset( $_POST['sources'][ $key ] ) ) {
+                    $site_custom_lists['sources'][ $key ]['enabled'] = true;
                 } else {
-                    $site_custom_lists[ 'sources' ][ $key ][ 'enabled' ] = false;
+                    $site_custom_lists['sources'][ $key ]['enabled'] = false;
                 }
             }
 
             // Process new field submitted
-            if( !empty( $_POST[ 'add_input_field' ][ 'label' ] ) ) {
+            if ( !empty( $_POST['add_input_field']['label'] ) ) {
 
-                $label = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'label' ] ) );
-                if( empty( $label ) ) {
+                $label = sanitize_text_field( wp_unslash( $_POST['add_input_field']['label'] ) );
+                if ( empty( $label ) ) {
                     return;
                 }
 
-                if( !empty( $_POST[ 'add_input_field' ][ 'description' ] ) ) {
-                    $description = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'description' ] ) );
+                if ( !empty( $_POST['add_input_field']['description'] ) ) {
+                    $description = sanitize_text_field( wp_unslash( $_POST['add_input_field']['description'] ) );
                 } else {
                     $description = '';
                 }
 
-                if( !empty( $_POST[ 'add_input_field' ][ 'type' ] ) ) {
-                    $type = sanitize_text_field( wp_unslash( $_POST[ 'add_input_field' ][ 'type' ] ) );
+                if ( !empty( $_POST['add_input_field']['type'] ) ) {
+                    $type = sanitize_text_field( wp_unslash( $_POST['add_input_field']['type'] ) );
                 } else {
                     $type = 'other';
                 }
@@ -283,7 +283,7 @@ class Disciple_Tools_Custom_Lists_Tab
                 $enabled = true;
 
                 // strip and make lowercase process
-                $site_custom_lists[ 'sources' ][ $key ] = [
+                $site_custom_lists['sources'][ $key ] = [
                     'label'       => $label,
                     'key'         => $key,
                     'type'        => $type,
@@ -293,21 +293,21 @@ class Disciple_Tools_Custom_Lists_Tab
             }
 
             // Process a field to delete.
-            if( isset( $_POST[ 'delete_field' ] ) ) {
+            if ( isset( $_POST['delete_field'] ) ) {
 
-                $delete_key = sanitize_text_field( wp_unslash( $_POST[ 'delete_field' ] ) );
+                $delete_key = sanitize_text_field( wp_unslash( $_POST['delete_field'] ) );
 
-                unset( $site_custom_lists[ 'sources' ][ $delete_key ] );
+                unset( $site_custom_lists['sources'][ $delete_key ] );
                 //TODO: Consider adding a database query to delete all instances of this key from usermeta
 
             }
 
             // Process reset request
-            if( isset( $_POST[ 'sources_reset' ] ) ) {
+            if ( isset( $_POST['sources_reset'] ) ) {
 
-                unset( $site_custom_lists[ 'sources' ] );
+                unset( $site_custom_lists['sources'] );
 
-                $site_custom_lists[ 'sources' ] = dt_get_site_custom_lists( 'sources' );
+                $site_custom_lists['sources'] = dt_get_site_custom_lists( 'sources' );
             }
 
             // Update the site option

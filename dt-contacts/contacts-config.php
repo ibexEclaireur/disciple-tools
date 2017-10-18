@@ -36,7 +36,7 @@ class Disciple_Tools_Config_Contacts {
      * @static
      * @return Disciple_Tools_Config_Contacts instance
      */
-    public static function instance () {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -49,13 +49,13 @@ class Disciple_Tools_Config_Contacts {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () {
+    public function __construct() {
 
         // Config columns
-        add_filter( 'manage_contacts_posts_columns', [$this, 'contacts_table_head'] );
-        add_action( 'manage_contacts_posts_custom_column', [$this, 'contacts_table_content'], 10, 2 );
+        add_filter( 'manage_contacts_posts_columns', [ $this, 'contacts_table_head' ] );
+        add_action( 'manage_contacts_posts_custom_column', [ $this, 'contacts_table_content' ], 10, 2 );
 
-        add_action( 'admin_menu', [$this, 'remove_default_meta_boxes' ] );
+        add_action( 'admin_menu', [ $this, 'remove_default_meta_boxes' ] );
 
     } // End __construct()
 

@@ -10,7 +10,7 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
+if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
     /**
      * The main User Taxonomy class
      *
@@ -79,8 +79,8 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $this->labels = $labels;
 
             // Label helpers
-            $this->tax_singular = $args[ 'singular' ];
-            $this->tax_plural = $args[ 'plural' ];
+            $this->tax_singular = $args['singular'];
+            $this->tax_plural = $args['plural'];
             $this->tax_singular_low = strtolower( $this->tax_singular );
             $this->tax_plural_low = strtolower( $this->tax_plural );
 
@@ -154,7 +154,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $tax = get_taxonomy( $this->taxonomy );
 
             // No UI
-            if( false === $tax->show_ui ) {
+            if ( false === $tax->show_ui ) {
                 return;
             }
 
@@ -222,7 +222,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         {
 
             // Add a body class for this taxonomy if it's currently selected
-            if( isset( $_GET[ $this->taxonomy ] ) ) {
+            if ( isset( $_GET[ $this->taxonomy ] ) ) {
                 $classes .= " tax-{$this->taxonomy}";
             }
 
@@ -263,23 +263,23 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $hooks = disciple_tools_profiles_get_section_hooknames( 'groups' ); //todo Fix this missing call. @see https://github.com/stuttter/wp-user-groups/blob/master/wp-user-groups/includes/classes/class-user-taxonomy.php
 
             // Bail if not the correct type
-            if( !in_array( $type, $hooks, true ) ) {
+            if ( !in_array( $type, $hooks, true ) ) {
                 return;
             }
 
             // Get the taxonomy
             $tax = get_taxonomy( $this->taxonomy );
-            $user_id = !empty( $_GET[ 'user_id' ] )
-                ? (int) $_GET[ 'user_id' ]
+            $user_id = !empty( $_GET['user_id'] )
+                ? (int) $_GET['user_id']
                 : get_current_user_id();
 
             // Make sure the user can assign terms of the group taxonomy before proceeding.
-            if( !current_user_can( 'edit_user', $user_id ) || !current_user_can( $tax->cap->assign_terms ) ) {
+            if ( !current_user_can( 'edit_user', $user_id ) || !current_user_can( $tax->cap->assign_terms ) ) {
                 return;
             }
 
             // Bail if no UI for taxonomy
-            if( false === $tax->show_ui ) {
+            if ( false === $tax->show_ui ) {
                 return;
             }
 
@@ -295,7 +295,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 'disciple_tools_taxonomy_' . $this->taxonomy,
                 $tax->label,
                 [ $this, 'user_profile_metabox' ],
-                $hooks[ 0 ],
+                $hooks[0],
                 'normal',
                 'default',
                 [
@@ -317,15 +317,15 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         {
 
             // Additional checks if User Profiles is active
-            if( function_exists( 'disciple_tools_profiles_get_section_hooknames' ) ) {
+            if ( function_exists( 'disciple_tools_profiles_get_section_hooknames' ) ) {
 
                 // Bail if no page
-                if( empty( $_GET[ 'page' ] ) ) {
+                if ( empty( $_GET['page'] ) ) {
                     return;
                 }
 
                 // Bail if not saving this section
-                if( sanitize_key( $_GET[ 'page' ] ) !== 'groups' ) {
+                if ( sanitize_key( $_GET['page'] ) !== 'groups' ) {
                     return;
                 }
             }
@@ -346,7 +346,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         {
 
             // Fallback to this taxonomy
-            if( empty( $taxonomy ) ) {
+            if ( empty( $taxonomy ) ) {
                 $taxonomy = $this->taxonomy;
             }
 
@@ -367,10 +367,10 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         {
 
             // Unset the "Posts" column
-            unset( $columns[ 'posts' ] );
+            unset( $columns['posts'] );
 
             // Add the "Users" column
-            $columns[ 'users' ] = esc_html__( 'Users', 'disciple-tools-user-groups' );
+            $columns['users'] = esc_html__( 'Users', 'disciple-tools-user-groups' );
 
             // Return modified columns
             return $columns;
@@ -389,7 +389,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         {
 
             // Users column gets custom content
-            if( 'users' === $column ) {
+            if ( 'users' === $column ) {
                 $term = get_term( $term_id, $this->taxonomy );
                 $args = [ $this->taxonomy => $term->slug ];
                 $users = admin_url( 'users.php' );
@@ -412,12 +412,12 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $tax = get_taxonomy( $this->taxonomy );
 
             // Make sure the user can assign terms of the group taxonomy before proceeding.
-            if( !current_user_can( 'edit_user', $user->ID ) || !current_user_can( $tax->cap->assign_terms ) ) {
+            if ( !current_user_can( 'edit_user', $user->ID ) || !current_user_can( $tax->cap->assign_terms ) ) {
                 return;
             }
 
             // Bail if no UI for taxonomy
-            if( false === $tax->show_ui ) {
+            if ( false === $tax->show_ui ) {
                 return;
             }
 
@@ -431,7 +431,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             <?php
 
             // Check for a global, because this is a huge dumb hack
-            if( !isset( $GLOBALS[ 'disciple_tools_taxonomies' ] ) ) : ?>
+            if ( !isset( $GLOBALS['disciple_tools_taxonomies'] ) ) : ?>
 
                 <h3 id="<?php echo esc_html( $this->taxonomy ); ?>">
                     <?php esc_html_e( 'Relationships', 'disciple-tools-user-groups' ); ?>
@@ -440,7 +440,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 <?php
 
                 // Set big dumb hack global to true
-                $GLOBALS[ 'disciple_tools_taxonomies' ] = true;
+                $GLOBALS['disciple_tools_taxonomies'] = true;
 
             endif; ?>
 
@@ -467,7 +467,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
          */
         public function user_profile_metabox( $user = null, $args = [] )
         {
-            $this->table_contents( $user, $args[ 'args' ][ 'tax' ], $args[ 'args' ][ 'terms' ] );
+            $this->table_contents( $user, $args['args']['tax'], $args['args']['terms'] );
         }
 
         /**
@@ -497,9 +497,9 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 </thead>
                 <tbody>
 
-                <?php if( !empty( $terms ) ) :
+                <?php if ( !empty( $terms ) ) :
 
-                    foreach( $terms as $term ) :
+                    foreach ( $terms as $term ) :
                         $active = is_object_in_term( $user->ID, $this->taxonomy, $term->slug ); ?>
 
                         <tr class="<?php echo ( true === $active ) ? 'active' : 'inactive'; ?>">
@@ -586,7 +586,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $actions = [];
 
             // View users
-            if( current_user_can( 'list_users' ) ) {
+            if ( current_user_can( 'list_users' ) ) {
                 $args = [ $tax->name => $term->slug ];
                 $users = admin_url( 'users.php' );
                 $url = add_query_arg( $args, $users );
@@ -594,7 +594,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             }
 
             // Edit term
-            if( current_user_can( $tax->cap->assign_terms ) ) {
+            if ( current_user_can( $tax->cap->assign_terms ) ) {
                 $args = [ 'action' => 'edit', 'taxonomy' => $tax->name, 'tag_ID' => $term->term_id, 'post_type' => 'post' ];
                 $edit_tags = admin_url( 'edit-tags.php' );
                 $url = add_query_arg( $args, $edit_tags );
@@ -620,7 +620,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         {
 
             // Set username to empty if it's this taxonomy
-            if( $this->taxonomy === $username ) {
+            if ( $this->taxonomy === $username ) {
                 $username = '';
             }
 
@@ -750,8 +750,8 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             );
 
             // Add to bulk actions array
-            if( !empty( $terms ) ) {
-                foreach( $terms as $term ) {
+            if ( !empty( $terms ) ) {
+                foreach ( $terms as $term ) {
                     $actions[ "add-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Add to %1$s %2$s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
                     $actions[ "remove-{$term->slug}-{$this->taxonomy}" ] = sprintf( esc_html__( 'Remove from %1$s %2$s', 'disciple-tools-user-groups' ), $term->name, $tax->labels->singular_name );
                 }
@@ -777,13 +777,13 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $old_actions = $add_actions = $rem_actions = [];
 
             // Loop through and separate out actions
-            foreach( $actions as $key => $name ) {
+            foreach ( $actions as $key => $name ) {
 
                 // Add
-                if( 0 === strpos( $key, 'add-' ) ) {
+                if ( 0 === strpos( $key, 'add-' ) ) {
                     $add_actions[ $key ] = $name;
                     // Remove
-                } elseif( 0 === strpos( $key, 'remove-' ) ) {
+                } elseif ( 0 === strpos( $key, 'remove-' ) ) {
                     $rem_actions[ $key ] = $name;
                     // Old
                 } else {
@@ -812,7 +812,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             );
 
             // Bail if no users or terms to work with
-            if( empty( $user_ids ) || empty( $terms ) ) {
+            if ( empty( $user_ids ) || empty( $terms ) ) {
                 return $redirect_to;
             }
 
@@ -820,14 +820,14 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $actions = [];
 
             // Compile available actions
-            foreach( $terms as $term ) {
+            foreach ( $terms as $term ) {
                 $key = "{$term->slug}-{$this->taxonomy}";
                 $actions[] = "add-{$key}";
                 $actions[] = "remove-{$key}";
             }
 
             // Bail if not a supported bulk action
-            if( !in_array( $action, $actions, true ) ) {
+            if ( !in_array( $action, $actions, true ) ) {
                 return $redirect_to;
             }
 
@@ -837,10 +837,10 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $term = str_replace( "-{$this->taxonomy}", '', $term );
 
             // Loop through users
-            foreach( $user_ids as $user ) {
+            foreach ( $user_ids as $user ) {
 
                 // Skip if current user cannot edit this user
-                if( !current_user_can( 'edit_user', $user ) ) {
+                if ( !current_user_can( 'edit_user', $user ) ) {
                     continue;
                 }
 
@@ -849,31 +849,31 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                 $update_terms = wp_list_pluck( $terms, 'slug' );
 
                 // Adding
-                if( 'add' === $type ) {
-                    if( !in_array( $term, $update_terms ) ) {
+                if ( 'add' === $type ) {
+                    if ( !in_array( $term, $update_terms ) ) {
                         $update_terms[] = $term;
                     }
                     // Removing
-                } elseif( 'remove' === $type ) {
+                } elseif ( 'remove' === $type ) {
                     $index = array_search( $term, $update_terms );
-                    if( ( false !== $index ) && isset( $update_terms[ $index ] ) ) {
+                    if ( ( false !== $index ) && isset( $update_terms[ $index ] ) ) {
                         unset( $update_terms[ $index ] );
                     }
                 }
 
                 // Delete all groups if they're empty
-                if( empty( $update_terms ) ) {
+                if ( empty( $update_terms ) ) {
                     $update_terms = null;
                 }
 
                 // Update terms for users
-                if( $update_terms !== $terms ) {
+                if ( $update_terms !== $terms ) {
                     disciple_tools_set_terms_for_user( $user, $this->taxonomy, $update_terms, true );
                 }
             }
 
             // Add count to redirection
-            if( !empty( $update_terms ) ) {
+            if ( !empty( $update_terms ) ) {
                 $redirect_to = add_query_arg(
                     [
                         'user_groups_count' => count( $user_ids ),
@@ -897,20 +897,20 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             static $highlander = false;
 
             // Bail if no count
-            if( empty( $_REQUEST[ 'user_groups_count' ] ) || empty( $_REQUEST[ 'action_type' ] ) || ( true === $highlander ) ) {
+            if ( empty( $_REQUEST['user_groups_count'] ) || empty( $_REQUEST['action_type'] ) || ( true === $highlander ) ) {
                 return;
             }
 
             // There can be only one
-            if( false === $highlander ) {
+            if ( false === $highlander ) {
                 $highlander = true;
             }
 
             // Get the count
-            $count = intval( $_REQUEST[ 'user_groups_count' ] );
+            $count = intval( $_REQUEST['user_groups_count'] );
 
             // Add/remove
-            $text = ( 'add' === $_REQUEST[ 'action_type' ] )
+            $text = ( 'add' === $_REQUEST['action_type'] )
                 ? sprintf( _n( '%s user added.', '%s users added.', $count, 'disciple-tools-user-groups' ), number_format_i18n( $count ) )
                 : sprintf( _n( '%s user removed.', '%s users removed.', $count, 'disciple-tools-user-groups' ), number_format_i18n( $count ) )
 
@@ -950,7 +950,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $viewing = array_search( $current, $slugs, true );
 
             // Viewing a specific taxonomy term
-            if( false !== $viewing ) {
+            if ( false !== $viewing ) {
 
                 // Assemble the "Edit" h1 link
                 $edit = admin_url( 'edit-tags.php' );
@@ -965,12 +965,12 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
                     <h1>
                         <?php esc_html_e( 'Users', 'disciple-tools-user-groups' ); ?>
 
-                        <?php if( current_user_can( 'create_users' ) ) : ?>
+                        <?php if ( current_user_can( 'create_users' ) ) : ?>
 
                             <a href="<?php echo esc_url( admin_url( 'user-new.php' ) ); ?>"
                                class="page-title-action"><?php echo esc_html_x( 'Add New', 'user', 'disciple-tools-user-groups' ); ?></a>
 
-                        <?php elseif( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
+                        <?php elseif ( is_multisite() && current_user_can( 'promote_users' ) ) : ?>
 
                             <a href="<?php echo esc_url( admin_url( 'user-new.php' ) ); ?>"
                                class="page-title-action"><?php echo esc_html_x( 'Add Existing', 'user', 'disciple-tools-user-groups' ); ?></a>
@@ -1004,12 +1004,12 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             global $pagenow;
 
             // Bail if not a users query
-            if( 'users.php' !== $pagenow ) {
+            if ( 'users.php' !== $pagenow ) {
                 return;
             }
 
             // Bail if not looking at taxonomy
-            if( empty( $_GET[ $this->taxonomy ] ) ) {
+            if ( empty( $_GET[ $this->taxonomy ] ) ) {
                 return;
             }
 
@@ -1017,18 +1017,18 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $groups = array_map( 'sanitize_key', explode( ',', sanitize_text_field( wp_unslash( $_GET[ $this->taxonomy ] ) ) ) );
 
             // Get terms
-            foreach( $groups as $group ) {
+            foreach ( $groups as $group ) {
                 $term = get_term_by( 'slug', $group, $this->taxonomy );
                 $user_ids = get_objects_in_term( $term->term_id, $this->taxonomy );
             }
 
             // If no users are in this group, pass a 0 user ID
-            if( empty( $user_ids ) ) {
+            if ( empty( $user_ids ) ) {
                 $user_ids = [ 0 ];
             }
 
             // Set IDs to be included
-            $user_query->query_vars[ 'include' ] = $user_ids;
+            $user_query->query_vars['include'] = $user_ids;
         }
 
         /**
@@ -1042,7 +1042,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
          */
         public function user_tax_query( $user_query = '' )
         {
-            return get_tax_sql( $user_query->tax_query, $GLOBALS[ 'wpdb' ]->users, 'ID' );
+            return get_tax_sql( $user_query->tax_query, $GLOBALS['wpdb']->users, 'ID' );
         }
 
         /**
@@ -1062,7 +1062,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $terms = disciple_tools_get_terms_for_user( $user, $this->taxonomy );
 
             // Bail if user has no terms
-            if( empty( $terms ) ) {
+            if ( empty( $terms ) ) {
                 return false;
             }
 
@@ -1070,7 +1070,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $url = admin_url( 'users.php' );
 
             // Loop through terms
-            foreach( $terms as $term ) {
+            foreach ( $terms as $term ) {
                 $args = [ $this->taxonomy => $term->slug ];
                 $href = empty( $page )
                     ? add_query_arg( $args, $url )
@@ -1098,13 +1098,13 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         {
 
             // Only for this column name
-            if( $column_name === $this->taxonomy ) {
+            if ( $column_name === $this->taxonomy ) {
 
                 // Get term links
                 $links = $this->get_user_term_links( $user_id );
 
                 // Use links
-                if( !empty( $links ) ) {
+                if ( !empty( $links ) ) {
                     $value = $links;
                     // No links
                 } else {
@@ -1132,7 +1132,7 @@ if( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
             $tax = get_taxonomy( $this->taxonomy );
 
             // Bail if no UI
-            if( false === $tax->show_ui ) {
+            if ( false === $tax->show_ui ) {
                 return $defaults;
             }
 

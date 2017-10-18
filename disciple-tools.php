@@ -21,7 +21,7 @@
  */
 
 // If this file is called directly, abort.
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -41,7 +41,7 @@ function dt_admin_notice_required_php_version()
     <?php
 }
 
-if( version_compare( phpversion(), '7.0', '<' ) ) {
+if ( version_compare( phpversion(), '7.0', '<' ) ) {
 
     /* We only support PHP >= 7.0, however, we want to support allowing users
      * to install this plugin even on old versions of PHP, without showing a
@@ -278,7 +278,7 @@ class Disciple_Tools
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -361,7 +361,7 @@ class Disciple_Tools
          * dt-contacts
          */
         require_once( 'dt-contacts/contacts-post-type.php' );
-        $this->post_types[ 'contacts' ] = Disciple_Tools_Contact_Post_Type::instance();
+        $this->post_types['contacts'] = Disciple_Tools_Contact_Post_Type::instance();
         require_once( 'dt-contacts/contacts-endpoints.php' );
         $this->endpoints['contacts'] = Disciple_Tools_Contacts_Endpoints::instance();
         require_once( 'dt-contacts/contacts-template.php' ); // Functions to support theme
@@ -370,7 +370,7 @@ class Disciple_Tools
          * dt-groups
          */
         require_once( 'dt-groups/groups-post-type.php' );
-        $this->post_types[ 'groups' ] = Disciple_Tools_Groups_Post_Type::instance();
+        $this->post_types['groups'] = Disciple_Tools_Groups_Post_Type::instance();
         require_once( 'dt-groups/groups-template.php' ); // Functions to support theme
         require_once( 'dt-groups/groups.php' );
         require_once( 'dt-groups/groups-endpoints.php' ); // builds rest endpoints
@@ -380,7 +380,7 @@ class Disciple_Tools
          * dt-locations
          */
         require_once( 'dt-locations/locations-post-type.php' );
-        $this->post_types[ 'locations' ] = Disciple_Tools_Location_Post_Type::instance();
+        $this->post_types['locations'] = Disciple_Tools_Location_Post_Type::instance();
         require_once( 'dt-locations/class-map.php' ); // Helper
         require_once( 'dt-locations/class-census-geolocation-api.php' );// APIs
         require_once( 'dt-locations/class-google-geolocation-api.php' );
@@ -395,7 +395,7 @@ class Disciple_Tools
          * dt-people-groups
          */
         require_once( 'dt-people-groups/people-groups-post-type.php' );
-        $this->post_types[ 'peoplegroups' ] = Disciple_Tools_People_Groups_Post_Type::instance();
+        $this->post_types['peoplegroups'] = Disciple_Tools_People_Groups_Post_Type::instance();
         require_once( 'dt-people-groups/people-groups-template.php' );
         require_once( 'dt-people-groups/people-groups.php' );
         require_once( 'dt-people-groups/people-groups-endpoints.php' ); // builds rest endpoints
@@ -405,7 +405,7 @@ class Disciple_Tools
          * dt-assetmapping
          */
         require_once( 'dt-assetmapping/assetmapping-post-type.php' );
-        $this->post_types[ 'assetmapping' ] = Disciple_Tools_Assetmapping_Post_Type::instance();
+        $this->post_types['assetmapping'] = Disciple_Tools_Assetmapping_Post_Type::instance();
         require_once( 'dt-assetmapping/assetmapping-template.php' );
         require_once( 'dt-assetmapping/assetmapping.php' );
         require_once( 'dt-assetmapping/assetmapping-endpoints.php' ); // builds rest endpoints
@@ -415,7 +415,7 @@ class Disciple_Tools
          * dt-resources
          */
         require_once( 'dt-resources/resources-post-type.php' );
-        $this->post_types[ 'resources' ] = Disciple_Tools_Resources_Post_Type::instance();
+        $this->post_types['resources'] = Disciple_Tools_Resources_Post_Type::instance();
         require_once( 'dt-resources/resources-template.php' );
         require_once( 'dt-resources/resources.php' );
         require_once( 'dt-resources/resources-endpoints.php' ); // builds rest endpoints
@@ -425,7 +425,7 @@ class Disciple_Tools
          * dt-prayer
          */
         require_once( 'dt-prayer/prayer-post-type.php' );
-        $this->post_types[ 'prayer' ] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
+        $this->post_types['prayer'] = new Disciple_Tools_Prayer_Post_Type( 'prayer', __( 'Prayer Guide', 'disciple_tools' ), __( 'Prayer Guide', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
         require_once( 'dt-prayer/prayer-template.php' );
         require_once( 'dt-prayer/prayer.php' );
         require_once( 'dt-prayer/prayer-endpoints.php' ); // builds rest endpoints
@@ -435,7 +435,7 @@ class Disciple_Tools
          * dt-progress
          */
         require_once( 'dt-progress/progress-post-type.php' );
-        $this->post_types[ 'progress' ] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
+        $this->post_types['progress'] = new Disciple_Tools_Progress_Post_Type( 'progress', __( 'Progress Update', 'disciple_tools' ), __( 'Progress Update', 'disciple_tools' ), [ 'menu_icon' => dt_svg_icon() ] );
         require_once( 'dt-progress/progress.php' );
         require_once( 'dt-progress/progress-template.php' );
         require_once( 'dt-progress/progress-endpoints.php' );
@@ -501,7 +501,7 @@ class Disciple_Tools
          * Integrations
          */
         require_once( 'dt-core/integrations/class-integrations.php' ); // data integration for cron scheduling
-        if( !class_exists( 'Ga_Autoloader' ) ) {
+        if ( !class_exists( 'Ga_Autoloader' ) ) {
             require_once( 'dt-core/libraries/google-analytics/disciple-tools-analytics.php' );
             require_once( 'dt-core/integrations/class-google-analytics-integration.php' );
             $this->analytics_integration = DT_Ga_Admin::instance();
@@ -519,7 +519,7 @@ class Disciple_Tools
          * Contains all those features that only run if in the Admin panel
          * or those things directly supporting Admin panel features.
          */
-        if( is_admin() ) {
+        if ( is_admin() ) {
 
             // Administration
             require_once( 'dt-core/admin/enqueue-scripts.php' ); // Load admin scripts

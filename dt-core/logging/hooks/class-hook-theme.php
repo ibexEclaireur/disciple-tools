@@ -11,7 +11,7 @@ class Disciple_Tools_Hook_Theme extends Disciple_Tools_Hook_Base {
                 // action name is built on POST parameters.
                 // @codingStandardsIgnoreLine
                 $stylesheet = $_POST['theme'] ? wp_unslash( $_POST['theme'] ) : get_stylesheet();
-                if (! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'edit-theme_' . $file . $stylesheet ) ) {
+                if ( ! wp_verify_nonce( sanitize_key( $_POST['_wpnonce'] ), 'edit-theme_' . $file . $stylesheet ) ) {
                     throw new Exception( "Could not verify nonce" );
                 }
                 if ( 'update' === $_POST['action'] ) {

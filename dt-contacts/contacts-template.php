@@ -24,16 +24,16 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
  * @param  bool $return
  * @return string
  */
-function dt_get_assigned_name ( int $contact_id, bool $return = false ) {
+function dt_get_assigned_name( int $contact_id, bool $return = false ) {
 
     $metadata = get_post_meta( $contact_id, $key = 'assigned_to', true );
 
-    if(!empty( $metadata )) {
+    if ( !empty( $metadata )) {
         $meta_array = explode( '-', $metadata ); // Separate the type and id
         $type = $meta_array[0];
         $id = $meta_array[1];
 
-        if($type == 'user') {
+        if ($type == 'user') {
             $value = get_user_by( 'id', $id );
             $rv = $value->display_name;
         } else {

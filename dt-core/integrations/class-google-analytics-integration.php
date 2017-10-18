@@ -34,7 +34,7 @@ class DT_Ga_Admin
     /**
      * @return \DT_Ga_Admin|null
      */
-    public static function instance () {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -105,7 +105,7 @@ class DT_Ga_Admin
     /**
      * DT_Ga_Admin constructor.
      */
-    public function __construct () {
+    public function __construct() {
         $this->init_admin();
     }
 
@@ -119,7 +119,7 @@ class DT_Ga_Admin
     {
         $data = json_decode( get_option( self::GA_ACCOUNT_AND_DATA_ARRAY, [] ) );
         foreach ($data as $account_email => $account){
-            foreach($account->account_summaries as $account_summary){
+            foreach ($account->account_summaries as $account_summary){
                 foreach ($account_summary->webProperties as $property){
                     foreach ($property->profiles as $profile){
                         if (array_key_exists( $profile->id, $new_value )){
@@ -156,7 +156,7 @@ class DT_Ga_Admin
     public static function options_page_googleanalytics()
     {
 
-        if (!Ga_Helper::is_wp_version_valid() || !Ga_Helper::is_php_version_valid()) {
+        if ( !Ga_Helper::is_wp_version_valid() || !Ga_Helper::is_php_version_valid()) {
             return false;
         }
 
@@ -166,11 +166,11 @@ class DT_Ga_Admin
          * @var array $data
          */
         $data = [];
-        $data[self::GA_ACCOUNT_AND_DATA_ARRAY] = json_decode( get_option( self::GA_ACCOUNT_AND_DATA_ARRAY, "[]" ), true );
+        $data[ self::GA_ACCOUNT_AND_DATA_ARRAY ] = json_decode( get_option( self::GA_ACCOUNT_AND_DATA_ARRAY, "[]" ), true );
 
-        foreach ($data[self::GA_ACCOUNT_AND_DATA_ARRAY] as $account_email => $account){
-            if(!Ga_Helper::is_authorized( $account['token'] )){
-                foreach($account['account_summaries'] as $account_summary){
+        foreach ($data[ self::GA_ACCOUNT_AND_DATA_ARRAY ] as $account_email => $account){
+            if ( !Ga_Helper::is_authorized( $account['token'] )){
+                foreach ($account['account_summaries'] as $account_summary){
                     $account_summary['reauth'] = true;
                     //                    foreach ($account_summary->webProperties as $property){
                     //                        foreach ($property->profiles as $profile){
@@ -181,7 +181,7 @@ class DT_Ga_Admin
         }
         $data['popup_url'] = self::get_auth_popup_url();
 
-        if (!empty( $_GET['err'] )) {
+        if ( !empty( $_GET['err'] )) {
             switch ($_GET['err']) {
                 case 1:
                     $data['error_message'] = Ga_Helper::ga_oauth_notice( 'There was a problem with Google Oauth2 authentication process.' );
@@ -270,7 +270,7 @@ class DT_Ga_Admin
      */
     public static function admin_notice_googleanalytics()
     {
-        if (!empty( $_GET['settings-updated'] ) && Ga_Helper::is_plugin_page()) {
+        if ( !empty( $_GET['settings-updated'] ) && Ga_Helper::is_plugin_page()) {
             // @codingStandardsIgnoreLine
             echo Ga_Helper::ga_wp_notice( _( 'Settings saved' ), self::NOTICE_SUCCESS );
         }
@@ -340,7 +340,7 @@ class DT_Ga_Admin
 
         $code = Ga_Helper::get_option( self::GA_OAUTH_AUTH_CODE_OPTION_NAME );
 
-        if (!empty( $code )) {
+        if ( !empty( $code )) {
             Ga_Helper::update_option( self::GA_OAUTH_AUTH_CODE_OPTION_NAME, "" );
 
             // Get access token
@@ -354,7 +354,7 @@ class DT_Ga_Admin
             if (empty( $token )) {
                 $param = '&err=1';
             } else {
-                $account_summaries = self::api_client()->call( 'ga_api_account_summaries', [$token] );
+                $account_summaries = self::api_client()->call( 'ga_api_account_summaries', [ $token ] );
 
                 self::save_accounts( $token, $account_summaries->getData() );
             }
@@ -378,7 +378,7 @@ class DT_Ga_Admin
         $return['token'] = $token;
         $return['account_summaries'] = [];
 
-        if (!empty( $account_summaries['items'] )) {
+        if ( !empty( $account_summaries['items'] )) {
             foreach ($account_summaries['items'] as $item) {
                 $tmp = [];
                 $tmp['id'] = $item['id'];
@@ -405,7 +405,7 @@ class DT_Ga_Admin
                 $return['account_summaries'][] = $tmp;
             }
 
-            $array[$account_summaries['username']] = $return;
+            $array[ $account_summaries['username'] ] = $return;
             update_option( self::GA_ACCOUNT_AND_DATA_ARRAY, json_encode( $array ) );
         }
 
@@ -420,13 +420,13 @@ class DT_Ga_Admin
     public static function parse_access_token( $response, $refresh_token = '' )
     {
         $access_token = $response->getData();
-        if (!empty( $access_token )) {
+        if ( !empty( $access_token )) {
             $access_token['created'] = time();
         } else {
             return false;
         }
 
-        if (!empty( $refresh_token )) {
+        if ( !empty( $refresh_token )) {
             $access_token['refresh_token'] = $refresh_token;
         }
         return $access_token;
@@ -443,8 +443,8 @@ class DT_Ga_Admin
         if (isset( $token['account_id'] )){
             $new_token = self::parse_access_token( $response );
             $array = json_decode( get_option( self::GA_ACCOUNT_AND_DATA_ARRAY, [] ), true );
-            foreach($array as $email => $account){
-                foreach($account['account_summaries'] as $account_summary){
+            foreach ($array as $email => $account){
+                foreach ($account['account_summaries'] as $account_summary){
                     if ($account_summary['id'] === $token["account_id"]){
                         $account['token'] = $new_token;
                     }
@@ -461,7 +461,7 @@ class DT_Ga_Admin
     public static function display_api_errors( $alias = '' )
     {
         $errors = self::api_client( $alias )->get_errors();
-        if (!empty( $errors )) {
+        if ( !empty( $errors )) {
             foreach ($errors as $error) {
                 // @codingStandardsIgnoreLine
                 echo Ga_Notice::get_message( $error );
@@ -481,11 +481,11 @@ class DT_Ga_Admin
 
         $website_unique_visits = [];
         foreach ($data as $account_email => $account){
-            foreach($account['account_summaries'] as $account_summary){
+            foreach ($account['account_summaries'] as $account_summary){
                 $account_summary['reauth'] = true;
                 foreach ($account_summary['webProperties'] as $property){
                     foreach ($property['profiles'] as $profile){
-                        if (isset( $profile['include_in_stats'] ) && $profile['include_in_stats']==true){
+                        if (isset( $profile['include_in_stats'] ) && $profile['include_in_stats'] ==true){
                             $selected_views[] = [
                                 'account_id'        => $account_summary['id'],
                                 'web_property_id'    => $property['webPropertyId'],
@@ -505,7 +505,7 @@ class DT_Ga_Admin
 
         $datys_ago = $interval->format( '%adaysago' );
 
-        foreach($selected_views as $selected){
+        foreach ($selected_views as $selected){
             $query_params = Ga_Stats::get_query( 'report', $selected['view_id'], $datys_ago );
             $query_params['token'] = $selected['token'];
             $query_params['token']['account_id'] = $selected['account_id'];
@@ -515,7 +515,7 @@ class DT_Ga_Admin
                 ]
             );
             $report = !empty( $stats_data ) ? Ga_Stats::get_report( $stats_data->getData() ) : [];
-            $website_unique_visits[$selected['url']] = $report;
+            $website_unique_visits[ $selected['url'] ] = $report;
         }
 
         return $website_unique_visits;

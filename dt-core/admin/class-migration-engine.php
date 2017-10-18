@@ -1,7 +1,7 @@
 <?php
 declare( strict_types = 1 );
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -20,22 +20,22 @@ class Disciple_Tools_Migration_Engine
     protected static function get_migrations(): array
     {
 
-        if( self::$migrations !== null ) {
+        if ( self::$migrations !== null ) {
             return self::$migrations;
         }
         require_once( plugin_dir_path( __DIR__ ) . "migrations/abstract.php" );
         $filenames = scandir( plugin_dir_path( __DIR__ ) . "migrations/", SCANDIR_SORT_ASCENDING );
-        if( $filenames === false ) {
+        if ( $filenames === false ) {
             throw new Exception( "Could not scan migrations directory" );
         }
         $expected_migration_number = 0;
         $rv = [];
-        foreach( $filenames as $filename ) {
-            if( $filename[ 0 ] === "." || $filename === "abstract.php" ) {
+        foreach ( $filenames as $filename ) {
+            if ( $filename[0] === "." || $filename === "abstract.php" ) {
                 // skip this filename
-            } elseif( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
-                $got_migration_number = intval( $matches[ 1 ] );
-                if( $expected_migration_number !== $got_migration_number ) {
+            } elseif ( preg_match( '/^([0-9][0-9][0-9][0-9])(-.*)?\.php$/i', $filename, $matches ) ) {
+                $got_migration_number = intval( $matches[1] );
+                if ( $expected_migration_number !== $got_migration_number ) {
                     throw new Exception( sprintf( "Expected to find migration number %04d", $expected_migration_number ) );
                 }
                 require_once( plugin_dir_path( __DIR__ ) . "migrations/$filename" );
@@ -61,23 +61,23 @@ class Disciple_Tools_Migration_Engine
      */
     public static function migrate( int $target_migration_number )
     {
-        if( $target_migration_number >= count( self::get_migrations() ) ) {
+        if ( $target_migration_number >= count( self::get_migrations() ) ) {
             throw new Exception( "Migration number $target_migration_number does not exist" );
         }
 
-        while( true ) {
+        while ( true ) {
             $current_migration_number = get_option( 'dt_migration_number' );
-            if( $current_migration_number === false ) {
+            if ( $current_migration_number === false ) {
                 $current_migration_number = -1;
             }
-            if( !preg_match( '/^-?[0-9]+$/', (string) $current_migration_number ) ) {
+            if ( !preg_match( '/^-?[0-9]+$/', (string) $current_migration_number ) ) {
                 throw new Exception( "Current migration number doesn't look like an integer ($current_migration_number)" );
             }
             $current_migration_number = intval( $current_migration_number );
 
-            if( $target_migration_number === $current_migration_number ) {
+            if ( $target_migration_number === $current_migration_number ) {
                 break;
-            } elseif( $target_migration_number < $current_migration_number ) {
+            } elseif ( $target_migration_number < $current_migration_number ) {
                 throw new Exception( "Trying to migrate backwards, aborting" );
             }
 
@@ -86,7 +86,7 @@ class Disciple_Tools_Migration_Engine
 
             self::sanity_check_expected_tables( $migration->get_expected_tables() );
 
-            if( (int) get_option( 'dt_migration_lock', 0 ) ) {
+            if ( (int) get_option( 'dt_migration_lock', 0 ) ) {
                 throw new Exception( "Cannot migrate, as migration lock is held" );
             }
             update_option( 'dt_migration_lock', '1' );
@@ -110,12 +110,12 @@ class Disciple_Tools_Migration_Engine
     protected static function sanity_check_expected_tables( array $expected_tables )
     {
         global $wpdb;
-        foreach( $expected_tables as $name => $table ) {
-            if( preg_match( '/\bIF NOT EXISTS\b/i', $table ) ) {
+        foreach ( $expected_tables as $name => $table ) {
+            if ( preg_match( '/\bIF NOT EXISTS\b/i', $table ) ) {
                 throw new Exception( "Table definition of $name should not contain 'IF NOT EXISTS'" );
-            } elseif( !preg_match( '/\b' . preg_quote( $name ) . '\b/', $table ) ) {
+            } elseif ( !preg_match( '/\b' . preg_quote( $name ) . '\b/', $table ) ) {
                 throw new Exception( "Expected to find table name in table definition of $name" );
-            } elseif( strpos( $name, $wpdb->prefix ) !== 0 ) {
+            } elseif ( strpos( $name, $wpdb->prefix ) !== 0 ) {
                 throw new Exception( "Table name expected to start with prefix {$wpdb->prefix}" );
             }
         }

@@ -89,7 +89,7 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
         : absint( $user );
 
     // Bail if empty
-    if( empty( $user_id ) ) {
+    if ( empty( $user_id ) ) {
         return false;
     }
 
@@ -120,7 +120,7 @@ function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = [], $b
     $tax = get_taxonomy( $taxonomy );
 
     // Make sure the current user can edit the user and assign terms before proceeding.
-    if( !current_user_can( 'edit_user', $user_id ) && current_user_can( $tax->cap->assign_terms ) ) {
+    if ( !current_user_can( 'edit_user', $user_id ) && current_user_can( $tax->cap->assign_terms ) ) {
         return false;
     }
 
@@ -135,7 +135,7 @@ function disciple_tools_set_terms_for_user( $user_id, $taxonomy, $terms = [], $b
     /* } */
 
     // Delete all user terms
-    if( is_null( $terms ) || empty( $terms ) ) {
+    if ( is_null( $terms ) || empty( $terms ) ) {
         wp_delete_object_term_relationships( $user_id, $taxonomy );
         // Set the terms
     } else {
@@ -214,11 +214,11 @@ function disciple_tools_get_users_of_group( $args = [] )
     );
 
     // Get user IDs in group
-    $term = get_term_by( $r[ 'term_by' ], $r[ 'term' ], $r[ 'taxonomy' ] );
-    $user_ids = get_objects_in_term( $term->term_id, $r[ 'taxonomy' ] );
+    $term = get_term_by( $r['term_by'], $r['term'], $r['taxonomy'] );
+    $user_ids = get_objects_in_term( $term->term_id, $r['taxonomy'] );
 
     // Bail if no users in this term
-    if( empty( $term ) || empty( $user_ids ) ) {
+    if ( empty( $term ) || empty( $user_ids ) ) {
         return [];
     }
 
@@ -245,7 +245,7 @@ function dt_groups_admin_assets()
 {
     global $pagenow;
 
-    if( 'users.php' === $pagenow || 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow || 'edit-tags.php' === $pagenow || 'profile.php' === $pagenow ) {
+    if ( 'users.php' === $pagenow || 'user-new.php' === $pagenow || 'user-edit.php' === $pagenow || 'edit-tags.php' === $pagenow || 'profile.php' === $pagenow ) {
 
         $url = disciple_tools()->plugin_url;
         $ver = disciple_tools()->version;
@@ -270,7 +270,7 @@ function disciple_tools_groups_add_profile_section( $sections = [] )
     $new_sections = $sections;
 
     // Add the "Activity" section
-    $new_sections[ 'groups' ] = [
+    $new_sections['groups'] = [
         'id'    => 'groups',
         'slug'  => 'groups',
         'name'  => esc_html__( 'Groups', 'disciple_tools' ),

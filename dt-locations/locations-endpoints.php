@@ -10,7 +10,7 @@
  *
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -43,7 +43,7 @@ class Disciple_Tools_Locations_Endpoints
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -119,12 +119,12 @@ class Disciple_Tools_Locations_Endpoints
     public function find_by_address( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'address' ] ) ) {
-            $result = Disciple_Tools_Locations::get_tract_by_address( $params[ 'address' ] );
-            if( $result[ "status" ] == 'OK' ) {
-                return $result[ "tract" ];
+        if ( isset( $params['address'] ) ) {
+            $result = Disciple_Tools_Locations::get_tract_by_address( $params['address'] );
+            if ( $result["status"] == 'OK' ) {
+                return $result["tract"];
             } else {
-                return new WP_Error( "tract_status_error", $result[ "message" ], [ 'status' => 400 ] );
+                return new WP_Error( "tract_status_error", $result["message"], [ 'status' => 400 ] );
             }
         } else {
             return new WP_Error( "tract_param_error", "Please provide a valid address", [ 'status' => 400 ] );
@@ -143,12 +143,12 @@ class Disciple_Tools_Locations_Endpoints
     public function get_tract_map( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'address' ] ) ) {
-            $result = Disciple_Tools_Locations::get_tract_map( $params[ 'address' ] );
-            if( $result[ "status" ] == 'OK' ) {
+        if ( isset( $params['address'] ) ) {
+            $result = Disciple_Tools_Locations::get_tract_map( $params['address'] );
+            if ( $result["status"] == 'OK' ) {
                 return $result;
             } else {
-                return new WP_Error( "map_status_error", $result[ "message" ], [ 'status' => 400 ] );
+                return new WP_Error( "map_status_error", $result["message"], [ 'status' => 400 ] );
             }
         } else {
             return new WP_Error( "map_param_error", "Please provide a valid address", [ 'status' => 400 ] );
@@ -167,12 +167,12 @@ class Disciple_Tools_Locations_Endpoints
     public function get_map_by_geoid( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'geoid' ] ) ) {
+        if ( isset( $params['geoid'] ) ) {
             $result = Disciple_Tools_Locations::get_map_by_geoid( $params );
-            if( $result[ "status" ] == 'OK' ) {
+            if ( $result["status"] == 'OK' ) {
                 return $result;
             } else {
-                return new WP_Error( "map_status_error", $result[ "message" ], [ 'status' => 400 ] );
+                return new WP_Error( "map_status_error", $result["message"], [ 'status' => 400 ] );
             }
         } else {
             return new WP_Error( "map_param_error", "Please provide a valid address", [ 'status' => 400 ] );
@@ -200,8 +200,8 @@ class Disciple_Tools_Locations_Endpoints
     {
         $params = $request->get_params();
         $search = "";
-        if( isset( $params[ 's' ] ) ) {
-            $search = $params[ 's' ];
+        if ( isset( $params['s'] ) ) {
+            $search = $params['s'];
         }
         $locations = Disciple_Tools_Locations::get_locations_compact( $search );
 

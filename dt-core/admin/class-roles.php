@@ -44,7 +44,7 @@ class Disciple_Tools_Roles
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -88,7 +88,7 @@ class Disciple_Tools_Roles
 
         /* TODO: Different capabilities are commented out below in the different roles as we configure usage in development, but should be removed for distribution. */
 
-        if( get_role( 'strategist' ) ) {
+        if ( get_role( 'strategist' ) ) {
             remove_role( 'strategist' );
         }
         add_role(
@@ -210,7 +210,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if( get_role( 'dispatcher' ) ) {
+        if ( get_role( 'dispatcher' ) ) {
             remove_role( 'dispatcher' );
         }
         add_role(
@@ -299,7 +299,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if( get_role( 'marketer' ) ) {
+        if ( get_role( 'marketer' ) ) {
             remove_role( 'marketer' );
         }
         add_role(
@@ -419,7 +419,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if( get_role( 'marketer_leader' ) ) {
+        if ( get_role( 'marketer_leader' ) ) {
             remove_role( 'marketer_leader' );
         }
         add_role(
@@ -538,7 +538,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if( get_role( 'multiplier' ) ) {
+        if ( get_role( 'multiplier' ) ) {
             remove_role( 'multiplier' );
         }
         add_role(
@@ -553,7 +553,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if( get_role( 'project_supporter' ) ) {
+        if ( get_role( 'project_supporter' ) ) {
             remove_role( 'project_supporter' );
         }
         add_role(
@@ -565,7 +565,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if( get_role( 'prayer_supporter' ) ) {
+        if ( get_role( 'prayer_supporter' ) ) {
             remove_role( 'prayer_supporter' );
         }
         add_role(
@@ -576,7 +576,7 @@ class Disciple_Tools_Roles
             ]
         );
 
-        if( get_role( 'registered' ) ) {
+        if ( get_role( 'registered' ) ) {
             remove_role( 'registered' );
         }
         add_role(
@@ -598,7 +598,7 @@ class Disciple_Tools_Roles
         $role = get_role( 'administrator' );
 
         // If the administrator role exists, add required capabilities for the plugin.
-        if( !empty( $role ) ) {
+        if ( !empty( $role ) ) {
 
             /* Manage DT configuration */
             $role->add_cap( 'manage_dt' ); // gives access to dt plugin options

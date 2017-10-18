@@ -10,7 +10,7 @@
  * @author     Chasm.Solutions & Kingdom.Training
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
@@ -39,7 +39,7 @@ final class Disciple_Tools_Config
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -58,7 +58,7 @@ final class Disciple_Tools_Config
         add_action( "admin_menu", [ $this, "add_dt_options_menu" ] );
 
         // check for default options
-        if( !get_option( 'dt_site_options' ) ) {
+        if ( !get_option( 'dt_site_options' ) ) {
             $site_options = dt_get_site_options_defaults();
             add_option( 'dt_site_options', $site_options, '', true );
         }
@@ -91,15 +91,15 @@ final class Disciple_Tools_Config
     public function build_default_page()
     {
 
-        if( !current_user_can( 'manage_dt' ) ) {
+        if ( !current_user_can( 'manage_dt' ) ) {
             wp_die( 'You do not have sufficient permissions to access this page.' );
         }
 
         /**
          * Begin Header & Tab Bar
          */
-        if( isset( $_GET[ "tab" ] ) ) {
-            $tab = sanitize_text_field( wp_unslash( $_GET[ "tab" ] ) );
+        if ( isset( $_GET["tab"] ) ) {
+            $tab = sanitize_text_field( wp_unslash( $_GET["tab"] ) );
         } else {
             $tab = 'general';
         }
@@ -110,25 +110,25 @@ final class Disciple_Tools_Config
             <h2 class="nav-tab-wrapper">';
 
         echo '<a href="admin.php?page=dt_options&tab=general" class="nav-tab ';
-        if( $tab == 'general' || !isset( $tab ) ) {
+        if ( $tab == 'general' || !isset( $tab ) ) {
             echo 'nav-tab-active';
         }
         echo '">General</a>';
 
         echo '<a href="admin.php?page=dt_options&tab=custom-lists" class="nav-tab ';
-        if( $tab == 'custom-lists' ) {
+        if ( $tab == 'custom-lists' ) {
             echo 'nav-tab-active';
         }
         echo '">Custom Lists</a>';
 
         echo '<a href="admin.php?page=dt_options&tab=import-export" class="nav-tab ';
-        if( $tab == 'import-export' ) {
+        if ( $tab == 'import-export' ) {
             echo 'nav-tab-active';
         }
         echo '">Import/Export</a>';
 
         echo '<a href="admin.php?page=dt_options&tab=setup-checklist" class="nav-tab ';
-        if( $tab == 'setup-checklist' ) {
+        if ( $tab == 'setup-checklist' ) {
             echo 'nav-tab-active';
         }
         echo '">Setup Checklist</a>';
@@ -140,7 +140,7 @@ final class Disciple_Tools_Config
         /**
          * Begin Page Content
          */
-        switch( $tab ) {
+        switch ( $tab ) {
 
             case 'general':
                 require_once( 'tab-general.php' );

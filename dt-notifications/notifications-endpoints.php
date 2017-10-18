@@ -10,7 +10,7 @@
  * @author     Chasm.Solutions & Kingdom.Training
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
@@ -38,7 +38,7 @@ class Disciple_Tools_Notifications_Endpoints
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -111,12 +111,12 @@ class Disciple_Tools_Notifications_Endpoints
     public function mark_viewed( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'notification_id' ] ) ) {
-            $result = Disciple_Tools_Notifications::mark_viewed( $params[ 'notification_id' ] );
-            if( $result[ "status" ] ) {
-                return $result[ 'rows_affected' ];
+        if ( isset( $params['notification_id'] ) ) {
+            $result = Disciple_Tools_Notifications::mark_viewed( $params['notification_id'] );
+            if ( $result["status"] ) {
+                return $result['rows_affected'];
             } else {
-                return new WP_Error( "mark_viewed_processing_error", $result[ "message" ], [ 'status' => 400 ] );
+                return new WP_Error( "mark_viewed_processing_error", $result["message"], [ 'status' => 400 ] );
             }
         } else {
             return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
@@ -135,12 +135,12 @@ class Disciple_Tools_Notifications_Endpoints
     public function mark_all_viewed( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'user_id' ] ) ) {
-            $result = Disciple_Tools_Notifications::mark_all_viewed( $params[ 'user_id' ] );
-            if( $result[ "status" ] ) {
-                return $result[ 'rows_affected' ];
+        if ( isset( $params['user_id'] ) ) {
+            $result = Disciple_Tools_Notifications::mark_all_viewed( $params['user_id'] );
+            if ( $result["status"] ) {
+                return $result['rows_affected'];
             } else {
-                return new WP_Error( "mark_viewed_processing_error", $result[ "message" ], [ 'status' => 400 ] );
+                return new WP_Error( "mark_viewed_processing_error", $result["message"], [ 'status' => 400 ] );
             }
         } else {
             return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
@@ -159,12 +159,12 @@ class Disciple_Tools_Notifications_Endpoints
     public function get_notifications( WP_REST_Request $request )
     {
         $params = $request->get_params();
-        if( isset( $params[ 'all' ] ) && isset( $params[ 'page' ] ) && isset( $params[ 'limit' ] ) ) {
-            $result = Disciple_Tools_Notifications::get_notifications( $params[ 'all' ], $params[ 'page' ], $params[ 'limit' ] );
-            if( $result[ 'status' ] ) {
-                return $result[ 'result' ];
+        if ( isset( $params['all'] ) && isset( $params['page'] ) && isset( $params['limit'] ) ) {
+            $result = Disciple_Tools_Notifications::get_notifications( $params['all'], $params['page'], $params['limit'] );
+            if ( $result['status'] ) {
+                return $result['result'];
             } else {
-                return new WP_Error( "get_user_notification_results", $result[ "message" ], [ 'status' => 204 ] );
+                return new WP_Error( "get_user_notification_results", $result["message"], [ 'status' => 204 ] );
             }
         } else {
             return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
@@ -181,10 +181,10 @@ class Disciple_Tools_Notifications_Endpoints
     public function get_new_notifications_count()
     {
         $result = Disciple_Tools_Notifications::get_new_notifications_count();
-        if( $result[ "status" ] ) {
-            return $result[ 'result' ];
+        if ( $result["status"] ) {
+            return $result['result'];
         } else {
-            return new WP_Error( "get_user_notification_results", $result[ "message" ], [ 'status' => 204 ] );
+            return new WP_Error( "get_user_notification_results", $result["message"], [ 'status' => 204 ] );
         }
     }
 

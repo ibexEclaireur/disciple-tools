@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -32,23 +32,23 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     public function filter_comment_for_notification( $comment_id, $comment = null )
     {
 
-        if( is_null( $comment ) ) {
+        if ( is_null( $comment ) ) {
             $comment = get_comment( $comment_id );
         }
 
-        if( $this->check_for_mention( $comment->comment_content ) == '0' ) { // fail if no mention found
+        if ( $this->check_for_mention( $comment->comment_content ) == '0' ) { // fail if no mention found
             return;
         }
 
         $mentioned_user_ids = $this->match_mention( $comment->comment_content ); // fail if no match for mention found
-        if( !$mentioned_user_ids ) {
+        if ( !$mentioned_user_ids ) {
             return;
         }
 
-        foreach( $mentioned_user_ids as $mentioned_user_id ) {
+        foreach ( $mentioned_user_ids as $mentioned_user_id ) {
             $source_user_id = $comment->user_id;
 
-            if( $mentioned_user_id != $source_user_id ) { // checks that the user who created the event and the user receiving the notification are not the same.
+            if ( $mentioned_user_id != $source_user_id ) { // checks that the user who created the event and the user receiving the notification are not the same.
 
                 // build variables
                 $post_id = $comment->comment_post_ID;
@@ -59,7 +59,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                 $user_meta = get_user_meta( $mentioned_user_id );
 
                 // call appropriate action
-                switch( current_filter() ) {
+                switch ( current_filter() ) {
                     case 'wp_insert_comment' :
                         $notification_action = 'mentioned';
 
@@ -67,7 +67,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
 
                         // web notification
-                        if( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
+                        if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
 
                             $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
                                 . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
@@ -84,7 +84,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         }
 
                         // email notification
-                        if( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
+                        if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
 
                             $message = strip_tags( $author_name ) . ' mentioned you saying: ' . strip_tags( $comment->comment_content );
                             $message .= '\r\n \r\n Want to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
@@ -105,7 +105,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
 
                         // web notification
-                        if( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
+                        if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
 
                             $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
                                 . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
@@ -122,7 +122,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         }
 
                         // email notification
-                        if( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
+                        if ( dt_user_notification_is_enabled( 'mentions_email', $user_meta, $user->ID ) ) {
 
                             $message = strip_tags( $author_name ) . ' updated a comment that mentioned you saying: ' . strip_tags( $comment->comment_content );
                             $message .= '. Want to reply: ' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id;
@@ -143,7 +143,7 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
                         Disciple_Tools_Contacts::add_shared( $post_type, $post_id, $mentioned_user_id );
 
                         // web notification
-                        if( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
+                        if ( dt_user_notification_is_enabled( 'mentions_web', $user_meta, $user->ID ) ) {
 
                             $notification_note = '<strong>' . strip_tags( $author_name ) . '</strong> untrashed a comment that mentioned you on <a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">'
                                 . strip_tags( get_the_title( $post_id ) ) . '</a> saying, "' . strip_tags( $comment->comment_content ) . '" ';
@@ -203,14 +203,14 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
         preg_match_all( '/(?<= |^)@([^@ ]+)/', $comment_content, $matches );
 
         $user_ids = [];
-        foreach( $matches[ 1 ] as $match ) {
+        foreach ( $matches[1] as $match ) {
 
             // trim punctuation
             $match = preg_replace( '/\W+/', '', $match );
 
             // get user_id by name match
             $user = get_user_by( 'login', $match );
-            if( $user ) {
+            if ( $user ) {
                 $user_ids[] = $user->ID;
             }
         }

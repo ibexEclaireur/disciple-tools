@@ -10,7 +10,7 @@
  * @author
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly
 
@@ -35,7 +35,7 @@ class Disciple_Tools_Deactivator
         $roles->reset_roles();
 
         /* Determines if on deactivate you have checked to remove database content */
-        if( get_option( 'delete_activity_db' ) ) {
+        if ( get_option( 'delete_activity_db' ) ) {
             self::_remove_tables();
         }
     }

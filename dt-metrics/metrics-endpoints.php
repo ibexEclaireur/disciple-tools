@@ -32,7 +32,7 @@ class Disciple_Tools_Metrics_Endpoints {
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -106,14 +106,14 @@ class Disciple_Tools_Metrics_Endpoints {
     public function critical_path_prayer()
     {
         $result = Disciple_Tools_Metrics::critical_path_prayer( true );
-        if( is_wp_error( $result ) ) {
+        if ( is_wp_error( $result ) ) {
             return $result;
         }
-        elseif( $result[ "status" ] ) {
-            return $result[ 'data' ];
+        elseif ( $result["status"] ) {
+            return $result['data'];
         }
         else {
-            return new WP_Error( "critical_path_processing_error", $result[ "message" ], [ 'status' => 400 ] );
+            return new WP_Error( "critical_path_processing_error", $result["message"], [ 'status' => 400 ] );
         }
     }
 
@@ -127,14 +127,14 @@ class Disciple_Tools_Metrics_Endpoints {
     public function critical_path_media()
     {
         $result = Disciple_Tools_Metrics::critical_path_media( true );
-        if( is_wp_error( $result ) ) {
+        if ( is_wp_error( $result ) ) {
             return $result;
         }
-        elseif( $result[ "status" ] ) {
-            return $result[ 'data' ];
+        elseif ( $result["status"] ) {
+            return $result['data'];
         }
         else {
-            return new WP_Error( "critical_path_processing_error", $result[ "message" ], [ 'status' => 400 ] );
+            return new WP_Error( "critical_path_processing_error", $result["message"], [ 'status' => 400 ] );
         }
     }
 
@@ -148,14 +148,14 @@ class Disciple_Tools_Metrics_Endpoints {
     public function critical_path_fup()
     {
         $result = Disciple_Tools_Metrics::critical_path_fup( true );
-        if( is_wp_error( $result ) ) {
+        if ( is_wp_error( $result ) ) {
             return $result;
         }
-        elseif( $result[ "status" ] ) {
-            return $result[ 'data' ];
+        elseif ( $result["status"] ) {
+            return $result['data'];
         }
         else {
-            return new WP_Error( "critical_path_processing_error", $result[ "message" ], [ 'status' => 400 ] );
+            return new WP_Error( "critical_path_processing_error", $result["message"], [ 'status' => 400 ] );
         }
     }
 
@@ -169,14 +169,14 @@ class Disciple_Tools_Metrics_Endpoints {
     public function critical_path_multiplication()
     {
         $result = Disciple_Tools_Metrics::critical_path_multiplication( true );
-        if( is_wp_error( $result ) ) {
+        if ( is_wp_error( $result ) ) {
             return $result;
         }
-        elseif( $result[ "status" ] ) {
-            return $result[ 'data' ];
+        elseif ( $result["status"] ) {
+            return $result['data'];
         }
         else {
-            return new WP_Error( "critical_path_processing_error", $result[ "message" ], [ 'status' => 400 ] );
+            return new WP_Error( "critical_path_processing_error", $result["message"], [ 'status' => 400 ] );
         }
     }
 

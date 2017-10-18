@@ -19,7 +19,7 @@ class Disciple_Tools_Counter_Baptism  {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () { } // End __construct()
+    public function __construct() { } // End __construct()
 
     /**
      * Counts the number of contacts with no disciples in database
@@ -27,7 +27,7 @@ class Disciple_Tools_Counter_Baptism  {
      * @access public
      * @since  1.0.0
      */
-    public function get_number_of_baptisms () {
+    public function get_number_of_baptisms() {
         global $wpdb;
 
         $results = $wpdb->get_var(
@@ -49,7 +49,7 @@ class Disciple_Tools_Counter_Baptism  {
      * @access public
      * @since  1.0.0
      */
-    public function get_number_of_baptizers () {
+    public function get_number_of_baptizers() {
         global $wpdb;
 
         $results = $wpdb->get_var(

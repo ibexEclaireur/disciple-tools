@@ -33,7 +33,7 @@ class Disciple_Tools_Counter_Factory {
      * @static
      * @return Disciple_Tools_Counter_Factory
      */
-    public static function instance () {
+    public static function instance() {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
@@ -46,7 +46,7 @@ class Disciple_Tools_Counter_Factory {
      * @access public
      * @since  1.0.0
      */
-    public function __construct () {
+    public function __construct() {
 
         // Load required files
         require_once( 'counters/counter-connected.php' );
@@ -64,7 +64,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return object
      */
-    public function contacts_post_status ( $status = '' ) {
+    public function contacts_post_status( $status = '' ) {
 
         /**
          * @usage disciple_tools()->counter->contacts_post_status()
@@ -123,7 +123,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return null|string
      */
-    public function connection_type_counter ( $type, $meta_value ) {
+    public function connection_type_counter( $type, $meta_value ) {
         $type = $this->set_connection_type( $type );
         $count = new Disciple_Tools_Counter_Connected();
         $result = $count->has_meta_value( $type, $meta_value );
@@ -141,7 +141,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return int
      */
-    public function contacts_meta_counter ( $meta_key, $meta_value ) {
+    public function contacts_meta_counter( $meta_key, $meta_value ) {
         $query = new WP_Query( [ 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'contacts', ] );
         return $query->found_posts;
     }
@@ -157,7 +157,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return int
      */
-    public function groups_meta_counter ( $meta_key, $meta_value ) {
+    public function groups_meta_counter( $meta_key, $meta_value ) {
         $query = new WP_Query( [ 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'groups', ] );
         return $query->found_posts;
     }
@@ -169,7 +169,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return null|string
      */
-    public function get_baptisms ( $type ) {
+    public function get_baptisms( $type ) {
         switch ($type) {
             case 'baptisms':
                 $count = new Disciple_Tools_Counter_Baptism();
@@ -198,7 +198,7 @@ class Disciple_Tools_Counter_Factory {
         // Set the P2P type for selecting group or contacts
         $type = $this->set_connection_type( $type );
 
-        switch($generation_number) {
+        switch ($generation_number) {
 
             case 'has_one_or_more':
                 $gen_object = new Disciple_Tools_Counter_Connected();
@@ -283,7 +283,7 @@ class Disciple_Tools_Counter_Factory {
      * @param  string = 'contacts' or 'groups' or 'baptisms'
      * @return string
      */
-    protected function set_connection_type ( $type ) {
+    protected function set_connection_type( $type ) {
         if ($type == 'contacts') {
             $type = 'contacts_to_contacts';
         } elseif ($type == 'groups') {

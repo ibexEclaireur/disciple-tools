@@ -1,5 +1,5 @@
 <?php
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit;
 } // Exit if accessed directly.
 
@@ -78,7 +78,7 @@ class Disciple_Tools_Prayer_Post_Type
         add_action( 'init', [ $this, 'register_post_type' ] );
         add_action( 'init', [ $this, 'register_taxonomy' ] );
 
-        if( is_admin() ) {
+        if ( is_admin() ) {
             global $pagenow;
 
             add_action( 'admin_menu', [ $this, 'meta_box_setup' ], 20 );
@@ -86,9 +86,9 @@ class Disciple_Tools_Prayer_Post_Type
             add_filter( 'enter_title_here', [ $this, 'enter_title_here' ] );
             add_filter( 'post_updated_messages', [ $this, 'updated_messages' ] );
 
-            if( $pagenow == 'edit.php' && isset( $_GET[ 'post_type' ] ) ) {
-                $pt = sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] ) );
-                if( $pt === $this->post_type ) {
+            if ( $pagenow == 'edit.php' && isset( $_GET['post_type'] ) ) {
+                $pt = sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
+                if ( $pt === $this->post_type ) {
                     add_filter( 'manage_edit-' . $this->post_type . '_columns', [ $this, 'register_custom_column_headings' ], 10, 1 );
                     add_action( 'manage_posts_custom_column', [ $this, 'register_custom_columns' ], 10, 2 );
                 }
@@ -189,8 +189,8 @@ class Disciple_Tools_Prayer_Post_Type
      */
     public function register_taxonomy()
     {
-        $this->taxonomies[ 'prayer-type' ] = new Disciple_Tools_Taxonomy( $post_type = 'prayer', $token = 'prayer-type', $singular = 'Type', $plural = 'Types', $args = [] ); // Leave arguments empty, to use the default arguments.
-        $this->taxonomies[ 'prayer-type' ]->register();
+        $this->taxonomies['prayer-type'] = new Disciple_Tools_Taxonomy( $post_type = 'prayer', $token = 'prayer-type', $singular = 'Type', $plural = 'Types', $args = [] ); // Leave arguments empty, to use the default arguments.
+        $this->taxonomies['prayer-type']->register();
     } // End register_taxonomy()
 
     /**
@@ -207,7 +207,7 @@ class Disciple_Tools_Prayer_Post_Type
     {
 //        global $post;
 
-        switch( $column_name ) {
+        switch ( $column_name ) {
             case 'image':
                 break;
             case 'phone':
@@ -236,15 +236,15 @@ class Disciple_Tools_Prayer_Post_Type
 
         $last_item = [];
 
-        if( count( $defaults ) > 2 ) {
+        if ( count( $defaults ) > 2 ) {
             $last_item = array_slice( $defaults, -1 );
 
             array_pop( $defaults );
         }
         $defaults = array_merge( $defaults, $new_columns );
 
-        if( is_array( $last_item ) && 0 < count( $last_item ) ) {
-            foreach( $last_item as $k => $v ) {
+        if ( is_array( $last_item ) && 0 < count( $last_item ) ) {
+            foreach ( $last_item as $k => $v ) {
                 $defaults[ $k ] = $v;
                 break;
             }
@@ -279,7 +279,7 @@ class Disciple_Tools_Prayer_Post_Type
             3  => __( 'Project Update deleted.', 'disciple_tools' ),
             4  => sprintf( __( '%s updated.', 'disciple_tools' ), $this->singular ),
             /* translators: %s: date and time of the revision */
-            5  => isset( $_GET[ 'revision' ] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET[ 'revision' ], false ) ) : false,
+            5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$s', 'disciple_tools' ), $this->singular, wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
             6  => sprintf( __( '%1$s published. %3$sView %2$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a href="' . esc_url( get_permalink( $post->ID ) ) . '">', '</a>' ),
             7  => sprintf( __( '%s saved.', 'disciple_tools' ), $this->singular ),
             8  => sprintf( __( '%1$s submitted. %2$sPreview %3$s%4$s', 'disciple_tools' ), $this->singular, strtolower( $this->singular ), '<a target="_blank" href="' . esc_url( add_query_arg( 'preview', 'true', get_permalink( $post->ID ) ) ) . '">', '</a>' ),
@@ -324,67 +324,67 @@ class Disciple_Tools_Prayer_Post_Type
 
         echo '<input type="hidden" name="dt_' . esc_attr( $this->post_type ) . '_noonce" id="dt_' . esc_attr( $this->post_type ) . '_noonce" value="' . esc_attr( wp_create_nonce( plugin_basename( dirname( disciple_tools()->plugin_path ) ) ) ) . '" />';
 
-        if( 0 < count( $field_data ) ) {
+        if ( 0 < count( $field_data ) ) {
             echo '<table class="form-table">' . "\n";
             echo '<tbody>' . "\n";
 
-            foreach( $field_data as $k => $v ) {
+            foreach ( $field_data as $k => $v ) {
 
-                if( $v[ 'section' ] == $section ) {
+                if ( $v['section'] == $section ) {
 
-                    $data = $v[ 'default' ];
-                    if( isset( $fields[ $k ] ) && isset( $fields[ $k ][ 0 ] ) ) {
-                        $data = $fields[ $k ][ 0 ];
+                    $data = $v['default'];
+                    if ( isset( $fields[ $k ] ) && isset( $fields[ $k ][0] ) ) {
+                        $data = $fields[ $k ][0];
                     }
 
-                    $type = $v[ 'type' ];
+                    $type = $v['type'];
 
-                    switch( $type ) {
+                    switch ( $type ) {
 
                         case 'url':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v[ 'name' ] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th><td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
                         case 'text':
-                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v[ 'name' ] ) . '</label></th>
+                            echo '<tr valign="top"><th scope="row"><label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
                                 <td><input name="' . esc_attr( $k ) . '" type="text" id="' . esc_attr( $k ) . '" class="regular-text" value="' . esc_attr( $data ) . '" />' . "\n";
-                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
                         case 'select':
                             echo '<tr valign="top"><th scope="row">
-                                <label for="' . esc_attr( $k ) . '">' . esc_html( $v[ 'name' ] ) . '</label></th>
+                                <label for="' . esc_attr( $k ) . '">' . esc_html( $v['name'] ) . '</label></th>
                                 <td>
                                 <select name="' . esc_attr( $k ) . '" id="' . esc_attr( $k ) . '" class="regular-text">';
                             // Iterate the options
-                            foreach( $v[ 'default' ] as $vv ) {
+                            foreach ( $v['default'] as $vv ) {
                                 echo '<option value="' . esc_attr( $vv ) . '" ';
-                                if( $vv == $data ) {
+                                if ( $vv == $data ) {
                                     echo 'selected';
                                 }
                                 echo '>' . esc_html( $vv ) . '</option>';
                             }
                             echo '</select>' . "\n";
-                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
                         case 'radio':
-                            echo '<tr valign="top"><th scope="row">' . esc_html( $v[ 'name' ] ) . '</th>
+                            echo '<tr valign="top"><th scope="row">' . esc_html( $v['name'] ) . '</th>
                                 <td><fieldset>';
                             // Iterate the buttons
                             $increment_the_radio_button = 1;
-                            foreach( $v[ 'default' ] as $vv ) {
+                            foreach ( $v['default'] as $vv ) {
                                 echo '<label for="' . esc_attr( "$k-$increment_the_radio_button" ) . "\">" . esc_html( $vv ) . "</label>" .
                                     '<input class="drm-radio" type="radio" name="' . esc_attr( $k ) . '" id="' . esc_attr( $k . '-' . $increment_the_radio_button ) . '" value="' . esc_attr( $vv ) . '" ';
-                                if( $vv == $data ) {
+                                if ( $vv == $data ) {
                                     echo 'checked';
                                 }
                                 echo '>';
                                 $increment_the_radio_button++;
                             }
                             echo '</fieldset>' . "\n";
-                            echo '<p class="description">' . esc_html( $v[ 'description' ] ) . '</p>' . "\n";
+                            echo '<p class="description">' . esc_html( $v['description'] ) . '</p>' . "\n";
                             echo '</td><tr/>' . "\n";
                             break;
 
@@ -413,27 +413,27 @@ class Disciple_Tools_Prayer_Post_Type
     {
 
         // Verify
-        if( get_post_type() != $this->post_type ) {
+        if ( get_post_type() != $this->post_type ) {
             return $post_id;
         }
 
         $key = 'dt_' . $this->post_type . '_noonce';
-        if( isset( $_POST[ $key ] ) && !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), plugin_basename( dirname( disciple_tools()->plugin_path ) ) ) ) {
+        if ( isset( $_POST[ $key ] ) && !wp_verify_nonce( sanitize_key( $_POST[ $key ] ), plugin_basename( dirname( disciple_tools()->plugin_path ) ) ) ) {
             return $post_id;
         }
 
-        if( isset( $_POST[ 'post_type' ] ) && 'page' == sanitize_text_field( wp_unslash( $_POST[ 'post_type' ] ) ) ) {
-            if( !current_user_can( 'edit_page', $post_id ) ) {
+        if ( isset( $_POST['post_type'] ) && 'page' == sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ) {
+            if ( !current_user_can( 'edit_page', $post_id ) ) {
                 return $post_id;
             }
         } else {
-            if( !current_user_can( 'edit_post', $post_id ) ) {
+            if ( !current_user_can( 'edit_post', $post_id ) ) {
                 return $post_id;
             }
         }
 
-        if( isset( $_GET[ 'action' ] ) ) {
-            if( $_GET[ 'action' ] == 'trash' || $_GET[ 'action' ] == 'untrash' || $_GET[ 'action' ] == 'delete' ) {
+        if ( isset( $_GET['action'] ) ) {
+            if ( $_GET['action'] == 'trash' || $_GET['action'] == 'untrash' || $_GET['action'] == 'delete' ) {
                 return $post_id;
             }
         }
@@ -441,23 +441,23 @@ class Disciple_Tools_Prayer_Post_Type
         $field_data = $this->get_custom_fields_settings();
         $fields = array_keys( $field_data );
 
-        foreach( $fields as $f ) {
-            if( !isset( $_POST[ $f ] ) ) {
+        foreach ( $fields as $f ) {
+            if ( !isset( $_POST[ $f ] ) ) {
                 continue;
             }
 
             ${$f} = strip_tags( trim( sanitize_text_field( wp_unslash( $_POST[ $f ] ) ) ) );
 
             // Escape the URLs.
-            if( 'url' == $field_data[ $f ][ 'type' ] ) {
+            if ( 'url' == $field_data[ $f ]['type'] ) {
                 ${$f} = esc_url( ${$f} );
             }
 
-            if( get_post_meta( $post_id, $f ) == '' ) {
+            if ( get_post_meta( $post_id, $f ) == '' ) {
                 add_post_meta( $post_id, $f, ${$f}, true );
-            } elseif( ${$f} != get_post_meta( $post_id, $f, true ) ) {
+            } elseif ( ${$f} != get_post_meta( $post_id, $f, true ) ) {
                 update_post_meta( $post_id, $f, ${$f} );
-            } elseif( ${$f} == '' ) {
+            } elseif ( ${$f} == '' ) {
                 delete_post_meta( $post_id, $f, get_post_meta( $post_id, $f, true ) );
             }
         }
@@ -487,7 +487,7 @@ class Disciple_Tools_Prayer_Post_Type
      */
     public function enter_title_here( $title )
     {
-        if( get_post_type() == $this->post_type ) {
+        if ( get_post_type() == $this->post_type ) {
             $title = __( 'Enter the title here', 'disciple_tools' );
         }
 
@@ -506,7 +506,7 @@ class Disciple_Tools_Prayer_Post_Type
         $fields = [];
 
         // Project Update Information Section
-        $fields[ 'audience' ] = [
+        $fields['audience'] = [
             'name'        => __( 'Audience', 'disciple_tools' ),
             'description' => 'Prayer Supporters are level 1; Project Supporters are level 2. Project supporters see all prayer supporter posts, but prayer supporters do not see project supporter posts.',
             'type'        => 'select',

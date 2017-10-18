@@ -10,7 +10,7 @@
  * @author     Chasm.Solutions & Kingdom.Training
  */
 
-if( !defined( 'ABSPATH' ) ) {
+if ( !defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly
 }
 
@@ -39,7 +39,7 @@ class Disciple_Tools_Metrics
      */
     public static function instance()
     {
-        if( is_null( self::$_instance ) ) {
+        if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
 
@@ -66,20 +66,20 @@ class Disciple_Tools_Metrics
     {
 
         $current_user = get_current_user();
-        if( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
+        if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
 
-        $current[ 'prayer' ] = 1000; // TODO build live report
+        $current['prayer'] = 1000; // TODO build live report
 
         $report = [
-            [ 'Prayer', 'Current'],
-            [ 'Prayers Network', (int) $current[ 'prayer' ] ],
+            [ 'Prayer', 'Current' ],
+            [ 'Prayers Network', (int) $current['prayer'] ],
         ];
 
         // Check for goals
         $has_goals = true; // TODO check site options to see if they have goals
-        if( $has_goals ) {
+        if ( $has_goals ) {
 
             $goal['prayer'] = 1100;
 
@@ -87,7 +87,7 @@ class Disciple_Tools_Metrics
             array_push( $report[1], $goal['prayer'] );
         }
 
-        if( !empty( $report ) ) {
+        if ( !empty( $report ) ) {
             return [
                 'status' => true,
                 'data'   => $report,
@@ -109,32 +109,32 @@ class Disciple_Tools_Metrics
     {
 
         $current_user = get_current_user();
-        if( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
+        if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
 
-        $current[ 'social_engagement' ] = 30000; // TODO replace with calculated data
-        $current[ 'website_visitors' ] = 40000; // TODO replace with calculated data
+        $current['social_engagement'] = 30000; // TODO replace with calculated data
+        $current['website_visitors'] = 40000; // TODO replace with calculated data
 
         $report = [
             [ 'Outreach', 'Current' ],
-            [ 'Social Engagement', (int) $current[ 'social_engagement' ] ],
-            [ 'Website Visitors', (int) $current[ 'website_visitors' ] ],
+            [ 'Social Engagement', (int) $current['social_engagement'] ],
+            [ 'Website Visitors', (int) $current['website_visitors'] ],
         ];
 
         // Check for goals
         $has_goals = true; // TODO check site options to see if they have goals
-        if( $has_goals ) {
+        if ( $has_goals ) {
 
-            $goal[ 'social_engagement' ] = (int) 350000; // TODO replace with calculated data
-            $goal[ 'website_visitors' ] = (int) 400000; // TODO replace with calculated data
+            $goal['social_engagement'] = (int) 350000; // TODO replace with calculated data
+            $goal['website_visitors'] = (int) 400000; // TODO replace with calculated data
 
             array_push( $report[0], 'Goal' );
-            array_push( $report[1], $goal[ 'social_engagement' ] );
-            array_push( $report[2], $goal[ 'website_visitors' ] );
+            array_push( $report[1], $goal['social_engagement'] );
+            array_push( $report[2], $goal['website_visitors'] );
         }
 
-        if( !empty( $report ) ) {
+        if ( !empty( $report ) ) {
             return [
                 'status' => true,
                 'data'   => $report,
@@ -156,40 +156,40 @@ class Disciple_Tools_Metrics
     {
 
         $current_user = get_current_user();
-        if( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
+        if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
 
-        $current[ 'new_contacts' ] = disciple_tools()->counter->contacts_post_status( 'publish' );
-        $current[ 'contacts_attempted' ] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );
-        $current[ 'contacts_established' ] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'established' );
-        $current[ 'first_meetings' ] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'met' );
+        $current['new_contacts'] = disciple_tools()->counter->contacts_post_status( 'publish' );
+        $current['contacts_attempted'] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'attempted' );
+        $current['contacts_established'] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'established' );
+        $current['first_meetings'] = disciple_tools()->counter->contacts_meta_counter( 'seeker_path', 'met' );
 
         $report = [
-            [ 'Followup', 'Current'],
-            [ 'New Contacts', (int) $current[ 'new_contacts' ] ],
-            [ 'Contacts Attempted', (int) $current[ 'contacts_attempted' ] ],
-            [ 'Contacts Established', (int) $current[ 'contacts_established' ] ],
-            [ 'First Meetings', (int) $current[ 'first_meetings' ] ],
+            [ 'Followup', 'Current' ],
+            [ 'New Contacts', (int) $current['new_contacts'] ],
+            [ 'Contacts Attempted', (int) $current['contacts_attempted'] ],
+            [ 'Contacts Established', (int) $current['contacts_established'] ],
+            [ 'First Meetings', (int) $current['first_meetings'] ],
         ];
 
         // Check for goals
         $has_goals = true; // TODO check site options to see if they have goals
-        if( $has_goals ) {
+        if ( $has_goals ) {
 
-            $goal[ 'new_contacts' ] = (int) 400; // TODO replace with calculated data
-            $goal[ 'contacts_attempted' ] = (int) 380; // TODO replace with calculated data
-            $goal[ 'contacts_established' ] = (int) 200; // TODO replace with calculated data
-            $goal[ 'first_meetings' ] = (int) 100; // TODO replace with calculated data
+            $goal['new_contacts'] = (int) 400; // TODO replace with calculated data
+            $goal['contacts_attempted'] = (int) 380; // TODO replace with calculated data
+            $goal['contacts_established'] = (int) 200; // TODO replace with calculated data
+            $goal['first_meetings'] = (int) 100; // TODO replace with calculated data
 
             array_push( $report[0], 'Goal' );
-            array_push( $report[1], $goal[ 'new_contacts' ] );
-            array_push( $report[2], $goal[ 'contacts_attempted' ] );
-            array_push( $report[3], $goal[ 'contacts_established' ] );
-            array_push( $report[4], $goal[ 'first_meetings' ] );
+            array_push( $report[1], $goal['new_contacts'] );
+            array_push( $report[2], $goal['contacts_attempted'] );
+            array_push( $report[3], $goal['contacts_established'] );
+            array_push( $report[4], $goal['first_meetings'] );
         }
 
-        if( !empty( $report ) ) {
+        if ( !empty( $report ) ) {
             return [
                 'status' => true,
                 'data'   => $report,
@@ -211,40 +211,40 @@ class Disciple_Tools_Metrics
     {
 
         $current_user = get_current_user();
-        if( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
+        if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
         }
 
-        $current[ 'baptisms' ] = disciple_tools()->counter->get_baptisms( 'baptisms' );
-        $current[ 'baptizers' ] = disciple_tools()->counter->get_baptisms( 'baptizers' );
-        $current[ 'active_churches' ] = disciple_tools()->counter->groups_meta_counter( 'is_church', '1' );
-        $current[ 'church_planters' ] = disciple_tools()->counter->connection_type_counter( 'participation', 'Planting' );
+        $current['baptisms'] = disciple_tools()->counter->get_baptisms( 'baptisms' );
+        $current['baptizers'] = disciple_tools()->counter->get_baptisms( 'baptizers' );
+        $current['active_churches'] = disciple_tools()->counter->groups_meta_counter( 'is_church', '1' );
+        $current['church_planters'] = disciple_tools()->counter->connection_type_counter( 'participation', 'Planting' );
 
         $report = [
             [ 'Multiplication', 'Current' ],
-            [ 'Baptisms', (int) $current[ 'baptisms' ] ],
-            [ 'Baptizers', (int) $current[ 'baptizers' ] ],
-            [ 'Active Churches', (int) $current[ 'active_churches' ] ],
-            [ 'Church Planters', (int) $current[ 'church_planters' ] ],
+            [ 'Baptisms', (int) $current['baptisms'] ],
+            [ 'Baptizers', (int) $current['baptizers'] ],
+            [ 'Active Churches', (int) $current['active_churches'] ],
+            [ 'Church Planters', (int) $current['church_planters'] ],
         ];
 
         // Check for goals
         $has_goals = true; // TODO check site options to see if they have goals
-        if( $has_goals ) {
+        if ( $has_goals ) {
 
-            $goal[ 'baptisms' ] = (int) 40; // TODO replace with calculated data
-            $goal[ 'baptizers' ] = (int) 35; // TODO replace with calculated data
-            $goal[ 'active_churches' ] = (int) 20; // TODO replace with calculated data
-            $goal[ 'church_planters' ] = (int) 5; // TODO replace with calculated data
+            $goal['baptisms'] = (int) 40; // TODO replace with calculated data
+            $goal['baptizers'] = (int) 35; // TODO replace with calculated data
+            $goal['active_churches'] = (int) 20; // TODO replace with calculated data
+            $goal['church_planters'] = (int) 5; // TODO replace with calculated data
 
             array_push( $report[0], 'Goal' );
-            array_push( $report[1], $goal[ 'baptisms' ] );
-            array_push( $report[2], $goal[ 'baptizers' ] );
-            array_push( $report[3], $goal[ 'active_churches' ] );
-            array_push( $report[4], $goal[ 'church_planters' ] );
+            array_push( $report[1], $goal['baptisms'] );
+            array_push( $report[2], $goal['baptizers'] );
+            array_push( $report[3], $goal['active_churches'] );
+            array_push( $report[4], $goal['church_planters'] );
         }
 
-        if( !empty( $report ) ) {
+        if ( !empty( $report ) ) {
             return [
                 'status' => true,
                 'data'   => $report,
@@ -270,14 +270,14 @@ class Disciple_Tools_Metrics
         // TODO decide on permission strategy for reporting
         // Do we hardwire permissions to reports to the roles of a person?
         // Do we set up a permission assignment tool in the config area, so that a group could assign reports to a role
-        if( empty( $user_id ) ) {
+        if ( empty( $user_id ) ) {
             $user_id = get_current_user_id();
         }
-        if( ! $user_id ) {
+        if ( ! $user_id ) {
             return false;
         }
 
-        switch( $report_name ) {
+        switch ( $report_name ) {
             case 'critical_path':
                 return true;
                 break;
@@ -298,13 +298,13 @@ class Disciple_Tools_Metrics
 
         // Build counters
         $system_users = count_users();
-        $dispatchers = $system_users[ 'avail_roles' ][ 'dispatcher' ];
-        $marketers = $system_users[ 'avail_roles' ][ 'marketer' ];
-        $multipliers = $system_users[ 'avail_roles' ][ 'multiplier' ];
-        $multiplier_leader = $system_users[ 'avail_roles' ][ 'multiplier_leader' ];
-        $prayer_supporters = $system_users[ 'avail_roles' ][ 'prayer_supporter' ];
-        $project_supporters = $system_users[ 'avail_roles' ][ 'project_supporter' ];
-        $registered = $system_users[ 'avail_roles' ][ 'registered' ];
+        $dispatchers = $system_users['avail_roles']['dispatcher'];
+        $marketers = $system_users['avail_roles']['marketer'];
+        $multipliers = $system_users['avail_roles']['multiplier'];
+        $multiplier_leader = $system_users['avail_roles']['multiplier_leader'];
+        $prayer_supporters = $system_users['avail_roles']['prayer_supporter'];
+        $project_supporters = $system_users['avail_roles']['project_supporter'];
+        $registered = $system_users['avail_roles']['registered'];
 
         $monitored_websites = 'x';
         $monitored_facebook_pages = 'x';
@@ -326,7 +326,7 @@ class Disciple_Tools_Metrics
             <tbody>
             <tr>
                 <td>System Users</td>
-                <td><?php echo esc_html( $system_users[ 'total_users' ] ); ?></td>
+                <td><?php echo esc_html( $system_users['total_users'] ); ?></td>
             </tr>
             <tr>
                 <td>Dispatchers</td>
