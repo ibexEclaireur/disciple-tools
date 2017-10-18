@@ -63,7 +63,8 @@ class Disciple_Tools_Activator
         } else {
             Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
         }
-        // TODO: we need to run the migrations on updates as well, not just on activations
+        // Disciple_Tools_Migration_Engine::migrate is also run on updates, see
+        // the code in disciple-tools.php
     }
 
     /**
