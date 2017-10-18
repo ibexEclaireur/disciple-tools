@@ -128,6 +128,10 @@ function dt_plugins_loaded()
      */
     require_once( dirname( __FILE__ ) . '/dt-core/admin/class-migration-engine.php' );
     Disciple_Tools_Migration_Engine::migrate( disciple_tools()->migration_number );
+
+    /** Similarly, we want to make sure roles are up-to-date. */
+    require_once( dirname( __FILE__ ) . '/dt-core/admin/class-roles.php' );
+    Disciple_Tools_Roles::instance()->set_roles_if_needed();
 }
 add_action( 'plugins_loaded', 'dt_plugins_loaded' );
 
