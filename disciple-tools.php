@@ -453,9 +453,9 @@ class Disciple_Tools
          * dt-users
          */
         require_once( 'dt-users/users.php' );
+        $this->core['users'] = new Disciple_Tools_Users();
         require_once( 'dt-users/users-template.php' );
         require_once( 'dt-users/users-endpoints.php' );
-        new Disciple_Tools_Users();
         $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
 
 

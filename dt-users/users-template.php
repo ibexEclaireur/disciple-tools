@@ -84,6 +84,8 @@ function dt_get_user_associations()
  * )
  * )
  *
+ * @param $user_id
+ *
  * @return array
  */
 function dt_get_team_contacts( $user_id )
@@ -184,13 +186,13 @@ function dt_user_display_name( int $user_id )
  *
  * @param $user_id
  *
- * @return string
+ * @return string|WP_Error
  */
 function dt_get_user_display_name( $user_id )
 {
     $user = get_userdata( $user_id );
     if(! $user ) {
-        return;
+        return new WP_Error( 'get_user_display_name_error', 'Could not find user object with that user id.' );
     }
 
     $display_name = $user->display_name;
