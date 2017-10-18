@@ -18,6 +18,12 @@ if( !defined( 'ABSPATH' ) ) {
  */
 class Disciple_Tools_Users
 {
+    public function __construct() {
+        add_action( 'user_register', [ &$this, 'user_register_hook' ] );
+        add_action( 'profile_update', [ &$this, 'profile_update_hook' ], 99 );
+    }
+
+
     /**
      * @param  $search_string
      *
@@ -173,5 +179,38 @@ class Disciple_Tools_Users
         }
 
         return true;
+    }
+
+    //Create a Contact for each user that registers
+    public static function create_contact_for_user( $user_id ){
+        $user = get_user_by( 'id', $user_id );
+        if ( $user->has_cap( 'access_contacts' ) ){
+            $args = [
+                'post_type'  => 'contacts',
+                'relation' => 'AND',
+                'meta_query' => [
+                    ['key'=>"corresponds_to_user", "value"=>$user_id],
+                    ['key'=>"is_a_user", "value"=>"yes"]
+                ],
+            ];
+            $contacts = new WP_Query( $args );
+            if (empty( $contacts->posts )){
+                Disciple_Tools_Contacts::create_contact( [
+                    "title" => $user->display_name,
+                    "assigned_to" => "user-" . $user_id,
+                    "overall_status" => "assigned",
+                    "is_a_user" => "yes",
+                    "corresponds_to_user" => $user_id
+                ], false );
+            }
+        }
+    }
+
+    public static function user_register_hook( $user_id ){
+        self::create_contact_for_user( $user_id );
+    }
+
+    public static function profile_update_hook( $user_id ){
+        self::create_contact_for_user( $user_id );
     }
 }
