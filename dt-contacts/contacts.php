@@ -263,11 +263,11 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             wp_update_post( [ 'ID' => $contact_id, 'post_title' => $fields['title'] ] );
         }
 
-        if ( isset( $fields[ "assigned_to" ] ) ) {
+        if ( isset( $fields["assigned_to"] ) ) {
             if ( current_user_can( "assign_any_contact" ) ) {
-                $fields[ "overall_status" ] = 'assigned';
+                $fields["overall_status"] = 'assigned';
             }
-            $fields[ 'accepted' ] = 'no';
+            $fields['accepted'] = 'no';
         }
 
         foreach ( $fields as $field_id => $value ) {
