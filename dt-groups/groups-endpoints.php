@@ -84,6 +84,12 @@ class Disciple_Tools_Groups_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/details_update', [
+                "methods"  => "POST",
+                "callback" => [ $this, 'update_detail_on_field' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/group/(?P<id>\d+)/details', [
                 "methods"  => "DELETE",
                 "callback" => [ $this, 'remove_item_from_field' ],
@@ -240,7 +246,7 @@ class Disciple_Tools_Groups_Endpoints
     {
         $params = $request->get_params();
         if( isset( $params[ 'id' ] ) ) {
-            $result = Disciple_Tools_groups::get_group( $params[ 'id' ], true );
+            $result = Disciple_Tools_Groups::get_group( $params[ 'id' ], true );
 
             return $result; // Could be permission WP_Error
         } else {
@@ -260,11 +266,32 @@ class Disciple_Tools_Groups_Endpoints
         if( isset( $params[ 'id' ] ) ) {
             reset( $body );
             $field = key( $body );
-            $result = Disciple_Tools_groups::add_item_to_field( $params[ 'id' ], $field, $body[ $field ], true );
+            $result = Disciple_Tools_Groups::add_item_to_field( $params[ 'id' ], $field, $body[ $field ], true );
 
             return $result;
         } else {
             return new WP_Error( "add_group_details", "Missing a valid group id", [ 'status' => 400 ] );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return int|\WP_Error|\WP_REST_Response
+     */
+    public function update_detail_on_field( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if( isset( $params[ 'id' ] ) ) {
+            $field_key = $body[ "key" ];
+            $values = $body[ "values" ];
+
+            $result = Disciple_Tools_Groups::update_detail_on_field( $params[ 'id' ], $field_key, $values, true );
+
+            return $result;
+        } else {
+            return new WP_Error( "add_contact_details", "Missing a valid group id", [ 'status' => 400 ] );
         }
     }
 
@@ -281,7 +308,7 @@ class Disciple_Tools_Groups_Endpoints
             $field_key = $body[ "key" ];
             $value = $body[ "value" ];
 
-            $result = Disciple_Tools_groups::remove_item_from_field( $params[ 'id' ], $field_key, $value, true );
+            $result = Disciple_Tools_Groups::remove_item_from_field( $params[ 'id' ], $field_key, $value, true );
             if( is_wp_error( $result ) ) {
                 return $result;
             } elseif( $result == 0 ) {

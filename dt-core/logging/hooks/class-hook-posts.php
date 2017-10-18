@@ -163,24 +163,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 if (strpos( $meta_key,"quick_button" ) !== false ){
                     $object_note = $this->_key_name( $meta_key, $fields );
                 }
-                if (strpos( $meta_key, "_details" ) !== false && is_array( $meta_value )) {
-                    $original_key = str_replace( "_details", "", $meta_key );
-                    $original = get_post_meta( $object_id, $original_key, true );
-                    $object_note = $this->_key_name( $original_key, $fields ) . ' "'. $original .'" ';
-                    foreach($meta_value as $k => $v){
-                        if (is_array( $prev_value ) && isset( $prev_value[$k] ) && $prev_value[$k] == $v){
-                            continue;
-                        }
-                        if ($k === "verified") {
-                            $object_note .= $v ? "verified" : "not verified";
-                        }
-                        if ($k === "invalid") {
-                            $object_note .= $v ? "invalidated" : "not invalidated";
-                        }
-                        $object_note .= ', ';
-                    }
-                    $object_note = chop( $object_note, ', ' );
-                }
                 if (strpos( $meta_key, "assigned_to" ) !== false ){
                     $meta_array = explode( '-', $meta_value ); // Separate the type and id
                     if( isset( $meta_array[ 1 ] ) ) {
@@ -200,7 +182,25 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 break;
         }
 
-
+        //build message for verifying and invalidating contact information fields.
+        if (strpos( $meta_key, "_details" ) !== false && is_array( $meta_value )) {
+            $original_key = str_replace( "_details", "", $meta_key );
+            $original = get_post_meta( $object_id, $original_key, true );
+            $object_note = $this->_key_name( $original_key, $fields ) . ' "'. $original .'" ';
+            foreach($meta_value as $k => $v){
+                if (is_array( $prev_value ) && isset( $prev_value[$k] ) && $prev_value[$k] == $v){
+                    continue;
+                }
+                if ($k === "verified") {
+                    $object_note .= $v ? "verified" : "not verified";
+                }
+                if ($k === "invalid") {
+                    $object_note .= $v ? "invalidated" : "not invalidated";
+                }
+                $object_note .= ', ';
+            }
+            $object_note = chop( $object_note, ', ' );
+        }
 
 
         if (!empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
