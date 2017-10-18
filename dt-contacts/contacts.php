@@ -1126,7 +1126,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         } else {
             $assign_to_id = 0;
             $last_activity = self::get_most_recent_activity_for_field( $contact_id, "assigned_to" );
-            if(isset( $last_activity->user_id )){
+            if ( isset( $last_activity->user_id )){
                 $assign_to_id = $last_activity->user_id;
             } else {
 //                @todo replace with main dispatcher
