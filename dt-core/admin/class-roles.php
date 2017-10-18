@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 1;
+    private static $target_roles_version_number = 2;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -545,6 +545,7 @@ class Disciple_Tools_Roles
             'multiplier', __( 'Multiplier' ),
             [
                 'access_contacts'        => true,
+                'create_contacts'        => true,
                 'update_shared_contacts' => true,
 
                 'access_groups' => true,
