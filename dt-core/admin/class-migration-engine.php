@@ -7,7 +7,7 @@ if( !defined( 'ABSPATH' ) ) {
 
 /**
  * For more documentation, see the class Disciple_Tools_Migration in file
- * migrations/abstract.php
+ * dt-core/migrations/abstract.php
  */
 class Disciple_Tools_Migration_Engine
 {
