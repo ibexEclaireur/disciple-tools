@@ -350,6 +350,35 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * @param     $group_id
      * @param     $key
+     * @param     $values
+     * @param     $check_permissions
+     *
+     * @return int|\WP_Error
+     */
+    public static function update_detail_on_field( int $group_id, string $key, array $values, bool $check_permissions )
+    {
+        if( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+        }
+        if( ( strpos( $key, "group_" ) === 0 || strpos( $key, "address_" ) === 0 ) &&
+            strpos( $key, "_details" ) === false
+        ) {
+            $details_key = $key . "_details";
+            $details = get_post_meta( $group_id, $details_key, true );
+            $details = isset( $details ) ? $details : [];
+            foreach( $values as $detail_key => $detail_value ) {
+                $details[ $detail_key ] = $detail_value;
+            }
+            update_post_meta( $group_id, $details_key, $details );
+        }
+
+        return $group_id;
+    }
+
+
+    /**
+     * @param     $group_id
+     * @param     $key
      * @param     $value
      * @param     $check_permissions
      *
