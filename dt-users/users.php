@@ -234,4 +234,44 @@ class Disciple_Tools_Users
     {
         self::create_contact_for_user( $user_id );
     }
+
+    /**
+     * Get the base user for the system
+     * You can call this function using dt_get_base_user( $id_only = false )
+     *
+     * @since 1.0.0
+     *
+     * @param bool $id_only     (optional) Default is false and function returns entire WP_User object.
+     *
+     * @return array|false|\WP_Error|\WP_User
+     */
+    public static function get_base_user( $id_only = false ) {
+
+        // get base user id
+        $base_user_id = dt_get_option( 'base_user' );
+        if ( empty( $base_user_id ) ) {
+            return new WP_Error( 'failed_to_get_base_user', 'Failed to get base user. dt_get_option( base_user ) failed.' );
+        }
+
+        // get base user object and test if user exists
+        $base_user = get_user_by( 'ID', $base_user_id );
+        if ( empty( $base_user ) ) { // if base_user has been deleted.
+            update_option( 'dt_base_user', false ); // clear current value
+            $base_user_id = dt_get_option( 'base_user' ); // call the reset process to re-assign new base user.
+            $base_user = get_user_by( 'ID', $base_user_id );
+        }
+
+        // test if id and object are populated
+        if ( empty( $base_user ) || empty( $base_user_id ) ) {
+            return new WP_Error( 'failed_to_get_base_user', 'Failed to get base user object or id using id: '. $base_user_id );
+        }
+
+        if ( $id_only ) {
+            return $base_user_id;
+        }
+
+        return $base_user;
+    }
+
+
 }

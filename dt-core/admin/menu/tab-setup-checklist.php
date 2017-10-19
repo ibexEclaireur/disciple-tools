@@ -96,9 +96,11 @@ class Disciple_Tools_Setup_Steps_Tab
                                             </thead>
                                             <tbody>
                                             <tr>
-                                                <td>WordFence Security <span class="float-right"><a
-                                                            href="https://wordpress.org/plugins/wordfence/"
-                                                            target="_blank">view plugin website</a></span></td>
+                                                <td>WordFence Security
+                                                    <span class="float-right">
+                                                        <a href="https://wordpress.org/plugins/wordfence/" target="_blank">view plugin website</a>
+                                                    </span>
+                                                </td>
                                                 <td width="20px">
                                                     <button type="submit" class="button-like-link"
                                                             name="input[security]" value="word_fence"><span
@@ -106,9 +108,11 @@ class Disciple_Tools_Setup_Steps_Tab
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>iThemes Security <span class="float-right"><a
-                                                            href="https://wordpress.org/plugins/better-wp-security/"
-                                                            target="_blank">view plugin website</a></span></td>
+                                                <td>iThemes Security
+                                                    <span class="float-right">
+                                                        <a href="https://wordpress.org/plugins/better-wp-security/" target="_blank">view plugin website</a>
+                                                    </span>
+                                                </td>
                                                 <td width="20px">
                                                     <button type="submit" class="button-like-link"
                                                             name="input[security]" value="ithemes"><span

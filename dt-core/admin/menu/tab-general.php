@@ -28,7 +28,18 @@ class Disciple_Tools_General_Tab
         echo '<div id="post-body-content">';
         /* Main Column */
 
-        dt_write_log( dt_multi_role_get_role_user_count() );
+
+        /* Box */
+        echo '<table class="widefat striped">
+                    <thead><th>Base User</th></thead>
+                    <tbody><tr><td>';
+
+        $this->process_base_user();
+        $this->base_user();
+
+        echo '</td></tr></tbody></table><br>';
+        /* End Box */
+
 
         /* Box */
         echo '<table class="widefat striped">
@@ -241,5 +252,54 @@ class Disciple_Tools_General_Tab
             update_option( 'dt_site_options', $site_options, true );
         }
     }
+
+    /**
+     * Set base user assigns the catch-all user
+     */
+    public function base_user() {
+        $base_user = dt_get_base_user();
+        $potential_user_list = get_users(
+            [
+                'role__in' => [ 'dispatcher', 'administrator', 'multiplier', 'marketer', 'strategist' ],
+                'order'    => 'ASC',
+                'orderby'  => 'display_name',
+            ]
+        );
+
+        echo '<form method="post" name="extension_modules_form">';
+        echo '<p>Base User is the catch-all account for orphaned contacts and other records to be assigned to. To be a base user, the user must be an administrator, dispatcher, multiplier, marketer, or strategist.</p>';
+        echo '<hr>';
+        echo '<input type="hidden" name="base_user_nonce" id="base_user_nonce" value="' . esc_attr( wp_create_nonce( 'base_user' ) ) . '" />';
+
+        echo 'Current Base User: <select name="base_user_select">';
+
+        echo '<option value="'. esc_attr( $base_user->ID ) . '">' . esc_attr( $base_user->display_name ) . '</option>';
+        echo '<option disabled>---</option>';
+
+        foreach ( $potential_user_list as $potential_user ) {
+            echo '<option value="' . esc_attr( $potential_user->ID ) . '">' . esc_attr( $potential_user->display_name ) . '</option>';
+        }
+
+        echo '</select>';
+
+        echo '<span style="float:right;"><button type="submit" class="button float-right">Update</button></span>';
+        echo '</form>';
+    }
+
+    /**
+     * Process changes to the base user.
+     */
+    public function process_base_user() {
+        if ( isset( $_POST['base_user_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['base_user_nonce'] ) ), 'base_user' ) ) {
+            if ( isset( $_POST['base_user_select'] ) ) {
+                $user_id = sanitize_key( wp_unslash( $_POST['base_user_select'] ) );
+                if ( is_numeric( $user_id ) ) {
+                    update_option( 'dt_base_user', $user_id );
+                }
+            }
+        }
+    }
+
+
 
 }
