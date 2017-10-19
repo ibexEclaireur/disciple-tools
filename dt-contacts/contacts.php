@@ -731,7 +731,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                             $id = $meta_array[1];
                             if ( $type == 'user' && $id) {
                                 $user = get_user_by( 'id', $id );
-                                $fields[ $key ] = [ "id" => $id, "type" => $type, "display" => $user->display_name, "assigned-to" => $value[0] ];
+                                $fields[ $key ] = [
+                                    "id" => $id,
+                                    "type" => $type,
+                                    "display" => ( $user ? $user->display_name : "Nobody" ) ,
+                                    "assigned-to" => $value[0]
+                                ];
                             }
                         }
                     }

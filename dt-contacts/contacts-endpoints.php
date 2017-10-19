@@ -332,7 +332,12 @@ class Disciple_Tools_Contacts_Endpoints
                     $type_and_id = explode( '-', $meta_value[0] );
                     if ( $type_and_id[0] == 'user' && isset( $type_and_id[1] ) ) {
                         $user = get_user_by( 'id', (int) $type_and_id[1] );
-                        $contact_array["assigned_to"] = [ "id" => $type_and_id[1], "type" => $type_and_id[0], "name" => $user->display_name, 'user_login' => $user->user_login ];
+                        $contact_array["assigned_to"] = [
+                            "id" => $type_and_id[1],
+                            "type" => $type_and_id[0],
+                            "name" => ( $user ? $user->display_name : "Nobody" ),
+                            'user_login' => ( $user ? $user->user_login : "nobody" )
+                        ];
                     }
                 } elseif ( $meta_key == "requires_update" ) {
                     $contact_array[ $meta_key ] = $this->yes_no_to_boolean( $meta_value[0] );
