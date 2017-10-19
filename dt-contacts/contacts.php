@@ -264,7 +264,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         if ( isset( $fields["assigned_to"] ) ) {
-            if ( current_user_can( "assign_any_contact" ) ) {
+            if ( current_user_can( "assign_any_contacts" ) ) {
                 $fields["overall_status"] = 'assigned';
             }
             $fields['accepted'] = 'no';

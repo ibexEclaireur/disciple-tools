@@ -511,7 +511,7 @@ class Disciple_Tools_Posts
         }
     }
 
-    public static function get_most_recent_activity_for_field( $post_id, $field_id ){
+    public static function get_most_recent_activity_for_field( $post_id, $field_key ){
         global $wpdb;
         $most_recent_activity = $wpdb->get_results( $wpdb->prepare(
             "SELECT
@@ -520,13 +520,13 @@ class Disciple_Tools_Posts
                 `$wpdb->dt_activity_log`
             WHERE
                 `object_id` = %s
-                AND `meta_id` = %s
+                AND `meta_key` = %s
             ORDER BY
                 `hist_time` DESC
             LIMIT
                 0,1;",
             $post_id,
-            $field_id
+            $field_key
         ) );
         return $most_recent_activity[0];
     }
