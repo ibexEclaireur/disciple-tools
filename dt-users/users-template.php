@@ -392,3 +392,14 @@ function dt_user_notification_is_enabled( string $notification_name, $user_meta_
     }
 }
 
+/**
+ * Get base user
+ *
+ * @param bool $id_only
+ *
+ * @return array|false|\WP_Error|\WP_User
+ */
+function dt_get_base_user( $id_only = false ) {
+    return Disciple_Tools_Users::get_base_user( $id_only );
+}
+

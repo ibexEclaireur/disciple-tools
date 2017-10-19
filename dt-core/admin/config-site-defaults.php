@@ -127,6 +127,31 @@ function dt_get_option( string $name )
 
             break;
 
+        case 'base_user':
+            if ( ! get_option( 'dt_base_user' ) ) { // options doesn't exist, create new.
+                // set base users to system admin
+                $users = get_users( [ 'role' => 'dispatcher' ] );
+                if ( empty( $users ) ) {
+                    $users = get_users( [ 'role' => 'administrator' ] );
+                }
+                if ( empty( $users ) ) {
+                    return new WP_Error( 'initialize_base_user_error', 'Failed to find users with administrator or dispatcher roles.' );
+                }
+
+                $user_id = $users[0]->ID;
+
+                // set as base user
+                $add = add_option( 'dt_base_user', $user_id, '', false );
+                if ( !$add ) {
+                    return new WP_Error( 'failed_add_site_option', 'Site option dt_site_options was not able to be created' );
+                }
+
+                return get_option( 'dt_base_user' );
+            } else {
+                return get_option( 'dt_base_user' );
+            }
+            break;
+
         default:
             return new WP_Error( 'option_does_not_exist', 'You have requested a non-supported site option.' );
             break;
