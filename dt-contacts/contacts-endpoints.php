@@ -347,7 +347,18 @@ class Disciple_Tools_Contacts_Endpoints
             }
             $rv[] = $contact_array;
         }
-
+        if (get_current_user_id()) {
+            $contacts_shared_with_user = Disciple_Tools_Contacts::get_posts_shared_with_user(
+                "contacts", get_current_user_id()
+            );
+            $ids_shared_with_user = [];
+            foreach ( $contacts_shared_with_user as $contact ) {
+                $ids_shared_with_user[$contact->ID] = true;
+            }
+            foreach ($rv as $index => $_) {
+                $rv[$index]["shared_with_user"] = isset( $ids_shared_with_user[$rv[$index]["ID"]] );
+            }
+        }
         return $rv;
     }
 
