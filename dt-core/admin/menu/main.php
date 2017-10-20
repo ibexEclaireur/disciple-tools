@@ -73,9 +73,10 @@ final class Disciple_Tools_Config
     {
 
         add_menu_page( __( 'Disciple Tools', 'disciple_tools' ), __( 'Disciple Tools', 'disciple_tools' ), 'manage_dt', 'dt_options', [ $this, 'build_default_page' ], dt_svg_icon(), 75 );
-        add_submenu_page( 'dt_options', 'API Keys', 'API Keys', 'manage_dt', 'dt_api_keys', [ $this, 'build_api_key_page' ] );
-        add_submenu_page( 'dt_options', 'Analytics', 'Analytics', 'manage_dt', 'dt_analytics', [ $this, 'build_analytics_page' ] );
-        add_submenu_page( 'dt_options', 'Facebook', 'Facebook', 'manage_dt', 'dt_facebook', [ $this, 'build_facebook_page' ] );
+//        @todo test and enable integrations after mvp
+//        add_submenu_page( 'dt_options', 'API Keys', 'API Keys', 'manage_dt', 'dt_api_keys', [ $this, 'build_api_key_page' ] );
+//        add_submenu_page( 'dt_options', 'Analytics', 'Analytics', 'manage_dt', 'dt_analytics', [ $this, 'build_analytics_page' ] );
+//        add_submenu_page( 'dt_options', 'Facebook', 'Facebook', 'manage_dt', 'dt_facebook', [ $this, 'build_facebook_page' ] );
         add_submenu_page( 'dt_options', 'Reports Log', 'Reports Log', 'manage_dt', 'dt_reports_log', [ $this, 'build_reports_log_page' ] );
         add_submenu_page( 'dt_options', 'Activity', 'Activity', 'manage_dt', 'dt_activity', [ $this, 'build_activity_page' ] );
         add_submenu_page( 'dt_options', 'Notifications', 'Notifications', 'manage_dt', 'dt_notifications', [ $this, 'build_notifications_page' ] );
