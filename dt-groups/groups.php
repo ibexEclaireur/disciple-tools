@@ -230,6 +230,20 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
+     * @param int    $group_id
+     * @param string $key
+     *
+     * @return bool|\WP_Error
+     */
+    public static function delete_group_field( int $group_id, string $key ){
+        if ( !self::can_update( 'groups', $group_id )){
+            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), ['status' => 401] );
+        }
+        delete_post_meta( $group_id, $key .'_details' );
+        return delete_post_meta( $group_id, $key );
+    }
+
+    /**
      * @param  $group_id
      * @param  $location_id
      *

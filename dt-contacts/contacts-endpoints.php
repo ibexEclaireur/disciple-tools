@@ -463,12 +463,12 @@ class Disciple_Tools_Contacts_Endpoints
 
             $result = Disciple_Tools_Contacts::delete_contact_field( $params['id'], $field_key );
             if ( $result == 0 ) {
-                return new WP_Error( "delete_contact_details", "Could not update contact", [ 'status' => 400 ] );
+                return new WP_Error( "delete_contact_field", "Could not update contact", [ 'status' => 400 ] );
             } else {
                 return new WP_REST_Response( $result );
             }
         } else {
-            return new WP_Error( "add_contact_details", "Missing a valid contact id", [ 'status' => 403 ] );
+            return new WP_Error( "delete_contact_field", "Missing a valid contact id", [ 'status' => 403 ] );
         }
     }
 

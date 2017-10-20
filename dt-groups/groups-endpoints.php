@@ -96,6 +96,12 @@ class Disciple_Tools_Groups_Endpoints
             ]
         );
         register_rest_route(
+            $this->namespace, '/group/(?P<id>\d+)/field', [
+                "methods"  => "DELETE",
+                "callback" => [ $this, 'delete_group_field' ],
+            ]
+        );
+        register_rest_route(
             $this->namespace, '/group/(?P<id>\d+)/comment', [
                 "methods"  => "POST",
                 "callback" => [ $this, 'post_comment' ],
@@ -318,6 +324,29 @@ class Disciple_Tools_Groups_Endpoints
             }
         } else {
             return new WP_Error( "add_group_details", "Missing a valid group id", [ 'status' => 400 ] );
+        }
+    }
+
+    /**
+     * @param \WP_REST_Request $request
+     *
+     * @return \WP_Error|\WP_REST_Response
+     */
+    public function delete_group_field( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        $body = $request->get_json_params();
+        if ( isset( $params['id'] ) ) {
+            $field_key = $body["key"];
+
+            $result = Disciple_Tools_Groups::delete_group_field( $params['id'], $field_key );
+            if ( $result == 0 ) {
+                return new WP_Error( "delete_group_details", "Could not update group", [ 'status' => 400 ] );
+            } else {
+                return new WP_REST_Response( $result );
+            }
+        } else {
+            return new WP_Error( "add_group_details", "Missing a valid group id", [ 'status' => 403 ] );
         }
     }
 
