@@ -16,7 +16,6 @@ class Disciple_Tools_Reports_List_Table extends WP_List_Table
     /**
      * Prepare the items for the table to process
      *
-     * @return Void
      */
     public function prepare_items()
     {

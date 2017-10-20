@@ -189,8 +189,8 @@ class Disciple_Tools_Counter_Factory {
     /**
      * Contact generations counting factory
      *
-     * @param  number = 1,2,3 etc for $generation number
-     * @param  string = contacts or groups or baptisms
+     * @param         $generation_number 1,2,3 etc for generation number
+     * @param  string $type contacts or groups or baptisms
      * @return number
      */
     public function get_generation( $generation_number, $type = 'contacts' ) {

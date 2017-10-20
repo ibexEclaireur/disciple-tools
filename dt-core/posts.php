@@ -396,9 +396,9 @@ class Disciple_Tools_Posts
     /**
      * Removes share record
      *
-     * @param $post_type
-     * @param $post_id
-     * @param $user_id
+     * @param string $post_type
+     * @param int    $post_id
+     * @param int    $user_id
      *
      * @return false|int|WP_Error
      */

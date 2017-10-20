@@ -221,12 +221,12 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     /**
      * Create notification activity
      *
-     * @param        $mentioned_user_id
-     * @param        $source_user_id
-     * @param        $post_id
-     * @param        $comment_id
-     * @param        $notification_action
-     * @param        $notification_note
+     * @param int    $mentioned_user_id
+     * @param int    $source_user_id
+     * @param int    $post_id
+     * @param int    $comment_id
+     * @param string $notification_action
+     * @param string $notification_note
      * @param        $date_notified
      */
     protected function add_mention_notification( int $mentioned_user_id, int $source_user_id, int $post_id, int $comment_id, string $notification_action, string $notification_note, $date_notified )
@@ -250,9 +250,9 @@ class Disciple_Tools_Notifications_Hook_Comments extends Disciple_Tools_Notifica
     /**
      * Delete notification
      *
-     * @param     $mentioned_user_id
-     * @param     $post_id
-     * @param     $comment_id
+     * @param int $mentioned_user_id
+     * @param int $post_id
+     * @param int $comment_id
      * @param     $date_notified
      */
     protected function delete_mention_notification( int $mentioned_user_id, int $post_id, int $comment_id, $date_notified )
