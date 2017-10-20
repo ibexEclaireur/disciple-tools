@@ -240,7 +240,6 @@ class Disciple_Tools_Assetmapping_Post_Type
      * @param  array $defaults
      *
      * @since  1.0.0
-     * @return void
      */
     public function register_custom_column_headings( $defaults )
     {
@@ -483,7 +482,6 @@ class Disciple_Tools_Assetmapping_Post_Type
      *
      * @param  string $title
      *
-     * @return void
      */
     public function enter_title_here( $title )
     {

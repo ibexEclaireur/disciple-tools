@@ -468,7 +468,7 @@ class Disciple_Tools_Groups_Post_Type
     /**
      * Save meta box fields.
      *
-     * @param  $post_id
+     * @param int $post_id
      *
      * @return int
      * @throws \Exception 'Expected field to exist'.
@@ -753,7 +753,7 @@ class Disciple_Tools_Groups_Post_Type
      * @access public
      * @since  1.0.0
      *
-     * @param   $title
+     * @param string $title
      *
      * @return string
      */

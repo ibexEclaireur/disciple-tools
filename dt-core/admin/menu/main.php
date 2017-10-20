@@ -217,7 +217,7 @@ final class Disciple_Tools_Config
     /**
      * Display the list table page
      *
-     * @return Void
+     * @return void
      */
     public function build_reports_log_page()
     {
@@ -237,7 +237,7 @@ final class Disciple_Tools_Config
     /**
      * Display the list table page
      *
-     * @return Void
+     * @return void
      */
     public function build_activity_page()
     {
