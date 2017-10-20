@@ -45,7 +45,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
             case 'notification_note':
                 return $item[ $column_name ];
             case 'user_id':
-                return dt_get_user_display_name( $item[ $column_name ] );
+//                return dt_get_user_display_name( $item[ $column_name ] );
                 break;
             case 'is_new':
                 return $item[ $column_name ] ? 'Yes' : 'No';
@@ -181,7 +181,7 @@ class Disciple_Tools_Notifications_Table extends WP_List_Table
 
         //Detect when a bulk action is being triggered...
         if ( 'viewed' === $this->current_action() && isset( $_GET['notification'] ) ) {
-            Disciple_Tools_Notifications::mark_notification_viewed( sanitize_text_field( wp_unslash( $_GET['notification'] ) ) );
+//            Disciple_Tools_Notifications::mark_notification_viewed( sanitize_text_field( wp_unslash( $_GET['notification'] ) ) );
         }
     }
 
