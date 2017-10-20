@@ -1142,6 +1142,22 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             update_post_meta( $contact_id, 'assigned_to', $meta_value = "user-" . $assign_to_id );
             update_post_meta( $contact_id, 'overall_status', $meta_value = 'unassigned' );
             $assign = get_user_by( 'id', $assign_to_id );
+            $current_user = wp_get_current_user();
+            dt_activity_insert(
+                [
+                    'action'         => 'decline',
+                    'object_type'    => get_post_type( $contact_id ),
+                    'object_subtype' => 'decline',
+                    'object_name'    => get_the_title( $contact_id ),
+                    'object_id'      => $contact_id,
+                    'meta_id'        => '', // id of the comment
+                    'meta_key'       => '',
+                    'meta_value'     => '',
+                    'meta_parent'    => '',
+                    'object_note'    => $current_user->display_name . " declined assignment",
+                ]
+            );
+
             return [
                 "assigned_to" => $assign->display_name,
                 "overall_status" => 'unassigned'
