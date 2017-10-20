@@ -57,7 +57,9 @@ class Disciple_Tools_Migration_Engine
      *
      * @param int $target_migration_number
      *
-     * @throws \Exception Migration number $target_migration_number does not exist.
+     * @throws \Exception ...
+     * @throws \Disciple_Tools_Migration_Lock_Exception ...
+     * @throws \Throwable ...
      */
     public static function migrate( int $target_migration_number )
     {
@@ -87,12 +89,22 @@ class Disciple_Tools_Migration_Engine
             self::sanity_check_expected_tables( $migration->get_expected_tables() );
 
             if ( (int) get_option( 'dt_migration_lock', 0 ) ) {
-                throw new Exception( "Cannot migrate, as migration lock is held" );
+                throw new Disciple_Tools_Migration_Lock_Exception();
             }
             update_option( 'dt_migration_lock', '1' );
 
             error_log( date( " Y-m-d H:i:s T" ) . " Starting migrating to number $activating_migration_number" );
-            $migration->up();
+            try {
+                $migration->up();
+            } catch (Throwable $e) {
+                update_option( 'dt_migrate_last_error', [
+                    'message' => $e->getMessage(),
+                    'code' => $e->getCode(),
+                    'trace' => $e->getTrace(),
+                    'time' => time(),
+                ] );
+                throw $e;
+            }
             update_option( 'dt_migration_number', (string) $activating_migration_number );
             error_log( date( " Y-m-d H:i:s T" ) . " Done migrating to number $activating_migration_number" );
 
@@ -124,3 +136,25 @@ class Disciple_Tools_Migration_Engine
 }
 
 
+class Disciple_Tools_Migration_Lock_Exception extends Exception
+{
+    public function __construct( $message = null, $code = 0, Exception $previous = null ) {
+        /*
+         * Instead of throwing a simple exception that the migration lock is
+         * held, it would be good for the user to if there any previous errors,
+         * that caused the lock never to be released. We could rely on the
+         * error logs, but this is a bit more user-friendly.
+         */
+        $last_migration_error = get_option( 'dt_migrate_last_error' );
+        if ($message === null) {
+            if ($last_migration_error === false) {
+                $message = "Cannot migrate, as migration lock is held";
+            } else {
+                $message =
+                    "Cannot migrate, as migration lock is held. This is the previous stored migration error: "
+                    . var_export( $last_migration_error, true );
+            }
+        }
+        parent::__construct( $message, $code, $previous );
+    }
+}
