@@ -207,8 +207,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * Make sure there are no extra or misspelled fields
      * Make sure the field values are the correct format
      *
-     * @param  $fields  , the contact meta fields
-     * @param  $post_id , the id of the contact
+     * @param          $fields  , the contact meta fields
+     * @param int|null $post_id , the id of the contact
      *
      * @access private
      * @since  1.0.0
@@ -453,10 +453,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
-     * @param           $contact_id
-     * @param           $key
-     * @param           $value
-     * @param bool|null $check_permissions
+     * @param int       $contact_id
+     * @param string    $key
+     * @param string    $value
+     * @param bool      $check_permissions
      *
      * @return array|mixed|null|string|\WP_Error|\WP_Post
      */
@@ -511,10 +511,10 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
-     * @param     $contact_id
-     * @param     $key
-     * @param     $values
-     * @param     $check_permissions
+     * @param int    $contact_id
+     * @param string $key
+     * @param array  $values
+     * @param bool   $check_permissions
      *
      * @return int|\WP_Error
      */
@@ -588,8 +588,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Get a single contact
      *
-     * @param    $contact_id , the contact post_id
-     * @param   $check_permissions
+     * @param int  $contact_id , the contact post_id
+     * @param bool $check_permissions
      *
      * @access public
      * @since  1.0.0
@@ -825,9 +825,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Get Contacts assigned to a user
      *
-     * @param  $user_id
-     * @param  $check_permissions
-     * @param  $query_pagination_args -Pass in pagination and ordering parameters if wanted.
+     * @param int   $user_id
+     * @param bool  $check_permissions
+     * @param array $query_pagination_args -Pass in pagination and ordering parameters if wanted.
      *
      * @access public
      * @since  1.0.0
@@ -853,8 +853,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Get Contacts viewable by a user
      *
-     * @param  $check_permissions
-     * @param  $query_pagination_args -Pass in pagination and ordering parameters if wanted.
+     * @param bool  $check_permissions
+     * @param array $query_pagination_args -Pass in pagination and ordering parameters if wanted.
      *
      * @access public
      * @since  1.0.0
@@ -912,8 +912,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Get Contacts assigned to a user's team
      *
-     * @param    $user_id
-     * @param    $check_permissions
+     * @param int  $user_id
+     * @param bool $check_permissions
      *
      * @access public
      * @since  1.0.0
@@ -1001,9 +1001,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     }
 
     /**
-     * @param     $contact_id
-     * @param  $path_option
-     * @param    $check_permissions
+     * @param int    $contact_id
+     * @param string $path_option
+     * @param bool   $check_permissions
      *
      * @return array|int|\WP_Error
      */
@@ -1157,7 +1157,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Gets an array of users whom the contact is shared with.
      *
-     * @param $post_id
+     * @param int $post_id
      *
      * @return array|mixed
      */
@@ -1169,8 +1169,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
     /**
      * Removes share record
      *
-     * @param $post_id
-     * @param $user_id
+     * @param int $post_id
+     * @param int $user_id
      *
      * @return false|int|WP_Error
      */

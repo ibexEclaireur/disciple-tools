@@ -406,9 +406,9 @@ class Disciple_Tools_Setup_Steps_Tab
     /**
      * Checks to see if element is checked
      *
-     * @param $group
-     * @param $item
-     * @param $checklist
+     * @param string $group
+     * @param string $item
+     * @param        $checklist
      *
      * @return bool
      */

@@ -404,8 +404,8 @@ class Disciple_Tools_Notifications
     /**
      * Insert notification for share
      *
-     * @param  $user_id
-     * @param  $post_id
+     * @param int $user_id
+     * @param int $post_id
      */
     public static function insert_notification_for_share( int $user_id, int $post_id )
     {

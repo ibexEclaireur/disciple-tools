@@ -56,12 +56,12 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param       $group_id
+     * @param  int  $group_id
      * @param  bool $check_permissions
      *
      * @return array|\WP_Error
      */
-    public static function get_group( int $group_id, $check_permissions = true )
+    public static function get_group( int $group_id, bool $check_permissions = true )
     {
         if ( $check_permissions && !self::can_view( 'groups', $group_id ) ) {
             return new WP_Error( __FUNCTION__, __( "No permissions to read group" ), [ 'status' => 403 ] );
@@ -166,8 +166,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
      * Make sure there are no extra or misspelled fields
      * Make sure the field values are the correct format
      *
-     * @param  $fields  , the group meta fields
-     * @param  $post_id , the id of the group
+     * @param array    $fields  , the group meta fields
+     * @param int|null $post_id , the id of the group
      *
      * @access private
      * @since  1.0.0
@@ -190,15 +190,15 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * Update an existing Group
      *
-     * @param       $group_id , the post id for the group
-     * @param       $fields   , the meta fields
-     * @param  bool $check_permissions
+     * @param int   $group_id , the post id for the group
+     * @param array $fields   , the meta fields
+     * @param bool  $check_permissions
      *
      * @access public
      * @since  1.0.0
      * @return int | WP_Error of group ID
      */
-    public static function update_group( int $group_id, array $fields, $check_permissions = true )
+    public static function update_group( int $group_id, array $fields, bool $check_permissions = true )
     {
 
         if ( $check_permissions && !self::can_update( 'groups', $group_id ) ) {
@@ -244,8 +244,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param  $group_id
-     * @param  $location_id
+     * @param int $group_id
+     * @param int $location_id
      *
      * @return mixed
      */
@@ -272,8 +272,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param  $group_id
-     * @param  $member_id
+     * @param int $group_id
+     * @param int $member_id
      *
      * @return mixed
      */
@@ -286,8 +286,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param  $group_id
-     * @param  $location_id
+     * @param int $group_id
+     * @param int $location_id
      *
      * @return mixed
      */
@@ -309,8 +309,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
 
     /**
-     * @param  $group_id
-     * @param  $member_id
+     * @param int $group_id
+     * @param int $member_id
      *
      * @return mixed
      */
@@ -320,10 +320,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param     $group_id
-     * @param     $key
-     * @param     $value
-     * @param     $check_permissions
+     * @param int    $group_id
+     * @param string $key
+     * @param string $value
+     * @param bool   $check_permissions
      *
      * @return array|mixed|null|string|\WP_Error|\WP_Post
      */
@@ -362,10 +362,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param     $group_id
-     * @param     $key
-     * @param     $values
-     * @param     $check_permissions
+     * @param int    $group_id
+     * @param string $key
+     * @param array  $values
+     * @param bool   $check_permissions
      *
      * @return int|\WP_Error
      */
@@ -391,10 +391,10 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
 
 
     /**
-     * @param     $group_id
-     * @param     $key
-     * @param     $value
-     * @param     $check_permissions
+     * @param int    $group_id
+     * @param string $key
+     * @param string $value
+     * @param bool   $check_permissions
      *
      * @return bool|mixed|\WP_Error
      */
@@ -415,8 +415,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param     $group_id
-     * @param     $comment
+     * @param int    $group_id
+     * @param string $comment
      *
      * @return false|int|\WP_Error
      */
@@ -426,7 +426,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param  $group_id
+     * @param int $group_id
      *
      * @return array|int|\WP_Error
      */
@@ -436,7 +436,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     }
 
     /**
-     * @param  $contact_id
+     * @param int $contact_id
      *
      * @return array|null|object|\WP_Error
      */
@@ -448,7 +448,7 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * Gets an array of users whom the group is shared with.
      *
-     * @param $post_id
+     * @param int $post_id
      *
      * @return array|mixed
      */
@@ -460,8 +460,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * Removes share record
      *
-     * @param $post_id
-     * @param $user_id
+     * @param int $post_id
+     * @param int $user_id
      *
      * @return false|int|WP_Error
      */
@@ -473,8 +473,8 @@ class Disciple_Tools_Groups extends Disciple_Tools_Posts
     /**
      * Adds a share record
      *
-     * @param       $post_id
-     * @param       $user_id
+     * @param int   $post_id
+     * @param int   $user_id
      * @param array $meta
      *
      * @return false|int|WP_Error

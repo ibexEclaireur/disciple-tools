@@ -174,7 +174,7 @@ function dt_get_site_default_user_fields(): array
 /**
  * Echos user display name
  *
- * @param $user_id
+ * @param int $user_id
  */
 function dt_user_display_name( int $user_id )
 {
@@ -364,12 +364,12 @@ function dt_get_user_team_members_list( int $user_id )
  *
  *
  * @param string   $notification_name
+ * @param int|null $user_meta_data
  * @param int|null $user_id
- * @param null     $user_meta_data
  *
  * @return bool
  */
-function dt_user_notification_is_enabled( string $notification_name, $user_meta_data = null, int $user_id = null ): bool
+function dt_user_notification_is_enabled( string $notification_name, int $user_meta_data = null, int $user_id = null ): bool
 {
     if ( empty( $user_id ) ) {
         $user_id = get_current_user_id();
