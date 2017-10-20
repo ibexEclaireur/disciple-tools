@@ -1134,14 +1134,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             if ( isset( $last_activity->user_id )){
                 $assign_to_id = $last_activity->user_id;
             } else {
-//                @todo replace with main dispatcher
-                //grab any dispatcher
-                $args = array(
-                    'role' => 'dispatcher',
-                );
-                $dispatchers = get_users( $args );
-                if (sizeof( $dispatchers ) > 0 ){
-                    $assign_to_id = $dispatchers[0]->ID;
+                $base_user = dt_get_base_user( true );
+                if ( $base_user ){
+                    $assign_to_id = $base_user;
                 }
             }
             update_post_meta( $contact_id, 'assigned_to', $meta_value = "user-" . $assign_to_id );
