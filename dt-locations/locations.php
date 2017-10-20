@@ -18,7 +18,120 @@ class Disciple_Tools_Locations
 {
 
     /**
+     * Get all locations in database
+     *
+     * @return array|WP_Error
+     */
+    public static function get_locations()
+    {
+        if ( ! current_user_can( 'read_location' ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
+        }
+
+        $query_args = [
+            'post_type' => 'locations',
+            'orderby'   => 'ID',
+            'nopaging'  => true,
+        ];
+        $query = new WP_Query( $query_args );
+
+        return $query->posts;
+    }
+
+    /**
+     * @param $search
+     *
+     * @return array|WP_Error
+     */
+    public static function get_locations_compact( $search )
+    {
+        if ( !current_user_can( 'read_location' )){
+            return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
+        }
+        $query_args = [
+            'post_type' => 'locations',
+            'orderby'   => 'ID',
+            's'         => $search,
+        ];
+        $query = new WP_Query( $query_args );
+        $list = [];
+        foreach ( $query->posts as $post ) {
+            $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
+        }
+
+        return $list;
+    }
+
+    /**
+     * Gets a count for the different levels of 4K locations
+     *
+     * @param string $level
+     *
+     * @return int|null|string
+     */
+    public static function get_4k_location_count( $level = 'all' )
+    {
+        global $wpdb;
+
+        switch ( $level ) {
+            case 'all':
+                $count = 0;
+                $count = $count + $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
+                $count = $count + $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
+                $count = $count + $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
+                $count = $count + $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
+                $count = $count + $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
+                return $count;
+                break;
+            case '0':
+                return $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___'" );
+                break;
+            case '1':
+                return $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___'" );
+                break;
+            case '2':
+                return $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___'" );
+                break;
+            case '3':
+                return $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___'" );
+                break;
+            case '4':
+                return $wpdb->get_var( "SELECT count(*) FROM $wpdb->posts WHERE post_type = 'locations' AND post_name LIKE '___-___-___-___-___'" );
+                break;
+            default:
+                return 0;
+                break;
+        }
+    }
+
+    /**
      * Returns the tract geoid from an address
+     * Zume Project USA
+     *
+     * @param  $address
+     *
+     * @return array
+     */
+    public static function geocode_address( $address, $type = 'full_object' )
+    {
+
+        $google_result = Disciple_Tools_Google_Geolocation::query_google_api( $address, $type ); // get google api info
+        if ( $google_result == 'ZERO_RESULTS' ) {
+            return [
+                'status' => false,
+                'message'  => 'Zero Results for Location',
+            ];
+        }
+
+        return [
+            'status' => true,
+            'results'  => $google_result,
+        ];
+    }
+
+    /**
+     * Returns the tract geoid from an address
+     * Zume Project USA
      *
      * @param  $address
      *
@@ -51,6 +164,7 @@ class Disciple_Tools_Locations
 
     /**
      * Returns the all the array elements needed for an address to tract map search
+     * Zume Project USA
      *
      * @param  $address
      *
@@ -102,6 +216,7 @@ class Disciple_Tools_Locations
 
     /**
      * Returns the all the array elements needed for an address to tract map search
+     * Zume Project
      *
      * @param  $params
      *
@@ -125,49 +240,6 @@ class Disciple_Tools_Locations
             'coordinates' => $coordinates,
             'state'       => substr( $geoid, 0, 1 ),
         ];
-    }
-
-    /**
-     * @return array|WP_Error
-     */
-    public static function get_locations()
-    {
-        if ( !current_user_can( 'read_location' )){
-            return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
-        }
-
-        $query_args = [
-            'post_type' => 'locations',
-            'orderby'   => 'ID',
-            'nopaging'  => true,
-        ];
-        $query = new WP_Query( $query_args );
-
-        return $query->posts;
-    }
-
-    /**
-     * @param $search
-     *
-     * @return array|WP_Error
-     */
-    public static function get_locations_compact( $search )
-    {
-        if ( !current_user_can( 'read_location' )){
-            return new WP_Error( __FUNCTION__, __( "No permissions to read locations" ), [ 'status' => 403 ] );
-        }
-        $query_args = [
-            'post_type' => 'locations',
-            'orderby'   => 'ID',
-            's'         => $search,
-        ];
-        $query = new WP_Query( $query_args );
-        $list = [];
-        foreach ( $query->posts as $post ) {
-            $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
-        }
-
-        return $list;
     }
 
 }

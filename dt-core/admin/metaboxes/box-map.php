@@ -124,7 +124,7 @@ class Disciple_Tools_Metabox_Map
                 });
             </script>
             <script
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcddCscCo-Uyfa3HJQVe0JdBaMCORA9eY">
+                src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( dt_get_option( 'map_key' ) ); ?>">
             </script>
 
             <?php

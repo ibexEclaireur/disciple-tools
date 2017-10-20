@@ -78,7 +78,7 @@ function dt_svg_icon()
  *
  * @param string $name
  *
- * @return array|WP_Error
+ * @return array|false
  */
 function dt_get_option( string $name )
 {
@@ -90,18 +90,20 @@ function dt_get_option( string $name )
             if ( !get_option( 'dt_site_options' ) ) { // options doesn't exist, create new.
                 $add = add_option( 'dt_site_options', $site_options, '', true );
                 if ( !$add ) {
-                    return new WP_Error( 'failed_add_site_option', 'Site option dt_site_options was not able to be created' );
+                    return false;
                 }
 
                 return get_option( 'dt_site_options' );
-            } elseif ( get_option( 'dt_site_options' )['version'] < $site_options['version'] ) { // option exists but version is behind
+            }
+            elseif ( get_option( 'dt_site_options' )['version'] < $site_options['version'] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_options' );
                 if ( !$upgrade ) {
-                    return new WP_Error( 'failed_site_option_upgrade', 'Versions of site options requires upgrade, but upgrade attempt failed.' );
+                    return false;
                 }
 
                 return get_option( 'dt_site_options' );
-            } else {
+            }
+            else {
                 return get_option( 'dt_site_options' );
             }
 
@@ -114,14 +116,16 @@ function dt_get_option( string $name )
                 add_option( 'dt_site_custom_lists', $custom_lists, '', true );
 
                 return get_option( 'dt_site_custom_lists' );
-            } elseif ( get_option( 'dt_site_custom_lists' )['version'] < $custom_lists['version'] ) { // option exists but version is behind
+            }
+            elseif ( get_option( 'dt_site_custom_lists' )['version'] < $custom_lists['version'] ) { // option exists but version is behind
                 $upgrade = dt_site_options_upgrade_version( 'dt_site_custom_lists' );
                 if ( !$upgrade ) {
-                    return new WP_Error( 'failed_site_option_custom_list_upgrade', 'Versions of site options custom lists requires upgrade, but upgrade attempt failed.' );
+                    return false;
                 }
 
                 return get_option( 'dt_site_custom_lists' );
-            } else {
+            }
+            else {
                 return get_option( 'dt_site_custom_lists' );
             }
 
@@ -135,25 +139,42 @@ function dt_get_option( string $name )
                     $users = get_users( [ 'role' => 'administrator' ] );
                 }
                 if ( empty( $users ) ) {
-                    return new WP_Error( 'initialize_base_user_error', 'Failed to find users with administrator or dispatcher roles.' );
+                    return false;
                 }
 
                 $user_id = $users[0]->ID;
 
                 // set as base user
                 $add = add_option( 'dt_base_user', $user_id, '', false );
-                if ( !$add ) {
-                    return new WP_Error( 'failed_add_site_option', 'Site option dt_site_options was not able to be created' );
+                if ( ! $add ) {
+                    return false;
                 }
 
                 return get_option( 'dt_base_user' );
-            } else {
+            }
+            else {
                 return get_option( 'dt_base_user' );
             }
             break;
 
+        case 'map_key':
+            if ( ! get_option( 'dt_map_key' ) || empty( get_option( 'dt_map_key' ) ) ) { // options doesn't exist, create new.
+                // disciple.tools default map key
+                $key = 'AIzaSyCcddCscCo-Uyfa3HJQVe0JdBaMCORA9eY';
+
+                $update = update_option( 'dt_map_key', $key, true );
+                if ( ! $update ) {
+                    return false;
+                }
+
+                return get_option( 'dt_map_key' );
+            } else {
+                return get_option( 'dt_map_key' );
+            }
+            break;
+
         default:
-            return new WP_Error( 'option_does_not_exist', 'You have requested a non-supported site option.' );
+            return false;
             break;
     }
 }
