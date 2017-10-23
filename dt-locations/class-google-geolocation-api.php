@@ -67,28 +67,11 @@ class Disciple_Tools_Google_Geolocation
         }
         elseif ( 'all_points' == $type ) {
 
-            $center_lat = $details->results[0]->geometry->location->lat;
-            $center_lng = $details->results[0]->geometry->location->lng;
-            $center = [ $center_lat, $center_lng ];
-
-            $g_lng = $details->results[0]->geometry->bounds->northeast->lat;
-            $g_lng = $details->results[0]->geometry->bounds->northeast->lng;
-            $northeast = [
-                $details->results[0]->geometry->bounds->northeast->lat,
-                $details->results[0]->geometry->bounds->northeast->lng,
-            ];
-
-            $g_lng = $details->results[0]->geometry->bounds->southwest->lat;
-            $g_lng = $details->results[0]->geometry->bounds->southwest->lng;
-
-            $g_lng = $details->results[0]->geometry->location->lng;
-            $g_formatted_address = $details->results[0]->formatted_address;
-
             return [
                 'center' => $details->results[0]->geometry->location,
                 'northeast' => $details->results[0]->geometry->bounds->northeast,
                 'southwest' => $details->results[0]->geometry->bounds->southwest,
-                'formatted_address' => $g_formatted_address
+                'formatted_address' => $details->results[0]->formatted_address,
             ];
         }
         else {

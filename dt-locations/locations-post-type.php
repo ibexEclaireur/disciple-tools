@@ -198,16 +198,22 @@ class Disciple_Tools_Location_Post_Type
      *
      * @param $column_name
      */
-    public function register_custom_columns( $column_name )
+    public function register_custom_columns( $column_name, $post_id )
     {
 //        global $post;
 
         switch ( $column_name ) {
-            case 'WorldId':
+            case 'WorldID':
+                echo esc_attr( get_post_meta( $post_id, 'WorldID', true ) );
+                break;
+            case 'Cnty_Name':
+                echo esc_attr( get_post_meta( $post_id, 'Cnty_Name', true ) );
                 break;
             case 'Adm1_Name':
+                echo esc_attr( get_post_meta( $post_id, 'Adm1_Name', true ) );
                 break;
             case 'Adm2_Name':
+                echo esc_attr( get_post_meta( $post_id, 'Adm2_Name', true ) );
                 break;
             case 'Map':
                 break;
@@ -233,6 +239,7 @@ class Disciple_Tools_Location_Post_Type
         if ( get_option( '_dt_usa_installed_state' ) || get_option( '_dt_installed_country' ) ) {
             $new_columns =
                 [
+                    'Cnty_Name' => __( 'Country', 'disciple_tools' ),
                     'WorldID'   => __( 'WorldID', 'disciple_tools' ),
                     'Adm1_Name' => __( 'A1 Name', 'disciple_tools' ),
                     'Adm2_Name' => __( 'A2 Name', 'disciple_tools' ),
@@ -314,8 +321,6 @@ class Disciple_Tools_Location_Post_Type
     public function meta_box_setup()
     {
         add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
-        //		add_meta_box( $this->post_type . '_data', __( 'Location Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_meta_box' ], $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
 
@@ -332,24 +337,9 @@ class Disciple_Tools_Location_Post_Type
      */
     public function load_map_meta_box()
     {
-        dt_map_metabox()->display_single_map();
+        dt_map_metabox()->display_location_map();
     }
 
-    /**
-     * Load activity metabox
-     */
-    //    public function load_details_meta_box () {
-    //        $this->meta_box_content('info');
-    //    }
-
-    /**
-     * Load address metabox
-     */
-    public function load_address_meta_box()
-    {
-        $this->meta_box_content( 'address' ); // prints
-        dt_address_metabox()->add_new_address_field(); // prints
-    }
 
     /**
      * The contents of our meta box.
@@ -547,6 +537,14 @@ class Disciple_Tools_Location_Post_Type
                 ];
             }
         }
+
+        $fields['location_address'] = [
+            'name'        => 'Location Address ',
+            'description' => '',
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'map',
+        ];
 
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
