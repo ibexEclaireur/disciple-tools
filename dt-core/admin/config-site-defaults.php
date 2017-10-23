@@ -21,6 +21,7 @@ add_filter( 'duplicate_comment_id', '__return_false' );
 //allow multiple comments in quick succession
 add_filter( 'comment_flood_filter', '__return_false' );
 add_filter( 'pre_comment_approved' , 'dt_filter_handler' , '99', 2 );
+add_filter( 'comment_notification_recipients', 'dt_override_comment_notice_recipients' , 10, 2 );
 
 /*********************************************************************************************
  * Functions
@@ -60,6 +61,10 @@ function dt_permalink_structure_changed_callback( $permalink_structure )
     if ( $permalink_structure !== '/%postname%/' ) {
         add_action( 'admin_notices', 'dt_warn_user_about_permalink_settings' );
     }
+}
+
+function dt_override_comment_notice_recipients() {
+    return [];
 }
 
 /**

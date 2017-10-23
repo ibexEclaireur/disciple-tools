@@ -4,7 +4,6 @@
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Description: Disciple Tools is a disciple relationship management system for disciple making movements. The plugin is the core of the system. It is intended to work with the Disciple Tools Theme, and Disciple Tools extension plugins.
  * Version: 1.0.0
- * Author: Chasm.Solutions
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Requires at least: 4.7.0
@@ -12,9 +11,8 @@
  * Tested up to: 4.8.2
  *
  * @package Disciple_Tools
- * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @link    https://github.com/DiscipleTools
- * @license GPL-2.0 and later
+ * @license GPL-2.0 or later
  *          https://www.gnu.org/licenses/gpl-2.0.html
  * @version 1.0.0
  *
@@ -132,6 +130,11 @@ function dt_plugins_loaded()
     /** Similarly, we want to make sure roles are up-to-date. */
     require_once( dirname( __FILE__ ) . '/dt-core/admin/class-roles.php' );
     Disciple_Tools_Roles::instance()->set_roles_if_needed();
+
+    /**
+     * Site options version check
+     */
+
 }
 add_action( 'plugins_loaded', 'dt_plugins_loaded' );
 
@@ -299,7 +302,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '1.0.0';
+        $this->version = '0.1.0';
         $this->migration_number = 0;
         $this->plugin_url = plugin_dir_url( __FILE__ );
         $this->plugin_path = plugin_dir_path( __FILE__ );
@@ -319,7 +322,6 @@ class Disciple_Tools
 
         require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
         require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
-
 
         /**
          * Rest API Support
@@ -461,7 +463,6 @@ class Disciple_Tools
         require_once( 'dt-users/users-template.php' );
         require_once( 'dt-users/users-endpoints.php' );
         $this->endpoints['users'] = new Disciple_Tools_Users_Endpoints();
-
 
         /**
          * dt-notifications
