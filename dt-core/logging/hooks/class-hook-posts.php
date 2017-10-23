@@ -202,6 +202,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
             $object_note = chop( $object_note, ', ' );
         }
 
+        if ( $meta_key == "title" ){
+            $object_note = "Name changed to: " . $meta_value;
+        }
 
         if ( !empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
             if ($new){
