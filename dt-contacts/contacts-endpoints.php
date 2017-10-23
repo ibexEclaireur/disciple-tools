@@ -32,7 +32,7 @@ class Disciple_Tools_Contacts_Endpoints
      * The Public_Hooks rest api variables
      */
     private $version = 1;
-    private $context = "dt-hooks";
+    private $context = "dt";
     private $namespace;
     private $contacts_instance;
     private $api_keys_controller;
