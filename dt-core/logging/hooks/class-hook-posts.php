@@ -163,13 +163,6 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
                 if (strpos( $meta_key,"quick_button" ) !== false ){
                     $object_note = $this->_key_name( $meta_key, $fields );
                 }
-                if (strpos( $meta_key, "assigned_to" ) !== false ){
-                    $meta_array = explode( '-', $meta_value ); // Separate the type and id
-                    if ( isset( $meta_array[1] ) ) {
-                        $user = get_user_by( "ID", $meta_array[1] );
-                        $object_note = "Assigned to: " . ($user ? $user->display_name : "Nobody");
-                    }
-                }
                 break;
             case 'groups':
                 $fields = Disciple_Tools_Groups_Post_Type::instance()->get_custom_fields_settings();
@@ -204,6 +197,13 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
 
         if ( $meta_key == "title" ){
             $object_note = "Name changed to: " . $meta_value;
+        }
+        if (strpos( $meta_key, "assigned_to" ) !== false ){
+            $meta_array = explode( '-', $meta_value ); // Separate the type and id
+            if ( isset( $meta_array[1] ) ) {
+                $user = get_user_by( "ID", $meta_array[1] );
+                $object_note = "Assigned to: " . ($user ? $user->display_name : "Nobody");
+            }
         }
 
         if ( !empty( $fields ) && !$object_note) { // Build object note if contact, group, location, else ignore object note
