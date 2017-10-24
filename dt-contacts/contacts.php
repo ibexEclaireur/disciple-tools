@@ -810,7 +810,9 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
                 `$wpdb->dt_activity_log`
             WHERE
                 `object_type` = 'contacts'
-                AND `object_id` = %s",
+                AND `object_id` = %d
+            ORDER BY
+                `hist_time`",
             $contact_id
         ) );
         foreach ( $activity as $a ) {

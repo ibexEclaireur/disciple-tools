@@ -32,7 +32,7 @@ class Disciple_Tools_Groups_Endpoints
     }
 
     private $version = 1;
-    private $context = "dt-hooks";
+    private $context = "dt";
     private $namespace;
     private $groups_instance;
     private $api_keys_controller;
