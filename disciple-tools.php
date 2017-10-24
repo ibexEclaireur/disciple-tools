@@ -517,7 +517,7 @@ class Disciple_Tools
 
         require 'dt-core/libraries/plugin-update-checker/plugin-update-checker.php';
         $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-            'https://github.com/DiscipleTools/disciple-tools/',
+            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools/locations-page/auto-updater.json',
             __FILE__,
             'disciple-tools'
         );

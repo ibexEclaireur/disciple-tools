@@ -1,7 +1,7 @@
 {
   "name": "Disciple Tools",
   "version": "0.1.0",
-  "download_url": "https://github.com/DiscipleTools/disciple-tools/releases",
+  "download_url": "https://github.com/DiscipleTools/disciple-tools/releases/download/0.1.0/disciple-tools.zip",
 
   "homepage": "https://disciple.tools/",
   "requires": "4.5",
