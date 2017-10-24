@@ -17,8 +17,17 @@ a google analytics library.)_
 1. `wp-background-process.php` _(Part of the WP Background Processing)
 
 
+## Update System
 
-### WP Background Processing
+Steps to updating:
+1. Update version number in `disciple-tools.php`.
+1. Update `version-updater.json`.
+1. Commit to GitHub.
+1. Download master .zip from Github, rename .zip as `disciple-tools.zip`.
+1. Create a new release in GitHub with the new version number and attach `disciple-tools.zip` to release.
+
+
+## Background Processing
 
 WP Background Processing can be used to fire off non-blocking asynchronous requests or as a background processing tool, allowing you to queue tasks. Check out the [example plugin](https://github.com/A5hleyRich/wp-background-processing-example) or read the [accompanying article](https://deliciousbrains.com/background-processing-wordpress/).
 
