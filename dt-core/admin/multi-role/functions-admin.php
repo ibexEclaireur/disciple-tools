@@ -22,7 +22,7 @@ add_filter( 'manage_users_custom_column', 'dt_multi_role_manage_users_custom_col
 /**
  * Registers custom plugin scripts.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return void
  */
@@ -48,7 +48,7 @@ function dt_multi_role_admin_register_scripts() {
 /**
  * Registers custom plugin scripts.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return void
  */
@@ -124,7 +124,7 @@ function dt_multi_role_get_user_meta_keys() {
 /**
  * Adds custom columns to the `users.php` screen.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  array  $columns
  * @return array
@@ -157,7 +157,7 @@ function dt_multi_role_manage_users_columns( $columns ) {
 /**
  * Handles the output of the roles column on the `users.php` screen.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $output
  * @param  string  $column

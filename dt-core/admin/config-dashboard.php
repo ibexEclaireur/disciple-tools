@@ -4,8 +4,8 @@
  * Disciple_Tools_Dashboard Class
  *
  * @class   Disciple_Tools_Dashboard
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools
  *
  */
@@ -25,7 +25,7 @@ final class Disciple_Tools_Dashboard
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -33,7 +33,7 @@ final class Disciple_Tools_Dashboard
      * Main Disciple_Tools_Dashboard Instance
      * Ensures only one instance of Disciple_Tools_Dashboard is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Dashboard
      */
@@ -50,7 +50,7 @@ final class Disciple_Tools_Dashboard
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {
@@ -67,7 +67,7 @@ final class Disciple_Tools_Dashboard
     /**
      * Main action hooks
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function add_widgets()
@@ -80,7 +80,7 @@ final class Disciple_Tools_Dashboard
     /**
      * Movement funnel path dashboard widget
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function funnel_stats_widget()
@@ -91,7 +91,7 @@ final class Disciple_Tools_Dashboard
     /**
      * Remove default dashboard widgets
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function remove_dashboard_meta()
@@ -126,7 +126,7 @@ final class Disciple_Tools_Dashboard
      * Add custom post types to Activity feed on dashboard
      * @source https://gist.github.com/Mte90/708e54b21b1f7372b48a
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function add_page_to_dashboard_activity( $query_args )

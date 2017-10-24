@@ -3,7 +3,7 @@
  * Fired during plugin activation.
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since      1.0.0
+ * @since      0.1.0
  * @package    Disciple_Tools
  * @subpackage Disciple_Tools/includes/admin
  * @author
@@ -20,7 +20,7 @@ class Disciple_Tools_Activator
     /**
      * Activities to run during installation.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      */
     public static function activate( $network_wide )
     {

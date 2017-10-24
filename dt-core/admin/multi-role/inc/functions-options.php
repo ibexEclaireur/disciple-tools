@@ -15,7 +15,7 @@
  * Conditional check to see if denied capabilities should overrule granted capabilities when
  * a user has multiple roles with conflicting cap definitions.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return bool
  */
@@ -26,7 +26,7 @@ function dt_multi_role_explicitly_deny_caps() {
 /**
  * Conditional check to see if the role manager is enabled.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return bool
  */

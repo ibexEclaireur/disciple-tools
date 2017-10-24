@@ -14,7 +14,7 @@
  * Validates a value as a boolean.  This way, strings such as "true" or "false" will be converted
  * to their correct boolean values.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  mixed   $val
  * @return bool

@@ -10,7 +10,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * @package    Disciple_Tools
  * @category   Plugin
  * @author     Chasm.Solutions & Kingdom.Training
- * @since      1.0.0
+ * @since      0.1.0
  */
 class Disciple_Tools_Groups_Post_Type
 {
@@ -18,7 +18,7 @@ class Disciple_Tools_Groups_Post_Type
      * The post type token.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    string
      */
     public $post_type;
@@ -27,7 +27,7 @@ class Disciple_Tools_Groups_Post_Type
      * The post type singular label.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    string
      */
     public $singular;
@@ -36,7 +36,7 @@ class Disciple_Tools_Groups_Post_Type
      * The post type plural label.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    string
      */
     public $plural;
@@ -45,7 +45,7 @@ class Disciple_Tools_Groups_Post_Type
      * The post type args.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    array
      */
     public $args;
@@ -54,7 +54,7 @@ class Disciple_Tools_Groups_Post_Type
      * The taxonomies for this post type.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    array
      */
     public $taxonomies;
@@ -64,7 +64,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -72,7 +72,7 @@ class Disciple_Tools_Groups_Post_Type
      * Main Disciple_Tools_Groups_Post_Type Instance
      * Ensures only one instance of Disciple_Tools_Groups_Post_Type is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Groups_Post_Type instance
      */
@@ -202,7 +202,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @param  string $column_name
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @return void
      */
     public function register_custom_columns( $column_name )
@@ -225,7 +225,7 @@ class Disciple_Tools_Groups_Post_Type
      *
      * @param  array $defaults
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @return mixed
      */
     public function register_custom_column_headings( $defaults )
@@ -256,7 +256,7 @@ class Disciple_Tools_Groups_Post_Type
     /**
      * Update messages for the post type admin.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      *
      * @param  array $messages Array of messages for all post types.
      *
@@ -295,7 +295,7 @@ class Disciple_Tools_Groups_Post_Type
      * Setup the meta box.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return void
      */
     public function meta_box_setup()
@@ -751,7 +751,7 @@ class Disciple_Tools_Groups_Post_Type
      * Customise the "Enter title here" text.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      *
      * @param string $title
      *
@@ -770,7 +770,7 @@ class Disciple_Tools_Groups_Post_Type
      * Run on activation.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function activation()
     {
@@ -781,7 +781,7 @@ class Disciple_Tools_Groups_Post_Type
      * Flush the rewrite rules
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private function flush_rewrite_rules()
     {

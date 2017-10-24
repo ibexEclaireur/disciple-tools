@@ -4,8 +4,8 @@
  * Disciple_Tools_Locations_Tab_USA
  *
  * @class   Disciple_Tools_Locations_Tab_USA
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools_Locations_Tab_USA
  * @author  Chasm.Solutions
  */

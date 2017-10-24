@@ -13,7 +13,7 @@
 /**
  * Edit user screen class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
 final class Disciple_Tools_Admin_User_Edit {
@@ -21,7 +21,7 @@ final class Disciple_Tools_Admin_User_Edit {
     /**
      * Holds the instances of this class.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access private
      * @var    object
      */
@@ -30,7 +30,7 @@ final class Disciple_Tools_Admin_User_Edit {
     /**
      * Sets up needed actions/filters for the admin to initialize.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return void
      */
@@ -43,7 +43,7 @@ final class Disciple_Tools_Admin_User_Edit {
     /**
      * Adds actions/filters on load.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return void
      */
@@ -61,7 +61,7 @@ final class Disciple_Tools_Admin_User_Edit {
     /**
      * Adds custom profile fields.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @param  object  $user
      * @return void
@@ -110,7 +110,7 @@ final class Disciple_Tools_Admin_User_Edit {
      * on a different hook, `profile_update`.  Using the normal hooks on the edit user screen won't work
      * because WP will wipe out the role.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @param  int    $user_id
      * @return void
@@ -174,7 +174,7 @@ final class Disciple_Tools_Admin_User_Edit {
     /**
      * Enqueue the plugin admin CSS.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return void
      */
@@ -187,7 +187,7 @@ final class Disciple_Tools_Admin_User_Edit {
     /**
      * Returns the instance.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return object
      */

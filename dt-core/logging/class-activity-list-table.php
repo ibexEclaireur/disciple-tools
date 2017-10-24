@@ -7,14 +7,14 @@ if ( !class_exists( 'WP_List_Table' ) ) {
 /**
  * Create a new table class that will extend the WP_List_Table
  *
- * @since 1.0.0
+ * @since 0.1.0
  */
 class Disciple_Tools_Activity_List_Table extends WP_List_Table
 {
     /**
      * Prepare the items for the table to process
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return void
      */
     public function prepare_items()
@@ -46,7 +46,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     /**
      * Override the parent columns method. Defines the columns to use in your listing table
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return array
      */
     public function get_columns()
@@ -73,7 +73,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     /**
      * Define which columns are hidden
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return array
      */
     public function get_hidden_columns()
@@ -84,7 +84,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     /**
      * Define the sortable columns
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return array
      */
     public function get_sortable_columns()
@@ -95,7 +95,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     /**
      * Get the table data
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @return array
      */
     private function get_activity_data()
@@ -142,7 +142,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     /**
      * Define what data to show on each column of the table
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param array  $item        Data
      * @param string $column_name - Current column name
@@ -174,7 +174,7 @@ class Disciple_Tools_Activity_List_Table extends WP_List_Table
     /**
      * Allows you to sort the data by the variables set in the $_GET
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param $a
      * @param $b

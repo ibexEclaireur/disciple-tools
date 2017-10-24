@@ -4,7 +4,7 @@
  *
  * @package Disciple_Tools
  * @class Disciple_Tools_Counter_Generations
- * @version 1.0.0
+ * @version 0.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
@@ -17,7 +17,7 @@ class Disciple_Tools_Counter_Generations  {
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct() { } // End __construct()
 

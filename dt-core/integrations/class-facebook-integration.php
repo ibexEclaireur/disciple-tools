@@ -13,7 +13,7 @@ class Disciple_Tools_Facebook_Integration
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -21,7 +21,7 @@ class Disciple_Tools_Facebook_Integration
      * Main Disciple_Tools_Facebook_Integration Instance
      * Ensures only one instance of Disciple_Tools_Facebook_Integration is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Facebook_Integration instance
      */
@@ -42,7 +42,7 @@ class Disciple_Tools_Facebook_Integration
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {
@@ -56,7 +56,7 @@ class Disciple_Tools_Facebook_Integration
     /**
      * Setup the api routs for the plugin
      *
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function add_api_routes()
     {

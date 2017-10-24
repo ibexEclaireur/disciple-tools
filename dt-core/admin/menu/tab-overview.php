@@ -4,7 +4,7 @@
  * Disciple_Tools_Landing_Tab
  *
  * @class      Disciple_Tools_Landing_Tab
- * @since      1.0.0
+ * @since      0.1.0
  * @package    Disciple_Tools
  * @author     Chasm.Solutions & Kingdom.Training
  */

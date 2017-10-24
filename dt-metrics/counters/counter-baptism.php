@@ -4,7 +4,7 @@
  *
  * @package Disciple_Tools
  *
- * @version 1.0.0
+ * @version 0.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
@@ -17,7 +17,7 @@ class Disciple_Tools_Counter_Baptism  {
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct() { } // End __construct()
 
@@ -25,7 +25,7 @@ class Disciple_Tools_Counter_Baptism  {
      * Counts the number of contacts with no disciples in database
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function get_number_of_baptisms() {
         global $wpdb;
@@ -47,7 +47,7 @@ class Disciple_Tools_Counter_Baptism  {
      * Counts the number of baptizers who are not zero generation.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function get_number_of_baptizers() {
         global $wpdb;

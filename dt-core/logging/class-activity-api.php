@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
  *
  * @see Disciple_Tools_Activity_Log_API::insert
  *
- * @since 1.0.0
+ * @since 0.1.0
  * @param array $args
  * @return void
  */
@@ -23,7 +23,7 @@ class Disciple_Tools_Activity_Log_API {
     /**
      * Get real address
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @return string real address IP
      */
@@ -49,7 +49,7 @@ class Disciple_Tools_Activity_Log_API {
     }
 
     /**
-     * @since 1.0.0
+     * @since 0.1.0
      * @return void
      */
     public function erase_all_items() {
@@ -61,7 +61,7 @@ class Disciple_Tools_Activity_Log_API {
     }
 
     /**
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param array $args
      * @return void
