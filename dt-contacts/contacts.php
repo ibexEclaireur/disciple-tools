@@ -3,7 +3,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    1.0.0
+ * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -108,7 +108,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param  bool|true $check_permissions
      *
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      * @return int | WP_Error
      */
     public static function create_contact( array $fields = [], $check_permissions = true )
@@ -211,7 +211,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param int|null $post_id , the id of the contact
      *
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      * @return array
      */
     private static function check_for_invalid_fields( $fields, int $post_id = null )
@@ -236,7 +236,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param  bool|null $check_permissions
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return int | WP_Error of contact ID
      */
     public static function update_contact( int $contact_id, array $fields, $check_permissions = true )
@@ -592,7 +592,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param bool $check_permissions
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return WP_Post| WP_Error, On success: the contact, else: the error message
      */
     public static function get_contact( int $contact_id, $check_permissions = true )
@@ -832,7 +832,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param array $query_pagination_args -Pass in pagination and ordering parameters if wanted.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return WP_Query | WP_Error
      */
     public static function get_user_contacts( int $user_id, bool $check_permissions = true, array $query_pagination_args = [] )
@@ -859,7 +859,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param array $query_pagination_args -Pass in pagination and ordering parameters if wanted.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return array | WP_Error
      */
     public static function get_viewable_contacts( bool $check_permissions = true, array $query_pagination_args = [] )
@@ -918,7 +918,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
      * @param bool $check_permissions
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return array | WP_Error
      */
     public static function get_team_contacts( int $user_id, bool $check_permissions = true )

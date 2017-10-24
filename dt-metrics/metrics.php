@@ -4,8 +4,8 @@
  * Disciple_Tools_Metrics
  *
  * @class      Disciple_Tools_Metrics
- * @version    1.0.0
- * @since      1.0.0
+ * @version    0.1.0
+ * @since      0.1.0
  * @package    Disciple_Tools
  * @author     Chasm.Solutions & Kingdom.Training
  */
@@ -25,7 +25,7 @@ class Disciple_Tools_Metrics
      *
      * @var    object
      * @access   private
-     * @since    1.0.0
+     * @since    0.1.0
      */
     private static $_instance = null;
 
@@ -33,7 +33,7 @@ class Disciple_Tools_Metrics
      * Main Disciple_Tools_Admin_Menus Instance
      * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @static
      * @return Disciple_Tools_Metrics instance
      */
@@ -50,7 +50,7 @@ class Disciple_Tools_Metrics
      * Constructor function.
      *
      * @access  public
-     * @since   1.0.0
+     * @since   0.1.0
      */
     public function __construct()
     {
@@ -290,7 +290,7 @@ class Disciple_Tools_Metrics
     /**
      * System stats dashboard widget
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function system_stats_widget()
@@ -380,7 +380,7 @@ class Disciple_Tools_Metrics
     /**
      * Movement funnel path dashboard widget
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function critical_path_stats()
@@ -465,7 +465,7 @@ class Disciple_Tools_Metrics
     /**
      * Contacts stats widget
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function contacts_stats_widget()
@@ -611,7 +611,7 @@ class Disciple_Tools_Metrics
     /**
      * Groups stats widget
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function groups_stats_widget()
@@ -730,7 +730,7 @@ class Disciple_Tools_Metrics
     /**
      * Baptism Generations stats dashboard widget
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      */
     public function baptism_stats_widget()

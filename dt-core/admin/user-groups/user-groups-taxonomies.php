@@ -104,7 +104,7 @@ function disciple_tools_get_terms_for_user( $user = false, $taxonomy = '' )
 /**
  * Save taxonomy terms for a specific user
  *
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param int     $user_id
  * @param string  $taxonomy

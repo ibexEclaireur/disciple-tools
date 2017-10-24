@@ -4,8 +4,8 @@
  * Disciple_Tools_Census_Geolocation
  *
  * @class   Disciple_Tools_Census_Geolocation
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools_Tabs
  * @author  Chasm.Solutions
  */
@@ -24,7 +24,7 @@ class Disciple_Tools_Census_Geolocation
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {
@@ -33,7 +33,7 @@ class Disciple_Tools_Census_Geolocation
     /**
      * Gets the census data query object using longitude and latitude
      *
-     * @since  1.0.0
+     * @since  0.1.0
      *
      * @param  $lng
      * @param  $lat
@@ -105,7 +105,7 @@ class Disciple_Tools_Census_Geolocation
     }
 
     /**
-     * @since  1.0.0
+     * @since  0.1.0
      *
      * @param $url
      *

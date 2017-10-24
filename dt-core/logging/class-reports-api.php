@@ -5,7 +5,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 /**
  * @see   Disciple_Tools_Activity_Log_API::insert
- * @since 1.0.0
+ * @since 0.1.0
  *
  * @param array $args
  *
@@ -26,7 +26,7 @@ class Disciple_Tools_Reports_API
     /**
      * Insert Report into _reports and _reportmeta tables
      *
-     * @since  1.0.0
+     * @since  0.1.0
      *
      * @param  array $args
      * @param        date   'report_date'
@@ -101,7 +101,7 @@ class Disciple_Tools_Reports_API
     /**
      * Add Report Metadata
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param  int    $report_id
      * @param  string $field

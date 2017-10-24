@@ -23,7 +23,7 @@ if ( dt_multi_role_explicitly_deny_caps() ) {
  * has the potential for granting permission for things that a user shouldn't have
  * permission to do.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  array  $allcaps
  * @param  array  $caps
@@ -68,7 +68,7 @@ function dt_user_has_cap_filter( $allcaps, $caps, $args, $user ) {
 /**
  * Conditional tag to check whether a user has a specific role.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  int     $user_id
  * @param  string  $role
@@ -84,7 +84,7 @@ function dt_user_has_role( $user_id, $role ) {
 /**
  * Conditional tag to check whether the currently logged-in user has a specific role.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return bool
@@ -97,7 +97,7 @@ function dt_current_user_has_role( $role ) {
 /**
  * Returns an array of the role names a user has.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  int    $user_id
  * @return array

@@ -14,7 +14,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
     /**
      * The main User Taxonomy class
      *
-     * @since 1.0.0
+     * @since 0.1.0
      */
     class Disciple_Tools_User_Taxonomy
     {
@@ -22,7 +22,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * The unique ID to use for the taxonomy type
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @var string
          */
         public $taxonomy = '';
@@ -30,7 +30,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * The URL friendly slug to use for the taxonomy
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @var string
          */
         public $slug = '';
@@ -42,7 +42,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
          * this method, so if you need different languages, use the `$labels`
          * array below.
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @var array
          */
         public $args = [];
@@ -50,7 +50,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Array of taxonomy labels, if you'd like to customize them completely
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @var array
          */
         public $labels = [];
@@ -58,7 +58,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Main constructor
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param string $taxonomy
          * @param string $slug
@@ -97,7 +97,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Hook in to actions & filters
          *
-         * @since 1.0.0.1
+         * @since 0.1.0.1
          */
         protected function hooks()
         {
@@ -145,7 +145,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Add the administration page for this taxonomy
          *
-         * @since 1.0.0
+         * @since 0.1.0
          */
         public function add_admin_page()
         {
@@ -186,7 +186,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /*  * This tells WordPress to highlight the "Users" menu item when viewing a */
         /*  * user taxonomy. */
         /*  * */
-        /*  * @since 1.0.0 */
+        /*  * @since 0.1.0 */
         /*  * @global string $plugin_page */
         /*  *1/ */
         /* public function admin_menu_highlight() */
@@ -202,7 +202,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Filter the body class
          *
-         * @since 1.0.0
+         * @since 0.1.0
          */
         public function admin_load()
         {
@@ -212,7 +212,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Add a class for this taxonomy
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param  string $classes
          *
@@ -233,7 +233,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Stylize custom columns
          *
-         * @since 1.0.0
+         * @since 0.1.0
          */
         public function admin_head()
         {
@@ -309,7 +309,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Save terms for a user for this taxonomy
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param int $user_id
          */
@@ -337,7 +337,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * * Update the term count for a user and taxonomy
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param array  $terms
          * @param string $taxonomy
@@ -357,7 +357,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Manage columns for user taxonomies
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param  array $columns
          *
@@ -379,7 +379,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          *  * Output the data for the "Users" column when viewing user taxonomies
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param bool   $display
          * @param string $column
@@ -402,7 +402,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Output a "Relationships" section to show off taxonomy groupings
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param mixed $user
          */
@@ -463,7 +463,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Output metabox for user profiles
          *
-         * @since 1.0.0.6
+         * @since 0.1.0.6
          */
         public function user_profile_metabox( $user = null, $args = [] )
         {
@@ -473,7 +473,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Output metabox contents
          *
-         * @since 1.0.0.6
+         * @since 0.1.0.6
          */
         protected function table_contents( $user, $tax, $terms )
         {
@@ -574,7 +574,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Output row actions when editing a user
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param array $tax
          * @param bool  $term
@@ -610,7 +610,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Disallow taxonomy as a username
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param  string $username
          *
@@ -631,7 +631,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Delete term relationships
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param int $user_id
          */
@@ -647,7 +647,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Register the taxonomy
          *
-         * @since 1.0.0
+         * @since 0.1.0
          */
         protected function register_user_taxonomy()
         {
@@ -661,7 +661,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Parse taxonomy labels
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @return array
          */
         protected function parse_labels()
@@ -694,7 +694,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Parse taxonomy options
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @return array
          */
         protected function parse_options()
@@ -732,7 +732,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Add custom bulk actions
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param array $actions
          *
@@ -764,7 +764,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Group add/remove options together for improved UX
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param array $actions
          *
@@ -799,7 +799,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Handle bulk editing of users
          *
-         * @since 1.0.0
+         * @since 0.1.0
          */
         public function handle_bulk_actions( $redirect_to = '', $action = '', $user_ids = [] )
         {
@@ -889,7 +889,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Maybe output a notice when bulk actions occur
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @return void
          */
         public function bulk_notice()
@@ -934,7 +934,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
          * Output an additional list-table view section that replaces the "h1" when
          * viewing a single user relationship term.
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param  array $views
          *
@@ -994,7 +994,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Modify the users.php query
          *
-         * @since 1.0.0
+         * @since 0.1.0
          * @global string $pagenow
          *
          * @param object  $user_query
@@ -1034,7 +1034,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Generated user taxonomy query SQL
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param string $user_query
          *
@@ -1048,7 +1048,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Get links to user taxonomy terms
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param mixed  $user
          * @param string $page
@@ -1086,7 +1086,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Add taxonomy links for a column
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param  string $value
          * @param  string $column_name
@@ -1119,7 +1119,7 @@ if ( !class_exists( 'Disciple_Tools_User_Taxonomy' ) ) :
         /**
          * Add the label to the table header
          *
-         * @since 1.0.0
+         * @since 0.1.0
          *
          * @param array $defaults
          *

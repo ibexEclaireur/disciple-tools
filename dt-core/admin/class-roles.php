@@ -3,8 +3,8 @@
  * Disciple_Tools Post to Post Metabox for Locations
  *
  * @class   Disciple_Tools_Roles
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools
  *
  */
@@ -30,7 +30,7 @@ class Disciple_Tools_Roles
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -38,7 +38,7 @@ class Disciple_Tools_Roles
      * Main Disciple_Tools_P2P_Metabox Instance
      * Ensures only one instance of Disciple_Tools_P2P_Metabox is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Roles instance
      */
@@ -55,7 +55,7 @@ class Disciple_Tools_Roles
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct() {} // End __construct()
 

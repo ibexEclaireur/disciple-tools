@@ -27,7 +27,7 @@ add_filter( 'comment_text_rss', 'disciple_tools_private_feed', 95 );
 /**
  * Conditional tag to see if we have a private blog.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return bool
  */
@@ -39,7 +39,7 @@ function disciple_tools_is_private_blog()
 /**
  * Conditional tag to see if we have a private feed.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return bool
  */
@@ -51,7 +51,7 @@ function disciple_tools_is_private_feed()
 /**
  * Redirects users that are not logged in to the 'wp-login.php' page.
  *
- * @since  1.0.0.0
+ * @since  0.1.0.0
  * @access public
  * @return void
  */
@@ -91,7 +91,7 @@ function disciple_tools_private_feed( $content )
 /**
  * Returns the private feed error message.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return string
  */

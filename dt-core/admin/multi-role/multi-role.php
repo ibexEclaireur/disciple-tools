@@ -4,8 +4,8 @@
  * Disciple_Tools_Multi_Roles
  *
  * @class   Disciple_Tools_Multi_Roles
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools
  *
  */
@@ -22,7 +22,7 @@ class Disciple_Tools_Multi_Roles {
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -33,7 +33,7 @@ class Disciple_Tools_Multi_Roles {
      *
      * Ensures only one instance of Disciple_Tools_Multi_Roles is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Multi_Roles instance
      */
@@ -48,7 +48,7 @@ class Disciple_Tools_Multi_Roles {
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct() {
 

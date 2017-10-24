@@ -14,7 +14,7 @@
 /**
  * Role factory class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
 final class Disciple_Tools_Multi_Role_Factory {
@@ -22,7 +22,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Array of roles added.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    array
      */
@@ -31,7 +31,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Array of editable roles.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    array
      */
@@ -40,7 +40,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Array of uneditable roles.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    array
      */
@@ -49,7 +49,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Array of core WordPress roles.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    array
      */
@@ -58,7 +58,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Private constructor method to prevent a new instance of the object.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return void
      */
@@ -67,7 +67,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Adds a role object.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @param  string  $role
      */
@@ -96,7 +96,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Returns a single role object.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @param  string  $role
      * @return object|bool
@@ -124,7 +124,7 @@ final class Disciple_Tools_Multi_Role_Factory {
     /**
      * Returns an array of role objects.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return array
      */
@@ -136,7 +136,7 @@ final class Disciple_Tools_Multi_Role_Factory {
      * Adds all the WP roles as role objects.  Rather than running this elsewhere, we're just
      * going to call this directly within the class when it is first constructed.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return void
      */

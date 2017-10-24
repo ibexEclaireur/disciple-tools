@@ -15,7 +15,7 @@ jQuery( document ).ready( function() {
 	 * Takes the given text and copies it to the role slug `<span>` after sanitizing it
 	 * as a role.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @param  string  $slug
 	 * @return void
@@ -187,7 +187,7 @@ jQuery( document ).ready( function() {
 	 * Counts the number of granted and denied capabilities that are checked and updates
 	 * the count in the submit role meta box.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -210,7 +210,7 @@ jQuery( document ).ready( function() {
 	 * When a grant/deny checkbox has a change, this function makes sure that any duplicates
 	 * also receive that change.  It also unchecks the grant/deny opposite checkbox if needed.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @param  object  $checkbox
 	 * @return void

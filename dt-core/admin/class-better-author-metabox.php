@@ -34,7 +34,7 @@ class Disciple_Tools_BetterAuthorMetabox
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -42,7 +42,7 @@ class Disciple_Tools_BetterAuthorMetabox
      * Main Disciple_Tools_BetterAuthorMetabox Instance
      * Ensures only one instance of Disciple_Tools_BetterAuthorMetabox is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_BetterAuthorMetabox
      */

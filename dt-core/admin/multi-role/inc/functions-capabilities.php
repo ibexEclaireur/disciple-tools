@@ -17,7 +17,7 @@ add_filter( 'dt_multi_role_get_capabilities', 'dt_multi_role_remove_hidden_caps'
 /**
  * Function for sanitizing a capability.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $cap
  * @return string
@@ -29,7 +29,7 @@ function dt_multi_role_sanitize_cap( $cap ) {
 /**
  * Conditional tag for checking whether a capability exists.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $cap
  * @return bool
@@ -42,7 +42,7 @@ function dt_multi_role_cap_exists( $cap ) {
  * Checks if a capability is editable.  A capability is editable if it's not one of the core WP
  * capabilities and doesn't belong to an uneditable role.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $cap
  * @return bool
@@ -57,7 +57,7 @@ function dt_multi_role_is_cap_editable( $cap ) {
 /**
  * Returns an array of roles that have a capability.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $cap
  * @return array
@@ -83,7 +83,7 @@ function dt_multi_role_get_cap_roles( $cap ) {
  * different functions to make sure we get all of the capabilities that we need for use in the
  * plugin components.
  *
- * @since  1.0.0.0
+ * @since  0.1.0.0
  * @access public
  * @return array
  */
@@ -114,7 +114,7 @@ function dt_multi_role_get_capabilities() {
  * a problem with folks accidentally deleting the default WordPress capabilities, the
  * `dt_multi_role_get_plugin_capabilities()` will return all the defaults.
  *
- * @since  1.0.0.0
+ * @since  0.1.0.0
  * @global object  $wp_roles
  * @return array
  */
@@ -145,7 +145,7 @@ function dt_multi_role_get_role_capabilities() {
  * Additional capabilities provided by the Members plugin that gives users permissions to handle
  * certain features of the plugin.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -171,7 +171,7 @@ function dt_multi_role_get_plugin_capabilities() {
  * together. ;)
  *
  * @link   http://codex.wordpress.org/Roles_and_Capabilities#Capabilities
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -236,7 +236,7 @@ function dt_multi_role_get_wp_capabilities() {
  * Checks if a specific capability has been given to at least one role. If it has, return true.
  * Else, return false.
  *
- * @since  1.0.0.0
+ * @since  0.1.0.0
  * @access public
  * @param  string  $cap
  * @return bool
@@ -255,7 +255,7 @@ function dt_multi_role_check_for_cap( $cap = '' ) {
 /**
  * Return an array of capabilities that are not allowed on this installation.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -302,7 +302,7 @@ function dt_multi_role_get_hidden_caps() {
 /**
  * Get rid of hidden capabilities.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  array  $caps
  * @return array
@@ -316,7 +316,7 @@ function dt_multi_role_remove_hidden_caps( $caps ) {
  * in admin screen.  Plugins shouldn't rely on these levels to create permissions for users.
  * They should move to the newer system of checking for a specific capability instead.
  *
- * @since  1.0.0.0
+ * @since  0.1.0.0
  * @access public
  * @return array
  */
@@ -341,7 +341,7 @@ function dt_multi_role_get_old_levels() {
  * Get rid of levels since these are mostly useless in newer versions of WordPress.  Devs should
  * add the `__return_false` filter to the `dt_multi_role_remove_old_levels` hook to utilize user levels.
  *
- * @since  1.0.0.0
+ * @since  0.1.0.0
  * @access public
  * @param  array  $caps
  * @return array
@@ -355,7 +355,7 @@ function dt_multi_role_remove_old_levels( $caps ) {
  * the only capability checked is 'read' because it's needed for users of the role to view their
  * profile in the admin.
  *
- * @since  1.0.0.0
+ * @since  0.1.0.0
  * @access public
  * @return array
  */
@@ -369,7 +369,7 @@ function dt_multi_role_new_role_default_capabilities() {
  * the only capability checked is 'read' because it's needed for users of the role to view their
  * profile in the admin.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
