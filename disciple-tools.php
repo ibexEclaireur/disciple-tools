@@ -515,6 +515,13 @@ class Disciple_Tools
          */
         add_action( 'init', [ $this, 'load_plugin_textdomain' ] );
 
+        require 'dt-core/libraries/plugin-update-checker/plugin-update-checker.php';
+        $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
+            'https://github.com/DiscipleTools/disciple-tools/',
+            __FILE__,
+            'disciple-tools'
+        );
+
         /**
          * Admin panel
          * Contains all those features that only run if in the Admin panel
@@ -569,6 +576,13 @@ class Disciple_Tools
             require_once( 'dt-core/admin/metaboxes/box-map.php' );
             require_once( 'dt-core/admin/metaboxes/box-activity.php' );
             require_once( 'dt-core/admin/metaboxes/box-share-contact.php' );
+
+//            require_once( 'dt-core/admin/class-updater.php' );
+//            new Disciple_Tools_GitHub_Plugin_Updater( __FILE__, 'DiscipleTools', "disciple-tools" );
+
+
+
+
         }
         /* End Admin configuration section */
     } // End __construct()
