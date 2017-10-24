@@ -249,7 +249,7 @@ class Disciple_Tools_Users
 
         // get base user id
         $base_user_id = dt_get_option( 'base_user' );
-        if ( empty( $base_user_id ) ) {
+        if ( ! $base_user_id ) {
             return new WP_Error( 'failed_to_get_base_user', 'Failed to get base user. dt_get_option( base_user ) failed.' );
         }
 

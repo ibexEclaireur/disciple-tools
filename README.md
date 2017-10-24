@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/DiscipleTools/disciple-tools.svg?branch=master)](https://travis-ci.org/DiscipleTools/disciple-tools)
 
 # Disciple Tools
-A disciple relationship management system for discipleship making movements. Wordpress plugin.
+A disciple relationship management system for discipleship making movements.
 
 ## Description
 Disciple Tools is a disciple relationship management (DRM) system especially designed to support outreach projects using digital marketing to accelerate disciple making movements (DMM).

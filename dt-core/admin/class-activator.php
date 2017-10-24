@@ -47,9 +47,11 @@ class Disciple_Tools_Activator
             }
         }
 
-        /** Add default dt site options for ini */
+        /** Initialize default dt site options */
         dt_get_option( 'dt_site_options' );
         dt_get_option( 'dt_site_custom_lists' );
+        dt_get_option( 'base_user' );
+        dt_get_option( 'map_key' );
 
         /** Activate database creation for Disciple Tools Activity logs */
         if ( is_multisite() && $network_wide ) {
