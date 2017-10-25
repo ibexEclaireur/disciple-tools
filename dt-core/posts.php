@@ -511,6 +511,14 @@ class Disciple_Tools_Posts
         }
     }
 
+    /**
+     * Get most recent activity for the field
+     *
+     * @param $post_id
+     * @param $field_key
+     *
+     * @return mixed
+     */
     public static function get_most_recent_activity_for_field( $post_id, $field_key ){
         global $wpdb;
         $most_recent_activity = $wpdb->get_results( $wpdb->prepare(
