@@ -255,6 +255,30 @@ class Disciple_Tools_Notifications
     }
 
     /**
+     * Mark the is_new field to 0 after user has viewed notification
+     *
+     * @param $notification_id
+     *
+     * @return array
+     */
+    public static function mark_unread( $notification_id )
+    {
+        global $wpdb;
+
+        $wpdb->update(
+            $wpdb->dt_notifications,
+            [
+                'is_new' => 1,
+            ],
+            [
+                'id' => $notification_id,
+            ]
+        );
+
+        return $wpdb->last_error ? [ 'status' => false, 'message' => $wpdb->last_error ] : [ 'status' => true, 'rows_affected' => $wpdb->rows_affected ];
+    }
+
+    /**
      * Mark all as viewed by user_id
      *
      * @param $user_id int
@@ -427,6 +451,7 @@ class Disciple_Tools_Notifications
             );
         }
     }
+
 
 
 }

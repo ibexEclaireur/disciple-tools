@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 3;
+    private static $target_roles_version_number = 4;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -305,117 +305,14 @@ class Disciple_Tools_Roles
         add_role(
             'marketer', __( 'Marketer' ),
             [
-                /* Standard Capabilities */
-                'list_users'                => true,
-                //                'delete_others_posts' => true,
-                'delete_pages'              => true,
-                'delete_posts'              => true,
-                //                'delete_private_pages' => true,
-                //                'delete_private_posts' => true,
-                //                'delete_published_pages' => true,
-                //                'delete_published_posts' => true,
-                //                'edit_others_pages' => true,
-                //                'edit_others_posts' => true,
-                'edit_pages'                => true,
-                'edit_posts'                => true,
-                'edit_private_pages'        => true,
-                'edit_private_posts'        => true,
-                'edit_published_pages'      => true,
-                'edit_published_posts'      => true,
-                'manage_options'            => false,
-                'manage_categories'         => false,
-                //                'manage_links' => true,
-                'moderate_comments'         => true,
-                //                'publish_pages' => true,
-                //                'publish_posts' => true,
-                'read'                      => true,
-                'read_private_pages'        => true,
-                'read_private_posts'        => true,
-                'upload_files'              => true,
-                //                'level_0' => true,
-                /* See all contacts */
-                'manage_contacts'           => true,
-                /* Add custom caps for contacts */
-                'edit_contact'              => true,
-                'read_contact'              => true,
-                'delete_contact'            => true,
-                'delete_others_contacts'    => true,
-                'delete_contacts'           => true,
-                'edit_contacts'             => true,
-                'edit_team_contacts'        => true,
-                'edit_others_contacts'      => true,
-                'publish_contacts'          => true,
-                'read_private_contacts'     => true,
-                /* Add custom caps for groups */
-                'edit_group'                => true,
-                'read_group'                => true,
-                'delete_group'              => true,
-                'delete_others_groups'      => true,
-                'delete_groups'             => true,
-                'edit_groups'               => true,
-                'edit_others_groups'        => true,
-                'publish_groups'            => true,
-                'read_private_groups'       => true,
-                /* Add custom caps for prayer updates */
-                'read_prayer'               => true,
-                'edit_prayer'               => true,
-                'delete_prayer'             => true,
-                //                'delete_others_prayers' => true,
-                'delete_prayers'            => true,
-                'edit_prayers'              => true,
-                //                'edit_others_prayers' => true,
-                'publish_prayers'           => true,
-                'read_private_prayers'      => true,
-                /* Add custom caps for locations */
-                'read_location'             => true,
-                'edit_location'             => true,
-                //                'delete_location' => true,
-                //                'delete_others_locations' => true,
-                //                'delete_locations' => true,
-                'edit_locations'            => true,
-                //                'edit_others_locations' => true,
-                //                'publish_locations' => true,
-                //                'read_private_locations' => true,
-                /* Add custom caps for progresss */
-                'read_progress'             => true,
-                'edit_progress'             => true,
-                'delete_progress'           => true,
-                //                'delete_others_progresss' => true,
-                'delete_progresss'          => true,
-                'edit_progresss'            => true,
-                //                'edit_others_progresss' => true,
-                'publish_progresss'         => true,
-                //                'read_private_progresss' => true,
-                /* Add custom caps for assets */
-                'read_assetmapping'         => true,
-                //                'edit_assetmapping' => true,
-                //                'delete_assetmapping' => true,
-                //                'delete_others_assetmapping' => true,
-                //                'delete_assetmappings' => true,
-                //                'edit_assetmappings' => true,
-                //                'edit_others_assetmapping' => true,
-                //                'publish_assetmapping' => true,
-                //                'read_private_assetmappings' => true,
-                /* Add custom caps for resources */
-                'read_resource'             => true,
-                'edit_resource'             => true,
-                'delete_resource'           => true,
-                'delete_others_resource'    => true,
-                'delete_resources'          => true,
-                'edit_resources'            => true,
-                'edit_others_resource'      => true,
-                'publish_resource'          => true,
-                'read_private_resources'    => true,
-                /* Add custom caps for people groups */
-                'read_peoplegroup'          => true,
-                'edit_peoplegroup'          => true,
-                //                'delete_peoplegroup' => true,
-                //                'delete_others_peoplegroup' => true,
-                //                'delete_peoplegroups' => true,
-                'edit_peoplegroups'         => true,
-                'edit_others_peoplegroup'   => true,
-                'publish_peoplegroup'       => true,
-                'read_private_peoplegroups' => true,
+                'access_contacts'        => true,
+                'create_contacts'        => true,
+                'update_shared_contacts' => true,
+
+                'access_groups' => true,
+                'create_groups' => true,
+
+                'read_location' => true
             ]
         );
 
@@ -535,6 +432,13 @@ class Disciple_Tools_Roles
                 'edit_others_peoplegroup'    => true,
                 'publish_peoplegroup'        => true,
                 'read_private_peoplegroups'  => true,
+                'access_contacts'        => true,
+                'create_contacts'        => true,
+                'update_shared_contacts' => true,
+
+                'access_groups' => true,
+                'create_groups' => true,
+
             ]
         );
 
