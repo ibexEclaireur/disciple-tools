@@ -255,6 +255,30 @@ class Disciple_Tools_Notifications
     }
 
     /**
+     * Mark the is_new field to 0 after user has viewed notification
+     *
+     * @param $notification_id
+     *
+     * @return array
+     */
+    public static function mark_unread( $notification_id )
+    {
+        global $wpdb;
+
+        $wpdb->update(
+            $wpdb->dt_notifications,
+            [
+                'is_new' => 1,
+            ],
+            [
+                'id' => $notification_id,
+            ]
+        );
+
+        return $wpdb->last_error ? [ 'status' => false, 'message' => $wpdb->last_error ] : [ 'status' => true, 'rows_affected' => $wpdb->rows_affected ];
+    }
+
+    /**
      * Mark all as viewed by user_id
      *
      * @param $user_id int
@@ -420,12 +444,43 @@ class Disciple_Tools_Notifications
                     'secondary_item_id'   => 0,
                     'notification_name'   => 'share',
                     'notification_action' => 'alert',
-                    'notification_note'   => '<a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '">' . strip_tags( get_the_title( $post_id ) ) . ' was shared with you.',
+                    'notification_note'   => '<a href="' . home_url( '/' ) . get_post_type( $post_id ) . '/' . $post_id . '" >' . strip_tags( get_the_title( $post_id ) ) . '</a> was shared with you.',
                     'date_notified'       => current_time( 'mysql' ),
                     'is_new'              => 1,
                 ]
             );
         }
+    }
+
+    /**
+     * Process post notifications for a user who has visited the post. This removes the new status for all notifications for this post
+     *
+     * @param $post_id
+     */
+    public static function process_new_notifications( $post_id )
+    {
+        global $wpdb;
+        $user_id = get_current_user_id();
+
+        // change new notifications to viewed
+        $results = $wpdb->update(
+            $wpdb->dt_notifications,
+            [
+                'is_new' => 0,
+            ],
+            [
+                'post_id' => $post_id,
+                'user_id' => $user_id,
+            ],
+            [
+                '%d'
+            ],
+            [
+                '%d',
+                '%d'
+            ]
+        );
+
     }
 
 

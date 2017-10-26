@@ -193,7 +193,7 @@ function dt_get_user_display_name( $user_id )
     $user = get_userdata( $user_id );
 
     if ( ! $user ) {
-        return new WP_Error( 'get_user_display_name_error', 'Could not find user object with that user id.' );
+        return ''; // return blank if user id does not exist
     }
 
     $display_name = $user->display_name;

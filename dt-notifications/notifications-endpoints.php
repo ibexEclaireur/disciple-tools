@@ -97,6 +97,15 @@ class Disciple_Tools_Notifications_Endpoints
             ]
         );
 
+        register_rest_route(
+            $namespace, '/notifications/mark_unread/(?P<notification_id>\d+)', [
+                [
+                    'methods'  => WP_REST_Server::CREATABLE,
+                    'callback' => [ $this, 'mark_unread' ],
+                ],
+            ]
+        );
+
     }
 
     /**
@@ -185,6 +194,30 @@ class Disciple_Tools_Notifications_Endpoints
             return $result['result'];
         } else {
             return new WP_Error( "get_user_notification_results", $result["message"], [ 'status' => 204 ] );
+        }
+    }
+
+    /**
+     * Get tract from submitted address
+     *
+     * @param  WP_REST_Request $request
+     *
+     * @access public
+     * @since  0.1.0
+     * @return string|WP_Error|array The contact on success
+     */
+    public function mark_unread( WP_REST_Request $request )
+    {
+        $params = $request->get_params();
+        if ( isset( $params['notification_id'] ) ) {
+            $result = Disciple_Tools_Notifications::mark_unread( $params['notification_id'] );
+            if ( $result["status"] ) {
+                return $result['rows_affected'];
+            } else {
+                return new WP_Error( "mark_viewed_processing_error", $result["message"], [ 'status' => 400 ] );
+            }
+        } else {
+            return new WP_Error( "notification_param_error", "Please provide a valid array", [ 'status' => 400 ] );
         }
     }
 
