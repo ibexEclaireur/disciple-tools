@@ -13,7 +13,7 @@
 /**
  * Returns the instance of the `Disciple_Tools_Multi_Role_Factory`.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string
  * @return object|bool
@@ -27,7 +27,7 @@ function dt_multi_role_role_factory() {
 /**
  * Returns a count of all the available roles for the site.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return int
  */
@@ -38,7 +38,7 @@ function dt_multi_role_get_role_count() {
 /**
  * Returns an array of `Disciple_Tools_Multi_Role` objects.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -49,7 +49,7 @@ function dt_multi_role_get_roles() {
 /**
  * Returns an array of role names.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -66,7 +66,7 @@ function dt_multi_role_get_role_names() {
 /**
  * Returns an array of roles.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -77,7 +77,7 @@ function dt_multi_role_get_role_slugs() {
 /**
  * Returns an array of the role names of roles that have users.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -94,7 +94,7 @@ function dt_multi_role_get_active_role_names() {
 /**
  * Returns an array of the roles that have users.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -115,7 +115,7 @@ function dt_multi_role_get_active_role_slugs() {
 /**
  * Returns an array of the role names of roles that do not have users.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -126,7 +126,7 @@ function dt_multi_role_get_inactive_role_names() {
 /**
  * Returns an array of the roles that have no users.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -137,7 +137,7 @@ function dt_multi_role_get_inactive_role_slugs() {
 /**
  * Returns an array of editable role names.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -154,7 +154,7 @@ function dt_multi_role_get_editable_role_names() {
 /**
  * Returns an array of editable roles.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -165,7 +165,7 @@ function dt_multi_role_get_editable_role_slugs() {
 /**
  * Returns an array of uneditable role names.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -182,7 +182,7 @@ function dt_multi_role_get_uneditable_role_names() {
 /**
  * Returns an array of uneditable roles.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -193,7 +193,7 @@ function dt_multi_role_get_uneditable_role_slugs() {
 /**
  * Returns an array of core WordPress role names.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -210,7 +210,7 @@ function dt_multi_role_get_wordpress_role_names() {
 /**
  * Returns an array of core WP roles.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return array
  */
@@ -223,7 +223,7 @@ function dt_multi_role_get_wordpress_role_slugs() {
 /**
  * Conditional tag to check if a role exists.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string
  * @return bool
@@ -236,7 +236,7 @@ function dt_multi_role_role_exists( $role ) {
  * Gets a Members role object.
  *
  * @see    Disciple_Tools_Multi_Role
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string
  * @return object
@@ -249,7 +249,7 @@ function dt_multi_role_get_role( $role ) {
  * Sanitizes a role name.  This is a wrapper for the `sanitize_key()` WordPress function.  Only
  * alphanumeric characters and underscores are allowed.  Hyphens are also replaced with underscores.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return int
  */
@@ -267,7 +267,7 @@ function dt_multi_role_sanitize_role( $role ) {
  *
  * Note the core WP `translate_user_role()` function only translates core user roles.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return string
@@ -281,7 +281,7 @@ function dt_multi_role_translate_role( $role ) {
 /**
  * Conditional tag to check if a role has any users.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return bool
  */
@@ -292,7 +292,7 @@ function dt_multi_role_role_has_users( $role ) {
 /**
  * Conditional tag to check if a role has any capabilities.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return bool
  */
@@ -335,7 +335,7 @@ function dt_multi_role_get_role_user_count( $role = '' ) {
 /**
  * Returns the number of granted capabilities that a role has.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string
  * @return int
@@ -347,7 +347,7 @@ function dt_multi_role_get_role_granted_cap_count( $role ) {
 /**
  * Returns the number of denied capabilities that a role has.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string
  * @return int
@@ -359,7 +359,7 @@ function dt_multi_role_get_role_denied_cap_count( $role ) {
 /**
  * Returns the human-readable role name.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return string
@@ -371,7 +371,7 @@ function dt_multi_role_get_role_name( $role ) {
 /**
  * Conditional tag to check whether a role can be edited.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return bool
@@ -383,7 +383,7 @@ function dt_multi_role_is_role_editable( $role ) {
 /**
  * Conditional tag to check whether a role is a core WordPress URL.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return bool
@@ -397,7 +397,7 @@ function dt_multi_role_is_wordpress_role( $role ) {
 /**
  * Returns the URL for the add-new role admin screen.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return string
  */
@@ -408,7 +408,7 @@ function dt_multi_role_get_new_role_url() {
 /**
  * Returns the URL for the clone role admin screen.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return string
@@ -420,7 +420,7 @@ function dt_multi_role_get_clone_role_url( $role ) {
 /**
  * Returns the URL for the edit roles admin screen.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @return string
  */
@@ -431,7 +431,7 @@ function dt_multi_role_get_edit_roles_url() {
 /**
  * Returns the URL for the edit "mine" roles admin screen.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $view
  * @return string
@@ -443,7 +443,7 @@ function dt_multi_role_get_role_view_url( $view ) {
 /**
  * Returns the URL for the edit role admin screen.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return string
@@ -455,7 +455,7 @@ function dt_multi_role_get_edit_role_url( $role ) {
 /**
  * Returns the URL to permanently delete a role (edit roles screen).
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return string
@@ -469,7 +469,7 @@ function dt_multi_role_get_delete_role_url( $role ) {
 /**
  * Returns the URL for the users admin screen specific to a role.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  * @param  string  $role
  * @return string

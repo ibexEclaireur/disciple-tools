@@ -6,7 +6,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    1.0.0
+ * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -22,7 +22,7 @@ class Disciple_Tools_People_Groups
      *
      * @var     object
      * @access    private
-     * @since     1.0.0
+     * @since     0.1.0
      */
     private static $_instance = null;
 
@@ -30,7 +30,7 @@ class Disciple_Tools_People_Groups
      * Main Disciple_Tools_People_Groups Instance
      * Ensures only one instance of Disciple_Tools_People_Groups is loaded or can be loaded.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @static
      * @return Disciple_Tools_People_Groups instance
      */
@@ -47,7 +47,7 @@ class Disciple_Tools_People_Groups
      * Constructor function.
      *
      * @access  public
-     * @since   1.0.0
+     * @since   0.1.0
      */
     public function __construct()
     {

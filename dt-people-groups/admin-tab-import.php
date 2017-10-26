@@ -3,8 +3,8 @@
  * Disciple_Tools_People_Groups_Tab_Import
  *
  * @class   Disciple_Tools_People_Groups_Tab_Import
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools
  * @author  Chasm.Solutions
  */
@@ -29,7 +29,7 @@ class Disciple_Tools_People_Groups_Tab_Import
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {

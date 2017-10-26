@@ -5,7 +5,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    1.0.0
+ * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -164,7 +164,7 @@ function dt_get_site_notification_defaults()
 function dt_get_site_default_user_fields(): array
 {
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if ( is_wp_error( $site_custom_lists ) ) {
+    if ( ! $site_custom_lists ) {
         return [];
     }
 
@@ -216,7 +216,7 @@ function dt_modify_profile_fields( $profile_fields )
 {
 
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if ( is_wp_error( $site_custom_lists ) ) {
+    if ( ! $site_custom_lists ) {
         return $profile_fields;
     }
     $user_fields = $site_custom_lists['user_fields'];
@@ -248,7 +248,7 @@ function dt_build_user_fields_display( array $usermeta ): array
     $fields = [];
 
     $site_custom_lists = dt_get_option( 'dt_site_custom_lists' );
-    if ( is_wp_error( $site_custom_lists ) ) {
+    if ( ! $site_custom_lists ) {
         return [];
     }
     $site_user_fields = $site_custom_lists['user_fields'];

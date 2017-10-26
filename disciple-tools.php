@@ -3,7 +3,7 @@
  * Plugin Name: Disciple Tools
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Description: Disciple Tools is a disciple relationship management system for disciple making movements. The plugin is the core of the system. It is intended to work with the Disciple Tools Theme, and Disciple Tools extension plugins.
- * Version: 1.0.0
+ * Version:  0.1.0
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Requires at least: 4.7.0
@@ -14,7 +14,7 @@
  * @link    https://github.com/DiscipleTools
  * @license GPL-2.0 or later
  *          https://www.gnu.org/licenses/gpl-2.0.html
- * @version 1.0.0
+ * @version  0.1.0
  *
  */
 
@@ -143,7 +143,7 @@ add_action( 'plugins_loaded', 'dt_plugins_loaded' );
  *
  * @example
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @return object Disciple_Tools
  */
 
@@ -157,7 +157,7 @@ function disciple_tools()
  * Main Disciple_Tools Class
  *
  * @class   Disciple_Tools
- * @since   1.0.0
+ * @since   0.1.0
  * @package Disciple_Tools
  *
  */
@@ -168,7 +168,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -177,7 +177,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $token;
 
@@ -186,7 +186,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $version;
 
@@ -195,7 +195,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $plugin_url;
 
@@ -204,7 +204,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $plugin_path;
 
@@ -213,7 +213,7 @@ class Disciple_Tools
      *
      * @var    string
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $dt_svg;
 
@@ -222,7 +222,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $admin;
 
@@ -231,7 +231,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $settings;
 
@@ -240,7 +240,7 @@ class Disciple_Tools
      *
      * @var    object
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $facebook_integration;
 
@@ -249,7 +249,7 @@ class Disciple_Tools
      *
      * @var    array
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public $post_types = [];
     public $endpoints = [];
@@ -265,7 +265,7 @@ class Disciple_Tools
      *
      * @var    array
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
 
 
@@ -274,7 +274,7 @@ class Disciple_Tools
      * Main Disciple_Tools Instance
      * Ensures only one instance of Disciple_Tools is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @see    disciple_tools()
      * @return Disciple_Tools instance
@@ -292,7 +292,7 @@ class Disciple_Tools
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {
@@ -522,6 +522,15 @@ class Disciple_Tools
          */
         add_action( 'init', [ $this, 'load_plugin_textdomain' ] );
 
+        if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+            require 'dt-core/libraries/plugin-update-checker/plugin-update-checker.php';
+        }
+        $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
+            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools/master/dt-core/version-updater.json',
+            __FILE__,
+            'disciple-tools'
+        );
+
         /**
          * Admin panel
          * Contains all those features that only run if in the Admin panel
@@ -576,6 +585,7 @@ class Disciple_Tools
             require_once( 'dt-core/admin/metaboxes/box-map.php' );
             require_once( 'dt-core/admin/metaboxes/box-activity.php' );
             require_once( 'dt-core/admin/metaboxes/box-share-contact.php' );
+
         }
         /* End Admin configuration section */
     } // End __construct()
@@ -584,7 +594,7 @@ class Disciple_Tools
      * Load the localisation file.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function load_plugin_textdomain()
     {
@@ -595,7 +605,7 @@ class Disciple_Tools
      * Log the plugin version number.
      *
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function _log_version_number()
     {
@@ -607,7 +617,7 @@ class Disciple_Tools
      * Cloning is forbidden.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __clone()
     {
@@ -618,7 +628,7 @@ class Disciple_Tools
      * Unserializing instances of this class is forbidden.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __wakeup()
     {

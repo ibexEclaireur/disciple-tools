@@ -5,8 +5,8 @@
  *
  * @see     https://github.com/techcrunch/wp-async-task
  * @class   Disciple_Tools_Notifications_Email
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools
  *
  */

@@ -5,7 +5,7 @@
  * @package Disciple_Tools
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @license GPL-3.0
- * @version 1.0.0
+ * @version 0.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
@@ -18,7 +18,7 @@ class Disciple_Tools_Counter_Groups  {
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct() { } // End __construct()
 

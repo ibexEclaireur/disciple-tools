@@ -4,8 +4,8 @@
  * Disciple Tools
  *
  * @class   Disciple_Tools_
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools
  *
  */
@@ -25,7 +25,7 @@ class Disciple_Tools_Reports_Cron
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -33,7 +33,7 @@ class Disciple_Tools_Reports_Cron
      * Main Disciple_Tools_Reports_Cron Instance
      * Ensures only one instance of Disciple_Tools_Admin_Menus is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Reports_Cron instance
      */
@@ -50,7 +50,7 @@ class Disciple_Tools_Reports_Cron
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {

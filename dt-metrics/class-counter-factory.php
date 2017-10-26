@@ -6,7 +6,7 @@
  * @package Disciple_Tools
  * @author  Chasm Solutions <chasm.crew@chasm.solutions>
  * @license GPL-3.0
- * @version 1.0.0
+ * @version 0.1.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
@@ -21,7 +21,7 @@ class Disciple_Tools_Counter_Factory {
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -29,7 +29,7 @@ class Disciple_Tools_Counter_Factory {
      * Main Disciple_Tools_Counter_Factory Instance
      * Ensures only one instance of Disciple_Tools_Counter_Factory is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Counter_Factory
      */
@@ -44,7 +44,7 @@ class Disciple_Tools_Counter_Factory {
      * Constructor function
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct() {
 

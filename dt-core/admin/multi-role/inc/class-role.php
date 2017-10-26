@@ -14,7 +14,7 @@
 /**
  * Role class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
 class Disciple_Tools_Multi_Role {
@@ -22,7 +22,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * The role/slug.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    string
      */
@@ -31,7 +31,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * The role name.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    string
      */
@@ -40,7 +40,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Whether the role can be edited.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    bool
      */
@@ -49,7 +49,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Whether the role is a core WP role.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    bool
      */
@@ -58,7 +58,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Whether the role has caps (granted).
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    bool
      */
@@ -67,7 +67,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Capability count for the role.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    int
      */
@@ -76,7 +76,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Capability count for the role.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    int
      */
@@ -85,7 +85,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Array of capabilities that the role has.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    array
      */
@@ -94,7 +94,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Array of granted capabilities that the role has.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    array
      */
@@ -103,7 +103,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Array of denied capabilities that the role has.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @var    array
      */
@@ -112,7 +112,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Return the role string in attempts to use the object as a string.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @return string
      */
@@ -123,7 +123,7 @@ class Disciple_Tools_Multi_Role {
     /**
      * Creates a new role object.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @access public
      * @global object  $wp_roles
      * @param  string  $role

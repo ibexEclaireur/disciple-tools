@@ -4,7 +4,7 @@
  *
  * @package  Disciple_Tools
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    1.0.0
+ * @since    0.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
@@ -17,7 +17,7 @@ class Disciple_Tools_Assetmapping_Endpoints {
      * Disciple_Tools_Admin_Menus The single instance of Disciple_Tools_Admin_Menus.
      * @var     object
      * @access  private
-     * @since   0.1
+     * @since   0.1.0
      */
     private static $_instance = null;
 
@@ -40,7 +40,7 @@ class Disciple_Tools_Assetmapping_Endpoints {
     /**
      * Constructor function.
      * @access  public
-     * @since   0.1
+     * @since   0.1.0
      */
     public function __construct() {
 

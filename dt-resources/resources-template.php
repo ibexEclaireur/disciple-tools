@@ -4,7 +4,7 @@
  *
  * @package  Disciple_Tools
  * @category Plugin
- * @since    1.0.0
+ * @since    0.1.0
  */
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 

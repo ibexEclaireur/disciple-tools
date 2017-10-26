@@ -4,8 +4,8 @@
  * Disciple_Tools_Config class for the admin page
  *
  * @class      Disciple_Tools_Config
- * @version    1.0.0
- * @since      1.0.0
+ * @version    0.1.0
+ * @since      0.1.0
  * @package    Disciple.Tools
  * @author     Chasm.Solutions & Kingdom.Training
  */
@@ -25,7 +25,7 @@ final class Disciple_Tools_Config
      *
      * @var     object
      * @access    private
-     * @since     1.0.0
+     * @since     0.1.0
      */
     private static $_instance = null;
 
@@ -33,7 +33,7 @@ final class Disciple_Tools_Config
      * Disciple_Tools_Options_Menu Instance
      * Ensures only one instance of Disciple_Tools_Config_Menu is loaded or can be loaded.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      * @static
      * @return Disciple_Tools_Config instance
      */
@@ -50,7 +50,7 @@ final class Disciple_Tools_Config
      * Constructor function.
      *
      * @access  portal
-     * @since   1.0.0
+     * @since   0.1.0
      */
     public function __construct()
     {
@@ -67,7 +67,7 @@ final class Disciple_Tools_Config
     /**
      * Loads the subnav page
      *
-     * @since 1.0.0
+     * @since 0.1.0
      */
     public function add_dt_options_menu()
     {
@@ -87,7 +87,7 @@ final class Disciple_Tools_Config
     /**
      * Builds default options page with the tab bar and tab page content
      *
-     * @since 1.0.0
+     * @since 0.1.0
      */
     public function build_default_page()
     {

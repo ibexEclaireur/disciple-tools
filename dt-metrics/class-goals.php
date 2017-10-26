@@ -4,7 +4,7 @@
  * Disciple_Tools_Goals
  *
  * @class Disciple_Tools_Goals
- * @since 1.0.0
+ * @since 0.1.0
  * @package Disciple_Tools
  */
 
@@ -19,7 +19,7 @@ class Disciple_Tools_Goals {
     /**
      * Constructor function.
      * @access  public
-     * @since   1.0.0
+     * @since   0.1.0
      */
     public function __construct() {
 

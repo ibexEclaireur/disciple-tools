@@ -5,7 +5,7 @@
  * @package  Disciple_Tools
  * @category Plugin
  * @author   Chasm.Solutions & Kingdom.Training
- * @since    1.0.0
+ * @since    0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {
     exit;
@@ -239,7 +239,7 @@ class Disciple_Tools_Users
      * Get the base user for the system
      * You can call this function using dt_get_base_user( $id_only = false )
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param bool $id_only     (optional) Default is false and function returns entire WP_User object.
      *
@@ -249,7 +249,7 @@ class Disciple_Tools_Users
 
         // get base user id
         $base_user_id = dt_get_option( 'base_user' );
-        if ( empty( $base_user_id ) ) {
+        if ( ! $base_user_id ) {
             return new WP_Error( 'failed_to_get_base_user', 'Failed to get base user. dt_get_option( base_user ) failed.' );
         }
 

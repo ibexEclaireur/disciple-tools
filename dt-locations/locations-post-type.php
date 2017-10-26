@@ -7,7 +7,7 @@ if ( !defined( 'ABSPATH' ) ) {
  * Disciple Tools Post Type Class
  *
  * @author     Chasm.Solutions & Kingdom.Training
- * @since      1.0.0
+ * @since      0.1.0
  */
 class Disciple_Tools_Location_Post_Type
 {
@@ -15,7 +15,7 @@ class Disciple_Tools_Location_Post_Type
      * The post type token.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    string
      */
     public $post_type;
@@ -24,7 +24,7 @@ class Disciple_Tools_Location_Post_Type
      * The post type singular label.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    string
      */
     public $singular;
@@ -33,7 +33,7 @@ class Disciple_Tools_Location_Post_Type
      * The post type plural label.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    string
      */
     public $plural;
@@ -42,7 +42,7 @@ class Disciple_Tools_Location_Post_Type
      * The post type args.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    array
      */
     public $args;
@@ -51,7 +51,7 @@ class Disciple_Tools_Location_Post_Type
      * The taxonomies for this post type.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @var    array
      */
     public $taxonomies;
@@ -61,7 +61,7 @@ class Disciple_Tools_Location_Post_Type
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -69,7 +69,7 @@ class Disciple_Tools_Location_Post_Type
      * Main Disciple_Tools_Location_Post_Type Instance
      * Ensures only one instance of Disciple_Tools_Location_Post_Type is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @static
      * @return Disciple_Tools_Location_Post_Type instance
      */
@@ -86,7 +86,7 @@ class Disciple_Tools_Location_Post_Type
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {
@@ -198,16 +198,22 @@ class Disciple_Tools_Location_Post_Type
      *
      * @param $column_name
      */
-    public function register_custom_columns( $column_name )
+    public function register_custom_columns( $column_name, $post_id )
     {
 //        global $post;
 
         switch ( $column_name ) {
-            case 'WorldId':
+            case 'WorldID':
+                echo esc_attr( get_post_meta( $post_id, 'WorldID', true ) );
+                break;
+            case 'Cnty_Name':
+                echo esc_attr( get_post_meta( $post_id, 'Cnty_Name', true ) );
                 break;
             case 'Adm1_Name':
+                echo esc_attr( get_post_meta( $post_id, 'Adm1_Name', true ) );
                 break;
             case 'Adm2_Name':
+                echo esc_attr( get_post_meta( $post_id, 'Adm2_Name', true ) );
                 break;
             case 'Map':
                 break;
@@ -233,6 +239,7 @@ class Disciple_Tools_Location_Post_Type
         if ( get_option( '_dt_usa_installed_state' ) || get_option( '_dt_installed_country' ) ) {
             $new_columns =
                 [
+                    'Cnty_Name' => __( 'Country', 'disciple_tools' ),
                     'WorldID'   => __( 'WorldID', 'disciple_tools' ),
                     'Adm1_Name' => __( 'A1 Name', 'disciple_tools' ),
                     'Adm2_Name' => __( 'A2 Name', 'disciple_tools' ),
@@ -268,7 +275,7 @@ class Disciple_Tools_Location_Post_Type
     /**
      * Update messages for the post type admin.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      *
      * @param  array $messages Array of messages for all post types.
      *
@@ -308,14 +315,12 @@ class Disciple_Tools_Location_Post_Type
      * Setup the meta box.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return void
      */
     public function meta_box_setup()
     {
         add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
-        //		add_meta_box( $this->post_type . '_data', __( 'Location Details', 'disciple_tools' ), array( $this, 'load_details_meta_box' ), $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_address', __( 'Address', 'disciple_tools' ), [ $this, 'load_address_meta_box' ], $this->post_type, 'normal', 'low' );
         add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
     } // End meta_box_setup()
 
@@ -332,24 +337,9 @@ class Disciple_Tools_Location_Post_Type
      */
     public function load_map_meta_box()
     {
-        dt_map_metabox()->display_single_map();
+        dt_map_metabox()->display_location_map();
     }
 
-    /**
-     * Load activity metabox
-     */
-    //    public function load_details_meta_box () {
-    //        $this->meta_box_content('info');
-    //    }
-
-    /**
-     * Load address metabox
-     */
-    public function load_address_meta_box()
-    {
-        $this->meta_box_content( 'address' ); // prints
-        dt_address_metabox()->add_new_address_field(); // prints
-    }
 
     /**
      * The contents of our meta box.
@@ -526,7 +516,7 @@ class Disciple_Tools_Location_Post_Type
      * Get the settings for the custom fields.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      * @return array
      */
     public function get_custom_fields_settings()
@@ -548,6 +538,14 @@ class Disciple_Tools_Location_Post_Type
             }
         }
 
+        $fields['location_address'] = [
+            'name'        => 'Location Address ',
+            'description' => '',
+            'type'        => 'text',
+            'default'     => '',
+            'section'     => 'map',
+        ];
+
 
         return apply_filters( 'dt_custom_fields_settings', $fields );
     }
@@ -556,7 +554,7 @@ class Disciple_Tools_Location_Post_Type
      * Run on activation.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function activation()
     {
@@ -567,7 +565,7 @@ class Disciple_Tools_Location_Post_Type
      * Flush the rewrite rules
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private function flush_rewrite_rules()
     {

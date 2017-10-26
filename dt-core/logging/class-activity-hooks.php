@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class Disciple_Tools_Activity_Hooks
  *
- * @since  1.0.0
+ * @since  0.1.0
  */
 class Disciple_Tools_Activity_Hooks {
 
@@ -13,7 +13,7 @@ class Disciple_Tools_Activity_Hooks {
      *
      * @var    object
      * @access private
-     * @since  1.0.0
+     * @since  0.1.0
      */
     private static $_instance = null;
 
@@ -22,7 +22,7 @@ class Disciple_Tools_Activity_Hooks {
      *
      * Ensures only one instance of Disciple_Tools_Activity_Hooks is loaded or can be loaded.
      *
-     * @since  1.0.0
+     * @since  0.1.0
      * @return Disciple_Tools_Activity_Hooks instance
      */
     public static function instance() {

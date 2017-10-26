@@ -267,7 +267,7 @@ class Disciple_Tools_Locations_Import
     /**
      * Import US State Tracks.
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param $state
      *
@@ -353,7 +353,7 @@ class Disciple_Tools_Locations_Import
     /**
      * The box for deleting locations
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @return string
      */
@@ -384,7 +384,7 @@ class Disciple_Tools_Locations_Import
     /**
      * Delete all locations in database
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @return string
      */
@@ -411,7 +411,7 @@ class Disciple_Tools_Locations_Import
     /**
      * Import Omega Zone locations
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param $cnty_id
      * @param $admin
@@ -482,7 +482,7 @@ class Disciple_Tools_Locations_Import
     /**
      * @param $geojson
      *
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @return bool
      */
@@ -584,7 +584,7 @@ class Disciple_Tools_Locations_Import
     }
 
     /**
-     * @since 1.0.0
+     * @since 0.1.0
      *
      * @param $cnty_id
      *

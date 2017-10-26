@@ -4,8 +4,8 @@
  * Disciple Tools
  *
  * @class   Disciple_Tools_
- * @version 1.0.0
- * @since   1.0.0
+ * @version 0.1.0
+ * @since   0.1.0
  * @package Disciple_Tools
  *
  */
@@ -35,7 +35,7 @@ class Disciple_Tools_Metabox_Map
      * Constructor function.
      *
      * @access public
-     * @since  1.0.0
+     * @since  0.1.0
      */
     public function __construct()
     {
@@ -43,140 +43,80 @@ class Disciple_Tools_Metabox_Map
     } // End __construct()
 
     /**
-     * Load map metabox
+     * @param $post
+     * @param $location_address
+     *
+     * @return mixed
      */
-    public function display_single_map()
-    {
-        global $wpdb, $post;
+    public function install_google_coordinates( $post, $location_address ) {
 
-        // get coordinates for county
-        $results = $wpdb->get_results( $wpdb->prepare(
-            "SELECT
-                meta_key, meta_value
-            FROM
-                `$wpdb->postmeta`
-            WHERE
-                post_id = %s
-                AND (meta_key = 'coordinates' OR meta_key = 'Cen_x' OR meta_key = 'Cen_y')",
-            $post->ID
-        ) );
+        global $post;
 
-        $meta = [];
-        foreach ( $results as $result ) {
-            $meta[ $result->meta_key ] = $result->meta_value;
-        }
+        $query_object = Disciple_Tools_Google_Geolocation::query_google_api( $location_address );
 
-        if ( !empty( $meta ) ) {
-            ?>
+        $location = [];
+        $location['lat'] = $query_object->results[0]->geometry->location->lat;
+        $location['lng'] = $query_object->results[0]->geometry->location->lng;
+        $location['northeast_lat'] = $query_object->results[0]->geometry->bounds->northeast->lat;
+        $location['northeast_lng'] = $query_object->results[0]->geometry->bounds->northeast->lng;
+        $location['southwest_lat'] = $query_object->results[0]->geometry->bounds->southwest->lat;
+        $location['southwest_lng'] = $query_object->results[0]->geometry->bounds->southwest->lng;
 
-            <style>
-                /* Always set the map height explicitly to define the size of the div
-            * element that contains the map. */
-                #map {
-                    height: 450px;;
-                    width: 100%;
-                    /*max-width:1000px;*/
-                }
+        update_post_meta( $post->ID, 'location', $location );
+        update_post_meta( $post->ID, 'lat', $location['lat'] );
+        update_post_meta( $post->ID, 'lng', $location['lng'] );
+        update_post_meta( $post->ID, 'northeast_lat', $location['northeast_lat'] );
+        update_post_meta( $post->ID, 'northeast_lng', $location['northeast_lng'] );
+        update_post_meta( $post->ID, 'southwest_lat', $location['southwest_lat'] );
+        update_post_meta( $post->ID, 'southwest_lng', $location['southwest_lng'] );
+        update_post_meta( $post->ID, 'google_coordinates_installed', true );
 
-                /* Optional: Makes the sample page fill the window. */
-                html, body {
-                    height: 100%;
-                    margin: 0;
-                    padding: 0;
-                }
-
-            </style>
-            <div id="map"></div>
-            <script type="text/javascript">
-
-                jQuery(document).ready(function () {
-
-                    var zoom = 7;
-
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: zoom,
-                        center: {lat: <?php echo esc_js( (float) $meta['Cen_y'] ); ?>, lng: <?php echo esc_js( (float) $meta['Cen_x'] ); ?>},
-                        mapTypeId: 'terrain'
-                    });
-
-//                    // TODO getting invalid geojson result from movement_mapping
-//                    map.data.loadGeoJson(
-//                        'http://en/wp-json/mm/v1/install/getcountrybylevel?cnty_id=ABW&level=0');
-
-                    // Define the LatLng coordinates for the polygon's path.
-//                    var coords = <?php //echo $meta['coordinates'] ?>//;
-//
-//                    var tracts = [];
-//
-//                    for (i = 0; i < coords.length; i++) {
-//                        tracts.push(new google.maps.Polygon({
-//                            paths: coords[i],
-//                            strokeColor: '#FF0000',
-//                            strokeOpacity: 0.5,
-//                            strokeWeight: 2,
-//                            fillColor: '',
-//                            fillOpacity: 0.2
-//                        }));
-//
-//                        tracts[i].setMap(map);
-//                    }
-
-                });
-            </script>
-            <script
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcddCscCo-Uyfa3HJQVe0JdBaMCORA9eY">
-            </script>
-
-            <?php
-        } else {
-            echo '<p>No map info available</p>';
-        } // end if no results
-
+        return get_post_meta( $post->ID );
     }
 
     /**
      * Load map metabox
      */
-    public function display_map()
+    public function display_location_map()
     {
-        global $wpdb, $post;
+        global  $post;
+        $post_meta = get_post_meta( $post->ID );
 
-        // get coordinates for county
-        $result = $wpdb->get_results( $wpdb->prepare(
-            "SELECT
-                meta_key, meta_value
-            FROM
-                `$wpdb->postmeta`
-            WHERE
-                post_id = %s
-                AND meta_key LIKE %s",
-            $post->ID,
-            esc_like( "polygon_$post->post_content_filtered" ) . '%'
-        ) );
-        if ( count( $result ) > 0 ) {
+        echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
+        ?>
 
-            // build subsection
+        <input type="text" name="location_address" value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( $post->post_title );  ?>" />
+        <button type="submit">Update</button>
+        <hr>
+
+        <?php
+        $key = 'dt_locations_noonce';
+        if ( ( get_post_type() == 'locations' ) || isset( $_POST[ $key ] ) || wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
+            $location_address = isset( $post_meta['location_address'][0] ) ? $post_meta['location_address'][0] . ', ' . $post_meta['Cnty_Name'][0] : $post->post_title . ', ' . $post_meta['Cnty_Name'][0];
+            $post_meta = $this->install_google_coordinates( $post, $location_address );
+        }
+
+        if ( ! ( isset( $post_meta['google_coordinates_installed'] ) && $post_meta['google_coordinates_installed'] == true ) ) {
+
+            $location_address = isset( $post_meta['location_address'][0] ) ? $post_meta['location_address'][0] : $post->post_title . ', ' . $post_meta['Cnty_Name'][0];
+            $post_meta = $this->install_google_coordinates( $post, $location_address );
+
+        }
+
+        $lat = (float) $post_meta['lat'][0];
+        $lng = (float) $post_meta['lng'][0];
+        $northeast_lat = (float) $post_meta['northeast_lat'][0];
+        $northeast_lng = (float) $post_meta['northeast_lng'][0];
+        $southwest_lat = (float) $post_meta['southwest_lat'][0];
+        $southwest_lng = (float) $post_meta['southwest_lng'][0];
+
             ?>
-            <p><select name="select_tract" id="select_tract">
-            <option value="all">Select Subsection</option>
-            <?php foreach ( $result as $value ): ?>
-                <option value="<?php echo esc_attr( substr( $value->meta_key, 8 ) ); ?>"><?php echo esc_html( substr( $value->meta_key, 8 ) ); ?></option>
-            <?php endforeach; ?>
-            </select>
-            <a href="javascript:location.reload();">show all</a>
-            <span id="spinner"></span></p>
-            <?php
 
-            $meta = dt_get_coordinates_meta( $post->post_content_filtered );
-
-            ?>
-
-            <div id="search-response"></div>
             <style>
                 /* Always set the map height explicitly to define the size of the div
             * element that contains the map. */
                 #map {
-                    height: 450px;;
+                    height: 550px;
                     width: 100%;
                     /*max-width:1000px;*/
                 }
@@ -191,88 +131,76 @@ class Disciple_Tools_Metabox_Map
             </style>
             <div id="map"></div>
             <script type="text/javascript">
-
                 jQuery(document).ready(function () {
 
-                    var zoom = <?php echo intval( $meta['zoom'] ); ?>;
+                    let $mapDiv = jQuery('#map');
 
-                    var map = new google.maps.Map(document.getElementById('map'), {
-                        zoom: zoom,
-                        center: {lat: <?php echo esc_js( $meta['center_lat'] ); ?>, lng: <?php echo esc_js( $meta['center_lng'] ); ?>},
+                    let centerLat = <?php echo esc_attr( $lat ); ?>;
+                    let centerLng = <?php echo esc_attr( $lng ); ?>;
+                    let center = new google.maps.LatLng(centerLat, centerLng);
+
+                    let sw = new google.maps.LatLng(<?php echo esc_attr( $southwest_lat ); ?>, <?php echo esc_attr( $southwest_lng ); ?>);
+                    let ne = new google.maps.LatLng(<?php echo esc_attr( $northeast_lat ); ?>, <?php echo esc_attr( $northeast_lng ); ?>);
+                    let bounds = new google.maps.LatLngBounds(sw, ne);
+
+                    let mapDim = {height: $mapDiv.height(), width: $mapDiv.width()};
+
+                    let zoom = getBoundsZoomLevel(bounds, mapDim);
+
+                    let map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: zoom - 3,
+                        center: center,
                         mapTypeId: 'terrain'
                     });
 
-                    // Define the LatLng coordinates for the polygon's path.
-                    var coords = [ <?php
-                        $rows = count( $result );
-                        $i = 0;
-                    foreach ( $result as $value ) {
-                        echo esc_js( $value->meta_value );
-                        if ( $rows > $i + 1 ) {
-                            echo ',';
-                        }
-                        $i++;
-                    } ?> ];
 
-                    var tracts = [];
-
-                    for (i = 0; i < coords.length; i++) {
-                        tracts.push(new google.maps.Polygon({
-                            paths: coords[i],
-                            strokeColor: '#FF0000',
-                            strokeOpacity: 0.5,
-                            strokeWeight: 2,
-                            fillColor: '',
-                            fillOpacity: 0.2
-                        }));
-
-                        tracts[i].setMap(map);
-                    }
-
-                    jQuery('#select_tract').change(function () {
-                        jQuery('#spinner').prepend('<img src="<?php echo esc_url( disciple_tools()->plugin_img_url ); ?>spinner.svg" style="height:30px;" />');
-
-                        var tract = jQuery('#select_tract').val();
-                        var restURL = '<?php echo esc_js( get_rest_url( null, '/dt/v1/locations/getmapbygeoid' ) ); ?>';
-                        jQuery.post(restURL, {geoid: tract})
-                            .done(function (data) {
-                                jQuery('#spinner').html('');
-
-                                var map = new google.maps.Map(document.getElementById('map'), {
-                                    zoom: data.zoom,
-                                    center: {lng: data.lng, lat: data.lat},
-                                    mapTypeId: 'terrain'
-                                });
-
-                                // Define the LatLng coordinates for the polygon's path.
-                                var coords = [data.coordinates];
-
-                                var tracts = [];
-
-                                for (i = 0; i < coords.length; i++) {
-                                    tracts.push(new google.maps.Polygon({
-                                        paths: coords[i],
-                                        strokeColor: '#FF0000',
-                                        strokeOpacity: 0.5,
-                                        strokeWeight: 2,
-                                        fillColor: '',
-                                        fillOpacity: 0.2
-                                    }));
-
-                                    tracts[i].setMap(map);
-                                }
-                            });
+                    let marker = new google.maps.Marker({
+                        position: center,
+                        map: map,
                     });
+
+                    /**
+                     * @see https://stackoverflow.com/questions/6048975/google-maps-v3-how-to-calculate-the-zoom-level-for-a-given-bounds
+                     * @param bounds
+                     * @param mapDim
+                     * @returns {number}
+                     */
+                    function getBoundsZoomLevel(bounds, mapDim) {
+                        let WORLD_DIM = { height: 256, width: 256 };
+                        let ZOOM_MAX = 21;
+
+                        function latRad(lat) {
+                            let sin = Math.sin(lat * Math.PI / 180);
+                            let radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+                            return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+                        }
+
+                        function zoom(mapPx, worldPx, fraction) {
+                            return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
+                        }
+
+                        let ne = bounds.getNorthEast();
+                        let sw = bounds.getSouthWest();
+
+                        let latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
+
+                        let lngDiff = ne.lng() - sw.lng();
+                        let lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+
+                        let latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);
+                        let lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);
+
+                        return Math.min(latZoom, lngZoom, ZOOM_MAX);
+                    }
                 });
+
             </script>
             <script
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcddCscCo-Uyfa3HJQVe0JdBaMCORA9eY">
+                src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( dt_get_option( 'map_key' ) ); ?>">
             </script>
 
             <?php
-        } else {
-            echo '<p>No map info available</p>';
-        } // end if no results
 
     }
+
 }
