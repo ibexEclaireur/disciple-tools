@@ -498,6 +498,13 @@ class Disciple_Tools
         require_once( 'dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
         require_once( 'dt-core/logging/debug-logger.php' );
 
+
+        /**
+         * Workflows
+         */
+        require_once( 'dt-workflows/index.php' );
+        $this->workflows = Disciple_Tools_Workflows::instance();
+
         /**
          * Integrations
          */

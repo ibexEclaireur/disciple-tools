@@ -56,6 +56,7 @@ class Disciple_Tools_Reports_Cron
     {
 
         // Registers the daily report cron jobs
+//        @todo register on activation
         add_action( 'init', [ $this, 'register_daily_report_events' ] );
 
         // Adds action for Facebook report build

@@ -274,7 +274,17 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             update_post_meta( $contact_id, $field_id, $value );
         }
 
+        self::check_requires_update( $contact_id );
         return self::get_contact( $contact_id, true );
+    }
+
+    //check to see if the contact is marked as needing an update
+    //if yes: mark as updated
+    private static function check_requires_update( $contact_id ){
+        $requires_update = get_post_meta( $contact_id, "requires_update", true );
+        if ( $requires_update == "yes" ){
+            update_post_meta( $contact_id, "requires_update", "no" );
+        }
     }
 
     /**
@@ -1093,6 +1103,7 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             'comment_type'         => 'comment',
         ];
 
+        self::check_requires_update( $contact_id );
         return wp_new_comment( $comment_data );
     }
 
