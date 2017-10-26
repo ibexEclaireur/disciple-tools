@@ -446,8 +446,8 @@ class Disciple_Tools
         /**
          * dt-metrics
          */
-        require_once( 'dt-metrics/class-counter-factory.php' );
-        $this->counter = Disciple_Tools_Counter_Factory::instance();
+        require_once( 'dt-metrics/class-counter.php' );
+        $this->counter = Disciple_Tools_Counter::instance();
         require_once( 'dt-metrics/class-goals.php' );
         require_once( 'dt-metrics/metrics-template.php' );
         require_once( 'dt-metrics/metrics.php' );
