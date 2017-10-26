@@ -271,10 +271,18 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         }
 
         foreach ( $fields as $field_id => $value ) {
+//            Boolean contact field are stored as yes/no
+            if ( $value === true ){
+                $value = "yes";
+            } elseif ( $value === false ){
+                $value = "no";
+            }
             update_post_meta( $contact_id, $field_id, $value );
         }
 
-        self::check_requires_update( $contact_id );
+        if ( !isset( $fields["requires_update"] )){
+            self::check_requires_update( $contact_id );
+        }
         return self::get_contact( $contact_id, true );
     }
 
