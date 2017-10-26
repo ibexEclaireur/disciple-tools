@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 /**
  * Class Disciple_Tools_Counter_Generations
  */
-class Disciple_Tools_Counter_Generations  {
+class Disciple_Tools_Counter_Generations extends Disciple_Tools_Counter_Base  {
 
     /**
      * Constructor function.
@@ -19,7 +19,9 @@ class Disciple_Tools_Counter_Generations  {
      * @access public
      * @since  0.1.0
      */
-    public function __construct() { } // End __construct()
+    public function __construct() {
+        parent::__construct();
+    } // End __construct()
 
     /**
      * Counts the number of records at the supplied generation level
