@@ -370,7 +370,7 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         if ( !self::can_update( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( 'no_permission', __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
         $shared_with_list = [];
@@ -386,7 +386,11 @@ class Disciple_Tools_Posts
 
         // adds display name to the array
         foreach ( $shares as $share ) {
-            $share['display_name'] = dt_get_user_display_name( $share['user_id'] );
+            $display_name = dt_get_user_display_name( $share['user_id'] );
+            if ( is_wp_error( $display_name ) ) {
+                $display_name = 'Not Found';
+            }
+            $share['display_name'] = $display_name;
             $shared_with_list[] = $share;
         }
 

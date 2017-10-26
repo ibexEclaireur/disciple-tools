@@ -452,6 +452,36 @@ class Disciple_Tools_Notifications
         }
     }
 
+    /**
+     * Process post notifications for a user who has visited the post. This removes the new status for all notifications for this post
+     *
+     * @param $post_id
+     */
+    public static function process_new_notifications( $post_id )
+    {
+        global $wpdb;
+        $user_id = get_current_user_id();
+
+        // change new notifications to viewed
+        $results = $wpdb->update(
+            $wpdb->dt_notifications,
+            [
+                'is_new' => 0,
+            ],
+            [
+                'post_id' => $post_id,
+                'user_id' => $user_id,
+            ],
+            [
+                '%d'
+            ],
+            [
+                '%d',
+                '%d'
+            ]
+        );
+
+    }
 
 
 }
