@@ -492,9 +492,9 @@ class Disciple_Tools
         require_once( 'dt-core/logging/class-activity-hooks.php' ); // contacts and groups report building
         $this->logging_activity_hooks = Disciple_Tools_Activity_Hooks::instance();
         require_once( 'dt-core/logging/class-reports-api.php' );
-        $this->logging_report_api = new Disciple_Tools_Reports_API();
+        $this->logging_reports_api = new Disciple_Tools_Reports_API();
         require_once( 'dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
-        $this->logging_report_cron = Disciple_Tools_Reports_Cron::instance();
+        $this->logging_reports_cron = Disciple_Tools_Reports_Cron::instance();
         require_once( 'dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
         require_once( 'dt-core/logging/debug-logger.php' );
 

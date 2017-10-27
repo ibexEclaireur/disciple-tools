@@ -46,6 +46,8 @@ class Disciple_Tools_Reports_API
                 'report_date'      => date( 'Y-m-d' ),
                 'report_source'    => '',
                 'report_subsource' => '',
+                'focus'            => '',
+                'category'         => '',
                 'meta_input'       => [],
             ]
         );
@@ -63,10 +65,14 @@ class Disciple_Tools_Reports_API
                 WHERE
                     `report_date` = %s
                     AND `report_source` = %s
-                    AND `report_subsource` = %s",
+                    AND `report_subsource` = %s
+                    AND `focus` = %s
+                    AND `category` = %s",
                 $args['report_date'],
                 $args['report_source'],
-                $args['report_subsource']
+                $args['report_subsource'],
+                $args['focus'],
+                $args['category']
             )
         );
 
@@ -80,8 +86,10 @@ class Disciple_Tools_Reports_API
                 'report_date'      => $args['report_date'],
                 'report_source'    => $args['report_source'],
                 'report_subsource' => $args['report_subsource'],
+                'focus'            => $args['focus'],
+                'category'         => $args['category'],
             ],
-            [ '%s', '%s', '%s' ]
+            [ '%s', '%s', '%s', '%s', '%s' ]
         );
 
         $report_id = $wpdb->insert_id;
@@ -450,8 +458,8 @@ class Disciple_Tools_Reports_API
     public function get_last_value( $source, $meta_key, $subsource = '' )
     {
 
-//        global $wpdb;
-//        $today = date( 'Y-m-d' );
+        //        global $wpdb;
+        //        $today = date( 'Y-m-d' );
 
         if ( empty( $source ) || empty( $meta_key ) ) {
             return false;

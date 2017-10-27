@@ -64,10 +64,12 @@ class Disciple_Tools_Migration_0000 extends Disciple_Tools_Migration {
                 ) $charset_collate;",
             "{$wpdb->prefix}dt_reports" =>
                 "CREATE TABLE `{$wpdb->prefix}dt_reports` (
-                    `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                    `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                     `report_date` DATE NOT NULL,
                     `report_source` VARCHAR(55) NOT NULL,
                     `report_subsource` VARCHAR(100) NOT NULL,
+                    `focus` VARCHAR(25) DEFAULT NULL,
+                    `category` VARCHAR(25) DEFAULT NULL,
                     PRIMARY KEY (`id`)
             ) $charset_collate;",
             "{$wpdb->prefix}dt_reportmeta" =>
