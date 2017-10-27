@@ -270,8 +270,12 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
             $fields['accepted'] = 'no';
         }
 
+        if ( isset( $fields["reason_unassignable"] ) ){
+            $fields["overall_status"] = 'unassignable';
+        }
+
         foreach ( $fields as $field_id => $value ) {
-//            Boolean contact field are stored as yes/no
+            // Boolean contact field are stored as yes/no
             if ( $value === true ){
                 $value = "yes";
             } elseif ( $value === false ){
