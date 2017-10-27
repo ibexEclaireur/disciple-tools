@@ -3,8 +3,6 @@
  * Counts Misc Contacts numbers
  *
  * @package Disciple_Tools
- * @author  Chasm Solutions <chasm.crew@chasm.solutions>
- * @license GPL-3.0
  * @version 0.1.0
  */
 if ( !defined( 'ABSPATH' ) ) {

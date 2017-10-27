@@ -4,8 +4,6 @@
  * Counter factory for reporting
  *
  * @package Disciple_Tools
- * @author  Chasm Solutions <chasm.crew@chasm.solutions>
- * @license GPL-3.0
  * @version 0.1.0
  */
 
@@ -61,6 +59,8 @@ class Disciple_Tools_Counter
         require_once( 'counters/counter-baptism.php' );
         require_once( 'counters/counter-groups.php' );
         require_once( 'counters/counter-contacts.php' );
+        require_once( 'counters/counter-prayer.php' );
+        require_once( 'counters/counter-outreach.php' );
     } // End __construct
 
     /**
@@ -79,13 +79,13 @@ class Disciple_Tools_Counter
         switch ( $step_name ) {
 
             case 'prayer':
-                return 75000; // TODO: finish counter creation
+                return Disciple_Tools_Counter_Prayer::get_prayer_count( 'prayer_network' );
                 break;
             case 'social_engagement':
-                return 210000; // TODO: finish counter creation
+                return Disciple_Tools_Counter_Outreach::get_outreach_count( 'social_engagement' );
                 break;
             case 'website_visitors':
-                return 150000; // TODO: finish counter creation
+                return Disciple_Tools_Counter_Outreach::get_outreach_count( 'website_visitors' );
                 break;
             case 'new_contacts':
                 return Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts' );
