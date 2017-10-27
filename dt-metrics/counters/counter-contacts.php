@@ -170,6 +170,31 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                 return $query->found_posts;
                 break;
 
+            case 'church_planters':
+                /**
+                 * Definition: A church planter is a contact whom is coaching another contact and that 'coached' contact is in an active church.
+                 */
+                global $wpdb;
+                $result = $wpdb->get_var( "
+                    SELECT COUNT( DISTINCT p2p_to ) AS church_planters
+                    FROM $wpdb->p2p
+                    WHERE p2p_type = 'contacts_to_contacts'
+                          AND p2p_from IN (
+                                SELECT p2p_from as coached
+                                FROM $wpdb->p2p
+                                WHERE p2p_type = 'contacts_to_groups'
+                                    AND p2p_to IN (
+                                        SELECT post_id AS church 
+                                        FROM $wpdb->postmeta 
+                                        WHERE meta_key = 'group_status' 
+                                            AND meta_value = 'active_church'
+                                    )
+                                GROUP BY p2p_from
+                          )
+                    " );
+                return $result;
+                break;
+
             case 'uncountable':
                 $count = wp_count_posts( 'contacts' );
                 $other = $count->draft;
@@ -187,14 +212,6 @@ class Disciple_Tools_Counter_Contacts extends Disciple_Tools_Counter_Base
                 return $count;
                 break;
         }
-    }
-
-    /**
-     * Count of Current Church Planters
-     */
-    public function church_planters()
-    {
-        return 10; // TODO: This is just a placeholder
     }
 
 }

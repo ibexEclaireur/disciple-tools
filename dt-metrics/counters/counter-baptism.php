@@ -29,7 +29,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
      * @access public
      * @since  0.1.0
      */
-    public function get_number_of_baptisms() {
+    public static function get_number_of_baptisms() {
         global $wpdb;
 
         $results = $wpdb->get_var(
@@ -51,7 +51,7 @@ class Disciple_Tools_Counter_Baptism extends Disciple_Tools_Counter_Base  {
      * @access public
      * @since  0.1.0
      */
-    public function get_number_of_baptizers() {
+    public static function get_number_of_baptizers() {
         global $wpdb;
 
         $results = $wpdb->get_var(

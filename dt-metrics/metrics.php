@@ -68,7 +68,7 @@ class Disciple_Tools_Metrics
         // Check for transient cache first for speed
         $current = get_transient( 'dt_critical_path' );
         if ( empty( $current ) ) {
-            $current = Disciple_Tools_Counter::critical_path( 'full' );
+            $current = Disciple_Tools_Counter::critical_path();
             if ( is_wp_error( $current ) ) {
                 return $current;
             }
@@ -114,6 +114,7 @@ class Disciple_Tools_Metrics
             // Multiplication
             [ 'Baptisms', (int) $current['baptisms'], (int) $current['baptisms'] ],
             [ 'Baptizers', (int) $current['baptizers'], (int) $current['baptizers'] ],
+            [ 'Active Groups', (int) $current['active_groups'], (int) $current['active_groups'] ],
             [ 'Active Churches', (int) $current['active_churches'], (int) $current['active_churches'] ],
             [ 'Church Planters', (int) $current['church_planters'], (int) $current['church_planters'] ],
         ];
@@ -604,7 +605,7 @@ class Disciple_Tools_Metrics
             </tr>
             <tr>
                 <td>Published Contacts / New Inquirers</td>
-                <td><?php echo esc_html( $contacts_count->publish ); ?></td>
+<!--                <td>--><?php //echo esc_html( $contacts_count->publish ); ?><!--</td>-->
                 <td>Contact Established</td>
                 <td><?php echo esc_html( $contact_established ); ?></td>
             </tr>
