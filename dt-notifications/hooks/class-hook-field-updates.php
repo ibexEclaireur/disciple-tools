@@ -125,11 +125,11 @@ class Disciple_Tools_Notifications_Hook_Field_Updates extends Disciple_Tools_Not
                     // email notification
                     if ( dt_user_notification_is_enabled( 'new_email', $user_meta, $user->ID ) ) {
 
-                        $message = 'You have a new contact: '. strip_tags( get_the_title( $object_id ) ) .'. View the new contact at: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
+                        $message = 'You have been assigned a new contact: '. strip_tags( get_the_title( $object_id ) ) .'. View the new contact at: ' . home_url( '/' ) . get_post_type( $object_id ) . '/' . $object_id;
 
                         dt_send_email(
                             $user->user_email,
-                            'Disciple Tools: You have a new contact assigned!',
+                            'Disciple Tools: You have been assigned a new contact!',
                             $message
                         );
 

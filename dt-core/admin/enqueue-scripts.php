@@ -15,6 +15,7 @@ if ( !defined( 'ABSPATH' ) ) {
 
 add_action( 'admin_enqueue_scripts', 'dt_contact_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_group_page_scripts' );
+add_action( 'admin_enqueue_scripts', 'dt_dashboard_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_location_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_asset_page_scripts' );
 add_action( 'admin_enqueue_scripts', 'dt_dismiss_notice_callback_script' );
@@ -68,6 +69,28 @@ function dt_group_page_scripts()
 
         wp_register_style( 'jquery-ui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' );
         wp_enqueue_style( 'jquery-ui' );
+    }
+}
+
+/**
+ * Loads scripts and styles for the groups page.
+ */
+function dt_dashboard_page_scripts()
+{
+    global $pagenow;
+
+    if ( is_admin() && 'index.php' === $pagenow ) {
+
+        wp_enqueue_script( 'google-charts', 'https://www.gstatic.com/charts/loader.js', array(),  false );
+        wp_enqueue_script( 'dt_shared_scripts', disciple_tools()->plugin_js_url . 'dt-shared.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-shared.js' ), true );
+        wp_enqueue_script( 'dt_dashboard_scripts', disciple_tools()->plugin_js_url . 'dt-dashboard.js', [], filemtime( disciple_tools()->plugin_js_path . 'dt-dashboard.js' ), true );
+        wp_localize_script(
+            'dt_dashboard_scripts', 'wpApiDashboard', array(
+                'root' => esc_url_raw( rest_url() ),
+                'nonce' => wp_create_nonce( 'wp_rest' )
+            )
+        );
+
     }
 }
 

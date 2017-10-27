@@ -69,33 +69,15 @@ class Disciple_Tools_Counter
      *
      * @param string $step_name
      *
-     * @return int|array|WP_Error Returns the count of the critical path, if 'full' then an array of entire critical path, or returns WP_Error
+     * @return int|array
      */
-    public static function critical_path( string $step_name )
+    public static function critical_path( string $step_name = '' )
     {
 
         $step_name = strtolower( $step_name );
 
         switch ( $step_name ) {
-            case 'full':
-                return [
-                    // Prayer
-                    'prayer'               => self::critical_path( 'prayer' ),
-                    // Outreach
-                    'social_engagement'    => self::critical_path( 'social_engagement' ),
-                    'website_visitors'     => self::critical_path( 'website_visitors' ),
-                    // Follow-up
-                    'new_contacts'         => self::critical_path( 'new_contacts' ),
-                    'contacts_attempted'   => self::critical_path( 'contacts_attempted' ),
-                    'contacts_established' => self::critical_path( 'contacts_established' ),
-                    'first_meetings'       => self::critical_path( 'first_meetings' ),
-                    // Multiplication
-                    'baptisms'             => self::critical_path( 'baptisms' ),
-                    'baptizers'            => self::critical_path( 'baptizers' ),
-                    'active_churches'      => self::critical_path( 'active_churches' ),
-                    'church_planters'      => self::critical_path( 'church_planters' ),
-                ];
-                break;
+
             case 'prayer':
                 return 75000; // TODO: finish counter creation
                 break;
@@ -118,19 +100,39 @@ class Disciple_Tools_Counter
                 return Disciple_Tools_Counter_Contacts::get_contacts_count( 'first_meetings' );
                 break;
             case 'baptisms':
-                return 75; // TODO: finish counter creation
+                return Disciple_Tools_Counter_Baptism::get_number_of_baptisms();
                 break;
             case 'baptizers':
-                return 39; // TODO: finish counter creation
+                return Disciple_Tools_Counter_Baptism::get_number_of_baptizers();
+                break;
+            case 'active_groups':
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'active_groups' );
                 break;
             case 'active_churches':
-                return 6; // TODO: finish counter creation
+                return Disciple_Tools_Counter_Groups::get_groups_count( 'active_churches' );
                 break;
             case 'church_planters':
-                return 3; // TODO: finish counter creation
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'church_planters' );
                 break;
             default:
-                return new WP_Error( 'incorrect_string', 'Incorrect "step name" used. Check spelling' );
+                return [
+                    // Prayer
+                    'prayer'               => self::critical_path( 'prayer' ),
+                    // Outreach
+                    'social_engagement'    => self::critical_path( 'social_engagement' ),
+                    'website_visitors'     => self::critical_path( 'website_visitors' ),
+                    // Follow-up
+                    'new_contacts'         => self::critical_path( 'new_contacts' ),
+                    'contacts_attempted'   => self::critical_path( 'contacts_attempted' ),
+                    'contacts_established' => self::critical_path( 'contacts_established' ),
+                    'first_meetings'       => self::critical_path( 'first_meetings' ),
+                    // Multiplication
+                    'baptisms'             => self::critical_path( 'baptisms' ),
+                    'baptizers'            => self::critical_path( 'baptizers' ),
+                    'active_groups'        => self::critical_path( 'active_groups' ),
+                    'active_churches'      => self::critical_path( 'active_churches' ),
+                    'church_planters'      => self::critical_path( 'church_planters' ),
+                ];
                 break;
         }
     }
