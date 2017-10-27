@@ -9,12 +9,15 @@
  * @version 0.1.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
+if ( !defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly
 
 /**
  * Class Disciple_Tools_Counter_Factory
  */
-class Disciple_Tools_Counter_Factory {
+class Disciple_Tools_Counter
+{
 
     /**
      * Disciple_Tools_Counter_Factory The single instance of Disciple_Tools_Counter_Factory.
@@ -31,12 +34,14 @@ class Disciple_Tools_Counter_Factory {
      *
      * @since  0.1.0
      * @static
-     * @return Disciple_Tools_Counter_Factory
+     * @return Disciple_Tools_Counter
      */
-    public static function instance() {
+    public static function instance()
+    {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
         }
+
         return self::$_instance;
     } // End instance()
 
@@ -46,72 +51,87 @@ class Disciple_Tools_Counter_Factory {
      * @access public
      * @since  0.1.0
      */
-    public function __construct() {
+    public function __construct()
+    {
 
         // Load required files
+        require_once( 'counters/abstract-class-counter.php' );
         require_once( 'counters/counter-connected.php' );
         require_once( 'counters/counter-generations-status.php' );
         require_once( 'counters/counter-baptism.php' );
         require_once( 'counters/counter-groups.php' );
         require_once( 'counters/counter-contacts.php' );
-
     } // End __construct
 
     /**
-     * Returns count of contacts publish status
+     * Gets the critical path.
+     * The steps of the critical path can be called direction, or the entire array for the critical path can be called with 'full'.
      *
-     * @param string $status
+     * @param string $step_name
      *
-     * @return object
+     * @return int|array|WP_Error Returns the count of the critical path, if 'full' then an array of entire critical path, or returns WP_Error
      */
-    public function contacts_post_status( $status = '' ) {
+    public static function critical_path( string $step_name )
+    {
 
-        /**
-         * @usage disciple_tools()->counter->contacts_post_status()
-         * @returns array of status counts
-         *
-         * @usage disciple_tools()->counter->contacts_post_status('publish')
-         * @returns number count
-         */
+        $step_name = strtolower( $step_name );
 
-        $status = strtolower( $status );
-
-        switch ($status) {
-
-            case 'publish':
-                $count = wp_count_posts( 'contacts' );
-                $count = $count->publish;
-                return $count;
+        switch ( $step_name ) {
+            case 'full':
+                return [
+                    // Prayer
+                    'prayer'               => self::critical_path( 'prayer' ),
+                    // Outreach
+                    'social_engagement'    => self::critical_path( 'social_engagement' ),
+                    'website_visitors'     => self::critical_path( 'website_visitors' ),
+                    // Follow-up
+                    'new_contacts'         => self::critical_path( 'new_contacts' ),
+                    'contacts_attempted'   => self::critical_path( 'contacts_attempted' ),
+                    'contacts_established' => self::critical_path( 'contacts_established' ),
+                    'first_meetings'       => self::critical_path( 'first_meetings' ),
+                    // Multiplication
+                    'baptisms'             => self::critical_path( 'baptisms' ),
+                    'baptizers'            => self::critical_path( 'baptizers' ),
+                    'active_churches'      => self::critical_path( 'active_churches' ),
+                    'church_planters'      => self::critical_path( 'church_planters' ),
+                ];
                 break;
-
-            case 'draft':
-                $count = wp_count_posts( 'contacts' );
-                $count = $count->draft;
-                return $count;
+            case 'prayer':
+                return 75000; // TODO: finish counter creation
                 break;
-
-            case 'pending':
-                $count = wp_count_posts( 'contacts' );
-                $count = $count->pending;
-                return $count;
+            case 'social_engagement':
+                return 210000; // TODO: finish counter creation
                 break;
-
-            case 'private':
-                $count = wp_count_posts( 'contacts' );
-                $count = $count->private;
-                return $count;
+            case 'website_visitors':
+                return 150000; // TODO: finish counter creation
                 break;
-
-            case 'trash':
-                $count = wp_count_posts( 'contacts' );
-                $count = $count->trash;
-                return $count;
+            case 'new_contacts':
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'new_contacts' );
                 break;
-
+            case 'contacts_attempted':
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'contacts_attempted' );
+                break;
+            case 'contacts_established':
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'contacts_established' );
+                break;
+            case 'first_meetings':
+                return Disciple_Tools_Counter_Contacts::get_contacts_count( 'first_meetings' );
+                break;
+            case 'baptisms':
+                return 75; // TODO: finish counter creation
+                break;
+            case 'baptizers':
+                return 39; // TODO: finish counter creation
+                break;
+            case 'active_churches':
+                return 6; // TODO: finish counter creation
+                break;
+            case 'church_planters':
+                return 3; // TODO: finish counter creation
+                break;
             default:
-                return wp_count_posts( 'contacts' );
+                return new WP_Error( 'incorrect_string', 'Incorrect "step name" used. Check spelling' );
                 break;
-
         }
     }
 
@@ -123,17 +143,18 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return null|string
      */
-    public function connection_type_counter( $type, $meta_value ) {
+    public function connection_type_counter( $type, $meta_value )
+    {
         $type = $this->set_connection_type( $type );
         $count = new Disciple_Tools_Counter_Connected();
         $result = $count->has_meta_value( $type, $meta_value );
+
         return $result;
     }
 
     /**
      * Counts Contacts with matching $meta_key and $meta_value provided.
      * Used to retrieve the number of contacts that match the meta_key and meta_value supplied.
-     *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
      * @param $meta_key
@@ -141,15 +162,16 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return int
      */
-    public function contacts_meta_counter( $meta_key, $meta_value ) {
+    public function contacts_meta_counter( $meta_key, $meta_value )
+    {
         $query = new WP_Query( [ 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'contacts', ] );
+
         return $query->found_posts;
     }
 
     /**
      * Counts Contacts with matching $meta_key and $meta_value provided.
      * Used to retrieve the number of contacts that match the meta_key and meta_value supplied.
-     *
      * Example usage: How many contacts have the "unassigned" status? or How many contacts have a "Contact Attempted" status?
      *
      * @param $meta_key
@@ -157,8 +179,10 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return int
      */
-    public function groups_meta_counter( $meta_key, $meta_value ) {
+    public function groups_meta_counter( $meta_key, $meta_value )
+    {
         $query = new WP_Query( [ 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'post_type' => 'groups', ] );
+
         return $query->found_posts;
     }
 
@@ -169,8 +193,9 @@ class Disciple_Tools_Counter_Factory {
      *
      * @return null|string
      */
-    public function get_baptisms( $type ) {
-        switch ($type) {
+    public function get_baptisms( $type )
+    {
+        switch ( $type ) {
             case 'baptisms':
                 $count = new Disciple_Tools_Counter_Baptism();
                 $result = $count->get_number_of_baptisms();
@@ -183,6 +208,7 @@ class Disciple_Tools_Counter_Factory {
                 $result = '';
                 break;
         }
+
         return $result;
     }
 
@@ -190,15 +216,17 @@ class Disciple_Tools_Counter_Factory {
      * Contact generations counting factory
      *
      * @param         $generation_number 1,2,3 etc for generation number
-     * @param  string $type contacts or groups or baptisms
+     * @param  string $type              contacts or groups or baptisms
+     *
      * @return number
      */
-    public function get_generation( $generation_number, $type = 'contacts' ) {
+    public function get_generation( $generation_number, $type = 'contacts' )
+    {
 
         // Set the P2P type for selecting group or contacts
         $type = $this->set_connection_type( $type );
 
-        switch ($generation_number) {
+        switch ( $generation_number ) {
 
             case 'has_one_or_more':
                 $gen_object = new Disciple_Tools_Counter_Connected();
@@ -274,6 +302,7 @@ class Disciple_Tools_Counter_Factory {
                 $count = null;
                 break;
         }
+
         return $count;
     }
 
@@ -281,22 +310,24 @@ class Disciple_Tools_Counter_Factory {
      * Sets the p2p_type for the where statement
      *
      * @param  string = 'contacts' or 'groups' or 'baptisms'
+     *
      * @return string
      */
-    protected function set_connection_type( $type ) {
-        if ($type == 'contacts') {
+    protected function set_connection_type( $type )
+    {
+        if ( $type == 'contacts' ) {
             $type = 'contacts_to_contacts';
-        } elseif ($type == 'groups') {
+        } elseif ( $type == 'groups' ) {
             $type = 'groups_to_groups';
-        } elseif ($type == 'baptisms') {
+        } elseif ( $type == 'baptisms' ) {
             $type = 'baptizer_to_baptized';
-        } elseif ($type == 'participation') {
+        } elseif ( $type == 'participation' ) {
             $type = 'contacts_to_groups';
         } else {
             $type = '';
         }
+
         return $type;
     }
-
 
 }

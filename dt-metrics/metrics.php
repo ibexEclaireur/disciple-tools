@@ -58,6 +58,83 @@ class Disciple_Tools_Metrics
     } // End __construct()
 
     /**
+     * Get the critical path in an array
+     * This function builds the caching layer to the critical path data. Often this data will not change rapidly,
+     * so it a good candidate for transient caching
+     *
+     * @return array|WP_Error
+     */
+    public static function get_critical_path(): array {
+        // Check for transient cache first for speed
+        $current = get_transient( 'dt_critical_path' );
+        if ( empty( $current ) ) {
+            $current = Disciple_Tools_Counter::critical_path( 'full' );
+            if ( is_wp_error( $current ) ) {
+                return $current;
+            }
+            $current['timestamp'] = current_time( 'mysql' ); // add timestamp so that we can publish age of the data
+            set_transient( 'dt_critical_path', $current, 6 * HOUR_IN_SECONDS ); // transient is set to update every 6 hours. Average work day.
+        }
+        return $current;
+    }
+
+    /**
+     * Bundles the basic critical path numbers in a google chart format
+     *
+     * @param $check_permissions
+     *
+     * @return array|\WP_Error
+     */
+    public static function critical_path_chart_data( $check_permissions )
+    {
+
+        $current_user = get_current_user();
+        if ( $check_permissions && !self::can_view( 'critical_path', $current_user ) ) {
+            return new WP_Error( __FUNCTION__, __( "No permissions to read contact" ), [ 'status' => 403 ] );
+        }
+
+        // Check for transient cache
+        $current = self::get_critical_path();
+        if ( is_wp_error( $current ) ) {
+            return $current;
+        }
+
+        $report = [
+            [ 'Critical Path', 'Current', [ 'role' => 'annotation' ] ],
+            // Prayer
+            [ 'Prayers Network', (int) $current['prayer'], (int) $current['prayer'] ],
+            // Outreach
+            [ 'Social Engagement', (int) $current['social_engagement'], (int) $current['social_engagement'] ],
+            [ 'Website Visitors', (int) $current['website_visitors'], (int) $current['website_visitors'] ],
+            // Follow-up
+            [ 'New Contacts', (int) $current['new_contacts'], (int) $current['new_contacts'] ],
+            [ 'Contacts Attempted', (int) $current['contacts_attempted'], (int) $current['contacts_attempted'] ],
+            [ 'Contacts Established', (int) $current['contacts_established'], (int) $current['contacts_established'] ],
+            [ 'First Meetings', (int) $current['first_meetings'], (int) $current['first_meetings'] ],
+            // Multiplication
+            [ 'Baptisms', (int) $current['baptisms'], (int) $current['baptisms'] ],
+            [ 'Baptizers', (int) $current['baptizers'], (int) $current['baptizers'] ],
+            [ 'Active Churches', (int) $current['active_churches'], (int) $current['active_churches'] ],
+            [ 'Church Planters', (int) $current['church_planters'], (int) $current['church_planters'] ],
+        ];
+
+        if ( !empty( $report ) ) {
+            return [
+                'status' => true,
+                'data'   => [
+                    'chart' => $report,
+                    'timestamp' => $current['timestamp'],
+                    ]
+            ];
+        } else {
+            return [
+                'status'  => false,
+                'message' => 'Failed to build critical path data.',
+            ];
+        }
+    }
+
+    /**
      * @param $check_permissions
      *
      * @return array|\WP_Error
@@ -105,7 +182,7 @@ class Disciple_Tools_Metrics
      *
      * @return array|\WP_Error
      */
-    public static function critical_path_media( $check_permissions )
+    public static function critical_path_outreach( $check_permissions )
     {
 
         $current_user = get_current_user();
@@ -288,7 +365,12 @@ class Disciple_Tools_Metrics
     }
 
     /**
+     * TODO: Deprecate and Remove Functions Below
+     */
+
+    /**
      * System stats dashboard widget
+     * TODO: Deprecate and remove
      *
      * @since  0.1.0
      * @access public
@@ -379,6 +461,7 @@ class Disciple_Tools_Metrics
 
     /**
      * Movement funnel path dashboard widget
+     *TODO: Deprecate and remove
      *
      * @since  0.1.0
      * @access public
@@ -464,6 +547,7 @@ class Disciple_Tools_Metrics
 
     /**
      * Contacts stats widget
+     *TODO: Deprecate and remove
      *
      * @since  0.1.0
      * @access public
@@ -491,7 +575,6 @@ class Disciple_Tools_Metrics
         $con_5gen = '';//disciple_tools()->counter->get_generation('at_fifth');
 
         // Build counters
-        $contacts_count = disciple_tools()->counter->contacts_post_status();
         $unassigned = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'unassigned' );
 
         $assigned_inquirers = disciple_tools()->counter->contacts_meta_counter( 'overall_status', 'assigned' );
@@ -610,6 +693,7 @@ class Disciple_Tools_Metrics
 
     /**
      * Groups stats widget
+     * TODO: Deprecate and remove
      *
      * @since  0.1.0
      * @access public
@@ -729,6 +813,7 @@ class Disciple_Tools_Metrics
 
     /**
      * Baptism Generations stats dashboard widget
+     * TODO: Deprecate and remove
      *
      * @since  0.1.0
      * @access public

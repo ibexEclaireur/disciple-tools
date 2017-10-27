@@ -370,7 +370,7 @@ class Disciple_Tools_Posts
         global $wpdb;
 
         if ( !self::can_update( $post_type, $post_id ) ) {
-            return new WP_Error( __FUNCTION__, __( "You do not have permission for this" ), [ 'status' => 403 ] );
+            return new WP_Error( 'no_permission', __( "You do not have permission for this" ), [ 'status' => 403 ] );
         }
 
         $shared_with_list = [];
@@ -386,7 +386,11 @@ class Disciple_Tools_Posts
 
         // adds display name to the array
         foreach ( $shares as $share ) {
-            $share['display_name'] = dt_get_user_display_name( $share['user_id'] );
+            $display_name = dt_get_user_display_name( $share['user_id'] );
+            if ( is_wp_error( $display_name ) ) {
+                $display_name = 'Not Found';
+            }
+            $share['display_name'] = $display_name;
             $shared_with_list[] = $share;
         }
 
@@ -511,6 +515,14 @@ class Disciple_Tools_Posts
         }
     }
 
+    /**
+     * Get most recent activity for the field
+     *
+     * @param $post_id
+     * @param $field_key
+     *
+     * @return mixed
+     */
     public static function get_most_recent_activity_for_field( $post_id, $field_key ){
         global $wpdb;
         $most_recent_activity = $wpdb->get_results( $wpdb->prepare(
