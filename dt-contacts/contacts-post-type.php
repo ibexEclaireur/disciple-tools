@@ -638,7 +638,7 @@ class Disciple_Tools_Contact_Post_Type
                 'none'        => __( 'No Action', 'disciple_tools' ),
                 'attempted'   => __( 'Contact Attempted', 'disciple_tools' ),
                 'established' => __( 'Contact Established', 'disciple_tools' ),
-                'scheduled'   => __( 'Meeting Scheduled', 'disciple_tools' ),
+                'scheduled'   => __( 'First Meeting Scheduled', 'disciple_tools' ),
                 'met'         => __( 'First Meeting Complete', 'disciple_tools' ),
                 'ongoing'     => __( 'Ongoing Meetings', 'disciple_tools' ),
                 'coaching'    => __( 'Being Coached', 'disciple_tools' ),
