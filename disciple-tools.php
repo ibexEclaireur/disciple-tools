@@ -566,6 +566,7 @@ class Disciple_Tools
             require_once( 'dt-locations/admin-menu.php' );
             $this->location_tools = Disciple_Tools_Location_Tools_Menu::instance();
             require_once( 'dt-locations/class-import.php' ); // import class
+            require_once( 'dt-locations/metabox-map.php' ); // map metabox
 
             // People Groups
             require_once( 'dt-people-groups/admin-menu.php' );
@@ -582,7 +583,6 @@ class Disciple_Tools
             require_once( 'dt-core/logging/class-reports-list-table.php' ); // contacts and groups report building
 
             // Metaboxes
-            require_once( 'dt-core/admin/metaboxes/box-map.php' );
             require_once( 'dt-core/admin/metaboxes/box-activity.php' );
             require_once( 'dt-core/admin/metaboxes/box-share-contact.php' );
 

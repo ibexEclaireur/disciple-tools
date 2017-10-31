@@ -7,7 +7,6 @@
  * @version 0.1.0
  * @since   0.1.0
  * @package Disciple_Tools
- *
  */
 
 if ( !defined( 'ABSPATH' ) ) {
@@ -48,7 +47,8 @@ class Disciple_Tools_Metabox_Map
      *
      * @return mixed
      */
-    public function install_google_coordinates( $post, $location_address ) {
+    public function install_google_coordinates( $post, $location_address )
+    {
 
         global $post;
 
@@ -79,43 +79,48 @@ class Disciple_Tools_Metabox_Map
      */
     public function display_location_map()
     {
-        global  $post;
+        global $post, $pagenow;
         $post_meta = get_post_meta( $post->ID );
 
         echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
         ?>
 
-        <input type="text" name="location_address" value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( $post->post_title );  ?>" />
+        <input type="text" name="location_address"
+               value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( $post->post_title ); ?>"/>
         <button type="submit">Update</button>
         <hr>
 
         <?php
-        $key = 'dt_locations_noonce';
-        if ( ( get_post_type() == 'locations' ) || isset( $_POST[ $key ] ) || wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
-            $location_address = isset( $post_meta['location_address'][0] ) ? $post_meta['location_address'][0] : $post->post_title;
-            if (isset( $post_meta['Cnty_Name'][0] )){
-                $location_address .= ', ' . $post_meta['Cnty_Name'][0];
-            }
-            if ( $location_address){
+
+        if ( !( 'post-new.php' == $pagenow ) ) { // don't run on the post-new.php page
+
+            // check for post submission
+            $key = 'dt_locations_noonce';
+            if ( ( get_post_type() == 'locations' ) || isset( $_POST[ $key ] ) || wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
+
+                if ( isset( $post_meta['location_address'][0] ) && isset( $post_meta['Cnty_Name'][0] ) ) { // if the Ctry Name is built in.
+                    $location_address = $post_meta['location_address'][0] . ', ' . $post_meta['Cnty_Name'][0];
+                } elseif ( isset( $post_meta['location_address'][0] ) && !isset( $post_meta['Cnty_Name'][0] ) ) { // if the ctry name is not given
+                    $location_address = $post_meta['location_address'][0];
+                } else {
+                    $location_address = $post->post_title;
+                }
+
                 $post_meta = $this->install_google_coordinates( $post, $location_address );
-            } else {
-                return;
             }
-        }
 
-        if ( ! ( isset( $post_meta['google_coordinates_installed'] ) && $post_meta['google_coordinates_installed'] == true ) ) {
+            if ( !( isset( $post_meta['google_coordinates_installed'] ) && $post_meta['google_coordinates_installed'] == true ) ) {
 
-            $location_address = isset( $post_meta['location_address'][0] ) ? $post_meta['location_address'][0] : $post->post_title . ', ' . $post_meta['Cnty_Name'][0];
-            $post_meta = $this->install_google_coordinates( $post, $location_address );
+                $location_address = isset( $post_meta['location_address'][0] ) ? $post_meta['location_address'][0] : $post->post_title . ', ' . $post_meta['Cnty_Name'][0];
+                $post_meta = $this->install_google_coordinates( $post, $location_address );
+            }
 
-        }
-
-        $lat = (float) $post_meta['lat'][0];
-        $lng = (float) $post_meta['lng'][0];
-        $northeast_lat = (float) $post_meta['northeast_lat'][0];
-        $northeast_lng = (float) $post_meta['northeast_lng'][0];
-        $southwest_lat = (float) $post_meta['southwest_lat'][0];
-        $southwest_lng = (float) $post_meta['southwest_lng'][0];
+            $lat = (float) $post_meta['lat'][0];
+            $lng = (float) $post_meta['lng'][0];
+            $northeast_lat = (float) $post_meta['northeast_lat'][0];
+            $northeast_lng = (float) $post_meta['northeast_lng'][0];
+            $southwest_lat = (float) $post_meta['southwest_lat'][0];
+            $southwest_lng = (float) $post_meta['southwest_lng'][0];
 
             ?>
 
@@ -173,7 +178,7 @@ class Disciple_Tools_Metabox_Map
                      * @returns {number}
                      */
                     function getBoundsZoomLevel(bounds, mapDim) {
-                        let WORLD_DIM = { height: 256, width: 256 };
+                        let WORLD_DIM = {height: 256, width: 256};
                         let ZOOM_MAX = 21;
 
                         function latRad(lat) {
@@ -207,6 +212,7 @@ class Disciple_Tools_Metabox_Map
             </script>
 
             <?php
+        } // endif $pagenow match
 
     }
 
