@@ -92,8 +92,15 @@ class Disciple_Tools_Metabox_Map
         <?php
         $key = 'dt_locations_noonce';
         if ( ( get_post_type() == 'locations' ) || isset( $_POST[ $key ] ) || wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
-            $location_address = isset( $post_meta['location_address'][0] ) ? $post_meta['location_address'][0] . ', ' . $post_meta['Cnty_Name'][0] : $post->post_title . ', ' . $post_meta['Cnty_Name'][0];
-            $post_meta = $this->install_google_coordinates( $post, $location_address );
+            $location_address = isset( $post_meta['location_address'][0] ) ? $post_meta['location_address'][0] : $post->post_title;
+            if (isset( $post_meta['Cnty_Name'][0] )){
+                $location_address .= ', ' . $post_meta['Cnty_Name'][0];
+            }
+            if ( $location_address){
+                $post_meta = $this->install_google_coordinates( $post, $location_address );
+            } else {
+                return;
+            }
         }
 
         if ( ! ( isset( $post_meta['google_coordinates_installed'] ) && $post_meta['google_coordinates_installed'] == true ) ) {
