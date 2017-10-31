@@ -104,8 +104,8 @@ class Disciple_Tools_Metrics
             // Prayer
             [ 'Prayers Network', (int) $current['prayer'], (int) $current['prayer'] ],
             // Outreach
-            [ 'Social Engagement', (int) $current['social_engagement'], (int) $current['social_engagement'] ],
-            [ 'Website Visitors', (int) $current['website_visitors'], (int) $current['website_visitors'] ],
+//            [ 'Social Engagement', (int) $current['social_engagement'], (int) $current['social_engagement'] ], // TODO Disabled until counting strategy is defined.
+//            [ 'Website Visitors', (int) $current['website_visitors'], (int) $current['website_visitors'] ], // TODO Disabled until counting strategy is defined.
             // Follow-up
             [ 'New Contacts', (int) $current['new_contacts'], (int) $current['new_contacts'] ],
             [ 'Contacts Attempted', (int) $current['contacts_attempted'], (int) $current['contacts_attempted'] ],
