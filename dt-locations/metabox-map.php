@@ -98,10 +98,10 @@ class Disciple_Tools_Metabox_Map
             $key = 'dt_locations_noonce';
             if ( ( get_post_type() == 'locations' ) || isset( $_POST[ $key ] ) || wp_verify_nonce( sanitize_key( $_POST[ $key ] ), 'update_location_info' ) ) {
 
-                if ( isset( $post_meta[ 'location_address' ][ 0 ] ) && isset( $post_meta[ 'Cnty_Name' ][ 0 ] ) ) { // if the Ctry Name is built in.
-                    $location_address = $post_meta[ 'location_address' ][ 0 ] . ', ' . $post_meta[ 'Cnty_Name' ][ 0 ];
-                } elseif ( isset( $post_meta[ 'location_address' ][ 0 ] ) && !isset( $post_meta[ 'Cnty_Name' ][ 0 ] ) ) { // if the ctry name is not given
-                    $location_address = $post_meta[ 'location_address' ][ 0 ];
+                if ( isset( $post_meta['location_address'][0] ) && isset( $post_meta['Cnty_Name'][0] ) ) { // if the Ctry Name is built in.
+                    $location_address = $post_meta['location_address'][0] . ', ' . $post_meta['Cnty_Name'][0];
+                } elseif ( isset( $post_meta['location_address'][0] ) && !isset( $post_meta['Cnty_Name'][0] ) ) { // if the ctry name is not given
+                    $location_address = $post_meta['location_address'][0];
                 } else {
                     $location_address = $post->post_title;
                 }
