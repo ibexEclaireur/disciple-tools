@@ -119,6 +119,9 @@ class Disciple_Tools_Hook_Posts extends Disciple_Tools_Hook_Base {
         if ($meta_key == '_edit_lock' || $meta_key == '_edit_last' || $meta_key == "last_modified") { // ignore edit lock
             return;
         }
+        if ($parent_post["post_status"] === "auto-draft"){
+            return;
+        }
 
         if ( 'nav_menu_item' == $parent_post['post_type'] || 'attachment' == $parent_post['post_type'] ) { // ignore nav items
             return;
