@@ -179,8 +179,8 @@ class Disciple_Tools_Location_Post_Type
             'rewrite'               => $rewrite,
             'capabilities'          => $capabilities,
             'has_archive'           => true,
-            'hierarchical'          => false,
-            'supports'              => [ 'title', 'comments' ],
+            'hierarchical'          => true,
+            'supports'              => [ 'title', 'comments', 'page-attributes' ],
             'menu_position'         => 6,
             'menu_icon'             => 'dashicons-smiley',
             'show_in_rest'          => true,
@@ -200,22 +200,23 @@ class Disciple_Tools_Location_Post_Type
      */
     public function register_custom_columns( $column_name, $post_id )
     {
-//        global $post;
 
         switch ( $column_name ) {
-            case 'WorldID':
-                echo esc_attr( get_post_meta( $post_id, 'WorldID', true ) );
+            case 'location_address':
+                dt_write_log( 'location_address' );
+                echo esc_attr( get_post_meta( $post_id, 'location_address', true ) );
                 break;
-            case 'Cnty_Name':
-                echo esc_attr( get_post_meta( $post_id, 'Cnty_Name', true ) );
+            case 'location_parent':
+                dt_write_log( 'location_parent' );
+                echo esc_attr( get_post_meta( $post_id, 'location_parent', true ) );
                 break;
-            case 'Adm1_Name':
-                echo esc_attr( get_post_meta( $post_id, 'Adm1_Name', true ) );
+            case 'level':
+                dt_write_log( 'level' );
+                echo esc_attr( get_post_meta( $post_id, 'level', true ) );
                 break;
-            case 'Adm2_Name':
-                echo esc_attr( get_post_meta( $post_id, 'Adm2_Name', true ) );
-                break;
-            case 'Map':
+            case 'map':
+                dt_write_log( 'map' );
+                echo esc_attr( get_post_meta( $post_id, 'lat', true ) ) . ', ' . esc_attr( get_post_meta( $post_id, 'lng', true ) );
                 break;
 
             default:
@@ -233,21 +234,13 @@ class Disciple_Tools_Location_Post_Type
     public function register_custom_column_headings( $defaults )
     {
 
-        /* Determine if Zume/24:14/4K Geographic zones are installed.
-         * If so, then render columns for those grid systems. */
-        // TODO finish the if/then logic of having admin areas. The if/then controls if Zume/24:14/4K units are used, then show these columns, if not show other defaults.
-        if ( get_option( '_dt_usa_installed_state' ) || get_option( '_dt_installed_country' ) ) {
-            $new_columns =
-                [
-                    'Cnty_Name' => __( 'Country', 'disciple_tools' ),
-                    'WorldID'   => __( 'WorldID', 'disciple_tools' ),
-                    'Adm1_Name' => __( 'A1 Name', 'disciple_tools' ),
-                    'Adm2_Name' => __( 'A2 Name', 'disciple_tools' ),
-                    'Map'       => __( 'Map', 'disciple_tools' ),
-                ];
-        } else {
-            $new_columns = [];
-        }
+        $new_columns =
+        [
+            'location_address' => __( 'Address', 'disciple_tools' ),
+            'location_parent'  => __( 'Parent', 'disciple_tools' ),
+            'level'            => __( 'Level', 'disciple_tools' ),
+            'map'              => __( 'Map', 'disciple_tools' ),
+        ];
 
         $last_item = [];
 
@@ -320,8 +313,9 @@ class Disciple_Tools_Location_Post_Type
      */
     public function meta_box_setup()
     {
-        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'normal', 'high' );
-        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'normal', 'low' );
+        add_meta_box( $this->post_type . '_geocode', __( 'Geo-Code', 'disciple_tools' ), [ $this, 'geocode_metabox' ], $this->post_type, 'normal', 'high' );
+        add_meta_box( $this->post_type . '_map', __( 'Map', 'disciple_tools' ), [ $this, 'load_map_meta_box' ], $this->post_type, 'advanced', 'high' );
+        add_meta_box( $this->post_type . '_activity', __( 'Activity', 'disciple_tools' ), [ $this, 'load_activity_meta_box' ], $this->post_type, 'advanced', 'low' );
     } // End meta_box_setup()
 
     /**
@@ -337,7 +331,7 @@ class Disciple_Tools_Location_Post_Type
      */
     public function load_map_meta_box()
     {
-        dt_map_metabox()->display_location_map();
+        $this->display_location_map();
     }
 
 
@@ -547,6 +541,8 @@ class Disciple_Tools_Location_Post_Type
         ];
 
 
+
+
         return apply_filters( 'dt_custom_fields_settings', $fields );
     }
 
@@ -582,6 +578,202 @@ class Disciple_Tools_Location_Post_Type
         unset(
             $submenu['edit.php?post_type=locations'][10]
         );
+    }
+
+    /**
+     * @param $post
+     * @param $location_address
+     *
+     * @return mixed
+     */
+    public function install_google_coordinates( $post, $location_address )
+    {
+
+        global $post;
+
+        $query_object = Disciple_Tools_Google_Geolocation::query_google_api( $location_address );
+
+        $location = [];
+        $location['lat'] = $query_object->results[0]->geometry->location->lat;
+        $location['lng'] = $query_object->results[0]->geometry->location->lng;
+        $location['northeast_lat'] = $query_object->results[0]->geometry->bounds->northeast->lat;
+        $location['northeast_lng'] = $query_object->results[0]->geometry->bounds->northeast->lng;
+        $location['southwest_lat'] = $query_object->results[0]->geometry->bounds->southwest->lat;
+        $location['southwest_lng'] = $query_object->results[0]->geometry->bounds->southwest->lng;
+
+        update_post_meta( $post->ID, 'location', $location );
+        update_post_meta( $post->ID, 'lat', $location['lat'] );
+        update_post_meta( $post->ID, 'lng', $location['lng'] );
+        update_post_meta( $post->ID, 'northeast_lat', $location['northeast_lat'] );
+        update_post_meta( $post->ID, 'northeast_lng', $location['northeast_lng'] );
+        update_post_meta( $post->ID, 'southwest_lat', $location['southwest_lat'] );
+        update_post_meta( $post->ID, 'southwest_lng', $location['southwest_lng'] );
+
+        return get_post_meta( $post->ID );
+    }
+
+    /**
+     * Load map metabox
+     */
+    public function display_location_map()
+    {
+        global $post, $pagenow;
+        $post_meta = get_post_meta( $post->ID );
+
+        if ( ! ( 'post-new.php' == $pagenow ) ) { // don't run on the post-new.php page
+
+            // check for post submission
+            if ( ( get_post_type() == 'locations' && isset( $_POST['dt_locations_noonce'] ) && wp_verify_nonce( sanitize_key( $_POST['dt_locations_noonce'] ), 'update_location_info' ) ) ||
+                ( ! ( isset( $post_meta['lat'][0] ) && isset( $post_meta['lng'][0] ) ) ) )
+            {
+                $location_address = '';
+                if ( isset( $post_meta['location_address'][0] ) ) {
+                    $location_address = $post_meta['location_address'][0];
+                } elseif ( isset( $_POST['location_address'] ) ) {
+                    $location_address = sanitize_key( $_POST['location_address'] );
+                } else {
+                    return new WP_Error( 'no_meta_field_found', 'Did not find address in the location_addres meta-field.' );
+                }
+
+                $post_meta = $this->install_google_coordinates( $post, $location_address );
+            }
+
+
+            $lat = (float) $post_meta['lat'][0];
+            $lng = (float) $post_meta['lng'][0];
+            $northeast_lat = (float) $post_meta['northeast_lat'][0];
+            $northeast_lng = (float) $post_meta['northeast_lng'][0];
+            $southwest_lat = (float) $post_meta['southwest_lat'][0];
+            $southwest_lng = (float) $post_meta['southwest_lng'][0];
+
+            ?>
+
+            <style>
+                /* Always set the map height explicitly to define the size of the div
+            * element that contains the map. */
+                #map {
+                    height: 550px;
+                    width: 100%;
+                    /*max-width:1000px;*/
+                }
+
+                /* Optional: Makes the sample page fill the window. */
+                html, body {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                }
+
+            </style>
+            <div id="map"></div>
+            <script type="text/javascript">
+                jQuery(document).ready(function () {
+
+                    let $mapDiv = jQuery('#map');
+
+                    let centerLat = <?php echo esc_attr( $lat ); ?>;
+                    let centerLng = <?php echo esc_attr( $lng ); ?>;
+                    let center = new google.maps.LatLng(centerLat, centerLng);
+
+                    let sw = new google.maps.LatLng(<?php echo esc_attr( $southwest_lat ); ?>, <?php echo esc_attr( $southwest_lng ); ?>);
+                    let ne = new google.maps.LatLng(<?php echo esc_attr( $northeast_lat ); ?>, <?php echo esc_attr( $northeast_lng ); ?>);
+                    let bounds = new google.maps.LatLngBounds(sw, ne);
+
+                    let mapDim = {height: $mapDiv.height(), width: $mapDiv.width()};
+
+                    let zoom = getBoundsZoomLevel(bounds, mapDim);
+
+                    let map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: zoom - 3,
+                        center: center,
+                        mapTypeId: 'terrain'
+                    });
+
+
+                    let marker = new google.maps.Marker({
+                        position: center,
+                        map: map,
+                    });
+
+                    /**
+                     * @see https://stackoverflow.com/questions/6048975/google-maps-v3-how-to-calculate-the-zoom-level-for-a-given-bounds
+                     * @param bounds
+                     * @param mapDim
+                     * @returns {number}
+                     */
+                    function getBoundsZoomLevel(bounds, mapDim) {
+                        let WORLD_DIM = {height: 256, width: 256};
+                        let ZOOM_MAX = 21;
+
+                        function latRad(lat) {
+                            let sin = Math.sin(lat * Math.PI / 180);
+                            let radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
+                            return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
+                        }
+
+                        function zoom(mapPx, worldPx, fraction) {
+                            return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2);
+                        }
+
+                        let ne = bounds.getNorthEast();
+                        let sw = bounds.getSouthWest();
+
+                        let latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI;
+
+                        let lngDiff = ne.lng() - sw.lng();
+                        let lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360;
+
+                        let latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction);
+                        let lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction);
+
+                        return Math.min(latZoom, lngZoom, ZOOM_MAX);
+                    }
+                });
+
+            </script>
+            <script
+                src="https://maps.googleapis.com/maps/api/js?key=<?php echo esc_attr( dt_get_option( 'map_key' ) ); ?>">
+            </script>
+
+            <?php
+        } // endif $pagenow match
+    }
+
+    public function geocode_metabox() {
+        global $post;
+        $post_meta = get_post_meta( $post->ID );
+
+        echo '<input type="hidden" name="dt_locations_noonce" id="dt_locations_noonce" value="' . esc_attr( wp_create_nonce( 'update_location_info' ) ) . '" />';
+        ?>
+        <table class="widefat striped">
+            <tr>
+                <td><label for="location_address">Address: </label></td>
+                <td><input type="text" id="location_address" name="location_address"
+                           value="<?php isset( $post_meta['location_address'][0] ) ? print esc_attr( $post_meta['location_address'][0] ) : print esc_attr( '' ); ?>"
+                           required/>
+                </td>
+            </tr>
+<!--            <tr>-->
+<!--                <td><label for="parent_location">Parent Location: </label></td>-->
+<!--                <td><select name="parent_location" id="parent_location">-->
+<!--                        <option>Select</option>-->
+<!--                        --><?php
+//                        $results = new WP_Query( [ 'post_type' => 'locations', 'orderby' => 'post_title', 'order' => 'ASC' ] );
+//                        foreach ( $results->posts as $result ) {
+//                            echo '<option value="' . $result->ID . '">' . $result->post_title . '</option>';
+//                        }
+//                        ?>
+<!--                    </select>-->
+<!--                </td>-->
+<!--            </tr>-->
+            <tr>
+                <td></td>
+                <td><button type="submit" class="button small right">Update</button></td>
+            </tr>
+
+        </table>
+
+        <?php
     }
 
 }
