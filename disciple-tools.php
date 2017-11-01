@@ -320,6 +320,7 @@ class Disciple_Tools
         $wpdb->dt_notifications = $wpdb->prefix . 'dt_notifications';
         /* End prep variables */
 
+        require_once( 'dt-core/logging/debug-logger.php' ); // enables dt_write_log for debug output.
         require_once( 'dt-core/admin/config-site-defaults.php' ); // Force required site configurations
         require_once( 'dt-core/wp-async-request.php' ); // Async Task Processing
 
@@ -496,7 +497,6 @@ class Disciple_Tools
         require_once( 'dt-core/logging/class-reports-cron.php' ); // Cron scheduling for nightly builds of reports
         $this->logging_reports_cron = Disciple_Tools_Reports_Cron::instance();
         require_once( 'dt-core/logging/class-reports-dt.php' ); // contacts and groups report building
-        require_once( 'dt-core/logging/debug-logger.php' );
 
 
         /**
@@ -526,7 +526,7 @@ class Disciple_Tools
             require 'dt-core/libraries/plugin-update-checker/plugin-update-checker.php';
         }
         $my_update_checker = Puc_v4_Factory::buildUpdateChecker(
-            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools/master/dt-core/version-updater.json',
+            'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-version-control/master/disciple-tools-plugin-version-control.json',
             __FILE__,
             'disciple-tools'
         );
