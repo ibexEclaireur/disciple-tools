@@ -302,7 +302,7 @@ class Disciple_Tools
          * Prepare variables
          */
         $this->token = 'disciple_tools';
-        $this->version = '0.1.0';
+        $this->version = '0.1.1';
         $this->migration_number = 0;
         $this->plugin_url = plugin_dir_url( __FILE__ );
         $this->plugin_path = plugin_dir_path( __FILE__ );
