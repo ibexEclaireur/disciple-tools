@@ -3,7 +3,7 @@
  * Plugin Name: Disciple Tools
  * Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Description: Disciple Tools is a disciple relationship management system for disciple making movements. The plugin is the core of the system. It is intended to work with the Disciple Tools Theme, and Disciple Tools extension plugins.
- * Version:  0.1.0
+ * Version:  0.1.1
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools
  * Requires at least: 4.7.0
