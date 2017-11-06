@@ -1,19 +1,19 @@
 {
   "name": "Disciple Tools",
-  "version": "0.1.1",
-  "download_url": "https://github.com/DiscipleTools/disciple-tools/releases/download/0.1.1/disciple-tools.zip",
+  "version": "0.1.2",
+  "download_url": "https://github.com/DiscipleTools/disciple-tools/releases/download/0.1.2/disciple-tools.zip",
 
   "homepage": "https://disciple.tools/",
   "requires": "4.5",
   "tested": "4.8",
-  "last_updated": "2017-11-05 16:17:00",
-  "upgrade_notice": "This is our private alpha release candidate.",
+  "last_updated": "2017-11-06 16:17:00",
+  "upgrade_notice": "This update comments back the locations section, corrects the critical path, and cleans up the config section.",
 
   "author": "Disciple Tools",
   "author_homepage": "https://disciple.tools",
 
   "sections": {
-    "description": "(Required) Plugin description. Basic HTML can be used in all sections.",
+    "description": "(Required) A disciple making coalition management system.",
     "installation": "(Recommended) Installation instructions.",
     "changelog": "(Recommended) Changelog. <p>This section will be displayed by default when the user clicks 'View version x.y.z details'.</p>",
     "custom_section": "This is a custom section labeled 'Custom Section'."
