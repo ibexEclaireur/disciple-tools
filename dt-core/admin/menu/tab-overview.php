@@ -29,42 +29,19 @@ class Disciple_Tools_Overview_Tab
 
         /* Box */
         echo '<table class="widefat striped">
-                    <thead><th>Getting Started</th></thead>
+                    <thead><th>Welcome to Disciple Tools</th></thead>
                     <tbody><tr><td>';
 
 
         echo '</td></tr></tbody></table><br>';
         /* End Box */
 
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Configurations</th></thead>
-                    <tbody><tr><td>';
-
-
-        echo '</td></tr></tbody></table><br>';
-        /* End Box */
-
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Help</th></thead>
-                    <tbody><tr><td>';
-
-
-        echo '</td></tr></tbody></table>';
-        /* End Box */
 
         /* End Main Column */
         echo '</div><!-- end post-body-content --><div id="postbox-container-1" class="postbox-container">';
         /* Right Column */
 
-        /* Box */
-        echo '<table class="widefat striped">
-                    <thead><th>Instructions</th></thead>
-                    <tbody><tr><td>';
 
-        echo '</td></tr></tbody></table>';
-        /* End Box */
 
         /* End Right Column*/
         echo '</div><!-- postbox-container 1 --><div id="postbox-container-2" class="postbox-container">';

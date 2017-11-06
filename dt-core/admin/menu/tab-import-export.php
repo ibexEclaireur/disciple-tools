@@ -33,6 +33,8 @@ class Disciple_Tools_Import_Export_Tab
                     <thead><th>Import Disciple Tools Data</th></thead>
                     <tbody><tr><td>';
 
+        echo '(Planned)';
+
         echo '</td></tr></tbody></table><br>';
         /* End Box */
 
@@ -41,6 +43,8 @@ class Disciple_Tools_Import_Export_Tab
                     <thead><th>Export Disciple Tools Data</th></thead>
                     <tbody><tr><td>';
 
+        echo '(Planned)';
+
         echo '</td></tr></tbody></table><br>';
         /* End Box */
 
@@ -48,6 +52,8 @@ class Disciple_Tools_Import_Export_Tab
         echo '<table class="widefat striped">
                     <thead><th>Delete Disciple Tools Data</th></thead>
                     <tbody><tr><td>';
+
+        echo '(Planned)';
 
         echo '</td></tr></tbody></table><br>';
         /* End Box */
@@ -60,6 +66,8 @@ class Disciple_Tools_Import_Export_Tab
         echo '<table class="widefat striped">
                     <thead><th>Instructions</th></thead>
                     <tbody><tr><td>';
+
+        echo '(Planned)';
 
         echo '</td></tr></tbody></table><br>';
         /* End Box */

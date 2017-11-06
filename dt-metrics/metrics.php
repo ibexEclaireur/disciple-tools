@@ -102,7 +102,7 @@ class Disciple_Tools_Metrics
         $report = [
             [ 'Critical Path', 'Current', [ 'role' => 'annotation' ] ],
             // Prayer
-            [ 'Prayers Network', (int) $current['prayer'], (int) $current['prayer'] ],
+//            [ 'Prayers Network', (int) $current['prayer'], (int) $current['prayer'] ], // TODO Disabled until counting strategy is defined.
             // Outreach
 //            [ 'Social Engagement', (int) $current['social_engagement'], (int) $current['social_engagement'] ], // TODO Disabled until counting strategy is defined.
 //            [ 'Website Visitors', (int) $current['website_visitors'], (int) $current['website_visitors'] ], // TODO Disabled until counting strategy is defined.
