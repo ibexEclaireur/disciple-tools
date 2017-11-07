@@ -442,6 +442,75 @@ class Disciple_Tools_Roles
             ]
         );
 
+        if ( get_role( 'dt_admin' ) ) {
+            remove_role( 'dt_admin' );
+        }
+        add_role(
+            'dt_admin', __( 'DT Admin' ),
+            [
+                'read'                      => true,
+                'level_0'                   => true,
+
+                /* Manage DT Options */
+                'manage_dt'                 => true, // key capability for wp-admin dt administration
+                'edit_users'                => true,
+                'create_users'              => true,
+                'delete_users'              => true,
+                'list_users'                => true,
+                'moderate_comments'         => true,
+
+                /* Add custom caps for contacts */
+                'access_contacts'           => true,
+                'create_contacts'           => true,  //create a new contact
+                'update_shared_contacts'    => true,
+                'view_any_contacts'         => true,    //view any contacts
+                'assign_any_contacts'       => true,  //assign contacts to others
+                'update_any_contacts'       => true,  //update any contacts
+                'delete_any_contacts'       => true,  //delete any contacts
+
+                /* Add custom caps for groups */
+                'access_groups'             => true,
+                'create_groups'             => true,
+                'view_any_groups'           => true,    //view any groups
+                'assign_any_groups'         => true,  //assign groups to others
+                'update_any_groups'         => true,  //update any groups
+                'delete_any_groups'         => true,  //delete any groups
+
+                /* Add custom caps for locations */
+                'read_location'             => true,
+                'edit_location'             => true,
+                'delete_location'           => true,
+                'delete_others_locations'   => true,
+                'delete_locations'          => true,
+                'edit_locations'            => true,
+                'edit_others_locations'     => true,
+                'publish_locations'         => true,
+                'read_private_locations'    => true,
+
+                /* Add custom caps for resources */
+                'read_resource'             => true,
+                'edit_resource'             => true,
+                'delete_resource'           => true,
+                'delete_others_resource'    => true,
+                'delete_resources'          => true,
+                'edit_resources'            => true,
+                'edit_others_resource'      => true,
+                'publish_resource'          => true,
+                'read_private_resources'    => true,
+                /* Add custom caps for people groups */
+                'read_peoplegroup'          => true,
+                'edit_peoplegroup'          => true,
+                'delete_peoplegroup'        => true,
+                'delete_others_peoplegroup' => true,
+                'delete_peoplegroups'       => true,
+                'edit_peoplegroups'         => true,
+                'edit_others_peoplegroup'   => true,
+                'publish_peoplegroup'       => true,
+                'read_private_peoplegroups' => true,
+
+            ]
+        );
+
         if ( get_role( 'multiplier' ) ) {
             remove_role( 'multiplier' );
         }

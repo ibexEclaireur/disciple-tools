@@ -65,7 +65,7 @@ class Disciple_Tools_Location_Tools_Menu
      */
     public function load_admin_menu_item()
     {
-        add_submenu_page( 'edit.php?post_type=locations', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_options', 'disciple_tools_locations', [ $this, 'page_content' ] );
+        add_submenu_page( 'edit.php?post_type=locations', __( 'Import', 'disciple_tools' ), __( 'Import', 'disciple_tools' ), 'manage_dt', 'disciple_tools_locations', [ $this, 'page_content' ] );
     }
 
     /**
@@ -76,7 +76,7 @@ class Disciple_Tools_Location_Tools_Menu
     public function page_content()
     {
 
-        if ( !current_user_can( 'manage_options' ) ) {
+        if ( !current_user_can( 'manage_dt' ) ) {
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.' ) );
         }
 
