@@ -310,8 +310,7 @@ class Disciple_Tools_Posts
             }
         }
 
-        $total = $posts->found_posts + sizeof( $shared_with_user );
-        return ["total" => $total, "posts" => $compact ];
+        return $compact;
     }
 
     /**
