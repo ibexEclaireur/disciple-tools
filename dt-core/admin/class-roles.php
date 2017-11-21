@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 5;
+    private static $target_roles_version_number = 6;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -468,6 +468,18 @@ class Disciple_Tools_Roles
                 'update_any_contacts'       => true,  //update any contacts
                 'delete_any_contacts'       => true,  //delete any contacts
 
+                /* Add wp-admin caps for contacts */
+                'edit_contact'               => true,
+                'read_contact'               => true,
+                'delete_contact'             => true,
+                'delete_others_contacts'     => true,
+                'delete_contacts'            => true,
+                'edit_contacts'              => true,
+                'edit_team_contacts'         => true,
+                'edit_others_contacts'       => true,
+                'publish_contacts'           => true,
+                'read_private_contacts'      => true,
+
                 /* Add custom caps for groups */
                 'access_groups'             => true,
                 'create_groups'             => true,
@@ -475,6 +487,18 @@ class Disciple_Tools_Roles
                 'assign_any_groups'         => true,  //assign groups to others
                 'update_any_groups'         => true,  //update any groups
                 'delete_any_groups'         => true,  //delete any groups
+
+                /* Add wp-admin caps for groups */
+                'edit_group'                 => true,
+                'read_group'                 => true,
+                'delete_group'               => true,
+                'delete_others_groups'       => true,
+                'delete_groups'              => true,
+                'edit_groups'                => true,
+                'edit_others_groups'         => true,
+                'publish_groups'             => true,
+                'read_private_groups'        => true,
+
 
                 /* Add custom caps for locations */
                 'read_location'             => true,
@@ -497,6 +521,7 @@ class Disciple_Tools_Roles
                 'edit_others_resource'      => true,
                 'publish_resource'          => true,
                 'read_private_resources'    => true,
+
                 /* Add custom caps for people groups */
                 'read_peoplegroup'          => true,
                 'edit_peoplegroup'          => true,
@@ -586,6 +611,19 @@ class Disciple_Tools_Roles
             $role->add_cap( 'assign_any_contacts' );
             $role->add_cap( 'update_any_contacts' );
             $role->add_cap( 'delete_any_contacts' );
+
+            /* Add WP-Admin caps for contacts */
+            $role->add_cap( 'edit_contact' );
+            $role->add_cap( 'read_contact' );
+            $role->add_cap( 'delete_contact' );
+            $role->add_cap( 'delete_others_contacts' );
+            $role->add_cap( 'delete_contacts' );
+            $role->add_cap( 'edit_contacts' );
+            $role->add_cap( 'edit_team_contacts' );
+            $role->add_cap( 'edit_others_contacts' );
+            $role->add_cap( 'publish_contacts' );
+            $role->add_cap( 'read_private_contacts' );
+
             /* Add Groups permissions */
             $role->add_cap( 'access_groups' );
             $role->add_cap( 'create_groups' );
@@ -595,6 +633,18 @@ class Disciple_Tools_Roles
             $role->add_cap( 'assign_any_groups' );
             $role->add_cap( 'update_any_groups' );
             $role->add_cap( 'delete_any_groups' );
+
+            /* Add WP-Admin caps for groups */
+            $role->add_cap( 'edit_group' );
+            $role->add_cap( 'read_group' );
+            $role->add_cap( 'delete_group' );
+            $role->add_cap( 'delete_others_groups' );
+            $role->add_cap( 'delete_groups' );
+            $role->add_cap( 'edit_groups' );
+            $role->add_cap( 'edit_others_groups' );
+            $role->add_cap( 'publish_groups' );
+            $role->add_cap( 'read_private_groups' );
+
             /* Add Prayer permissions*/
             $role->add_cap( 'edit_prayer' );
             $role->add_cap( 'read_prayer' );
