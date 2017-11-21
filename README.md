@@ -16,6 +16,10 @@ We are building on the Wordpress platform because of its open-source availabilit
 
 Don't forget, we have a [wiki for Disciple Tools](https://github.com/DiscipleTools/disciple-tools/wiki).
 
+## Support
+
+If you need support, email us at supportXXXdisciple.tools, replacing XXX with the @ symbol. You can also read articles in our knowledge base at http://help.disciple.tools.
+
 ---
 
 ## How to Install
