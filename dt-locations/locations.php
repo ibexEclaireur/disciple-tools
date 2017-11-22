@@ -52,6 +52,7 @@ class Disciple_Tools_Locations
             'post_type' => 'locations',
             'orderby'   => 'ID',
             's'         => $search,
+            'posts_per_page' => 30,
         ];
         $query = new WP_Query( $query_args );
         $list = [];
@@ -59,7 +60,7 @@ class Disciple_Tools_Locations
             $list[] = [ "ID" => $post->ID, "name" => $post->post_title ];
         }
 
-        return $list;
+        return [ "total" => $query->found_posts, "posts" => $list ];
     }
 
     /**
