@@ -75,7 +75,7 @@ class Disciple_Tools_Assetmapping_Post_Type
      *
      * @since  0.1.0
      * @static
-     * @return Disciple_Tools_Asset_Mapping_Post_Type instance
+     * @return Disciple_Tools_Assetmapping_Post_Type instance
      */
     public static function instance()
     {
@@ -163,10 +163,10 @@ class Disciple_Tools_Assetmapping_Post_Type
             'edit_post'           => 'edit_assetmapping',
             'read_post'           => 'read_assetmapping',
             'delete_post'         => 'delete_assetmapping',
-            'delete_others_posts' => 'delete_others_assetmapping',
+            'delete_others_posts' => 'delete_others_assetmappings',
             'delete_posts'        => 'delete_assetmappings',
             'edit_posts'          => 'edit_assetmappings',
-            'edit_others_posts'   => 'edit_others_assetmapping',
+            'edit_others_posts'   => 'edit_others_assetmappings',
             'publish_posts'       => 'publish_assetmappings',
             'read_private_posts'  => 'read_private_assetmappings',
         ];

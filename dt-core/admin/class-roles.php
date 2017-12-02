@@ -23,7 +23,7 @@ class Disciple_Tools_Roles
      *
      * @var int
      */
-    private static $target_roles_version_number = 6;
+    private static $target_roles_version_number = 7;
 
     /**
      * The single instance of Disciple_Tools_Roles
@@ -499,7 +499,6 @@ class Disciple_Tools_Roles
                 'publish_groups'             => true,
                 'read_private_groups'        => true,
 
-
                 /* Add custom caps for locations */
                 'read_location'             => true,
                 'edit_location'             => true,
@@ -511,26 +510,15 @@ class Disciple_Tools_Roles
                 'publish_locations'         => true,
                 'read_private_locations'    => true,
 
-                /* Add custom caps for resources */
-                'read_resource'             => true,
-                'edit_resource'             => true,
-                'delete_resource'           => true,
-                'delete_others_resource'    => true,
-                'delete_resources'          => true,
-                'edit_resources'            => true,
-                'edit_others_resource'      => true,
-                'publish_resource'          => true,
-                'read_private_resources'    => true,
-
                 /* Add custom caps for people groups */
                 'read_peoplegroup'          => true,
                 'edit_peoplegroup'          => true,
                 'delete_peoplegroup'        => true,
-                'delete_others_peoplegroup' => true,
+                'delete_others_peoplegroups' => true,
                 'delete_peoplegroups'       => true,
                 'edit_peoplegroups'         => true,
-                'edit_others_peoplegroup'   => true,
-                'publish_peoplegroup'       => true,
+                'edit_others_peoplegroups'   => true,
+                'publish_peoplegroups'       => true,
                 'read_private_peoplegroups' => true,
 
             ]
@@ -655,6 +643,7 @@ class Disciple_Tools_Roles
             $role->add_cap( 'edit_others_prayers' );
             $role->add_cap( 'publish_prayers' );
             $role->add_cap( 'read_private_prayers' );
+
             /* Add Progress permissions */
             $role->add_cap( 'edit_progress' );
             $role->add_cap( 'read_progress' );
@@ -665,6 +654,7 @@ class Disciple_Tools_Roles
             $role->add_cap( 'edit_others_progresss' );
             $role->add_cap( 'publish_progresss' );
             $role->add_cap( 'read_private_progresss' );
+
             /* Add Location permissions */
             $role->add_cap( 'edit_location' );
             $role->add_cap( 'read_location' );
@@ -675,35 +665,38 @@ class Disciple_Tools_Roles
             $role->add_cap( 'edit_others_locations' );
             $role->add_cap( 'publish_locations' );
             $role->add_cap( 'read_private_locations' );
+
             /* Add Asset permissions */
             $role->add_cap( 'edit_assetmapping' );
             $role->add_cap( 'read_assetmapping' );
             $role->add_cap( 'delete_assetmapping' );
-            $role->add_cap( 'delete_others_assetmapping' );
+            $role->add_cap( 'delete_others_assetmappings' );
             $role->add_cap( 'delete_assetmappings' );
             $role->add_cap( 'edit_assetmappings' );
-            $role->add_cap( 'edit_others_assetmapping' );
+            $role->add_cap( 'edit_others_assetmappings' );
             $role->add_cap( 'publish_assetmappings' );
             $role->add_cap( 'read_private_assetmappings' );
+
             /* Add Resource permissions */
             $role->add_cap( 'edit_resource' );
             $role->add_cap( 'read_resource' );
             $role->add_cap( 'delete_resource' );
-            $role->add_cap( 'delete_others_resource' );
+            $role->add_cap( 'delete_others_resources' );
             $role->add_cap( 'delete_resources' );
             $role->add_cap( 'edit_resources' );
-            $role->add_cap( 'edit_others_resource' );
-            $role->add_cap( 'publish_resource' );
+            $role->add_cap( 'edit_others_resources' );
+            $role->add_cap( 'publish_resources' );
             $role->add_cap( 'read_private_resources' );
+
             /* Add People Group permissions */
             $role->add_cap( 'edit_peoplegroup' );
             $role->add_cap( 'read_peoplegroup' );
             $role->add_cap( 'delete_peoplegroup' );
-            $role->add_cap( 'delete_others_peoplegroup' );
+            $role->add_cap( 'delete_others_peoplegroups' );
             $role->add_cap( 'delete_peoplegroups' );
             $role->add_cap( 'edit_peoplegroups' );
-            $role->add_cap( 'edit_others_peoplegroup' );
-            $role->add_cap( 'publish_peoplegroup' );
+            $role->add_cap( 'edit_others_peoplegroups' );
+            $role->add_cap( 'publish_peoplegroups' );
             $role->add_cap( 'read_private_peoplegroups' );
         }
 
