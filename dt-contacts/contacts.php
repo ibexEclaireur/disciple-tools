@@ -839,7 +839,8 @@ class Disciple_Tools_Contacts extends Disciple_Tools_Posts
         ) );
         foreach ( $activity as $a ) {
             if ( isset( $a->user_id ) && $a->user_id > 0 ) {
-                $a->name = get_user_by( "id", $a->user_id )->display_name;
+                $user = get_user_by( "id", $a->user_id );
+                $a->name = $user ? $user->display_name : "Nobody";
             }
         }
 
