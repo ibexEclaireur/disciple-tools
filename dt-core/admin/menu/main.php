@@ -99,22 +99,11 @@ final class Disciple_Tools_Config
         /**
          * Begin Header & Tab Bar
          */
-        if ( isset( $_GET["tab"] ) ) {
-            $tab = sanitize_text_field( wp_unslash( $_GET["tab"] ) );
-        } else {
-            $tab = 'overview';
-        }
-
+        $tab = isset( $_GET["tab"] ) ? sanitize_text_field( wp_unslash( $_GET["tab"] ) ) : 'general';
 
         echo '<div class="wrap">
             <h2>DISCIPLE TOOLS OPTIONS</h2>
             <h2 class="nav-tab-wrapper">';
-
-        echo '<a href="admin.php?page=dt_options&tab=overview" class="nav-tab ';
-        if ( $tab == 'overview' || !isset( $tab ) ) {
-            echo 'nav-tab-active';
-        }
-        echo '">Overview</a>';
 
         echo '<a href="admin.php?page=dt_options&tab=general" class="nav-tab ';
         if ( $tab == 'general' || !isset( $tab ) ) {
@@ -149,11 +138,6 @@ final class Disciple_Tools_Config
          */
         switch ( $tab ) {
 
-            case 'overview':
-                require_once( 'tab-overview.php' );
-                $object = new Disciple_Tools_Overview_Tab();
-                $object->content(); // prints
-                break;
             case 'general':
                 require_once( 'tab-general.php' );
                 $object = new Disciple_Tools_General_Tab();
