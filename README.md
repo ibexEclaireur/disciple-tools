@@ -60,10 +60,11 @@ The goal of the project is to create a disciple-making DRM that is incredibly si
 - "Psalm 119" and "JWT Authentication for WP-API" are required, install them.
 - "Disciple Tools - Demo" allows you to add/remove sample data to your database so that you can explore the disciple-tools CRM more effectively. Installing it is recommended but not required.
 
-Done! You can visit the CRM by clicking on the home button at the top of the navigation bar.
+Done! You now have a complete disciple-making CRM for your movement.
+You can access it by clicking on the home button at the top of the navigation bar.
 
 
-You now have a complete disciple-making CRM for your movement. Blessings!
+ Blessings!
 
 ## How to Contribute
 
