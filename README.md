@@ -16,6 +16,11 @@ We are building on the Wordpress platform because of its open-source availabilit
 
 Don't forget, we have a [wiki for Disciple Tools](https://github.com/DiscipleTools/disciple-tools/wiki).
 
+## Theme
+
+This repository contains only the WordPress pluggin for a Disciple Tools CRM. Another repository contains the theme also needed to run the CRM:  
+https://github.com/DiscipleTools/disciple-tools-theme
+
 ## Support
 
 If you need support, email us at supportXXXdisciple.tools, replacing XXX with the @ symbol. You can also read articles in our knowledge base at http://help.disciple.tools.
@@ -37,7 +42,7 @@ The goal of the project is to create a disciple-making DRM that is incredibly si
 
 ### Step 3
 - At the top of the "Add New" plugins screen, select the "Upload Plugin" button at the top of the page.
-- Use the file upload tool, to upload the plugin .zip file you saved in Step #1.
+- Use the file upload tool to upload the plugin .zip file you saved in Step #1.
 
 ### Step 4
 - Once uploaded, "Activate" the plugin.
@@ -48,14 +53,14 @@ The goal of the project is to create a disciple-making DRM that is incredibly si
 
 ### Step 6
 - At the top of the "Add New" themes screen, select the "Upload Theme" button at the top of the page.
-- Use the file upload tool, to upload the theme .zip file you saved in Step #1.
+- Use the file upload tool to upload the theme .zip file you saved in Step #1.
 
 ### Step 7
-- When you active the theme, wordpress will prompt you to install 3 pluggins:  for WP-API and Disciple Tools - Demo. 
-- Psalm 119 and JWT Authentication are required, install them.
-- Disciple Tools - Demo allows you to add/remove sample data to your database so that you can explore the disciple-tools website more effectively. Installing it is recommended but not required.
+- When you active the theme, WordPress will prompt you to install 3 pluggins: 
+- "Psalm 119" and "JWT Authentication for WP-API" are required, install them.
+- "Disciple Tools - Demo" allows you to add/remove sample data to your database so that you can explore the disciple-tools CRM more effectively. Installing it is recommended but not required.
 
-Done! You can visit the website by clicking on the home button at the top of the navigation bar.
+Done! You can visit the CRM by clicking on the home button at the top of the navigation bar.
 
 
 You now have a complete disciple-making CRM for your movement. Blessings!
@@ -72,7 +77,7 @@ Follow these steps.
 
 > Note: you may also want to fork the theme repo (https://github.com/DiscipleTools/disciple-tools-theme)
 
-To apply your changes to the website, update the contents of the "wp-content\plugins\disciple-tools" folder in your word press installation.
+To apply your changes to the pluggin, update the contents of the "wp-content\plugins\disciple-tools" folder in your WordPress installation.
 
 Make sure tests are passing!
 
